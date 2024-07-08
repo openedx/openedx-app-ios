@@ -38,7 +38,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(OfflineSyncInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
-        }.inObjectScope(.weak)
+        }
 
         // MARK: Auth
         container.register(AuthRepositoryProtocol.self) { r in

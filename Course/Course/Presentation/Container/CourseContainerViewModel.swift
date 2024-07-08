@@ -39,7 +39,7 @@ extension CourseTab {
             return CourseLocalization.CourseContainer.handouts
         }
     }
-
+    
     public var image: Image {
         switch self {
         case .course:
@@ -59,7 +59,7 @@ extension CourseTab {
 }
 
 public class CourseContainerViewModel: BaseCourseViewModel {
-
+    
     @Published public var selection: Int
     @Published var isShowProgress = true
     @Published var isShowRefresh = false
@@ -78,13 +78,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @Published var downloadedFilesSize: Int = 0
     @Published var realDownloadedFilesSize: Int = 0
     @Published var largestDownloadBlocks: [CourseBlock] = []
-    @Published var visibleOnMobile: Int = 0
-    @Published var downloadable: Int = 0
-    @Published var canBeCompletedOffline: Int = 0
     @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
-
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -96,23 +93,25 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     let router: CourseRouter
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
-
+    
     let isActive: Bool?
     let courseStart: Date?
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
     let lastVisitedBlockID: String?
-
+    
     var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
-
+    
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
     let analytics: CourseAnalytics
     let coreAnalytics: CoreAnalytics
     private(set) var storage: CourseStorage
-
+    
+    private let cellularFileSizeLimit: Int = 100 * 1024 * 1024
+    
     public init(
         interactor: CourseInteractorProtocol,
         authInteractor: AuthInteractorProtocol,
@@ -148,7 +147,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         self.lastVisitedBlockID = lastVisitedBlockID
         self.coreAnalytics = coreAnalytics
         self.selection = selection.rawValue
-
+        
         super.init(manager: manager)
         addObservers()
     }
@@ -159,7 +158,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             updateCourseProgress = false
         }
     }
-
+    
     func openLastVisitedBlock() {
         guard let continueWith = continueWith,
               let courseStructure = courseStructure else { return }
@@ -242,7 +241,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-
+    
     @MainActor
     func shiftDueDates(courseID: String, withProgress: Bool = true, screen: DatesStatusInfoScreen, type: String) async {
         isShowProgress = withProgress
@@ -286,7 +285,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         storage.userSettings?.downloadQuality = downloadQuality
         userSettings = storage.userSettings
     }
-
+    
     @MainActor
     func tryToRefreshCookies() async {
         try? await authInteractor.getCookies(force: false)
@@ -310,7 +309,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-
+    
     func verticalsBlocksDownloadable(by courseSequential: CourseSequential) -> [CourseBlock] {
         let verticals = downloadableVerticals.filter { verticalState in
             courseSequential.childs.contains(where: { item in
@@ -319,7 +318,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
         return verticals.flatMap { $0.vertical.childs.filter { $0.isDownloadable } }
     }
-
+    
     func getTasks(sequential: CourseSequential) -> [DownloadDataTask] {
         let blocks = verticalsBlocksDownloadable(by: sequential)
         let tasks = blocks.compactMap { block in
@@ -327,7 +326,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
         return tasks
     }
-
+    
     func continueDownload() {
         guard let blocks = waitingDownloads else {
             return
@@ -340,7 +339,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-
+    
     func trackSelectedTab(
         selection: CourseTab,
         courseId: String,
@@ -361,7 +360,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             analytics.courseOutlineHandoutsTabClicked(courseId: courseId, courseName: courseName)
         }
     }
-
+    
     func trackVerticalClicked(
         courseId: String,
         courseName: String,
@@ -382,7 +381,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             courseID: courseID
         )
     }
-
+    
     func trackSequentialClicked(_ sequential: CourseSequential) {
         guard let course = courseStructure else { return }
         analytics.sequentialClicked(
@@ -401,7 +400,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             blockId: blockId
         )
     }
-
+    
     func completeBlock(
         chapterID: String,
         sequentialID: String,
@@ -417,14 +416,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .childs.firstIndex(where: { $0.id == sequentialID }) else {
             return
         }
-
+        
         guard let verticalIndex = courseStructure?
             .childs[chapterIndex]
             .childs[sequentialIndex]
             .childs.firstIndex(where: { $0.id == verticalID }) else {
             return
         }
-
+        
         guard let blockIndex = courseStructure?
             .childs[chapterIndex]
             .childs[sequentialIndex]
@@ -432,7 +431,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .childs.firstIndex(where: { $0.id == blockID }) else {
             return
         }
-
+        
         courseStructure?
             .childs[chapterIndex]
             .childs[sequentialIndex]
@@ -442,7 +441,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: $0)
         }
     }
-
+    
     func hasVideoForDowbloads() -> Bool {
         guard let courseVideosStructure = courseVideosStructure else {
             return false
@@ -451,7 +450,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .flatMap { $0.childs }
             .contains(where: { $0.isDownloadable })
     }
-
+    
     func isAllDownloading() -> Bool {
         let totalCount = downloadableVerticals.count
         let downloadingCount = downloadableVerticals.filter { $0.state == .downloading }.count
@@ -460,7 +459,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         return totalCount - finishedCount == downloadingCount
     }
     
-    @MainActor func isAllDownloaded() -> Bool {
+    @MainActor
+    func isAllDownloaded() -> Bool {
         guard let course = courseStructure else { return false }
         for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
@@ -478,7 +478,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
         return true
     }
-
+    
     @MainActor
     func download(state: DownloadViewState, blocks: [CourseBlock], sequentials: [CourseSequential]) async {
         do {
@@ -491,14 +491,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     if storage.userSettings?.wifiOnly == true {
                         presentWifiRequiredAlert(sequentials: sequentials)
                     } else {
-                       await presentConfirmDownloadCellularAlert(
+                        await presentConfirmDownloadCellularAlert(
                             blocks: blocks,
                             sequentials: sequentials,
                             totalFileSize: totalFileSize
                         )
                     }
                 } else {
-                    if totalFileSize > 100 * 1024 * 1024 {
+                    if totalFileSize > cellularFileSizeLimit {
                         await presentConfirmDownloadAlert(
                             blocks: blocks,
                             sequentials: sequentials,
@@ -526,28 +526,30 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             view: DownloadErrorAlertView(
                 errorType: .noInternetConnection,
                 sequentials: sequentials,
-                close: {
+                close: { [weak self] in
+                    guard let self else { return }
                     self.router.dismiss(animated: true)
                 }
             ),
             completion: {}
         )
     }
-
+    
     private func presentWifiRequiredAlert(sequentials: [CourseSequential]) {
         router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadErrorAlertView(
                 errorType: .wifiRequired,
                 sequentials: sequentials,
-                close: {
+                close: { [weak self] in
+                    guard let self else { return }
                     self.router.dismiss(animated: true)
                 }
             ),
             completion: {}
         )
     }
-
+    
     @MainActor
     private func presentConfirmDownloadCellularAlert(
         blocks: [CourseBlock],
@@ -560,7 +562,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             view: DownloadActionView(
                 actionType: .confirmDownloadCellular,
                 sequentials: sequentials,
-                action: {
+                action: { [weak self] in
+                    guard let self else { return }
                     if !self.isEnoughSpace(for: totalFileSize) {
                         self.presentStorageFullAlert(sequentials: sequentials)
                     } else {
@@ -569,14 +572,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     }
                     self.router.dismiss(animated: true)
                 },
-                cancel: {
+                cancel: { [weak self] in
+                    guard let self else { return }
                     self.router.dismiss(animated: true)
                 }
             ),
             completion: {}
         )
     }
-
+    
     private func presentStorageFullAlert(sequentials: [CourseSequential]) {
         router.presentView(
             transitionStyle: .coverVertical,
@@ -584,14 +588,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 sequentials: sequentials,
                 usedSpace: getUsedDiskSpace() ?? 0,
                 freeSpace: getFreeDiskSpace() ?? 0,
-                close: {
+                close: { [weak self] in
+                    guard let self else { return }
                     self.router.dismiss(animated: true)
                 }
             ),
             completion: {}
         )
     }
-
+    
     @MainActor
     private func presentConfirmDownloadAlert(
         blocks: [CourseBlock],
@@ -604,7 +609,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             view: DownloadActionView(
                 actionType: .confirmDownload,
                 sequentials: manager.updateUnzippedFileSize(for: sequentials),
-                action: {
+                action: { [weak self] in
+                    guard let self else { return }
                     if !self.isEnoughSpace(for: totalFileSize) {
                         self.router.dismiss(animated: true)
                         self.presentStorageFullAlert(sequentials: sequentials)
@@ -614,27 +620,30 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     }
                     self.router.dismiss(animated: true)
                 },
-                cancel: {
+                cancel: { [weak self] in
+                    guard let self else { return }
                     self.router.dismiss(animated: true)
                 }
             ),
             completion: {}
         )
     }
-
+    
     private func presentRemoveDownloadAlert(blocks: [CourseBlock], sequentials: [CourseSequential]) {
         router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .remove,
                 sequentials: manager.updateUnzippedFileSize(for: sequentials),
-                action: {
+                action: { [weak self] in
+                    guard let self else { return }
                     Task {
                         await self.manager.deleteFile(blocks: blocks)
                     }
                     self.router.dismiss(animated: true)
                 },
-                cancel: {
+                cancel: { [weak self] in
+                    guard let self else { return }
                     self.router.dismiss(animated: true)
                 }
             ),
@@ -675,7 +684,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         
         return blocks
     }
-
+    
     @MainActor
     func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
         waitingDownloads = nil
@@ -728,7 +737,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         blocks: allBlocks,
                         sequentials: sequentials,
                         totalFileSize: totalFileSize,
-                        action: { self.downloadAllButtonState = .cancel }
+                        action: { [weak self] in
+                            guard let self else { return }
+                            self.downloadAllButtonState = .cancel
+                        }
                     )
                 }
             } else {
@@ -737,7 +749,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         blocks: allBlocks,
                         sequentials: sequentials,
                         totalFileSize: totalFileSize,
-                        action: { self.downloadAllButtonState = .cancel }
+                        action: {  [weak self] in
+                            guard let self else { return }
+                            self.downloadAllButtonState = .cancel
+                        }
                     )
                 } else {
                     try? self.manager.addToDownloadQueue(blocks: allBlocks)
@@ -757,7 +772,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             errorMessage = CoreLocalization.Error.unknownError
         }
     }
-
+    
     @MainActor
     func downloadableBlocks(from sequential: CourseSequential) -> [CourseBlock] {
         let verticals = sequential.childs
@@ -770,7 +785,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func getDownloadingProgress() async {
         guard let course = courseStructure else { return }
-//        courseDownloadTasks = await manager.getDownloadTasksForCourse(course.id)
         
         var totalFilesSize: Int = 0
         var downloadedFilesSize: Int = 0
@@ -794,7 +808,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 $0.childs.flatMap { $0.childs.compactMap { $0.actualFileSize } }
             }.reduce(0, { $0 + $1 })
         }
-            
+        
         for task in courseDownloadTasks where task.state == .finished {
             downloadedFilesSize += task.fileSize
         }
@@ -813,7 +827,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
         await fetchLargestDownloadBlocks()
     }
-
+    
     @MainActor
     func setDownloadsStates() async {
         guard let course = courseStructure else { return }
@@ -832,7 +846,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                                 if Date(iso8601: newDateOfLastModified) > Date(iso8601: oldDateOfLastModified) {
                                     guard isEnoughSpace(for: block.fileSize ?? 0) else { return }
                                     download.lastModified = newDateOfLastModified
-//                                    await manager.deleteFile(blocks: [block])
                                     try? await manager.cancelDownloading(task: download)
                                     sequentialsChilds.append(.available)
                                     verticalsChilds.append(.available)
@@ -926,7 +939,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     // MARK: Larges Downloads
-
+    
     @MainActor
     func fetchLargestDownloadBlocks() async {
         let allBlocks = courseStructure?.childs.flatMap { $0.childs.flatMap { $0.childs.flatMap { $0.childs } } } ?? []
@@ -937,25 +950,27 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             return false
         }
         
-        let filteredBlocks = downloadedBlocks
-            .filter { $0.fileSize != nil }
-            .sorted { $0.fileSize! > $1.fileSize! }
-            .prefix(5)
-            .map { $0 }
+        let filteredBlocks = Array(
+            downloadedBlocks
+                .filter { $0.fileSize != nil }
+                .sorted { $0.fileSize! > $1.fileSize! }
+                .prefix(5)
+        )
         
         withAnimation(.linear(duration: 0.3)) {
             largestDownloadBlocks = filteredBlocks
         }
     }
-      
-      @MainActor
+    
+    @MainActor
     func removeBlock(_ block: CourseBlock) async {
         router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .remove,
                 courseBlocks: [block],
-                action: {
+                action: { [weak self] in
+                    guard let self else { return }
                     withAnimation(.linear(duration: 0.3)) {
                         self.largestDownloadBlocks.removeAll { $0.id == block.id }
                     }
@@ -964,15 +979,16 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     }
                     self.router.dismiss(animated: true)
                 },
-                cancel: {
+                cancel: { [weak self] in
+                    guard let self else { return }
                     self.router.dismiss(animated: true)
                 }
             ),
             completion: {}
         )
     }
-
-      @MainActor
+    
+    @MainActor
     func removeAllBlocks() async {
         let allBlocks = courseStructure?.childs.flatMap { $0.childs.flatMap { $0.childs.flatMap { $0.childs } } } ?? []
         let blocksToRemove = allBlocks.filter { block in
@@ -981,7 +997,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             }
             return false
         }
-
+        
         router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
@@ -989,20 +1005,22 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 courseBlocks: blocksToRemove,
                 courseName: courseStructure?.displayName ?? "",
                 action: { [weak self] in
+                    guard let self else { return }
                     Task {
-                        await self?.stopAllDownloads()
-                        await self?.manager.deleteFile(blocks: blocksToRemove)
+                        await self.stopAllDownloads()
+                        await self.manager.deleteFile(blocks: blocksToRemove)
                     }
-                    self?.router.dismiss(animated: true)
+                    self.router.dismiss(animated: true)
                 },
                 cancel: { [weak self] in
-                    self?.router.dismiss(animated: true)
+                    guard let self else { return }
+                    self.router.dismiss(animated: true)
                 }
             ),
             completion: {}
         )
     }
-
+    
     private func addObservers() {
         manager.eventPublisher()
             .sink { [weak self] state in
@@ -1015,13 +1033,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
             .store(in: &cancellables)
-
+        
         connectivity.internetReachableSubject
             .sink { [weak self] _ in
-            guard let self else { return }
+                guard let self else { return }
                 self.isInternetAvaliable = self.connectivity.isInternetAvaliable
-        }
-        .store(in: &cancellables)
+            }
+            .store(in: &cancellables)
         
         NotificationCenter.default.addObserver(
             self,
@@ -1030,17 +1048,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         )
         
         completionPublisher
-              .sink { [weak self] _ in
-                  guard let self = self else { return }
-                  updateCourseProgress = true
-              }
-              .store(in: &cancellables)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                updateCourseProgress = true
+            }
+            .store(in: &cancellables)
         
         $sequentialsDownloadState.sink(receiveValue: { states in
             if states.values.allSatisfy({ $0 == .available }) {
                 self.downloadAllButtonState = .start
-            } else {
-//                self.downloadAllButtonState = .cancel
             }
         }).store(in: &cancellables)
     }
@@ -1077,7 +1093,7 @@ extension CourseContainerViewModel {
 struct VerticalsDownloadState: Hashable {
     let vertical: CourseVertical
     let state: DownloadViewState
-
+    
     var downloadableBlocks: [CourseBlock] {
         vertical.childs.filter { $0.isDownloadable && $0.type == .video }
     }

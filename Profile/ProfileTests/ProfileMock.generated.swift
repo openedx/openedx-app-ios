@@ -1390,6 +1390,580 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
     }
 }
 
+// MARK: - CorePersistenceProtocol
+
+open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func set(userId: Int) {
+        addInvocation(.m_set__userId_userId(Parameter<Int>.value(`userId`)))
+		let perform = methodPerformValue(.m_set__userId_userId(Parameter<Int>.value(`userId`))) as? (Int) -> Void
+		perform?(`userId`)
+    }
+
+    open func getUserID() -> Int? {
+        addInvocation(.m_getUserID)
+		let perform = methodPerformValue(.m_getUserID) as? () -> Void
+		perform?()
+		var __value: Int? = nil
+		do {
+		    __value = try methodReturnValue(.m_getUserID).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    open func publisher() -> AnyPublisher<Int, Never> {
+        addInvocation(.m_publisher)
+		let perform = methodPerformValue(.m_publisher) as? () -> Void
+		perform?()
+		var __value: AnyPublisher<Int, Never>
+		do {
+		    __value = try methodReturnValue(.m_publisher).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for publisher(). Use given")
+			Failure("Stub return value not specified for publisher(). Use given")
+		}
+		return __value
+    }
+
+    open func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) {
+        addInvocation(.m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>.value(`blocks`), Parameter<DownloadQuality>.value(`downloadQuality`)))
+		let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>.value(`blocks`), Parameter<DownloadQuality>.value(`downloadQuality`))) as? ([CourseBlock], DownloadQuality) -> Void
+		perform?(`blocks`, `downloadQuality`)
+    }
+
+    open func addToDownloadQueue(tasks: [DownloadDataTask]) {
+        addInvocation(.m_addToDownloadQueue__tasks_tasks(Parameter<[DownloadDataTask]>.value(`tasks`)))
+		let perform = methodPerformValue(.m_addToDownloadQueue__tasks_tasks(Parameter<[DownloadDataTask]>.value(`tasks`))) as? ([DownloadDataTask]) -> Void
+		perform?(`tasks`)
+    }
+
+    open func nextBlockForDownloading() -> DownloadDataTask? {
+        addInvocation(.m_nextBlockForDownloading)
+		let perform = methodPerformValue(.m_nextBlockForDownloading) as? () -> Void
+		perform?()
+		var __value: DownloadDataTask? = nil
+		do {
+		    __value = try methodReturnValue(.m_nextBlockForDownloading).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    open func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) {
+        addInvocation(.m_updateDownloadState__id_idstate_stateresumeData_resumeData(Parameter<String>.value(`id`), Parameter<DownloadState>.value(`state`), Parameter<Data?>.value(`resumeData`)))
+		let perform = methodPerformValue(.m_updateDownloadState__id_idstate_stateresumeData_resumeData(Parameter<String>.value(`id`), Parameter<DownloadState>.value(`state`), Parameter<Data?>.value(`resumeData`))) as? (String, DownloadState, Data?) -> Void
+		perform?(`id`, `state`, `resumeData`)
+    }
+
+    open func deleteDownloadDataTask(id: String) throws {
+        addInvocation(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`)))
+		let perform = methodPerformValue(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`))) as? (String) -> Void
+		perform?(`id`)
+		do {
+		    _ = try methodReturnValue(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
+    open func downloadDataTask(for blockId: String) -> DownloadDataTask? {
+        addInvocation(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`)))
+		let perform = methodPerformValue(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
+		perform?(`blockId`)
+		var __value: DownloadDataTask? = nil
+		do {
+		    __value = try methodReturnValue(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    open func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void) {
+        addInvocation(.m_downloadDataTask__for_blockIdcompletion_completion(Parameter<String>.value(`blockId`), Parameter<(DownloadDataTask?) -> Void>.value(`completion`)))
+		let perform = methodPerformValue(.m_downloadDataTask__for_blockIdcompletion_completion(Parameter<String>.value(`blockId`), Parameter<(DownloadDataTask?) -> Void>.value(`completion`))) as? (String, @escaping (DownloadDataTask?) -> Void) -> Void
+		perform?(`blockId`, `completion`)
+    }
+
+    open func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void) {
+        addInvocation(.m_getDownloadDataTasks__completion_completion(Parameter<([DownloadDataTask]) -> Void>.value(`completion`)))
+		let perform = methodPerformValue(.m_getDownloadDataTasks__completion_completion(Parameter<([DownloadDataTask]) -> Void>.value(`completion`))) as? (@escaping ([DownloadDataTask]) -> Void) -> Void
+		perform?(`completion`)
+    }
+
+    open func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void) {
+        addInvocation(.m_getDownloadDataTasksForCourse__courseIdcompletion_completion(Parameter<String>.value(`courseId`), Parameter<([DownloadDataTask]) -> Void>.value(`completion`)))
+		let perform = methodPerformValue(.m_getDownloadDataTasksForCourse__courseIdcompletion_completion(Parameter<String>.value(`courseId`), Parameter<([DownloadDataTask]) -> Void>.value(`completion`))) as? (String, @escaping ([DownloadDataTask]) -> Void) -> Void
+		perform?(`courseId`, `completion`)
+    }
+
+    open func saveOfflineProgress(progress: OfflineProgress) {
+        addInvocation(.m_saveOfflineProgress__progress_progress(Parameter<OfflineProgress>.value(`progress`)))
+		let perform = methodPerformValue(.m_saveOfflineProgress__progress_progress(Parameter<OfflineProgress>.value(`progress`))) as? (OfflineProgress) -> Void
+		perform?(`progress`)
+    }
+
+    open func loadProgress(for blockID: String) -> OfflineProgress? {
+        addInvocation(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`)))
+		let perform = methodPerformValue(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`))) as? (String) -> Void
+		perform?(`blockID`)
+		var __value: OfflineProgress? = nil
+		do {
+		    __value = try methodReturnValue(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    open func loadAllOfflineProgress() -> [OfflineProgress] {
+        addInvocation(.m_loadAllOfflineProgress)
+		let perform = methodPerformValue(.m_loadAllOfflineProgress) as? () -> Void
+		perform?()
+		var __value: [OfflineProgress]
+		do {
+		    __value = try methodReturnValue(.m_loadAllOfflineProgress).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for loadAllOfflineProgress(). Use given")
+			Failure("Stub return value not specified for loadAllOfflineProgress(). Use given")
+		}
+		return __value
+    }
+
+    open func deleteProgress(for blockID: String) {
+        addInvocation(.m_deleteProgress__for_blockID(Parameter<String>.value(`blockID`)))
+		let perform = methodPerformValue(.m_deleteProgress__for_blockID(Parameter<String>.value(`blockID`))) as? (String) -> Void
+		perform?(`blockID`)
+    }
+
+    open func deleteAllProgress() {
+        addInvocation(.m_deleteAllProgress)
+		let perform = methodPerformValue(.m_deleteAllProgress) as? () -> Void
+		perform?()
+    }
+
+
+    fileprivate enum MethodType {
+        case m_set__userId_userId(Parameter<Int>)
+        case m_getUserID
+        case m_publisher
+        case m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>, Parameter<DownloadQuality>)
+        case m_addToDownloadQueue__tasks_tasks(Parameter<[DownloadDataTask]>)
+        case m_nextBlockForDownloading
+        case m_updateDownloadState__id_idstate_stateresumeData_resumeData(Parameter<String>, Parameter<DownloadState>, Parameter<Data?>)
+        case m_deleteDownloadDataTask__id_id(Parameter<String>)
+        case m_downloadDataTask__for_blockId(Parameter<String>)
+        case m_downloadDataTask__for_blockIdcompletion_completion(Parameter<String>, Parameter<(DownloadDataTask?) -> Void>)
+        case m_getDownloadDataTasks__completion_completion(Parameter<([DownloadDataTask]) -> Void>)
+        case m_getDownloadDataTasksForCourse__courseIdcompletion_completion(Parameter<String>, Parameter<([DownloadDataTask]) -> Void>)
+        case m_saveOfflineProgress__progress_progress(Parameter<OfflineProgress>)
+        case m_loadProgress__for_blockID(Parameter<String>)
+        case m_loadAllOfflineProgress
+        case m_deleteProgress__for_blockID(Parameter<String>)
+        case m_deleteAllProgress
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_set__userId_userId(let lhsUserid), .m_set__userId_userId(let rhsUserid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUserid, rhs: rhsUserid, with: matcher), lhsUserid, rhsUserid, "userId"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getUserID, .m_getUserID): return .match
+
+            case (.m_publisher, .m_publisher): return .match
+
+            case (.m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(let lhsBlocks, let lhsDownloadquality), .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(let rhsBlocks, let rhsDownloadquality)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDownloadquality, rhs: rhsDownloadquality, with: matcher), lhsDownloadquality, rhsDownloadquality, "downloadQuality"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_addToDownloadQueue__tasks_tasks(let lhsTasks), .m_addToDownloadQueue__tasks_tasks(let rhsTasks)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTasks, rhs: rhsTasks, with: matcher), lhsTasks, rhsTasks, "tasks"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_nextBlockForDownloading, .m_nextBlockForDownloading): return .match
+
+            case (.m_updateDownloadState__id_idstate_stateresumeData_resumeData(let lhsId, let lhsState, let lhsResumedata), .m_updateDownloadState__id_idstate_stateresumeData_resumeData(let rhsId, let rhsState, let rhsResumedata)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher), lhsId, rhsId, "id"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsState, rhs: rhsState, with: matcher), lhsState, rhsState, "state"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResumedata, rhs: rhsResumedata, with: matcher), lhsResumedata, rhsResumedata, "resumeData"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_deleteDownloadDataTask__id_id(let lhsId), .m_deleteDownloadDataTask__id_id(let rhsId)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher), lhsId, rhsId, "id"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_downloadDataTask__for_blockId(let lhsBlockid), .m_downloadDataTask__for_blockId(let rhsBlockid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_downloadDataTask__for_blockIdcompletion_completion(let lhsBlockid, let lhsCompletion), .m_downloadDataTask__for_blockIdcompletion_completion(let rhsBlockid, let rhsCompletion)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getDownloadDataTasks__completion_completion(let lhsCompletion), .m_getDownloadDataTasks__completion_completion(let rhsCompletion)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getDownloadDataTasksForCourse__courseIdcompletion_completion(let lhsCourseid, let lhsCompletion), .m_getDownloadDataTasksForCourse__courseIdcompletion_completion(let rhsCourseid, let rhsCompletion)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCompletion, rhs: rhsCompletion, with: matcher), lhsCompletion, rhsCompletion, "completion"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_saveOfflineProgress__progress_progress(let lhsProgress), .m_saveOfflineProgress__progress_progress(let rhsProgress)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsProgress, rhs: rhsProgress, with: matcher), lhsProgress, rhsProgress, "progress"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_loadProgress__for_blockID(let lhsBlockid), .m_loadProgress__for_blockID(let rhsBlockid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_loadAllOfflineProgress, .m_loadAllOfflineProgress): return .match
+
+            case (.m_deleteProgress__for_blockID(let lhsBlockid), .m_deleteProgress__for_blockID(let rhsBlockid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_deleteAllProgress, .m_deleteAllProgress): return .match
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_set__userId_userId(p0): return p0.intValue
+            case .m_getUserID: return 0
+            case .m_publisher: return 0
+            case let .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(p0, p1): return p0.intValue + p1.intValue
+            case let .m_addToDownloadQueue__tasks_tasks(p0): return p0.intValue
+            case .m_nextBlockForDownloading: return 0
+            case let .m_updateDownloadState__id_idstate_stateresumeData_resumeData(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_deleteDownloadDataTask__id_id(p0): return p0.intValue
+            case let .m_downloadDataTask__for_blockId(p0): return p0.intValue
+            case let .m_downloadDataTask__for_blockIdcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+            case let .m_getDownloadDataTasks__completion_completion(p0): return p0.intValue
+            case let .m_getDownloadDataTasksForCourse__courseIdcompletion_completion(p0, p1): return p0.intValue + p1.intValue
+            case let .m_saveOfflineProgress__progress_progress(p0): return p0.intValue
+            case let .m_loadProgress__for_blockID(p0): return p0.intValue
+            case .m_loadAllOfflineProgress: return 0
+            case let .m_deleteProgress__for_blockID(p0): return p0.intValue
+            case .m_deleteAllProgress: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_set__userId_userId: return ".set(userId:)"
+            case .m_getUserID: return ".getUserID()"
+            case .m_publisher: return ".publisher()"
+            case .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality: return ".addToDownloadQueue(blocks:downloadQuality:)"
+            case .m_addToDownloadQueue__tasks_tasks: return ".addToDownloadQueue(tasks:)"
+            case .m_nextBlockForDownloading: return ".nextBlockForDownloading()"
+            case .m_updateDownloadState__id_idstate_stateresumeData_resumeData: return ".updateDownloadState(id:state:resumeData:)"
+            case .m_deleteDownloadDataTask__id_id: return ".deleteDownloadDataTask(id:)"
+            case .m_downloadDataTask__for_blockId: return ".downloadDataTask(for:)"
+            case .m_downloadDataTask__for_blockIdcompletion_completion: return ".downloadDataTask(for:completion:)"
+            case .m_getDownloadDataTasks__completion_completion: return ".getDownloadDataTasks(completion:)"
+            case .m_getDownloadDataTasksForCourse__courseIdcompletion_completion: return ".getDownloadDataTasksForCourse(_:completion:)"
+            case .m_saveOfflineProgress__progress_progress: return ".saveOfflineProgress(progress:)"
+            case .m_loadProgress__for_blockID: return ".loadProgress(for:)"
+            case .m_loadAllOfflineProgress: return ".loadAllOfflineProgress()"
+            case .m_deleteProgress__for_blockID: return ".deleteProgress(for:)"
+            case .m_deleteAllProgress: return ".deleteAllProgress()"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func getUserID(willReturn: Int?...) -> MethodStub {
+            return Given(method: .m_getUserID, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func publisher(willReturn: AnyPublisher<Int, Never>...) -> MethodStub {
+            return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func nextBlockForDownloading(willReturn: DownloadDataTask?...) -> MethodStub {
+            return Given(method: .m_nextBlockForDownloading, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func downloadDataTask(for blockId: Parameter<String>, willReturn: DownloadDataTask?...) -> MethodStub {
+            return Given(method: .m_downloadDataTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func loadProgress(for blockID: Parameter<String>, willReturn: OfflineProgress?...) -> MethodStub {
+            return Given(method: .m_loadProgress__for_blockID(`blockID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func loadAllOfflineProgress(willReturn: [OfflineProgress]...) -> MethodStub {
+            return Given(method: .m_loadAllOfflineProgress, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getUserID(willProduce: (Stubber<Int?>) -> Void) -> MethodStub {
+            let willReturn: [Int?] = []
+			let given: Given = { return Given(method: .m_getUserID, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func publisher(willProduce: (Stubber<AnyPublisher<Int, Never>>) -> Void) -> MethodStub {
+            let willReturn: [AnyPublisher<Int, Never>] = []
+			let given: Given = { return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (AnyPublisher<Int, Never>).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func nextBlockForDownloading(willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
+            let willReturn: [DownloadDataTask?] = []
+			let given: Given = { return Given(method: .m_nextBlockForDownloading, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (DownloadDataTask?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func downloadDataTask(for blockId: Parameter<String>, willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
+            let willReturn: [DownloadDataTask?] = []
+			let given: Given = { return Given(method: .m_downloadDataTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (DownloadDataTask?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func loadProgress(for blockID: Parameter<String>, willProduce: (Stubber<OfflineProgress?>) -> Void) -> MethodStub {
+            let willReturn: [OfflineProgress?] = []
+			let given: Given = { return Given(method: .m_loadProgress__for_blockID(`blockID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (OfflineProgress?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func loadAllOfflineProgress(willProduce: (Stubber<[OfflineProgress]>) -> Void) -> MethodStub {
+            let willReturn: [[OfflineProgress]] = []
+			let given: Given = { return Given(method: .m_loadAllOfflineProgress, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([OfflineProgress]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func deleteDownloadDataTask(id: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_deleteDownloadDataTask__id_id(`id`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func deleteDownloadDataTask(id: Parameter<String>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_deleteDownloadDataTask__id_id(`id`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func set(userId: Parameter<Int>) -> Verify { return Verify(method: .m_set__userId_userId(`userId`))}
+        public static func getUserID() -> Verify { return Verify(method: .m_getUserID)}
+        public static func publisher() -> Verify { return Verify(method: .m_publisher)}
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, downloadQuality: Parameter<DownloadQuality>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(`blocks`, `downloadQuality`))}
+        public static func addToDownloadQueue(tasks: Parameter<[DownloadDataTask]>) -> Verify { return Verify(method: .m_addToDownloadQueue__tasks_tasks(`tasks`))}
+        public static func nextBlockForDownloading() -> Verify { return Verify(method: .m_nextBlockForDownloading)}
+        public static func updateDownloadState(id: Parameter<String>, state: Parameter<DownloadState>, resumeData: Parameter<Data?>) -> Verify { return Verify(method: .m_updateDownloadState__id_idstate_stateresumeData_resumeData(`id`, `state`, `resumeData`))}
+        public static func deleteDownloadDataTask(id: Parameter<String>) -> Verify { return Verify(method: .m_deleteDownloadDataTask__id_id(`id`))}
+        public static func downloadDataTask(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_downloadDataTask__for_blockId(`blockId`))}
+        public static func downloadDataTask(for blockId: Parameter<String>, completion: Parameter<(DownloadDataTask?) -> Void>) -> Verify { return Verify(method: .m_downloadDataTask__for_blockIdcompletion_completion(`blockId`, `completion`))}
+        public static func getDownloadDataTasks(completion: Parameter<([DownloadDataTask]) -> Void>) -> Verify { return Verify(method: .m_getDownloadDataTasks__completion_completion(`completion`))}
+        public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>, completion: Parameter<([DownloadDataTask]) -> Void>) -> Verify { return Verify(method: .m_getDownloadDataTasksForCourse__courseIdcompletion_completion(`courseId`, `completion`))}
+        public static func saveOfflineProgress(progress: Parameter<OfflineProgress>) -> Verify { return Verify(method: .m_saveOfflineProgress__progress_progress(`progress`))}
+        public static func loadProgress(for blockID: Parameter<String>) -> Verify { return Verify(method: .m_loadProgress__for_blockID(`blockID`))}
+        public static func loadAllOfflineProgress() -> Verify { return Verify(method: .m_loadAllOfflineProgress)}
+        public static func deleteProgress(for blockID: Parameter<String>) -> Verify { return Verify(method: .m_deleteProgress__for_blockID(`blockID`))}
+        public static func deleteAllProgress() -> Verify { return Verify(method: .m_deleteAllProgress)}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func set(userId: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
+            return Perform(method: .m_set__userId_userId(`userId`), performs: perform)
+        }
+        public static func getUserID(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_getUserID, performs: perform)
+        }
+        public static func publisher(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_publisher, performs: perform)
+        }
+        public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, downloadQuality: Parameter<DownloadQuality>, perform: @escaping ([CourseBlock], DownloadQuality) -> Void) -> Perform {
+            return Perform(method: .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(`blocks`, `downloadQuality`), performs: perform)
+        }
+        public static func addToDownloadQueue(tasks: Parameter<[DownloadDataTask]>, perform: @escaping ([DownloadDataTask]) -> Void) -> Perform {
+            return Perform(method: .m_addToDownloadQueue__tasks_tasks(`tasks`), performs: perform)
+        }
+        public static func nextBlockForDownloading(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_nextBlockForDownloading, performs: perform)
+        }
+        public static func updateDownloadState(id: Parameter<String>, state: Parameter<DownloadState>, resumeData: Parameter<Data?>, perform: @escaping (String, DownloadState, Data?) -> Void) -> Perform {
+            return Perform(method: .m_updateDownloadState__id_idstate_stateresumeData_resumeData(`id`, `state`, `resumeData`), performs: perform)
+        }
+        public static func deleteDownloadDataTask(id: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_deleteDownloadDataTask__id_id(`id`), performs: perform)
+        }
+        public static func downloadDataTask(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_downloadDataTask__for_blockId(`blockId`), performs: perform)
+        }
+        public static func downloadDataTask(for blockId: Parameter<String>, completion: Parameter<(DownloadDataTask?) -> Void>, perform: @escaping (String, @escaping (DownloadDataTask?) -> Void) -> Void) -> Perform {
+            return Perform(method: .m_downloadDataTask__for_blockIdcompletion_completion(`blockId`, `completion`), performs: perform)
+        }
+        public static func getDownloadDataTasks(completion: Parameter<([DownloadDataTask]) -> Void>, perform: @escaping (@escaping ([DownloadDataTask]) -> Void) -> Void) -> Perform {
+            return Perform(method: .m_getDownloadDataTasks__completion_completion(`completion`), performs: perform)
+        }
+        public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>, completion: Parameter<([DownloadDataTask]) -> Void>, perform: @escaping (String, @escaping ([DownloadDataTask]) -> Void) -> Void) -> Perform {
+            return Perform(method: .m_getDownloadDataTasksForCourse__courseIdcompletion_completion(`courseId`, `completion`), performs: perform)
+        }
+        public static func saveOfflineProgress(progress: Parameter<OfflineProgress>, perform: @escaping (OfflineProgress) -> Void) -> Perform {
+            return Perform(method: .m_saveOfflineProgress__progress_progress(`progress`), performs: perform)
+        }
+        public static func loadProgress(for blockID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_loadProgress__for_blockID(`blockID`), performs: perform)
+        }
+        public static func loadAllOfflineProgress(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_loadAllOfflineProgress, performs: perform)
+        }
+        public static func deleteProgress(for blockID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_deleteProgress__for_blockID(`blockID`), performs: perform)
+        }
+        public static func deleteAllProgress(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_deleteAllProgress, performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - DownloadManagerProtocol
 
 open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {

@@ -150,12 +150,6 @@ struct OfflineView: View {
                     }
                 }
             }
-            
-            .onFirstAppear {
-                Task {
-                    
-                }
-            }
             .background(
                 Theme.Colors.background
                     .ignoresSafeArea()
@@ -168,7 +162,7 @@ struct OfflineView: View {
     
     @ViewBuilder
     private var downloadAll: some View {
-        if viewModel.connectivity.isInternetAvaliable 
+        if viewModel.connectivity.isInternetAvaliable
             && (viewModel.totalFilesSize - viewModel.downloadedFilesSize != 0)
             || (viewModel.totalFilesSize == 0 && viewModel.downloadedFilesSize == 0) {
             Button(action: {
@@ -191,12 +185,11 @@ struct OfflineView: View {
                 .foregroundStyle(
                     viewModel.totalFilesSize == 0
                     ? Theme.Colors.disabledButtonText
-                     : viewModel.downloadAllButtonState.textColor
+                    : viewModel.downloadAllButtonState.textColor
                 )
                 .frame(maxWidth: .infinity)
                 .frame(height: 42)
                 .overlay(
-                    
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(
                             viewModel.totalFilesSize == 0
@@ -237,7 +230,6 @@ struct OfflineView: View {
                     )
                     .background(Theme.Colors.background)
                     .cornerRadius(8)
-                    
                 }
             }
             .padding(.vertical, 4)

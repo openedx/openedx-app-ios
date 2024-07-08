@@ -74,10 +74,8 @@ public struct DownloadActionView: View {
         }
         .ignoresSafeArea()
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(.linear(duration: 0.3), {
-                    fadeEffect = true
-                })
+            withAnimation(Animation.linear(duration: 0.3).delay(0.2)) {
+                fadeEffect = true
             }
         }
     }
@@ -128,7 +126,6 @@ public struct DownloadActionView: View {
                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
             
             VStack(spacing: 16) {
-                
                 Button(action: {
                     fadeEffect = false
                     action()
@@ -267,7 +264,7 @@ public struct DownloadActionView: View {
             Theme.Colors.snackbarErrorColor
         case .confirmDownloadCellular, .confirmDownload:
             Theme.Colors.accentColor
-        
+            
         }
     }
     

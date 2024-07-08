@@ -43,6 +43,7 @@
 		025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025B36742A13B7D5001A640E /* UnitButtonView.swift */; };
 		025EF2F62971740000B838AB /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 025EF2F52971740000B838AB /* YouTubePlayerKit */; };
 		0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0260E57F28FD792800BBBE18 /* WebUnitViewModel.swift */; };
+		0267F8512C3C256F0089D810 /* FileWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0267F8502C3C256F0089D810 /* FileWebView.swift */; };
 		027BD3922907D88F00392132 /* Data_RegistrationFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3912907D88F00392132 /* Data_RegistrationFields.swift */; };
 		027BD39C2908810C00392132 /* RegisterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD39B2908810C00392132 /* RegisterUser.swift */; };
 		027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3A62909474100392132 /* KeyboardAvoidingViewController.swift */; };
@@ -73,7 +74,6 @@
 		029A13282C246AE6005FB830 /* OfflineSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A13272C246AE6005FB830 /* OfflineSyncManager.swift */; };
 		029A132A2C2471DF005FB830 /* OfflineSyncRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A13292C2471DF005FB830 /* OfflineSyncRepository.swift */; };
 		029A132C2C2471F8005FB830 /* OfflineSyncEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */; };
-		029A132E2C2477B8005FB830 /* JSONBodyEncoding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A132D2C2477B8005FB830 /* JSONBodyEncoding.swift */; };
 		029A13302C2479E7005FB830 /* OfflineSyncInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A132F2C2479E7005FB830 /* OfflineSyncInteractor.swift */; };
 		029EE3ED2BF6650500F64F33 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029EE3EC2BF6650500F64F33 /* Bundle.swift */; };
 		02A463112AEA966C00331037 /* AppReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A463102AEA966C00331037 /* AppReviewView.swift */; };
@@ -239,6 +239,7 @@
 		025A204F2C071EB0003EA08D /* ErrorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertView.swift; sourceTree = "<group>"; };
 		025B36742A13B7D5001A640E /* UnitButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitButtonView.swift; sourceTree = "<group>"; };
 		0260E57F28FD792800BBBE18 /* WebUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUnitViewModel.swift; sourceTree = "<group>"; };
+		0267F8502C3C256F0089D810 /* FileWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWebView.swift; sourceTree = "<group>"; };
 		027BD3912907D88F00392132 /* Data_RegistrationFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_RegistrationFields.swift; sourceTree = "<group>"; };
 		027BD39B2908810C00392132 /* RegisterUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUser.swift; sourceTree = "<group>"; };
 		027BD3A62909474100392132 /* KeyboardAvoidingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidingViewController.swift; sourceTree = "<group>"; };
@@ -269,7 +270,6 @@
 		029A13272C246AE6005FB830 /* OfflineSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncManager.swift; sourceTree = "<group>"; };
 		029A13292C2471DF005FB830 /* OfflineSyncRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncRepository.swift; sourceTree = "<group>"; };
 		029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncEndpoint.swift; sourceTree = "<group>"; };
-		029A132D2C2477B8005FB830 /* JSONBodyEncoding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSONBodyEncoding.swift; sourceTree = "<group>"; };
 		029A132F2C2479E7005FB830 /* OfflineSyncInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncInteractor.swift; sourceTree = "<group>"; };
 		029EE3EC2BF6650500F64F33 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		02A463102AEA966C00331037 /* AppReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewView.swift; sourceTree = "<group>"; };
@@ -712,7 +712,6 @@
 				0236961E28F9A2F600EEF206 /* AuthEndpoint.swift */,
 				029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */,
 				0255D55729362839004DBC1A /* UploadBodyEncoding.swift */,
-				029A132D2C2477B8005FB830 /* JSONBodyEncoding.swift */,
 				02A4833929B8A9AB00D33F33 /* DownloadManager.swift */,
 				029A13272C246AE6005FB830 /* OfflineSyncManager.swift */,
 			);
@@ -780,6 +779,7 @@
 				020D72F32BB76DFE00773319 /* VisualEffectView.swift */,
 				06DEA4A22BBD66A700110D20 /* BackNavigationButton.swift */,
 				06DEA4A42BBD66D700110D20 /* BackNavigationButtonViewModel.swift */,
+				0267F8502C3C256F0089D810 /* FileWebView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1128,7 +1128,6 @@
 				029A13262C2457D9005FB830 /* OfflineProgress.swift in Sources */,
 				02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */,
 				0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */,
-				029A132E2C2477B8005FB830 /* JSONBodyEncoding.swift in Sources */,
 				06619EAF2B973B25001FAADE /* AccessibilityInjection.swift in Sources */,
 				BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */,
 				02935B732BCECAD000B22F66 /* Data_PrimaryEnrollment.swift in Sources */,
@@ -1218,6 +1217,7 @@
 				DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
+				0267F8512C3C256F0089D810 /* FileWebView.swift in Sources */,
 				A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */,
 				06DEA4A52BBD66D700110D20 /* BackNavigationButtonViewModel.swift in Sources */,
 				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,

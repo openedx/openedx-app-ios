@@ -42,13 +42,12 @@ public struct DeviceStorageFullAlertView: View {
         }
         .ignoresSafeArea()
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(.linear(duration: 0.3), {
-                    fadeEffect = true
-                })
+            withAnimation(Animation.linear(duration: 0.3).delay(0.2)) {
+                fadeEffect = true
             }
         }
     }
+    
     
     private var content: some View {
         VStack {
@@ -180,7 +179,7 @@ struct StorageProgressBar: View {
             
             let normalizedUsedSpaceWidth = usedSpacePercentage * normalizationFactor
             let normalizedContentSizeWidth = contentSizePercentage * normalizationFactor
-
+            
             ZStack {
                 RoundedRectangle(cornerRadius: 3)
                     .fill(Theme.Colors.datesSectionStroke)
@@ -208,7 +207,6 @@ struct StorageProgressBar: View {
         }
         .frame(height: 44)
     }
-
 }
 
 #if DEBUG

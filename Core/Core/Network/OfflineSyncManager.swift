@@ -34,7 +34,7 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
         self.connectivity.internetReachableSubject.sink(receiveValue: { state in
             switch state {
             case .reachable:
-                Task {
+                Task(priority: .low) {
                     await self.syncOfflineProgress()
                 }
             case .notReachable, nil:
@@ -58,10 +58,6 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
             var correctedProgressJson = offlineProgress.progressJson
             correctedProgressJson = correctedProgressJson.removingPercentEncoding ?? correctedProgressJson
             message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')")
-        }
-        
-        Task(priority: .low) {
-            await syncOfflineProgress()
         }
     }
     

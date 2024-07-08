@@ -136,6 +136,8 @@ public enum CourseLocalization {
       }
     }
     public enum TotalProgress {
+      /// Available to Download
+      public static let avaliableToDownload = CourseLocalization.tr("Localizable", "COURSE.TOTAL_PROGRESS.AVALIABLE_TO_DOWNLOAD", fallback: "Available to Download")
       /// Downloaded
       public static let downloaded = CourseLocalization.tr("Localizable", "COURSE.TOTAL_PROGRESS.DOWNLOADED", fallback: "Downloaded")
       /// Downloading

@@ -9,7 +9,6 @@ import Foundation
 
 public protocol OfflineSyncRepositoryProtocol {
     func submitOfflineProgress(courseID: String, blockID: String, data: String) async throws -> Bool
-
 }
 
 public class OfflineSyncRepository: OfflineSyncRepositoryProtocol {

@@ -12,11 +12,11 @@ import Theme
 public struct LargestDownloadsView: View {
     
     @State private var isEditing = false
-    @StateObject
+    @ObservedObject
     private var viewModel: CourseContainerViewModel
     
     init(viewModel: CourseContainerViewModel) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
     }
     
     public var body: some View {
@@ -169,44 +169,6 @@ struct LargestDownloadsView_Previews: PreviewProvider {
                         fileUrl: "123",
                         lastModified: "e",
                         fileSize: 742343214
-                    )
-                ),
-                CourseBlock(
-                    blockId: "",
-                    id: "4",
-                    courseId: "",
-                    graded: false,
-                    due: nil,
-                    completion: 0,
-                    type: .discussion,
-                    displayName: "Basic Illustration",
-                    studentUrl: "",
-                    webUrl: "",
-                    encodedVideo: nil,
-                    multiDevice: nil,
-                    offlineDownload: OfflineDownload(
-                        fileUrl: "123",
-                        lastModified: "e",
-                        fileSize: 122343214
-                    )
-                ),
-                CourseBlock(
-                    blockId: "",
-                    id: "5",
-                    courseId: "",
-                    graded: false,
-                    due: nil,
-                    completion: 0,
-                    type: .discussion,
-                    displayName: "Block Diagrams",
-                    studentUrl: "",
-                    webUrl: "",
-                    encodedVideo: nil,
-                    multiDevice: nil,
-                    offlineDownload: OfflineDownload(
-                        fileUrl: "123",
-                        lastModified: "e",
-                        fileSize: 42343214
                     )
                 )
             ]

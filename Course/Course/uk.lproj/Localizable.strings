@@ -164,6 +164,7 @@
 
 "COURSE.TOTAL_PROGRESS.DOWNLOADED" = "Завантажено";
 "COURSE.TOTAL_PROGRESS.DOWNLOADING" = "Завантаження";
+"COURSE.TOTAL_PROGRESS.AVALIABLE_TO_DOWNLOAD" = "Доступний для завантаження";
 "COURSE.TOTAL_PROGRESS.READY_TO_DOWNLOAD" = "Готовий для завантаження";
 
 "COURSE.OFFLINE.YOU_CAN_DOWNLOAD" = "Ви можете завантажити вміст курсу в автономному режимі, щоб навчатися в дорозі, не вимагаючи активного підключення до Інтернету або використання мобільних даних.";

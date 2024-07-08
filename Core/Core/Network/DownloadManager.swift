@@ -162,6 +162,8 @@ public class DownloadManager: DownloadManagerProtocol {
     private let backgroundTaskProvider = BackgroundTaskProvider()
     private var cancellables = Set<AnyCancellable>()
     private var failedDownloads: [DownloadDataTask] = []
+    
+    private let indexPage = "index.html"
 
     private var downloadQuality: DownloadQuality {
         appStorage.userSettings?.downloadQuality ?? .auto
@@ -316,7 +318,7 @@ public class DownloadManager: DownloadManagerProtocol {
                     let block = updatedSequentials[i].childs[j].childs[k]
                     if let fileUrl = fileUrl(for: block.id) {
                         do {
-                            if fileUrl.lastPathComponent == "index.html" {
+                            if fileUrl.lastPathComponent == indexPage {
                                 let folderUrl = fileUrl.deletingLastPathComponent()
                                 let folderSize = try calculateFolderSize(at: folderUrl)
                                 updatedSequentials[i].childs[j].childs[k].actualFileSize = folderSize
@@ -399,7 +401,7 @@ public class DownloadManager: DownloadManagerProtocol {
         case .html, .problem:
             if let folderUrl = URL(string: data.url) {
                 let folder = folderUrl.deletingPathExtension().lastPathComponent
-                let sfds = path?.appendingPathComponent(folder).appendingPathComponent("index.html")
+                let sfds = path?.appendingPathComponent(folder).appendingPathComponent(indexPage)
                 return sfds
             } else {
                 return nil

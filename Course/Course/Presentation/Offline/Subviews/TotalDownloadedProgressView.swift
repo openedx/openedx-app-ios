@@ -29,8 +29,8 @@ public struct TotalDownloadedProgressView: View {
                 Text(downloadedFilesSize.formattedFileSize())
                     .foregroundStyle(
                         totalFilesSize == 0
-                                     ? Theme.Colors.textSecondaryLight
-                                     : Theme.Colors.success
+                        ? Theme.Colors.textSecondaryLight
+                        : Theme.Colors.success
                     )
                 Spacer()
                 if totalFilesSize != 0 {
@@ -42,17 +42,17 @@ public struct TotalDownloadedProgressView: View {
                 CoreAssets.deleteDownloading.swiftUIImage.renderingMode(.template)
                     .foregroundStyle(
                         totalFilesSize == 0
-                                     ? Theme.Colors.textSecondaryLight
-                                     : Theme.Colors.success
+                        ? Theme.Colors.textSecondaryLight
+                        : Theme.Colors.success
                     )
                 Text(totalFilesSize == 0
-                     ? "Available to download"
+                     ? CourseLocalization.Course.TotalProgress.avaliableToDownload
                      : CourseLocalization.Course.TotalProgress.downloaded)
-                    .foregroundStyle(
-                        totalFilesSize == 0
-                                     ? Theme.Colors.textSecondaryLight
-                                     : Theme.Colors.success
-                    )
+                .foregroundStyle(
+                    totalFilesSize == 0
+                    ? Theme.Colors.textSecondaryLight
+                    : Theme.Colors.success
+                )
                 Spacer()
                 if totalFilesSize != 0 {
                     CoreAssets.startDownloading.swiftUIImage
@@ -84,7 +84,6 @@ public struct TotalDownloadedProgressView: View {
                 .cornerRadius(5)
                 .padding(.bottom, 10)
             }
-            
         }
         .onChange(of: readyToDownload, perform: { size in
             if size == 0 {
@@ -101,6 +100,6 @@ struct TotalDownloadedProgressView_Previews: PreviewProvider {
             totalFilesSize: 324324132413,
             isDownloading: .constant(false)
         )
-            .loadFonts()
+        .loadFonts()
     }
 }

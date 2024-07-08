@@ -10,10 +10,10 @@ import SwiftUI
 import Theme
 
 public struct WebUnitView: View {
-
+    
     @StateObject private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
-
+    
     private var url: String
     private var injections: [WebviewInjection]?
     private let connectivity: ConnectivityProtocol
@@ -21,7 +21,7 @@ public struct WebUnitView: View {
     @State private var isFileOpen: Bool = false
     @State private var dataUrl: String?
     @State private var fileUrl: String = ""
-
+    
     public init(
         url: String,
         dataUrl: String?,
@@ -39,15 +39,8 @@ public struct WebUnitView: View {
         self.injections = injections
         self.blockID = blockID
         
-        Task {
-            if dataUrl == nil {
-                await viewModel.updateCookies()
-            }
-        }
-        if !self.connectivity.isInternetAvaliable {
-            if let dataUrl {
-                self.url = dataUrl
-            }
+        if !self.connectivity.isInternetAvaliable, let dataUrl {
+            self.url = dataUrl
         }
     }
     
@@ -155,60 +148,5 @@ public struct WebUnitView: View {
                 }
             }
         }
-    }
-}
-
-import WebKit
-
-public struct FileWebView: UIViewRepresentable {
-    public func makeUIView(context: Context) -> WKWebView {
-        let webview = WKWebView()
-        webview.scrollView.bounces = false
-        webview.scrollView.alwaysBounceHorizontal = false
-        webview.scrollView.showsHorizontalScrollIndicator = false
-        webview.scrollView.isScrollEnabled = true
-        webview.configuration.suppressesIncrementalRendering = true
-        webview.isOpaque = false
-        webview.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
-        webview.configuration.defaultWebpagePreferences.allowsContentJavaScript = true
-        webview.backgroundColor = .clear
-        webview.scrollView.backgroundColor = UIColor.white
-        webview.scrollView.alwaysBounceVertical = false
-        webview.scrollView.layer.cornerRadius = 24
-        webview.scrollView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        
-        if let url = URL(string: viewModel.url) {
-            
-            if let fileURL = URL(string: url.absoluteString) {
-                let fileAccessURL = fileURL.deletingLastPathComponent()
-                if let pdfData = try? Data(contentsOf: url) {
-                    webview.load(pdfData,
-                                 mimeType: "application/pdf",
-                                 characterEncodingName: "",
-                                 baseURL: fileAccessURL)
-                }
-            }
-        }
-        
-        return webview
-    }
-    
-    public func updateUIView(_ webview: WKWebView, context: Context) {
-
-    }
-    
-    public class ViewModel: ObservableObject {
-        
-        @Published var url: String
-        
-        public init(url: String) {
-            self.url = url
-        }
-    }
-        
-    @ObservedObject var viewModel: ViewModel
-    
-    public init(viewModel: ViewModel) {
-        self.viewModel = viewModel
     }
 }

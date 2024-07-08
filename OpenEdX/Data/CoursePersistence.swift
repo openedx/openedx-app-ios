@@ -82,7 +82,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 encodedVideo: DataLayer.CourseDetailEncodedVideoData(
                     youTube: DataLayer.EncodedVideoData(
                         url: $0.youTube?.url,
-                        fileSize: $0.youTube?.fileSize == nil ? nil : Int($0.youTube!.fileSize)
+                        fileSize: nil
                     ),
                     fallback: DataLayer.EncodedVideoData(
                         url: $0.fallback?.url,

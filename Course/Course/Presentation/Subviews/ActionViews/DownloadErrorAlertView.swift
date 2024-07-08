@@ -24,7 +24,7 @@ public struct DownloadErrorAlertView: View {
     @State private var fadeEffect: Bool = false
     
     @Environment(\.isHorizontal) private var isHorizontal
-
+    
     public init(
         errorType: ContentErrorType,
         sequentials: [CourseSequential],
@@ -49,10 +49,8 @@ public struct DownloadErrorAlertView: View {
         }
         .ignoresSafeArea()
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                withAnimation(.linear(duration: 0.3), {
-                    fadeEffect = true
-                })
+            withAnimation(Animation.linear(duration: 0.3).delay(0.2)) {
+                fadeEffect = true
             }
         }
     }
@@ -78,13 +76,13 @@ public struct DownloadErrorAlertView: View {
                 }
                 .frame(maxHeight: isHorizontal ? 80 : 200)
             }
-           
+            
             Text(descriptionText)
                 .font(.subheadline)
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
-                        
+            
             VStack(spacing: 16) {
                 
                 if errorType == .downloadFailed {

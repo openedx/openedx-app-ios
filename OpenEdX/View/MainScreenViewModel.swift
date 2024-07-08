@@ -65,27 +65,27 @@ final class MainScreenViewModel: ObservableObject {
     
     @MainActor
     func showDownloadFailed(downloads: [DownloadDataTask]) async {
-        
         if let sequentials = try? await courseInteractor.getSequentialsContainsBlocks(
             blockIds: downloads.map {
                 $0.blockId
             },
             courseID: downloads.first?.courseId ?? ""
         ) {
-            
             router.presentView(
                 transitionStyle: .coverVertical,
                 view: DownloadErrorAlertView(
                     errorType: .downloadFailed,
                     sequentials: sequentials,
-                    tryAgain: {
+                    tryAgain: { [weak self] in
+                        guard let self else { return }
                         NotificationCenter.default.post(
                             name: .tryDownloadAgain,
                             object: downloads
                         )
                         self.router.dismiss(animated: true)
                     },
-                    close: {
+                    close: { [weak self] in
+                        guard let self else { return }
                         self.router.dismiss(animated: true)
                     }
                 ),

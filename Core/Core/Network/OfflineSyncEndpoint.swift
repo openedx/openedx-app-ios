@@ -15,7 +15,6 @@ enum OfflineSyncEndpoint: EndPointType {
         switch self {
         case let .submitOfflineProgress(courseID, blockID, _):
             return "/courses/\(courseID)/xblock/\(blockID)/handler/xmodule_handler/problem_check"
-        
         }
     }
 
@@ -23,7 +22,6 @@ enum OfflineSyncEndpoint: EndPointType {
         switch self {
         case .submitOfflineProgress:
             return .post
-      
         }
     }
 
@@ -34,11 +32,6 @@ enum OfflineSyncEndpoint: EndPointType {
     var task: HTTPTask {
         switch self {
         case let .submitOfflineProgress(_, _, data):
-//            let components = data.components(separatedBy: "=")
-//            let params: [String: Encodable] = [
-//                components[0]: components[1]
-//            ]
-//            
             return .requestParameters(parameters: decode(query: data), encoding: URLEncoding.httpBody)
         }
     }
@@ -53,7 +46,6 @@ enum OfflineSyncEndpoint: EndPointType {
                 let key = String(keyValue[0]).removingPercentEncoding!
                 let value = String(keyValue[1]).removingPercentEncoding!
                 
-                // Обработка случаев с массивами
                 if key.hasSuffix("[]") {
                     let trimmedKey = String(key.dropLast(2))
                     if parameters[trimmedKey] == nil {

@@ -8,6 +8,7 @@
 import CoreData
 import Combine
 
+//sourcery: AutoMockable
 public protocol CorePersistenceProtocol {
     func set(userId: Int)
     func getUserID() -> Int?
@@ -28,6 +29,7 @@ public protocol CorePersistenceProtocol {
     func deleteAllProgress()
 }
 
+#if DEBUG
 public class CorePersistenceMock: CorePersistenceProtocol {
     
     public init() {}
@@ -50,6 +52,7 @@ public class CorePersistenceMock: CorePersistenceProtocol {
     public func deleteProgress(for blockID: String) {}
     public func deleteAllProgress() {}
 }
+#endif
 
 public final class CoreBundle {
     private init() {}

@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>openEdx.offlineProgressSync</string>
+	</array>
 	<key>Configuration</key>
 	<string>$(CONFIGURATION)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>
@@ -29,17 +33,17 @@
 		<key>NSAllowsArbitraryLoadsInWebContent</key>
 		<true/>
 	</dict>
+	<key>NSCalendarsFullAccessUsageDescription</key>
+	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>fetch</string>
+		<string>processing</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSCalendarsUsageDescription</key>
-	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
-	<key>NSCalendarsFullAccessUsageDescription</key>
-	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
 </dict>
 </plist>

@@ -51,6 +51,7 @@ public struct WebView: UIViewRepresentable {
     
     var refreshCookies: () async -> Void
     var webViewType: String?
+    private let userContentControllerName = "IOSBridge"
 
     public init(
         viewModel: ViewModel,
@@ -265,7 +266,7 @@ public struct WebView: UIViewRepresentable {
 
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
         let webViewConfig = WKWebViewConfiguration()
-        webViewConfig.userContentController.add(context.coordinator, name: "IOSBridge")
+        webViewConfig.userContentController.add(context.coordinator, name: userContentControllerName)
         webViewConfig.defaultWebpagePreferences.allowsContentJavaScript = true
         webViewConfig.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         

@@ -227,12 +227,12 @@ public struct CourseContainerView: View {
                         collapsed: $collapsed,
                         viewModel: viewModel
                     )
-                        .tabItem {
-                            tab.image
-                            Text(tab.title)
-                        }
-                        .tag(tab)
-                        .accentColor(Theme.Colors.accentColor)
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
+                    .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
                 case .discussion:
                     DiscussionTopicsView(
                         courseID: courseID,

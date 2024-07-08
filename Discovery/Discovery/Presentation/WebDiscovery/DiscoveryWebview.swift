@@ -95,11 +95,13 @@ public struct DiscoveryWebview: View {
                     WebView(
                         viewModel: .init(
                             url: URLString,
-                            baseURL: ""
+                            baseURL: "",
+                            openFile: {_ in}
                         ),
                         isLoading: $isLoading,
                         refreshCookies: {},
                         navigationDelegate: viewModel,
+                        connectivity: viewModel.connectivity,
                         webViewType: discoveryType.rawValue
                     )
                     .accessibilityIdentifier("discovery_webview")
