@@ -210,7 +210,7 @@ public struct ThreadView: View {
                         Text(viewModel.alertMessage ?? "")
                             .shadowCardStyle(
                                 bgColor: Theme.Colors.accentColor,
-                                textColor: Theme.Colors.white
+                                textColor: Theme.Colors.primaryButtonTextColor
                             )
                             .padding(.top, 80)
                         Spacer()

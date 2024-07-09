@@ -61,6 +61,9 @@ struct HandoutsView: View {
                                     )
                                 })
                                 Divider()
+                                    .frame(height: 1)
+                                    .overlay(Theme.Colors.cardViewStroke)
+                                    .accessibilityIdentifier("divider")
                                 HandoutsItemCell(type: .announcements, onTapAction: {
                                     if !viewModel.updates.isEmpty {
                                         viewModel.router.showHandoutsUpdatesView(
