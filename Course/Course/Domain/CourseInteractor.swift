@@ -64,7 +64,7 @@ public class CourseInteractor: CourseInteractorProtocol {
     }
     
     public func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure {
-        return try repository.getLoadedCourseBlocks(courseID: courseID)
+        return try await repository.getLoadedCourseBlocks(courseID: courseID)
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {

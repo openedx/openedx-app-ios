@@ -10,7 +10,7 @@ import Core
 
 public protocol DashboardRepositoryProtocol {
     func getEnrollments(page: Int) async throws -> [CourseItem]
-    func getEnrollmentsOffline() throws -> [CourseItem]
+    func getEnrollmentsOffline() async throws -> [CourseItem]
     func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment
     func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment
     func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment
@@ -41,8 +41,8 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         
     }
     
-    public func getEnrollmentsOffline() throws -> [CourseItem] {
-        return try persistence.loadEnrollments()
+    public func getEnrollmentsOffline() async throws -> [CourseItem] {
+        return try await persistence.loadEnrollments()
     }
     
     public func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment {
@@ -59,7 +59,7 @@ public class DashboardRepository: DashboardRepositoryProtocol {
     }
     
     public func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment {
-        return try persistence.loadPrimaryEnrollment()
+        return try await persistence.loadPrimaryEnrollment()
     }
     
     public func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment {

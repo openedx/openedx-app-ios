@@ -67,7 +67,7 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             do {
                 switch state {
                 case .available:
-                    try manager.addToDownloadQueue(blocks: blocks)
+                    try await manager.addToDownloadQueue(blocks: blocks)
                     downloadState[vertical.id] = .downloading
                 case .downloading:
                     try await manager.cancelDownloading(courseId: vertical.courseId, blocks: blocks)

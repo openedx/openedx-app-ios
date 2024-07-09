@@ -10,7 +10,7 @@ import Core
 
 public protocol CourseRepositoryProtocol {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
-    func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure
+    func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
@@ -50,8 +50,8 @@ public class CourseRepository: CourseRepositoryProtocol {
         return parsedStructure
     }
     
-    public func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
-        let localData = try persistence.loadCourseStructure(courseID: courseID)
+    public func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure {
+        let localData = try await persistence.loadCourseStructure(courseID: courseID)
         return parseCourseStructure(course: localData)
     }
     
@@ -85,7 +85,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getSubtitles(url: String, selectedLanguage: String) async throws -> String {
-        if let subtitlesOffline = persistence.loadSubtitles(url: url + selectedLanguage) {
+        if let subtitlesOffline = await persistence.loadSubtitles(url: url + selectedLanguage) {
             return subtitlesOffline
         } else {
             let result = try await api.requestData(CourseEndpoint.getSubtitles(
