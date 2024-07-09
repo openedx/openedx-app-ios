@@ -12,7 +12,13 @@ public struct DynamicOffsetView: View {
     private let padHeight: CGFloat = 290
     private let collapsedHorizontalHeight: CGFloat = 120
     private let collapsedVerticalHeight: CGFloat = 100
-    private let expandedHeight: CGFloat = 240
+    private var expandedHeight: CGFloat {
+        let topInset = UIApplication.shared.windowInsets.top
+        guard topInset > 0 else {
+            return 240
+        }
+        return 300 - topInset
+    }
     private let coordinateBoundaryLower: CGFloat = -115
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
