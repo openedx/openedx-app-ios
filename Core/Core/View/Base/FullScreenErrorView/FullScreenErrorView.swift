@@ -38,7 +38,7 @@ public struct FullScreenErrorView: View {
         VStack(spacing: 20) {
             Spacer()
             switch errorType {
-            case .noContent(let error, image: let image):
+            case .noContent(let message, image: let image):
                 image
                     .resizable()
                     .renderingMode(.template)
@@ -46,7 +46,7 @@ public struct FullScreenErrorView: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 72, maxHeight: 80)
                 
-                Text(error)
+                Text(message)
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
