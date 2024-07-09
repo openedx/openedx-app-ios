@@ -9,9 +9,9 @@ import CoreData
 import Core
 
 public protocol DashboardPersistenceProtocol {
-    func loadEnrollments() throws -> [CourseItem]
+    func loadEnrollments() async throws -> [CourseItem]
     func saveEnrollments(items: [CourseItem])
-    func loadPrimaryEnrollment() throws -> PrimaryEnrollment
+    func loadPrimaryEnrollment() async throws -> PrimaryEnrollment
     func savePrimaryEnrollment(enrollments: PrimaryEnrollment)
 }
 

@@ -9,6 +9,7 @@ import coloredlogs
 from PIL import Image
 import re
 from textwrap import dedent
+from process_config import PlistManager  # type: ignore
 
 class WhitelabelApp:
     EXAMPLE_CONFIG_FILE = dedent("""
@@ -46,9 +47,11 @@ class WhitelabelApp:
         config1: # build configuration name in project
           app_bundle_id: "bundle.id.app.new1" # bundle ID which should be set
           product_name: "Mobile App Name1" # app name which should be set
+          env_config: 'prod' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.yaml defines)
         config2: # build configuration name in project
           app_bundle_id: "bundle.id.app.new2" # bundle ID which should be set
           product_name: "Mobile App Name2" # app name which should be set
+          env_config: 'dev' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.yaml defines)
     font:
       font_import_file_path: 'path/to/importing/Font_file.ttf' # path to ttf font file what should be imported to project
       project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
@@ -90,6 +93,7 @@ class WhitelabelApp:
         self.copy_project_files()
         if self.project_config:
             self.set_app_project_config()
+        self.set_flags_from_mobile_config()
 
     def copy_assets(self):
         if self.assets:
@@ -326,12 +330,12 @@ class WhitelabelApp:
                 # replace existing parameter value with new value
                 config_string_out = config_string.replace(parameter_string, new_param_string)
             else:
-                errors_texts.append("project_config->configurations->"+config_name+": Check regex please. Can't find place in project file where insert '"+new_param_string+"'")
+                errors_texts.append(config_name+": Check regex please. Can't find place in project file where place '"+new_param_string+"'")
             # if something found
             if config_string != config_string_out:
                 config_file_string = config_file_string.replace(config_string, config_string_out)
         else:
-            errors_texts.append("project_config->configurations->"+config_name+": not found in project file")
+            errors_texts.append(config_name+": not found in project file")
         return config_file_string
 
     def regex_string_for_build_config(self, build_config):
@@ -506,6 +510,96 @@ class WhitelabelApp:
                     logging.error("'import_file_path' for "+file_name+" not found in config")
         else:
             logging.debug("Project's Files for copying not found in config")
+
+    # params from MOBILE CONFIG
+    CONFIG_SETTINGS_YAML_FILENAME = 'config_settings.yaml'
+    DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_YAML_FILENAME
+    CONFIG_DIRECTORY_NAME = 'config_directory'
+    CONFIG_MAPPINGS = 'config_mapping'
+    MAPPINGS_FILENAME = 'file_mappings.yaml'
+
+    def parse_yaml(self, file_path):
+        try:
+            with open(file_path, 'r') as file:
+                return yaml.safe_load(file)
+        except Exception as e:
+            logging.error(f"Unable to open or read the file '{file_path}': {e}")
+            return None
+
+    def get_mobile_config(self, config_directory,  config_folder, errors_texts):
+        # get path to mappings file
+        path = os.path.join(config_directory, config_folder)
+        mappings_path = os.path.join(path, self.MAPPINGS_FILENAME)
+        # read mappings file
+        data = self.parse_yaml(mappings_path)
+        if data:
+            # get config for ios described in mappings file
+            ios_files = data.get('ios', {}).get('files', [])
+            # re-use PlistManager class from process_config.py script
+            plist_manager = PlistManager(path, ios_files)
+            config = plist_manager.load_config()
+            if config:
+                return config
+            else:
+                errors_texts.append("Unable to parse config for "+config_folder)
+        else:
+            errors_texts.append("Files mappings for "+config_folder+" not found")
+        return None
+
+    def set_flags_from_mobile_config(self):
+        # get path to mobile config
+        config_settings = self.parse_yaml(self.CONFIG_SETTINGS_YAML_FILENAME)
+        if not config_settings:
+            config_settings = self.parse_yaml(self.DEFAULT_CONFIG_PATH)
+        config_directory = config_settings.get(self.CONFIG_DIRECTORY_NAME)
+        # check if we found config directory
+        if config_directory:
+            # check if configurations exist
+            if "configurations" in self.project_config:
+                configurations = self.project_config["configurations"]
+                # read project file
+                with open(self.config_project_path, 'r') as openfile:
+                    project_file_string = openfile.read()
+                errors_texts = []
+                # iterate for all configurations
+                for name, config in configurations.items():
+                    if 'env_config' in config:
+                        # get folder name for mobile config for current configuration by env_config 
+                        config_folder = config_settings.get(self.CONFIG_MAPPINGS, {}).get(config['env_config'])
+                        if config_folder:
+                            # replace fullstory flag
+                            project_file_string = self.replace_fullstory_flag(project_file_string, config_directory, name, config_folder, errors_texts)
+                        else:
+                            logging.error("Config folder for '"+config['env_config']+"' is not defined in config_settings.yaml->config_mapping")
+                    else:
+                        logging.error("'env_config' is not defined for "+name)
+                # write to project file
+                with open(self.config_project_path, 'w') as openfile:
+                    openfile.write(project_file_string)
+                # print success message or errors if are presented
+                if len(errors_texts) == 0:
+                    logging.debug("Mobile config user-defined flags were successfully changed")
+                else:
+                    for error in errors_texts:
+                        logging.error(error)
+            else:
+                logging.error("Project configurations are not defined")
+        else:
+            logging.error("Mobile config directory not found")
+
+    def replace_fullstory_flag(self, project_file_string, config_directory, config_name,  config_folder, errors_texts):
+        # get mobile config 
+        mobile_config = self.get_mobile_config(config_directory,  config_folder, errors_texts)
+        if mobile_config:
+            # get FULLSTORY settings from mobile config
+            fullstory_config = mobile_config.get('FULLSTORY', {})
+            if fullstory_config:
+                fullstory_config_enabled = fullstory_config.get('ENABLED')
+                fullstory_string = "FULLSTORY_ENABLED = YES;" if fullstory_config_enabled else "FULLSTORY_ENABLED = NO;"
+                fullstory_regex = "FULLSTORY_ENABLED = .*;"
+                # serach by regex and replace
+                project_file_string = self.replace_parameter_for_build_config(project_file_string, config_name, fullstory_string, fullstory_regex, errors_texts)
+        return project_file_string
 
 def main():
     """

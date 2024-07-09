@@ -12,15 +12,14 @@ public protocol CorePersistenceProtocol {
     func set(userId: Int)
     func getUserID() -> Int?
     func publisher() -> AnyPublisher<Int, Never>
-    func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality)
-    func nextBlockForDownloading() -> DownloadDataTask?
+    func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) async
+    func nextBlockForDownloading() async -> DownloadDataTask?
     func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
-    func deleteDownloadDataTask(id: String) throws
+    func deleteDownloadDataTask(id: String) async throws
     func saveDownloadDataTask(_ task: DownloadDataTask)
     func downloadDataTask(for blockId: String) -> DownloadDataTask?
-    func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void)
-    func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void)
-    func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void)
+    func getDownloadDataTasks() async -> [DownloadDataTask]
+    func getDownloadDataTasksForCourse(_ courseId: String) async -> [DownloadDataTask]
 }
 
 public final class CoreBundle {

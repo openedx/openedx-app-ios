@@ -10,19 +10,28 @@ import SegmentBrazeUI
 import Swinject
 
 class BrazeProvider: PushNotificationsProvider {
+    
     func didRegisterWithDeviceToken(deviceToken: Data) {
         guard let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) else { return }
         segmentService.analytics?.add(
             plugin: BrazeDestination(
                 additionalConfiguration: { configuration in
-                    configuration.logger.level = .debug
+                    configuration.logger.level = .info
                 }, additionalSetup: { braze in
                     braze.notifications.register(deviceToken: deviceToken)
                 }
             )
         )
+        
+        segmentService.analytics?.registeredForRemoteNotifications(deviceToken: deviceToken)
     }
     
     func didFailToRegisterForRemoteNotificationsWithError(error: Error) {
+    }
+    
+    func synchronizeToken() {
+    }
+    
+    func refreshToken() {
     }
 }

@@ -58,7 +58,8 @@ struct DropDownMenu: View {
                                     Text(option.text)
                                         .font(Theme.Fonts.titleSmall)
                                         .foregroundColor(
-                                            option == selectedOption ? Theme.Colors.white : Theme.Colors.textPrimary
+                                            option == selectedOption ? Theme.Colors.primaryButtonTextColor :
+                                                Theme.Colors.textPrimary
                                         )
                                     Spacer()
                                 }

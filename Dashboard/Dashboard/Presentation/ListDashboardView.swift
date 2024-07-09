@@ -27,6 +27,7 @@ public struct ListDashboardView: View {
     @StateObject
     private var viewModel: ListDashboardViewModel
     private let router: DashboardRouter
+    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(viewModel: ListDashboardViewModel, router: DashboardRouter) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
@@ -103,6 +104,17 @@ public struct ListDashboardView: View {
                         .frameLimit(width: proxy.size.width)
                     }.accessibilityAction {}
                 }.padding(.top, 8)
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        router.showSettings()
+                    }, label: {
+                        CoreAssets.settings.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
+                    })
+                }
+                .padding(.top, idiom == .pad ? 13 : 5)
+                .padding(.trailing, idiom == .pad ? 20 : 16)
                 
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(connectivity: viewModel.connectivity,

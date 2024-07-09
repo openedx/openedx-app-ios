@@ -118,13 +118,14 @@ struct NewCalendarView: View {
                 .frame(height: 65)
             
             VStack(spacing: 16) {
-                StyledButton(ProfileLocalization.Calendar.cancel,
-                             action: {
-                    onCloseTapped()
-                },
-                             color: Theme.Colors.background,
-                             textColor: Theme.Colors.accentColor,
-                             borderColor: Theme.Colors.accentColor
+                StyledButton(
+                    ProfileLocalization.Calendar.cancel,
+                    action: {
+                        onCloseTapped()
+                    },
+                    color: Theme.Colors.background,
+                    textColor: Theme.Colors.accentColor,
+                    borderColor: Theme.Colors.accentColor
                 )
                 
                 StyledButton(ProfileLocalization.Calendar.beginSyncing) {

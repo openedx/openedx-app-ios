@@ -50,7 +50,24 @@ struct CustomDisclosureGroup: View {
                                    let state = downloadAllButtonState(for: chapter) {
                                     Button(
                                         action: {
-                                            downloadAllSubsections(in: chapter, state: state)
+                                            switch state {
+                                            case .finished:
+                                                viewModel.router.presentAlert(
+                                                    alertTitle: CourseLocalization.Alert.warning,
+                                                    alertMessage: deleteMessage(for: chapter),
+                                                    positiveAction: CoreLocalization.Alert.delete,
+                                                    onCloseTapped: {
+                                                        viewModel.router.dismiss(animated: true)
+                                                    },
+                                                    okTapped: {
+                                                        downloadAllSubsections(in: chapter, state: state)
+                                                        viewModel.router.dismiss(animated: true)
+                                                    },
+                                                    type: .deleteVideo
+                                                )
+                                            default:
+                                                downloadAllSubsections(in: chapter, state: state)
+                                            }
                                         }, label: {
                                             switch state {
                                             case .available:
@@ -157,7 +174,7 @@ struct CustomDisclosureGroup: View {
                 .padding(.vertical, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Theme.Colors.tabbarColor)
+                        .fill(Theme.Colors.datesSectionBackground)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
@@ -173,6 +190,10 @@ struct CustomDisclosureGroup: View {
                 expandedSections[chapter.id] = false
             }
         }
+    }
+    
+    private func deleteMessage(for chapter: CourseChapter) -> String {
+        "\(CourseLocalization.Alert.deleteVideos) \"\(chapter.displayName)\"?"
     }
     
     func getAssignmentStatus(for date: Date) -> String {

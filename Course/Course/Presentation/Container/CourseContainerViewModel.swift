@@ -346,12 +346,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         return tasks
     }
 
-    func continueDownload() {
+    func continueDownload() async {
         guard let blocks = waitingDownloads else {
             return
         }
         do {
-            try manager.addToDownloadQueue(blocks: blocks)
+            try await manager.addToDownloadQueue(blocks: blocks)
         } catch let error {
             if error is NoWiFiError {
                 errorMessage = CoreLocalization.Error.wifi
@@ -481,7 +481,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         do {
             switch state {
             case .available:
-                try manager.addToDownloadQueue(blocks: blocks)
+                try await manager.addToDownloadQueue(blocks: blocks)
             case .downloading:
                 try await manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
             case .finished:
@@ -507,7 +507,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     self.router.dismiss(animated: true)
                 },
                 okTapped: {
-                    self.continueDownload()
+                    Task {
+                        await self.continueDownload()
+                    }
                     self.router.dismiss(animated: true)
                 },
                 type: .default(positiveAction: CourseLocalization.Alert.accept, image: nil)

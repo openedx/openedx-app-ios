@@ -136,7 +136,7 @@ public class SignUpViewModel: ObservableObject {
             analytics.registrationSuccess(method: authMetod.analyticsValue)
             isShowProgress = false
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
-            
+            NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             isShowProgress = false
             if case APIError.invalidGrant = error {
@@ -193,6 +193,7 @@ public class SignUpViewModel: ObservableObject {
             analytics.userLogin(method: authMethod)
             isShowProgress = false
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch {
             update(fullName: response.name, email: response.email)
             self.externalToken = response.token
@@ -211,5 +212,12 @@ public class SignUpViewModel: ObservableObject {
 
     func trackCreateAccountClicked() {
         analytics.createAccountClicked()
+    }
+    
+    func trackScreenEvent() {
+        analytics.authTrackScreenEvent(
+            .logistrationRegister,
+            biValue: .logistrationRegister
+        )
     }
 }

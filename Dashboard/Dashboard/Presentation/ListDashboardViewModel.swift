@@ -30,6 +30,7 @@ public class ListDashboardViewModel: ObservableObject {
     private let interactor: DashboardInteractorProtocol
     private let analytics: DashboardAnalytics
     private var onCourseEnrolledCancellable: AnyCancellable?
+    private var refreshEnrollmentsCancellable: AnyCancellable?
     
     public init(interactor: DashboardInteractorProtocol,
                 connectivity: ConnectivityProtocol,
@@ -40,6 +41,14 @@ public class ListDashboardViewModel: ObservableObject {
         
         onCourseEnrolledCancellable = NotificationCenter.default
             .publisher(for: .onCourseEnrolled)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                Task {
+                    await self.getMyCourses(page: 1, refresh: true)
+                }
+            }
+        refreshEnrollmentsCancellable = NotificationCenter.default
+            .publisher(for: .refreshEnrollments)
             .sink { [weak self] _ in
                 guard let self = self else { return }
                 Task {
@@ -66,7 +75,7 @@ public class ListDashboardViewModel: ObservableObject {
                 }
                 fetchInProgress = false
             } else {
-                courses = try interactor.getEnrollmentsOffline()
+                courses = try await interactor.getEnrollmentsOffline()
                 self.nextPage += 1
                 fetchInProgress = false
             }

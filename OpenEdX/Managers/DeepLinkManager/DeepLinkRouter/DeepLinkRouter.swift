@@ -112,7 +112,7 @@ extension Router: DeepLinkRouter {
                     courseEnd: courseDetails.courseEnd,
                     enrollmentStart: courseDetails.enrollmentStart,
                     enrollmentEnd: courseDetails.enrollmentEnd,
-                    title: courseDetails.courseTitle, 
+                    title: courseDetails.courseTitle,
                     showDates: false,
                     lastVisitedBlockID: nil
                 )
@@ -131,7 +131,9 @@ extension Router: DeepLinkRouter {
             .courseHandout,
             .courseAnnouncement,
             .courseDashboard,
-            .courseComponent:
+            .courseComponent,
+            .enroll,
+            .addBetaTester:
             popToCourseContainerView(animated: false)
         default:
             break

@@ -124,7 +124,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     func onToggle() async {
         if allVideosDownloaded {
             courseViewModel.router.presentAlert(
-                alertTitle: "Warning",
+                alertTitle: CourseLocalization.Alert.warning,
                 alertMessage: "\(CourseLocalization.Alert.deleteAllVideos) \"\(courseStructure.displayName)\"?",
                 positiveAction: CoreLocalization.Alert.delete,
                 onCloseTapped: { [weak self] in
@@ -145,7 +145,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
 
         if isOn {
             courseViewModel.router.presentAlert(
-                alertTitle: "Warning",
+                alertTitle: CourseLocalization.Alert.warning,
                 alertMessage: "\(CourseLocalization.Alert.stopDownloading) \"\(courseStructure.displayName)\"",
                 positiveAction: CoreLocalization.Alert.accept,
                 onCloseTapped: { [weak self] in
