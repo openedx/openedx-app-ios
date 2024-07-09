@@ -35,7 +35,7 @@ public struct CourseUnitView: View {
     private let landscapeTopSpacing: CGFloat = 75
     
     @State private var videoURL: URL?
-    @State private var localWebURL: String?
+    @State private var webURL: URL?
     
     let isDropdownActive: Bool
     
@@ -237,11 +237,11 @@ public struct CourseUnitView: View {
                         }
                     case let .web(url, injections, blockId, isDownloadable):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            if let localUrl = localWebURL {
-                                if viewModel.connectivity.isInternetAvaliable {
+                            if let url = webURL {
+                                if viewModel.connectivity.isInternetAvaliable || url.isFileURL == true {
                                     WebView(
-                                        url: url,
-                                        localUrl: viewModel.connectivity.isInternetAvaliable ? nil : localUrl,
+                                        url: url.absoluteString,
+                                        localUrl: viewModel.connectivity.isInternetAvaliable ? nil : url.absoluteString,
                                         injections: injections,
                                         blockID: block.id,
                                         roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
@@ -254,7 +254,7 @@ public struct CourseUnitView: View {
                             } else {
                                 ProgressView()
                                     .task {
-                                        localWebURL = await viewModel.urlForOfflineContent(blockId: blockId)?.absoluteString
+                                        webURL = await viewModel.urlForOfflineContent(blockId: blockId)
                                     }
                             }
                         } else {

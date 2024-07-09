@@ -50,24 +50,7 @@ struct CustomDisclosureGroup: View {
                                    let state = downloadAllButtonState(for: chapter) {
                                     Button(
                                         action: {
-                                            switch state {
-                                            case .finished:
-                                                viewModel.router.presentAlert(
-                                                    alertTitle: CourseLocalization.Alert.warning,
-                                                    alertMessage: deleteMessage(for: chapter),
-                                                    positiveAction: CoreLocalization.Alert.delete,
-                                                    onCloseTapped: {
-                                                        viewModel.router.dismiss(animated: true)
-                                                    },
-                                                    okTapped: {
-                                                        downloadAllSubsections(in: chapter, state: state)
-                                                        viewModel.router.dismiss(animated: true)
-                                                    },
-                                                    type: .deleteVideo
-                                                )
-                                            default:
                                                 downloadAllSubsections(in: chapter, state: state)
-                                            }
                                         }, label: {
                                             switch state {
                                             case .available:
