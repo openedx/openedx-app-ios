@@ -93,27 +93,34 @@ public struct PrimaryCardView: View {
     
     @ViewBuilder
     var horizontalLayout: some View {
-        GeometryReader { proxy in
-            HStack(alignment: .top, spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
+        HStack(alignment: .top, spacing: 0) {
+            VStack(alignment: .leading, spacing: 0) {
+                GeometryReader { proxy in
                     courseBanner
-                        .frame(width: proxy.size.width/2)
-                    ProgressLineView(progressEarned: progressEarned, progressPossible: progressPossible)
+                        .frame(width: proxy.size.width)
+                        .clipped()
                 }
-                .clipped()
+                ProgressLineView(progressEarned: progressEarned, progressPossible: progressPossible)
+            }
+            .onTapGesture {
+                openCourseAction()
+            }
+            VStack(alignment: .leading, spacing: 0) {
+                ZStack(alignment: .leading) {
+                    courseTitle
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .background(
+                    Theme.Colors.background // need for tap area
+                )
+                
                 .onTapGesture {
                     openCourseAction()
                 }
-                VStack(alignment: .leading, spacing: 0) {
-                    courseTitle
-                        .onTapGesture {
-                            openCourseAction()
-                        }
-                    assignments
-                }
+                assignments
             }
         }
-        .frame(height: 240)
+        .frame(minHeight: 240)
     }
     
     private var assignments: some View {
@@ -262,9 +269,6 @@ public struct PrimaryCardView: View {
     
     private var courseTitle: some View {
         VStack(alignment: .leading, spacing: 3) {
-            if isHorizontal {
-                Spacer()
-            }
             Text(org)
                 .font(Theme.Fonts.labelMedium)
                 .foregroundStyle(Theme.Colors.textSecondaryLight)
@@ -280,9 +284,6 @@ public struct PrimaryCardView: View {
                 Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear))
                     .font(Theme.Fonts.labelMedium)
                     .foregroundStyle(Theme.Colors.textSecondaryLight)
-            }
-            if isHorizontal {
-                Spacer()
             }
         }
         .padding(.top, 10)
