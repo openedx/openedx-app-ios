@@ -126,6 +126,9 @@ public struct StartupView: View {
         .onTapGesture {
             UIApplication.shared.endEditing()
         }
+        .onFirstAppear {
+            viewModel.trackScreenEvent()
+        }
     }
 }
 

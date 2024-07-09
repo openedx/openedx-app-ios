@@ -147,5 +147,11 @@ public class SignInViewModel: ObservableObject {
     func trackForgotPasswordClicked() {
         analytics.forgotPasswordClicked()
     }
-
+    
+    func trackScreenEvent() {
+        analytics.authTrackScreenEvent(
+            .logistrationSignIn,
+            biValue: .logistrationSignIn
+        )
+    }
 }

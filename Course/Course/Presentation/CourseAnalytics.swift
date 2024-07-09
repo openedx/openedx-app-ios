@@ -87,6 +87,8 @@ public protocol CourseAnalytics {
         snackbar: SnackbarType
     )
     func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String)
+    func trackCourseScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String)
+    
     func plsEvent(
         _ event: AnalyticsEvent,
         bivalue: EventBIValue,
@@ -164,6 +166,7 @@ class CourseAnalyticsMock: CourseAnalytics {
         snackbar: SnackbarType
     ) {}
     public func trackCourseEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String) {}
+    public func trackCourseScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue, courseID: String) {}
     public func plsEvent(
         _ event: AnalyticsEvent,
         bivalue: EventBIValue,

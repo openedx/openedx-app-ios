@@ -26,6 +26,10 @@ class FirebaseAnalyticsService: AnalyticsService {
         
         Analytics.logEvent(name, parameters: formatParamaters(params: parameters))
     }
+    
+    func logScreenEvent(_ event: Core.AnalyticsEvent, parameters: [String: Any]?) {
+        logEvent(event, parameters: parameters)
+    }
 }
 
 extension FirebaseAnalyticsService {
