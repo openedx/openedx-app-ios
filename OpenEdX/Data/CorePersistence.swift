@@ -80,34 +80,64 @@ public class CorePersistence: CorePersistenceProtocol {
         let userId = getUserId32() ?? 0
         for block in blocks {
             let downloadDataId = downloadDataId(from: block.id)
-            await context.perform {[context] in
+            
+            await context.perform { [weak self] in
+                guard let self else { return }
                 let data = try? CorePersistenceHelper.fetchCDDownloadData(
                     predicate: CDPredicate.id(downloadDataId),
-                    context: context,
+                    context: self.context,
                     userId: userId
                 )
                 guard data?.first == nil else { return }
                 
-                guard let video = block.encodedVideo?.video(downloadQuality: downloadQuality),
-                      let url = video.url,
-                      let fileExtension = URL(string: url)?.pathExtension
-                else { return }
+                var fileExtension: String?
+                var url: String?
+                var fileSize: Int32?
+                var fileName: String?
                 
-                let fileName = "\(block.id).\(fileExtension)"
-                let newDownloadData = CDDownloadData(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                newDownloadData.id = downloadDataId
-                newDownloadData.blockId = block.id
-                newDownloadData.userId = userId
-                newDownloadData.courseId = block.courseId
-                newDownloadData.url = url
-                newDownloadData.fileName = fileName
-                newDownloadData.displayName = block.displayName
-                newDownloadData.progress = .zero
-                newDownloadData.resumeData = nil
-                newDownloadData.state = DownloadState.waiting.rawValue
-                newDownloadData.type = DownloadType.video.rawValue
-                newDownloadData.fileSize = Int32(video.fileSize ?? 0)
+                if let html = block.offlineDownload {
+                    let fileUrl = html.fileUrl
+                    url = fileUrl
+                    fileSize = Int32(html.fileSize)
+                    fileExtension = URL(string: fileUrl)?.pathExtension
+                    if let folderName = URL(string: fileUrl)?.lastPathComponent,
+                       let folderUrl = URL(string: folderName)?.deletingPathExtension() {
+                        fileName = folderUrl.absoluteString
+                    }
+                    saveDownloadData()
+                } else if let encodedVideo = block.encodedVideo,
+                          let video = encodedVideo.video(downloadQuality: downloadQuality),
+                          let videoUrl = video.url {
+                    url = videoUrl
+                    if let videoFileSize = video.fileSize {
+                        fileSize = Int32(videoFileSize)
+                    }
+                    fileExtension = URL(string: videoUrl)?.pathExtension
+                    fileName = "\(block.id).\(fileExtension ?? "")"
+                    saveDownloadData()
+                } else { return }
+                
+                func saveDownloadData() {
+                    let newDownloadData = CDDownloadData(context: context)
+                    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+                    newDownloadData.id = downloadDataId
+                    newDownloadData.blockId = block.id
+                    newDownloadData.userId = userId
+                    newDownloadData.courseId = block.courseId
+                    newDownloadData.url = url
+                    newDownloadData.fileName = fileName
+                    newDownloadData.displayName = block.displayName
+                    if let lastModified = block.offlineDownload?.lastModified {
+                        newDownloadData.lastModified = lastModified
+                    }
+                    newDownloadData.progress = .zero
+                    newDownloadData.resumeData = nil
+                    newDownloadData.state = DownloadState.waiting.rawValue
+                    newDownloadData.type = block.offlineDownload != nil
+                    ? DownloadType.html.rawValue
+                    : DownloadType.video.rawValue
+                    newDownloadData.fileSize = Int32(fileSize ?? 0)
+                }
             }
         }
     }
@@ -198,7 +228,7 @@ public class CorePersistence: CorePersistenceProtocol {
         let userId = getUserId32()
         return await context.perform {[context] in
             let data = try? CorePersistenceHelper.fetchCDDownloadData(
-                predicate: .state(DownloadState.waiting.rawValue),
+                predicate: .state(DownloadState.finished.rawValue),
                 fetchLimit: 1,
                 context: context,
                 userId: userId
@@ -264,7 +294,9 @@ public class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
-
+//<<<<<<< HEAD
+//=======
+    
     public func saveDownloadDataTask(_ task: DownloadDataTask) {
         context.perform {[context] in
             let newDownloadData = CDDownloadData(context: context)
@@ -289,6 +321,7 @@ public class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
+//>>>>>>> develop
 
     public func publisher() -> AnyPublisher<Int, Never> {
         let notification = NSManagedObjectContext.didChangeObjectsNotification
@@ -394,6 +427,38 @@ public class CorePersistence: CorePersistenceProtocol {
 
     // MARK: - Private Intents
 
+//<<<<<<< HEAD
+    private func fetchCDDownloadData(
+        predicate: CDPredicate? = nil,
+        fetchLimit: Int? = nil
+    ) throws -> [CDDownloadData] {
+        let request = CDDownloadData.fetchRequest()
+        
+        var predicates = [NSPredicate]()
+        
+        if let predicate = predicate {
+            predicates.append(predicate.predicate)
+        }
+        
+        if let userId = getUserId32() {
+            let userIdNumber = NSNumber(value: userId)
+            let userIdPredicate = NSPredicate(format: "userId == %@", userIdNumber)
+            predicates.append(userIdPredicate)
+        }
+        
+        if !predicates.isEmpty {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
+        }
+        
+        if let fetchLimit = fetchLimit {
+            request.fetchLimit = fetchLimit
+        }
+        
+        return try context.fetch(request)
+    }
+
+//=======
+//>>>>>>> develop
     private func getUserId32() -> Int32? {
         guard let userId else {
             return nil

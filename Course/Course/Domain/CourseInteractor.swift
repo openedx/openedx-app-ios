@@ -69,7 +69,7 @@ public class CourseInteractor: CourseInteractorProtocol {
     }
     
     public func getSequentialsContainsBlocks(blockIds: [String], courseID: String) async throws -> [CourseSequential] {
-        let courseStructure = try repository.getLoadedCourseBlocks(courseID: courseID)
+        let courseStructure = try await repository.getLoadedCourseBlocks(courseID: courseID)
         var sequentials: [CourseSequential] = []
         
         for chapter in courseStructure.childs {
@@ -156,7 +156,7 @@ public class CourseInteractor: CourseInteractorProtocol {
             type: sequential.type,
             completion: sequential.completion,
             childs: newChilds,
-            sequentialProgress: sequential.sequentialProgress, 
+            sequentialProgress: sequential.sequentialProgress,
             due: sequential.due
         )
     }

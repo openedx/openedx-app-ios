@@ -14,10 +14,6 @@ public protocol CorePersistenceProtocol {
     func getUserID() -> Int?
     func publisher() -> AnyPublisher<Int, Never>
     func addToDownloadQueue(tasks: [DownloadDataTask])
-//    func downloadDataTask(for blockId: String) -> DownloadDataTask?
-//    func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void)
-//    func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void)
-//    func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void)
     func saveOfflineProgress(progress: OfflineProgress)
     func loadProgress(for blockID: String) -> OfflineProgress?
     func loadAllOfflineProgress() -> [OfflineProgress]
@@ -48,9 +44,6 @@ public class CorePersistenceMock: CorePersistenceProtocol {
     public func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) {}
     public func deleteDownloadDataTask(id: String) throws {}
     public func downloadDataTask(for blockId: String) -> DownloadDataTask? { nil }
-    public func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void) {}
-    public func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void) {}
-    public func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void) {}
     public func saveOfflineProgress(progress: OfflineProgress) {}
     public func loadProgress(for blockID: String) -> OfflineProgress? { nil }
     public func loadAllOfflineProgress() -> [OfflineProgress] { [] }

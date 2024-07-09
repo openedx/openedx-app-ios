@@ -129,6 +129,11 @@ public class CoursePersistence: CoursePersistenceProtocol {
                         assignmentType: $0.assignmentType,
                         numPointsEarned: $0.numPointsEarned,
                         numPointsPossible: $0.numPointsPossible
+                    ),
+                    offlineDownload: DataLayer.OfflineDownload(
+                        fileUrl: $0.fileUrl,
+                        lastModified: $0.lastModified,
+                        fileSize: Int($0.fileSize)
                     )
                 )
             }

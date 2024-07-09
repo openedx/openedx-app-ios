@@ -34,6 +34,9 @@ public struct CourseUnitView: View {
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
     
+    @State private var videoURL: URL?
+    @State private var localWebURL: String?
+    
     let isDropdownActive: Bool
     
     var sequenceTitle: String {
@@ -200,53 +203,64 @@ public struct CourseUnitView: View {
                         // MARK: Encoded Video
                     case let .video(encodedUrl, blockID):
                         if index == viewModel.index {
-                            let url = viewModel.urlForVideoFileOrFallback(
-                                blockId: blockID,
-                                url: encodedUrl
-                            )
-                            if viewModel.connectivity.isInternetAvaliable || url?.isFileURL == true {
-                                EncodedVideoView(
-                                    name: block.displayName,
-                                    url: url,
-                                    courseID: viewModel.courseID,
-                                    blockID: blockID,
-                                    playerStateSubject: playerStateSubject,
-                                    languages: block.subtitles ?? [],
-                                    isOnScreen: index == viewModel.index
-                                )
-                                .padding(.top, 5)
-                                .frameLimit(width: reader.size.width)
-                                
-                                if !isHorizontal {
-                                    Spacer(minLength: 150)
+                            if let url = videoURL {
+                                if viewModel.connectivity.isInternetAvaliable || url.isFileURL {
+                                    EncodedVideoView(
+                                        name: block.displayName,
+                                        url: url,
+                                        courseID: viewModel.courseID,
+                                        blockID: blockID,
+                                        playerStateSubject: playerStateSubject,
+                                        languages: block.subtitles ?? [],
+                                        isOnScreen: index == viewModel.index
+                                    )
+                                    .padding(.top, 5)
+                                    .frameLimit(width: reader.size.width)
+                                    
+                                    if !isHorizontal {
+                                        Spacer(minLength: 150)
+                                    }
+                                } else {
+                                    OfflineContentView(
+                                        isDownloadable: true
+                                    )
                                 }
                             } else {
-                                OfflineContentView(
-                                    isDownloadable: true
-                                )
+                                ProgressView()
+                                    .task {
+                                        videoURL = await viewModel.urlForVideoFileOrFallback(
+                                            blockId: blockID,
+                                            url: encodedUrl
+                                        )
+                                    }
                             }
                         }
-                        // MARK: Web
                     case let .web(url, injections, blockId, isDownloadable):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            let localUrl = viewModel.urlForOfflineContent(blockId: blockId)?.absoluteString
-                            if viewModel.connectivity.isInternetAvaliable || localUrl != nil {
-                                // not need to add frame limit there because we did that with injection
-                                WebView(
-                                    url: url,
-                                    localUrl: viewModel.connectivity.isInternetAvaliable ? nil : localUrl,
-                                    injections: injections,
-                                    blockID: block.id,
-                                    roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
-                                )
+                            if let localUrl = localWebURL {
+                                if viewModel.connectivity.isInternetAvaliable {
+                                    WebView(
+                                        url: url,
+                                        localUrl: viewModel.connectivity.isInternetAvaliable ? nil : localUrl,
+                                        injections: injections,
+                                        blockID: block.id,
+                                        roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
+                                    )
+                                } else {
+                                    OfflineContentView(
+                                        isDownloadable: isDownloadable
+                                    )
+                                }
                             } else {
-                                OfflineContentView(
-                                    isDownloadable: isDownloadable
-                                )
+                                ProgressView()
+                                    .task {
+                                        localWebURL = await viewModel.urlForOfflineContent(blockId: blockId)?.absoluteString
+                                    }
                             }
                         } else {
                             EmptyView()
                         }
+
                         // MARK: Unknown
                     case .unknown(let url):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {

@@ -192,7 +192,7 @@ public class DownloadManager: DownloadManagerProtocol {
             }
             .store(in: &cancellables)
     }
-
+    
     private func tryDownloadAgain(downloads: [DownloadDataTask]) {
         persistence.addToDownloadQueue(tasks: downloads)
         Task {
@@ -361,7 +361,7 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteAllFiles() async {
         let downloadsData = await getDownloadTasks()
         for downloadData in downloadsData {
-            if let fileURL = await fileUrl(for: downloadData.id) {
+            if let fileURL = fileUrl(for: downloadData.id) {
                 do {
                     try FileManager.default.removeItem(at: fileURL)
                 } catch {
@@ -371,21 +371,7 @@ public class DownloadManager: DownloadManagerProtocol {
         }
         currentDownloadEventPublisher.send(.clearedAll)
     }
-
-    public func fileUrl(for blockId: String) async -> URL? {
-        await withCheckedContinuation { continuation in
-            persistence.downloadDataTask(for: blockId) { [weak self] data in
-                guard let data = data, data.url.count > 0, data.state == .finished else {
-                    continuation.resume(returning: nil)
-                    return
-                }
-                let path = self?.filesFolderUrl
-                let fileName = data.fileName
-                continuation.resume(returning: path?.appendingPathComponent(fileName))
-            }
-        }
-    }
-
+    
     public func fileUrl(for blockId: String) -> URL? {
         guard let data = persistence.downloadDataTask(for: blockId),
               data.url.count > 0,
@@ -428,7 +414,7 @@ public class DownloadManager: DownloadManagerProtocol {
             try await cancelDownloading(task: downloadTask)
             return
         }
-
+        
         currentDownloadTask = downloadTask
         if downloadTask.type == .html || downloadTask.type == .problem {
             try downloadHTMLWithProgress(downloadTask)
@@ -467,7 +453,7 @@ public class DownloadManager: DownloadManagerProtocol {
             downloadRequest = AF.download(url)
         }
 
-        downloadRequest?.downloadProgress { [weak self]  prog in
+        downloadRequest?.downloadProgress { [weak self] prog in
             guard let self else { return }
             let fractionCompleted = prog.fractionCompleted
             self.currentDownloadTask?.progress = fractionCompleted
@@ -483,7 +469,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 if error.asAFError?.isExplicitlyCancelledError == false {
                     failedDownloads.append(download)
                     Task {
-                        try? await newDownload()
+                        try? await self.newDownload()
                     }
                     return
                 }
@@ -537,7 +523,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 if error.asAFError?.isExplicitlyCancelledError == false {
                     failedDownloads.append(download)
                     Task {
-                        try? await newDownload()
+                        try? await self.newDownload()
                     }
                     return
                 }

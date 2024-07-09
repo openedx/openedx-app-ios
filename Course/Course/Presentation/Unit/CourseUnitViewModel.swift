@@ -261,17 +261,16 @@ public class CourseUnitViewModel: ObservableObject {
         }
     }
     
-    func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
-        if let fileURL = manager.fileUrl(for: blockId) {
+    func urlForVideoFileOrFallback(blockId: String, url: String) async -> URL? {
+        if let fileURL = await manager.fileUrl(for: blockId) {
             return fileURL
         } else {
             return URL(string: url)
         }
     }
-    
-    func urlForOfflineContent(blockId: String) -> URL? {
-        let fileUrl = manager.fileUrl(for: blockId)
-        return fileUrl
+
+    func urlForOfflineContent(blockId: String) async -> URL? {
+        return await manager.fileUrl(for: blockId)
     }
     
     func trackFinishVerticalBackToOutlineClicked() {
