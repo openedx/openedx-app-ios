@@ -73,7 +73,8 @@ public enum DiscussionLocalization {
   }
   public enum Error {
     /// Unable to load discussions.
-    public static let unableToLoadDiscussion = DiscussionLocalization.tr("Localizable", "ERROR.UNABLE_TO_LOAD_DISCUSSION", fallback: "Unable to load discussions.")
+    /// Try again later.
+    public static let unableToLoadDiscussion = DiscussionLocalization.tr("Localizable", "ERROR.UNABLE_TO_LOAD_DISCUSSION", fallback: "Unable to load discussions.\nTry again later.")
   }
   public enum Post {
     /// Last post:
