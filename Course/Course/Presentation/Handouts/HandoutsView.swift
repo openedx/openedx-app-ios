@@ -60,13 +60,16 @@ struct HandoutsView: View {
                                         cssInjector: viewModel.cssInjector,
                                         type: type
                                     )
-                                    viewModel.analytics.trackCourseEvent(
+                                    viewModel.analytics.trackCourseScreenEvent(
                                         .courseHandouts,
                                         biValue: .courseHandouts,
                                         courseID: courseID
                                     )
                                 })
                                 Divider()
+                                    .frame(height: 1)
+                                    .overlay(Theme.Colors.cardViewStroke)
+                                    .accessibilityIdentifier("divider")
                                 HandoutsItemCell(type: .announcements, onTapAction: { type in
                                     viewModel.router.showHandoutsUpdatesView(
                                         handouts: nil,

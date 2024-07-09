@@ -196,6 +196,9 @@ public struct SignUpView: View {
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .hideNavigationBar()
+        .onFirstAppear{
+            viewModel.trackScreenEvent()
+        }
     }
 }
 

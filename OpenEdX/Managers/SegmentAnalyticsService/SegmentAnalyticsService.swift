@@ -41,4 +41,8 @@ class SegmentAnalyticsService: AnalyticsService {
             properties: parameters
         )
     }
+    
+    func logScreenEvent(_ event: Core.AnalyticsEvent, parameters: [String: Any]?) {
+        analytics?.screen(title: event.rawValue, properties: parameters)
+    }
 }
