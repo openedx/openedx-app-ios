@@ -100,7 +100,7 @@ public struct CourseOutlineView: View {
                                !isVideo {
                                 FullScreenErrorView(
                                     type: .noContent(
-                                        error: CourseLocalization.Error.coursewareUnavailable,
+                                        CourseLocalization.Error.coursewareUnavailable,
                                         image: CoreAssets.information.swiftUIImage
                                     )
                                 )
@@ -284,7 +284,7 @@ public struct CourseOutlineView: View {
         } else {
             FullScreenErrorView(
                 type: .noContent(
-                    error: CourseLocalization.Error.videosUnavailable,
+                    CourseLocalization.Error.videosUnavailable,
                     image: CoreAssets.noVideos.swiftUIImage
                 )
             )

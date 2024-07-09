@@ -85,7 +85,7 @@ public struct HandoutsUpdatesDetailView: View {
                 if handouts?.isEmpty ?? true {
                     FullScreenErrorView(
                         type: .noContent(
-                            error: CourseLocalization.Error.handoutsUnavailable,
+                            CourseLocalization.Error.handoutsUnavailable,
                             image: CoreAssets.noHandouts.swiftUIImage
                         )
                     )
@@ -96,7 +96,7 @@ public struct HandoutsUpdatesDetailView: View {
                 if announcements?.isEmpty ?? true {
                     FullScreenErrorView(
                         type: .noContent(
-                            error: CourseLocalization.Error.announcementsUnavailable,
+                            CourseLocalization.Error.announcementsUnavailable,
                             image: CoreAssets.noAnnouncements.swiftUIImage
                         )
                     )

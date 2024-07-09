@@ -66,7 +66,7 @@ public struct CourseDatesView: View {
                                 
                                 FullScreenErrorView(
                                     type: .noContent(
-                                        error: CourseLocalization.Error.courseDateUnavailable,
+                                        CourseLocalization.Error.courseDateUnavailable,
                                         image: CoreAssets.information.swiftUIImage
                                     )
                                 )

@@ -165,7 +165,7 @@ public struct DiscussionTopicsView: View {
                                     } else if viewModel.isShowProgress == false {
                                         FullScreenErrorView(
                                             type: .noContent(
-                                                error: DiscussionLocalization.Error.unableToLoadDiscussion,
+                                                DiscussionLocalization.Error.unableToLoadDiscussion,
                                                 image: CoreAssets.information.swiftUIImage
                                             )
                                         )

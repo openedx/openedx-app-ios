@@ -14,7 +14,7 @@ public struct FullScreenErrorView: View {
         case noInternet
         case noInternetWithReload
         case generic
-        case noContent(error: String, image: SwiftUI.Image)
+        case noContent(_ message: String, image: SwiftUI.Image)
     }
     
     private let errorType: ErrorType
@@ -38,7 +38,7 @@ public struct FullScreenErrorView: View {
         VStack(spacing: 20) {
             Spacer()
             switch errorType {
-            case .noContent(error: let error, image: let image):
+            case .noContent(let error, image: let image):
                 image
                     .resizable()
                     .renderingMode(.template)
