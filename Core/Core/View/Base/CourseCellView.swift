@@ -116,7 +116,7 @@ public struct CourseCellView: View {
                     .overlay(Theme.Colors.cardViewStroke)
                     .padding(.vertical, 18)
                     .padding(.horizontal, 3)
-                    .accessibilityIdentifier("devider")
+                    .accessibilityIdentifier("divider")
             }
         }
     }

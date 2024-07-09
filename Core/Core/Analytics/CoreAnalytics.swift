@@ -11,6 +11,8 @@ import Foundation
 public protocol CoreAnalytics {
     func trackEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
     func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?)
+    func trackScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
+    func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?)
     func appreview(_ event: AnalyticsEvent, biValue: EventBIValue, action: String?, rating: Int?)
     func videoQualityChanged(
         _ event: AnalyticsEvent,
@@ -28,6 +30,14 @@ public extension CoreAnalytics {
     func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
         trackEvent(event, biValue: biValue, parameters: nil)
     }
+    
+    func trackScreenEvent(_ event: AnalyticsEvent) {
+        trackScreenEvent(event, parameters: nil)
+    }
+    
+    func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
+        trackScreenEvent(event, biValue: biValue, parameters: nil)
+    }
 }
 
 #if DEBUG
@@ -35,6 +45,8 @@ public class CoreAnalyticsMock: CoreAnalytics {
     public init() {}
     public func trackEvent(_ event: AnalyticsEvent, parameters: [String: Any]? = nil) {}
     public func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?) {}
+    public func trackScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]?) {}
+    public func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?) {}
     public func appreview(_ event: AnalyticsEvent, biValue: EventBIValue, action: String? = nil, rating: Int? = 0) {}
     public func videoQualityChanged(
         _ event: AnalyticsEvent,
@@ -125,6 +137,10 @@ public enum AnalyticsEvent: String {
     case whatnewPopup = "WhatsNew:Pop up Viewed"
     case whatnewDone = "WhatsNew:Done"
     case whatnewClose = "WhatsNew:Close"
+    case logistration = "Logistration"
+    case logistrationSignIn = "Logistration:Sign In"
+    case logistrationRegister = "Logistration:Register"
+    case profileEdit = "Profile:Edit Profile"
 }
 
 public enum EventBIValue: String {
@@ -207,6 +223,10 @@ public enum EventBIValue: String {
     case whatnewPopup = "edx.bi.app.whats_new.popup.viewed"
     case whatnewDone = "edx.bi.app.whats_new.done"
     case whatnewClose = "edx.bi.app.whats_new.close"
+    case logistration = "edx.bi.app.logistration"
+    case logistrationSignIn = "edx.bi.app.logistration.signin"
+    case logistrationRegister = "edx.bi.app.logistration.register"
+    case profileEdit = "edx.bi.app.profile.edit"
 }
 
 public struct EventParamKey {

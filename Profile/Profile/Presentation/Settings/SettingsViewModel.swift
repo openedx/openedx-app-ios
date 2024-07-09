@@ -186,7 +186,7 @@ public class SettingsViewModel: ObservableObject {
     }
     
     func trackLogoutClickedClicked() {
-        analytics.profileEvent(.userLogoutClicked, biValue: .userLogoutClicked)
+        analytics.profileTrackEvent(.userLogoutClicked, biValue: .userLogoutClicked)
     }
     
 }

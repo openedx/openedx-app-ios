@@ -60,7 +60,7 @@ public struct RegistrationTextField: View {
                             .fill(
                                 config.error == "" ?
                                 Theme.Colors.textInputStroke
-                                : Theme.Colors.alert
+                                : Theme.Colors.irreversibleAlert
                             )
                     )
                     .shake($config.shake)
@@ -83,7 +83,7 @@ public struct RegistrationTextField: View {
                                 .fill(
                                     config.error == "" ?
                                     Theme.Colors.textInputStroke
-                                    : Theme.Colors.alert
+                                    : Theme.Colors.irreversibleAlert
                                 )
                         )
                         .shake($config.shake)
@@ -107,7 +107,7 @@ public struct RegistrationTextField: View {
                                 .fill(
                                     config.error == "" ?
                                     Theme.Colors.textInputStroke
-                                    : Theme.Colors.alert
+                                    : Theme.Colors.irreversibleAlert
                                 )
                         )
                         .shake($config.shake)
@@ -119,7 +119,7 @@ public struct RegistrationTextField: View {
                 .font(Theme.Fonts.bodySmall)
                 .foregroundColor(config.error == ""
                                  ? Theme.Colors.textSecondaryLight
-                                 : Theme.Colors.alert)
+                                 : Theme.Colors.irreversibleAlert)
                 .accessibilityIdentifier("\(config.field.name)_instructions_text")
         }
     }

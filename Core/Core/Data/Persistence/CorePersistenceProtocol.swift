@@ -13,20 +13,25 @@ public protocol CorePersistenceProtocol {
     func set(userId: Int)
     func getUserID() -> Int?
     func publisher() -> AnyPublisher<Int, Never>
-    func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality)
     func addToDownloadQueue(tasks: [DownloadDataTask])
-    func nextBlockForDownloading() -> DownloadDataTask?
-    func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
-    func deleteDownloadDataTask(id: String) throws
-    func downloadDataTask(for blockId: String) -> DownloadDataTask?
-    func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void)
-    func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void)
-    func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void)
+//    func downloadDataTask(for blockId: String) -> DownloadDataTask?
+//    func downloadDataTask(for blockId: String, completion: @escaping (DownloadDataTask?) -> Void)
+//    func getDownloadDataTasks(completion: @escaping ([DownloadDataTask]) -> Void)
+//    func getDownloadDataTasksForCourse(_ courseId: String, completion: @escaping ([DownloadDataTask]) -> Void)
     func saveOfflineProgress(progress: OfflineProgress)
     func loadProgress(for blockID: String) -> OfflineProgress?
     func loadAllOfflineProgress() -> [OfflineProgress]
     func deleteProgress(for blockID: String)
     func deleteAllProgress()
+
+    func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) async
+    func nextBlockForDownloading() async -> DownloadDataTask?
+    func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
+    func deleteDownloadDataTask(id: String) async throws
+    func saveDownloadDataTask(_ task: DownloadDataTask)
+    func downloadDataTask(for blockId: String) -> DownloadDataTask?
+    func getDownloadDataTasks() async -> [DownloadDataTask]
+    func getDownloadDataTasksForCourse(_ courseId: String) async -> [DownloadDataTask]
 }
 
 #if DEBUG
@@ -51,6 +56,9 @@ public class CorePersistenceMock: CorePersistenceProtocol {
     public func loadAllOfflineProgress() -> [OfflineProgress] { [] }
     public func deleteProgress(for blockID: String) {}
     public func deleteAllProgress() {}
+    public func saveDownloadDataTask(_ task: DownloadDataTask) {}
+    public func getDownloadDataTasks() async -> [DownloadDataTask] {[]}
+    public func getDownloadDataTasksForCourse(_ courseId: String) async -> [DownloadDataTask] {[]}
 }
 #endif
 

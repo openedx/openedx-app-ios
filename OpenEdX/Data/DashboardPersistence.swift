@@ -18,32 +18,34 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         self.context = context
     }
     
-    public func loadEnrollments() throws -> [CourseItem] {
-        let result = try? context.fetch(CDDashboardCourse.fetchRequest())
-            .map { CourseItem(name: $0.name ?? "",
-                              org: $0.org ?? "",
-                              shortDescription: $0.desc ?? "",
-                              imageURL: $0.imageURL ?? "",
-                              hasAccess: $0.hasAccess,
-                              courseStart: $0.courseStart,
-                              courseEnd: $0.courseEnd,
-                              enrollmentStart: $0.enrollmentStart,
-                              enrollmentEnd: $0.enrollmentEnd,
-                              courseID: $0.courseID ?? "",
-                              numPages: Int($0.numPages),
-                              coursesCount: Int($0.courseCount),
-                              progressEarned: 0,
-                              progressPossible: 0)}
-        if let result, !result.isEmpty {
-            return result
-        } else {
-            throw NoCachedDataError()
+    public func loadEnrollments() async throws -> [CourseItem] {
+        try await context.perform {[context] in
+            let result = try? context.fetch(CDDashboardCourse.fetchRequest())
+                .map { CourseItem(name: $0.name ?? "",
+                                  org: $0.org ?? "",
+                                  shortDescription: $0.desc ?? "",
+                                  imageURL: $0.imageURL ?? "",
+                                  hasAccess: $0.hasAccess,
+                                  courseStart: $0.courseStart,
+                                  courseEnd: $0.courseEnd,
+                                  enrollmentStart: $0.enrollmentStart,
+                                  enrollmentEnd: $0.enrollmentEnd,
+                                  courseID: $0.courseID ?? "",
+                                  numPages: Int($0.numPages),
+                                  coursesCount: Int($0.courseCount),
+                                  progressEarned: 0,
+                                  progressPossible: 0)}
+            if let result, !result.isEmpty {
+                return result
+            } else {
+                throw NoCachedDataError()
+            }
         }
     }
     
     public func saveEnrollments(items: [CourseItem]) {
         for item in items {
-            context.performAndWait {
+            context.perform {[context] in
                 let newItem = CDDashboardCourse(context: self.context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.name = item.name
@@ -67,97 +69,90 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
 
-    public func loadPrimaryEnrollment() throws -> PrimaryEnrollment {
-        let request = CDMyEnrollments.fetchRequest()
-        if let result = try context.fetch(request).first {
-            let primaryCourse = result.primaryCourse.flatMap { cdPrimaryCourse -> PrimaryCourse? in
+    public func loadPrimaryEnrollment() async throws -> PrimaryEnrollment {
+        try await context.perform {[context] in
+            let request = CDMyEnrollments.fetchRequest()
+            if let result = try context.fetch(request).first {
+                let primaryCourse = result.primaryCourse.flatMap { cdPrimaryCourse -> PrimaryCourse? in
 
-                guard let futureAssignmentsSet = cdPrimaryCourse.futureAssignments as? Set<CDAssignment> else {
-                    print("Error: futureAssignments is nil or not of expected type")
-                    return nil
-                }
+                    let futureAssignments = (cdPrimaryCourse.futureAssignments as? Set<CDAssignment> ?? [])
+                        .map { future in
+                            return Assignment(
+                                type: future.type ?? "",
+                                title: future.title ?? "",
+                                description: future.descript ?? "",
+                                date: future.date ?? Date(),
+                                complete: future.complete,
+                                firstComponentBlockId: future.firstComponentBlockId
+                            )
+                        }
+                    
+                    let pastAssignments = (cdPrimaryCourse.pastAssignments as? Set<CDAssignment> ?? [])
+                        .map { past in
+                            return Assignment(
+                                type: past.type ?? "",
+                                title: past.title ?? "",
+                                description: past.descript ?? "",
+                                date: past.date ?? Date(),
+                                complete: past.complete,
+                                firstComponentBlockId: past.firstComponentBlockId
+                            )
+                        }
 
-                let futureAssignments = futureAssignmentsSet.map { future in
-                    return Assignment(
-                        type: future.type ?? "",
-                        title: future.title ?? "",
-                        description: future.descript ?? "",
-                        date: future.date ?? Date(),
-                        complete: future.complete,
-                        firstComponentBlockId: future.firstComponentBlockId
+                    return PrimaryCourse(
+                        name: cdPrimaryCourse.name ?? "",
+                        org: cdPrimaryCourse.org ?? "",
+                        courseID: cdPrimaryCourse.courseID ?? "",
+                        hasAccess: cdPrimaryCourse.hasAccess,
+                        courseStart: cdPrimaryCourse.courseStart,
+                        courseEnd: cdPrimaryCourse.courseEnd,
+                        courseBanner: cdPrimaryCourse.courseBanner ?? "",
+                        futureAssignments: futureAssignments,
+                        pastAssignments: pastAssignments,
+                        progressEarned: Int(cdPrimaryCourse.progressEarned),
+                        progressPossible: Int(cdPrimaryCourse.progressPossible),
+                        lastVisitedBlockID: cdPrimaryCourse.lastVisitedBlockID ?? "",
+                        resumeTitle: cdPrimaryCourse.resumeTitle
                     )
                 }
 
-                guard let pastAssignmentsSet = cdPrimaryCourse.pastAssignments as? Set<CDAssignment> else {
-                    print("Error: pastAssignments is nil or not of expected type")
-                    return nil
-                }
+                let courses = (result.courses as? Set<CDDashboardCourse> ?? [])
+                    .map { cdCourse in
+                        return CourseItem(
+                            name: cdCourse.name ?? "",
+                            org: cdCourse.org ?? "",
+                            shortDescription: cdCourse.desc ?? "",
+                            imageURL: cdCourse.imageURL ?? "",
+                            hasAccess: cdCourse.hasAccess,
+                            courseStart: cdCourse.courseStart,
+                            courseEnd: cdCourse.courseEnd,
+                            enrollmentStart: cdCourse.enrollmentStart,
+                            enrollmentEnd: cdCourse.enrollmentEnd,
+                            courseID: cdCourse.courseID ?? "",
+                            numPages: Int(cdCourse.numPages),
+                            coursesCount: Int(cdCourse.courseCount),
+                            progressEarned: Int(cdCourse.progressEarned),
+                            progressPossible: Int(cdCourse.progressPossible)
+                        )
+                    }
 
-                let pastAssignments = pastAssignmentsSet.map { past in
-                    return Assignment(
-                        type: past.type ?? "",
-                        title: past.title ?? "",
-                        description: past.descript ?? "",
-                        date: past.date ?? Date(),
-                        complete: past.complete,
-                        firstComponentBlockId: past.firstComponentBlockId
-                    )
-                }
-
-                return PrimaryCourse(
-                    name: cdPrimaryCourse.name ?? "",
-                    org: cdPrimaryCourse.org ?? "",
-                    courseID: cdPrimaryCourse.courseID ?? "",
-                    hasAccess: cdPrimaryCourse.hasAccess,
-                    courseStart: cdPrimaryCourse.courseStart,
-                    courseEnd: cdPrimaryCourse.courseEnd,
-                    courseBanner: cdPrimaryCourse.courseBanner ?? "",
-                    futureAssignments: futureAssignments,
-                    pastAssignments: pastAssignments,
-                    progressEarned: Int(cdPrimaryCourse.progressEarned),
-                    progressPossible: Int(cdPrimaryCourse.progressPossible),
-                    lastVisitedBlockID: cdPrimaryCourse.lastVisitedBlockID ?? "",
-                    resumeTitle: cdPrimaryCourse.resumeTitle
+                return PrimaryEnrollment(
+                    primaryCourse: primaryCourse,
+                    courses: courses,
+                    totalPages: Int(result.totalPages),
+                    count: Int(result.count)
                 )
+            } else {
+                throw NoCachedDataError()
             }
-
-            let courses = (result.courses as? Set<CDDashboardCourse> ?? [])
-                .map { cdCourse in
-                    return CourseItem(
-                        name: cdCourse.name ?? "",
-                        org: cdCourse.org ?? "",
-                        shortDescription: cdCourse.desc ?? "",
-                        imageURL: cdCourse.imageURL ?? "",
-                        hasAccess: cdCourse.hasAccess,
-                        courseStart: cdCourse.courseStart,
-                        courseEnd: cdCourse.courseEnd,
-                        enrollmentStart: cdCourse.enrollmentStart,
-                        enrollmentEnd: cdCourse.enrollmentEnd,
-                        courseID: cdCourse.courseID ?? "",
-                        numPages: Int(cdCourse.numPages),
-                        coursesCount: Int(cdCourse.courseCount),
-                        progressEarned: Int(cdCourse.progressEarned),
-                        progressPossible: Int(cdCourse.progressPossible)
-                    )
-                }
-
-            return PrimaryEnrollment(
-                primaryCourse: primaryCourse,
-                courses: courses,
-                totalPages: Int(result.totalPages),
-                count: Int(result.count)
-            )
-        } else {
-            throw NoCachedDataError()
         }
     }
     
     // swiftlint:disable function_body_length
     public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) {
-        context.performAndWait {
-            // Deleting all old data before saving new ones
-            clearOldEnrollmentsData()
-            
+        // Deleting all old data before saving new ones
+        clearOldEnrollmentsData()
+        context.perform {[context] in
             let newEnrollment = CDMyEnrollments(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
 
@@ -236,17 +231,23 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     // swiftlint:enable function_body_length
     
     func clearOldEnrollmentsData() {
-        let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
-        let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
+        context.perform {[context] in
+            let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
+            let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
 
-        let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = CDMyEnrollments.fetchRequest()
-        let batchDeleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
+            let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = CDPrimaryCourse.fetchRequest()
+            let batchDeleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
 
-        do {
-            try context.execute(batchDeleteRequest1)
-            try context.execute(batchDeleteRequest2)
-        } catch {
-            print("Error when deleting old data:", error)
+            let fetchRequest3: NSFetchRequest<NSFetchRequestResult> = CDMyEnrollments.fetchRequest()
+            let batchDeleteRequest3 = NSBatchDeleteRequest(fetchRequest: fetchRequest3)
+
+            do {
+                try context.execute(batchDeleteRequest1)
+                try context.execute(batchDeleteRequest2)
+                try context.execute(batchDeleteRequest3)
+            } catch {
+                print("Error when deleting old data:", error)
+            }
         }
     }
 }

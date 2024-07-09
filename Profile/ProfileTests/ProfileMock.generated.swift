@@ -1171,6 +1171,18 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 		perform?(`event`, `biValue`, `parameters`)
     }
 
+    open func trackScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]?) {
+        addInvocation(.m_trackScreenEvent__eventparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<[String: Any]?>.value(`parameters`)))
+		let perform = methodPerformValue(.m_trackScreenEvent__eventparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<[String: Any]?>.value(`parameters`))) as? (AnalyticsEvent, [String: Any]?) -> Void
+		perform?(`event`, `parameters`)
+    }
+
+    open func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?) {
+        addInvocation(.m_trackScreenEvent__eventbiValue_biValueparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<[String: Any]?>.value(`parameters`)))
+		let perform = methodPerformValue(.m_trackScreenEvent__eventbiValue_biValueparameters_parameters(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<[String: Any]?>.value(`parameters`))) as? (AnalyticsEvent, EventBIValue, [String: Any]?) -> Void
+		perform?(`event`, `biValue`, `parameters`)
+    }
+
     open func appreview(_ event: AnalyticsEvent, biValue: EventBIValue, action: String?, rating: Int?) {
         addInvocation(.m_appreview__eventbiValue_biValueaction_actionrating_rating(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<String?>.value(`action`), Parameter<Int?>.value(`rating`)))
 		let perform = methodPerformValue(.m_appreview__eventbiValue_biValueaction_actionrating_rating(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`), Parameter<String?>.value(`action`), Parameter<Int?>.value(`rating`))) as? (AnalyticsEvent, EventBIValue, String?, Int?) -> Void
@@ -1195,14 +1207,30 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 		perform?(`event`, `biValue`)
     }
 
+    open func trackScreenEvent(_ event: AnalyticsEvent) {
+        addInvocation(.m_trackScreenEvent__event(Parameter<AnalyticsEvent>.value(`event`)))
+		let perform = methodPerformValue(.m_trackScreenEvent__event(Parameter<AnalyticsEvent>.value(`event`))) as? (AnalyticsEvent) -> Void
+		perform?(`event`)
+    }
+
+    open func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
+        addInvocation(.m_trackScreenEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`)))
+		let perform = methodPerformValue(.m_trackScreenEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`))) as? (AnalyticsEvent, EventBIValue) -> Void
+		perform?(`event`, `biValue`)
+    }
+
 
     fileprivate enum MethodType {
         case m_trackEvent__eventparameters_parameters(Parameter<AnalyticsEvent>, Parameter<[String: Any]?>)
         case m_trackEvent__eventbiValue_biValueparameters_parameters(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<[String: Any]?>)
+        case m_trackScreenEvent__eventparameters_parameters(Parameter<AnalyticsEvent>, Parameter<[String: Any]?>)
+        case m_trackScreenEvent__eventbiValue_biValueparameters_parameters(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<[String: Any]?>)
         case m_appreview__eventbiValue_biValueaction_actionrating_rating(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String?>, Parameter<Int?>)
         case m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>, Parameter<String>, Parameter<String>)
         case m_trackEvent__event(Parameter<AnalyticsEvent>)
         case m_trackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
+        case m_trackScreenEvent__event(Parameter<AnalyticsEvent>)
+        case m_trackScreenEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -1213,6 +1241,19 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_trackEvent__eventbiValue_biValueparameters_parameters(let lhsEvent, let lhsBivalue, let lhsParameters), .m_trackEvent__eventbiValue_biValueparameters_parameters(let rhsEvent, let rhsBivalue, let rhsParameters)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameters, rhs: rhsParameters, with: matcher), lhsParameters, rhsParameters, "parameters"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_trackScreenEvent__eventparameters_parameters(let lhsEvent, let lhsParameters), .m_trackScreenEvent__eventparameters_parameters(let rhsEvent, let rhsParameters)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParameters, rhs: rhsParameters, with: matcher), lhsParameters, rhsParameters, "parameters"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_trackScreenEvent__eventbiValue_biValueparameters_parameters(let lhsEvent, let lhsBivalue, let lhsParameters), .m_trackScreenEvent__eventbiValue_biValueparameters_parameters(let rhsEvent, let rhsBivalue, let rhsParameters)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
@@ -1245,6 +1286,17 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_trackScreenEvent__event(let lhsEvent), .m_trackScreenEvent__event(let rhsEvent)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_trackScreenEvent__eventbiValue_biValue(let lhsEvent, let lhsBivalue), .m_trackScreenEvent__eventbiValue_biValue(let rhsEvent, let rhsBivalue)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -1253,20 +1305,28 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
             switch self {
             case let .m_trackEvent__eventparameters_parameters(p0, p1): return p0.intValue + p1.intValue
             case let .m_trackEvent__eventbiValue_biValueparameters_parameters(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case let .m_trackScreenEvent__eventparameters_parameters(p0, p1): return p0.intValue + p1.intValue
+            case let .m_trackScreenEvent__eventbiValue_biValueparameters_parameters(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_appreview__eventbiValue_biValueaction_actionrating_rating(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_trackEvent__event(p0): return p0.intValue
             case let .m_trackEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
+            case let .m_trackScreenEvent__event(p0): return p0.intValue
+            case let .m_trackScreenEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_trackEvent__eventparameters_parameters: return ".trackEvent(_:parameters:)"
             case .m_trackEvent__eventbiValue_biValueparameters_parameters: return ".trackEvent(_:biValue:parameters:)"
+            case .m_trackScreenEvent__eventparameters_parameters: return ".trackScreenEvent(_:parameters:)"
+            case .m_trackScreenEvent__eventbiValue_biValueparameters_parameters: return ".trackScreenEvent(_:biValue:parameters:)"
             case .m_appreview__eventbiValue_biValueaction_actionrating_rating: return ".appreview(_:biValue:action:rating:)"
             case .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue: return ".videoQualityChanged(_:bivalue:value:oldValue:)"
             case .m_trackEvent__event: return ".trackEvent(_:)"
             case .m_trackEvent__eventbiValue_biValue: return ".trackEvent(_:biValue:)"
+            case .m_trackScreenEvent__event: return ".trackScreenEvent(_:)"
+            case .m_trackScreenEvent__eventbiValue_biValue: return ".trackScreenEvent(_:biValue:)"
             }
         }
     }
@@ -1287,10 +1347,14 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>, parameters: Parameter<[String: Any]?>) -> Verify { return Verify(method: .m_trackEvent__eventparameters_parameters(`event`, `parameters`))}
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, parameters: Parameter<[String: Any]?>) -> Verify { return Verify(method: .m_trackEvent__eventbiValue_biValueparameters_parameters(`event`, `biValue`, `parameters`))}
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>, parameters: Parameter<[String: Any]?>) -> Verify { return Verify(method: .m_trackScreenEvent__eventparameters_parameters(`event`, `parameters`))}
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, parameters: Parameter<[String: Any]?>) -> Verify { return Verify(method: .m_trackScreenEvent__eventbiValue_biValueparameters_parameters(`event`, `biValue`, `parameters`))}
         public static func appreview(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, action: Parameter<String?>, rating: Parameter<Int?>) -> Verify { return Verify(method: .m_appreview__eventbiValue_biValueaction_actionrating_rating(`event`, `biValue`, `action`, `rating`))}
         public static func videoQualityChanged(_ event: Parameter<AnalyticsEvent>, bivalue: Parameter<EventBIValue>, value: Parameter<String>, oldValue: Parameter<String>) -> Verify { return Verify(method: .m_videoQualityChanged__eventbivalue_bivaluevalue_valueoldValue_oldValue(`event`, `bivalue`, `value`, `oldValue`))}
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>) -> Verify { return Verify(method: .m_trackEvent__event(`event`))}
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_trackEvent__eventbiValue_biValue(`event`, `biValue`))}
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>) -> Verify { return Verify(method: .m_trackScreenEvent__event(`event`))}
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_trackScreenEvent__eventbiValue_biValue(`event`, `biValue`))}
     }
 
     public struct Perform {
@@ -1303,6 +1367,12 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, parameters: Parameter<[String: Any]?>, perform: @escaping (AnalyticsEvent, EventBIValue, [String: Any]?) -> Void) -> Perform {
             return Perform(method: .m_trackEvent__eventbiValue_biValueparameters_parameters(`event`, `biValue`, `parameters`), performs: perform)
         }
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>, parameters: Parameter<[String: Any]?>, perform: @escaping (AnalyticsEvent, [String: Any]?) -> Void) -> Perform {
+            return Perform(method: .m_trackScreenEvent__eventparameters_parameters(`event`, `parameters`), performs: perform)
+        }
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, parameters: Parameter<[String: Any]?>, perform: @escaping (AnalyticsEvent, EventBIValue, [String: Any]?) -> Void) -> Perform {
+            return Perform(method: .m_trackScreenEvent__eventbiValue_biValueparameters_parameters(`event`, `biValue`, `parameters`), performs: perform)
+        }
         public static func appreview(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, action: Parameter<String?>, rating: Parameter<Int?>, perform: @escaping (AnalyticsEvent, EventBIValue, String?, Int?) -> Void) -> Perform {
             return Perform(method: .m_appreview__eventbiValue_biValueaction_actionrating_rating(`event`, `biValue`, `action`, `rating`), performs: perform)
         }
@@ -1314,6 +1384,12 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
         }
         public static func trackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
             return Perform(method: .m_trackEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
+        }
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>, perform: @escaping (AnalyticsEvent) -> Void) -> Perform {
+            return Perform(method: .m_trackScreenEvent__event(`event`), performs: perform)
+        }
+        public static func trackScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
+            return Perform(method: .m_trackScreenEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
         }
     }
 
@@ -2962,9 +3038,15 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
 		perform?(`success`)
     }
 
-    open func profileEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
-        addInvocation(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`)))
-		let perform = methodPerformValue(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`))) as? (AnalyticsEvent, EventBIValue) -> Void
+    open func profileTrackEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
+        addInvocation(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(biValue)))
+		let perform = methodPerformValue(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(biValue))) as? (AnalyticsEvent, EventBIValue) -> Void
+		perform?(`event`, biValue)
+    }
+
+    open func profileScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
+        addInvocation(.m_profileScreenEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`)))
+		let perform = methodPerformValue(.m_profileScreenEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`))) as? (AnalyticsEvent, EventBIValue) -> Void
 		perform?(`event`, `biValue`)
     }
 
@@ -2986,6 +3068,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         case m_profileUserDeleteAccountClicked
         case m_profileDeleteAccountSuccess__success_success(Parameter<Bool>)
         case m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
+        case m_profileScreenEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3036,6 +3119,12 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_profileScreenEvent__eventbiValue_biValue(let lhsEvent, let lhsBivalue), .m_profileScreenEvent__eventbiValue_biValue(let rhsEvent, let rhsBivalue)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -3058,6 +3147,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
             case .m_profileUserDeleteAccountClicked: return 0
             case let .m_profileDeleteAccountSuccess__success_success(p0): return p0.intValue
             case let .m_profileEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
+            case let .m_profileScreenEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
             }
         }
         func assertionName() -> String {
@@ -3078,6 +3168,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
             case .m_profileUserDeleteAccountClicked: return ".profileUserDeleteAccountClicked()"
             case .m_profileDeleteAccountSuccess__success_success: return ".profileDeleteAccountSuccess(success:)"
             case .m_profileEvent__eventbiValue_biValue: return ".profileEvent(_:biValue:)"
+            case .m_profileScreenEvent__eventbiValue_biValue: return ".profileScreenEvent(_:biValue:)"
             }
         }
     }
@@ -3112,6 +3203,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         public static func profileUserDeleteAccountClicked() -> Verify { return Verify(method: .m_profileUserDeleteAccountClicked)}
         public static func profileDeleteAccountSuccess(success: Parameter<Bool>) -> Verify { return Verify(method: .m_profileDeleteAccountSuccess__success_success(`success`))}
         public static func profileEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_profileEvent__eventbiValue_biValue(`event`, `biValue`))}
+        public static func profileScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_profileScreenEvent__eventbiValue_biValue(`event`, `biValue`))}
     }
 
     public struct Perform {
@@ -3165,6 +3257,9 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         }
         public static func profileEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
             return Perform(method: .m_profileEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
+        }
+        public static func profileScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
+            return Perform(method: .m_profileScreenEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
         }
     }
 

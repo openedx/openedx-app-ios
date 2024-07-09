@@ -66,7 +66,7 @@ struct CourseCardView: View {
                 .padding(8)
             }
         }
-        .background(Theme.Colors.background)
+        .background(Theme.Colors.courseCardBackground)
         .cornerRadius(8)
         .shadow(color: Theme.Colors.courseCardShadow, radius: 6, x: 2, y: 2)
     }

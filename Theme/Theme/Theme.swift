@@ -59,6 +59,7 @@ public struct Theme {
         public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
         public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
         public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
+        public private(set) static var secondaryButtonBGColor = ThemeAssets.secondaryButtonBGColor.swiftUIColor
         public private(set) static var success = ThemeAssets.success.swiftUIColor
         public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
         public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
@@ -74,6 +75,7 @@ public struct Theme {
         public private(set) static var secondaryHeaderColor = ThemeAssets.secondaryHeaderColor.swiftUIColor
         public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
         public private(set) static var shade = ThemeAssets.shade.swiftUIColor
+        public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,

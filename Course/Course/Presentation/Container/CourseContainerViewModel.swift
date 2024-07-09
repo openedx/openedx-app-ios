@@ -326,13 +326,13 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
         return tasks
     }
-    
-    func continueDownload() {
+
+    func continueDownload() async {
         guard let blocks = waitingDownloads else {
             return
         }
         do {
-            try manager.addToDownloadQueue(blocks: blocks)
+            try await manager.addToDownloadQueue(blocks: blocks)
         } catch let error {
             if error is NoWiFiError {
                 errorMessage = CoreLocalization.Error.wifi
@@ -485,29 +485,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             let totalFileSize = blocks.reduce(0, { $0 + ($1.fileSize ?? 0) })
             switch state {
             case .available:
-                if !connectivity.isInternetAvaliable {
-                    presentNoInternetAlert(sequentials: sequentials)
-                } else if connectivity.isMobileData {
-                    if storage.userSettings?.wifiOnly == true {
-                        presentWifiRequiredAlert(sequentials: sequentials)
-                    } else {
-                        await presentConfirmDownloadCellularAlert(
-                            blocks: blocks,
-                            sequentials: sequentials,
-                            totalFileSize: totalFileSize
-                        )
-                    }
-                } else {
-                    if totalFileSize > cellularFileSizeLimit {
-                        await presentConfirmDownloadAlert(
-                            blocks: blocks,
-                            sequentials: sequentials,
-                            totalFileSize: totalFileSize
-                        )
-                    } else {
-                        try? self.manager.addToDownloadQueue(blocks: blocks)
-                    }
-                }
+                try await manager.addToDownloadQueue(blocks: blocks)
             case .downloading:
                 try await manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
             case .finished:
@@ -567,7 +545,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     if !self.isEnoughSpace(for: totalFileSize) {
                         self.presentStorageFullAlert(sequentials: sequentials)
                     } else {
-                        try? self.manager.addToDownloadQueue(blocks: blocks)
+                        Task {
+                            try? await self.manager.addToDownloadQueue(blocks: blocks)
+                        }
                         action()
                     }
                     self.router.dismiss(animated: true)
@@ -615,7 +595,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         self.router.dismiss(animated: true)
                         self.presentStorageFullAlert(sequentials: sequentials)
                     } else {
-                        try? self.manager.addToDownloadQueue(blocks: blocks)
+                        Task {
+                            try? await self.manager.addToDownloadQueue(blocks: blocks)
+                        }
                         action()
                     }
                     self.router.dismiss(animated: true)
@@ -698,7 +680,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     self.router.dismiss(animated: true)
                 },
                 okTapped: {
-                    self.continueDownload()
+                    Task {
+                        await self.continueDownload()
+                    }
                     self.router.dismiss(animated: true)
                 },
                 type: .default(positiveAction: CourseLocalization.Alert.accept, image: nil)
@@ -755,7 +739,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                         }
                     )
                 } else {
-                    try? self.manager.addToDownloadQueue(blocks: allBlocks)
+                    try? await self.manager.addToDownloadQueue(blocks: allBlocks)
                     self.downloadAllButtonState = .cancel
                 }
             }
@@ -849,7 +833,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                                     try? await manager.cancelDownloading(task: download)
                                     sequentialsChilds.append(.available)
                                     verticalsChilds.append(.available)
-                                    try? self.manager.addToDownloadQueue(blocks: [block])
+                                    try? await self.manager.addToDownloadQueue(blocks: [block])
                                     continue
                                 }
                             }
