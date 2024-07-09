@@ -13,7 +13,7 @@ import Alamofire
 public protocol DiscoveryRepositoryProtocol {
     func getDiscovery(page: Int) async throws -> [CourseItem]
     func searchCourses(page: Int, searchTerm: String) async throws -> [CourseItem]
-    func getDiscoveryOffline() throws -> [CourseItem]
+    func getDiscoveryOffline() async throws -> [CourseItem]
     func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails
     func enrollToCourse(courseID: String) async throws -> Bool
@@ -44,8 +44,8 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
         return discoveryResponse
     }
     
-    public func getDiscoveryOffline() throws -> [CourseItem] {
-        return try persistence.loadDiscovery()
+    public func getDiscoveryOffline() async throws -> [CourseItem] {
+        try await persistence.loadDiscovery()
     }
     
     public func searchCourses(page: Int, searchTerm: String) async throws -> [CourseItem] {
@@ -68,7 +68,7 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
     }
     
     public func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
-        return try persistence.loadCourseDetails(courseID: courseID)
+        try await persistence.loadCourseDetails(courseID: courseID)
     }
     
     public func enrollToCourse(courseID: String) async throws -> Bool {

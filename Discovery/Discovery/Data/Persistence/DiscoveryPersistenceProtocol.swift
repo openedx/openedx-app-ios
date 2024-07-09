@@ -9,9 +9,9 @@ import CoreData
 import Core
 
 public protocol DiscoveryPersistenceProtocol {
-    func loadDiscovery() throws -> [CourseItem]
+    func loadDiscovery() async throws -> [CourseItem]
     func saveDiscovery(items: [CourseItem])
-    func loadCourseDetails(courseID: String) throws -> CourseDetails
+    func loadCourseDetails(courseID: String) async throws -> CourseDetails
     func saveCourseDetails(course: CourseDetails)
 }
 
