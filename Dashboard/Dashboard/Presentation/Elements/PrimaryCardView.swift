@@ -26,6 +26,7 @@ public struct PrimaryCardView: View {
     private var assignmentAction: (String?) -> Void
     private var openCourseAction: () -> Void
     private var resumeAction: () -> Void
+    @Environment(\.isHorizontal) var isHorizontal
     
     public init(
         courseName: String,
@@ -61,22 +62,58 @@ public struct PrimaryCardView: View {
     
     public var body: some View {
         ZStack {
-            VStack(alignment: .leading, spacing: 0) {
-                Group {
-                    courseBanner
-                    ProgressLineView(progressEarned: progressEarned, progressPossible: progressPossible)
-                    courseTitle
-                }
-                .onTapGesture {
-                    openCourseAction()
-                }
-                assignments
+            if isHorizontal {
+                horizontalLayout
+            } else {
+                verticalLayout
             }
         }
         .background(Theme.Colors.courseCardBackground)
         .cornerRadius(8)
         .shadow(color: Theme.Colors.courseCardShadow, radius: 4, x: 0, y: 3)
         .padding(20)
+    }
+    
+    @ViewBuilder
+    var verticalLayout: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Group {
+                courseBanner
+                    .frame(height: 140)
+                    .clipped()
+                ProgressLineView(progressEarned: progressEarned, progressPossible: progressPossible)
+                courseTitle
+            }
+            .onTapGesture {
+                openCourseAction()
+            }
+            assignments
+        }
+    }
+    
+    @ViewBuilder
+    var horizontalLayout: some View {
+        GeometryReader { proxy in
+            HStack(alignment: .top, spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
+                    courseBanner
+                        .frame(width: proxy.size.width/2)
+                    ProgressLineView(progressEarned: progressEarned, progressPossible: progressPossible)
+                }
+                .clipped()
+                .onTapGesture {
+                    openCourseAction()
+                }
+                VStack(alignment: .leading, spacing: 0) {
+                    courseTitle
+                        .onTapGesture {
+                            openCourseAction()
+                        }
+                    assignments
+                }
+            }
+        }
+        .frame(height: 240)
     }
     
     private var assignments: some View {
@@ -219,14 +256,15 @@ public struct PrimaryCardView: View {
             .onFailureImage(CoreAssets.noCourseImage.image)
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(height: 140)
-            .clipped()
             .accessibilityElement(children: .ignore)
             .accessibilityIdentifier("course_image")
     }
     
     private var courseTitle: some View {
         VStack(alignment: .leading, spacing: 3) {
+            if isHorizontal {
+                Spacer()
+            }
             Text(org)
                 .font(Theme.Fonts.labelMedium)
                 .foregroundStyle(Theme.Colors.textSecondaryLight)
@@ -242,6 +280,9 @@ public struct PrimaryCardView: View {
                 Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear))
                     .font(Theme.Fonts.labelMedium)
                     .foregroundStyle(Theme.Colors.textSecondaryLight)
+            }
+            if isHorizontal {
+                Spacer()
             }
         }
         .padding(.top, 10)
