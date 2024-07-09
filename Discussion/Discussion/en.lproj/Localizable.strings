@@ -62,4 +62,4 @@
 
 "ANONYMOUS" = "Anonymous";
 
-"ERROR.UNABLE_TO_LOAD_COURSE_CONTENT" = "Unable to load course content.\nTry again later.";
+"ERROR.UNABLE_TO_LOAD_DISCUSSION" = "Unable to load discussions.";

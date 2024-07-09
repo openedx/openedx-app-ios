@@ -99,7 +99,7 @@ public struct CourseOutlineView: View {
                                viewModel.isShowProgress == false,
                                !isVideo {
                                 FullScreenErrorView(
-                                    type: .noCourseware(
+                                    type: .noContent(
                                         error: CourseLocalization.Error.coursewareUnavailable,
                                         image: CoreAssets.information.swiftUIImage
                                     )
@@ -283,7 +283,7 @@ public struct CourseOutlineView: View {
             }
         } else {
             FullScreenErrorView(
-                type: .noVideos(
+                type: .noContent(
                     error: CourseLocalization.Error.videosUnavailable,
                     image: CoreAssets.noVideos.swiftUIImage
                 )

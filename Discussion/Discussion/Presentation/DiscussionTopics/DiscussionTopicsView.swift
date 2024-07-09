@@ -164,8 +164,8 @@ public struct DiscussionTopicsView: View {
                                         }
                                     } else if viewModel.isShowProgress == false {
                                         FullScreenErrorView(
-                                            type: .noCourseDates(
-                                                error: DiscussionLocalization.Error.unableToLoadCourseContent,
+                                            type: .noContent(
+                                                error: DiscussionLocalization.Error.unableToLoadDiscussion,
                                                 image: CoreAssets.information.swiftUIImage
                                             )
                                         )
