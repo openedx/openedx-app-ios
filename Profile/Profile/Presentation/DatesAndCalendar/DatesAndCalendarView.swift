@@ -61,6 +61,7 @@ public struct DatesAndCalendarView: View {
                         .onTapGesture {
                             viewModel.openNewCalendarView = false
                             screenDimmed = false
+                            viewModel.showCalendaAccessDenied = false
                             viewModel.calendarName = viewModel.oldCalendarName
                             viewModel.colorSelection = viewModel.oldColorSelection
                         }
