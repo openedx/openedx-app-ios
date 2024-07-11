@@ -180,16 +180,34 @@ public class CalendarManager: CalendarManagerProtocol {
         let events = generateEvents(for: dateBlocks, courseName: courseName, calendar: calendar)
         var saveSuccessful = true
         events.forEach { event in
-            do {
-                try eventStore.save(event, span: .thisEvent)
-                persistence.saveCourseCalendarEvent(
-                    CourseCalendarEvent(courseID: courseID, eventIdentifier: event.eventIdentifier)
-                )
-            } catch {
-                saveSuccessful = false
+            if !eventExists(event, in: calendar) {
+                do {
+                    try eventStore.save(event, span: .thisEvent)
+                    persistence.saveCourseCalendarEvent(
+                        CourseCalendarEvent(courseID: courseID, eventIdentifier: event.eventIdentifier)
+                    )
+                } catch {
+                    saveSuccessful = false
+                }
             }
         }
         return saveSuccessful
+    }
+    
+    private func eventExists(_ event: EKEvent, in calendar: EKCalendar) -> Bool {
+        let predicate = eventStore.predicateForEvents(
+            withStart: event.startDate,
+            end: event.endDate,
+            calendars: [calendar]
+        )
+        let existingEvents = eventStore.events(matching: predicate)
+        
+        return existingEvents.contains { existingEvent in
+            existingEvent.title == event.title &&
+            existingEvent.startDate == event.startDate &&
+            existingEvent.endDate == event.endDate &&
+            existingEvent.notes == event.notes
+        }
     }
     
     public func filterCoursesBySelected(fetchedCourses: [CourseForSync]) async -> [CourseForSync] {
