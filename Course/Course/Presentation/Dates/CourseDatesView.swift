@@ -286,8 +286,9 @@ struct CompletedBlocks: View {
                                 Spacer()
                                 if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                                     Image(systemName: "chevron.right")
-                                        .flipsForRightToLeftLayoutDirection(true)
                                         .resizable()
+                                        .flipsForRightToLeftLayoutDirection(true)
+                                        
                                         .scaledToFit()
                                         .frame(width: 6.55, height: 11.15)
                                         .labelStyle(.iconOnly)
@@ -326,8 +327,8 @@ struct BlockStatusView: View {
                     Spacer()
                     if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                         Image(systemName: "chevron.right")
-                            .flipsForRightToLeftLayoutDirection(true)
                             .resizable()
+                            .flipsForRightToLeftLayoutDirection(true)
                             .scaledToFit()
                             .frame(width: 6.55, height: 11.15)
                             .labelStyle(.iconOnly)
