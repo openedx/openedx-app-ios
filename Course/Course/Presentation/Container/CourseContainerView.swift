@@ -29,7 +29,15 @@ public struct CourseContainerView: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     private let coordinateBoundaryLower: CGFloat = -115
-    private let coordinateBoundaryHigher: CGFloat = 40
+    
+    private var coordinateBoundaryHigher: CGFloat {
+        let topInset = UIApplication.shared.windowInsets.top
+        guard topInset > 0 else {
+            return 40
+        }
+
+        return topInset
+    }
     
     private struct GeometryName {
         static let backButton = "backButton"
