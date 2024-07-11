@@ -94,7 +94,11 @@ public class CalendarManager: CalendarManagerProtocol {
             }
             
             calendar.source = calendarSource
-            try? eventStore.saveCalendar(calendar, commit: true)
+            do {
+                try eventStore.saveCalendar(calendar, commit: true)
+            } catch {
+                print(">>>> 🥷", error)
+            }
         }
     }
     

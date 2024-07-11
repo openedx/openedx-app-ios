@@ -167,6 +167,9 @@ public struct SyncCalendarOptionsView: View {
                     )
                     .transition(.move(edge: .bottom))
                     .frame(alignment: .center)
+                    .onAppear {
+                        screenDimmed = true
+                    }
                 } else if viewModel.showDisableCalendarSync {
                     CalendarDialogView(
                         type: .disableCalendarSync(calendarName: viewModel.calendarName),

@@ -200,6 +200,10 @@ public class DatesAndCalendarViewModel: ObservableObject {
     func fetchCourses() async {
         guard connectivity.isInternetAvaliable else { return }
         assignmentStatus = .loading
+        guard await calendarManager.requestAccess() else {
+            await showCalendarAccessDenied()
+            return
+        }
         calendarManager.createCalendarIfNeeded()
         do {
             let fetchedCourses = try await interactor.enrollmentsStatus()

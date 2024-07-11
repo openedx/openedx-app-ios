@@ -12,6 +12,7 @@ import Theme
 struct CalendarSyncStatusView: View {
     
     var status: SyncStatus
+    let router: CourseRouter
     
     var body: some View {
         HStack {
@@ -27,6 +28,9 @@ struct CalendarSyncStatusView: View {
                 .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
         )
         .background(Theme.Colors.datesSectionBackground)
+        .onTapGesture {
+            router.showDatesAndCalendar()
+        }
     }
     
     private var icon: Image {
@@ -56,9 +60,9 @@ struct CalendarSyncStatusView: View {
 struct CalendarSyncStatusView_Previews: PreviewProvider {
     static var previews: some View {
         VStack {
-            CalendarSyncStatusView(status: .synced)
-            CalendarSyncStatusView(status: .failed)
-            CalendarSyncStatusView(status: .offline)
+            CalendarSyncStatusView(status: .synced, router: CourseRouterMock())
+            CalendarSyncStatusView(status: .failed, router: CourseRouterMock())
+            CalendarSyncStatusView(status: .offline, router: CourseRouterMock())
         }
         .loadFonts()
         .padding()
