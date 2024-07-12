@@ -28,7 +28,7 @@ public extension DataLayer {
     
     // MARK: - Primary
     struct ActiveEnrollment: Codable {
-        public let auditAccessExpires: Date?
+        public let auditAccessExpires: String?
         public let created: String?
         public let mode: String?
         public let isActive: Bool?
@@ -51,28 +51,9 @@ public extension DataLayer {
             case progress = "course_progress"
             case courseAssignments = "course_assignments"
         }
-        
-        public init(from decoder: Decoder) throws {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            
-            if let dateString = try? values.decode(String.self, forKey: .auditAccessExpires) {
-                auditAccessExpires = Date(iso8601: dateString)
-            } else {
-                auditAccessExpires = nil
-            }
-            created = try? values.decode(String.self, forKey: .created)
-            mode = try? values.decode(String.self, forKey: .mode)
-            isActive = try? values.decode(Bool.self, forKey: .isActive)
-            course = try? values.decode(DashboardCourse.self, forKey: .course)
-            certificate = try? values.decode(Certificate.self, forKey: .certificate)
-            courseModes = try? values.decode([CourseMode].self, forKey: .courseModes)
-            courseStatus = try? values.decode(CourseStatus.self, forKey: .courseStatus)
-            progress = try? values.decode(CourseProgress.self, forKey: .progress)
-            courseAssignments = try? values.decode(CourseAssignments.self, forKey: .courseAssignments)
-        }
 
         public init(
-            auditAccessExpires: Date?,
+            auditAccessExpires: String?,
             created: String?,
             mode: String?,
             isActive: Bool?,
