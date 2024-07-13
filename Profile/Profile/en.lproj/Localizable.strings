@@ -26,7 +26,7 @@
 "FULL_PROFILE" = "full profile";
 "LIMITED_PROFILE" = "limited profile";
 
-"LOGOUT_ALERT.TITLE" = "Comfirm log out";
+"LOGOUT_ALERT.TITLE" = "Confirm log out";
 "LOGOUT_ALERT.TEXT" = "Are you sure you want to log out?";
 
 "DELETE_ALERT.TITLE" = "Warning!";
@@ -55,7 +55,7 @@
 "DELETE_ACCOUNT.DESCRIPTION" = "To confirm this action, please enter your account password.";
 "DELETE_ACCOUNT.PASSWORD" = "Password";
 "DELETE_ACCOUNT.PASSWORD_DESCRIPTION" = "Enter password";
-"DELETE_ACCOUNT.COMFIRM" = "Yes, delete account";
+"DELETE_ACCOUNT.CONFIRM" = "Yes, delete account";
 "DELETE_ACCOUNT.BACK_TO_PROFILE" = "Back to profile";
 "DELETE_ACCOUNT.INCORRECT_PASSWORD" = "The password is incorrect. Please try again.";
 

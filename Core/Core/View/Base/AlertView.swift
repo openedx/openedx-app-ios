@@ -488,7 +488,7 @@ struct AlertView_Previews: PreviewProvider {
         .previewLayout(.sizeThatFits)
         .background(Color.gray)
         
-        AlertView(alertTitle: "Comfirm log out",
+        AlertView(alertTitle: "Confirm log out",
                   alertMessage: "Are you sure you want to log out?",
                   positiveAction: "Yes",
                   onCloseTapped: {},

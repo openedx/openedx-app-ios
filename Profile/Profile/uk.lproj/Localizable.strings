@@ -54,7 +54,7 @@
 "DELETE_ACCOUNT.DESCRIPTION" = "Для підтвердження цієї дії необхідно ввести пароль свого облікового запису.";
 "DELETE_ACCOUNT.PASSWORD" = "Пароль";
 "DELETE_ACCOUNT.PASSWORD_DESCRIPTION" = "Введіть пароль";
-"DELETE_ACCOUNT.COMFIRM" = "Так, видалити акаунт";
+"DELETE_ACCOUNT.CONFIRM" = "Так, видалити акаунт";
 "DELETE_ACCOUNT.BACK_TO_PROFILE" = "Повернутись до профілю";
 "DELETE_ACCOUNT.INCORRECT_PASSWORD" = "Пароль неправильний. Будь ласка спробуйте ще раз.";
 
