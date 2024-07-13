@@ -10,6 +10,8 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum CoreLocalization {
+  /// back
+  public static let back = CoreLocalization.tr("Localizable", "BACK", fallback: "back")
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
   /// View in Safari
@@ -21,7 +23,7 @@ public enum CoreLocalization {
   /// Tomorrow
   public static let tomorrow = CoreLocalization.tr("Localizable", "TOMORROW", fallback: "Tomorrow")
   /// View
-  public static let view = CoreLocalization.tr("Localizable", "VIEW ", fallback: "View")
+  public static let view = CoreLocalization.tr("Localizable", "VIEW", fallback: "View")
   /// Yesterday
   public static let yesterday = CoreLocalization.tr("Localizable", "YESTERDAY", fallback: "Yesterday")
   public enum Alert {

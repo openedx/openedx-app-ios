@@ -86,7 +86,8 @@
 "SETTINGS.DOWNLOAD_QUALITY_720_DESCRIPTION" = "Best quality";
 
 "DONE" = "Done";
-"VIEW " = "View";
+"VIEW" = "View";
+"BACK" = "back";
 
 "PICKER.SEARCH" = "Search";
 "PICKER.ACCEPT" = "Accept";

@@ -78,6 +78,8 @@ public struct BackNavigationButton: View {
     
     public var body: some View {
         BackNavigationButtonRepresentable(action: action, color: color, viewModel: viewModel)
+            .accessibilityIdentifier("back_button")
+            .accessibilityLabel(CoreLocalization.back)
         .onAppear {
             viewModel.loadItems()
         }

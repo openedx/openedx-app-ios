@@ -29,7 +29,7 @@ public struct SettingsView: View {
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
                 }
-                .frame(maxWidth: .infinity, maxHeight: 200)
+                .frame(maxWidth: .infinity, maxHeight: 50)
                 .accessibilityIdentifier("auth_bg_image")
                 
                 // MARK: - Page name
@@ -120,7 +120,7 @@ public struct SettingsView: View {
                 viewModel.router.showDatesAndCalendar()
             }, label: {
                 HStack {
-                    Text("Dates & Calendar") // TODO: add ProfileLocalization...
+                    Text(ProfileLocalization.datesAndCalendar)
                         .font(Theme.Fonts.titleMedium)
                     Spacer()
                     Image(systemName: "chevron.right")
@@ -130,7 +130,7 @@ public struct SettingsView: View {
 
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ProfileLocalization.settingsVideo)
+        .accessibilityLabel(ProfileLocalization.datesAndCalendar)
         .cardStyle(
             bgColor: Theme.Colors.textInputUnfocusedBackground,
             strokeColor: .clear
@@ -155,7 +155,7 @@ public struct SettingsView: View {
             .accessibilityIdentifier("video_settings_button")
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ProfileLocalization.settingsVideo)
+        .accessibilityLabel(ProfileLocalization.manageAccount)
         .cardStyle(
             bgColor: Theme.Colors.textInputUnfocusedBackground,
             strokeColor: .clear
