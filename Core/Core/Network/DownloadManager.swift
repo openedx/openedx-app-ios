@@ -125,7 +125,7 @@ public protocol DownloadManagerProtocol {
     func deleteFile(blocks: [CourseBlock]) async
     func deleteAllFiles() async
 
-    func fileUrl(for blockId: String) async -> URL?
+    func fileUrl(for blockId: String) -> URL?
     func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential]
 
     func resumeDownloading() async throws

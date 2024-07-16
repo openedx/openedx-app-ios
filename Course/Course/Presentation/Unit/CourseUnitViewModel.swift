@@ -48,6 +48,8 @@ public enum LessonType: Equatable {
                 return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockId: block.id)
             } else if let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
                 return .video(videoUrl: encodedVideo, blockId: block.id)
+            } else if let encodedVideo = block.encodedVideo?.video(downloadQuality: DownloadQuality.auto)?.url {
+                   return .video(videoUrl: encodedVideo, blockId: block.id)
             } else {
                 return .unknown(block.studentUrl)
             }
@@ -261,16 +263,16 @@ public class CourseUnitViewModel: ObservableObject {
         }
     }
     
-    func urlForVideoFileOrFallback(blockId: String, url: String) async -> URL? {
-        if let fileURL = await manager.fileUrl(for: blockId) {
+    func urlForVideoFileOrFallback(blockId: String, url: String) -> URL? {
+        if let fileURL = manager.fileUrl(for: blockId) {
             return fileURL
         } else {
             return URL(string: url)
         }
     }
 
-    func urlForOfflineContent(blockId: String) async -> URL? {
-        return await manager.fileUrl(for: blockId)
+    func urlForOfflineContent(blockId: String) -> URL? {
+        return manager.fileUrl(for: blockId)
     }
     
     func trackFinishVerticalBackToOutlineClicked() {

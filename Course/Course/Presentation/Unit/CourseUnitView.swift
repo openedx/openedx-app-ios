@@ -203,59 +203,50 @@ public struct CourseUnitView: View {
                         // MARK: Encoded Video
                     case let .video(encodedUrl, blockID):
                         if index == viewModel.index {
-                            if let url = videoURL {
-                                if viewModel.connectivity.isInternetAvaliable || url.isFileURL {
-                                    EncodedVideoView(
-                                        name: block.displayName,
-                                        url: url,
-                                        courseID: viewModel.courseID,
-                                        blockID: blockID,
-                                        playerStateSubject: playerStateSubject,
-                                        languages: block.subtitles ?? [],
-                                        isOnScreen: index == viewModel.index
-                                    )
-                                    .padding(.top, 5)
-                                    .frameLimit(width: reader.size.width)
-                                    
-                                    if !isHorizontal {
-                                        Spacer(minLength: 150)
-                                    }
-                                } else {
-                                    OfflineContentView(
-                                        isDownloadable: true
-                                    )
+                            let url = viewModel.urlForVideoFileOrFallback(
+                                blockId: blockID,
+                                url: encodedUrl
+                            )
+                            if viewModel.connectivity.isInternetAvaliable || url?.isFileURL == true {
+                                EncodedVideoView(
+                                    name: block.displayName,
+                                    url: url,
+                                    courseID: viewModel.courseID,
+                                    blockID: blockID,
+                                    playerStateSubject: playerStateSubject,
+                                    languages: block.subtitles ?? [],
+                                    isOnScreen: index == viewModel.index
+                                )
+                                .padding(.top, 5)
+                                .frameLimit(width: reader.size.width)
+                                
+                                if !isHorizontal {
+                                    Spacer(minLength: 150)
                                 }
                             } else {
-                                ProgressView()
-                                    .task {
-                                        videoURL = await viewModel.urlForVideoFileOrFallback(
-                                            blockId: blockID,
-                                            url: encodedUrl
-                                        )
-                                    }
+                                OfflineContentView(
+                                    isDownloadable: true
+                                )
                             }
                         }
+                        
+                        // MARK: Web
                     case let .web(url, injections, blockId, isDownloadable):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            if let url = webURL {
-                                if viewModel.connectivity.isInternetAvaliable || url.isFileURL == true {
-                                    WebView(
-                                        url: url.absoluteString,
-                                        localUrl: viewModel.connectivity.isInternetAvaliable ? nil : url.absoluteString,
-                                        injections: injections,
-                                        blockID: block.id,
-                                        roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
-                                    )
-                                } else {
-                                    OfflineContentView(
-                                        isDownloadable: isDownloadable
-                                    )
-                                }
+                            let localUrl = viewModel.urlForOfflineContent(blockId: blockId)?.absoluteString
+                            if viewModel.connectivity.isInternetAvaliable || localUrl != nil {
+                                // not need to add frame limit there because we did that with injection
+                                WebView(
+                                    url: url,
+                                    localUrl: viewModel.connectivity.isInternetAvaliable ? nil : localUrl,
+                                    injections: injections,
+                                    blockID: block.id,
+                                    roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
+                                )
                             } else {
-                                ProgressView()
-                                    .task {
-                                        webURL = await viewModel.urlForOfflineContent(blockId: blockId)
-                                    }
+                                OfflineContentView(
+                                    isDownloadable: isDownloadable
+                                )
                             }
                         } else {
                             EmptyView()
