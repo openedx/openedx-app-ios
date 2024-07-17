@@ -86,27 +86,27 @@ public class CoursePersistence: CoursePersistenceProtocol {
                     encodedVideo: DataLayer.CourseDetailEncodedVideoData(
                         youTube: DataLayer.EncodedVideoData(
                             url: $0.youTube?.url,
-                            fileSize: Int($0.youTube?.fileSize ?? 0)
+                            fileSize: $0.youTube?.fileSize == nil ? nil : Int($0.youTube!.fileSize)
                         ),
                         fallback: DataLayer.EncodedVideoData(
                             url: $0.fallback?.url,
-                            fileSize: Int($0.fallback?.fileSize ?? 0)
+                            fileSize: $0.fallback?.fileSize == nil ? nil : Int($0.fallback!.fileSize)
                         ),
                         desktopMP4: DataLayer.EncodedVideoData(
                             url: $0.desktopMP4?.url,
-                            fileSize: Int($0.desktopMP4?.fileSize ?? 0)
+                            fileSize: $0.desktopMP4?.fileSize == nil ? nil : Int($0.desktopMP4!.fileSize)
                         ),
                         mobileHigh: DataLayer.EncodedVideoData(
                             url: $0.mobileHigh?.url,
-                            fileSize: Int($0.mobileHigh?.fileSize ?? 0)
+                            fileSize: $0.mobileHigh?.fileSize == nil ? nil : Int($0.mobileHigh!.fileSize)
                         ),
                         mobileLow: DataLayer.EncodedVideoData(
                             url: $0.mobileLow?.url,
-                            fileSize: Int($0.mobileLow?.fileSize ?? 0)
+                            fileSize: $0.mobileLow?.fileSize == nil ? nil : Int($0.mobileLow!.fileSize)
                         ),
                         hls: DataLayer.EncodedVideoData(
                             url: $0.hls?.url,
-                            fileSize: Int($0.hls?.fileSize ?? 0)
+                            fileSize: $0.hls?.fileSize == nil ? nil : Int($0.hls!.fileSize)
                         )
                     ),
                     topicID: ""
