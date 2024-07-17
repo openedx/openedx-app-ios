@@ -281,11 +281,17 @@ public enum ProfileLocalization {
     /// Wi-fi only download
     public static let wifiTitle = ProfileLocalization.tr("Localizable", "SETTINGS.WIFI_TITLE", fallback: "Wi-fi only download")
   }
+  public enum Sync {
+    /// No Synced Courses
+    public static let noSynced = ProfileLocalization.tr("Localizable", "SYNC.NO_SYNCED", fallback: "No Synced Courses")
+    /// No courses are currently being synced to your calendar.
+    public static let noSyncedDescription = ProfileLocalization.tr("Localizable", "SYNC.NO_SYNCED_DESCRIPTION", fallback: "No courses are currently being synced to your calendar.")
+  }
   public enum SyncSelector {
     /// Not Synced
     public static let notSynced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.NOT_SYNCED", fallback: "Not Synced")
-    /// Synced
-    public static let synced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.SYNCED", fallback: "Synced")
+    /// To Sync
+    public static let synced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.SYNCED", fallback: "To Sync")
   }
   public enum UnsavedDataAlert {
     /// Changes you have made will be discarded.

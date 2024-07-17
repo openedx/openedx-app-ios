@@ -143,3 +143,6 @@
 "CALENDAR.COURSE_DATES" = "%@ Дати курсу";
 
 "DROP_DOWN_PICKER.SELECT" = "Оберіть";
+
+"SYNC.NO_SYNCED" = "Немає синхронізованих курсів";
+"SYNC.NO_SYNCED_DESCRIPTION" = "Жоден курс зараз не синхронізується з вашим календарем.";

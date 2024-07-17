@@ -146,5 +146,8 @@
 
 "DROP_DOWN_PICKER.SELECT" = "Select";
 
-"SYNC_SELECTOR.SYNCED" = "Synced";
+"SYNC_SELECTOR.SYNCED" = "To Sync";
 "SYNC_SELECTOR.NOT_SYNCED" = "Not Synced";
+
+"SYNC.NO_SYNCED" = "No Synced Courses";
+"SYNC.NO_SYNCED_DESCRIPTION" = "No courses are currently being synced to your calendar.";
