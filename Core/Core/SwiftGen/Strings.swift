@@ -10,8 +10,8 @@ import Foundation
 // swiftlint:disable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:disable nesting type_body_length type_name vertical_whitespace_opening_braces
 public enum CoreLocalization {
-  /// back
-  public static let back = CoreLocalization.tr("Localizable", "BACK", fallback: "back")
+  /// Back
+  public static let back = CoreLocalization.tr("Localizable", "BACK", fallback: "Back")
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
   /// View in Safari
