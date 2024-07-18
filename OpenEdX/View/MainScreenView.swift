@@ -189,6 +189,7 @@ struct MainScreenView: View {
         .onFirstAppear {
             Task {
                 await viewModel.prefetchDataForOffline()
+                await viewModel.loadCalendar()
             }
         }
         .accentColor(Theme.Colors.accentXColor)

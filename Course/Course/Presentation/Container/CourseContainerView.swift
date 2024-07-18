@@ -29,7 +29,15 @@ public struct CourseContainerView: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     private let coordinateBoundaryLower: CGFloat = -115
-    private let coordinateBoundaryHigher: CGFloat = 40
+    
+    private var coordinateBoundaryHigher: CGFloat {
+        let topInset = UIApplication.shared.windowInsets.top
+        guard topInset > 0 else {
+            return 40
+        }
+
+        return topInset
+    }
     
     private struct GeometryName {
         static let backButton = "backButton"
@@ -136,7 +144,8 @@ public struct CourseContainerView: View {
     private func showDatesSuccessView(title: String, message: String) -> some View {
         return DatesSuccessView(
             title: title,
-            message: message
+            message: message, 
+            selectedTab: .dates
         ) {
             courseDatesViewModel.resetEventState()
         }
@@ -212,7 +221,8 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewModel: courseDatesViewModel
+                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
+                                                            arguments: courseID, title)!
                     )
                     .tabItem {
                         tab.image
@@ -362,7 +372,8 @@ struct CourseScreensView_Previews: PreviewProvider {
                 config: ConfigMock(),
                 courseID: "1",
                 courseName: "a",
-                analytics: CourseAnalyticsMock()
+                analytics: CourseAnalyticsMock(), 
+                calendarManager: CalendarManagerMock()
             ),
             courseID: "",
             title: "Title of Course"

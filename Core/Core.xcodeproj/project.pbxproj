@@ -15,8 +15,10 @@
 		021D925028DC89D100ACC565 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924F28DC89D100ACC565 /* UserProfile.swift */; };
 		021D925728DCF12900ACC565 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D925628DCF12900ACC565 /* AlertView.swift */; };
 		02228B312C2232D2009A5F28 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02228B302C2232D2009A5F28 /* IntExtension.swift */; };
+		022020462C11BB2200D15795 /* Data_CourseDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022020452C11BB2200D15795 /* Data_CourseDates.swift */; };
 		02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5A294B4E6F0032823A /* Connectivity.swift */; };
 		02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02284C172A3B1AE00007117F /* UIApplicationExtension.swift */; };
+		02286D162C106393005EEC8D /* CourseDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02286D152C106393005EEC8D /* CourseDates.swift */; };
 		022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64E329AE0191000F532B /* TextWithUrls.swift */; };
 		0231CDBE2922422D00032416 /* CSSInjector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231CDBD2922422D00032416 /* CSSInjector.swift */; };
 		0233D56F2AF13EB200BAC8BD /* StarRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */; };
@@ -82,6 +84,7 @@
 		02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833929B8A9AB00D33F33 /* DownloadManager.swift */; };
 		02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833B29B8C57800D33F33 /* DownloadView.swift */; };
 		02AA27942C2C1B88006F5B6A /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 02AA27932C2C1B88006F5B6A /* ZipArchive */; };
+		02A8C5812C05DBB4004B91FF /* Data_EnrollmentsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8C5802C05DBB4004B91FF /* Data_EnrollmentsStatus.swift */; };
 		02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */; };
 		02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */; };
 		02B2B594295C5C7A00914876 /* Thread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02B2B593295C5C7A00914876 /* Thread.swift */; };
@@ -95,6 +98,9 @@
 		02E224DB2BB76B3E00EF1ADB /* DynamicOffsetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E224DA2BB76B3E00EF1ADB /* DynamicOffsetView.swift */; };
 		02E225B0291D29EB0067769A /* UrlExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E225AF291D29EB0067769A /* UrlExtension.swift */; };
 		02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E93F842AEBAEBC006C4750 /* AppReviewViewModel.swift */; };
+		02EBC7572C19DCDB00BE182C /* SyncStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EBC7562C19DCDB00BE182C /* SyncStatus.swift */; };
+		02EBC7592C19DE1100BE182C /* CalendarManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EBC7582C19DE1100BE182C /* CalendarManagerProtocol.swift */; };
+		02EBC75B2C19DE3D00BE182C /* CourseForSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EBC75A2C19DE3D00BE182C /* CourseForSync.swift */; };
 		02F164372902A9EB0090DDEF /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F164362902A9EB0090DDEF /* StringExtension.swift */; };
 		02F6EF3B28D9B8EC00835477 /* CourseCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */; };
 		02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F6EF4928D9F0A700835477 /* DateExtension.swift */; };
@@ -214,8 +220,10 @@
 		021D924F28DC89D100ACC565 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		021D925628DCF12900ACC565 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		02228B302C2232D2009A5F28 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
+		022020452C11BB2200D15795 /* Data_CourseDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CourseDates.swift; sourceTree = "<group>"; };
 		02280F5A294B4E6F0032823A /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		02284C172A3B1AE00007117F /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
+		02286D152C106393005EEC8D /* CourseDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDates.swift; sourceTree = "<group>"; };
 		022C64E329AE0191000F532B /* TextWithUrls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWithUrls.swift; sourceTree = "<group>"; };
 		0231CDBD2922422D00032416 /* CSSInjector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CSSInjector.swift; sourceTree = "<group>"; };
 		0233D56E2AF13EB200BAC8BD /* StarRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StarRatingView.swift; sourceTree = "<group>"; };
@@ -279,6 +287,7 @@
 		02A4833729B8A8F800D33F33 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		02A4833929B8A9AB00D33F33 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
 		02A4833B29B8C57800D33F33 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
+		02A8C5802C05DBB4004B91FF /* Data_EnrollmentsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_EnrollmentsStatus.swift; sourceTree = "<group>"; };
 		02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyMailClient.swift; sourceTree = "<group>"; };
 		02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyMailer.swift; sourceTree = "<group>"; };
 		02B2B593295C5C7A00914876 /* Thread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Thread.swift; sourceTree = "<group>"; };
@@ -292,6 +301,9 @@
 		02E224DA2BB76B3E00EF1ADB /* DynamicOffsetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicOffsetView.swift; sourceTree = "<group>"; };
 		02E225AF291D29EB0067769A /* UrlExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UrlExtension.swift; sourceTree = "<group>"; };
 		02E93F842AEBAEBC006C4750 /* AppReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewViewModel.swift; sourceTree = "<group>"; };
+		02EBC7562C19DCDB00BE182C /* SyncStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatus.swift; sourceTree = "<group>"; };
+		02EBC7582C19DE1100BE182C /* CalendarManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManagerProtocol.swift; sourceTree = "<group>"; };
+		02EBC75A2C19DE3D00BE182C /* CourseForSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseForSync.swift; sourceTree = "<group>"; };
 		02ED50CB29A64B84008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F164362902A9EB0090DDEF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCellView.swift; sourceTree = "<group>"; };
@@ -629,6 +641,8 @@
 				027BD3912907D88F00392132 /* Data_RegistrationFields.swift */,
 				028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */,
 				07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */,
+				02A8C5802C05DBB4004B91FF /* Data_EnrollmentsStatus.swift */,
+				022020452C11BB2200D15795 /* Data_CourseDates.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -656,8 +670,11 @@
 				027BD39B2908810C00392132 /* RegisterUser.swift */,
 				028F9F38293A452B00DE65D0 /* ResetPassword.swift */,
 				020C31C8290AC3F700D6DEA2 /* PickerFields.swift */,
+				02EBC75A2C19DE3D00BE182C /* CourseForSync.swift */,
 				076F297E2A1F80C800967E7D /* Pagination.swift */,
 				029A13252C2457D9005FB830 /* OfflineProgress.swift */,
+				02286D152C106393005EEC8D /* CourseDates.swift */,
+				02EBC7562C19DCDB00BE182C /* SyncStatus.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -757,6 +774,7 @@
 				025A204F2C071EB0003EA08D /* ErrorAlertView.swift */,
 				0727878028D25EFD002E9142 /* SnackBarView.swift */,
 				02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */,
+				02EBC7582C19DE1100BE182C /* CalendarManagerProtocol.swift */,
 				024FCCFF28EF1CD300232339 /* WebBrowser.swift */,
 				028CE96829858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift */,
 				023A4DD3299E66BD006C0E48 /* OfflineSnackBarView.swift */,
@@ -1114,6 +1132,7 @@
 				0727878528D31657002E9142 /* Data_User.swift in Sources */,
 				064987942B4D69FF0071642A /* WebviewInjection.swift in Sources */,
 				02F6EF4A28D9F0A700835477 /* DateExtension.swift in Sources */,
+				02EBC7572C19DCDB00BE182C /* SyncStatus.swift in Sources */,
 				DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */,
 				027BD3AF2909475000392132 /* DismissKeyboardTapHandler.swift in Sources */,
 				027F1BF72C071C820001A24C /* NavigationTitle.swift in Sources */,
@@ -1128,6 +1147,7 @@
 				027BD3B92909476200392132 /* KeyboardAvoidingModifier.swift in Sources */,
 				BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */,
 				0770DE2C28D092B3006D8A5D /* NetworkLogger.swift in Sources */,
+				02A8C5812C05DBB4004B91FF /* Data_EnrollmentsStatus.swift in Sources */,
 				06BEEA0E2B6A55C500D25A97 /* ColorInversionInjection.swift in Sources */,
 				064987972B4D69FF0071642A /* WebView.swift in Sources */,
 				0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */,
@@ -1186,8 +1206,10 @@
 				02C917F029CDA99E00DBB8BD /* Data_Enrollments.swift in Sources */,
 				024FCD0028EF1CD300232339 /* WebBrowser.swift in Sources */,
 				027BD3B52909475900392132 /* KeyboardStateObserver.swift in Sources */,
+				022020462C11BB2200D15795 /* Data_CourseDates.swift in Sources */,
 				0283347D28D4D3DE00C828FC /* Data_Discovery.swift in Sources */,
 				064987962B4D69FF0071642A /* WebviewMessage.swift in Sources */,
+				02EBC75B2C19DE3D00BE182C /* CourseForSync.swift in Sources */,
 				07DDFCBD29A780BB00572595 /* UINavigationController+Animation.swift in Sources */,
 				023A4DD4299E66BD006C0E48 /* OfflineSnackBarView.swift in Sources */,
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
@@ -1219,6 +1241,7 @@
 				02228B312C2232D2009A5F28 /* IntExtension.swift in Sources */,
 				0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */,
 				BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */,
+				02286D162C106393005EEC8D /* CourseDates.swift in Sources */,
 				0284DBFE28D48C5300830893 /* CourseItem.swift in Sources */,
 				0248C92329C075EF00DC8402 /* CourseBlockModel.swift in Sources */,
 				E0D5861A2B2FF74C009B4BA7 /* DiscoveryConfig.swift in Sources */,
@@ -1233,6 +1256,7 @@
 				BAFB99842B0E282E007D09F9 /* MicrosoftConfig.swift in Sources */,
 				02B2B594295C5C7A00914876 /* Thread.swift in Sources */,
 				E0D5861C2B2FF85B009B4BA7 /* RawStringExtactable.swift in Sources */,
+				02EBC7592C19DE1100BE182C /* CalendarManagerProtocol.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
 				BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */,
 				02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */,
