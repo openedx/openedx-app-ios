@@ -774,18 +774,25 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         var downloadedFilesSize: Int = 0
         var sequentials: [CourseSequential] = []
         
+        var updatedBlocks: [CourseBlock] = []
         for chapter in course.childs {
             for sequential in chapter.childs {
                 sequentials.append(sequential)
                 for vertical in sequential.childs {
                     for block in vertical.childs {
-                        if let fileSize = block.fileSize {
-                            totalFilesSize += fileSize
-                        }
+                        let updatedBlock = await updateFileSizeIfNeeded(for: block)
+                        updatedBlocks.append(updatedBlock)
                     }
                 }
             }
         }
+        
+        for block in updatedBlocks {
+            if let fileSize = block.fileSize {
+                totalFilesSize += fileSize
+            }
+        }
+        
         if connectivity.isInternetAvaliable {
             let updatedSequentials = manager.updateUnzippedFileSize(for: sequentials)
             realDownloadedFilesSize = updatedSequentials.flatMap {
@@ -794,23 +801,38 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
         
         for task in courseDownloadTasks where task.state == .finished {
-            downloadedFilesSize += task.fileSize
+            if let fileUrl = manager.fileUrl(for: task.blockId), 
+                let fileSize = getFileSize(at: fileUrl),
+                task.type == .video {
+                if fileSize > 0 {
+                    downloadedFilesSize += fileSize
+                }
+            } else {
+                downloadedFilesSize += task.fileSize
+            }
         }
         
-        if !courseDownloadTasks.isEmpty && sequentialsDownloadState.allSatisfy({ $0.value == .finished }) {
-            withAnimation(.linear(duration: 0.3)) {
-                self.downloadedFilesSize = downloadedFilesSize
-            }
-        } else {
-            withAnimation(.linear(duration: 0.3)) {
-                self.downloadedFilesSize = downloadedFilesSize
-            }
+        withAnimation(.linear(duration: 0.3)) {
+            self.downloadedFilesSize = downloadedFilesSize
         }
         withAnimation(.linear(duration: 0.3)) {
             self.totalFilesSize = totalFilesSize
         }
         await fetchLargestDownloadBlocks()
     }
+
+    private func getFileSize(at url: URL) -> Int? {
+        do {
+            let fileAttributes = try FileManager.default.attributesOfItem(atPath: url.path)
+            if let fileSize = fileAttributes[.size] as? Int, fileSize > 0 {
+                return fileSize
+            }
+        } catch {
+            debugLog("Error getting file size: \(error.localizedDescription)")
+        }
+        return nil
+    }
+
     
     @MainActor
     func setDownloadsStates() async {
@@ -934,8 +956,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             return false
         }
         
+        var updatedDownloadedBlocks: [CourseBlock] = []
+        
+        for block in downloadedBlocks {
+            let updatedBlock = await updateFileSizeIfNeeded(for: block)
+            updatedDownloadedBlocks.append(updatedBlock)
+        }
+        
         let filteredBlocks = Array(
-            downloadedBlocks
+            updatedDownloadedBlocks
                 .filter { $0.fileSize != nil }
                 .sorted { $0.fileSize! > $1.fileSize! }
                 .prefix(5)
@@ -944,6 +973,17 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         withAnimation(.linear(duration: 0.3)) {
             largestDownloadBlocks = filteredBlocks
         }
+    }
+    
+    @MainActor
+    func updateFileSizeIfNeeded(for block: CourseBlock) async -> CourseBlock {
+        var updatedBlock = block
+        if let fileUrl = manager.fileUrl(for: block.id), 
+            let fileSize = getFileSize(at: fileUrl), fileSize > 0,
+            block.type == .video {
+            updatedBlock.actualFileSize = fileSize
+        }
+        return updatedBlock
     }
     
     @MainActor
