@@ -2738,6 +2738,38 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 		perform?(`settings`)
     }
 
+    open func enrollmentsStatus() throws -> [CourseForSync] {
+        addInvocation(.m_enrollmentsStatus)
+		let perform = methodPerformValue(.m_enrollmentsStatus) as? () -> Void
+		perform?()
+		var __value: [CourseForSync]
+		do {
+		    __value = try methodReturnValue(.m_enrollmentsStatus).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for enrollmentsStatus(). Use given")
+			Failure("Stub return value not specified for enrollmentsStatus(). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+    open func getCourseDates(courseID: String) throws -> CourseDates {
+        addInvocation(.m_getCourseDates__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getCourseDates__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseDates
+		do {
+		    __value = try methodReturnValue(.m_getCourseDates__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getCourseDates(courseID: String). Use given")
+			Failure("Stub return value not specified for getCourseDates(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_getUserProfile__username_username(Parameter<String>)
@@ -2752,6 +2784,8 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         case m_deleteAccount__password_password(Parameter<String>)
         case m_getSettings
         case m_saveSettings__settings(Parameter<UserSettings>)
+        case m_enrollmentsStatus
+        case m_getCourseDates__courseID_courseID(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -2793,6 +2827,13 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSettings, rhs: rhsSettings, with: matcher), lhsSettings, rhsSettings, "_ settings"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_enrollmentsStatus, .m_enrollmentsStatus): return .match
+
+            case (.m_getCourseDates__courseID_courseID(let lhsCourseid), .m_getCourseDates__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -2811,6 +2852,8 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
             case let .m_deleteAccount__password_password(p0): return p0.intValue
             case .m_getSettings: return 0
             case let .m_saveSettings__settings(p0): return p0.intValue
+            case .m_enrollmentsStatus: return 0
+            case let .m_getCourseDates__courseID_courseID(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -2827,6 +2870,8 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
             case .m_deleteAccount__password_password: return ".deleteAccount(password:)"
             case .m_getSettings: return ".getSettings()"
             case .m_saveSettings__settings: return ".saveSettings(_:)"
+            case .m_enrollmentsStatus: return ".enrollmentsStatus()"
+            case .m_getCourseDates__courseID_courseID: return ".getCourseDates(courseID:)"
             }
         }
     }
@@ -2866,6 +2911,12 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         }
         public static func getSettings(willReturn: UserSettings...) -> MethodStub {
             return Given(method: .m_getSettings, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func enrollmentsStatus(willReturn: [CourseForSync]...) -> MethodStub {
+            return Given(method: .m_enrollmentsStatus, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCourseDates(courseID: Parameter<String>, willReturn: CourseDates...) -> MethodStub {
+            return Given(method: .m_getCourseDates__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getMyProfileOffline(willProduce: (Stubber<UserProfile?>) -> Void) -> MethodStub {
             let willReturn: [UserProfile?] = []
@@ -2965,6 +3016,26 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func enrollmentsStatus(willThrow: Error...) -> MethodStub {
+            return Given(method: .m_enrollmentsStatus, products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func enrollmentsStatus(willProduce: (StubberThrows<[CourseForSync]>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_enrollmentsStatus, products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: ([CourseForSync]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getCourseDates(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getCourseDates__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getCourseDates(courseID: Parameter<String>, willProduce: (StubberThrows<CourseDates>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getCourseDates__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (CourseDates).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -2982,6 +3053,8 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         public static func deleteAccount(password: Parameter<String>) -> Verify { return Verify(method: .m_deleteAccount__password_password(`password`))}
         public static func getSettings() -> Verify { return Verify(method: .m_getSettings)}
         public static func saveSettings(_ settings: Parameter<UserSettings>) -> Verify { return Verify(method: .m_saveSettings__settings(`settings`))}
+        public static func enrollmentsStatus() -> Verify { return Verify(method: .m_enrollmentsStatus)}
+        public static func getCourseDates(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseDates__courseID_courseID(`courseID`))}
     }
 
     public struct Perform {
@@ -3023,6 +3096,12 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
         }
         public static func saveSettings(_ settings: Parameter<UserSettings>, perform: @escaping (UserSettings) -> Void) -> Perform {
             return Perform(method: .m_saveSettings__settings(`settings`), performs: perform)
+        }
+        public static func enrollmentsStatus(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_enrollmentsStatus, performs: perform)
+        }
+        public static func getCourseDates(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseDates__courseID_courseID(`courseID`), performs: perform)
         }
     }
 

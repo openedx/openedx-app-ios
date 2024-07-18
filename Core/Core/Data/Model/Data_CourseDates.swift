@@ -1,12 +1,11 @@
 //
 //  Data_CourseDates.swift
-//  Course
+//  Core
 //
-//  Created by Muhammad Umer on 10/18/23.
+//  Created by  Stepanok Ivan on 05.06.2024.
 //
 
 import Foundation
-import Core
 
 public extension DataLayer {
     struct CourseDates: Codable {
@@ -100,46 +99,46 @@ public extension DataLayer {
         case upgradeToResetBanner
         case resetDatesBanner
             
-        var header: String {
+        public var header: String {
             switch self {
             case .datesTabInfoBanner:
-                CourseLocalization.CourseDates.ResetDate.TabInfoBanner.header
+                CoreLocalization.CourseDates.ResetDate.TabInfoBanner.header
             case .upgradeToCompleteGradedBanner:
-                CourseLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.header
+                CoreLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.header
             case .upgradeToResetBanner:
-                CourseLocalization.CourseDates.ResetDate.UpgradeToResetBanner.header
+                CoreLocalization.CourseDates.ResetDate.UpgradeToResetBanner.header
             case .resetDatesBanner:
-                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.header
+                CoreLocalization.CourseDates.ResetDate.ResetDateBanner.header
             }
         }
         
-        var body: String {
+        public var body: String {
             switch self {
             case .datesTabInfoBanner:
-                CourseLocalization.CourseDates.ResetDate.TabInfoBanner.body
+                CoreLocalization.CourseDates.ResetDate.TabInfoBanner.body
             case .upgradeToCompleteGradedBanner:
-                CourseLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.body
+                CoreLocalization.CourseDates.ResetDate.UpgradeToCompleteGradedBanner.body
             case .upgradeToResetBanner:
-                CourseLocalization.CourseDates.ResetDate.UpgradeToResetBanner.body
+                CoreLocalization.CourseDates.ResetDate.UpgradeToResetBanner.body
             case .resetDatesBanner:
-                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.body
+                CoreLocalization.CourseDates.ResetDate.ResetDateBanner.body
             }
         }
         
-        var buttonTitle: String {
+        public var buttonTitle: String {
             switch self {
             case .upgradeToCompleteGradedBanner, .upgradeToResetBanner:
                 // Mobile payments are not implemented yet and to avoid breaking appstore guidelines,
                 // upgrade button is hidden, which leads user to payments
                 ""
             case .resetDatesBanner:
-                CourseLocalization.CourseDates.ResetDate.ResetDateBanner.button
+                CoreLocalization.CourseDates.ResetDate.ResetDateBanner.button
             default:
                 ""
             }
         }
         
-        var analyticsBannerType: String {
+        public var analyticsBannerType: String {
             switch self {
             case .datesTabInfoBanner:
                 "info"

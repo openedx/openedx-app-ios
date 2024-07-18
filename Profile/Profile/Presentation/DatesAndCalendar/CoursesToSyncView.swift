@@ -84,39 +84,64 @@ public struct CoursesToSyncView: View {
     
     private var coursesList: some View {
         VStack(alignment: .leading, spacing: 24) {
-            ForEach(
-                Array(
-                    viewModel.coursesForSync.filter({ course in
-                        course.synced == viewModel.synced && (!viewModel.hideInactiveCourses || course.active)
-                    }).enumerated()
-                ),
-                id: \.offset
-            ) { _, course in
-                HStack {
-                    CheckBoxView(
-                        checked: Binding(
-                            get: { course.synced },
-                            set: { _ in viewModel.toggleSync(for: course) }
-                        ),
-                        text: course.name,
-                        color: Theme.Colors.textPrimary.opacity(course.active ? 1 : 0.8)
-                    )
-                    
-                    if !course.active {
-                        Text(ProfileLocalization.CoursesToSync.inactive)
-                            .font(Theme.Fonts.labelSmall)
-                            .foregroundStyle(Theme.Colors.textPrimary.opacity(0.8))
+            if viewModel.coursesForSync.allSatisfy({ !$0.synced }) && viewModel.synced {
+                noSyncedCourses
+            } else {
+                ForEach(
+                    Array(
+                        viewModel.coursesForSync.filter({ course in
+                            course.synced == viewModel.synced && (!viewModel.hideInactiveCourses || course.active)
+                        })
+                        .sorted { $0.active && !$1.active }
+                            .enumerated()
+                    ),
+                    id: \.offset
+                ) { _, course in
+                    HStack {
+                        CheckBoxView(
+                            checked: Binding(
+                                get: { course.synced },
+                                set: { _ in viewModel.toggleSync(for: course) }
+                            ),
+                            text: course.name,
+                            color: Theme.Colors.textPrimary.opacity(course.active ? 1 : 0.8)
+                        )
+                        
+                        if !course.active {
+                            Text(ProfileLocalization.CoursesToSync.inactive)
+                                .font(Theme.Fonts.labelSmall)
+                                .foregroundStyle(Theme.Colors.textPrimary.opacity(0.8))
+                        }
                     }
+                    .frame(
+                        minWidth: 0,
+                        maxWidth: .infinity,
+                        alignment: .leading
+                    )
                 }
-                .frame(
-                    minWidth: 0,
-                    maxWidth: .infinity,
-                    alignment: .leading
-                )
             }
+            Spacer(minLength: 100)
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 16)
+    }
+    
+    private var noSyncedCourses: some View {
+        VStack(spacing: 8) {
+            Spacer()
+            CoreAssets.learnEmpty.swiftUIImage
+                .resizable()
+                .frame(width: 96, height: 96)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
+            Text(ProfileLocalization.Sync.noSynced)
+                .foregroundStyle(Theme.Colors.textPrimary)
+                .font(Theme.Fonts.titleMedium)
+                Text(ProfileLocalization.Sync.noSyncedDescription)
+                    .multilineTextAlignment(.center)
+                    .foregroundStyle(Theme.Colors.textPrimary)
+                    .font(Theme.Fonts.labelMedium)
+                    .frame(width: 245)
+        }
     }
 }
 
@@ -124,7 +149,12 @@ public struct CoursesToSyncView: View {
 struct CoursesToSyncView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DatesAndCalendarViewModel(
-            router: ProfileRouterMock()
+            router: ProfileRouterMock(),
+            interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
+            profileStorage: ProfileStorageMock(),
+            persistence: ProfilePersistenceMock(),
+            calendarManager: CalendarManagerMock(), 
+            connectivity: Connectivity()
         )
         return CoursesToSyncView(viewModel: vm)
             .previewDisplayName("Courses to Sync")

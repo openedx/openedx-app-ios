@@ -9,7 +9,6 @@ import SwiftUI
 import Core
 import Theme
 import Combine
-import Profile
 
 struct VideoDownloadQualityBarView: View {
 

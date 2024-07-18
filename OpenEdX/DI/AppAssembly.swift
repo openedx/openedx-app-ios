@@ -180,6 +180,15 @@ class AppAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
+        
+        container.register(CalendarManagerProtocol.self) { r in
+            CalendarManager(
+                persistence: r.resolve(ProfilePersistenceProtocol.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                profileStorage: r.resolve(ProfileStorage.self)!
+            )
+        }
+        .inObjectScope(.container)
 
         container.register(DeepLinkManager.self) { r in
             DeepLinkManager(
