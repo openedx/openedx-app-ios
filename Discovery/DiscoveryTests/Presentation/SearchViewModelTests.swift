@@ -31,7 +31,8 @@ final class SearchViewModelTests: XCTestCase {
             interactor: interactor,
             connectivity: connectivity,
             router: router,
-            analytics: analytics,
+            analytics: analytics, 
+            storage: CoreStorageMock(),
             debounce: .test
         )
         
@@ -94,6 +95,7 @@ final class SearchViewModelTests: XCTestCase {
             connectivity: connectivity,
             router: router,
             analytics: analytics,
+            storage: CoreStorageMock(),
             debounce: .test
         )
 
@@ -122,6 +124,7 @@ final class SearchViewModelTests: XCTestCase {
             connectivity: connectivity,
             router: router,
             analytics: analytics,
+            storage: CoreStorageMock(),
             debounce: .test
         )
 
@@ -155,6 +158,7 @@ final class SearchViewModelTests: XCTestCase {
             connectivity: connectivity,
             router: router,
             analytics: analytics,
+            storage: CoreStorageMock(),
             debounce: .test
         )
 

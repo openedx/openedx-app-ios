@@ -13,12 +13,13 @@ public protocol CoreStorage {
     var pushToken: String? {get set}
     var appleSignFullName: String? {get set}
     var appleSignEmail: String? {get set}
-    var cookiesDate: String? {get set}
+    var cookiesDate: Date? {get set}
     var reviewLastShownVersion: String? {get set}
     var lastReviewDate: Date? {get set}
     var user: DataLayer.User? {get set}
     var userSettings: UserSettings? {get set}
     var resetAppSupportDirectoryUserData: Bool? {get set}
+    var useRelativeDates: Bool {get set}
     func clear()
 }
 
@@ -29,12 +30,13 @@ public class CoreStorageMock: CoreStorage {
     public var pushToken: String?
     public var appleSignFullName: String?
     public var appleSignEmail: String?
-    public var cookiesDate: String?
+    public var cookiesDate: Date?
     public var reviewLastShownVersion: String?
     public var lastReviewDate: Date?
     public var user: DataLayer.User?
     public var userSettings: UserSettings?
     public var resetAppSupportDirectoryUserData: Bool?
+    public var useRelativeDates: Bool = true
     public func clear() {}
     
     public init() {}

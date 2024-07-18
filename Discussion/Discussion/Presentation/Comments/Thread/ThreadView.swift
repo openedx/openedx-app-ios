@@ -43,7 +43,8 @@ public struct ThreadView: View {
                                     if let comments = viewModel.postComments {
                                         ParentCommentView(
                                             comments: comments,
-                                            isThread: true,
+                                            isThread: true, 
+                                            useRelativeDates: viewModel.storage.useRelativeDates,
                                             onAvatarTap: { username in
                                                 viewModel.router.showUserDetails(username: username)
                                             },
@@ -96,7 +97,8 @@ public struct ThreadView: View {
                                         ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
                                             CommentCell(
                                                 comment: comment,
-                                                addCommentAvailable: true,
+                                                addCommentAvailable: true, 
+                                                useRelativeDates: viewModel.storage.useRelativeDates,
                                                 onAvatarTap: { username in
                                                     viewModel.router.showUserDetails(username: username)
                                                 },
@@ -281,10 +283,13 @@ struct CommentsView_Previews: PreviewProvider {
                                     abuseFlagged: true,
                                     hasEndorsed: true,
                                     numPages: 3)
-        let vm = ThreadViewModel(interactor: DiscussionInteractor.mock,
-                                 router: DiscussionRouterMock(),
-                                 config: ConfigMock(),
-                                 postStateSubject: .init(nil))
+        let vm = ThreadViewModel(
+            interactor: DiscussionInteractor.mock,
+            router: DiscussionRouterMock(),
+            config: ConfigMock(),
+            storage: CoreStorageMock(),
+            postStateSubject: .init(nil)
+        )
         
         ThreadView(thread: userThread, viewModel: vm)
             .preferredColorScheme(.light)

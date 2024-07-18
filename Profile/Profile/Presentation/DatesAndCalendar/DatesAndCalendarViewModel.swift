@@ -16,7 +16,6 @@ import Core
 // MARK: - DatesAndCalendarViewModel
 
 public class DatesAndCalendarViewModel: ObservableObject {
-    @Published var useRelativeDates: Bool = false
     @Published var showCalendaAccessDenied: Bool = false
     @Published var showDisableCalendarSync: Bool = false
     @Published var showError: Bool = false
@@ -107,6 +106,39 @@ public class DatesAndCalendarViewModel: ObservableObject {
         return avaliable
     }
     
+    private var useRelativeDatesBinding: Binding<Bool> {
+        Binding(
+            get: { self.profileStorage.useRelativeDates },
+            set: { self.profileStorage.useRelativeDates = $0 }
+        )
+    }
+    
+    // MARK: - Options Toggle
+    var relativeDatesToggle: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(ProfileLocalization.Options.title)
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+            HStack(spacing: 16) {
+                Toggle("", isOn: useRelativeDatesBinding)
+                    .frame(width: 50)
+                    .tint(Theme.Colors.accentColor)
+                Text(ProfileLocalization.Options.useRelativeDates)
+                    .font(Theme.Fonts.bodyLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+            }
+            Text(ProfileLocalization.Options.showRelativeDates)
+                .font(Theme.Fonts.labelMedium)
+                .foregroundColor(Theme.Colors.textPrimary)
+        }
+        .padding(.top, 14)
+        .padding(.horizontal, 24)
+        .frame(minWidth: 0,
+               maxWidth: .infinity,
+               alignment: .leading)
+        .accessibilityIdentifier("relative_dates_toggle")
+    }
+    
     // MARK: - Lifecycle Functions
     
     func loadCalendarOptions() {
@@ -187,8 +219,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
                     colorSelection: colorString,
                     calendarName: calendarName,
                     accountSelection: accountSelection,
-                    courseCalendarSync: self.courseCalendarSync,
-                    useRelativeDates: self.useRelativeDates
+                    courseCalendarSync: self.courseCalendarSync
                 )
                 profileStorage.lastCalendarName = calendarName
             }

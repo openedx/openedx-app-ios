@@ -74,7 +74,8 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                                                     progressEarned: primary.progressEarned,
                                                     progressPossible: primary.progressPossible,
                                                     canResume: primary.lastVisitedBlockID != nil,
-                                                    resumeTitle: primary.resumeTitle,
+                                                    resumeTitle: primary.resumeTitle, 
+                                                    useRelativeDates: viewModel.storage.useRelativeDates,
                                                     assignmentAction: { lastVisitedBlockID in
                                                         router.showCourseScreens(
                                                             courseID: primary.courseID,
@@ -228,7 +229,8 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     courseStartDate: nil,
                     courseEndDate: nil,
                     hasAccess: course.hasAccess,
-                    showProgress: false
+                    showProgress: false, 
+                    useRelativeDates: viewModel.storage.useRelativeDates
                 ).frame(width: idiom == .pad ? nil : 120)
             }
             )
@@ -330,7 +332,8 @@ struct PrimaryCourseDashboardView_Previews: PreviewProvider {
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
             analytics: DashboardAnalyticsMock(),
-            config: ConfigMock()
+            config: ConfigMock(), 
+            storage: CoreStorageMock()
         )
         
         PrimaryCourseDashboardView(

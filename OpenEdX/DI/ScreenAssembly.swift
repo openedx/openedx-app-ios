@@ -142,6 +142,7 @@ class ScreenAssembly: Assembly {
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 router: r.resolve(DiscoveryRouter.self)!,
                 analytics: r.resolve(DiscoveryAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 debounce: .searchDebounce
             )
         }
@@ -168,7 +169,8 @@ class ScreenAssembly: Assembly {
             ListDashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
@@ -177,7 +179,8 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DashboardAnalytics.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
@@ -185,7 +188,8 @@ class ScreenAssembly: Assembly {
             AllCoursesViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
@@ -520,6 +524,7 @@ class ScreenAssembly: Assembly {
             DiscussionSearchTopicsViewModel(
                 courseID: courseID,
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 debounce: .searchDebounce
             )
@@ -529,7 +534,8 @@ class ScreenAssembly: Assembly {
             PostsViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
@@ -538,6 +544,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 postStateSubject: subject
             )
         }
@@ -547,6 +554,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 threadStateSubject: subject
             )
         }

@@ -162,7 +162,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     public func getCourseDates(courseID: String) async throws -> CourseDates {
         let courseDates = try await api.requestData(
             ProfileEndpoint.getCourseDates(courseID: courseID)
-        ).mapResponse(DataLayer.CourseDates.self).domain
+        ).mapResponse(DataLayer.CourseDates.self).domain(useRelativeDates: storage.useRelativeDates)
         return courseDates
     }
 }

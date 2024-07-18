@@ -88,9 +88,9 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
         }
     }
 
-    public var cookiesDate: String? {
+    public var cookiesDate: Date? {
         get {
-            return userDefaults.string(forKey: KEY_COOKIES_DATE)
+            return userDefaults.object(forKey: KEY_COOKIES_DATE) as? Date
         }
         set(newValue) {
             if let newValue {
@@ -123,7 +123,13 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue.dateToString(style: .iso8601), forKey: KEY_REVIEW_LAST_REVIEW_DATE)
+                userDefaults.set(
+                    newValue.dateToString(
+                        style: .iso8601,
+                        useRelativeDates: false
+                    ),
+                    forKey: KEY_REVIEW_LAST_REVIEW_DATE
+                )
             } else {
                 userDefaults.removeObject(forKey: KEY_REVIEW_LAST_REVIEW_DATE)
             }
@@ -285,7 +291,13 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue.dateToString(style: .iso8601), forKey: KEY_LAST_CALENDAR_UPDATE_DATE)
+                userDefaults.set(
+                    newValue.dateToString(
+                        style: .iso8601,
+                        useRelativeDates: useRelativeDates
+                    ),
+                    forKey: KEY_LAST_CALENDAR_UPDATE_DATE
+                )
             } else {
                 userDefaults.removeObject(forKey: KEY_LAST_CALENDAR_UPDATE_DATE)
             }
@@ -318,6 +330,15 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
         }
     }
 
+    public var useRelativeDates: Bool {
+        get {
+            return userDefaults.object(forKey: KEY_USE_RELATIVE_DATES) as? Bool ?? true
+        }
+        set {
+            userDefaults.set(newValue, forKey: KEY_USE_RELATIVE_DATES)
+        }
+    }
+    
     public func clear() {
         accessToken = nil
         refreshToken = nil
@@ -346,4 +367,5 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
     private let KEY_HIDE_INACTIVE_COURSES = "hideInactiveCourses"
     private let KEY_FIRST_CALENDAR_UPDATE = "firstCalendarUpdate"
     private let KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA = "resetAppSupportDirectoryUserData"
+    private let KEY_USE_RELATIVE_DATES = "useRelativeDates"
 }

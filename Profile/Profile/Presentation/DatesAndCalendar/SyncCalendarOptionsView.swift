@@ -95,7 +95,7 @@ public struct SyncCalendarOptionsView: View {
                                 coursesToSync
                                     .padding(.bottom, 24)
                             }
-//                           relativeDatesToggle
+                            viewModel.relativeDatesToggle
                         }
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                         .frameLimit(width: proxy.size.width)
@@ -257,21 +257,6 @@ public struct SyncCalendarOptionsView: View {
             bgColor: Theme.Colors.textInputUnfocusedBackground,
             strokeColor: .clear
         )
-    }
-    
-    @ViewBuilder
-    private var relativeDatesToggle: some View {
-        Divider()
-            .padding(.horizontal, 24)
-        
-        optionTitle(ProfileLocalization.Options.title)
-            .padding(.vertical, 16)
-        ToggleWithDescriptionView(
-            text: ProfileLocalization.Options.useRelativeDates,
-            description: ProfileLocalization.Options.showRelativeDates,
-            toggle: $viewModel.reconnectRequired
-        )
-        .padding(.horizontal, 24)
     }
 }
 

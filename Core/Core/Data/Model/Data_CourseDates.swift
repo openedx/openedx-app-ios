@@ -166,7 +166,7 @@ public extension DataLayer {
 }
 
 public extension DataLayer.CourseDates {
-    var domain: CourseDates {
+    func domain(useRelativeDates: Bool) -> CourseDates {
         return CourseDates(
             datesBannerInfo: DatesBannerInfo(
                 missedDeadlines: datesBannerInfo?.missedDeadlines ?? false,
@@ -186,7 +186,8 @@ public extension DataLayer.CourseDates {
                     linkText: block.linkText ?? nil,
                     title: block.title,
                     extraInfo: block.extraInfo,
-                    firstComponentBlockID: block.firstComponentBlockID)
+                    firstComponentBlockID: block.firstComponentBlockID,
+                    useRelativeDates: useRelativeDates)
             },
             hasEnded: hasEnded,
             learnerIsFullAccess: learnerIsFullAccess,

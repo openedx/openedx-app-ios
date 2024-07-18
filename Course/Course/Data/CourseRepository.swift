@@ -101,7 +101,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     public func getCourseDates(courseID: String) async throws -> CourseDates {
         let courseDates = try await api.requestData(
             CourseEndpoint.getCourseDates(courseID: courseID)
-        ).mapResponse(DataLayer.CourseDates.self).domain
+        ).mapResponse(DataLayer.CourseDates.self).domain(useRelativeDates: coreStorage.useRelativeDates)
         persistence.saveCourseDates(courseID: courseID, courseDates: courseDates)
         return courseDates
     }
@@ -276,7 +276,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         do {
             let courseDates = try
             CourseRepository.courseDatesJSON.data(using: .utf8)!.mapResponse(DataLayer.CourseDates.self)
-            return courseDates.domain
+            return courseDates.domain(useRelativeDates: true)
         } catch {
             throw error
         }

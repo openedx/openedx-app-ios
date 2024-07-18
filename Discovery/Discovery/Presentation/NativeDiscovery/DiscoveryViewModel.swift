@@ -37,7 +37,7 @@ public class DiscoveryViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
-    private let storage: CoreStorage
+    let storage: CoreStorage
     
     public init(
         router: DiscoveryRouter,

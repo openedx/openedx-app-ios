@@ -80,17 +80,20 @@ public class PostsViewModel: ObservableObject {
     private let interactor: DiscussionInteractorProtocol
     private let router: DiscussionRouter
     private let config: ConfigProtocol
+    private let storage: CoreStorage
     internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     private var cancellable: AnyCancellable?
     
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
-        config: ConfigProtocol
+        config: ConfigProtocol,
+        storage: CoreStorage
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
+        self.storage = storage
         
         cancellable = postStateSubject
             .receive(on: RunLoop.main)
@@ -130,17 +133,24 @@ public class PostsViewModel: ObservableObject {
         var result: [DiscussionPost] = []
         if let threads = threads?.threads {
             for thread in threads {
-                result.append(thread.discussionPost(action: { [weak self] in
-                    guard let self, let actualThread = self.threads.threads
-                        .first(where: {$0.id  == thread.id }) else { return }
-                    
-                    self.router.showThread(
-                        thread: actualThread,
-                        postStateSubject: self.postStateSubject,
-                        isBlackedOut: self.isBlackedOut ?? false,
-                        animated: true
+                result.append(
+                    thread.discussionPost(
+                        useRelativeDates: storage.useRelativeDates,
+                        action: {
+                            [weak self] in
+                            guard let self,
+                                  let actualThread = self.threads.threads
+                                .first(where: {$0.id  == thread.id }) else { return }
+                            
+                            self.router.showThread(
+                                thread: actualThread,
+                                postStateSubject: self.postStateSubject,
+                                isBlackedOut: self.isBlackedOut ?? false,
+                                animated: true
+                            )
+                        }
                     )
-                }))
+                )
             }
         }
         

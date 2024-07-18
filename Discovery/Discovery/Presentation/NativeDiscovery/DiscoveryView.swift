@@ -111,7 +111,8 @@ public struct DiscoveryView: View {
                                         model: course,
                                         type: .discovery,
                                         index: index,
-                                        cellsCount: viewModel.courses.count
+                                        cellsCount: viewModel.courses.count, 
+                                        useRelativeDates: viewModel.storage.useRelativeDates
                                     ).padding(.horizontal, 24)
                                         .onAppear {
                                             Task {

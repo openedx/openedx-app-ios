@@ -112,10 +112,13 @@ public struct SearchView: View {
                                 let searchResults = viewModel.searchResults.enumerated()
                                 ForEach(
                                     Array(searchResults), id: \.offset) { index, course in
-                                        CourseCellView(model: course,
-                                                       type: .discovery,
-                                                       index: index,
-                                                       cellsCount: viewModel.searchResults.count)
+                                        CourseCellView(
+                                            model: course,
+                                            type: .discovery,
+                                            index: index,
+                                            cellsCount: viewModel.searchResults.count,
+                                            useRelativeDates: viewModel.storage.useRelativeDates
+                                        )
                                         .padding(.horizontal, 24)
                                         .onAppear {
                                             Task {
@@ -219,7 +222,8 @@ struct SearchView_Previews: PreviewProvider {
             interactor: DiscoveryInteractor.mock,
             connectivity: Connectivity(),
             router: router,
-            analytics: DiscoveryAnalyticsMock(),
+            analytics: DiscoveryAnalyticsMock(), 
+            storage: CoreStorageMock(),
             debounce: .searchDebounce
         )
         

@@ -156,9 +156,10 @@ public struct CourseDateBlock: Identifiable {
     public let title: String
     public let extraInfo: String?
     public let firstComponentBlockID: String
+    public let useRelativeDates: Bool
     
     public var formattedDate: String {
-        return date.dateToString(style: .shortWeekdayMonthDayYear)
+        return date.dateToString(style: .shortWeekdayMonthDayYear, useRelativeDates: useRelativeDates)
     }
     
     public var isInPast: Bool {

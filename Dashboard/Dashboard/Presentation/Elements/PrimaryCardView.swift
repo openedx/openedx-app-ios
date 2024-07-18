@@ -23,6 +23,7 @@ public struct PrimaryCardView: View {
     private let progressPossible: Int
     private let canResume: Bool
     private let resumeTitle: String?
+    private let useRelativeDates: Bool
     private var assignmentAction: (String?) -> Void
     private var openCourseAction: () -> Void
     private var resumeAction: () -> Void
@@ -39,6 +40,7 @@ public struct PrimaryCardView: View {
         progressPossible: Int,
         canResume: Bool,
         resumeTitle: String?,
+        useRelativeDates: Bool,
         assignmentAction: @escaping (String?) -> Void,
         openCourseAction: @escaping () -> Void,
         resumeAction: @escaping () -> Void
@@ -54,6 +56,7 @@ public struct PrimaryCardView: View {
         self.progressPossible = progressPossible
         self.canResume = canResume
         self.resumeTitle = resumeTitle
+        self.useRelativeDates = useRelativeDates
         self.assignmentAction = assignmentAction
         self.openCourseAction = openCourseAction
         self.resumeAction = resumeAction
@@ -125,7 +128,7 @@ public struct PrimaryCardView: View {
                         courseButton(
                             title: DashboardLocalization.Learn.PrimaryCard.futureAssignments(
                                 futureAssignments.count,
-                                firtsData.date.dateToString(style: .lastPost)
+                                firtsData.date.dateToString(style: .lastPost, useRelativeDates: useRelativeDates)
                             ),
                             description: nil,
                             icon: CoreAssets.chapter.swiftUIImage,
@@ -235,11 +238,11 @@ public struct PrimaryCardView: View {
                 .foregroundStyle(Theme.Colors.textPrimary)
                 .lineLimit(3)
             if let courseEndDate {
-                Text(courseEndDate.dateToString(style: .courseEndsMonthDDYear))
+                Text(courseEndDate.dateToString(style: .courseEndsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelMedium)
                     .foregroundStyle(Theme.Colors.textSecondaryLight)
             } else if let courseStartDate {
-                Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear))
+                Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelMedium)
                     .foregroundStyle(Theme.Colors.textSecondaryLight)
             }
@@ -267,7 +270,10 @@ struct PrimaryCardView_Previews: PreviewProvider {
                 progressPossible: 45,
                 canResume: true,
                 resumeTitle: "Course Chapter 1",
-                assignmentAction: {_ in },
+                useRelativeDates: true,
+                assignmentAction: {
+                    _ in
+                },
                 openCourseAction: {},
                 resumeAction: {}
             )

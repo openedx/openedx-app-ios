@@ -14,7 +14,7 @@ public extension Date {
         var date: Date
         var dateFormatter: DateFormatter?
         dateFormatter = DateFormatter()
-        dateFormatter?.locale = Locale(identifier: "en_US_POSIX")
+        dateFormatter?.locale = .current
         
         date = formats.compactMap { format in
             dateFormatter?.dateFormat = format
@@ -37,11 +37,31 @@ public extension Date {
         let formatter = RelativeDateTimeFormatter()
         formatter.locale = .current
         formatter.unitsStyle = .full
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        if description == Date().description {
-            return CoreLocalization.Date.justNow
+        
+        let currentDate = Date()
+        let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!
+        let sevenDaysAhead = Calendar.current.date(byAdding: .day, value: 7, to: currentDate)!
+
+        if self >= sevenDaysAgo && self <= sevenDaysAhead {
+            if self.description == currentDate.description {
+                return CoreLocalization.Date.justNow
+            } else {
+                return formatter.localizedString(for: self, relativeTo: currentDate)
+            }
         } else {
-            return formatter.localizedString(for: self, relativeTo: Date())
+            let specificFormatter = DateFormatter()
+            specificFormatter.dateFormat = "MMM d"
+            
+            let yearFormatter = DateFormatter()
+            yearFormatter.dateFormat = "yyyy"
+            let currentYear = yearFormatter.string(from: currentDate)
+            let dateYear = yearFormatter.string(from: self)
+            
+            if currentYear != dateYear {
+                specificFormatter.dateFormat = "MMM d, yyyy"
+            }
+            
+            return specificFormatter.string(from: self)
         }
     }
     
@@ -100,29 +120,34 @@ public extension Date {
         return totalSeconds
     }
     
-    func dateToString(style: DateStringStyle) -> String {
+    func dateToString(style: DateStringStyle, useRelativeDates: Bool) -> String {
         let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         
-        switch style {
-        case .courseStartsMonthDDYear:
-            dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmDdYyyy
-        case .courseEndsMonthDDYear:
-            dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmDdYyyy
-        case .endedMonthDay:
-            dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmmDd
-        case .mmddyy:
-            dateFormatter.dateFormat = "dd.MM.yy"
-        case .monthYear:
-            dateFormatter.dateFormat = "MMMM yyyy"
-        case .startDDMonthYear:
-            dateFormatter.dateFormat = "dd MMM yyyy"
-        case .lastPost:
-            dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmDdYyyy
-        case .iso8601:
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        case .shortWeekdayMonthDayYear:
-            applyShortWeekdayMonthDayYear(dateFormatter: dateFormatter)
+        dateFormatter.locale = .current
+        
+        if useRelativeDates {
+            return timeAgoDisplay()
+        } else {
+            switch style {
+            case .courseStartsMonthDDYear:
+                dateFormatter.dateStyle = .medium
+            case .courseEndsMonthDDYear:
+                dateFormatter.dateStyle = .medium
+            case .endedMonthDay:
+                dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmmDd
+            case .mmddyy:
+                dateFormatter.dateFormat = "dd.MM.yy"
+            case .monthYear:
+                dateFormatter.dateFormat = "MMMM yyyy"
+            case .startDDMonthYear:
+                dateFormatter.dateFormat = "dd MMM yyyy"
+            case .lastPost:
+                dateFormatter.dateFormat = CoreLocalization.DateFormat.mmmDdYyyy
+            case .iso8601:
+                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+            case .shortWeekdayMonthDayYear:
+                applyShortWeekdayMonthDayYear(dateFormatter: dateFormatter)
+            }
         }
         
         let date = dateFormatter.string(from: self)

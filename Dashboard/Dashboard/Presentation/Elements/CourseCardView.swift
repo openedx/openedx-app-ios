@@ -20,6 +20,7 @@ struct CourseCardView: View {
     private let courseEndDate: Date?
     private let hasAccess: Bool
     private let showProgress: Bool
+    private let useRelativeDates: Bool
     
     init(
         courseName: String,
@@ -29,7 +30,8 @@ struct CourseCardView: View {
         courseStartDate: Date?,
         courseEndDate: Date?,
         hasAccess: Bool,
-        showProgress: Bool
+        showProgress: Bool,
+        useRelativeDates: Bool
     ) {
         self.courseName = courseName
         self.courseImage = courseImage
@@ -39,6 +41,7 @@ struct CourseCardView: View {
         self.courseEndDate = courseEndDate
         self.hasAccess = hasAccess
         self.showProgress = showProgress
+        self.useRelativeDates = useRelativeDates
     }
     
     var body: some View {
@@ -85,12 +88,12 @@ struct CourseCardView: View {
     private var courseTitle: some View {
         VStack(alignment: .leading, spacing: 3) {
             if let courseEndDate {
-                Text(courseEndDate.dateToString(style: .courseEndsMonthDDYear))
+                Text(courseEndDate.dateToString(style: .courseEndsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelSmall)
                     .foregroundStyle(Theme.Colors.textSecondaryLight)
                     .multilineTextAlignment(.leading)
             } else if let courseStartDate {
-                Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear))
+                Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelSmall)
                     .foregroundStyle(Theme.Colors.textSecondaryLight)
                     .multilineTextAlignment(.leading)
@@ -119,7 +122,8 @@ struct CourseCardView: View {
         courseStartDate: nil,
         courseEndDate: Date(),
         hasAccess: true,
-        showProgress: true
+        showProgress: true, 
+        useRelativeDates: true
     ).frame(width: 170)
 }
 #endif
