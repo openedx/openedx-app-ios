@@ -54,7 +54,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
         var result = false
 
         viewModel.postComments = post
@@ -76,7 +81,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
 
@@ -100,7 +110,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
 
@@ -123,7 +138,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
         
@@ -148,7 +168,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
 
@@ -170,7 +195,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
         
@@ -190,7 +220,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
         
@@ -213,7 +248,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
         
@@ -236,7 +276,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
 
@@ -258,7 +303,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
 
@@ -278,7 +328,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
         
@@ -301,7 +356,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
 
@@ -323,7 +383,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
 
         var result = false
 
@@ -343,7 +408,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
         
         viewModel.postComments = post
         

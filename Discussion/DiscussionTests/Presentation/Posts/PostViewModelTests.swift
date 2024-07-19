@@ -109,7 +109,12 @@ final class PostViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let config = ConfigMock()
         var result = false
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = PostsViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
         
         viewModel.courseID = "1"
         viewModel.type = .allPosts
@@ -149,7 +154,13 @@ final class PostViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let config = ConfigMock()
         var result = false
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = PostsViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
+        
         viewModel.isBlackedOut = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -174,7 +185,13 @@ final class PostViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let config = ConfigMock()
         var result = false
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = PostsViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
+                
         viewModel.isBlackedOut = false
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError()))
@@ -196,7 +213,12 @@ final class PostViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let config = ConfigMock()
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = PostsViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
         
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any,
                                           willReturn: threads))

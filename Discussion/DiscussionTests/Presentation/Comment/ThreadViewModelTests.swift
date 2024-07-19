@@ -212,6 +212,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
                 
         Given(interactor, .readBody(threadID: .any, willProduce: {_ in}))
@@ -241,6 +242,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
                 
         Given(interactor, .readBody(threadID: .any, willProduce: {_ in}))
@@ -270,6 +272,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -301,6 +304,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
                         
         Given(interactor, .readBody(threadID: .any, willThrow: NSError()))
@@ -328,6 +332,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
         
         let post = Post(authorName: "",
@@ -368,6 +373,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -392,6 +398,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
                         
         Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willThrow: NSError()) )
@@ -415,6 +422,7 @@ final class ThreadViewModelTests: XCTestCase {
         let viewModel = ThreadViewModel(interactor: interactor,
                                         router: router,
                                         config: config,
+                                        storage: CoreStorageMock(),
                                         postStateSubject: .init(.readed(id: "1")))
         
         viewModel.totalPages = 2

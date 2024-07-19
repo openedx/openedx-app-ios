@@ -18,7 +18,8 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
-                                                        interactor: interactor,
+                                                        interactor: interactor, 
+                                                        storage: CoreStorageMock(),
                                                         router: router,
                                                         debounce: .test)
         
@@ -71,6 +72,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
                                                         interactor: interactor,
+                                                        storage: CoreStorageMock(),
                                                         router: router,
                                                         debounce: .test)
         
@@ -100,6 +102,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
                                                         interactor: interactor,
+                                                        storage: CoreStorageMock(),
                                                         router: router,
                                                         debounce: .test)
 
@@ -127,6 +130,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
                                                         interactor: interactor,
+                                                        storage: CoreStorageMock(),
                                                         router: router,
                                                         debounce: .test)
         

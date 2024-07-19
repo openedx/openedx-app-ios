@@ -2230,9 +2230,9 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
     }
 
     open func profileTrackEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
-        addInvocation(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(biValue)))
-		let perform = methodPerformValue(.m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(biValue))) as? (AnalyticsEvent, EventBIValue) -> Void
-		perform?(`event`, biValue)
+        addInvocation(.m_profileTrackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`)))
+		let perform = methodPerformValue(.m_profileTrackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>.value(`event`), Parameter<EventBIValue>.value(`biValue`))) as? (AnalyticsEvent, EventBIValue) -> Void
+		perform?(`event`, `biValue`)
     }
 
     open func profileScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
@@ -2258,7 +2258,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         case m_profileWifiToggle__action_action(Parameter<String>)
         case m_profileUserDeleteAccountClicked
         case m_profileDeleteAccountSuccess__success_success(Parameter<Bool>)
-        case m_profileEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
+        case m_profileTrackEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
         case m_profileScreenEvent__eventbiValue_biValue(Parameter<AnalyticsEvent>, Parameter<EventBIValue>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -2305,7 +2305,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSuccess, rhs: rhsSuccess, with: matcher), lhsSuccess, rhsSuccess, "success"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_profileEvent__eventbiValue_biValue(let lhsEvent, let lhsBivalue), .m_profileEvent__eventbiValue_biValue(let rhsEvent, let rhsBivalue)):
+            case (.m_profileTrackEvent__eventbiValue_biValue(let lhsEvent, let lhsBivalue), .m_profileTrackEvent__eventbiValue_biValue(let rhsEvent, let rhsBivalue)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBivalue, rhs: rhsBivalue, with: matcher), lhsBivalue, rhsBivalue, "biValue"))
@@ -2337,7 +2337,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
             case let .m_profileWifiToggle__action_action(p0): return p0.intValue
             case .m_profileUserDeleteAccountClicked: return 0
             case let .m_profileDeleteAccountSuccess__success_success(p0): return p0.intValue
-            case let .m_profileEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
+            case let .m_profileTrackEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
             case let .m_profileScreenEvent__eventbiValue_biValue(p0, p1): return p0.intValue + p1.intValue
             }
         }
@@ -2358,7 +2358,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
             case .m_profileWifiToggle__action_action: return ".profileWifiToggle(action:)"
             case .m_profileUserDeleteAccountClicked: return ".profileUserDeleteAccountClicked()"
             case .m_profileDeleteAccountSuccess__success_success: return ".profileDeleteAccountSuccess(success:)"
-            case .m_profileEvent__eventbiValue_biValue: return ".profileEvent(_:biValue:)"
+            case .m_profileTrackEvent__eventbiValue_biValue: return ".profileTrackEvent(_:biValue:)"
             case .m_profileScreenEvent__eventbiValue_biValue: return ".profileScreenEvent(_:biValue:)"
             }
         }
@@ -2393,7 +2393,7 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         public static func profileWifiToggle(action: Parameter<String>) -> Verify { return Verify(method: .m_profileWifiToggle__action_action(`action`))}
         public static func profileUserDeleteAccountClicked() -> Verify { return Verify(method: .m_profileUserDeleteAccountClicked)}
         public static func profileDeleteAccountSuccess(success: Parameter<Bool>) -> Verify { return Verify(method: .m_profileDeleteAccountSuccess__success_success(`success`))}
-        public static func profileEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_profileEvent__eventbiValue_biValue(`event`, `biValue`))}
+        public static func profileTrackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_profileTrackEvent__eventbiValue_biValue(`event`, `biValue`))}
         public static func profileScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>) -> Verify { return Verify(method: .m_profileScreenEvent__eventbiValue_biValue(`event`, `biValue`))}
     }
 
@@ -2446,8 +2446,8 @@ open class ProfileAnalyticsMock: ProfileAnalytics, Mock {
         public static func profileDeleteAccountSuccess(success: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
             return Perform(method: .m_profileDeleteAccountSuccess__success_success(`success`), performs: perform)
         }
-        public static func profileEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
-            return Perform(method: .m_profileEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
+        public static func profileTrackEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
+            return Perform(method: .m_profileTrackEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
         }
         public static func profileScreenEvent(_ event: Parameter<AnalyticsEvent>, biValue: Parameter<EventBIValue>, perform: @escaping (AnalyticsEvent, EventBIValue) -> Void) -> Perform {
             return Perform(method: .m_profileScreenEvent__eventbiValue_biValue(`event`, `biValue`), performs: perform)
