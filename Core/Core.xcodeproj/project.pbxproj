@@ -15,7 +15,6 @@
 		021D925028DC89D100ACC565 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924F28DC89D100ACC565 /* UserProfile.swift */; };
 		021D925728DCF12900ACC565 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D925628DCF12900ACC565 /* AlertView.swift */; };
 		022020462C11BB2200D15795 /* Data_CourseDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022020452C11BB2200D15795 /* Data_CourseDates.swift */; };
-		0225440E2C4961A300EEC33F /* CourseDatesшкя.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225440D2C4961A300EEC33F /* CourseDatesшкя.swift */; };
 		02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5A294B4E6F0032823A /* Connectivity.swift */; };
 		02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02284C172A3B1AE00007117F /* UIApplicationExtension.swift */; };
 		02286D162C106393005EEC8D /* CourseDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02286D152C106393005EEC8D /* CourseDates.swift */; };
@@ -213,7 +212,6 @@
 		021D924F28DC89D100ACC565 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		021D925628DCF12900ACC565 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
 		022020452C11BB2200D15795 /* Data_CourseDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CourseDates.swift; sourceTree = "<group>"; };
-		0225440D2C4961A300EEC33F /* CourseDatesшкя.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CourseDatesшкя.swift"; sourceTree = "<group>"; };
 		02280F5A294B4E6F0032823A /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		02284C172A3B1AE00007117F /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
 		02286D152C106393005EEC8D /* CourseDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDates.swift; sourceTree = "<group>"; };
@@ -627,7 +625,6 @@
 				07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */,
 				02A8C5802C05DBB4004B91FF /* Data_EnrollmentsStatus.swift */,
 				022020452C11BB2200D15795 /* Data_CourseDates.swift */,
-				0225440D2C4961A300EEC33F /* CourseDatesшкя.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1231,7 +1228,6 @@
 				E0D5861C2B2FF85B009B4BA7 /* RawStringExtactable.swift in Sources */,
 				02EBC7592C19DE1100BE182C /* CalendarManagerProtocol.swift in Sources */,
 				027BD3BD2909478B00392132 /* UIView+EnclosingScrollView.swift in Sources */,
-				0225440E2C4961A300EEC33F /* CourseDatesшкя.swift in Sources */,
 				BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */,
 				02D400612B0678190029D168 /* SKStoreReviewControllerExtension.swift in Sources */,
 				02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */,

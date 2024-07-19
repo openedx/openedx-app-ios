@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		02197DC52C1AFC0600CC8FF2 /* CalendarSyncStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EBC7542C19CFCF00BE182C /* CalendarSyncStatusView.swift */; };
-		022544102C4961E400EEC33F /* CourseDatesшкя2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0225440F2C4961E400EEC33F /* CourseDatesшкя2.swift */; };
 		02280F5E294B4FDA0032823A /* CourseCoreModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5C294B4FDA0032823A /* CourseCoreModel.xcdatamodeld */; };
 		02280F60294B50030032823A /* CoursePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5F294B50030032823A /* CoursePersistenceProtocol.swift */; };
 		022C64D829ACEC48000F532B /* HandoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022C64D729ACEC48000F532B /* HandoutsView.swift */; };
@@ -109,7 +108,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0225440F2C4961E400EEC33F /* CourseDatesшкя2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CourseDatesшкя2.swift"; sourceTree = "<group>"; };
 		02280F5D294B4FDA0032823A /* CourseCoreModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CourseCoreModel.xcdatamodel; sourceTree = "<group>"; };
 		02280F5F294B50030032823A /* CoursePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursePersistenceProtocol.swift; sourceTree = "<group>"; };
 		022C64D729ACEC48000F532B /* HandoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandoutsView.swift; sourceTree = "<group>"; };
@@ -430,7 +428,6 @@
 				02B6B3C228E1DCD100232911 /* CourseDetails.swift */,
 				0276D75C29DDA3F80004CDF8 /* ResumeBlock.swift */,
 				022C64E129ADEB83000F532B /* CourseUpdate.swift */,
-				0225440F2C4961E400EEC33F /* CourseDatesшкя2.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -888,7 +885,6 @@
 				067B7B4F2BED339200D1768F /* PlayerDelegateProtocol.swift in Sources */,
 				0231124D28EDA804002588FB /* CourseUnitView.swift in Sources */,
 				027020FC28E7362100F54332 /* Data_CourseOutlineResponse.swift in Sources */,
-				022544102C4961E400EEC33F /* CourseDatesшкя2.swift in Sources */,
 				067B7B532BED339200D1768F /* PlayerServiceProtocol.swift in Sources */,
 				BAD9CA2D2B2736BB00DE790A /* LessonLineProgressView.swift in Sources */,
 				02197DC52C1AFC0600CC8FF2 /* CalendarSyncStatusView.swift in Sources */,

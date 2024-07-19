@@ -50,7 +50,7 @@ public extension Date {
             }
         } else {
             let specificFormatter = DateFormatter()
-            specificFormatter.dateFormat = "MMM d"
+            specificFormatter.dateFormat = "MMMM d"
             
             let yearFormatter = DateFormatter()
             yearFormatter.dateFormat = "yyyy"
@@ -58,7 +58,7 @@ public extension Date {
             let dateYear = yearFormatter.string(from: self)
             
             if currentYear != dateYear {
-                specificFormatter.dateFormat = "MMM d, yyyy"
+                specificFormatter.dateFormat = "MMMM d, yyyy"
             }
             
             return specificFormatter.string(from: self)
@@ -190,47 +190,12 @@ public extension Date {
     }
     
     private func applyShortWeekdayMonthDayYear(dateFormatter: DateFormatter) {
-        if isCurrentYear() {
-            let days = Calendar.current.dateComponents([.day], from: self, to: Date())
-            if let day = days.day, (-6 ... -2).contains(day) {
-                dateFormatter.dateFormat = "EEEE"
-            } else {
-                dateFormatter.dateFormat = "MMMM d"
-            }
-        } else {
             dateFormatter.dateFormat = "MMMM d, yyyy"
-        }
     }
     
     private func getShortWeekdayMonthDayYear(dateFormatterString: String) -> String {
         let days = Calendar.current.dateComponents([.day], from: self, to: Date())
-        
-        if let day = days.day {
-            guard isCurrentYear() else {
-                // It's past year or future year
-                return dateFormatterString
-            }
-            
-            switch day {
-            case -6...(-2):
-                return dateFormatterString
-            case 2...6:
-                return timeAgoDisplay()
-            case -1:
-                return CoreLocalization.tomorrow
-            case 1:
-                return CoreLocalization.yesterday
-            default:
-                if day > 6 || day < -6 {
-                    return dateFormatterString
-                } else {
-                    // It means, date is in hours past due or upcoming
-                    return timeAgoDisplay()
-                }
-            }
-        } else {
-            return dateFormatterString
-        }
+        return dateFormatterString
     }
     
     func isCurrentYear() -> Bool {
