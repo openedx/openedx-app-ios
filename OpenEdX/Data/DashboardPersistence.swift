@@ -234,17 +234,13 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         context.perform {[context] in
             let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
             let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
-
-            let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = CDPrimaryCourse.fetchRequest()
+            
+            let fetchRequest2: NSFetchRequest<NSFetchRequestResult> = CDMyEnrollments.fetchRequest()
             let batchDeleteRequest2 = NSBatchDeleteRequest(fetchRequest: fetchRequest2)
-
-            let fetchRequest3: NSFetchRequest<NSFetchRequestResult> = CDMyEnrollments.fetchRequest()
-            let batchDeleteRequest3 = NSBatchDeleteRequest(fetchRequest: fetchRequest3)
-
+            
             do {
                 try context.execute(batchDeleteRequest1)
                 try context.execute(batchDeleteRequest2)
-                try context.execute(batchDeleteRequest3)
             } catch {
                 print("Error when deleting old data:", error)
             }

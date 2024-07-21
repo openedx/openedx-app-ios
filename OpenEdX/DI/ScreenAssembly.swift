@@ -40,6 +40,8 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(MainScreenAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 profileInteractor: r.resolve(ProfileInteractorProtocol.self)!,
+                appStorage: r.resolve(AppStorage.self)!, 
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!,
                 sourceScreen: sourceScreen
             )
         }
@@ -189,6 +191,11 @@ class ScreenAssembly: Assembly {
         
         // MARK: Profile
         
+        // MARK: Course
+        container.register(ProfilePersistenceProtocol.self) { r in
+            ProfilePersistence(context: r.resolve(DatabaseManager.self)!.context)
+        }
+        
         container.register(ProfileRepositoryProtocol.self) { r in
             ProfileRepository(
                 api: r.resolve(API.self)!,
@@ -235,10 +242,16 @@ class ScreenAssembly: Assembly {
         
         container.register(DatesAndCalendarViewModel.self) { r in
             DatesAndCalendarViewModel(
-                router: r.resolve(ProfileRouter.self)!
+                router: r.resolve(ProfileRouter.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                profileStorage: r.resolve(ProfileStorage.self)!,
+                persistence: r.resolve(ProfilePersistenceProtocol.self)!,
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
-        
+        .inObjectScope(.weak)
+                
         container.register(ManageAccountViewModel.self) { r in
             ManageAccountViewModel(
                 router: r.resolve(ProfileRouter.self)!,
@@ -472,7 +485,8 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 courseID: courseID,
                 courseName: courseName,
-                analytics: r.resolve(CourseAnalytics.self)!
+                analytics: r.resolve(CourseAnalytics.self)!,
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!
             )
         }
         

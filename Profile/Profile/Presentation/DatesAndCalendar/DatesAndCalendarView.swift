@@ -55,28 +55,45 @@ public struct DatesAndCalendarView: View {
                 .navigationBarHidden(true)
                 .navigationBarBackButtonHidden(true)
                 
-                // Error Alert if needed
-                if viewModel.showError {
-                    ErrorAlertView(errorMessage: $viewModel.errorMessage)
-                }
                 if screenDimmed {
                     Color.black.opacity(0.3)
                         .ignoresSafeArea()
                         .onTapGesture {
                             viewModel.openNewCalendarView = false
                             screenDimmed = false
+                            viewModel.showCalendaAccessDenied = false
+                            viewModel.calendarName = viewModel.oldCalendarName
+                            viewModel.colorSelection = viewModel.oldColorSelection
                         }
                 }
+                
+                // Error Alert if needed
+                if viewModel.showError {
+                    ErrorAlertView(errorMessage: $viewModel.errorMessage)
+                }
+                
                 if viewModel.openNewCalendarView {
                     NewCalendarView(
                         title: .newCalendar,
                         viewModel: viewModel,
                         beginSyncingTapped: {
+                            guard viewModel.isInternetAvaliable else {
+                                viewModel.openNewCalendarView = false
+                                screenDimmed = false
+                                viewModel.calendarName = viewModel.oldCalendarName
+                                viewModel.colorSelection = viewModel.oldColorSelection
+                                return
+                            }
                             if viewModel.calendarName == "" {
                                 viewModel.calendarName = viewModel.calendarNameHint
                             }
-                            viewModel.router.showSyncCalendarOptions() },
+                            viewModel.saveCalendarOptions()
+                            viewModel.router.back(animated: false)
+                            viewModel.router.showSyncCalendarOptions()
+                        },
                         onCloseTapped: {
+                            viewModel.calendarName = viewModel.oldCalendarName
+                            viewModel.colorSelection = viewModel.oldColorSelection
                             viewModel.openNewCalendarView = false
                             screenDimmed = false
                         }
@@ -88,16 +105,16 @@ public struct DatesAndCalendarView: View {
                     }
                 }
                 
-                if viewModel.showCalendaAccessDenided {
+                if viewModel.showCalendaAccessDenied {
                     CalendarDialogView(
                         type: .calendarAccess,
                         action: {
-                            viewModel.showCalendaAccessDenided = false
+                            viewModel.showCalendaAccessDenied = false
                             screenDimmed = false
                             viewModel.openAppSettings()
                         },
                         onCloseTapped: {
-                            viewModel.showCalendaAccessDenided = false
+                            viewModel.showCalendaAccessDenied = false
                             screenDimmed = false
                         }
                     )
@@ -138,9 +155,15 @@ public struct DatesAndCalendarView: View {
                         .foregroundColor(Theme.Colors.textPrimary)
                         .accessibilityIdentifier("calendar_sync_description")
                     
-                    StyledButton(ProfileLocalization.CalendarSync.button, action: {
-                        viewModel.requestCalendarPermission()
-                    }, horizontalPadding: true)
+                    StyledButton(
+                        ProfileLocalization.CalendarSync.button,
+                        action: {
+                            Task {
+                                await viewModel.requestCalendarPermission()
+                            }
+                        },
+                        horizontalPadding: true
+                    )
                     .fixedSize()
                     .accessibilityIdentifier("calendar_sync_button")
                 }
@@ -185,11 +208,15 @@ public struct DatesAndCalendarView: View {
 struct DatesAndCalendarView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DatesAndCalendarViewModel(
-            router: ProfileRouterMock()
+            router: ProfileRouterMock(),
+            interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
+            profileStorage: ProfileStorageMock(), 
+            persistence: ProfilePersistenceMock(),
+            calendarManager: CalendarManagerMock(), 
+            connectivity: Connectivity()
         )
         DatesAndCalendarView(viewModel: vm)
             .loadFonts()
     }
 }
 #endif
-

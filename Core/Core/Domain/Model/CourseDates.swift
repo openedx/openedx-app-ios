@@ -1,20 +1,20 @@
 //
 //  CourseDates.swift
-//  Course
+//  Core
 //
-//  Created by Muhammad Umer on 10/18/23.
+//  Created by  Stepanok Ivan on 05.06.2024.
 //
 
 import Foundation
-import Core
+import CryptoKit
 
 public struct CourseDates {
-    let datesBannerInfo: DatesBannerInfo
-    let courseDateBlocks: [CourseDateBlock]
-    let hasEnded, learnerIsFullAccess: Bool
-    let userTimezone: String?
+    public let datesBannerInfo: DatesBannerInfo
+    public let courseDateBlocks: [CourseDateBlock]
+    public let hasEnded, learnerIsFullAccess: Bool
+    public let userTimezone: String?
     
-    var statusDatesBlocks: [CompletionStatus: [Date: [CourseDateBlock]]] {
+    public var statusDatesBlocks: [CompletionStatus: [Date: [CourseDateBlock]]] {
         var statusDatesBlocks: [CompletionStatus: [Date: [CourseDateBlock]]] = [:]
         var statusBlocks: [CompletionStatus: [CourseDateBlock]] = [:]
         
@@ -56,15 +56,41 @@ public struct CourseDates {
         return statusDatesBlocks
     }
     
-    var dateBlocks: [Date: [CourseDateBlock]] {
+    public var dateBlocks: [Date: [CourseDateBlock]] {
         return courseDateBlocks.reduce(into: [:]) { result, block in
             let date = block.date
             result[date, default: []].append(block)
         }
     }
+    
+    public init(
+        datesBannerInfo: DatesBannerInfo,
+        courseDateBlocks: [CourseDateBlock],
+        hasEnded: Bool,
+        learnerIsFullAccess: Bool,
+        userTimezone: String?
+    ) {
+        self.datesBannerInfo = datesBannerInfo
+        self.courseDateBlocks = courseDateBlocks
+        self.hasEnded = hasEnded
+        self.learnerIsFullAccess = learnerIsFullAccess
+        self.userTimezone = userTimezone
+    }
+    
+    public var checksum: String {
+        var combinedString = ""
+        for block in self.courseDateBlocks {
+            let assignmentType = block.assignmentType ?? ""
+            combinedString += assignmentType + block.firstComponentBlockID + block.date.description
+        }
+        
+        let checksumData = SHA256.hash(data: Data(combinedString.utf8))
+        let checksumString = checksumData.map { String(format: "%02hhx", $0) }.joined()
+        return checksumString
+    }
 }
 
-extension Date {
+public extension Date {
     static var today: Date {
         return Calendar.current.startOfDay(for: Date())
     }
@@ -120,26 +146,26 @@ extension Date {
 public struct CourseDateBlock: Identifiable {
     public let id: UUID = UUID()
     
-    let assignmentType: String?
-    let complete: Bool?
-    let date: Date
-    let dateType, description: String
-    let learnerHasAccess: Bool
-    let link: String
-    let linkText: String?
-    let title: String
-    let extraInfo: String?
-    let firstComponentBlockID: String
+    public let assignmentType: String?
+    public let complete: Bool?
+    public let date: Date
+    public let dateType, description: String
+    public let learnerHasAccess: Bool
+    public let link: String
+    public let linkText: String?
+    public let title: String
+    public let extraInfo: String?
+    public let firstComponentBlockID: String
     
-    var formattedDate: String {
+    public var formattedDate: String {
         return date.dateToString(style: .shortWeekdayMonthDayYear)
     }
     
-    var isInPast: Bool {
+    public var isInPast: Bool {
         return date.isInPast
     }
     
-    var isToday: Bool {
+    public var isToday: Bool {
         if dateType.isEmpty {
             return true
         } else {
@@ -147,55 +173,55 @@ public struct CourseDateBlock: Identifiable {
         }
     }
     
-    var isInFuture: Bool {
+    public var isInFuture: Bool {
         return date.isInFuture
     }
     
-    var isThisWeek: Bool {
+    public var isThisWeek: Bool {
         return date.isThisWeek
     }
     
-    var isNextWeek: Bool {
+    public var isNextWeek: Bool {
         return date.isNextWeek
     }
     
-    var isUpcoming: Bool {
+    public var isUpcoming: Bool {
         return date.isUpcoming
     }
     
-    var isAssignment: Bool {
+    public var isAssignment: Bool {
         return BlockStatus.status(of: dateType) == .assignment
     }
     
-    var isVerifiedOnly: Bool {
+    public var isVerifiedOnly: Bool {
         return !learnerHasAccess
     }
     
-    var isComplete: Bool {
+    public var isComplete: Bool {
         return complete ?? false
     }
     
-    var isLearnerAssignment: Bool {
+    public var isLearnerAssignment: Bool {
         return learnerHasAccess && isAssignment
     }
     
-    var isPastDue: Bool {
+    public var isPastDue: Bool {
         return !isComplete && (date < .today)
     }
     
-    var isUnreleased: Bool {
+    public var isUnreleased: Bool {
         return link.isEmpty
     }
     
-    var canShowLink: Bool {
+    public var canShowLink: Bool {
         return !isUnreleased && isLearnerAssignment
     }
     
-    var isAvailable: Bool {
+    public var isAvailable: Bool {
         return learnerHasAccess && (!isUnreleased || !isLearnerAssignment)
     }
     
-    var blockStatus: BlockStatus {
+    public var blockStatus: BlockStatus {
         if isComplete {
             return .completed
         }
@@ -215,7 +241,7 @@ public struct CourseDateBlock: Identifiable {
         return BlockStatus.status(of: dateType)
     }
     
-    var blockImage: ImageAsset? {
+    public var blockImage: ImageAsset? {
         if !learnerHasAccess {
             return CoreAssets.lockIcon
         }
@@ -240,14 +266,33 @@ public struct CourseDateBlock: Identifiable {
 }
 
 public struct DatesBannerInfo {
-    let missedDeadlines, contentTypeGatingEnabled, missedGatedContent: Bool
-    let verifiedUpgradeLink: String?
-    let status: DataLayer.BannerInfoStatus?
+    public let missedDeadlines, contentTypeGatingEnabled, missedGatedContent: Bool
+    public let verifiedUpgradeLink: String?
+    public let status: DataLayer.BannerInfoStatus?
+    
+    public init(
+        missedDeadlines: Bool,
+        contentTypeGatingEnabled: Bool,
+        missedGatedContent: Bool,
+        verifiedUpgradeLink: String?,
+        status: DataLayer.BannerInfoStatus?
+    ) {
+        self.missedDeadlines = missedDeadlines
+        self.contentTypeGatingEnabled = contentTypeGatingEnabled
+        self.missedGatedContent = missedGatedContent
+        self.verifiedUpgradeLink = verifiedUpgradeLink
+        self.status = status
+    }
 }
 
 public struct CourseDateBanner {
-    let datesBannerInfo: DatesBannerInfo
-    let hasEnded: Bool
+    public let datesBannerInfo: DatesBannerInfo
+    public let hasEnded: Bool
+    
+    public init(datesBannerInfo: DatesBannerInfo, hasEnded: Bool) {
+        self.datesBannerInfo = datesBannerInfo
+        self.hasEnded = hasEnded
+    }
 }
 
 public enum BlockStatus {
@@ -305,7 +350,7 @@ public enum CompletionStatus: String {
     }
 }
 
-extension Array {
+public extension Array {
     mutating func modifyForEach(_ body: (_ element: inout Element) -> Void) {
         for index in indices {
             modifyElement(atIndex: index) { body(&$0) }

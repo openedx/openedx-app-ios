@@ -60,6 +60,8 @@ public enum ProfileLocalization {
     public static let offline = ProfileLocalization.tr("Localizable", "ASSIGNMENT_STATUS.OFFLINE", fallback: "Offline")
     /// Synced
     public static let synced = ProfileLocalization.tr("Localizable", "ASSIGNMENT_STATUS.SYNCED", fallback: "Synced")
+    /// Syncing to calendar...
+    public static let syncing = ProfileLocalization.tr("Localizable", "ASSIGNMENT_STATUS.SYNCING", fallback: "Syncing to calendar...")
   }
   public enum Calendar {
     /// Account
@@ -114,10 +116,12 @@ public enum ProfileLocalization {
     public static let calendarAccessDescription = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.CALENDAR_ACCESS_DESCRIPTION", fallback: "To show upcoming assignments and course milestones on your calendar, we need permission to access your calendar.")
     /// Cancel
     public static let cancel = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.CANCEL", fallback: "Cancel")
-    /// Change Sync Options
-    public static let disableCalendarSync = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC", fallback: "Change Sync Options")
-    /// Disabling calendar sync will delete the calendar “My Assignments.” You can turn calendar sync back on at any time.
-    public static let disableCalendarSyncDescription = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION", fallback: "Disabling calendar sync will delete the calendar “My Assignments.” You can turn calendar sync back on at any time.")
+    /// Disable Calendar Sync
+    public static let disableCalendarSync = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC", fallback: "Disable Calendar Sync")
+    /// Disabling calendar sync will delete the calendar “%@”. You can turn calendar sync back on at any time.
+    public static func disableCalendarSyncDescription(_ p1: Any) -> String {
+      return ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_CALENDAR_SYNC_DESCRIPTION", String(describing: p1), fallback: "Disabling calendar sync will delete the calendar “%@”. You can turn calendar sync back on at any time.")
+    }
     /// Disable Syncing
     public static let disableSyncing = ProfileLocalization.tr("Localizable", "CALENDAR_DIALOG.DISABLE_SYNCING", fallback: "Disable Syncing")
     /// Grant Calendar Access
@@ -277,11 +281,17 @@ public enum ProfileLocalization {
     /// Wi-fi only download
     public static let wifiTitle = ProfileLocalization.tr("Localizable", "SETTINGS.WIFI_TITLE", fallback: "Wi-fi only download")
   }
+  public enum Sync {
+    /// No Synced Courses
+    public static let noSynced = ProfileLocalization.tr("Localizable", "SYNC.NO_SYNCED", fallback: "No Synced Courses")
+    /// No courses are currently being synced to your calendar.
+    public static let noSyncedDescription = ProfileLocalization.tr("Localizable", "SYNC.NO_SYNCED_DESCRIPTION", fallback: "No courses are currently being synced to your calendar.")
+  }
   public enum SyncSelector {
     /// Not Synced
     public static let notSynced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.NOT_SYNCED", fallback: "Not Synced")
-    /// Synced
-    public static let synced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.SYNCED", fallback: "Synced")
+    /// To Sync
+    public static let synced = ProfileLocalization.tr("Localizable", "SYNC_SELECTOR.SYNCED", fallback: "To Sync")
   }
   public enum UnsavedDataAlert {
     /// Changes you have made will be discarded.

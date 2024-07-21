@@ -9,20 +9,81 @@ import SwiftUI
 import Core
 import Theme
 
-enum DropDownPickerState {
+public enum DropDownPickerState {
     case top
     case bottom
 }
 
-struct DropDownPicker: View {
+public enum DropDownColor: String {
+    case accent
+    case red
+    case orange
+    case yellow
+    case green
+    case blue
+    case purple
+    case brown
     
+    var title: String {
+        switch self {
+        case .accent:
+            ProfileLocalization.Calendar.DropdownColor.accent
+        case .red:
+            ProfileLocalization.Calendar.DropdownColor.red
+        case .orange:
+            ProfileLocalization.Calendar.DropdownColor.orange
+        case .yellow:
+            ProfileLocalization.Calendar.DropdownColor.yellow
+        case .green:
+            ProfileLocalization.Calendar.DropdownColor.green
+        case .blue:
+            ProfileLocalization.Calendar.DropdownColor.blue
+        case .purple:
+            ProfileLocalization.Calendar.DropdownColor.purple
+        case .brown:
+            ProfileLocalization.Calendar.DropdownColor.brown
+        }
+    }
+    
+    var color: Color {
+        switch self {
+        case .accent:
+                .accentColor
+        case .red:
+                .red
+        case .orange:
+                .orange
+        case .yellow:
+                .yellow
+        case .green:
+                .green
+        case .blue:
+                .blue
+        case .purple:
+                .purple
+        case .brown:
+                .brown
+        }
+    }
+}
+
+struct DropDownPicker: View {
+        
     struct DownPickerOption: Hashable {
         let title: String
         let color: Color?
+        let colorString: String?
         
-        init(title: String, color: Color? = nil) {
+        init(title: String) {
             self.title = title
-            self.color = color
+            self.color = nil
+            self.colorString = nil
+        }
+        
+        init(color: DropDownColor) {
+            self.title = color.title
+            self.color = color.color
+            self.colorString = color.rawValue
         }
         
         func hash(into hasher: inout Hasher) {
@@ -136,8 +197,6 @@ struct DropDownPicker: View {
                                 .font(Theme.Fonts.bodyMedium)
                                 .foregroundStyle(Theme.Colors.textPrimary)
                             Spacer()
-//                        Image(systemName: "checkmark")
-//                            .opacity(selection == option ? 1 : 0)
                         }
                         VStack {
                             Spacer()

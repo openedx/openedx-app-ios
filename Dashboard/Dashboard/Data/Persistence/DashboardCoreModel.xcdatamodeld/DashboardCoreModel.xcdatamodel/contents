@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22757" systemVersion="23E224" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CDAssignment" representedClassName=".CDAssignment" syncable="YES" codeGenerationType="class">
         <attribute name="complete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -39,8 +39,8 @@
     <entity name="CDMyEnrollments" representedClassName=".CDMyEnrollments" syncable="YES" codeGenerationType="class">
         <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="totalPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <relationship name="courses" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDDashboardCourse"/>
-        <relationship name="primaryCourse" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPrimaryCourse"/>
+        <relationship name="courses" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDDashboardCourse"/>
+        <relationship name="primaryCourse" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrimaryCourse"/>
     </entity>
     <entity name="CDPrimaryCourse" representedClassName=".CDPrimaryCourse" syncable="YES" codeGenerationType="class">
         <attribute name="courseBanner" optional="YES" attributeType="String"/>
@@ -54,8 +54,8 @@
         <attribute name="progressEarned" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="progressPossible" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="resumeTitle" optional="YES" attributeType="String"/>
-        <relationship name="futureAssignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAssignment"/>
-        <relationship name="pastAssignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAssignment"/>
+        <relationship name="futureAssignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDAssignment"/>
+        <relationship name="pastAssignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDAssignment"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>

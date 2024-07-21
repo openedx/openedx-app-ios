@@ -110,7 +110,18 @@
 "SIGN_IN.LOG_IN_BTN" = "Увійти";
 "REGISTER" = "Реєстрація";
 
-"TOMORROW" = "Tomorrow";
-"YESTERDAY" = "Yesterday";
-
-"OPEN_IN_BROWSER"="View in Safari";
+"TOMORROW" = "Завтра";
+"YESTERDAY" = "Учора";
+"OPEN_IN_BROWSER"="Переглянути в Safari";
+"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY" = "Не хвилюйтеся - перенесіть наш запропонований розклад, щоб виконати прострочені завдання без втрати прогресу.";
+"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON" = "Зміщення термінів виконання";
+"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.HEADER" = "Пропустив деякі терміни?";
+"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.BODY" = "Ми склали запропонований розклад, щоб допомогти вам не відставати від курсу. Але не хвилюйтеся – він гнучкий, тож ви можете навчатися у своєму власному темпі. Якщо трапиться, що ви відстаєте, ви будете мати можливість коригувати дати, щоб тримати себе в курсі.";
+"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.HEADER" = "";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BODY" = "Щоб виконати оцінені завдання в рамках цього курсу, ви можете оновити сьогодні."; "COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BUTTON" = "";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.HEADER" = "";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BODY" = "Ви перевіряєте цей курс, що означає, що ви не можете брати участь у оцінюваних завданнях. Схоже, що ви пропустили деякі важливі терміни згідно з нашим запропонованим розкладом. Щоб виконати оцінені завдання в рамках цей курс і перенести прострочені завдання в майбутнє, ви можете оновити сьогодні.";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BUTTON" = "";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.HEADER" = "";
+"COURSE_DATES.RESET_DATE.ERROR_MESSAGE" = "Ваші дати не можуть бути зміщені. Спробуйте ще раз.";
+"COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE" = "Ваші дати успішно перенесено."; "COURSE_DATES.RESET_DATE.TITLE" = "Дати курсу";
