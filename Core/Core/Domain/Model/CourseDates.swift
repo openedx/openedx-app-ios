@@ -332,20 +332,20 @@ public enum CompletionStatus: String {
     case nextWeek = "Next Week"
     case upcoming = "Upcoming"
     
-    var localized: String {
+    public var localized: String {
         switch self {
         case .completed:
-            return CourseLocalization.CourseDates.completed
+            return CoreLocalization.CourseDates.completed
         case .pastDue:
-            return CourseLocalization.CourseDates.pastDue
+            return CoreLocalization.CourseDates.pastDue
         case .today:
-            return CourseLocalization.CourseDates.today
+            return CoreLocalization.CourseDates.today
         case .thisWeek:
-            return CourseLocalization.CourseDates.today
+            return CoreLocalization.CourseDates.thisWeek
         case .nextWeek:
-            return CourseLocalization.CourseDates.today
+            return CoreLocalization.CourseDates.nextWeek
         case .upcoming:
-            return CourseLocalization.CourseDates.today
+            return CoreLocalization.CourseDates.upcoming
         }
     }
 }
