@@ -301,14 +301,22 @@ public enum CourseLocalization {
     public static let videos = CourseLocalization.tr("Localizable", "DOWNLOAD.VIDEOS", fallback: "Videos")
   }
   public enum Error {
+    /// There are currently no announcements for this course.
+    public static let announcementsUnavailable = CourseLocalization.tr("Localizable", "ERROR.ANNOUNCEMENTS_UNAVAILABLE", fallback: "There are currently no announcements for this course.")
     /// Course component not found, please reload
     public static let componentNotFount = CourseLocalization.tr("Localizable", "ERROR.COMPONENT_NOT_FOUNT", fallback: "Course component not found, please reload")
-    /// There are currently no handouts for this course
-    public static let noHandouts = CourseLocalization.tr("Localizable", "ERROR.NO_HANDOUTS", fallback: "There are currently no handouts for this course")
+    /// Course dates are not currently available.
+    public static let courseDateUnavailable = CourseLocalization.tr("Localizable", "ERROR.COURSE_DATE_UNAVAILABLE", fallback: "Course dates are not currently available.")
+    /// No course content is currently available.
+    public static let coursewareUnavailable = CourseLocalization.tr("Localizable", "ERROR.COURSEWARE_UNAVAILABLE", fallback: "No course content is currently available.")
+    /// There are currently no handouts for this course.
+    public static let handoutsUnavailable = CourseLocalization.tr("Localizable", "ERROR.HANDOUTS_UNAVAILABLE", fallback: "There are currently no handouts for this course.")
     /// You are not connected to the Internet. Please check your Internet connection.
     public static let noInternet = CourseLocalization.tr("Localizable", "ERROR.NO_INTERNET", fallback: "You are not connected to the Internet. Please check your Internet connection.")
     /// Reload
     public static let reload = CourseLocalization.tr("Localizable", "ERROR.RELOAD", fallback: "Reload")
+    /// There are currently no vidoes for this course.
+    public static let videosUnavailable = CourseLocalization.tr("Localizable", "ERROR.VIDEOS_UNAVAILABLE", fallback: "There are currently no vidoes for this course.")
   }
   public enum HandoutsCellAnnouncements {
     /// Keep up with the latest news

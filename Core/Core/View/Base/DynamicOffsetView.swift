@@ -24,16 +24,23 @@ public struct DynamicOffsetView: View {
     
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var viewHeight: CGFloat
     @State private var collapseHeight: CGFloat = .zero
     
     @Environment(\.isHorizontal) private var isHorizontal
     
     public init(
         coordinate: Binding<CGFloat>,
-        collapsed: Binding<Bool>
+        collapsed: Binding<Bool>,
+        viewHeight: Binding<CGFloat>,
+        shouldShowUpgradeButton: Binding<Bool>,
+        shouldHideMenuBar: Binding<Bool>
     ) {
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
+        self._shouldShowUpgradeButton = shouldShowUpgradeButton
+        self._shouldHideMenuBar = shouldHideMenuBar
     }
     
     public var body: some View {
@@ -71,13 +78,34 @@ public struct DynamicOffsetView: View {
         }
     }
     
-    private func changeCollapsedHeight() {
-        collapseHeight = idiom == .pad
-        ? padHeight
-        : (
-            collapsed
-            ? (isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight)
-            : expandedHeight
-        )
+    private func collapsedHorizontalHeight(shouldHideMenuBar: Bool) -> CGFloat {
+        120 - (shouldHideMenuBar ? 50 : 0)
+    }
+    
+    private func expandedHeight(shouldShowUpgradeButton: Bool, shouldHideMenuBar: Bool) -> CGFloat {
+        240 + (shouldShowUpgradeButton ? 63 : 0) - (shouldHideMenuBar ? 80 : 0)
+    }
+
+    private func changeCollapsedHeight(
+        collapsed: Bool,
+        isHorizontal: Bool,
+        shouldShowUpgradeButton: Bool,
+        shouldHideMenuBar: Bool
+    ) {
+        if idiom == .pad {
+            collapseHeight = padHeight
+        } else if collapsed {
+            if isHorizontal {
+                collapseHeight = collapsedHorizontalHeight(shouldHideMenuBar: shouldHideMenuBar)
+            } else {
+                collapseHeight = collapsedVerticalHeight
+            }
+        } else {
+            collapseHeight = expandedHeight(
+                shouldShowUpgradeButton: shouldShowUpgradeButton,
+                shouldHideMenuBar: shouldHideMenuBar
+            )
+        }
+        viewHeight = collapseHeight
     }
 }

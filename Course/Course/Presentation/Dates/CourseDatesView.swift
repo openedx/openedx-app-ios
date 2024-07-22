@@ -19,16 +19,23 @@ public struct CourseDatesView: View {
     private var viewModel: CourseDatesViewModel
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var shouldShowUpgradeButton: Bool
+    @Binding private var shouldHideMenuBar: Bool
+    @Binding private var viewHeight: CGFloat
     
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
-        viewModel: CourseDatesViewModel
+        viewHeight: Binding<CGFloat>,
+        viewModel: CourseDatesViewModel,
+        shouldShowUpgradeButton: Binding<Bool>,
+        shouldHideMenuBar: Binding<Bool>
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -46,10 +53,35 @@ public struct CourseDatesView: View {
                         viewModel: viewModel,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         courseDates: courseDates,
                         courseID: courseID
                     )
                     .padding(.top, 10)
+                } else {
+                    GeometryReader { proxy in
+                        VStack {
+                            ScrollView {
+                                DynamicOffsetView(
+                                    coordinate: $coordinate,
+                                    collapsed: $collapsed,
+                                    viewHeight: $viewHeight,
+                                    shouldShowUpgradeButton: $shouldShowUpgradeButton,
+                                    shouldHideMenuBar: $shouldHideMenuBar
+                                )
+                                
+                                FullScreenErrorView(
+                                    type: .noContent(
+                                        CourseLocalization.Error.courseDateUnavailable,
+                                        image: CoreAssets.information.swiftUIImage
+                                    )
+                                )
+                                .frame(maxWidth: .infinity)
+                                .frame(height: proxy.size.height - viewHeight)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                    }
                 }
             }
             
@@ -154,6 +186,7 @@ struct CourseDateListView: View {
     @State private var isExpanded = false
     @Binding var coordinate: CGFloat
     @Binding var collapsed: Bool
+    @Binding var viewHeight: CGFloat
     var courseDates: CourseDates
     let courseID: String
     
@@ -163,7 +196,10 @@ struct CourseDateListView: View {
                 ScrollView {
                     DynamicOffsetView(
                         coordinate: $coordinate,
-                        collapsed: $collapsed
+                        collapsed: $collapsed,
+                        viewHeight: $viewHeight,
+                        shouldShowUpgradeButton: $shouldShowUpgradeButton,
+                        shouldHideMenuBar: $shouldHideMenuBar
                     )
                     VStack(alignment: .leading, spacing: 0) {
                         
@@ -479,8 +515,12 @@ struct CourseDatesView_Previews: PreviewProvider {
         CourseDatesView(
             courseID: "",
             coordinate: .constant(0),
-            collapsed: .constant(false), 
-            viewModel: viewModel)
+            collapsed: .constant(false),
+            viewHeight: .constant(0),
+            viewModel: viewModel,
+            shouldShowUpgradeButton: .constant(false),
+            shouldHideMenuBar: .constant(false)
+        )
     }
 }
 #endif

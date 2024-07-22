@@ -210,8 +210,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
 
             if isInternetAvaliable {
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
-                isShowProgress = false
-                isShowRefresh = false
                 if let courseStructure {
                     try await getResumeBlock(
                         courseID: courseID,
@@ -224,14 +222,12 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             isShowProgress = false
             isShowRefresh = false
             
-        } catch let error {
+        } catch {
             isShowProgress = false
             isShowRefresh = false
-            if error.isInternetError || error is NoCachedDataError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
+            shouldShowUpgradeButton = false
+            courseStructure = nil
+            courseVideosStructure = nil
         }
     }
     

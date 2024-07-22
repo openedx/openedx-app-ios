@@ -229,9 +229,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testGetCourseBlocksNoCacheError() async throws {
@@ -270,9 +269,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testGetCourseBlocksUnknownError() async throws {
@@ -311,9 +309,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testTabSelectedAnalytics() {

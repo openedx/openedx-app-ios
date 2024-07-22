@@ -14,6 +14,7 @@ struct HandoutsView: View {
     private let courseID: String
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var viewHeight: CGFloat
     
     @StateObject
     private var viewModel: HandoutsViewModel
@@ -22,11 +23,15 @@ struct HandoutsView: View {
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
-        viewModel: HandoutsViewModel
+        viewHeight: Binding<CGFloat>,
+        viewModel: HandoutsViewModel,
+        shouldShowUpgradeButton: Binding<Bool>,
+        shouldHideMenuBar: Binding<Bool>
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
         self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
     
@@ -38,7 +43,10 @@ struct HandoutsView: View {
                     ScrollView {
                         DynamicOffsetView(
                             coordinate: $coordinate,
-                            collapsed: $collapsed
+                            collapsed: $collapsed,
+                            viewHeight: $viewHeight,
+                            shouldShowUpgradeButton: $shouldShowUpgradeButton,
+                            shouldHideMenuBar: $shouldHideMenuBar
                         )
                         if viewModel.isShowProgress {
                             HStack(alignment: .center) {
@@ -48,12 +56,14 @@ struct HandoutsView: View {
                             }
                         } else {
                             VStack(alignment: .leading) {
-                                HandoutsItemCell(type: .handouts, onTapAction: {
+                                HandoutsItemCell(type: .handouts, onTapAction: { type in
                                     viewModel.router.showHandoutsUpdatesView(
                                         handouts: viewModel.handouts,
                                         announcements: nil,
                                         router: viewModel.router,
-                                        cssInjector: viewModel.cssInjector)
+                                        cssInjector: viewModel.cssInjector,
+                                        type: type
+                                    )
                                     viewModel.analytics.trackCourseScreenEvent(
                                         .courseHandouts,
                                         biValue: .courseHandouts,
@@ -64,19 +74,19 @@ struct HandoutsView: View {
                                     .frame(height: 1)
                                     .overlay(Theme.Colors.cardViewStroke)
                                     .accessibilityIdentifier("divider")
-                                HandoutsItemCell(type: .announcements, onTapAction: {
-                                    if !viewModel.updates.isEmpty {
-                                        viewModel.router.showHandoutsUpdatesView(
-                                            handouts: nil,
-                                            announcements: viewModel.updates,
-                                            router: viewModel.router,
-                                            cssInjector: viewModel.cssInjector)
-                                        viewModel.analytics.trackCourseScreenEvent(
-                                            .courseAnnouncement,
-                                            biValue: .courseAnnouncement,
-                                            courseID: courseID
-                                        )
-                                    }
+                                HandoutsItemCell(type: .announcements, onTapAction: { type in
+                                    viewModel.router.showHandoutsUpdatesView(
+                                        handouts: nil,
+                                        announcements: viewModel.updates,
+                                        router: viewModel.router,
+                                        cssInjector: viewModel.cssInjector,
+                                        type: type
+                                    )
+                                    viewModel.analytics.trackCourseEvent(
+                                        .courseAnnouncement,
+                                        biValue: .courseAnnouncement,
+                                        courseID: courseID
+                                    )
                                 })
                             }.padding(.horizontal, 32)
                             Spacer(minLength: 84)
@@ -94,22 +104,6 @@ struct HandoutsView: View {
                         }
                     }
                 )
-                
-                // MARK: - Error Alert
-                if viewModel.showError {
-                    VStack {
-                        Spacer()
-                        SnackBarView(message: viewModel.errorMessage)
-                    }
-                    .padding(.bottom, viewModel.connectivity.isInternetAvaliable
-                             ? 0 : OfflineSnackBarView.height)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
-                        }
-                    }
-                }
             }
             
             .onFirstAppear {
@@ -140,57 +134,59 @@ struct HandoutsView_Previews: PreviewProvider {
             courseID: "",
             coordinate: .constant(0),
             collapsed: .constant(false),
-            viewModel: viewModel
+            viewHeight: .constant(0),
+            viewModel: viewModel,
+            shouldShowUpgradeButton: .constant(false),
+            shouldHideMenuBar: .constant(false)
         )
     }
 }
 #endif
 
-struct HandoutsItemCell: View {
+public enum HandoutsItemType: String {
+    case handouts
+    case announcements
     
-    enum ItemType {
-        case handouts
-        case announcements
-        
-        var title: String {
-            switch self {
-            case .handouts:
-                return CourseLocalization.HandoutsCellHandouts.title
-            case .announcements:
-                return CourseLocalization.HandoutsCellAnnouncements.title
-            }
-        }
-        
-        var description: String {
-            switch self {
-            case .handouts:
-                return CourseLocalization.HandoutsCellHandouts.description
-            case .announcements:
-                return CourseLocalization.HandoutsCellAnnouncements.description
-            }
-        }
-        
-        var image: Image {
-            switch self {
-            case .handouts:
-                return CoreAssets.handouts.swiftUIImage
-            case .announcements:
-                return CoreAssets.announcements.swiftUIImage
-            }
+    var title: String {
+        switch self {
+        case .handouts:
+            return CourseLocalization.HandoutsCellHandouts.title
+        case .announcements:
+            return CourseLocalization.HandoutsCellAnnouncements.title
         }
     }
     
-    private let type: ItemType
-    private let onTapAction: () -> Void
+    var description: String {
+        switch self {
+        case .handouts:
+            return CourseLocalization.HandoutsCellHandouts.description
+        case .announcements:
+            return CourseLocalization.HandoutsCellAnnouncements.description
+        }
+    }
     
-    public init(type: ItemType, onTapAction: @escaping () -> Void) {
+    var image: Image {
+        switch self {
+        case .handouts:
+            return CoreAssets.handouts.swiftUIImage
+        case .announcements:
+            return CoreAssets.announcements.swiftUIImage
+        }
+    }
+}
+
+struct HandoutsItemCell: View {
+    private let type: HandoutsItemType
+    private let onTapAction: (HandoutsItemType) -> Void
+    
+    public init(type: HandoutsItemType, onTapAction: @escaping (HandoutsItemType) -> Void) {
         self.type = type
         self.onTapAction = onTapAction
     }
     
     public var body: some View {
         Button(action: {
-            onTapAction()
+            onTapAction(type)
         }, label: {
             HStack(spacing: 12) {
                 type.image.renderingMode(.template)
