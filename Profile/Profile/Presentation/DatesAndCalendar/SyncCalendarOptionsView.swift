@@ -95,7 +95,7 @@ public struct SyncCalendarOptionsView: View {
                                 coursesToSync
                                     .padding(.bottom, 24)
                             }
-                            viewModel.relativeDatesToggle
+                            RelativeDatesToggleView(useRelativeDates: $viewModel.profileStorage.useRelativeDates)
                         }
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                         .frameLimit(width: proxy.size.width)

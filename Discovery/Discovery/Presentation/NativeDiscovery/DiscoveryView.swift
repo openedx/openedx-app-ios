@@ -106,13 +106,14 @@ public struct DiscoveryView: View {
                                         .padding(.bottom, 20)
                                     Spacer()
                                 }.padding(.leading, 10)
+                                let useRelativeDates = viewModel.storage.useRelativeDates
                                 ForEach(Array(viewModel.courses.enumerated()), id: \.offset) { index, course in
                                     CourseCellView(
                                         model: course,
                                         type: .discovery,
                                         index: index,
                                         cellsCount: viewModel.courses.count, 
-                                        useRelativeDates: viewModel.storage.useRelativeDates
+                                        useRelativeDates: useRelativeDates
                                     ).padding(.horizontal, 24)
                                         .onAppear {
                                             Task {

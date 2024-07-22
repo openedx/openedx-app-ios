@@ -43,7 +43,7 @@ public struct ThreadView: View {
                                     if let comments = viewModel.postComments {
                                         ParentCommentView(
                                             comments: comments,
-                                            isThread: true, 
+                                            isThread: true,
                                             useRelativeDates: viewModel.storage.useRelativeDates,
                                             onAvatarTap: { username in
                                                 viewModel.router.showUserDetails(username: username)
@@ -93,12 +93,13 @@ public struct ThreadView: View {
                                         .padding(.leading, 24)
                                         .font(Theme.Fonts.titleMedium)
                                         .foregroundColor(Theme.Colors.textPrimary)
+                                        let useRelativeDates = viewModel.storage.useRelativeDates
                                         
                                         ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
                                             CommentCell(
                                                 comment: comment,
-                                                addCommentAvailable: true, 
-                                                useRelativeDates: viewModel.storage.useRelativeDates,
+                                                addCommentAvailable: true,
+                                                useRelativeDates: useRelativeDates,
                                                 onAvatarTap: { username in
                                                     viewModel.router.showUserDetails(username: username)
                                                 },

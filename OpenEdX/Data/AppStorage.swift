@@ -332,6 +332,7 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
 
     public var useRelativeDates: Bool {
         get {
+            // We use userDefaults.object to return the default value as true
             return userDefaults.object(forKey: KEY_USE_RELATIVE_DATES) as? Bool ?? true
         }
         set {

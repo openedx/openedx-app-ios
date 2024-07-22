@@ -58,6 +58,7 @@ public struct AllCoursesView: View {
                             .disabled(viewModel.fetchInProgress)
                             .frameLimit(width: proxy.size.width)
                         if let myEnrollments = viewModel.myEnrollments {
+                            let useRelativeDates = viewModel.storage.useRelativeDates
                             LazyVGrid(columns: columns(), spacing: 15) {
                                 ForEach(
                                     Array(myEnrollments.courses.enumerated()),
@@ -89,7 +90,7 @@ public struct AllCoursesView: View {
                                             courseEndDate: course.courseEnd,
                                             hasAccess: course.hasAccess,
                                             showProgress: true, 
-                                            useRelativeDates: viewModel.storage.useRelativeDates
+                                            useRelativeDates: useRelativeDates
                                         ).padding(8)
                                     })
                                     .accessibilityIdentifier("course_item")

@@ -110,6 +110,7 @@ public struct SearchView: View {
                             
                             LazyVStack {
                                 let searchResults = viewModel.searchResults.enumerated()
+                                let useRelativeDates = viewModel.storage.useRelativeDates
                                 ForEach(
                                     Array(searchResults), id: \.offset) { index, course in
                                         CourseCellView(
@@ -117,7 +118,7 @@ public struct SearchView: View {
                                             type: .discovery,
                                             index: index,
                                             cellsCount: viewModel.searchResults.count,
-                                            useRelativeDates: viewModel.storage.useRelativeDates
+                                            useRelativeDates: useRelativeDates
                                         )
                                         .padding(.horizontal, 24)
                                         .onAppear {

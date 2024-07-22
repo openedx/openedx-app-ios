@@ -54,15 +54,15 @@ public struct ListDashboardView: View {
                                 if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
                                     EmptyPageIcon()
                                 } else {
+                                    let useRelativeDates = viewModel.storage.useRelativeDates
                                     ForEach(Array(viewModel.courses.enumerated()),
                                             id: \.offset) { index, course in
-                                        
                                         CourseCellView(
                                             model: course,
                                             type: .dashboard,
                                             index: index,
                                             cellsCount: viewModel.courses.count, 
-                                            useRelativeDates: viewModel.storage.useRelativeDates
+                                            useRelativeDates: useRelativeDates
                                         )
                                         .padding(.horizontal, 20)
                                         .listRowBackground(Color.clear)

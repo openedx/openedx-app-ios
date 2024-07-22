@@ -72,7 +72,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     var router: ProfileRouter
     private var interactor: ProfileInteractorProtocol
-    private var profileStorage: ProfileStorage
+    var profileStorage: ProfileStorage
     private var persistence: ProfilePersistenceProtocol
     private var calendarManager: CalendarManagerProtocol
     private var connectivity: ConnectivityProtocol
@@ -104,39 +104,6 @@ public class DatesAndCalendarViewModel: ObservableObject {
             errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
         }
         return avaliable
-    }
-    
-    private var useRelativeDatesBinding: Binding<Bool> {
-        Binding(
-            get: { self.profileStorage.useRelativeDates },
-            set: { self.profileStorage.useRelativeDates = $0 }
-        )
-    }
-    
-    // MARK: - Options Toggle
-    var relativeDatesToggle: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(ProfileLocalization.Options.title)
-                .font(Theme.Fonts.labelLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-            HStack(spacing: 16) {
-                Toggle("", isOn: useRelativeDatesBinding)
-                    .frame(width: 50)
-                    .tint(Theme.Colors.accentColor)
-                Text(ProfileLocalization.Options.useRelativeDates)
-                    .font(Theme.Fonts.bodyLarge)
-                    .foregroundColor(Theme.Colors.textPrimary)
-            }
-            Text(ProfileLocalization.Options.showRelativeDates)
-                .font(Theme.Fonts.labelMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
-        }
-        .padding(.top, 14)
-        .padding(.horizontal, 24)
-        .frame(minWidth: 0,
-               maxWidth: .infinity,
-               alignment: .leading)
-        .accessibilityIdentifier("relative_dates_toggle")
     }
     
     // MARK: - Lifecycle Functions
