@@ -149,7 +149,11 @@ public struct UnitButtonView: View {
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(
+                                        type == .continueLesson
+                                        ? Theme.Colors.accentColor
+                                        : Theme.Colors.styledButtonText
+                                    )
                                 .rotationEffect(Angle.degrees(180))
                                 .padding(.trailing, 20)
                         }

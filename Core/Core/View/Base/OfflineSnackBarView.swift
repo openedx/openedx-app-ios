@@ -29,23 +29,29 @@ public struct OfflineSnackBarView: View {
                 HStack(spacing: 12) {
                     Text(CoreLocalization.NoInternet.offline)
                         .accessibilityIdentifier("no_internet_text")
+                        .foregroundColor(Theme.Colors.snackbarTextColor)
                     Spacer()
-                    Button(CoreLocalization.NoInternet.dismiss,
-                           action: {
+                    Button(action: {
                         withAnimation {
                             dismiss = true
                         }
+                    }, label: {
+                        Text(CoreLocalization.NoInternet.dismiss)
+                            .foregroundColor(Theme.Colors.snackbarTextColor)
                     })
                     .accessibilityIdentifier("no_internet_dismiss_button")
-                    Button(CoreLocalization.NoInternet.reload,
-                           action: {
+                    Button(action: {
                         Task {
                             await reloadAction()
                         }
                         withAnimation {
                             dismiss = true
                         }
-                    })
+                    }, label: {
+                        Text(CoreLocalization.NoInternet.reload)
+                            .foregroundColor(Theme.Colors.snackbarTextColor)
+                    }
+                    )
                     .accessibilityIdentifier("no_internet_reload_button")
                 }.padding(.horizontal, 16)
                     .font(Theme.Fonts.titleSmall)
