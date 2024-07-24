@@ -51,8 +51,9 @@ enum DashboardEndpoint: EndPointType {
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             
         case let .getAllCourses(_, filteredBy, page):
+            var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
             let params: Parameters = [
-                "page_size": 10,
+                "page_size": idiom == .pad ? 24 : 12,
                 "status": filteredBy,
                 "requested_fields": "course_progress",
                 "page": page
