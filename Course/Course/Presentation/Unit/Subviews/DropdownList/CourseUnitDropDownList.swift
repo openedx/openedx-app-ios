@@ -119,7 +119,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "First Unit",
                 type: .vertical,
                 completion: 0,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             ),
             CourseVertical(
                 blockId: "2",
@@ -128,7 +129,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "Second Unit",
                 type: .vertical,
                 completion: 1,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             ),
             CourseVertical(
                 blockId: "3",
@@ -137,7 +139,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "Third Unit",
                 type: .vertical,
                 completion: 0,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             ),
             CourseVertical(
                 blockId: "4",
@@ -146,7 +149,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "Fourth Unit",
                 type: .vertical,
                 completion: 1,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             )
         ]
         

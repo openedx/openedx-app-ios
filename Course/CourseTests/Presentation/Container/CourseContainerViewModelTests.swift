@@ -67,7 +67,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
         let sequential = CourseSequential(
             blockId: "",
@@ -397,7 +398,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -543,7 +545,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -672,7 +675,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -802,7 +806,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -925,7 +930,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -1064,7 +1070,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -1225,7 +1232,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block, block2]
+            childs: [block, block2],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
