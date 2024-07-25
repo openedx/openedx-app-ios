@@ -205,7 +205,9 @@ struct HandoutsItemCell: View {
                         .font(Theme.Fonts.labelSmall)
                 }
                 Spacer()
-                Image(systemName: "chevron.right").resizable()
+                Image(systemName: "chevron.right")
+                    .resizable()
+                    .flipsForRightToLeftLayoutDirection(true)
                     .frame(width: 7, height: 12)
                     .foregroundColor(Theme.Colors.accentColor)
             }
