@@ -10,6 +10,7 @@ import Core
 import Discussion
 import Swinject
 import Theme
+@_spi(Advanced) import SwiftUIIntrospect
 
 public struct CourseContainerView: View {
     
@@ -38,6 +39,9 @@ public struct CourseContainerView: View {
         }
 
         return topInset
+    }
+    private var additionSpace: CGFloat {
+        viewModel.shouldShowUpgradeButton ? 60 : 0
     }
     
     private struct GeometryName {
@@ -114,16 +118,17 @@ public struct CourseContainerView: View {
                         .offset(
                             y: ignoreOffset
                             ? (collapsed ? coordinateBoundaryLower : .zero)
-                            : ((coordinateBoundaryLower...coordinateBoundaryHigher).contains(coordinate)
-                               ? coordinate
+                            : ((coordinateBoundaryLower-additionSpace...coordinateBoundaryHigher).contains(coordinate)
+                               ? (collapsed ? coordinateBoundaryLower : coordinate)
                                : (collapsed ? coordinateBoundaryLower : .zero))
                         )
                         backButton(containerWidth: proxy.size.width)
                     }
-                }.ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
-                    .onAppear {
-                        self.collapsed = isHorizontal
-                    }
+                }
+                .ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
+                .onAppear {
+                    self.collapsed = isHorizontal
+                }
             }
         }
         
@@ -281,9 +286,12 @@ public struct CourseContainerView: View {
                 }
             }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
-        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { tabView in
+        .versionedTabStyle()
+        .introspect(.scrollView, on: .iOS(.v16...), customize: { tabView in
             tabView.isScrollEnabled = false
+        })
+        .introspect(.viewController, on: .iOS(.v15), customize: { controller in
+            controller.navigationController?.setNavigationBarHidden(true, animated: false)
         })
         .onFirstAppear {
             Task {
@@ -306,7 +314,7 @@ public struct CourseContainerView: View {
     
     private func collapseHeader(_ coordinate: CGFloat) {
         guard !isHorizontal else { return collapsed = true }
-        let lowerBound: CGFloat = -90
+        let lowerBound: CGFloat = -90-additionSpace
         let upperBound: CGFloat = 160
         
         switch coordinate {
@@ -347,6 +355,24 @@ public struct CourseContainerView: View {
         }
         
         return true
+    }
+}
+
+struct TabViewStyleModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.0, *) {
+            content
+                .tabViewStyle(.page(indexDisplayMode: .never))
+        } else {
+            content
+                .tabViewStyle(.automatic)
+        }
+    }
+}
+
+extension View {
+    func versionedTabStyle() -> some View {
+        modifier(TabViewStyleModifier())
     }
 }
 

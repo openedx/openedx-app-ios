@@ -51,9 +51,9 @@ struct CourseHeaderView: View {
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             ScrollView {
-                if let banner = viewModel.courseStructure?.media.image.raw
+                if let banner = (courseRawImage ?? viewModel.courseStructure?.media.image.raw)?
                     .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                    KFImage(courseBannerURL(for: banner))
                         .onFailureImage(CoreAssets.noCourseImage.image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -157,6 +157,13 @@ struct CourseHeaderView: View {
             ) : expandedHeight
         )
         .ignoresSafeArea(edges: .top)
+    }
+    
+    private func courseBannerURL(for path: String) -> URL? {
+        if path.contains("http://") || path.contains("https://") {
+            return URL(string: path)
+        }
+        return URL(string: viewModel.config.baseURL.absoluteString + path)
     }
     
     private func courseMenuBar(containerWidth: CGFloat) -> some View {

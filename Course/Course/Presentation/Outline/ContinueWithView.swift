@@ -41,7 +41,6 @@ struct ContinueWithView: View {
                         .frame(width: 200)
                 }
                 .padding(.horizontal, 24)
-                .padding(.top, 32)
             } else {
                 VStack(alignment: .leading) {
                     ContinueTitle(vertical: courseContinueUnit)

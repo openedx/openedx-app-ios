@@ -29,6 +29,7 @@ public struct DynamicOffsetView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     
+    @State private var isOnTheScreen: Bool = false
     public init(
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
@@ -45,6 +46,9 @@ public struct DynamicOffsetView: View {
         .frame(height: collapseHeight)
         .overlay(
             GeometryReader { geometry -> Color in
+                if !isOnTheScreen {
+                    return .clear
+                }
                 guard idiom != .pad else {
                     return .clear
                 }
@@ -59,7 +63,11 @@ public struct DynamicOffsetView: View {
             }
         )
         .onAppear {
+            isOnTheScreen = true
             changeCollapsedHeight(collapsed: collapsed, isHorizontal: isHorizontal)
+        }
+        .onDisappear {
+            isOnTheScreen = false
         }
         .onChange(of: collapsed) { collapsed in
             if !collapsed {
@@ -74,12 +82,20 @@ public struct DynamicOffsetView: View {
         }
     }
     
+    private func collapsedHorizontalHeight(shouldHideMenuBar: Bool) -> CGFloat {
+        120 - (shouldHideMenuBar ? 50 : 0)
+    }
+    
+    private func expandedHeight(shouldShowUpgradeButton: Bool, shouldHideMenuBar: Bool) -> CGFloat {
+        expandedHeight + (shouldShowUpgradeButton ? 63 : 0) - (shouldHideMenuBar ? 80 : 0)
+    }
+
     private func changeCollapsedHeight(
         collapsed: Bool,
         isHorizontal: Bool
     ) {
         if idiom == .pad {
-            collapseHeight = padHeight
+            collapseHeight = padHeight + (shouldShowUpgradeButton ? 63 : 0) - (shouldHideMenuBar ? 80 : 0)
         } else if collapsed {
             if isHorizontal {
                 collapseHeight = collapsedHorizontalHeight
