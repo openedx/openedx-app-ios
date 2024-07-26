@@ -67,7 +67,7 @@ public struct RegistrationTextField: View {
                     .accessibilityIdentifier("\(config.field.name)_textarea")
             } else {
                 if textContentType == .password {
-                    SecureField(placeholder, text: $config.text)
+                    SecureInputView($config.text)
                         .keyboardType(keyboardType)
                         .textContentType(textContentType)
                         .autocapitalization(.none)
