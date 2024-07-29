@@ -66,7 +66,9 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
         completionPublisher
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                updateEnrollmentsIfNeeded()
+                DispatchQueue.main.async {
+                    self.updateEnrollmentsIfNeeded()
+                }
             }
             .store(in: &cancellables)
         
@@ -80,6 +82,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    @MainActor
     private func updateEnrollmentsIfNeeded() {
         guard updateNeeded else { return }
         Task {
