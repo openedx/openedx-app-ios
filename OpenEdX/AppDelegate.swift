@@ -175,7 +175,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             Task {
                 await Container.shared.resolve(CorePersistenceProtocol.self)?.deleteAllProgress()
-                await Container.shared.resolve(DownloadManagerProtocol.self)?.deleteAllFiles()
+                await Container.shared.resolve(DownloadManagerProtocol.self)?.deleteAll()
                 await Container.shared.resolve(CoreDataHandlerProtocol.self)?.clear()
             }
             window?.rootViewController = RouteController()

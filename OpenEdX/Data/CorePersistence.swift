@@ -75,98 +75,69 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
 
     // MARK: - Public Intents
-
     public func addToDownloadQueue(
         blocks: [CourseBlock],
         downloadQuality: DownloadQuality
     ) async {
         let userId = getUserId32() ?? 0
-        await container.performBackgroundTask { context in
-            for block in blocks {
-                let downloadDataId = self.downloadDataId(from: block.id)
-                let data = try? CorePersistenceHelper.fetchCDDownloadData(
-                    predicate: CDPredicate.id(downloadDataId),
-                    context: context,
-                    userId: userId
-                )
-                guard data?.first == nil else { return }
-                
-                var fileExtension: String?
-                var url: String?
-                var fileSize: Int32?
-                var fileName: String?
-                
-                if let html = block.offlineDownload {
-                    let fileUrl = html.fileUrl
-                    url = fileUrl
-                    fileSize = Int32(html.fileSize)
-                    fileExtension = URL(string: fileUrl)?.pathExtension
-                    if let folderName = URL(string: fileUrl)?.lastPathComponent,
-                       let folderUrl = URL(string: folderName)?.deletingPathExtension() {
-                        fileName = folderUrl.absoluteString
-                    }
-                    saveDownloadData(context)
-                } else if let encodedVideo = block.encodedVideo,
-                          let video = encodedVideo.video(downloadQuality: downloadQuality),
-                          let videoUrl = video.url {
-                    url = videoUrl
-                    if let videoFileSize = video.fileSize {
-                        fileSize = Int32(videoFileSize)
-                    }
-                    fileExtension = URL(string: videoUrl)?.pathExtension
-                    fileName = "\(block.id).\(fileExtension ?? "")"
-                    saveDownloadData(context)
-                } else { return }
-                
-                func saveDownloadData(_ context: NSManagedObjectContext) {
-                    let newDownloadData = CDDownloadData(context: context)
-                    context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                    newDownloadData.id = downloadDataId
-                    newDownloadData.blockId = block.id
-                    newDownloadData.userId = userId
-                    newDownloadData.courseId = block.courseId
-                    newDownloadData.url = url
-                    newDownloadData.fileName = fileName
-                    newDownloadData.displayName = block.displayName
-                    if let lastModified = block.offlineDownload?.lastModified {
-                        newDownloadData.lastModified = lastModified
-                    }
-                    newDownloadData.progress = .zero
-                    newDownloadData.resumeData = nil
-                    newDownloadData.state = DownloadState.waiting.rawValue
-                    newDownloadData.type = block.offlineDownload != nil
-                    ? DownloadType.html.rawValue
-                    : DownloadType.video.rawValue
-                    newDownloadData.fileSize = Int32(fileSize ?? 0)
-                }
-            }
+        let objects: [[String: Any]] = blocks.compactMap { block -> [String: Any]? in
+            let downloadDataId = downloadDataId(from: block.id)
+            var fileExtension: String?
+            let url: String
+            var fileSize: Int32?
+            var fileName: String?
             
+            if let html = block.offlineDownload {
+                let fileUrl = html.fileUrl
+                url = fileUrl
+                fileSize = Int32(html.fileSize)
+                fileExtension = URL(string: fileUrl)?.pathExtension
+                if let folderName = URL(string: fileUrl)?.lastPathComponent,
+                   let folderUrl = URL(string: folderName)?.deletingPathExtension() {
+                    fileName = folderUrl.absoluteString
+                }
+            } else if let encodedVideo = block.encodedVideo,
+                      let video = encodedVideo.video(downloadQuality: downloadQuality),
+                      let videoUrl = video.url {
+                url = videoUrl
+                if let videoFileSize = video.fileSize {
+                    fileSize = Int32(videoFileSize)
+                }
+                fileExtension = URL(string: videoUrl)?.pathExtension
+                fileName = "\(block.id).\(fileExtension ?? "")"
+            } else { return nil }
+            
+            var dictionary = [
+                "id": downloadDataId,
+                "blockId": block.id,
+                "userId": userId,
+                "courseId": block.courseId,
+                "url": url,
+                "fileName": fileName ?? "",
+                "displayName": block.displayName,
+                "progress": Double.zero,
+                "state": DownloadState.waiting.rawValue,
+                "type": block.offlineDownload != nil ? DownloadType.html.rawValue : DownloadType.video.rawValue,
+                "fileSize": fileSize ?? 0,
+            ]
+            if let lastModified = block.offlineDownload?.lastModified {
+                dictionary["lastModified"] = lastModified
+            }
+            return dictionary
+        }
+        let batchInsertRequest = NSBatchInsertRequest(entityName: "CDDownloadData", objects: objects)
+        batchInsertRequest.resultType = .objectIDs
+        await container.performBackgroundTask { context in
             do {
-                try context.save()
+                let batchInsertResult = try context.execute(batchInsertRequest) as? NSBatchInsertResult
+                if let objectIDs = batchInsertResult?.result as? [NSManagedObjectID] {
+                    NSManagedObjectContext.mergeChanges(
+                        fromRemoteContextSave: [NSInsertedObjectsKey: objectIDs],
+                        into: [context]
+                    )
+                }
             } catch {
                 debugLog("⛔️⛔️⛔️⛔️⛔️", error)
-            }
-        }
-    }
-
-    public func addToDownloadQueue(tasks: [DownloadDataTask]) async {
-        await container.performBackgroundTask { context in
-        for task in tasks {
-                let newDownloadData = CDDownloadData(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                newDownloadData.id = task.id
-                newDownloadData.blockId = task.blockId
-                newDownloadData.userId = Int32(task.userId)
-                newDownloadData.courseId = task.courseId
-                newDownloadData.url = task.url
-                newDownloadData.fileName = task.fileName
-                newDownloadData.displayName = task.displayName
-                newDownloadData.lastModified = task.lastModified
-                newDownloadData.progress = .zero
-                newDownloadData.resumeData = nil
-                newDownloadData.state = DownloadState.waiting.rawValue
-                newDownloadData.type = task.type.rawValue
-                newDownloadData.fileSize = Int32(task.fileSize)
             }
         }
     }
@@ -279,25 +250,25 @@ public final class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func deleteDownloadDataTask(id: String) async throws {
-        let dataId = downloadDataId(from: id)
-        let userId = getUserId32()
+    public func deleteDownloadDataTasks(ids: [String]) async {
         await container.performBackgroundTask { context in
+            let request: NSFetchRequest<any NSFetchRequestResult> = CDDownloadData.fetchRequest()
+            request.predicate = NSPredicate(format: "id IN %@", ids)
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+            batchDeleteRequest.resultType = .resultTypeObjectIDs
+            
             do {
-                let records = try CorePersistenceHelper.fetchCDDownloadData(
-                    predicate: .id(dataId),
-                    context: context,
-                    userId: userId
-                )
-
-                for record in records {
-                    context.delete(record)
-                    try context.save()
-                    debugLog("File erased successfully")
+                let deleteResult = try context.execute(batchDeleteRequest) as? NSBatchDeleteResult
+                
+                if let objectIDs = deleteResult?.result as? [NSManagedObjectID] {
+                    NSManagedObjectContext.mergeChanges(
+                        fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs],
+                        into: [context]
+                    )
                 }
-
+                debugLog("Tasks erased successfully")
             } catch {
-                debugLog("Error fetching records: \(error.localizedDescription)")
+                debugLog("Error deleting tasks: \(error.localizedDescription)")
             }
         }
     }

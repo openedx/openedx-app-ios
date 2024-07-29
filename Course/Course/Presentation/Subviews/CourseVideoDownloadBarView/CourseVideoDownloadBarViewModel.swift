@@ -40,6 +40,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         }
     }
 
+    /// total progress of downloading video files
     var progress: Double {
         guard let currentDownloadTask = currentDownloadTask else {
             return 0.0
@@ -51,7 +52,9 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         }
         courseViewModel.courseDownloadTasks[index].progress = currentDownloadTask.progress
         let videoTasks = courseViewModel.courseDownloadTasks.filter { $0.type == .video }
-        return videoTasks.reduce(0) { $0 + $1.progress } / Double(videoTasks.count)
+        return videoTasks.reduce(0) {
+            $0 + ($1.state == .finished ? 1 : $1.progress)
+        } / Double(videoTasks.count)
     }
 
     var downloadableVerticals: Set<VerticalsDownloadState> {

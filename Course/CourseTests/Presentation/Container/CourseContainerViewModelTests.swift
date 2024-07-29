@@ -487,11 +487,10 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
-        await viewModel.download(
-            state: .available,
-            blocks: [block],
-            sequentials: [sequential]
-        )
+        await viewModel.onDownloadViewTap(
+             chapter: chapter,
+             state: .available
+         )
 
         await Task.yield()
 
@@ -613,11 +612,10 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
-        await viewModel.download(
-            state: .available,
-            blocks: [block],
-            sequentials: [sequential]
-        )
+        await viewModel.onDownloadViewTap(
+             chapter: chapter,
+             state: .downloading
+         )
 
         await Task.yield()
 
@@ -738,11 +736,10 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.courseStructure = courseStructure
         await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
-        await viewModel.download(
-            state: .available,
-            blocks: [block],
-            sequentials: [sequential]
-        )
+        await viewModel.onDownloadViewTap(
+             chapter: chapter,
+             state: .finished
+         )
 
         await Task.yield()
 

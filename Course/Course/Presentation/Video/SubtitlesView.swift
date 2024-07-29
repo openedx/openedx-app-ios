@@ -58,10 +58,9 @@ public struct SubtitlesView: View {
                     }
                 }
                 ZStack {
-                    
                     ScrollView {
                         if viewModel.subtitles.count > 0 {
-                            VStack(alignment: .leading, spacing: 0) {
+                            LazyVStack(alignment: .leading, spacing: 0) {
                                 ForEach(viewModel.subtitles, id: \.id) { subtitle in
                                     HStack {
                                         Button(action: {

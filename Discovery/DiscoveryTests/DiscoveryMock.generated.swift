@@ -4307,15 +4307,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		}
     }
 
-    open func deleteFile(blocks: [CourseBlock]) {
-        addInvocation(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
-		perform?(`blocks`)
-    }
-
-    open func deleteAllFiles() {
-        addInvocation(.m_deleteAllFiles)
-		let perform = methodPerformValue(.m_deleteAllFiles) as? () -> Void
+    open func deleteAll() {
+        addInvocation(.m_deleteAll)
+		let perform = methodPerformValue(.m_deleteAll) as? () -> Void
 		perform?()
     }
 
@@ -4379,6 +4373,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		perform?()
     }
 
+    open func delete(blocks: [CourseBlock], courseId: String) {
+        addInvocation(.m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>.value(`blocks`), Parameter<String>.value(`courseId`)))
+		let perform = methodPerformValue(.m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>.value(`blocks`), Parameter<String>.value(`courseId`))) as? ([CourseBlock], String) -> Void
+		perform?(`blocks`, `courseId`)
+    }
+
 
     fileprivate enum MethodType {
         case m_publisher
@@ -4390,13 +4390,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_cancelDownloading__task_task(Parameter<DownloadDataTask>)
         case m_cancelDownloading__courseId_courseId(Parameter<String>)
         case m_cancelAllDownloading
-        case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
-        case m_deleteAllFiles
+        case m_deleteAll
         case m_fileUrl__for_blockId(Parameter<String>)
         case m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>)
         case m_resumeDownloading
         case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
         case m_removeAppSupportDirectoryUnusedContent
+        case m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>, Parameter<String>)
         case p_currentDownloadTask_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -4435,12 +4435,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 
             case (.m_cancelAllDownloading, .m_cancelAllDownloading): return .match
 
-            case (.m_deleteFile__blocks_blocks(let lhsBlocks), .m_deleteFile__blocks_blocks(let rhsBlocks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_deleteAllFiles, .m_deleteAllFiles): return .match
+            case (.m_deleteAll, .m_deleteAll): return .match
 
             case (.m_fileUrl__for_blockId(let lhsBlockid), .m_fileUrl__for_blockId(let rhsBlockid)):
 				var results: [Matcher.ParameterComparisonResult] = []
@@ -4460,6 +4455,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_removeAppSupportDirectoryUnusedContent, .m_removeAppSupportDirectoryUnusedContent): return .match
+
+            case (.m_delete__blocks_blockscourseId_courseId(let lhsBlocks, let lhsCourseid), .m_delete__blocks_blockscourseId_courseId(let rhsBlocks, let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				return Matcher.ComparisonResult(results)
             case (.p_currentDownloadTask_get,.p_currentDownloadTask_get): return Matcher.ComparisonResult.match
             default: return .none
             }
@@ -4476,13 +4477,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case let .m_cancelDownloading__task_task(p0): return p0.intValue
             case let .m_cancelDownloading__courseId_courseId(p0): return p0.intValue
             case .m_cancelAllDownloading: return 0
-            case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
-            case .m_deleteAllFiles: return 0
+            case .m_deleteAll: return 0
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
             case let .m_updateUnzippedFileSize__for_sequentials(p0): return p0.intValue
             case .m_resumeDownloading: return 0
             case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
             case .m_removeAppSupportDirectoryUnusedContent: return 0
+            case let .m_delete__blocks_blockscourseId_courseId(p0, p1): return p0.intValue + p1.intValue
             case .p_currentDownloadTask_get: return 0
             }
         }
@@ -4497,13 +4498,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_cancelDownloading__task_task: return ".cancelDownloading(task:)"
             case .m_cancelDownloading__courseId_courseId: return ".cancelDownloading(courseId:)"
             case .m_cancelAllDownloading: return ".cancelAllDownloading()"
-            case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
-            case .m_deleteAllFiles: return ".deleteAllFiles()"
+            case .m_deleteAll: return ".deleteAll()"
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
             case .m_updateUnzippedFileSize__for_sequentials: return ".updateUnzippedFileSize(for:)"
             case .m_resumeDownloading: return ".resumeDownloading()"
             case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
             case .m_removeAppSupportDirectoryUnusedContent: return ".removeAppSupportDirectoryUnusedContent()"
+            case .m_delete__blocks_blockscourseId_courseId: return ".delete(blocks:courseId:)"
             case .p_currentDownloadTask_get: return "[get] .currentDownloadTask"
             }
         }
@@ -4668,13 +4669,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelDownloading(task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_cancelDownloading__task_task(`task`))}
         public static func cancelDownloading(courseId: Parameter<String>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseId(`courseId`))}
         public static func cancelAllDownloading() -> Verify { return Verify(method: .m_cancelAllDownloading)}
-        public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
-        public static func deleteAllFiles() -> Verify { return Verify(method: .m_deleteAllFiles)}
+        public static func deleteAll() -> Verify { return Verify(method: .m_deleteAll)}
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
         public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>) -> Verify { return Verify(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`))}
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
         public static func removeAppSupportDirectoryUnusedContent() -> Verify { return Verify(method: .m_removeAppSupportDirectoryUnusedContent)}
+        public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>) -> Verify { return Verify(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`))}
         public static var currentDownloadTask: Verify { return Verify(method: .p_currentDownloadTask_get) }
     }
 
@@ -4709,11 +4710,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelAllDownloading(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_cancelAllDownloading, performs: perform)
         }
-        public static func deleteFile(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
-            return Perform(method: .m_deleteFile__blocks_blocks(`blocks`), performs: perform)
-        }
-        public static func deleteAllFiles(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_deleteAllFiles, performs: perform)
+        public static func deleteAll(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_deleteAll, performs: perform)
         }
         public static func fileUrl(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_fileUrl__for_blockId(`blockId`), performs: perform)
@@ -4729,6 +4727,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func removeAppSupportDirectoryUnusedContent(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_removeAppSupportDirectoryUnusedContent, performs: perform)
+        }
+        public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>, perform: @escaping ([CourseBlock], String) -> Void) -> Perform {
+            return Perform(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`), performs: perform)
         }
     }
 

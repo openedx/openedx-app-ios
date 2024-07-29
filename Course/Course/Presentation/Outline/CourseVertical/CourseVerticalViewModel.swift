@@ -77,7 +77,9 @@ public final class CourseVerticalViewModel: BaseCourseViewModel {
                     try await manager.cancelDownloading(courseId: vertical.courseId, blocks: blocks)
                     downloadState[vertical.id] = .available
                 case .finished:
-                    await manager.deleteFile(blocks: blocks)
+                    if let courseId = blocks.first?.courseId {
+                        await manager.delete(blocks: blocks, courseId: courseId)
+                    }
                     downloadState[vertical.id] = .available
                 }
             } catch let error {

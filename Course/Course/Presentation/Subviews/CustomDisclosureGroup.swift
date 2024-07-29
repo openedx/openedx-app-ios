@@ -225,16 +225,7 @@ struct CustomDisclosureGroup: View {
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
         Task {
-            var allBlocks: [CourseBlock] = []
-            for sequential in chapter.childs {
-                let blocks = await viewModel.collectBlocks(chapter: chapter, blockId: sequential.id, state: state)
-                allBlocks.append(contentsOf: blocks)
-            }
-            await viewModel.download(
-                state: state,
-                blocks: allBlocks,
-                sequentials: chapter.childs.filter({ $0.isDownloadable })
-            )
+            await viewModel.onDownloadViewTap(chapter: chapter, state: state)
         }
     }
     
