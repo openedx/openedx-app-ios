@@ -125,14 +125,24 @@ public enum CoreLocalization {
     public static let courseEnds = CoreLocalization.tr("Localizable", "DATE.COURSE_ENDS", fallback: "Course Ends")
     /// Course Starts
     public static let courseStarts = CoreLocalization.tr("Localizable", "DATE.COURSE_STARTS", fallback: "Course Starts")
+    /// %@ Days Ago
+    public static func daysAgo(_ p1: Any) -> String {
+      return CoreLocalization.tr("Localizable", "DATE.DAYS_AGO", String(describing: p1), fallback: "%@ Days Ago")
+    }
     /// Ended
     public static let ended = CoreLocalization.tr("Localizable", "DATE.ENDED", fallback: "Ended")
     /// Just now
     public static let justNow = CoreLocalization.tr("Localizable", "DATE.JUST_NOW", fallback: "Just now")
+    /// Next %@
+    public static func next(_ p1: Any) -> String {
+      return CoreLocalization.tr("Localizable", "DATE.NEXT", String(describing: p1), fallback: "Next %@")
+    }
     /// Start
     public static let start = CoreLocalization.tr("Localizable", "DATE.START", fallback: "Start")
     /// Started
     public static let started = CoreLocalization.tr("Localizable", "DATE.STARTED", fallback: "Started")
+    /// Today
+    public static let today = CoreLocalization.tr("Localizable", "DATE.TODAY", fallback: "Today")
   }
   public enum DateFormat {
     /// MMM dd, yyyy

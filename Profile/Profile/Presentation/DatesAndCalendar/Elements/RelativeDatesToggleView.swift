@@ -24,7 +24,11 @@ struct RelativeDatesToggleView: View {
                     .font(Theme.Fonts.bodyLarge)
                     .foregroundColor(Theme.Colors.textPrimary)
             }
-            Text(ProfileLocalization.Options.showRelativeDates)
+            Text(
+                useRelativeDates 
+                ? ProfileLocalization.Options.showRelativeDates
+                : ProfileLocalization.Options.showFullDates
+            )
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(Theme.Colors.textPrimary)
         }
@@ -34,13 +38,5 @@ struct RelativeDatesToggleView: View {
                maxWidth: .infinity,
                alignment: .leading)
         .accessibilityIdentifier("relative_dates_toggle")
-    }
-}
-
-// Usage example
-struct ContentView: View {
-
-    var body: some View {
-        RelativeDatesToggleView(useRelativeDates: .constant(true))
     }
 }

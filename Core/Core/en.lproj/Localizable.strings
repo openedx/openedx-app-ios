@@ -53,6 +53,9 @@
 "DATE.START" = "Start";
 "DATE.STARTED" = "Started";
 "DATE.JUST_NOW" = "Just now";
+"DATE.TODAY" = "Today";
+"DATE.NEXT" = "Next %@";
+"DATE.DAYS_AGO" = "%@ Days Ago";
 
 "ALERT.ACCEPT" = "ACCEPT";
 "ALERT.CANCEL" = "CANCEL";

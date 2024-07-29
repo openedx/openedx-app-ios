@@ -34,35 +34,59 @@ public extension Date {
     }
     
     func timeAgoDisplay() -> String {
-        let formatter = RelativeDateTimeFormatter()
-        formatter.locale = .current
-        formatter.unitsStyle = .full
-        
         let currentDate = Date()
-        let sevenDaysAgo = Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!
-        let sevenDaysAhead = Calendar.current.date(byAdding: .day, value: 7, to: currentDate)!
-
-        if self >= sevenDaysAgo && self <= sevenDaysAhead {
-            if self.description == currentDate.description {
-                return CoreLocalization.Date.justNow
-            } else {
-                return formatter.localizedString(for: self, relativeTo: currentDate)
-            }
-        } else {
-            let specificFormatter = DateFormatter()
-            specificFormatter.dateFormat = "MMMM d"
-            
-            let yearFormatter = DateFormatter()
-            yearFormatter.dateFormat = "yyyy"
-            let currentYear = yearFormatter.string(from: currentDate)
-            let dateYear = yearFormatter.string(from: self)
-            
-            if currentYear != dateYear {
-                specificFormatter.dateFormat = "MMMM d, yyyy"
-            }
-            
-            return specificFormatter.string(from: self)
+        let calendar = Calendar.current
+        
+        let startOfCurrentDate = calendar.startOfDay(for: currentDate)
+        let startOfSelfDate = calendar.startOfDay(for: self)
+        
+        // Calculate date ranges
+        let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: startOfCurrentDate)!
+        let sevenDaysAhead = calendar.date(byAdding: .day, value: 7, to: startOfCurrentDate)!
+        
+        let isCurrentYear = calendar.component(.year, from: self) == calendar.component(.year, from: currentDate)
+        
+        if calendar.isDateInToday(self) {
+            return CoreLocalization.Date.today
         }
+        
+        if calendar.isDateInYesterday(self) {
+            return CoreLocalization.yesterday
+        }
+        
+        if calendar.isDateInTomorrow(self) {
+            return CoreLocalization.tomorrow
+        }
+        
+        if startOfSelfDate > startOfCurrentDate && startOfSelfDate <= sevenDaysAhead {
+            let weekdayFormatter = DateFormatter()
+            weekdayFormatter.dateFormat = "EEEE"
+            if startOfSelfDate == calendar.date(byAdding: .day, value: 1, to: startOfCurrentDate) {
+                return CoreLocalization.tomorrow
+            } else if startOfSelfDate == calendar.date(byAdding: .day, value: 7, to: startOfCurrentDate) {
+                return CoreLocalization.Date.next(weekdayFormatter.string(from: startOfSelfDate))
+            } else {
+                return weekdayFormatter.string(from: startOfSelfDate)
+            }
+        }
+        
+        if startOfSelfDate < startOfCurrentDate && startOfSelfDate >= sevenDaysAgo {
+            let daysAgo = calendar.dateComponents([.day], from: startOfSelfDate, to: startOfCurrentDate).day!
+            return CoreLocalization.Date.daysAgo(daysAgo)
+        }
+        
+        let specificFormatter = DateFormatter()
+        specificFormatter.dateFormat = isCurrentYear ? "MMMM d" : "MMMM d, yyyy"
+        return specificFormatter.string(from: self)
+    }
+
+    func isDateInNextWeek(date: Date, currentDate: Date) -> Bool {
+        let calendar = Calendar.current
+        guard let nextWeek = calendar.date(byAdding: .weekOfYear, value: 1, to: currentDate) else { return false }
+        let startOfNextWeek = calendar.startOfDay(for: nextWeek)
+        guard let endOfNextWeek = calendar.date(byAdding: .day, value: 6, to: startOfNextWeek) else { return false }
+        let startOfSelfDate = calendar.startOfDay(for: date)
+        return startOfSelfDate >= startOfNextWeek && startOfSelfDate <= endOfNextWeek
     }
     
     init(subtitleTime: String) {

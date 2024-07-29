@@ -240,6 +240,8 @@ public enum ProfileLocalization {
     public static let title = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TITLE", fallback: "Comfirm log out")
   }
   public enum Options {
+    /// Show full dates like “January 1, 2021”
+    public static let showFullDates = ProfileLocalization.tr("Localizable", "OPTIONS.SHOW_FULL_DATES", fallback: "Show full dates like “January 1, 2021”")
     /// Show relative dates like “Tomorrow” and “Yesterday”
     public static let showRelativeDates = ProfileLocalization.tr("Localizable", "OPTIONS.SHOW_RELATIVE_DATES", fallback: "Show relative dates like “Tomorrow” and “Yesterday”")
     /// Options

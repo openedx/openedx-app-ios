@@ -112,6 +112,7 @@
 "OPTIONS.TITLE" = "Options";
 "OPTIONS.USE_RELATIVE_DATES" = "Use relative dates";
 "OPTIONS.SHOW_RELATIVE_DATES" = "Show relative dates like “Tomorrow” and “Yesterday”";
+"OPTIONS.SHOW_FULL_DATES" = "Show full dates like “January 1, 2021”";
 
 "DATES_AND_CALENDAR.TITLE" = "Dates & Calendar";
 "COURSE_CALENDAR_SYNC.TITLE" = "Course Calendar Sync";

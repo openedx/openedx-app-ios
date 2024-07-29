@@ -72,7 +72,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     var router: ProfileRouter
     private var interactor: ProfileInteractorProtocol
-    var profileStorage: ProfileStorage
+    @Published var profileStorage: ProfileStorage
     private var persistence: ProfilePersistenceProtocol
     private var calendarManager: CalendarManagerProtocol
     private var connectivity: ConnectivityProtocol
