@@ -59,7 +59,7 @@ public struct AllCoursesView: View {
                                 .frameLimit(width: proxy.size.width)
                             if let myEnrollments = viewModel.myEnrollments {
                                 let useRelativeDates = viewModel.storage.useRelativeDates
-                                LazyVGrid(columns: columns(), spacing: 15) {
+                                LazyVGrid(columns: columns(), spacing: 0) {
                                     ForEach(
                                         Array(myEnrollments.courses.enumerated()),
                                         id: \.offset
@@ -173,13 +173,13 @@ public struct AllCoursesView: View {
     private func columns() -> [GridItem] {
         isHorizontal || idiom == .pad
         ? [
-            GridItem(.flexible()),
-            GridItem(.flexible()),
-            GridItem(.flexible())
+            GridItem(.flexible(), spacing: 0),
+            GridItem(.flexible(), spacing: 0),
+            GridItem(.flexible(), spacing: 0)
         ]
         : [
-            GridItem(.flexible()),
-            GridItem(.flexible())
+            GridItem(.flexible(), spacing: 0),
+            GridItem(.flexible(), spacing: 0)
         ]
     }
     
