@@ -541,7 +541,8 @@ public class Router: AuthorizationRouter,
                         verticalIndex: verticalPosition ?? 0,
                         chapters: courseStructure.childs,
                         chapterIndex: chapterPosition ?? 0,
-                        sequentialIndex: sequentialPosition ?? 0)
+                        sequentialIndex: sequentialPosition ?? 0
+                    )
                 }
             } else if !blockLink.isEmpty, let blockURL = URL(string: blockLink) {
                 DispatchQueue.main.async { [weak self] in

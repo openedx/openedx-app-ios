@@ -224,6 +224,10 @@ public enum CoreLocalization {
     public static let profile = CoreLocalization.tr("Localizable", "MAINSCREEN.PROFILE", fallback: "Profile")
     /// Programs
     public static let programs = CoreLocalization.tr("Localizable", "MAINSCREEN.PROGRAMS", fallback: "Programs")
+    /// You already set up an %@ account with your %@ account. You have been logged in with that account.
+    public static func socialRegisterBanner(_ p1: Any, _ p2: Any) -> String {
+      return CoreLocalization.tr("Localizable", "MAINSCREEN.SOCIAL_REGISTER_BANNER", String(describing: p1), String(describing: p2), fallback: "You already set up an %@ account with your %@ account. You have been logged in with that account.")
+    }
   }
   public enum NoInternet {
     /// Dismiss

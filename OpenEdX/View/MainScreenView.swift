@@ -48,6 +48,7 @@ struct MainScreenView: View {
                     if updateAvailable {
                         UpdateNotificationView(config: viewModel.config)
                     }
+                    registerBanner
                 }
                 .tabItem {
                     CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
@@ -55,6 +56,7 @@ struct MainScreenView: View {
                 }
                 .tag(MainTab.dashboard)
                 .accessibilityIdentifier("dashboard_tabitem")
+                .animation(.easeInOut, value: viewModel.showRegisterBanner)
                 if viewModel.config.program.enabled {
                     ZStack {
                         if viewModel.config.program.type == .webview {
@@ -90,6 +92,7 @@ struct MainScreenView: View {
                     if updateAvailable {
                         UpdateNotificationView(config: viewModel.config)
                     }
+                    registerBanner
                 }
                 .tabItem {
                     CoreAssets.learn.swiftUIImage.renderingMode(.template)
@@ -97,6 +100,7 @@ struct MainScreenView: View {
                 }
                 .tag(MainTab.dashboard)
                 .accessibilityIdentifier("dashboard_tabitem")
+                .animation(.easeInOut, value: viewModel.showRegisterBanner)
             }
             
             if viewModel.config.discovery.enabled {
@@ -193,8 +197,30 @@ struct MainScreenView: View {
             }
             viewModel.trackMainDashboardLearnTabClicked()
             viewModel.trackMainDashboardMyCoursesClicked()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                viewModel.checkIfNeedToShowRegisterBanner()
+            }
         }
         .accentColor(Theme.Colors.accentXColor)
+    }
+    
+    @ViewBuilder
+    private var registerBanner: some View {
+        if viewModel.showRegisterBanner {
+            VStack {
+                SnackBarView(
+                    message: viewModel.registerBannerText,
+                    textColor: Theme.Colors.primaryButtonTextColor,
+                    bgColor: Theme.Colors.accentColor
+                )
+                Spacer()
+            }.transition(.move(edge: .top))
+                .onAppear {
+                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                        viewModel.registerBannerWasShowed()
+                    }
+                }
+        }
     }
     
     private func titleBar() -> String {
