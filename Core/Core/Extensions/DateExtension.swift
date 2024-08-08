@@ -41,8 +41,10 @@ public extension Date {
         let startOfSelfDate = calendar.startOfDay(for: self)
         
         // Calculate date ranges
-        let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: startOfCurrentDate)!
-        let sevenDaysAhead = calendar.date(byAdding: .day, value: 7, to: startOfCurrentDate)!
+        guard let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: startOfCurrentDate),
+              let sevenDaysAhead = calendar.date(byAdding: .day, value: 7, to: startOfCurrentDate) else {
+            return self.dateToString(style: .mmddyy, useRelativeDates: false)
+        }
         
         let isCurrentYear = calendar.component(.year, from: self) == calendar.component(.year, from: currentDate)
         
@@ -71,7 +73,9 @@ public extension Date {
         }
         
         if startOfSelfDate < startOfCurrentDate && startOfSelfDate >= sevenDaysAgo {
-            let daysAgo = calendar.dateComponents([.day], from: startOfSelfDate, to: startOfCurrentDate).day!
+            guard let daysAgo = calendar.dateComponents([.day], from: startOfSelfDate, to: startOfCurrentDate).day else {
+                return self.dateToString(style: .mmddyy, useRelativeDates: false)
+            }
             return CoreLocalization.Date.daysAgo(daysAgo)
         }
         

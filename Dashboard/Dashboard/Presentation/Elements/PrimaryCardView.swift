@@ -271,9 +271,7 @@ struct PrimaryCardView_Previews: PreviewProvider {
                 canResume: true,
                 resumeTitle: "Course Chapter 1",
                 useRelativeDates: true,
-                assignmentAction: {
-                    _ in
-                },
+                assignmentAction: { _ in },
                 openCourseAction: {},
                 resumeAction: {}
             )
