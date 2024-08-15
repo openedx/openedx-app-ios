@@ -279,7 +279,7 @@ public struct SignInView: View {
         .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
-        .onFirstAppear{
+        .onFirstAppear {
             viewModel.trackScreenEvent()
         }
     }
@@ -308,7 +308,7 @@ public struct SignInView: View {
     }
 
     private func handleURL(_ url: URL) -> OpenURLAction.Result {
-        viewModel.router.showWebBrowser(title: url.host ?? "", url: url)
+        viewModel.router.showWebBrowser(title: "", url: url)
         return .handled
     }
 }
