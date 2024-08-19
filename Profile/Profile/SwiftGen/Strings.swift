@@ -177,7 +177,7 @@ public enum ProfileLocalization {
     /// Back to profile
     public static let backToProfile = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.BACK_TO_PROFILE", fallback: "Back to profile")
     /// Yes, delete account
-    public static let comfirm = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.COMFIRM", fallback: "Yes, delete account")
+    public static let confirm = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.CONFIRM", fallback: "Yes, delete account")
     /// To confirm this action, please enter your account password.
     public static let description = ProfileLocalization.tr("Localizable", "DELETE_ACCOUNT.DESCRIPTION", fallback: "To confirm this action, please enter your account password.")
     /// The password is incorrect. Please try again.
@@ -236,8 +236,8 @@ public enum ProfileLocalization {
   public enum LogoutAlert {
     /// Are you sure you want to log out?
     public static let text = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TEXT", fallback: "Are you sure you want to log out?")
-    /// Comfirm log out
-    public static let title = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TITLE", fallback: "Comfirm log out")
+    /// Confirm log out
+    public static let title = ProfileLocalization.tr("Localizable", "LOGOUT_ALERT.TITLE", fallback: "Confirm log out")
   }
   public enum Options {
     /// Show full dates like “January 1, 2021”

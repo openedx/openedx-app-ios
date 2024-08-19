@@ -70,7 +70,6 @@
 		02A9A9082978194100B55797 /* DashboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DashboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A9A90A2978194100B55797 /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
 		02A9A92829781A4D00B55797 /* DashboardMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardMock.generated.swift; sourceTree = "<group>"; };
-		02ED50CD29A64B9B008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02EF39E728D89F560058F6BD /* Dashboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Dashboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02F175322A4DABBF0019CD70 /* DashboardAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE029252FCB0051930C /* DashboardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRouter.swift; sourceTree = "<group>"; };
@@ -532,7 +531,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				02F6EF4428D9ECC500835477 /* en */,
-				02ED50CD29A64B9B008341CD /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

@@ -130,6 +130,7 @@ struct ProfileSupportInfoView: View {
                     .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
+                    .flipsForRightToLeftLayoutDirection(true)
             }
         }
         .simultaneousGesture(TapGesture().onEnded {
@@ -187,6 +188,7 @@ struct ProfileSupportInfoView: View {
                     .font(Theme.Fonts.titleMedium)
                 Spacer()
                 Image(systemName: "chevron.right")
+                    .flipsForRightToLeftLayoutDirection(true)
             }
         }
         .foregroundColor(.primary)

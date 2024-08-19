@@ -142,3 +142,10 @@
 "COURSE_DATES.RESET_DATE.ERROR_MESSAGE" = "Your dates could not be shifted. Please try again.";
 "COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE" = "Your dates have been successfully shifted.";
 "COURSE_DATES.RESET_DATE.TITLE" = "Course Dates";
+
+"COURSE_DATES.TODAY" = "Today";
+"COURSE_DATES.COMPLETED" = "Completed";
+"COURSE_DATES.PAST_DUE" = "Past due";
+"COURSE_DATES.THIS_WEEK" = "This week";
+"COURSE_DATES.NEXT_WEEK" = "Next week";
+"COURSE_DATES.UPCOMING" = "Upcoming";

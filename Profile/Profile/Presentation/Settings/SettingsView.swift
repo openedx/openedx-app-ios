@@ -150,6 +150,7 @@ public struct SettingsView: View {
                         .font(Theme.Fonts.titleMedium)
                     Spacer()
                     Image(systemName: "chevron.right")
+                        .flipsForRightToLeftLayoutDirection(true)
                 }
             })
             .accessibilityIdentifier("video_settings_button")
@@ -183,6 +184,7 @@ public struct SettingsView: View {
                         .font(Theme.Fonts.titleMedium)
                     Spacer()
                     Image(systemName: "chevron.right")
+                        .flipsForRightToLeftLayoutDirection(true)
                 }
             })
             .accessibilityIdentifier("video_settings_button")

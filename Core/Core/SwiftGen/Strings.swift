@@ -79,6 +79,18 @@ public enum CoreLocalization {
     }
   }
   public enum CourseDates {
+    /// Completed
+    public static let completed = CoreLocalization.tr("Localizable", "COURSE_DATES.COMPLETED", fallback: "Completed")
+    /// Next week
+    public static let nextWeek = CoreLocalization.tr("Localizable", "COURSE_DATES.NEXT_WEEK", fallback: "Next week")
+    /// Past due
+    public static let pastDue = CoreLocalization.tr("Localizable", "COURSE_DATES.PAST_DUE", fallback: "Past due")
+    /// This week
+    public static let thisWeek = CoreLocalization.tr("Localizable", "COURSE_DATES.THIS_WEEK", fallback: "This week")
+    /// Today
+    public static let today = CoreLocalization.tr("Localizable", "COURSE_DATES.TODAY", fallback: "Today")
+    /// Upcoming
+    public static let upcoming = CoreLocalization.tr("Localizable", "COURSE_DATES.UPCOMING", fallback: "Upcoming")
     public enum ResetDate {
       /// Your dates could not be shifted. Please try again.
       public static let errorMessage = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.ERROR_MESSAGE", fallback: "Your dates could not be shifted. Please try again.")

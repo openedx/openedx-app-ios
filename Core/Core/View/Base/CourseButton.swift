@@ -40,6 +40,7 @@ public struct CourseButton: View {
                 .foregroundColor(Theme.Colors.textPrimary)
             Spacer()
             Image(systemName: "chevron.right")
+                .flipsForRightToLeftLayoutDirection(true)
                 .padding(.vertical, 8)
                 .foregroundColor(Theme.Colors.accentXColor)
         }
