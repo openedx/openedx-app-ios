@@ -289,7 +289,6 @@
 		02EBC7562C19DCDB00BE182C /* SyncStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncStatus.swift; sourceTree = "<group>"; };
 		02EBC7582C19DE1100BE182C /* CalendarManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManagerProtocol.swift; sourceTree = "<group>"; };
 		02EBC75A2C19DE3D00BE182C /* CourseForSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseForSync.swift; sourceTree = "<group>"; };
-		02ED50CB29A64B84008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F164362902A9EB0090DDEF /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		02F6EF3A28D9B8EC00835477 /* CourseCellView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCellView.swift; sourceTree = "<group>"; };
 		02F6EF4928D9F0A700835477 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
@@ -1293,7 +1292,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				0770DE5C28D0B209006D8A5D /* en */,
-				02ED50CB29A64B84008341CD /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
