@@ -113,7 +113,6 @@
 		02D0FD082AD698380020D752 /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		02D0FD0A2AD6984D0020D752 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		02EBC7522C19CD1700BE182C /* CalendarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManager.swift; sourceTree = "<group>"; };
-		02ED50CE29A64BAD008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02F175342A4DAD030019CD70 /* ProfileAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE6292539850051930C /* ProfileRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRouter.swift; sourceTree = "<group>"; };
 		02F81DDE2BF4D83E002D3604 /* CalendarDialogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarDialogView.swift; sourceTree = "<group>"; };
@@ -726,7 +725,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				021D926028DDADE600ACC565 /* en */,
-				02ED50CE29A64BAD008341CD /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

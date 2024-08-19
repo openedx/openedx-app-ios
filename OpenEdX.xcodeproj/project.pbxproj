@@ -114,7 +114,6 @@
 		0293A2082A6FCDE50090A336 /* DashboardPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardPersistence.swift; sourceTree = "<group>"; };
 		0298DF2F2A4EF7230023A257 /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		02B6B3C428E1E61400232911 /* CourseDetails.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CourseDetails.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		02ED50CA29A64AAA008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02ED50D529A6554E008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = "uk.lproj/сountries.json"; sourceTree = "<group>"; };
 		02ED50D729A65554008341CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = "Base.lproj/сountries.json"; sourceTree = "<group>"; };
 		02ED50D929A66007008341CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = Base; path = Base.lproj/languages.json; sourceTree = "<group>"; };
@@ -675,7 +674,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				0770DE6528D0BCC7006D8A5D /* en */,
-				02ED50CA29A64AAA008341CD /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1293,8 +1291,8 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 10.26.0;
-            };
-        };
+			};
+		};
 		14D912D12C25483F0077CCCE /* XCRemoteSwiftPackageReference "fullstory-swift-package-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/fullstorydev/fullstory-swift-package-ios";
@@ -1347,7 +1345,7 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 0780ABE12BFBA2E40093A4A6 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
-        };
+		};
 		14D912D22C25483F0077CCCE /* FullStory */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 14D912D12C25483F0077CCCE /* XCRemoteSwiftPackageReference "fullstory-swift-package-ios" */;

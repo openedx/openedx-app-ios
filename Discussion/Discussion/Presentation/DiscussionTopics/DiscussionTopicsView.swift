@@ -263,6 +263,7 @@ public struct TopicCell: View {
                     .multilineTextAlignment(.leading)
                 Spacer()
                 Image(systemName: "chevron.right")
+                    .flipsForRightToLeftLayoutDirection(true)
                     .foregroundColor(Theme.Colors.accentColor)
             }
         })

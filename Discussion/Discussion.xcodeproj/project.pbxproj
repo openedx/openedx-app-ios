@@ -107,7 +107,6 @@
 		02D1267528F76F5D00C8E689 /* DiscussionTopicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicsView.swift; sourceTree = "<group>"; };
 		02D1267728F76FF200C8E689 /* DiscussionTopicsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionTopicsViewModel.swift; sourceTree = "<group>"; };
 		02E4F18029A8C2FD00F31684 /* DiscussionSearchTopicsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionSearchTopicsViewModelTests.swift; sourceTree = "<group>"; };
-		02ED50D029A64BBF008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		02ED50D129A64BBF008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		02F175382A4DD5AA0019CD70 /* DiscussionAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionAnalytics.swift; sourceTree = "<group>"; };
 		02F28A5D28FF23E700AFDE1B /* ThreadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadView.swift; sourceTree = "<group>"; };
@@ -733,7 +732,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				0218196128F734CD00202564 /* en */,
-				02ED50D029A64BBF008341CD /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

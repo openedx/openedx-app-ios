@@ -83,6 +83,7 @@ public struct CourseVerticalView: View {
                                         .accessibilityLabel(vertical.displayName)
                                         Spacer()
                                         Image(systemName: "chevron.right")
+                                        .flipsForRightToLeftLayoutDirection(true)
                                             .padding(.vertical, 8)
                                     }
                                 .padding(.horizontal, 36)
