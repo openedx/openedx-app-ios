@@ -113,9 +113,10 @@ public struct PrimaryCardView: View {
                     ).day ?? 0
                     courseButton(
                         title: futureAssignment.title,
-                        description: DashboardLocalization.Learn.PrimaryCard.dueDays(
-                            futureAssignment.type,
-                            daysRemaining
+                        description:  futureAssignment.date.dateToString(
+                            style: .shortWeekdayMonthDayYear,
+                            useRelativeDates: useRelativeDates,
+                            dueIn: true
                         ),
                         icon: CoreAssets.chapter.swiftUIImage,
                         selected: false,
@@ -264,13 +265,22 @@ struct PrimaryCardView_Previews: PreviewProvider {
                 courseImage: "https://thumbs.dreamstime.com/b/logo-edx-samsung-tablet-edx-massive-open-online-course-mooc-provider-hosts-online-university-level-courses-wide-117763805.jpg",
                 courseStartDate: nil,
                 courseEndDate: Date(),
-                futureAssignments: [],
+                futureAssignments: [
+                    Assignment(
+                        type: "Lesson",
+                        title: "HomeWork",
+                        description: "Some description",
+                        date: Date().addingTimeInterval(64000 * 3),
+                        complete: false,
+                        firstComponentBlockId: "123"
+                    )
+                ],
                 pastAssignments: [],
                 progressEarned: 10,
                 progressPossible: 45,
                 canResume: true,
                 resumeTitle: "Course Chapter 1",
-                useRelativeDates: true,
+                useRelativeDates: false,
                 assignmentAction: { _ in },
                 openCourseAction: {},
                 resumeAction: {}
