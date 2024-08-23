@@ -193,9 +193,15 @@ public class CourseInteractor: CourseInteractorProtocol {
                 let endTime = startAndEndTimes.last ?? "00:00:00,000"
                 let text = lines[2..<lines.count].joined(separator: "\n")
                 
+                let startTimeInterval = Date(subtitleTime: startTime)
+                var endTimeInverval = Date(subtitleTime: endTime)
+                if startTimeInterval > endTimeInverval {
+                    endTimeInverval = startTimeInterval
+                }
+                
                 let subtitle = Subtitle(id: id,
-                                        fromTo: DateInterval(start: Date(subtitleTime: startTime),
-                                                             end: Date(subtitleTime: endTime)),
+                                        fromTo: DateInterval(start: startTimeInterval,
+                                                             end: endTimeInverval),
                                         text: text.decodedHTMLEntities())
                 subtitles.append(subtitle)
             }
