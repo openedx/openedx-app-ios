@@ -40,6 +40,7 @@
 		0288C4EA2BC6AE2D009158B9 /* ManageAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */; };
 		0288C4EC2BC6AE82009158B9 /* ManageAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0288C4EB2BC6AE82009158B9 /* ManageAccountViewModel.swift */; };
 		029301DA2938948500E99AB8 /* ProfileType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029301D92938948500E99AB8 /* ProfileType.swift */; };
+		0294987A2C4E4332008FD0E7 /* RelativeDatesToggleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029498792C4E4332008FD0E7 /* RelativeDatesToggleView.swift */; };
 		02A4833329B7710A00D33F33 /* DeleteAccountViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833229B7710A00D33F33 /* DeleteAccountViewModelTests.swift */; };
 		02A9A91D2978194A00B55797 /* ProfileViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */; };
 		02A9A91E2978194A00B55797 /* Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 020F834A28DB4CCD0062FA70 /* Profile.framework */; platformFilter = ios; };
@@ -105,6 +106,7 @@
 		0288C4E92BC6AE2D009158B9 /* ManageAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountView.swift; sourceTree = "<group>"; };
 		0288C4EB2BC6AE82009158B9 /* ManageAccountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManageAccountViewModel.swift; sourceTree = "<group>"; };
 		029301D92938948500E99AB8 /* ProfileType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileType.swift; sourceTree = "<group>"; };
+		029498792C4E4332008FD0E7 /* RelativeDatesToggleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RelativeDatesToggleView.swift; sourceTree = "<group>"; };
 		02A4833229B7710A00D33F33 /* DeleteAccountViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DeleteAccountViewModelTests.swift; path = ProfileTests/Presentation/DeleteAccount/DeleteAccountViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02A9A91A2978194A00B55797 /* ProfileTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProfileTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A9A91C2978194A00B55797 /* ProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModelTests.swift; sourceTree = "<group>"; };
@@ -340,6 +342,7 @@
 				022301E72BF4C4E70028A287 /* ToggleWithDescriptionView.swift */,
 				02F81DDE2BF4D83E002D3604 /* CalendarDialogView.swift */,
 				02F81DE22BF502B9002D3604 /* SyncSelector.swift */,
+				029498792C4E4332008FD0E7 /* RelativeDatesToggleView.swift */,
 			);
 			path = Elements;
 			sourceTree = "<group>";
@@ -675,6 +678,7 @@
 				021C90D72BC98734004876AF /* DatesAndCalendarViewModel.swift in Sources */,
 				021D925528DC92F800ACC565 /* ProfileInteractor.swift in Sources */,
 				029301DA2938948500E99AB8 /* ProfileType.swift in Sources */,
+				0294987A2C4E4332008FD0E7 /* RelativeDatesToggleView.swift in Sources */,
 				0259104429C39C9E004B5A55 /* SettingsView.swift in Sources */,
 				02B089432A9F832200754BD4 /* ProfileStorage.swift in Sources */,
 				022213D72C0E18A300B917E6 /* CourseCalendarState.swift in Sources */,

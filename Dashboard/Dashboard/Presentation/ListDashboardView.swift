@@ -54,14 +54,15 @@ public struct ListDashboardView: View {
                                 if viewModel.courses.isEmpty && !viewModel.fetchInProgress {
                                     EmptyPageIcon()
                                 } else {
+                                    let useRelativeDates = viewModel.storage.useRelativeDates
                                     ForEach(Array(viewModel.courses.enumerated()),
                                             id: \.offset) { index, course in
-                                        
                                         CourseCellView(
                                             model: course,
                                             type: .dashboard,
                                             index: index,
-                                            cellsCount: viewModel.courses.count
+                                            cellsCount: viewModel.courses.count, 
+                                            useRelativeDates: useRelativeDates
                                         )
                                         .padding(.horizontal, 20)
                                         .listRowBackground(Color.clear)
@@ -157,7 +158,8 @@ struct ListDashboardView_Previews: PreviewProvider {
         let vm = ListDashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock()
+            analytics: DashboardAnalyticsMock(), 
+            storage: CoreStorageMock()
         )
         let router = DashboardRouterMock()
         

@@ -53,6 +53,12 @@
 "DATE.START" = "Start";
 "DATE.STARTED" = "Started";
 "DATE.JUST_NOW" = "Just now";
+"DATE.TODAY" = "Today";
+"DATE.NEXT" = "Next %@";
+"DATE.DAYS_AGO" = "%@ Days Ago";
+"DATE.DUE" = "Due ";
+"DATE.DUE_IN" = "Due in ";
+"DATE.DUE_IN_DAYS" = "Due in %@ Days";
 
 "ALERT.ACCEPT" = "ACCEPT";
 "ALERT.CANCEL" = "CANCEL";

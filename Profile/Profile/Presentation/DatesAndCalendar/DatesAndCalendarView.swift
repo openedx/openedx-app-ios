@@ -44,7 +44,7 @@ public struct DatesAndCalendarView: View {
                     ScrollView {
                         Group {
                             calendarSyncCard
-//                        relativeDatesToggle
+                            RelativeDatesToggleView(useRelativeDates: $viewModel.profileStorage.useRelativeDates)
                         }
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                     }
@@ -176,31 +176,6 @@ public struct DatesAndCalendarView: View {
             .padding(.top, 24)
             .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
         }
-    }
-
-    // MARK: - Options Toggle
-    private var relativeDatesToggle: some View {
-        VStack(alignment: .leading) {
-            Text(ProfileLocalization.Options.title)
-                .font(Theme.Fonts.labelLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-            HStack(spacing: 16) {
-                Toggle("", isOn: $viewModel.useRelativeDates)
-                    .frame(width: 50)
-                    .tint(Theme.Colors.accentColor)
-                Text(ProfileLocalization.Options.useRelativeDates)
-                    .font(Theme.Fonts.bodyLarge)
-                    .foregroundColor(Theme.Colors.textPrimary)
-            }
-            Text(ProfileLocalization.Options.showRelativeDates)
-                .font(Theme.Fonts.labelMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
-        }
-        .padding(.horizontal, 24)
-        .frame(minWidth: 0,
-                maxWidth: .infinity,
-                alignment: .top)
-        .accessibilityIdentifier("relative_dates_toggle")
     }
 }
 

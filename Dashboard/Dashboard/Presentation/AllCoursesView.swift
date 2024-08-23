@@ -58,6 +58,7 @@ public struct AllCoursesView: View {
                             .disabled(viewModel.fetchInProgress)
                             .frameLimit(width: proxy.size.width)
                         if let myEnrollments = viewModel.myEnrollments {
+                            let useRelativeDates = viewModel.storage.useRelativeDates
                             LazyVGrid(columns: columns(), spacing: 15) {
                                 ForEach(
                                     Array(myEnrollments.courses.enumerated()),
@@ -88,7 +89,8 @@ public struct AllCoursesView: View {
                                             courseStartDate: course.courseStart,
                                             courseEndDate: course.courseEnd,
                                             hasAccess: course.hasAccess,
-                                            showProgress: true
+                                            showProgress: true, 
+                                            useRelativeDates: useRelativeDates
                                         ).padding(8)
                                     })
                                     .accessibilityIdentifier("course_item")
@@ -196,7 +198,8 @@ struct AllCoursesView_Previews: PreviewProvider {
         let vm = AllCoursesViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock()
+            analytics: DashboardAnalyticsMock(), 
+            storage: CoreStorageMock()
         )
         
         AllCoursesView(viewModel: vm, router: DashboardRouterMock())

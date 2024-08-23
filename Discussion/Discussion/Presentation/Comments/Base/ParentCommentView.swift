@@ -14,6 +14,7 @@ public struct ParentCommentView: View {
     
     private let comments: Post
     private var isThread: Bool
+    private let useRelativeDates: Bool
     private var onAvatarTap: ((String) -> Void)
     private var onLikeTap: (() -> Void)
     private var onReportTap: (() -> Void)
@@ -24,6 +25,7 @@ public struct ParentCommentView: View {
     public init(
         comments: Post,
         isThread: Bool,
+        useRelativeDates: Bool,
         onAvatarTap: @escaping (String) -> Void,
         onLikeTap: @escaping () -> Void,
         onReportTap: @escaping () -> Void,
@@ -31,6 +33,7 @@ public struct ParentCommentView: View {
     ) {
         self.comments = comments
         self.isThread = isThread
+        self.useRelativeDates = useRelativeDates
         self.onAvatarTap = onAvatarTap
         self.onLikeTap = onLikeTap
         self.onReportTap = onReportTap
@@ -55,7 +58,7 @@ public struct ParentCommentView: View {
                         .font(Theme.Fonts.titleMedium)
                         .foregroundColor(Theme.Colors.textPrimary)
                     Text(comments.postDate
-                        .dateToString(style: .lastPost))
+                        .dateToString(style: .lastPost, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelSmall)
                     .foregroundColor(Theme.Colors.textSecondaryLight)
                 }
@@ -169,7 +172,8 @@ struct ParentCommentView_Previews: PreviewProvider {
         return VStack {
             ParentCommentView(
                 comments: comment,
-                isThread: true,
+                isThread: true, 
+                useRelativeDates: true,
                 onAvatarTap: {_ in},
                 onLikeTap: {},
                 onReportTap: {},

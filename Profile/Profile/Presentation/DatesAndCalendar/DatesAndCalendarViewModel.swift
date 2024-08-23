@@ -16,7 +16,6 @@ import Core
 // MARK: - DatesAndCalendarViewModel
 
 public class DatesAndCalendarViewModel: ObservableObject {
-    @Published var useRelativeDates: Bool = false
     @Published var showCalendaAccessDenied: Bool = false
     @Published var showDisableCalendarSync: Bool = false
     @Published var showError: Bool = false
@@ -73,7 +72,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     var router: ProfileRouter
     private var interactor: ProfileInteractorProtocol
-    private var profileStorage: ProfileStorage
+    @Published var profileStorage: ProfileStorage
     private var persistence: ProfilePersistenceProtocol
     private var calendarManager: CalendarManagerProtocol
     private var connectivity: ConnectivityProtocol
@@ -187,8 +186,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
                     colorSelection: colorString,
                     calendarName: calendarName,
                     accountSelection: accountSelection,
-                    courseCalendarSync: self.courseCalendarSync,
-                    useRelativeDates: self.useRelativeDates
+                    courseCalendarSync: self.courseCalendarSync
                 )
                 profileStorage.lastCalendarName = calendarName
             }

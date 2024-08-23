@@ -18,7 +18,12 @@ final class ListDashboardViewModelTests: XCTestCase {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
         
         let items = [
             CourseItem(name: "Test",
@@ -67,7 +72,12 @@ final class ListDashboardViewModelTests: XCTestCase {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
         
         let items = [
             CourseItem(name: "Test",
@@ -116,7 +126,12 @@ final class ListDashboardViewModelTests: XCTestCase {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getEnrollments(page: .any, willThrow: NoCachedDataError()) )
@@ -134,7 +149,12 @@ final class ListDashboardViewModelTests: XCTestCase {
         let interactor = DashboardInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DashboardAnalyticsMock()
-        let viewModel = ListDashboardViewModel(interactor: interactor, connectivity: connectivity, analytics: analytics)
+        let viewModel = ListDashboardViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getEnrollments(page: .any, willThrow: NSError()) )

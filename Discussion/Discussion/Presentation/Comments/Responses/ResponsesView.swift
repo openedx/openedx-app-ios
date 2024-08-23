@@ -59,7 +59,9 @@ public struct ResponsesView: View {
                                     if let comments = viewModel.postComments {
                                         ParentCommentView(
                                             comments: comments,
-                                            isThread: false, onAvatarTap: { username in
+                                            isThread: false,
+                                            useRelativeDates: viewModel.storage.useRelativeDates,
+                                            onAvatarTap: { username in
                                                 viewModel.router.showUserDetails(username: username)
                                             },
                                             onLikeTap: {
@@ -99,12 +101,15 @@ public struct ResponsesView: View {
                                         .padding(.leading, 24)
                                         .font(Theme.Fonts.titleMedium)
                                         .foregroundColor(Theme.Colors.textPrimary)
+                                        let useRelativeDates = viewModel.storage.useRelativeDates
                                         ForEach(
                                             Array(comments.comments.enumerated()), id: \.offset
                                         ) { index, comment in
                                             CommentCell(
                                                 comment: comment,
-                                                addCommentAvailable: false, leftLineEnabled: true,
+                                                addCommentAvailable: false,
+                                                useRelativeDates: useRelativeDates,
+                                                leftLineEnabled: true,
                                                 onAvatarTap: { username in
                                                     viewModel.router.showUserDetails(username: username)
                                                 },
@@ -238,6 +243,7 @@ struct ResponsesView_Previews: PreviewProvider {
             interactor: DiscussionInteractor(repository: DiscussionRepositoryMock()),
             router: DiscussionRouterMock(),
             config: ConfigMock(),
+            storage: CoreStorageMock(),
             threadStateSubject: .init(nil)
         )
         let post = Post(

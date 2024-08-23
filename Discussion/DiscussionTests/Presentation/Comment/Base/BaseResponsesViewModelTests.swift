@@ -50,11 +50,27 @@ final class BaseResponsesViewModelTests: XCTestCase {
                     abuseFlagged: false,
                     closed: false)
     
+    var interactor: DiscussionInteractorProtocolMock!
+    var router: DiscussionRouterMock!
+    var config: ConfigMock!
+    var viewModel: BaseResponsesViewModel!
+    
+    override func setUp() async throws {
+        try await super.setUp()
+        
+        interactor = DiscussionInteractorProtocolMock()
+        router = DiscussionRouterMock()
+        config = ConfigMock()
+        viewModel = BaseResponsesViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
+    }
+    
     func testVoteThreadSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+ 
         var result = false
 
         viewModel.postComments = post
@@ -73,10 +89,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testVoteResponseSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+
 
         var result = false
 
@@ -97,10 +110,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testVoteParentThreadSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+   
 
         var result = false
 
@@ -120,10 +130,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testVoteParentResponseSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+  
 
         var result = false
         
@@ -145,10 +152,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testVoteNoInternetError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+
 
         var result = false
 
@@ -167,10 +171,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testVoteUnknownError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
+ 
 
         var result = false
         
@@ -187,10 +188,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testFlagThreadSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
 
         var result = false
         
@@ -210,10 +207,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testFlagCommentSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
 
         var result = false
         
@@ -233,10 +226,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testFlagNoInternetError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
 
         var result = false
 
@@ -255,10 +244,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testFlagUnknownError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
 
         var result = false
 
@@ -275,10 +260,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testFollowThreadSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
 
         var result = false
         
@@ -298,10 +279,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testFollowThreadNoInternetError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
 
         var result = false
 
@@ -320,10 +297,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testFollowThreadUnknownError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
 
         var result = false
 
@@ -340,10 +313,6 @@ final class BaseResponsesViewModelTests: XCTestCase {
     }
     
     func testAddNewPost() {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = BaseResponsesViewModel(interactor: interactor, router: router, config: config)
         
         viewModel.postComments = post
         

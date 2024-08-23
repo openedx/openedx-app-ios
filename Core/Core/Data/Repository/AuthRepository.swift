@@ -88,15 +88,14 @@ public class AuthRepository: AuthRepositoryProtocol {
     
     public func getCookies(force: Bool) async throws {
         if let cookiesCreatedDate = appStorage.cookiesDate, !force {
-            let cookiesCreated = Date(iso8601: cookiesCreatedDate)
-            let cookieLifetimeLimit = cookiesCreated.addingTimeInterval(60 * 60)
+            let cookieLifetimeLimit = cookiesCreatedDate.addingTimeInterval(60 * 60)
             if Date() > cookieLifetimeLimit {
                 _ = try await api.requestData(AuthEndpoint.getAuthCookies)
-                appStorage.cookiesDate = Date().dateToString(style: .iso8601)
+                appStorage.cookiesDate = Date()
             }
         } else {
             _ = try await api.requestData(AuthEndpoint.getAuthCookies)
-            appStorage.cookiesDate = Date().dateToString(style: .iso8601)
+            appStorage.cookiesDate = Date()
         }
     }
     

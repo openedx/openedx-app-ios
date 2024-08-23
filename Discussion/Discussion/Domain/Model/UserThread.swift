@@ -87,19 +87,24 @@ public struct UserThread {
 }
 
 public extension UserThread {
-    func discussionPost(action: @escaping () -> Void) -> DiscussionPost {
-        return DiscussionPost(id: id,
-                              title: title,
-                              replies: commentCount,
-                              lastPostDate: updatedAt,
-                              lastPostDateFormatted: updatedAt.dateToString(style: .lastPost),
-                              isFavorite: following,
-                              type: type,
-                              unreadCommentCount: unreadCommentCount,
-                              action: action,
-                              hasEndorsed: hasEndorsed,
-                              voteCount: voteCount,
-                              numPages: numPages)
+    func discussionPost(useRelativeDates: Bool, action: @escaping () -> Void) -> DiscussionPost {
+        return DiscussionPost(
+            id: id,
+            title: title,
+            replies: commentCount,
+            lastPostDate: updatedAt,
+            lastPostDateFormatted: updatedAt.dateToString(
+                style: .lastPost,
+                useRelativeDates: useRelativeDates
+            ),
+            isFavorite: following,
+            type: type,
+            unreadCommentCount: unreadCommentCount,
+            action: action,
+            hasEndorsed: hasEndorsed,
+            voteCount: voteCount,
+            numPages: numPages
+        )
     }
 }
 

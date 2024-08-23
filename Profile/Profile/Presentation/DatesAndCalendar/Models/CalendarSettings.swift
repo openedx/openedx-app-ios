@@ -12,20 +12,17 @@ public struct CalendarSettings: Codable {
     public var calendarName: String?
     public var accountSelection: String
     public var courseCalendarSync: Bool
-    public var useRelativeDates: Bool
     
     public init(
         colorSelection: String,
         calendarName: String?,
         accountSelection: String,
-        courseCalendarSync: Bool,
-        useRelativeDates: Bool
+        courseCalendarSync: Bool
     ) {
         self.colorSelection = colorSelection
         self.calendarName = calendarName
         self.accountSelection = accountSelection
         self.courseCalendarSync = courseCalendarSync
-        self.useRelativeDates = useRelativeDates
     }
     
     enum CodingKeys: String, CodingKey {
@@ -33,7 +30,6 @@ public struct CalendarSettings: Codable {
         case calendarName
         case accountSelection
         case courseCalendarSync
-        case useRelativeDates
     }
     
     public init(from decoder: Decoder) throws {
@@ -42,7 +38,6 @@ public struct CalendarSettings: Codable {
         self.calendarName = try container.decode(String.self, forKey: .calendarName)
         self.accountSelection = try container.decode(String.self, forKey: .accountSelection)
         self.courseCalendarSync = try container.decode(Bool.self, forKey: .courseCalendarSync)
-        self.useRelativeDates = try container.decode(Bool.self, forKey: .useRelativeDates)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -51,6 +46,5 @@ public struct CalendarSettings: Codable {
         try container.encode(calendarName, forKey: .calendarName)
         try container.encode(accountSelection, forKey: .accountSelection)
         try container.encode(courseCalendarSync, forKey: .courseCalendarSync)
-        try container.encode(useRelativeDates, forKey: .useRelativeDates)
     }
 }

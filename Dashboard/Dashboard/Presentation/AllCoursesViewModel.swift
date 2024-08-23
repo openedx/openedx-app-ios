@@ -29,6 +29,7 @@ public class AllCoursesViewModel: ObservableObject {
     }
     
     let connectivity: ConnectivityProtocol
+    let storage: CoreStorage
     private let interactor: DashboardInteractorProtocol
     private let analytics: DashboardAnalytics
     private var onCourseEnrolledCancellable: AnyCancellable?
@@ -36,11 +37,13 @@ public class AllCoursesViewModel: ObservableObject {
     public init(
         interactor: DashboardInteractorProtocol,
         connectivity: ConnectivityProtocol,
-        analytics: DashboardAnalytics
+        analytics: DashboardAnalytics,
+        storage: CoreStorage
     ) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
+        self.storage = storage
         
         onCourseEnrolledCancellable = NotificationCenter.default
             .publisher(for: .onCourseEnrolled)

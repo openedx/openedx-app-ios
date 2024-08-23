@@ -29,15 +29,18 @@ public class ListDashboardViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DashboardInteractorProtocol
     private let analytics: DashboardAnalytics
+    let storage: CoreStorage
     private var onCourseEnrolledCancellable: AnyCancellable?
     private var refreshEnrollmentsCancellable: AnyCancellable?
     
     public init(interactor: DashboardInteractorProtocol,
                 connectivity: ConnectivityProtocol,
-                analytics: DashboardAnalytics) {
+                analytics: DashboardAnalytics,
+                storage: CoreStorage) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
+        self.storage = storage
         
         onCourseEnrolledCancellable = NotificationCenter.default
             .publisher(for: .onCourseEnrolled)

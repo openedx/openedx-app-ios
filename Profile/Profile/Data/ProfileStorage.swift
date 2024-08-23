@@ -11,6 +11,7 @@ import UIKit
 
 public protocol ProfileStorage {
     var userProfile: DataLayer.UserProfile? {get set}
+    var useRelativeDates: Bool {get set}
     var calendarSettings: CalendarSettings? {get set}
     var hideInactiveCourses: Bool? {get set}
     var lastLoginUsername: String? {get set}
@@ -23,6 +24,7 @@ public protocol ProfileStorage {
 public class ProfileStorageMock: ProfileStorage {
   
     public var userProfile: DataLayer.UserProfile?
+    public var useRelativeDates: Bool = true
     public var calendarSettings: CalendarSettings?
     public var hideInactiveCourses: Bool?
     public var lastLoginUsername: String?

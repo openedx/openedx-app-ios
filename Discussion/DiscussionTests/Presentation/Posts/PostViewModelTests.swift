@@ -102,14 +102,29 @@ final class PostViewModelTests: XCTestCase {
     ])
 
     let discussionInfo = DiscussionInfo(discussionID: "1", blackouts: [])
+    
+    var interactor: DiscussionInteractorProtocolMock!
+    var router: DiscussionRouterMock!
+    var config: ConfigMock!
+    var viewModel: PostsViewModel!
+    
+    override func setUp() async throws {
+        try await super.setUp()
+        
+        interactor = DiscussionInteractorProtocolMock()
+        router = DiscussionRouterMock()
+        config = ConfigMock()
+        viewModel = PostsViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            storage: CoreStorageMock()
+        )
+    }
 
 
     func testGetThreadListSuccess() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
         var result = false
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
         
         viewModel.courseID = "1"
         viewModel.type = .allPosts
@@ -145,11 +160,8 @@ final class PostViewModelTests: XCTestCase {
     }
     
     func testGetThreadListNoInternetError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
         var result = false
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
+        
         viewModel.isBlackedOut = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -170,11 +182,8 @@ final class PostViewModelTests: XCTestCase {
     }
     
     func testGetThreadListUnknownError() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
         var result = false
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
+                
         viewModel.isBlackedOut = false
 
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError()))
@@ -193,11 +202,7 @@ final class PostViewModelTests: XCTestCase {
     }
     
     func testSortingAndFilters() async throws {
-        let interactor = DiscussionInteractorProtocolMock()
-        let router = DiscussionRouterMock()
-        let config = ConfigMock()
-        let viewModel = PostsViewModel(interactor: interactor, router: router, config: config)
-        
+       
         Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any,
                                           willReturn: threads))
         Given(interactor, .getCourseDiscussionInfo(courseID: "1", willReturn: discussionInfo))
