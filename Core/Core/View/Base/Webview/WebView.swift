@@ -122,6 +122,17 @@ public struct WebView: UIViewRepresentable {
                 handler: { _ in
                     completionHandler(false)
                 }))
+            
+            if let presenter = alertController.popoverPresentationController {
+                let view = UIApplication.topViewController()?.view
+                presenter.sourceView = view
+                presenter.sourceRect = CGRect(
+                    x: view?.bounds.midX ?? 0,
+                    y: view?.bounds.midY ?? 0,
+                    width: 0,
+                    height: 0
+                )
+            }
 
             UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
         }
