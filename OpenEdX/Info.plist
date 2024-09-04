@@ -39,5 +39,7 @@
 	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Allow access to your photo library so you can save photos in your gallery.</string>
 </dict>
 </plist>
