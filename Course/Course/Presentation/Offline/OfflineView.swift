@@ -155,9 +155,6 @@ struct OfflineView: View {
                     .ignoresSafeArea()
             )
         }
-        .onAppear {
-            viewModel.downloadAllButtonState = viewModel.isAllDownloading() ? .cancel : .start
-        }
     }
     
     @ViewBuilder

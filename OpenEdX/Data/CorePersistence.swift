@@ -427,7 +427,6 @@ public class CorePersistence: CorePersistenceProtocol {
 
     // MARK: - Private Intents
 
-//<<<<<<< HEAD
     private func fetchCDDownloadData(
         predicate: CDPredicate? = nil,
         fetchLimit: Int? = nil
@@ -457,8 +456,6 @@ public class CorePersistence: CorePersistenceProtocol {
         return try context.fetch(request)
     }
 
-//=======
-//>>>>>>> develop
     private func getUserId32() -> Int32? {
         guard let userId else {
             return nil

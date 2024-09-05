@@ -101,6 +101,7 @@ public struct CourseOutlineView: View {
                                 
                                 // MARK: - Sections
                                 CustomDisclosureGroup(
+                                    isVideo: isVideo,
                                     course: course,
                                     proxy: proxy,
                                     viewModel: viewModel
