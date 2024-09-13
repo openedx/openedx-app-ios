@@ -3459,9 +3459,23 @@ open class DashboardAnalyticsMock: DashboardAnalytics, Mock {
 		perform?(`courseID`, `courseName`)
     }
 
+    open func mainProgramsClicked() {
+        addInvocation(.m_mainProgramsClicked)
+		let perform = methodPerformValue(.m_mainProgramsClicked) as? () -> Void
+		perform?()
+    }
+
+    open func mainCoursesClicked() {
+        addInvocation(.m_mainCoursesClicked)
+		let perform = methodPerformValue(.m_mainCoursesClicked) as? () -> Void
+		perform?()
+    }
+
 
     fileprivate enum MethodType {
         case m_dashboardCourseClicked__courseID_courseIDcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_mainProgramsClicked
+        case m_mainCoursesClicked
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3470,17 +3484,26 @@ open class DashboardAnalyticsMock: DashboardAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_mainProgramsClicked, .m_mainProgramsClicked): return .match
+
+            case (.m_mainCoursesClicked, .m_mainCoursesClicked): return .match
+            default: return .none
             }
         }
 
         func intValue() -> Int {
             switch self {
             case let .m_dashboardCourseClicked__courseID_courseIDcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case .m_mainProgramsClicked: return 0
+            case .m_mainCoursesClicked: return 0
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_dashboardCourseClicked__courseID_courseIDcourseName_courseName: return ".dashboardCourseClicked(courseID:courseName:)"
+            case .m_mainProgramsClicked: return ".mainProgramsClicked()"
+            case .m_mainCoursesClicked: return ".mainCoursesClicked()"
             }
         }
     }
@@ -3500,6 +3523,8 @@ open class DashboardAnalyticsMock: DashboardAnalytics, Mock {
         fileprivate var method: MethodType
 
         public static func dashboardCourseClicked(courseID: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_dashboardCourseClicked__courseID_courseIDcourseName_courseName(`courseID`, `courseName`))}
+        public static func mainProgramsClicked() -> Verify { return Verify(method: .m_mainProgramsClicked)}
+        public static func mainCoursesClicked() -> Verify { return Verify(method: .m_mainCoursesClicked)}
     }
 
     public struct Perform {
@@ -3508,6 +3533,12 @@ open class DashboardAnalyticsMock: DashboardAnalytics, Mock {
 
         public static func dashboardCourseClicked(courseID: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .m_dashboardCourseClicked__courseID_courseIDcourseName_courseName(`courseID`, `courseName`), performs: perform)
+        }
+        public static func mainProgramsClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_mainProgramsClicked, performs: perform)
+        }
+        public static func mainCoursesClicked(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_mainCoursesClicked, performs: perform)
         }
     }
 

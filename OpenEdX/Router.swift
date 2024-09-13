@@ -387,6 +387,10 @@ public class Router: AuthorizationRouter,
             try? await Task.sleep(for: .seconds(1))
             await Container.shared.resolve(PushNotificationsManager.self)?.performRegistration()
         }
+        
+        if let analytics = Container.shared.resolve(DashboardAnalytics.self) {
+            analytics.dashboardCourseClicked(courseID: courseID, courseName: title)
+        }
     }
     
     public func getCourseScreensController(

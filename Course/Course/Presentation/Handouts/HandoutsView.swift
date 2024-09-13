@@ -78,7 +78,7 @@ struct HandoutsView: View {
                                         cssInjector: viewModel.cssInjector,
                                         type: type
                                     )
-                                    viewModel.analytics.trackCourseEvent(
+                                    viewModel.analytics.trackCourseScreenEvent(
                                         .courseAnnouncement,
                                         biValue: .courseAnnouncement,
                                         courseID: courseID

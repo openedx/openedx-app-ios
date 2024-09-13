@@ -179,7 +179,7 @@ struct MainScreenView: View {
             case .discovery:
                 viewModel.trackMainDiscoveryTabClicked()
             case .dashboard:
-                viewModel.trackMainDashboardTabClicked()
+                viewModel.trackMainDashboardLearnTabClicked()
             case .programs:
                 viewModel.trackMainProgramsTabClicked()
             case .profile:
@@ -191,6 +191,8 @@ struct MainScreenView: View {
                 await viewModel.prefetchDataForOffline()
                 await viewModel.loadCalendar()
             }
+            viewModel.trackMainDashboardLearnTabClicked()
+            viewModel.trackMainDashboardMyCoursesClicked()
         }
         .accentColor(Theme.Colors.accentXColor)
     }
