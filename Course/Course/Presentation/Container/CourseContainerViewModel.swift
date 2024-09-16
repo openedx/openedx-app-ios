@@ -699,7 +699,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         
         for chapter in course.childs {
             for sequential in chapter.childs where sequential.isDownloadable {
-                var blocks = downloadableBlocks(from: sequential)
+                let blocks = downloadableBlocks(from: sequential)
                 let notDownloadedBlocks = blocks.filter { !isBlockDownloaded($0) }
                 if !notDownloadedBlocks.isEmpty {
                     var updatedSequential = sequential
@@ -854,7 +854,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         return nil
     }
     
-    
     @MainActor
     func setDownloadsStates() async {
         guard let course = courseStructure else { return }
@@ -963,7 +962,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     private func getUsedDiskSpace() -> Int? {
         do {
             let attributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            if let totalSpace = attributes[.systemSize] as? Int64, let freeSpace = attributes[.systemFreeSize] as? Int64 {
+            if let totalSpace = attributes[.systemSize] as? Int64,
+                let freeSpace = attributes[.systemFreeSize] as? Int64 {
                 return Int(totalSpace - freeSpace)
             }
         } catch {

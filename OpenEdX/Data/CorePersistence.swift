@@ -294,8 +294,6 @@ public class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
-//<<<<<<< HEAD
-//=======
     
     public func saveDownloadDataTask(_ task: DownloadDataTask) {
         context.perform {[context] in
@@ -321,7 +319,6 @@ public class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
-//>>>>>>> develop
 
     public func publisher() -> AnyPublisher<Int, Never> {
         let notification = NSManagedObjectContext.didChangeObjectsNotification

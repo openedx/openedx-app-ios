@@ -271,7 +271,7 @@ struct DownloadErrorAlertView_Previews: PreviewProvider {
                         childs: [],
                         sequentialProgress: nil,
                         due: nil
-                    ),
+                    )
                 ],
                 close: { print("Cancel triggered") }
             )

@@ -75,59 +75,60 @@ struct OfflineView: View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
                 VStack(alignment: .center) {
+                    
                     // MARK: - Page Body
-
-                        if viewModel.isShowProgress {
-                            HStack(alignment: .center) {
-                                ProgressBar(size: 40, lineWidth: 8)
-                                    .padding(.top, 200)
-                                    .padding(.horizontal)
-                            }
-                        } else {
-                            ScrollView {
-                                VStack(alignment: .leading) {
-                                    DynamicOffsetView(
-                                        coordinate: $coordinate,
-                                        collapsed: $collapsed
-                                    )
-                                    TotalDownloadedProgressView(
-                                        downloadedFilesSize: viewModel.downloadedFilesSize,
-                                        totalFilesSize: viewModel.totalFilesSize,
-                                        isDownloading: Binding<Bool>(
-                                            get: { viewModel.downloadAllButtonState == .cancel },
-                                            set: { newValue in
-                                                viewModel.downloadAllButtonState = newValue ? .cancel : .start
-                                            }
-                                        )
-                                    )
-                                    .padding(.top, 36)
-                                    
-                                    if viewModel.downloadedFilesSize == 0 && viewModel.totalFilesSize != 0 {
-                                        Text(CourseLocalization.Course.Offline.youCanDownload)
-                                            .font(Theme.Fonts.labelLarge)
-                                            .foregroundColor(Theme.Colors.textPrimary)
-                                            .padding(.top, 8)
-                                            .padding(.bottom, 16)
-                                    } else if viewModel.downloadedFilesSize == 0 && viewModel.totalFilesSize == 0 {
-                                        Text(CourseLocalization.Course.Offline.youCantDownload)
-                                            .font(Theme.Fonts.labelLarge)
-                                            .foregroundColor(Theme.Colors.textPrimary)
-                                            .padding(.top, 8)
-                                            .padding(.bottom, 16)
-                                    }
-                                        downloadAll
-                                    
-                                    if !viewModel.largestDownloadBlocks.isEmpty {
-                                        LargestDownloadsView(viewModel: viewModel)
-                                    }
-                                    removeAllDownloads
-                                                                        
-                                }.padding(.horizontal, 32)
-                                Spacer(minLength: 84)
-                            }
+                    if viewModel.isShowProgress {
+                        HStack(alignment: .center) {
+                            ProgressBar(size: 40, lineWidth: 8)
+                                .padding(.top, 200)
+                                .padding(.horizontal)
                         }
+                    } else {
+                        ScrollView {
+                            VStack(alignment: .leading) {
+                                DynamicOffsetView(
+                                    coordinate: $coordinate,
+                                    collapsed: $collapsed
+                                )
+                                TotalDownloadedProgressView(
+                                    downloadedFilesSize: viewModel.downloadedFilesSize,
+                                    totalFilesSize: viewModel.totalFilesSize,
+                                    isDownloading: Binding<Bool>(
+                                        get: { viewModel.downloadAllButtonState == .cancel },
+                                        set: { newValue in
+                                            viewModel.downloadAllButtonState = newValue ? .cancel : .start
+                                        }
+                                    )
+                                )
+                                .padding(.top, 36)
+                                
+                                if viewModel.downloadedFilesSize == 0 && viewModel.totalFilesSize != 0 {
+                                    Text(CourseLocalization.Course.Offline.youCanDownload)
+                                        .font(Theme.Fonts.labelLarge)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .padding(.top, 8)
+                                        .padding(.bottom, 16)
+                                } else if viewModel.downloadedFilesSize == 0 && viewModel.totalFilesSize == 0 {
+                                    Text(CourseLocalization.Course.Offline.youCantDownload)
+                                        .font(Theme.Fonts.labelLarge)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .padding(.top, 8)
+                                        .padding(.bottom, 16)
+                                }
+                                downloadAll
+                                
+                                if !viewModel.largestDownloadBlocks.isEmpty {
+                                    LargestDownloadsView(viewModel: viewModel)
+                                }
+                                removeAllDownloads
+                                
+                            }.padding(.horizontal, 32)
+                            Spacer(minLength: 84)
+                        }
+                    }
                 }
                 .frameLimit(width: proxy.size.width)
+                
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
@@ -160,8 +161,8 @@ struct OfflineView: View {
     @ViewBuilder
     private var downloadAll: some View {
         if viewModel.connectivity.isInternetAvaliable
-            && (viewModel.totalFilesSize - viewModel.downloadedFilesSize != 0)
-            || (viewModel.totalFilesSize == 0 && viewModel.downloadedFilesSize == 0) {
+            && ((viewModel.totalFilesSize - viewModel.downloadedFilesSize != 0)
+            || (viewModel.totalFilesSize == 0 && viewModel.downloadedFilesSize == 0)) {
             Button(action: {
                 Task(priority: .low) {
                     switch viewModel.downloadAllButtonState {
@@ -191,7 +192,8 @@ struct OfflineView: View {
                         .stroke(
                             viewModel.totalFilesSize == 0
                             ? .clear
-                            : viewModel.downloadAllButtonState.color, lineWidth: 2
+                            : viewModel.downloadAllButtonState.color,
+                            lineWidth: 2
                         )
                 )
                 .background(
@@ -233,3 +235,34 @@ struct OfflineView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview {
+    let vm = CourseContainerViewModel(
+        interactor: CourseInteractor.mock,
+        authInteractor: AuthInteractor.mock,
+        router: CourseRouterMock(),
+        analytics: CourseAnalyticsMock(),
+        config: ConfigMock(),
+        connectivity: Connectivity(),
+        manager: DownloadManagerMock(),
+        storage: CourseStorageMock(),
+        isActive: true,
+        courseStart: nil,
+        courseEnd: nil,
+        enrollmentStart: nil,
+        enrollmentEnd: nil,
+        lastVisitedBlockID: nil,
+        coreAnalytics: CoreAnalyticsMock()
+    )
+    
+   return OfflineView(
+        courseID: "123",
+        coordinate: .constant(0),
+        collapsed: .constant(false),
+        viewModel: vm
+    ).onAppear {
+        vm.isShowProgress = false
+    }
+}
+#endif

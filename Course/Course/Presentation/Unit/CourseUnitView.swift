@@ -429,7 +429,7 @@ public struct CourseUnitView: View {
                 Spacer()
             }
             VStack {
-                if (!isHorizontal) {
+                if !isHorizontal {
                     Spacer()
                 }
                 CourseNavigationView(

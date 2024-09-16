@@ -48,7 +48,6 @@ public struct DeviceStorageFullAlertView: View {
         }
     }
     
-    
     private var content: some View {
         VStack {
             HStack {
@@ -80,10 +79,12 @@ public struct DeviceStorageFullAlertView: View {
                 .padding(.top, 8)
                 
                 HStack {
-                    Text(CourseLocalization.Course.StorageAlert.usedAndFree(
-                        usedSpace.formattedFileSize(),
-                        freeSpace.formattedFileSize()
-                    ))
+                    Text(
+                        CourseLocalization.Course.StorageAlert.usedAndFree(
+                            usedSpace.formattedFileSize(),
+                            freeSpace.formattedFileSize()
+                        )
+                    )
                     .foregroundColor(Theme.Colors.textSecondaryLight)
                     .font(Theme.Fonts.bodySmall)
                     Spacer()
@@ -178,7 +179,6 @@ struct StorageProgressBar: View {
             let normalizationFactor = 1 / (usedSpacePercentage + contentSizePercentage)
             
             let normalizedUsedSpaceWidth = usedSpacePercentage * normalizationFactor
-            let normalizedContentSizeWidth = contentSizePercentage * normalizationFactor
             
             ZStack {
                 RoundedRectangle(cornerRadius: 3)

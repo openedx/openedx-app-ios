@@ -213,7 +213,7 @@ struct CustomDisclosureGroup: View {
                 }.contains(where: { $0.isDownloadable })
                 guard isDownloadable else { return false }
             }
-            if let _ = viewModel.sequentialsDownloadState[sequential.id] {
+            if viewModel.sequentialsDownloadState[sequential.id] != nil {
                 return true
             }
         }

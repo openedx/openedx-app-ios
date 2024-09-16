@@ -59,3 +59,7 @@ public struct OfflineContentView: View {
         .padding(24)
     }
 }
+
+#Preview {
+    OfflineContentView(isDownloadable: true)
+}

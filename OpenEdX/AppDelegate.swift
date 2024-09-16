@@ -203,7 +203,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     // Background progress update
     
     func registerBackgroundTask() {
-        let isRegistered = BGTaskScheduler.shared.register(forTaskWithIdentifier: Self.bgAppTaskId, using: nil) { task in
+        let isRegistered = BGTaskScheduler.shared.register(
+            forTaskWithIdentifier: Self.bgAppTaskId,
+            using: nil
+        ) { task in
             debugLog("Background task is executing: \(task.identifier)")
             guard let task = task as? BGAppRefreshTask else { return }
             self.handleAppRefreshTask(task: task)

@@ -93,13 +93,13 @@ public struct TotalDownloadedProgressView: View {
     }
 }
 
-struct TotalDownloadedProgressView_Previews: PreviewProvider {
-    static var previews: some View {
-        TotalDownloadedProgressView(
-            downloadedFilesSize: 24341324514,
-            totalFilesSize: 324324132413,
-            isDownloading: .constant(false)
-        )
-        .loadFonts()
-    }
+#if DEBUG
+#Preview {
+    TotalDownloadedProgressView(
+        downloadedFilesSize: 24341324514,
+        totalFilesSize: 324324132413,
+        isDownloading: .constant(false)
+    )
+    .loadFonts()
 }
+#endif
