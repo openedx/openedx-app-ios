@@ -33,6 +33,7 @@ public struct PickerMenu: View {
     private let router: BaseRouter
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var selected: ((PickerItem) -> Void) = { _ in }
+    private let emptyKey: String = "--empty--"
 
     public init(
         items: [PickerItem],
@@ -50,18 +51,19 @@ public struct PickerMenu: View {
 
     private var filteredItems: [PickerItem] {
         if search.isEmpty {
-            return items
+            return items.isEmpty ? [PickerItem(key: emptyKey, value: "")] : items
         } else {
-            return items.filter { $0.value.localizedCaseInsensitiveContains(search) }
+            let filteredItems = items.filter { $0.value.localizedCaseInsensitiveContains(search) }
+            return filteredItems.isEmpty ? [PickerItem(key: emptyKey, value: "")] : filteredItems
         }
     }
 
     private var isSingleSelection: Bool {
-        return filteredItems.count == 1
+        return filteredItems.count == 1 && filteredItems.first?.key != emptyKey
     }
 
     private var isItemSelected: Bool {
-        return filteredItems.contains(selectedItem)
+        return filteredItems.contains(selectedItem) && selectedItem.key != emptyKey
     }
 
     private var acceptButtonDisabled: Bool {
