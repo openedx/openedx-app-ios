@@ -256,7 +256,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
-        guard let encodedVideo else {
+        guard let encodedVideo, encodedVideo.url?.isEmpty == false else {
             return nil
         }
         return .init(

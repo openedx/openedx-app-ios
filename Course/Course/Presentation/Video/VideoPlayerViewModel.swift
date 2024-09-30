@@ -103,7 +103,7 @@ public class VideoPlayerViewModel: ObservableObject {
 
             subtitles = result
         } catch {
-            print(">>>>> ⛔️⛔️⛔️⛔️⛔️⛔️⛔️⛔️", error)
+            debugLog(">>>>> ⛔️⛔️⛔️⛔️⛔️⛔️⛔️⛔️", error)
         }
     }
     
