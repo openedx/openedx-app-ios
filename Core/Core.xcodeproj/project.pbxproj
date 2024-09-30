@@ -14,6 +14,7 @@
 		021D924828DC860C00ACC565 /* Data_UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924728DC860C00ACC565 /* Data_UserProfile.swift */; };
 		021D925028DC89D100ACC565 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D924F28DC89D100ACC565 /* UserProfile.swift */; };
 		021D925728DCF12900ACC565 /* AlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021D925628DCF12900ACC565 /* AlertView.swift */; };
+		02228B312C2232D2009A5F28 /* IntExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02228B302C2232D2009A5F28 /* IntExtension.swift */; };
 		022020462C11BB2200D15795 /* Data_CourseDates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022020452C11BB2200D15795 /* Data_CourseDates.swift */; };
 		02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02280F5A294B4E6F0032823A /* Connectivity.swift */; };
 		02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02284C172A3B1AE00007117F /* UIApplicationExtension.swift */; };
@@ -44,6 +45,7 @@
 		025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025B36742A13B7D5001A640E /* UnitButtonView.swift */; };
 		025EF2F62971740000B838AB /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = 025EF2F52971740000B838AB /* YouTubePlayerKit */; };
 		0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0260E57F28FD792800BBBE18 /* WebUnitViewModel.swift */; };
+		0267F8512C3C256F0089D810 /* FileWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0267F8502C3C256F0089D810 /* FileWebView.swift */; };
 		027BD3922907D88F00392132 /* Data_RegistrationFields.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3912907D88F00392132 /* Data_RegistrationFields.swift */; };
 		027BD39C2908810C00392132 /* RegisterUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD39B2908810C00392132 /* RegisterUser.swift */; };
 		027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3A62909474100392132 /* KeyboardAvoidingViewController.swift */; };
@@ -70,12 +72,18 @@
 		02935B732BCECAD000B22F66 /* Data_PrimaryEnrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02935B722BCECAD000B22F66 /* Data_PrimaryEnrollment.swift */; };
 		02935B752BCEE6D600B22F66 /* PrimaryEnrollment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02935B742BCEE6D600B22F66 /* PrimaryEnrollment.swift */; };
 		0295C885299B99DD00ABE571 /* RefreshableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */; };
+		029A13262C2457D9005FB830 /* OfflineProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A13252C2457D9005FB830 /* OfflineProgress.swift */; };
+		029A13282C246AE6005FB830 /* OfflineSyncManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A13272C246AE6005FB830 /* OfflineSyncManager.swift */; };
+		029A132A2C2471DF005FB830 /* OfflineSyncRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A13292C2471DF005FB830 /* OfflineSyncRepository.swift */; };
+		029A132C2C2471F8005FB830 /* OfflineSyncEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */; };
+		029A13302C2479E7005FB830 /* OfflineSyncInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029A132F2C2479E7005FB830 /* OfflineSyncInteractor.swift */; };
 		029EE3ED2BF6650500F64F33 /* Bundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029EE3EC2BF6650500F64F33 /* Bundle.swift */; };
 		02A463112AEA966C00331037 /* AppReviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A463102AEA966C00331037 /* AppReviewView.swift */; };
 		02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */; };
 		02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */; };
 		02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833929B8A9AB00D33F33 /* DownloadManager.swift */; };
 		02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833B29B8C57800D33F33 /* DownloadView.swift */; };
+		02AA27942C2C1B88006F5B6A /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 02AA27932C2C1B88006F5B6A /* ZipArchive */; };
 		02A8C5812C05DBB4004B91FF /* Data_EnrollmentsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8C5802C05DBB4004B91FF /* Data_EnrollmentsStatus.swift */; };
 		02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */; };
 		02AFCC1A2AEFDC18000360F0 /* ThirdPartyMailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AFCC192AEFDC18000360F0 /* ThirdPartyMailer.swift */; };
@@ -211,6 +219,7 @@
 		021D924728DC860C00ACC565 /* Data_UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_UserProfile.swift; sourceTree = "<group>"; };
 		021D924F28DC89D100ACC565 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		021D925628DCF12900ACC565 /* AlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertView.swift; sourceTree = "<group>"; };
+		02228B302C2232D2009A5F28 /* IntExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtension.swift; sourceTree = "<group>"; };
 		022020452C11BB2200D15795 /* Data_CourseDates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CourseDates.swift; sourceTree = "<group>"; };
 		02280F5A294B4E6F0032823A /* Connectivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connectivity.swift; sourceTree = "<group>"; };
 		02284C172A3B1AE00007117F /* UIApplicationExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIApplicationExtension.swift; sourceTree = "<group>"; };
@@ -240,6 +249,7 @@
 		025A204F2C071EB0003EA08D /* ErrorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorAlertView.swift; sourceTree = "<group>"; };
 		025B36742A13B7D5001A640E /* UnitButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitButtonView.swift; sourceTree = "<group>"; };
 		0260E57F28FD792800BBBE18 /* WebUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUnitViewModel.swift; sourceTree = "<group>"; };
+		0267F8502C3C256F0089D810 /* FileWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileWebView.swift; sourceTree = "<group>"; };
 		027BD3912907D88F00392132 /* Data_RegistrationFields.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_RegistrationFields.swift; sourceTree = "<group>"; };
 		027BD39B2908810C00392132 /* RegisterUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterUser.swift; sourceTree = "<group>"; };
 		027BD3A62909474100392132 /* KeyboardAvoidingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardAvoidingViewController.swift; sourceTree = "<group>"; };
@@ -266,6 +276,11 @@
 		02935B722BCECAD000B22F66 /* Data_PrimaryEnrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_PrimaryEnrollment.swift; sourceTree = "<group>"; };
 		02935B742BCEE6D600B22F66 /* PrimaryEnrollment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryEnrollment.swift; sourceTree = "<group>"; };
 		0295C884299B99DD00ABE571 /* RefreshableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshableScrollView.swift; sourceTree = "<group>"; };
+		029A13252C2457D9005FB830 /* OfflineProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineProgress.swift; sourceTree = "<group>"; };
+		029A13272C246AE6005FB830 /* OfflineSyncManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncManager.swift; sourceTree = "<group>"; };
+		029A13292C2471DF005FB830 /* OfflineSyncRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncRepository.swift; sourceTree = "<group>"; };
+		029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncEndpoint.swift; sourceTree = "<group>"; };
+		029A132F2C2479E7005FB830 /* OfflineSyncInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSyncInteractor.swift; sourceTree = "<group>"; };
 		029EE3EC2BF6650500F64F33 /* Bundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bundle.swift; sourceTree = "<group>"; };
 		02A463102AEA966C00331037 /* AppReviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppReviewView.swift; sourceTree = "<group>"; };
 		02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorePersistenceProtocol.swift; sourceTree = "<group>"; };
@@ -413,6 +428,7 @@
 				C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */,
 				142EDD6C2B831D1400F9F320 /* BranchSDK in Frameworks */,
 				BA8FA66C2AD59BBC00EA029A /* GoogleSignIn in Frameworks */,
+				02AA27942C2C1B88006F5B6A /* ZipArchive in Frameworks */,
 				E055A5392B18DC95008D9E5E /* Theme.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -434,6 +450,7 @@
 			isa = PBXGroup;
 			children = (
 				0236961828F9A26900EEF206 /* AuthRepository.swift */,
+				029A13292C2471DF005FB830 /* OfflineSyncRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -498,6 +515,7 @@
 				0283347F28D4DCD200C828FC /* ViewExtension.swift */,
 				02F6EF4928D9F0A700835477 /* DateExtension.swift */,
 				02F98A7E28F81EE900DE94C0 /* Container+App.swift */,
+				02228B302C2232D2009A5F28 /* IntExtension.swift */,
 				027BD3BB2909478B00392132 /* UIResponder+CurrentResponder.swift */,
 				027BD3BA2909478B00392132 /* UIView+EnclosingScrollView.swift */,
 				02E225AF291D29EB0067769A /* UrlExtension.swift */,
@@ -633,6 +651,7 @@
 			children = (
 				0727878728D3172D002E9142 /* Model */,
 				0236961A28F9A28B00EEF206 /* AuthInteractor.swift */,
+				029A132F2C2479E7005FB830 /* OfflineSyncInteractor.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -652,6 +671,7 @@
 				020C31C8290AC3F700D6DEA2 /* PickerFields.swift */,
 				02EBC75A2C19DE3D00BE182C /* CourseForSync.swift */,
 				076F297E2A1F80C800967E7D /* Pagination.swift */,
+				029A13252C2457D9005FB830 /* OfflineProgress.swift */,
 				02286D152C106393005EEC8D /* CourseDates.swift */,
 				02EBC7562C19DCDB00BE182C /* SyncStatus.swift */,
 			);
@@ -710,8 +730,10 @@
 				0727877A28D24A1D002E9142 /* HeadersRedirectHandler.swift */,
 				0727877E28D25B24002E9142 /* Alamofire+Error.swift */,
 				0236961E28F9A2F600EEF206 /* AuthEndpoint.swift */,
+				029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */,
 				0255D55729362839004DBC1A /* UploadBodyEncoding.swift */,
 				02A4833929B8A9AB00D33F33 /* DownloadManager.swift */,
+				029A13272C246AE6005FB830 /* OfflineSyncManager.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -778,6 +800,7 @@
 				020D72F32BB76DFE00773319 /* VisualEffectView.swift */,
 				06DEA4A22BBD66A700110D20 /* BackNavigationButton.swift */,
 				06DEA4A42BBD66D700110D20 /* BackNavigationButtonViewModel.swift */,
+				0267F8502C3C256F0089D810 /* FileWebView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -972,6 +995,7 @@
 				BA8FA66B2AD59BBC00EA029A /* GoogleSignIn */,
 				BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */,
 				142EDD6B2B831D1400F9F320 /* BranchSDK */,
+				02AA27932C2C1B88006F5B6A /* ZipArchive */,
 			);
 			productName = Core;
 			productReference = 0770DE0828D07831006D8A5D /* Core.framework */;
@@ -1012,6 +1036,7 @@
 				BA8FA65E2AD574D700EA029A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */,
+				02AA27922C2C1B61006F5B6A /* XCRemoteSwiftPackageReference "ZipArchive" */,
 			);
 			productRefGroup = 0770DE0928D07831006D8A5D /* Products */;
 			projectDirPath = "";
@@ -1112,6 +1137,7 @@
 				027F1BF72C071C820001A24C /* NavigationTitle.swift in Sources */,
 				06619EAA2B8F2936001FAADE /* ReadabilityModifier.swift in Sources */,
 				BAFB99902B14B377007D09F9 /* GoogleConfig.swift in Sources */,
+				029A132C2C2471F8005FB830 /* OfflineSyncEndpoint.swift in Sources */,
 				02E225B0291D29EB0067769A /* UrlExtension.swift in Sources */,
 				02CF46C829546AA200A698EE /* NoCachedDataError.swift in Sources */,
 				0727877728D23847002E9142 /* DataLayer.swift in Sources */,
@@ -1125,6 +1151,7 @@
 				064987972B4D69FF0071642A /* WebView.swift in Sources */,
 				0770DE2A28D0929E006D8A5D /* HTTPTask.swift in Sources */,
 				06619EAD2B90918B001FAADE /* ReadabilityInjection.swift in Sources */,
+				029A13262C2457D9005FB830 /* OfflineProgress.swift in Sources */,
 				02284C182A3B1AE00007117F /* UIApplicationExtension.swift in Sources */,
 				0255D5582936283A004DBC1A /* UploadBodyEncoding.swift in Sources */,
 				06619EAF2B973B25001FAADE /* AccessibilityInjection.swift in Sources */,
@@ -1187,6 +1214,7 @@
 				021D925728DCF12900ACC565 /* AlertView.swift in Sources */,
 				027BD3A82909474200392132 /* KeyboardAvoidingViewController.swift in Sources */,
 				025A20502C071EB0003EA08D /* ErrorAlertView.swift in Sources */,
+				029A13282C246AE6005FB830 /* OfflineSyncManager.swift in Sources */,
 				02E93F852AEBAEBC006C4750 /* AppReviewViewModel.swift in Sources */,
 				A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */,
 				0770DE2528D08FBA006D8A5D /* CoreStorage.swift in Sources */,
@@ -1209,6 +1237,7 @@
 				0259104A29C4A5B6004B5A55 /* UserSettings.swift in Sources */,
 				021D925028DC89D100ACC565 /* UserProfile.swift in Sources */,
 				071009D028D1E3A600344290 /* Constants.swift in Sources */,
+				02228B312C2232D2009A5F28 /* IntExtension.swift in Sources */,
 				0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */,
 				BA30427F2B20B320009B64B7 /* SocialAuthError.swift in Sources */,
 				02286D162C106393005EEC8D /* CourseDates.swift in Sources */,
@@ -1218,6 +1247,7 @@
 				DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */,
 				072787B628D37A0E002E9142 /* Validator.swift in Sources */,
 				0236961D28F9A2D200EEF206 /* Data_AuthResponse.swift in Sources */,
+				0267F8512C3C256F0089D810 /* FileWebView.swift in Sources */,
 				A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */,
 				06DEA4A52BBD66D700110D20 /* BackNavigationButtonViewModel.swift in Sources */,
 				02AFCC182AEFDB24000360F0 /* ThirdPartyMailClient.swift in Sources */,
@@ -1256,12 +1286,14 @@
 				064987982B4D69FF0071642A /* CSSInjectionProtocol.swift in Sources */,
 				029EE3ED2BF6650500F64F33 /* Bundle.swift in Sources */,
 				BADB3F5B2AD6EC56004D5CFA /* ResultExtension.swift in Sources */,
+				029A132A2C2471DF005FB830 /* OfflineSyncRepository.swift in Sources */,
 				0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */,
 				023A1136291432B200D0D354 /* RegistrationTextField.swift in Sources */,
 				02A463112AEA966C00331037 /* AppReviewView.swift in Sources */,
 				025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */,
 				028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */,
 				0233D56F2AF13EB200BAC8BD /* StarRatingView.swift in Sources */,
+				029A13302C2479E7005FB830 /* OfflineSyncInteractor.swift in Sources */,
 				0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */,
 				027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */,
 				024BE3DF29B2615500BCDEE2 /* CGColorExtension.swift in Sources */,
@@ -2294,6 +2326,14 @@
 				minimumVersion = 1.8.0;
 			};
 		};
+		02AA27922C2C1B61006F5B6A /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ZipArchive/ZipArchive.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.5;
+			};
+		};
 		142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/BranchMetrics/ios-branch-sdk-spm";
@@ -2325,6 +2365,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 025EF2F42971740000B838AB /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */;
 			productName = YouTubePlayerKit;
+		};
+		02AA27932C2C1B88006F5B6A /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 02AA27922C2C1B61006F5B6A /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
 		};
 		142EDD6B2B831D1400F9F320 /* BranchSDK */ = {
 			isa = XCSwiftPackageProductDependency;

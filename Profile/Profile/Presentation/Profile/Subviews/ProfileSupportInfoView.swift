@@ -119,7 +119,8 @@ struct ProfileSupportInfoView: View {
             WebBrowser(
                 url: viewModel.url.absoluteString,
                 pageTitle: viewModel.title,
-                showProgress: true
+                showProgress: true, 
+                connectivity: self.viewModel.connectivity
             )
             
         } label: {

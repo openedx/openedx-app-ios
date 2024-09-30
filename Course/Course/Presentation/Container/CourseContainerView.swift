@@ -230,6 +230,19 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
+                case .offline:
+                    OfflineView(
+                        courseID: courseID,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
+                        viewModel: viewModel
+                    )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
+                    .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
                 case .discussion:
                     DiscussionTopicsView(
                         courseID: courseID,

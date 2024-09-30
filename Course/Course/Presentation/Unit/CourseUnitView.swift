@@ -34,6 +34,9 @@ public struct CourseUnitView: View {
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
     
+    @State private var videoURL: URL?
+    @State private var webURL: URL?
+    
     let isDropdownActive: Bool
     
     var sequenceTitle: String {
@@ -184,12 +187,14 @@ public struct CourseUnitView: View {
                                     isOnScreen: index == viewModel.index
                                 )
                                 .frameLimit(width: reader.size.width)
-
+                                
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                FullScreenErrorView(type: .noInternet)
+                                OfflineContentView(
+                                    isDownloadable: false
+                                )
                             }
                             
                         } else {
@@ -214,30 +219,39 @@ public struct CourseUnitView: View {
                                 )
                                 .padding(.top, 5)
                                 .frameLimit(width: reader.size.width)
-
+                                
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                FullScreenErrorView(type: .noInternet)
+                                OfflineContentView(
+                                    isDownloadable: true
+                                )
                             }
                         }
+                        
                         // MARK: Web
-                    case let .web(url, injections):
+                    case let .web(url, injections, blockId, isDownloadable):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            if viewModel.connectivity.isInternetAvaliable {
+                            let localUrl = viewModel.urlForOfflineContent(blockId: blockId)?.absoluteString
+                            if viewModel.connectivity.isInternetAvaliable || localUrl != nil {
+                                // not need to add frame limit there because we did that with injection
                                 WebView(
                                     url: url,
+                                    localUrl: viewModel.connectivity.isInternetAvaliable ? nil : localUrl,
                                     injections: injections,
+                                    blockID: block.id,
                                     roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
                                 )
-                                // not need to add frame limit there because we did that with injection
                             } else {
-                                FullScreenErrorView(type: .noInternet)
+                                OfflineContentView(
+                                    isDownloadable: isDownloadable
+                                )
                             }
                         } else {
                             EmptyView()
                         }
+
                         // MARK: Unknown
                     case .unknown(let url):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
@@ -247,7 +261,9 @@ public struct CourseUnitView: View {
                                 Spacer()
                                     .frame(minHeight: 100)
                             } else {
-                                FullScreenErrorView(type: .noInternet)
+                                OfflineContentView(
+                                    isDownloadable: false
+                                )
                             }
                         } else {
                             EmptyView()
@@ -449,7 +465,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "2",
@@ -464,7 +481,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 studentUrl: "2",
                 webUrl: "2",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "3",
@@ -479,7 +497,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 studentUrl: "3",
                 webUrl: "3",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "4",
@@ -494,7 +513,8 @@ struct CourseUnitView_Previews: PreviewProvider {
                 studentUrl: "4",
                 webUrl: "4",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             ),
         ]
         

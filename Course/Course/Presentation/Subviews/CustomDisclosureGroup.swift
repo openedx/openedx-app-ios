@@ -12,12 +12,14 @@ import Theme
 struct CustomDisclosureGroup: View {
     @State private var expandedSections: [String: Bool] = [:]
     
+    private let isVideo: Bool
     private let proxy: GeometryProxy
     private let course: CourseStructure
     private let viewModel: CourseContainerViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    init(course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
+    init(isVideo: Bool, course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
+        self.isVideo = isVideo
         self.course = course
         self.proxy = proxy
         self.viewModel = viewModel
@@ -46,28 +48,11 @@ struct CustomDisclosureGroup: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .lineLimit(1)
                                 Spacer()
-                                if canDownloadAllSections(in: chapter),
-                                   let state = downloadAllButtonState(for: chapter) {
+                                if canDownloadAllSections(in: chapter, videoOnly: isVideo),
+                                   let state = downloadAllButtonState(for: chapter, videoOnly: isVideo) {
                                     Button(
                                         action: {
-                                            switch state {
-                                            case .finished:
-                                                viewModel.router.presentAlert(
-                                                    alertTitle: CourseLocalization.Alert.warning,
-                                                    alertMessage: deleteMessage(for: chapter),
-                                                    positiveAction: CoreLocalization.Alert.delete,
-                                                    onCloseTapped: {
-                                                        viewModel.router.dismiss(animated: true)
-                                                    },
-                                                    okTapped: {
-                                                        downloadAllSubsections(in: chapter, state: state)
-                                                        viewModel.router.dismiss(animated: true)
-                                                    },
-                                                    type: .deleteVideo
-                                                )
-                                            default:
                                                 downloadAllSubsections(in: chapter, state: state)
-                                            }
                                         }, label: {
                                             switch state {
                                             case .available:
@@ -146,7 +131,14 @@ struct CustomDisclosureGroup: View {
                                                        let numPointsPossible = sequentialProgress.numPointsPossible,
                                                        let due = sequential.due {
                                                         let daysRemaining = getAssignmentStatus(for: due)
-                                                        Text("\(assignmentType) - \(daysRemaining) - \(numPointsEarned) / \(numPointsPossible)")
+                                                        Text(
+                                                             """
+                                                             \(assignmentType) -
+                                                             \(daysRemaining) -
+                                                             \(numPointsEarned) /
+                                                             \(numPointsPossible)
+                                                             """
+                                                        )
                                                             .font(Theme.Fonts.bodySmall)
                                                             .multilineTextAlignment(.leading)
                                                             .lineLimit(2)
@@ -213,9 +205,15 @@ struct CustomDisclosureGroup: View {
         }
     }
     
-    private func canDownloadAllSections(in chapter: CourseChapter) -> Bool {
+    private func canDownloadAllSections(in chapter: CourseChapter, videoOnly: Bool) -> Bool {
         for sequential in chapter.childs {
-            if let state = viewModel.sequentialsDownloadState[sequential.id] {
+            if videoOnly {
+                let isDownloadable = sequential.childs.flatMap {
+                    $0.childs.filter({ $0.type == .video })
+                }.contains(where: { $0.isDownloadable })
+                guard isDownloadable else { return false }
+            }
+            if viewModel.sequentialsDownloadState[sequential.id] != nil {
                 return true
             }
         }
@@ -224,18 +222,21 @@ struct CustomDisclosureGroup: View {
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
         Task {
+            var allBlocks: [CourseBlock] = []
             for sequential in chapter.childs {
-                await viewModel.onDownloadViewTap(
-                    chapter: chapter,
-                    blockId: sequential.id,
-                    state: state
-                )
+                let blocks = await viewModel.collectBlocks(chapter: chapter, blockId: sequential.id, state: state)
+                allBlocks.append(contentsOf: blocks)
             }
+            await viewModel.download(
+                state: state,
+                blocks: allBlocks,
+                sequentials: chapter.childs.filter({ $0.isDownloadable })
+            )
         }
     }
     
-    private func downloadAllButtonState(for chapter: CourseChapter) -> DownloadViewState? {
-        if canDownloadAllSections(in: chapter) {
+    private func downloadAllButtonState(for chapter: CourseChapter, videoOnly: Bool) -> DownloadViewState? {
+        if canDownloadAllSections(in: chapter, videoOnly: videoOnly) {
             let downloads = chapter.childs.filter({ viewModel.sequentialsDownloadState[$0.id] != nil })
             
             if downloads.contains(where: { viewModel.sequentialsDownloadState[$0.id] == .downloading }) {
@@ -397,6 +398,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
         return GeometryReader { proxy in
             ScrollView {
                 CustomDisclosureGroup(
+                    isVideo: false,
                     course: CourseStructure(
                         id: "Id",
                         graded: false,

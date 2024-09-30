@@ -20,6 +20,26 @@ import Combine
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
+        // MARK: OfflineSync
+        container.register(OfflineSyncRepositoryProtocol.self) { r in
+            OfflineSyncRepository(
+                api: r.resolve(API.self)!
+            )
+        }
+        container.register(OfflineSyncInteractorProtocol.self) { r in
+            OfflineSyncInteractor(
+                repository: r.resolve(OfflineSyncRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(OfflineSyncManagerProtocol.self) { r in
+            OfflineSyncManager(
+                persistence: r.resolve(CorePersistenceProtocol.self)!,
+                interactor: r.resolve(OfflineSyncInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }
+
         // MARK: Auth
         container.register(AuthRepositoryProtocol.self) { r in
             AuthRepository(
@@ -39,8 +59,11 @@ class ScreenAssembly: Assembly {
             MainScreenViewModel(
                 analytics: r.resolve(MainScreenAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
+                router: r.resolve(Router.self)!,
+                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!,
                 profileInteractor: r.resolve(ProfileInteractorProtocol.self)!,
-                appStorage: r.resolve(AppStorage.self)!, 
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                appStorage: r.resolve(AppStorage.self)!,
                 calendarManager: r.resolve(CalendarManagerProtocol.self)!,
                 sourceScreen: sourceScreen
             )
@@ -240,7 +263,9 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                corePersistence: r.resolve(CorePersistenceProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
         
@@ -363,8 +388,11 @@ class ScreenAssembly: Assembly {
         }
         
         container.register(WebUnitViewModel.self) { r in
-            WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!,
-                             config: r.resolve(ConfigProtocol.self)!)
+            WebUnitViewModel(
+                authInteractor: r.resolve(AuthInteractorProtocol.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!
+            )
         }
         
         container.register(
