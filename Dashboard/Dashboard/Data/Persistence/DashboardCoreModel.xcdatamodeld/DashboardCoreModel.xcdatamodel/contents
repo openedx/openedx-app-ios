@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="22758" systemVersion="23F79" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23231" systemVersion="24A335" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="CDAssignment" representedClassName="CDAssignment" syncable="YES" codeGenerationType="class">
         <attribute name="complete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
@@ -7,8 +7,8 @@
         <attribute name="firstComponentBlockId" optional="YES" attributeType="String"/>
         <attribute name="title" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
-        <relationship name="futureAssignment" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPrimaryCourse" inverseName="futureAssignments" inverseEntity="CDPrimaryCourse"/>
-        <relationship name="pastAssignments" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDPrimaryCourse" inverseName="pastAssignments" inverseEntity="CDPrimaryCourse"/>
+        <relationship name="futureAssignment" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrimaryCourse" inverseName="futureAssignments" inverseEntity="CDPrimaryCourse"/>
+        <relationship name="pastAssignments" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrimaryCourse" inverseName="pastAssignments" inverseEntity="CDPrimaryCourse"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="title"/>
@@ -56,8 +56,8 @@
         <attribute name="progressEarned" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="progressPossible" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="resumeTitle" optional="YES" attributeType="String"/>
-        <relationship name="futureAssignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAssignment" inverseName="futureAssignment" inverseEntity="CDAssignment"/>
-        <relationship name="pastAssignments" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDAssignment" inverseName="pastAssignments" inverseEntity="CDAssignment"/>
+        <relationship name="futureAssignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDAssignment" inverseName="futureAssignment" inverseEntity="CDAssignment"/>
+        <relationship name="pastAssignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDAssignment" inverseName="pastAssignments" inverseEntity="CDAssignment"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>
