@@ -162,6 +162,13 @@ struct MainScreenView: View {
         .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
             updateAvailable = true
         }
+        .onReceive(NotificationCenter.default.publisher(for: .showDownloadFailed)) { downloads in
+            if let downloads = downloads.object as? [DownloadDataTask] {
+                Task {
+                   await viewModel.showDownloadFailed(downloads: downloads)
+                }
+            }
+        }
         .onChange(of: viewModel.selection) { _ in
             if disableAllTabs {
                 viewModel.selection = .profile

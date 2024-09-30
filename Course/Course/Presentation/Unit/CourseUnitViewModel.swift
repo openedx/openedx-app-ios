@@ -9,9 +9,9 @@ import SwiftUI
 import Core
 
 public enum LessonType: Equatable {
-    case web(url: String, injections: [WebviewInjection])
-    case youtube(youtubeVideoUrl: String, blockID: String)
-    case video(videoUrl: String, blockID: String)
+    case web(url: String, injections: [WebviewInjection], blockId: String, isDownloadable: Bool)
+    case youtube(youtubeVideoUrl: String, blockId: String)
+    case video(videoUrl: String, blockId: String)
     case unknown(String)
     case discussion(String, String, String)
     
@@ -22,34 +22,66 @@ public enum LessonType: Equatable {
             return .unknown(block.studentUrl)
         case .unknown:
             if let multiDevice = block.multiDevice, multiDevice {
-                return .web(url: block.studentUrl, injections: mandatoryInjections)
+                return .web(
+                    url: block.studentUrl,
+                    injections: mandatoryInjections,
+                    blockId: block.id,
+                    isDownloadable: block.isDownloadable
+                )
             } else {
                 return .unknown(block.studentUrl)
             }
         case .html:
-            return .web(url: block.studentUrl, injections: mandatoryInjections)
+            return .web(
+                url: block.studentUrl,
+                injections: mandatoryInjections,
+                blockId: block.id,
+                isDownloadable: block.isDownloadable
+            )
         case .discussion:
             return .discussion(block.topicId ?? "", block.id, block.displayName)
         case .video:
             if block.encodedVideo?.youtubeVideoUrl != nil,
                 let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
-                return .video(videoUrl: encodedVideo, blockID: block.id)
+                return .video(videoUrl: encodedVideo, blockId: block.id)
             } else if let youtubeVideoUrl = block.encodedVideo?.youtubeVideoUrl {
-                return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockID: block.id)
+                return .youtube(youtubeVideoUrl: youtubeVideoUrl, blockId: block.id)
             } else if let encodedVideo = block.encodedVideo?.video(streamingQuality: streamingQuality)?.url {
-                return .video(videoUrl: encodedVideo, blockID: block.id)
+                return .video(videoUrl: encodedVideo, blockId: block.id)
+            } else if let encodedVideo = block.encodedVideo?.video(downloadQuality: DownloadQuality.auto)?.url {
+                   return .video(videoUrl: encodedVideo, blockId: block.id)
             } else {
                 return .unknown(block.studentUrl)
             }
             
         case .problem:
-            return .web(url: block.studentUrl, injections: mandatoryInjections)
+            return .web(
+                url: block.studentUrl,
+                injections: mandatoryInjections,
+                blockId: block.id,
+                isDownloadable: block.isDownloadable
+            )
         case .dragAndDropV2:
-            return .web(url: block.studentUrl, injections: mandatoryInjections + [.dragAndDropCss])
+            return .web(
+                url: block.studentUrl,
+                injections: mandatoryInjections + [.dragAndDropCss],
+                blockId: block.id,
+                isDownloadable: block.isDownloadable
+            )
         case .survey:
-            return .web(url: block.studentUrl, injections: mandatoryInjections + [.surveyCSS])
+            return .web(
+                url: block.studentUrl,
+                injections: mandatoryInjections + [.surveyCSS],
+                blockId: block.id,
+                isDownloadable: block.isDownloadable
+            )
         case .openassessment, .peerInstructionTool:
-            return .web(url: block.studentUrl, injections: mandatoryInjections)
+            return .web(
+                url: block.studentUrl,
+                injections: mandatoryInjections,
+                blockId: block.id,
+                isDownloadable: block.isDownloadable
+            )
         }
     }
 }
@@ -237,6 +269,10 @@ public class CourseUnitViewModel: ObservableObject {
         } else {
             return URL(string: url)
         }
+    }
+
+    func urlForOfflineContent(blockId: String) -> URL? {
+        return manager.fileUrl(for: blockId)
     }
     
     func trackFinishVerticalBackToOutlineClicked() {

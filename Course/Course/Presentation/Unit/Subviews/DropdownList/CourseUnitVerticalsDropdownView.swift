@@ -71,7 +71,8 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
 
             ),
             CourseBlock(
@@ -87,7 +88,8 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 studentUrl: "2",
                 webUrl: "2",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
 
             ),
             CourseBlock(
@@ -103,7 +105,8 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 studentUrl: "3",
                 webUrl: "3",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
 
             ),
             CourseBlock(
@@ -119,7 +122,8 @@ struct CourseUnitVerticalsDropdownView_Previews: PreviewProvider {
                 studentUrl: "4",
                 webUrl: "4",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             )
         ]
         

@@ -22,7 +22,7 @@ public struct ProgramWebviewView: View {
     private var router: DiscoveryRouter
     private var viewType: ProgramViewType
     public var pathID: String
-
+    
     private var URLString: String {
         switch viewType {
         case .program:
@@ -55,7 +55,8 @@ public struct ProgramWebviewView: View {
                     WebView(
                         viewModel: .init(
                             url: URLString,
-                            baseURL: "",
+                            baseURL: "", 
+                            openFile: {_ in},
                             injections: [.colorInversionCss]
                         ),
                         isLoading: $isLoading,
@@ -64,7 +65,8 @@ public struct ProgramWebviewView: View {
                                 force: true
                             )
                         },
-                        navigationDelegate: viewModel,
+                        navigationDelegate: viewModel, 
+                        connectivity: viewModel.connectivity,
                         webViewType: viewType.rawValue
                     )
                     .accessibilityIdentifier("program_webview")

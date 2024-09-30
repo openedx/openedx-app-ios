@@ -28,7 +28,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     studentUrl: "",
                     webUrl: "",
                     encodedVideo: nil,
-                    multiDevice: true
+                    multiDevice: true,
+                    offlineDownload: nil
                    ),
         CourseBlock(blockId: "2",
                     id: "2",
@@ -42,7 +43,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     studentUrl: "2",
                     webUrl: "2",
                     encodedVideo: nil,
-                    multiDevice: false
+                    multiDevice: false,
+                    offlineDownload: nil
                    ),
         CourseBlock(blockId: "3",
                     id: "3",
@@ -56,7 +58,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     studentUrl: "3",
                     webUrl: "3",
                     encodedVideo: nil,
-                    multiDevice: true
+                    multiDevice: true,
+                    offlineDownload: nil
                    ),
         CourseBlock(blockId: "4",
                     id: "4",
@@ -70,7 +73,8 @@ final class CourseUnitViewModelTests: XCTestCase {
                     studentUrl: "4",
                     webUrl: "4",
                     encodedVideo: nil,
-                    multiDevice: false
+                    multiDevice: false,
+                    offlineDownload: nil
                    ),
     ]
     

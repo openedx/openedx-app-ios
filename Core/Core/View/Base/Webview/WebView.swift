@@ -28,10 +28,17 @@ public struct WebView: UIViewRepresentable {
         @Published var url: String
         let baseURL: String
         let injections: [WebviewInjection]?
+        var openFile: (String) -> Void
         
-        public init(url: String, baseURL: String, injections: [WebviewInjection]? = nil) {
+        public init(
+            url: String,
+            baseURL: String,
+            openFile: @escaping (String) -> Void,
+            injections: [WebviewInjection]? = nil
+        ) {
             self.url = url
             self.baseURL = baseURL
+            self.openFile = openFile
             self.injections = injections
         }
     }
@@ -39,21 +46,28 @@ public struct WebView: UIViewRepresentable {
     @ObservedObject var viewModel: ViewModel
     @Binding public var isLoading: Bool
     var webViewNavDelegate: WebViewNavigationDelegate?
+    let connectivity: ConnectivityProtocol
+    var message: ((WKScriptMessage) -> Void)
     
     var refreshCookies: () async -> Void
     var webViewType: String?
+    private let userContentControllerName = "IOSBridge"
 
     public init(
         viewModel: ViewModel,
         isLoading: Binding<Bool>,
         refreshCookies: @escaping () async -> Void,
         navigationDelegate: WebViewNavigationDelegate? = nil,
+        connectivity: ConnectivityProtocol,
+        message: @escaping ((WKScriptMessage) -> Void) = { _ in },
         webViewType: String? = nil
     ) {
         self.viewModel = viewModel
         self._isLoading = isLoading
         self.refreshCookies = refreshCookies
         self.webViewNavDelegate = navigationDelegate
+        self.connectivity = connectivity
+        self.message = message
         self.webViewType = webViewType
     }
 
@@ -122,6 +136,17 @@ public struct WebView: UIViewRepresentable {
                 handler: { _ in
                     completionHandler(false)
                 }))
+            
+            if let presenter = alertController.popoverPresentationController {
+                let view = UIApplication.topViewController()?.view
+                presenter.sourceView = view
+                presenter.sourceRect = CGRect(
+                    x: view?.bounds.midX ?? 0,
+                    y: view?.bounds.midY ?? 0,
+                    width: 0,
+                    height: 0
+                )
+            }
 
             UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
         }
@@ -132,6 +157,13 @@ public struct WebView: UIViewRepresentable {
         ) async -> WKNavigationActionPolicy {
             
             guard let url = navigationAction.request.url else { return .cancel }
+            
+            if url.absoluteString.starts(with: "file:///") {
+                if url.pathExtension == "pdf" {
+                    await parent.viewModel.openFile(url.absoluteString)
+                    return .cancel
+                }
+            }
             
             let isWebViewDelegateHandled = await (
                 parent.webViewNavDelegate?.webView(
@@ -165,18 +197,20 @@ public struct WebView: UIViewRepresentable {
             _ webView: WKWebView,
             decidePolicyFor navigationResponse: WKNavigationResponse
         ) async -> WKNavigationResponsePolicy {
-            guard let response = (navigationResponse.response as? HTTPURLResponse),
-                  let url = response.url else {
-                return .cancel
-            }
-            let baseURL = await parent.viewModel.baseURL
-
-            if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
-                await parent.refreshCookies()
-                DispatchQueue.main.async {
-                    if let url = webView.url {
-                        let request = URLRequest(url: url)
-                        webView.load(request)
+            if parent.connectivity.isInternetAvaliable {
+                guard let response = (navigationResponse.response as? HTTPURLResponse),
+                      let url = response.url else {
+                    return .cancel
+                }
+                let baseURL = await parent.viewModel.baseURL
+                
+                if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
+                    await parent.refreshCookies()
+                    DispatchQueue.main.async {
+                        if let url = webView.url {
+                            let request = URLRequest(url: url)
+                            webView.load(request)
+                        }
                     }
                 }
             }
@@ -217,8 +251,13 @@ public struct WebView: UIViewRepresentable {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
+            self.parent.message(message)
             parent.viewModel.injections?.handle(message: message)
         }
+    }
+    
+    public func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKContextMenuElementInfo) -> Bool {
+        return true
     }
 
     private var userAgent: String {
@@ -238,6 +277,9 @@ public struct WebView: UIViewRepresentable {
 
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
         let webViewConfig = WKWebViewConfiguration()
+        webViewConfig.userContentController.add(context.coordinator, name: userContentControllerName)
+        webViewConfig.defaultWebpagePreferences.allowsContentJavaScript = true
+        webViewConfig.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         
         let webView = WKWebView(frame: .zero, configuration: webViewConfig)
         #if DEBUG
@@ -260,7 +302,6 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        // To add ability to change font size with webkitTextSizeAdjust need to set mode to mobile
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile
         webView.applyInjections(viewModel.injections, toHandler: context.coordinator)
         
