@@ -129,6 +129,10 @@ public struct CourseSequential: Identifiable {
         return childs.first(where: { $0.isDownloadable }) != nil
     }
     
+    public var totalSize: Int {
+        childs.flatMap { $0.childs.filter({ $0.isDownloadable }) }.reduce(0) { $0 + ($1.fileSize ?? 0) }
+    }
+    
     public init(
         blockId: String,
         id: String,
@@ -233,9 +237,31 @@ public struct CourseBlock: Hashable, Identifiable {
     public let subtitles: [SubtitleUrl]?
     public let encodedVideo: CourseBlockEncodedVideo?
     public let multiDevice: Bool?
+    public var offlineDownload: OfflineDownload?
+    public var actualFileSize: Int?
 
     public var isDownloadable: Bool {
-        encodedVideo?.isDownloadable ?? false
+        encodedVideo?.isDownloadable ?? false || offlineDownload?.isDownloadable ?? false
+    }
+    
+    public var fileSize: Int? {
+        if let actualFileSize {
+            return actualFileSize
+        } else if let fileSize = encodedVideo?.desktopMP4?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.fallback?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.hls?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.mobileHigh?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.mobileLow?.fileSize {
+            return fileSize
+        } else if let fileSize = offlineDownload?.fileSize {
+            return fileSize
+        } else {
+            return nil
+        }
     }
 
     public init(
@@ -252,7 +278,8 @@ public struct CourseBlock: Hashable, Identifiable {
         webUrl: String,
         subtitles: [SubtitleUrl]? = nil,
         encodedVideo: CourseBlockEncodedVideo?,
-        multiDevice: Bool?
+        multiDevice: Bool?,
+        offlineDownload: OfflineDownload?
     ) {
         self.blockId = blockId
         self.id = id
@@ -268,6 +295,23 @@ public struct CourseBlock: Hashable, Identifiable {
         self.subtitles = subtitles
         self.encodedVideo = encodedVideo
         self.multiDevice = multiDevice
+        self.offlineDownload = offlineDownload
+    }
+}
+
+public struct OfflineDownload {
+    public let fileUrl: String
+    public var lastModified: String
+    public let fileSize: Int
+    
+    public init(fileUrl: String, lastModified: String, fileSize: Int) {
+        self.fileUrl = fileUrl
+        self.lastModified = lastModified
+        self.fileSize = fileSize
+    }
+    
+    public var isDownloadable: Bool {
+        [".zip"].contains(where: { fileUrl.contains($0) == true })
     }
 }
 

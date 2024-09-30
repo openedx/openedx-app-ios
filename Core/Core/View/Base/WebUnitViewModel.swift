@@ -12,6 +12,7 @@ public class WebUnitViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
     
     public let authInteractor: AuthInteractorProtocol
     let config: ConfigProtocol
+    let syncManager: OfflineSyncManagerProtocol
     
     @Published public var updatingCookies: Bool = false
     @Published public var cookiesReady: Bool = false
@@ -26,8 +27,13 @@ public class WebUnitViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
         }
     }
     
-    public init(authInteractor: AuthInteractorProtocol, config: ConfigProtocol) {
+    public init(
+        authInteractor: AuthInteractorProtocol,
+        config: ConfigProtocol,
+        syncManager: OfflineSyncManagerProtocol
+    ) {
         self.authInteractor = authInteractor
         self.config = config
+        self.syncManager = syncManager
     }
 }

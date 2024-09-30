@@ -84,6 +84,7 @@ public extension DataLayer {
         public let userViewData: CourseDetailUserViewData?
         public let multiDevice: Bool?
         public let assignmentProgress: AssignmentProgress?
+        public let offlineDownload: OfflineDownload?
         
         public init(
             blockId: String,
@@ -99,7 +100,8 @@ public extension DataLayer {
             allSources: [String]?,
             userViewData: CourseDetailUserViewData?,
             multiDevice: Bool?,
-            assignmentProgress: AssignmentProgress?
+            assignmentProgress: AssignmentProgress?,
+            offlineDownload: OfflineDownload?
         ) {
             self.blockId = blockId
             self.id = id
@@ -115,6 +117,7 @@ public extension DataLayer {
             self.userViewData = userViewData
             self.multiDevice = multiDevice
             self.assignmentProgress = assignmentProgress
+            self.offlineDownload = offlineDownload
         }
         
         public enum CodingKeys: String, CodingKey {
@@ -127,6 +130,7 @@ public extension DataLayer {
             case allSources = "all_sources"
             case multiDevice = "student_view_multi_device"
             case assignmentProgress = "assignment_progress"
+            case offlineDownload = "offline_download"
         }
     }
     
@@ -145,6 +149,24 @@ public extension DataLayer {
             self.assignmentType = assignmentType
             self.numPointsEarned = numPointsEarned
             self.numPointsPossible = numPointsPossible
+        }
+    }
+    
+    struct OfflineDownload: Codable {
+        public let fileUrl: String?
+        public let lastModified: String?
+        public let fileSize: Int?
+        
+        public enum CodingKeys: String, CodingKey {
+            case fileUrl = "file_url"
+            case lastModified = "last_modified"
+            case fileSize = "file_size"
+        }
+        
+        public init(fileUrl: String?, lastModified: String?, fileSize: Int?) {
+            self.fileUrl = fileUrl
+            self.lastModified = lastModified
+            self.fileSize = fileSize
         }
     }
 

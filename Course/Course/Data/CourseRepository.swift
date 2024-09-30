@@ -214,6 +214,20 @@ public class CourseRepository: CourseRepositoryProtocol {
                 .replacingOccurrences(of: "?lang=\($0.key)", with: "")
             return SubtitleUrl(language: $0.key, url: url)
         }
+        
+        var offlineDownload: OfflineDownload?
+        
+        if let offlineData = block.offlineDownload,
+           let fileUrl = offlineData.fileUrl,
+           let lastModified = offlineData.lastModified,
+           let fileSize = offlineData.fileSize {
+            let fullUrl = fileUrl.starts(with: "http") ? fileUrl : config.baseURL.absoluteString + fileUrl
+            offlineDownload = OfflineDownload(
+                fileUrl: fullUrl,
+                lastModified: lastModified,
+                fileSize: fileSize
+            )
+        }
             
         return CourseBlock(
             blockId: block.blockId,
@@ -236,12 +250,13 @@ public class CourseRepository: CourseRepositoryProtocol {
                 mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
                 hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
             ),
-            multiDevice: block.multiDevice
+            multiDevice: block.multiDevice,
+            offlineDownload: offlineDownload
         )
     }
     
     private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
-        guard let encodedVideo else {
+        guard let encodedVideo, encodedVideo.url?.isEmpty == false else {
             return nil
         }
         return .init(
@@ -435,6 +450,19 @@ And there are various ways of describing it-- call it oral poetry or
             let url = $0.value
             return SubtitleUrl(language: $0.key, url: url)
         }
+        
+        var offlineDownload: OfflineDownload?
+        
+        if let offlineData = block.offlineDownload,
+           let fileUrl = offlineData.fileUrl,
+           let lastModified = offlineData.lastModified,
+           let fileSize = offlineData.fileSize {
+            offlineDownload = OfflineDownload(
+                fileUrl: fileUrl,
+                lastModified: lastModified,
+                fileSize: fileSize
+            )
+        }
             
         return CourseBlock(
             blockId: block.blockId,
@@ -457,7 +485,8 @@ And there are various ways of describing it-- call it oral poetry or
                 mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
                 hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
             ),
-            multiDevice: block.multiDevice
+            multiDevice: block.multiDevice, 
+            offlineDownload: offlineDownload
         )
     }
 

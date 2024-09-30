@@ -111,7 +111,13 @@ public class PlayerTracker: PlayerTrackerProtocol {
             item = AVPlayerItem(url: url)
         }
         self.player = AVPlayer(playerItem: item)
-        timePublisher = CurrentValueSubject(player?.currentTime().seconds ?? 0)
+        
+        var playerTime = player?.currentTime().seconds ?? 0.0
+        if playerTime.isNaN == true {
+            playerTime = 0.0
+        }
+        
+        timePublisher = CurrentValueSubject(playerTime)
         ratePublisher = CurrentValueSubject(player?.rate ?? 0)
         finishPublisher = PassthroughSubject<Void, Never>()
         readyPublisher = PassthroughSubject<Bool, Never>()

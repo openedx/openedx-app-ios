@@ -21,6 +21,8 @@ public extension Notification.Name {
     static let shiftCourseDates = Notification.Name("shiftCourseDates")
     static let profileUpdated = Notification.Name("profileUpdated")
     static let getCourseDates = Notification.Name("getCourseDates")
+    static let showDownloadFailed = Notification.Name("showDownloadFailed")
+    static let tryDownloadAgain = Notification.Name("tryDownloadAgain")
     static let refreshEnrollments = Notification.Name("refreshEnrollments")
 }
 
@@ -29,3 +31,4 @@ public extension Notification {
         case isForced
     }
 }
+

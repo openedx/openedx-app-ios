@@ -101,6 +101,7 @@ public struct CourseOutlineView: View {
                                 
                                 // MARK: - Sections
                                 CustomDisclosureGroup(
+                                    isVideo: isVideo,
                                     course: course,
                                     proxy: proxy,
                                     viewModel: viewModel
@@ -256,7 +257,8 @@ public struct CourseOutlineView: View {
                 content: {
                     WebBrowser(
                         url: url,
-                        pageTitle: CourseLocalization.Outline.certificate
+                        pageTitle: CourseLocalization.Outline.certificate, 
+                        connectivity: viewModel.connectivity
                     )
                 }
             )

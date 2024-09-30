@@ -37,6 +37,8 @@ public struct Theme {
         public private(set) static var snackbarInfoColor = ThemeAssets.snackbarInfoColor.swiftUIColor
         public private(set) static var snackbarTextColor = ThemeAssets.snackbarTextColor.swiftUIColor
         public private(set) static var styledButtonText = ThemeAssets.styledButtonText.swiftUIColor
+        public private(set) static var disabledButton = ThemeAssets.disabledButton.swiftUIColor
+        public private(set) static var disabledButtonText = ThemeAssets.disabledButtonText.swiftUIColor
         public private(set) static var textPrimary = ThemeAssets.textPrimary.swiftUIColor
         public private(set) static var textSecondary = ThemeAssets.textSecondary.swiftUIColor
         public private(set) static var textSecondaryLight = ThemeAssets.textSecondaryLight.swiftUIColor
@@ -72,6 +74,7 @@ public struct Theme {
         public private(set) static var primaryHeaderColor = ThemeAssets.primaryHeaderColor.swiftUIColor
         public private(set) static var secondaryHeaderColor = ThemeAssets.secondaryHeaderColor.swiftUIColor
         public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
+        public private(set) static var shade = ThemeAssets.shade.swiftUIColor
         public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
 
         public static func update(

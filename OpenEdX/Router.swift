@@ -840,7 +840,8 @@ public class Router: AuthorizationRouter,
         let webBrowser = WebBrowser(
             url: url.absoluteString,
             pageTitle: title,
-            showProgress: true
+            showProgress: true,
+            connectivity: Container.shared.resolve(ConnectivityProtocol.self)!
         )
         let controller = UIHostingController(rootView: webBrowser)
         navigationController.pushViewController(controller, animated: true)

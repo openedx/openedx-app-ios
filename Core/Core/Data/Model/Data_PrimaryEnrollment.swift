@@ -28,7 +28,7 @@ public extension DataLayer {
     
     // MARK: - Primary
     struct ActiveEnrollment: Codable {
-        public let auditAccessExpires: Date?
+        public let auditAccessExpires: String?
         public let created: String?
         public let mode: String?
         public let isActive: Bool?
@@ -53,7 +53,7 @@ public extension DataLayer {
         }
         
         public init(
-            auditAccessExpires: Date?,
+            auditAccessExpires: String?,
             created: String?,
             mode: String?,
             isActive: Bool?,

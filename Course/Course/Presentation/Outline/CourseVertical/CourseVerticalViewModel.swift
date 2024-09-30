@@ -83,19 +83,6 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             }
         }
     }
-
-    func trackVerticalClicked(
-        courseId: String,
-        courseName: String,
-        vertical: CourseVertical
-    ) {
-        analytics.verticalClicked(
-            courseId: courseId,
-            courseName: courseName,
-            blockId: vertical.blockId,
-            blockName: vertical.displayName
-        )
-    }
     
     @MainActor
     private func setDownloadsStates() async {
@@ -125,5 +112,18 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             }
         }
         downloadState = states
+    }
+
+    func trackVerticalClicked(
+        courseId: String,
+        courseName: String,
+        vertical: CourseVertical
+    ) {
+        analytics.verticalClicked(
+            courseId: courseId,
+            courseName: courseName,
+            blockId: vertical.blockId,
+            blockName: vertical.displayName
+        )
     }
 }

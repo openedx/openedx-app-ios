@@ -231,7 +231,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
     // swiftlint:enable function_body_length
     
     func clearOldEnrollmentsData() {
-        context.perform {[context] in
+        context.performAndWait {[context] in
             let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
             let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
             
