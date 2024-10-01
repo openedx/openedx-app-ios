@@ -27,8 +27,6 @@ public struct PrimaryCardView: View {
     private var assignmentAction: (String?) -> Void
     private var openCourseAction: () -> Void
     private var resumeAction: () -> Void
-    private var upgradeAction: () -> Void
-    private var isUpgradeable: Bool
     @Environment(\.isHorizontal) var isHorizontal
     
     public init(
