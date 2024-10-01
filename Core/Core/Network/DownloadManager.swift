@@ -215,9 +215,11 @@ public class DownloadManager: DownloadManagerProtocol {
     // MARK: - Intents
 
     public func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
-        (blocks.reduce(0) {
-            $0 + Double($1.encodedVideo?.video(downloadQuality: downloadQuality)?.fileSize ?? 0)
-        } / 1024 / 1024 / 1024) > 1
+        var totalSize: Int = 0
+        blocks.forEach { block in
+            totalSize += block.encodedVideo?.video(downloadQuality: downloadQuality)?.fileSize ?? 0
+        }
+        return totalSize / (1024 * 1024 * 1024) > 1
     }
 
     public func getDownloadTasks() async -> [DownloadDataTask] {
@@ -438,7 +440,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadFileWithProgress(_ download: DownloadDataTask) throws {
-        guard let url = URL(string: download.url), let folderURL = self.videosFolderUrl else {
+        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
             return
         }
 
