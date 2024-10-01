@@ -207,9 +207,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             let courseStructure = try await getCourseStructure(courseID: courseID)
             await setDownloadsStates(courseStructure: courseStructure)
             self.courseStructure = courseStructure
-            let type = type(for: courseStructure?.coursewareAccessDetails?.coursewareAccess)
-            shouldShowUpgradeButton = type == nil && courseStructure?.isUpgradeable ?? false
-            updateMenuBarVisibility()
 
             if isInternetAvaliable {
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
@@ -783,7 +780,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     func stopAllDownloads() async {
         do {
             try await manager.cancelAllDownloading()
-            await setDownloadsStates()
+            await setDownloadsStates(courseStructure: self.courseStructure)
             await getDownloadingProgress()
         } catch {
             errorMessage = CoreLocalization.Error.unknownError
