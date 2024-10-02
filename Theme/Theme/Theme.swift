@@ -76,6 +76,7 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
         nonisolated(unsafe) public private(set) static var shade = ThemeAssets.shade.swiftUIColor
         nonisolated(unsafe) public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var deleteAccountBG = ThemeAssets.deleteAccountBG.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
