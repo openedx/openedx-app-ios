@@ -283,9 +283,7 @@ public struct WebView: UIViewRepresentable {
         
         let webView = WKWebView(frame: .zero, configuration: webViewConfig)
         #if DEBUG
-        if #available(iOS 16.4, *) {
-            webView.isInspectable = true
-        }
+        webView.isInspectable = true
         #endif
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator

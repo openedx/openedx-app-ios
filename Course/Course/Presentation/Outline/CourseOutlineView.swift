@@ -56,13 +56,7 @@ public struct CourseOutlineView: View {
         ZStack(alignment: .top) {
             GeometryReader { proxy in
                 VStack(alignment: .center) {
-                    RefreshableScrollViewCompat(action: {
-                        await withTaskGroup(of: Void.self) { group in
-                            group.addTask {
-                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-                            }
-                        }
-                    }) {
+                    ScrollView {
                         DynamicOffsetView(
                             coordinate: $coordinate,
                             collapsed: $collapsed
@@ -116,6 +110,13 @@ public struct CourseOutlineView: View {
                             Spacer(minLength: 200)
                         }
                         .frameLimit(width: proxy.size.width)
+                    }
+                    .refreshable {
+                        await withTaskGroup(of: Void.self) { group in
+                            group.addTask {
+                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                            }
+                        }
                     }
                     .onRightSwipeGesture {
                         viewModel.router.back()

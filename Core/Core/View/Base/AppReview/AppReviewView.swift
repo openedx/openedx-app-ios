@@ -13,8 +13,8 @@ public struct AppReviewView: View {
         
     @ObservedObject private var viewModel: AppReviewViewModel
 
-    @Environment (\.isHorizontal) private var isHorizontal
-    @Environment (\.presentationMode) private var presentationMode
+    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.presentationMode) private var presentationMode
     
     public init(viewModel: AppReviewViewModel) {
         self.viewModel = viewModel
@@ -77,7 +77,7 @@ public struct AppReviewView: View {
                             .foregroundColor(Theme.Colors.textPrimary)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 4)
-                            .hideScrollContentBackground()
+                            .scrollContentBackground(.hidden)
                             .background(
                                 Theme.Shapes.textInputShape
                                     .fill(Theme.Colors.commentCellBackground)

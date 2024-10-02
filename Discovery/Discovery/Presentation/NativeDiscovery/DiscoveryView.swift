@@ -19,7 +19,7 @@ public struct DiscoveryView: View {
     
     private var sourceScreen: LogistrationSourceScreen
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
     
     private let discoveryNew: some View = VStack(alignment: .leading) {
@@ -92,13 +92,7 @@ public struct DiscoveryView: View {
                     .accessibilityLabel(DiscoveryLocalization.search)
                     
                     ZStack {
-                        RefreshableScrollViewCompat(action: {
-                            viewModel.totalPages = 1
-                            viewModel.nextPage = 1
-                            Task {
-                                await viewModel.discovery(page: 1, withProgress: false)
-                            }
-                        }) {
+                        ScrollView {
                             LazyVStack(spacing: 0) {
                                 HStack {
                                     discoveryNew
@@ -112,7 +106,7 @@ public struct DiscoveryView: View {
                                         model: course,
                                         type: .discovery,
                                         index: index,
-                                        cellsCount: viewModel.courses.count, 
+                                        cellsCount: viewModel.courses.count,
                                         useRelativeDates: useRelativeDates
                                     ).padding(.horizontal, 24)
                                         .onAppear {
@@ -143,60 +137,66 @@ public struct DiscoveryView: View {
                                 VStack {}.frame(height: 40)
                             }
                             .frameLimit(width: proxy.size.width)
-                        }
-                    }.accessibilityAction {}
-                    
-                    if !viewModel.userloggedIn {
-                        LogistrationBottomView { buttonAction in
-                            switch buttonAction {
-                            case .signIn:
-                                viewModel.router.showLoginScreen(sourceScreen: .discovery)
-                            case .register:
-                                viewModel.router.showRegisterScreen(sourceScreen: .discovery)
+                        }.refreshable {
+                            viewModel.totalPages = 1
+                            viewModel.nextPage = 1
+                            Task {
+                                await viewModel.discovery(page: 1, withProgress: false)
                             }
                         }
                     }
-                }.padding(.top, 8)
+                }.accessibilityAction {}
                 
-                // MARK: - Offline mode SnackBar
-                OfflineSnackBarView(
-                    connectivity: viewModel.connectivity,
-                    reloadAction: {
-                        await viewModel.discovery(page: 1, withProgress: false)
-                    })
-                
-                // MARK: - Error Alert
-                if viewModel.showError {
-                    VStack {
-                        Spacer()
-                        SnackBarView(message: viewModel.errorMessage)
-                    }
-                    .padding(.bottom, viewModel.connectivity.isInternetAvaliable
-                             ? 0 : OfflineSnackBarView.height)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
+                if !viewModel.userloggedIn {
+                    LogistrationBottomView { buttonAction in
+                        switch buttonAction {
+                        case .signIn:
+                            viewModel.router.showLoginScreen(sourceScreen: .discovery)
+                        case .register:
+                            viewModel.router.showRegisterScreen(sourceScreen: .discovery)
                         }
                     }
                 }
-            }
-            .navigationBarHidden(sourceScreen != .startup)
-            .onFirstAppear {
-                if !(searchQuery.isEmpty) {
-                    router.showDiscoverySearch(searchQuery: searchQuery)
-                    searchQuery = ""
+            }.padding(.top, 8)
+            
+            // MARK: - Offline mode SnackBar
+            OfflineSnackBarView(
+                connectivity: viewModel.connectivity,
+                reloadAction: {
+                    await viewModel.discovery(page: 1, withProgress: false)
+                })
+            
+            // MARK: - Error Alert
+            if viewModel.showError {
+                VStack {
+                    Spacer()
+                    SnackBarView(message: viewModel.errorMessage)
                 }
-                Task {
-                    await viewModel.discovery(page: 1)
-                    if case let .courseDetail(courseID, courseTitle) = sourceScreen {
-                        viewModel.router.showCourseDetais(courseID: courseID, title: courseTitle)
+                .padding(.bottom, viewModel.connectivity.isInternetAvaliable
+                         ? 0 : OfflineSnackBarView.height)
+                .transition(.move(edge: .bottom))
+                .onAppear {
+                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                        viewModel.errorMessage = nil
                     }
                 }
-                viewModel.setupNotifications()
             }
-            .background(Theme.Colors.background.ignoresSafeArea())
         }
+        .navigationBarHidden(sourceScreen != .startup)
+        .onFirstAppear {
+            if !(searchQuery.isEmpty) {
+                router.showDiscoverySearch(searchQuery: searchQuery)
+                searchQuery = ""
+            }
+            Task {
+                await viewModel.discovery(page: 1)
+                if case let .courseDetail(courseID, courseTitle) = sourceScreen {
+                    viewModel.router.showCourseDetais(courseID: courseID, title: courseTitle)
+                }
+            }
+            viewModel.setupNotifications()
+        }
+        .background(Theme.Colors.background.ignoresSafeArea())
     }
 }
 
