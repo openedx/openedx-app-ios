@@ -26,7 +26,7 @@ public struct PickerMenu: View {
     
     @State private var search: String = ""
     @State public var selectedItem: PickerItem = PickerItem(key: "", value: "")
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     private let ipadPickerWidth: CGFloat = 300
     private var items: [PickerItem]
     private let titleText: String

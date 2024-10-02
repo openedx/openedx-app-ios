@@ -14,7 +14,7 @@ public struct ManageAccountView: View {
     @ObservedObject
     private var viewModel: ManageAccountViewModel
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     
     public init(viewModel: ManageAccountViewModel) {
         self.viewModel = viewModel
@@ -56,24 +56,25 @@ public struct ManageAccountView: View {
                     }
                     
                     // MARK: - Page Body
-                    RefreshableScrollViewCompat(
-                        action: {
-                            await viewModel.getMyProfile(withProgress: false)
-                        },
-                        content: {
-                            VStack(alignment: .leading, spacing: 12) {
-                                if viewModel.isShowProgress {
-                                    ProgressBar(size: 40, lineWidth: 8)
-                                        .padding(.top, 200)
-                                        .padding(.horizontal)
-                                        .accessibilityIdentifier("progress_bar")
-                                } else {
-                                    userAvatar
-                                    editProfileButton
-                                    deleteAccount
-                                }
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 12) {
+                            if viewModel.isShowProgress {
+                                ProgressBar(size: 40, lineWidth: 8)
+                                    .padding(.top, 200)
+                                    .padding(.horizontal)
+                                    .accessibilityIdentifier("progress_bar")
+                            } else {
+                                userAvatar
+                                editProfileButton
+                                deleteAccount
                             }
-                        })
+                        }
+                    }
+                    .refreshable {
+                        Task {
+                            await viewModel.getMyProfile(withProgress: false)
+                        }
+                    }
                     .frameLimit(width: proxy.size.width)
                     .padding(.top, 24)
                     .padding(.horizontal, isHorizontal ? 24 : 0)

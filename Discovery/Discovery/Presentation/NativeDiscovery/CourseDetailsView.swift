@@ -50,9 +50,7 @@ public struct CourseDetailsView: View {
                                 .accessibilityIdentifier("progress_bar")
                         }.frame(width: proxy.size.width)
                     } else {
-                        RefreshableScrollViewCompat(action: {
-                            await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
-                        }) {
+                        ScrollView {
                             VStack(alignment: .leading) {
                                 if let courseDetails = viewModel.courseDetails {
                                     
@@ -138,6 +136,11 @@ public struct CourseDetailsView: View {
                                 }
                             }
                             .frameLimit(width: proxy.size.width)
+                        }
+                        .refreshable {
+                            Task {
+                                await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
+                            }
                         }
                         .onRightSwipeGesture {
                             viewModel.router.back()

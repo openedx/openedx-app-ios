@@ -1,10 +1,10 @@
-platform :ios, '14.0'
+platform :ios, '16.0'
 use_frameworks! :linkage => :static
 
 abstract_target "App" do
   
   #Code style
-  pod 'SwiftLint', '~> 0.54.0'
+  pod 'SwiftLint', '~> 0.57.0'
   #CodeGen for resources
   pod 'SwiftGen', '~> 6.6'
   
@@ -17,14 +17,14 @@ abstract_target "App" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
     #Networking
-    pod 'Alamofire', '~> 5.7'
+    pod 'Alamofire', '~> 5.9'
     #Keychain
-    pod 'KeychainSwift', '~> 20.0'
+    pod 'KeychainSwift', '~> 24.0'
     #SwiftUI backward UIKit access
     #pod 'Introspect', '~> 0.6'
-    pod 'SwiftUIIntrospect', '~> 0.8'
-    pod 'Kingfisher', '~> 7.8'
-    pod 'Swinject', '2.8.3'
+    pod 'SwiftUIIntrospect', '~> 1.3'
+    pod 'Kingfisher', '~> 8.0'
+    pod 'Swinject', '2.9.1'
   end
   
   target "Authorization" do
