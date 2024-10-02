@@ -14,7 +14,7 @@ public struct VideoQualityView: View {
     
     @ObservedObject
     private var viewModel: SettingsViewModel
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel

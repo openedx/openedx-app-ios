@@ -104,9 +104,7 @@ public struct WebUnitView: View {
                             )
                         }
                     }
-                    .introspect(.scrollView, on: .iOS(.v15...), customize: { scrollView in
-                        scrollView.isScrollEnabled = false
-                    })
+                    .scrollDisabled(true)
                     .onChange(of: self.fileUrl, perform: { file in
                         if file != "" {
                             self.isFileOpen = true

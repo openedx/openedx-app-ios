@@ -23,7 +23,7 @@ public struct NavigationBar: View {
     private let rightButtonType: ButtonType?
     private let rightButtonAction: (() -> Void)?
     @Binding private var rightButtonIsActive: Bool
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     
     public init(title: String,
                 titleColor: Color = Theme.Colors.navigationBarTintColor,

@@ -39,7 +39,7 @@ struct ProfileBottomSheet: View {
     private var removePhoto: () -> Void
     @Binding private var showingBottomSheet: Bool
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     
     private var maxWidth: CGFloat {
         idiom == .pad || (idiom == .phone && isHorizontal) ? 330 : .infinity

@@ -49,9 +49,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     Spacer(minLength: 50)
                     switch selectedMenu {
                     case .courses:
-                    RefreshableScrollViewCompat(action: {
-                        await viewModel.getEnrollments(showProgress: false)
-                    }) {
+                    ScrollView {
                         ZStack(alignment: .topLeading) {
                             if viewModel.fetchInProgress {
                                 VStack(alignment: .center) {
@@ -148,7 +146,13 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                             }
                         }
                         .frameLimit(width: proxy.size.width)
-                    }.accessibilityAction {}
+                    }
+                    .refreshable {
+                        Task {
+                            await viewModel.getEnrollments(showProgress: false)
+                        }
+                    }
+                    .accessibilityAction {}
                     case .programs:
                         programView
                     }
