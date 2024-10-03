@@ -90,7 +90,7 @@ public struct EditProfileView: View {
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 4)
                                         .frame(height: 200)
-                                        .hideScrollContentBackground()
+                                        .scrollContentBackground(.hidden)
                                         .background(
                                             Theme.Shapes.textInputShape
                                                 .fill(Theme.Colors.textInputBackground)

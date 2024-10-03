@@ -15,7 +15,7 @@ public struct SignInView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     
     @ObservedObject
     private var viewModel: SignInViewModel
@@ -209,7 +209,7 @@ public struct SignInView: View {
                     }
             }
         }
-        .hideNavigationBar()
+        .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .onFirstAppear{

@@ -40,9 +40,7 @@ public struct ListDashboardView: View {
                 
                 // MARK: - Page body
                 VStack(alignment: .center) {
-                    RefreshableScrollViewCompat(action: {
-                        await viewModel.getMyCourses(page: 1, refresh: true)
-                    }) {
+                    ScrollView {
                         Group {
                             LazyVStack(spacing: 0) {
                                 HStack {
@@ -103,7 +101,13 @@ public struct ListDashboardView: View {
                             }
                         }
                         .frameLimit(width: proxy.size.width)
-                    }.accessibilityAction {}
+                    }
+                    .refreshable {
+                        Task {
+                            await viewModel.getMyCourses(page: 1, refresh: true)
+                        }
+                    }
+                    .accessibilityAction {}
                 }.padding(.top, 8)
                 HStack {
                     Spacer()

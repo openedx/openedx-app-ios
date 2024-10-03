@@ -179,29 +179,6 @@ public extension View {
         }
     }
     
-    func hideNavigationBar() -> some View {
-        if #available(iOS 16.0, *) {
-            return self.navigationBarHidden(true)
-        } else {
-            return self.introspect(
-                .navigationView(style: .stack),
-                on: .iOS(.v15...),
-                scope: .ancestor) {
-                    $0.isNavigationBarHidden = true
-                }
-        }
-    }
-
-    func hideScrollContentBackground() -> some View {
-        if #available(iOS 16.0, *) {
-            return self.scrollContentBackground(.hidden)
-        } else {
-            return self.onAppear {
-                UITextView.appearance().backgroundColor = .clear
-            }
-        }
-    }
-    
     func onRightSwipeGesture(perform action: @escaping () -> Void) -> some View {
         self.gesture(
             DragGesture(minimumDistance: 20, coordinateSpace: .local)

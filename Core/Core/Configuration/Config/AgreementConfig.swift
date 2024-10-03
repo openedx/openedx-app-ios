@@ -42,12 +42,7 @@ public class AgreementConfig: NSObject {
     }
 
     private func completePath(url: String) -> String {
-        let langCode: String
-        if #available(iOS 16, *) {
-            langCode = Locale.current.language.languageCode?.identifier ?? ""
-        } else {
-            langCode = Locale.current.languageCode ?? ""
-        }
+        let langCode = Locale.current.language.languageCode?.identifier ?? ""
 
         if let supportedLanguages = supportedLanguages,
            !supportedLanguages.contains(langCode) {

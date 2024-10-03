@@ -19,7 +19,7 @@ public struct ResponsesView: View {
     
     @ObservedObject private var viewModel: ResponsesViewModel
     @State private var isShowProgress: Bool = true
-
+    
     public init(
         commentID: String,
         viewModel: ResponsesViewModel,
@@ -46,15 +46,7 @@ public struct ResponsesView: View {
                 ScrollViewReader { scroll in
                     VStack {
                         ZStack(alignment: .top) {
-                            RefreshableScrollViewCompat(action: {
-                                viewModel.comments = []
-                                _ = await viewModel.getResponsesData(
-                                    commentID: commentID,
-                                    parentComment: parentComment,
-                                    page: 1,
-                                    refresh: true
-                                )
-                            }) {
+                            ScrollView {
                                 VStack {
                                     if let comments = viewModel.postComments {
                                         ParentCommentView(
@@ -161,6 +153,17 @@ public struct ResponsesView: View {
                                     viewModel.router.back()
                                 }
                                 .frameLimit(width: proxy.size.width)
+                            }
+                            .refreshable {
+                                viewModel.comments = []
+                                Task {
+                                    _ = await viewModel.getResponsesData(
+                                        commentID: commentID,
+                                        parentComment: parentComment,
+                                        page: 1,
+                                        refresh: true
+                                    )
+                                }
                             }
                             if !(parentComment.closed  || viewModel.isBlackedOut) {
                                 FlexibleKeyboardInputView(

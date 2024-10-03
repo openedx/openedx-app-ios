@@ -16,7 +16,7 @@ public struct WhatsNewView: View {
     @ObservedObject
     private var viewModel: WhatsNewViewModel
     
-    @Environment (\.isHorizontal)
+    @Environment(\.isHorizontal)
     private var isHorizontal
     
     @State var index = 0

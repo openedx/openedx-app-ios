@@ -769,7 +769,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -860,7 +860,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -957,7 +957,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1048,7 +1048,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1199,7 +1199,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1236,7 +1236,7 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1290,7 +1290,7 @@
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 10.26.0;
+				minimumVersion = 11.3.0;
 			};
 		};
 		14D912D12C25483F0077CCCE /* XCRemoteSwiftPackageReference "fullstory-swift-package-ios" */ = {
@@ -1298,7 +1298,7 @@
 			repositoryURL = "https://github.com/fullstorydev/fullstory-swift-package-ios";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.49.0;
+				minimumVersion = 1.53.0;
 			};
 		};
 		A51CDBEB2B6D2BEE009B6D4E /* XCRemoteSwiftPackageReference "braze-segment-swift" */ = {
@@ -1306,7 +1306,7 @@
 			repositoryURL = "https://github.com/braze-inc/braze-segment-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.2.0;
+				minimumVersion = 4.0.0;
 			};
 		};
 		A5462D9D2B865713003B96A5 /* XCRemoteSwiftPackageReference "analytics-swift" */ = {
@@ -1314,7 +1314,7 @@
 			repositoryURL = "https://github.com/segmentio/analytics-swift.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.5.3;
+				minimumVersion = 1.6.1;
 			};
 		};
 		A5BD3E2E2B83B0F7006A8983 /* XCRemoteSwiftPackageReference "analytics-swift-firebase" */ = {
@@ -1322,7 +1322,7 @@
 			repositoryURL = "https://github.com/segment-integrations/analytics-swift-firebase";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.5;
+				minimumVersion = 1.4.0;
 			};
 		};
 		BA3042772B1F7147009B64B7 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
@@ -1330,7 +1330,7 @@
 			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.2.19;
+				minimumVersion = 1.5.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

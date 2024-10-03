@@ -44,7 +44,7 @@ enum CategoryOption: String, CaseIterable {
 
 struct CategoryFilterView: View {
     @Binding var selectedOption: CategoryOption
-    @Environment (\.colorScheme) var colorScheme
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         ScrollView(.horizontal) {

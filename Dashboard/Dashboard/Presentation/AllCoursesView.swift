@@ -14,7 +14,7 @@ public struct AllCoursesView: View {
     @ObservedObject
     private var viewModel: AllCoursesViewModel
     private let router: DashboardRouter
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(viewModel: AllCoursesViewModel, router: DashboardRouter) {
@@ -51,9 +51,7 @@ public struct AllCoursesView: View {
                 VStack(alignment: .center) {
                     learnTitleAndSearch()
                         .frameLimit(width: proxy.size.width)
-                    RefreshableScrollViewCompat(action: {
-                        await viewModel.getCourses(page: 1, refresh: true)
-                    }) {
+                    ScrollView {
                         CategoryFilterView(selectedOption: $viewModel.selectedMenu)
                             .disabled(viewModel.fetchInProgress)
                             .frameLimit(width: proxy.size.width)
@@ -113,6 +111,11 @@ public struct AllCoursesView: View {
                                     maxHeight: .infinity)
                         }
                         VStack {}.frame(height: 40)
+                    }
+                    .refreshable {
+                        Task {
+                            await viewModel.getCourses(page: 1, refresh: true)
+                        }
                     }
                     .accessibilityAction {}
                 }
