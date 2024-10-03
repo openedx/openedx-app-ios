@@ -15,7 +15,7 @@ public struct DownloadsView: View {
     // MARK: - Properties
 
     @Environment(\.dismiss) private var dismiss
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     @StateObject private var viewModel: DownloadsViewModel
 
     var isSheet: Bool = true

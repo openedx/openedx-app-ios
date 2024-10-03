@@ -28,9 +28,7 @@ public struct UserProfileView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
                 // MARK: - Page Body
-                RefreshableScrollViewCompat(action: {
-                    await viewModel.getUserProfile(withProgress: false)
-                }) {
+                ScrollView {
                     VStack {
                         if viewModel.isShowProgress {
                             ProgressBar(size: 40, lineWidth: 8)
@@ -83,6 +81,11 @@ public struct UserProfileView: View {
                         Spacer()
                     }
                     .frameLimit(width: proxy.size.width)
+                }
+                .refreshable {
+                    Task {
+                        await viewModel.getUserProfile(withProgress: false)
+                    }
                 }
                 .padding(.top, 8)
                 .navigationBarHidden(false)

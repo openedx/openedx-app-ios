@@ -141,7 +141,7 @@ public struct CreateNewThreadView: View {
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 10)
                                     .frame(height: 200)
-                                    .hideScrollContentBackground()
+                                    .scrollContentBackground(.hidden)
                                     .background(
                                         Theme.Shapes.textInputShape
                                             .fill(Theme.Colors.textInputBackground)

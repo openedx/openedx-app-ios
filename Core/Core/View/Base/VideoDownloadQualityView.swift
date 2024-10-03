@@ -35,7 +35,7 @@ public struct VideoDownloadQualityView: View {
     private var analytics: CoreAnalytics
     private var router: BaseRouter
     private var isModal: Bool
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
 
     public init(
         downloadQuality: DownloadQuality,

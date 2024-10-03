@@ -36,9 +36,7 @@ public struct ThreadView: View {
                 ScrollViewReader { scroll in
                     VStack {
                         ZStack(alignment: .top) {
-                            RefreshableScrollViewCompat(action: {
-                                _ = await viewModel.getThreadData(thread: thread, page: 1, refresh: true)
-                            }) {
+                            ScrollView {
                                 VStack {
                                     if let comments = viewModel.postComments {
                                         ParentCommentView(
@@ -156,6 +154,11 @@ public struct ThreadView: View {
                                     viewModel.sendUpdateUnreadState()
                                 }
                                 .frameLimit(width: proxy.size.width)
+                            }
+                            .refreshable {
+                                Task {
+                                    _ = await viewModel.getThreadData(thread: thread, page: 1, refresh: true)
+                                }
                             }
                             if !(thread.closed  || viewModel.isBlackedOut) {
                                 FlexibleKeyboardInputView(

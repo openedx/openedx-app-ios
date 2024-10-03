@@ -48,7 +48,7 @@ public struct RegistrationTextField: View {
                     .padding(.vertical, 4)
                     .foregroundColor(Theme.Colors.textInputTextColor)
                     .frame(height: 100)
-                    .hideScrollContentBackground()
+                    .scrollContentBackground(.hidden)
                     .background(
                         Theme.Shapes.textInputShape
                             .fill(Theme.Colors.textInputBackground)
