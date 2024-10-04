@@ -24,9 +24,7 @@ struct HandoutsView: View {
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
         viewHeight: Binding<CGFloat>,
-        viewModel: HandoutsViewModel,
-        shouldShowUpgradeButton: Binding<Bool>,
-        shouldHideMenuBar: Binding<Bool>
+        viewModel: HandoutsViewModel
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
@@ -44,9 +42,7 @@ struct HandoutsView: View {
                         DynamicOffsetView(
                             coordinate: $coordinate,
                             collapsed: $collapsed,
-                            viewHeight: $viewHeight,
-                            shouldShowUpgradeButton: $shouldShowUpgradeButton,
-                            shouldHideMenuBar: $shouldHideMenuBar
+                            viewHeight: $viewHeight
                         )
                         if viewModel.isShowProgress {
                             HStack(alignment: .center) {
@@ -135,9 +131,7 @@ struct HandoutsView_Previews: PreviewProvider {
             coordinate: .constant(0),
             collapsed: .constant(false),
             viewHeight: .constant(0),
-            viewModel: viewModel,
-            shouldShowUpgradeButton: .constant(false),
-            shouldHideMenuBar: .constant(false)
+            viewModel: viewModel
         )
     }
 }

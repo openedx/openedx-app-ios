@@ -94,6 +94,7 @@ public struct CourseContainerView: View {
                     selection: $viewModel.selection,
                     coordinate: $coordinate,
                     collapsed: $collapsed,
+                    viewHeight: $viewHeight,
                     dateTabIndex: CourseTab.dates.rawValue
                 )
             } else {
@@ -181,137 +182,23 @@ public struct CourseContainerView: View {
     
     private var tabs: some View {
         TabView(selection: $viewModel.selection) {
-            if let courseStart = viewModel.courseStart, courseStart > Date() {
-                UpgradeCourseView(
-                    type: viewModel.type(for: actualAccess) ?? .startDateError(date: courseStart),
-                    coordinate: $coordinate,
-                    collapsed: $collapsed,
-                    viewHeight: $viewHeight,
-                    shouldShowUpgradeButton: $viewModel.shouldShowUpgradeButton,
-                    shouldHideMenuBar: $viewModel.shouldHideMenuBar,
-                    backAction: {
-                        viewModel.router.back()
-                    },
-                    findAction: {
-                        viewModel.router.backToRoot(animated: true)
-                        viewModel.router.showTabScreen(tab: .discovery)
-                    }
-                )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onAppear {
-                        ignoreOffset = true
-                    }
-            } else {
-                if let type = viewModel.type(for: actualAccess) {
-                    UpgradeCourseView(
-                        type: type,
+            ForEach(CourseTab.allCases) { tab in
+                switch tab {
+                case .course:
+                    CourseOutlineView(
+                        viewModel: viewModel,
+                        title: title,
+                        courseID: courseID,
+                        isVideo: false,
+                        selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         viewHeight: $viewHeight,
-                        shouldShowUpgradeButton: $viewModel.shouldShowUpgradeButton,
-                        shouldHideMenuBar: $viewModel.shouldHideMenuBar,
-                        backAction: {
-                            viewModel.router.back()
-                        },
-                        findAction: {
-                            viewModel.router.backToRoot(animated: true)
-                            viewModel.router.showTabScreen(tab: .discovery)
-                        }
+                        dateTabIndex: CourseTab.dates.rawValue
                     )
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onAppear {
-                        ignoreOffset = true
-                    }
-                } else {
-                    ForEach(CourseTab.allCases) { tab in
-                        switch tab {
-                        case .course:
-                            CourseOutlineView(
-                                viewModel: viewModel,
-                                title: title,
-                                courseID: courseID,
-                                isVideo: false,
-                                selection: $viewModel.selection,
-                                coordinate: $coordinate,
-                                collapsed: $collapsed,
-                                viewHeight: $viewHeight,
-                                dateTabIndex: CourseTab.dates.rawValue
-                            )
-                            .tabItem {
-                                tab.image
-                                Text(tab.title)
-                            }
-                            .tag(tab)
-                            .accentColor(Theme.Colors.accentColor)
-                        case .videos:
-                            CourseOutlineView(
-                                viewModel: viewModel,
-                                title: title,
-                                courseID: courseID,
-                                isVideo: true,
-                                selection: $viewModel.selection,
-                                coordinate: $coordinate,
-                                collapsed: $collapsed,
-                                viewHeight: $viewHeight,
-                                dateTabIndex: CourseTab.dates.rawValue
-                            )
-                            .tabItem {
-                                tab.image
-                                Text(tab.title)
-                            }
-                            .tag(tab)
-                            .accentColor(Theme.Colors.accentColor)
-                        case .dates:
-                            CourseDatesView(
-                                courseID: courseID,
-                                coordinate: $coordinate,
-                                collapsed: $collapsed,
-                                viewHeight: $viewHeight,
-                                viewModel: courseDatesViewModel,
-                                shouldShowUpgradeButton: $viewModel.shouldShowUpgradeButton,
-                                shouldHideMenuBar: $viewModel.shouldHideMenuBar
-                            )
-                            .tabItem {
-                                tab.image
-                                Text(tab.title)
-                            }
-                            .tag(tab)
-                            .accentColor(Theme.Colors.accentColor)
-                        case .discussion:
-                            DiscussionTopicsView(
-                                courseID: courseID,
-                                coordinate: $coordinate,
-                                collapsed: $collapsed,
-                                viewHeight: $viewHeight,
-                                viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
-                                                                    argument: title)!,
-                                router: Container.shared.resolve(DiscussionRouter.self)!,
-                                shouldShowUpgradeButton: $viewModel.shouldShowUpgradeButton,
-                                shouldHideMenuBar: $viewModel.shouldHideMenuBar
-                            )
-                            .tabItem {
-                                tab.image
-                                Text(tab.title)
-                            }
-                            .tag(tab)
-                            .accentColor(Theme.Colors.accentColor)
-                        case .handounds:
-                            HandoutsView(
-                                courseID: courseID,
-                                coordinate: $coordinate,
-                                collapsed: $collapsed,
-                                viewHeight: $viewHeight,
-                                viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!,
-                                shouldShowUpgradeButton: $viewModel.shouldShowUpgradeButton,
-                                shouldHideMenuBar: $viewModel.shouldHideMenuBar
-                            )
-                            .tabItem {
-                                tab.image
-                                Text(tab.title)
-                            }
-                            .tag(tab)
-                            .accentColor(Theme.Colors.accentColor)
-                        }
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
@@ -324,6 +211,7 @@ public struct CourseContainerView: View {
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
@@ -337,8 +225,8 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
-                                                            arguments: courseID, title)!
+                        viewHeight: $viewHeight,
+                        viewModel: courseDatesViewModel
                     )
                     .tabItem {
                         tab.image
@@ -351,6 +239,7 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         viewModel: viewModel
                     )
                     .tabItem {
@@ -364,6 +253,7 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                             argument: title)!,
                         router: Container.shared.resolve(DiscussionRouter.self)!
@@ -379,6 +269,7 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!
                     )
                     .tabItem {

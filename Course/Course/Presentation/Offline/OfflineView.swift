@@ -55,6 +55,7 @@ struct OfflineView: View {
     private let courseID: String
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var viewHeight: CGFloat
     
     @StateObject
     private var viewModel: CourseContainerViewModel
@@ -63,11 +64,13 @@ struct OfflineView: View {
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
+        viewHeight: Binding<CGFloat>,
         viewModel: CourseContainerViewModel
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
         self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
     
@@ -88,7 +91,8 @@ struct OfflineView: View {
                             VStack(alignment: .leading) {
                                 DynamicOffsetView(
                                     coordinate: $coordinate,
-                                    collapsed: $collapsed
+                                    collapsed: $collapsed,
+                                    viewHeight: $viewHeight
                                 )
                                 TotalDownloadedProgressView(
                                     downloadedFilesSize: viewModel.downloadedFilesSize,
@@ -260,6 +264,7 @@ struct OfflineView: View {
         courseID: "123",
         coordinate: .constant(0),
         collapsed: .constant(false),
+        viewHeight: .constant(0),
         viewModel: vm
     ).onAppear {
         vm.isShowProgress = false

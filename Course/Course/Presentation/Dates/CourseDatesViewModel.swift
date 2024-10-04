@@ -95,7 +95,6 @@ public class CourseDatesViewModel: ObservableObject {
                 return
             }
             isShowProgress = false
-            addCourseEventsIfNecessary()
         } catch {
             isShowProgress = false
             courseDates = nil

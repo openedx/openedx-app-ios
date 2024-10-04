@@ -225,7 +225,6 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         } catch {
             isShowProgress = false
             isShowRefresh = false
-            shouldShowUpgradeButton = false
             courseStructure = nil
             courseVideosStructure = nil
         }

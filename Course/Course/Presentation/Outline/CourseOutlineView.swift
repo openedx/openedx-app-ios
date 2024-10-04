@@ -63,9 +63,7 @@ public struct CourseOutlineView: View {
                         DynamicOffsetView(
                             coordinate: $coordinate,
                             collapsed: $collapsed,
-                            viewHeight: $viewHeight,
-                            shouldShowUpgradeButton: $viewModel.shouldShowUpgradeButton,
-                            shouldHideMenuBar: $viewModel.shouldHideMenuBar
+                            viewHeight: $viewHeight
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         VStack(alignment: .leading) {
@@ -118,6 +116,7 @@ public struct CourseOutlineView: View {
                                     
                                     // MARK: - Sections
                                     CustomDisclosureGroup(
+                                        isVideo: isVideo,
                                         course: course,
                                         proxy: proxy,
                                         viewModel: viewModel

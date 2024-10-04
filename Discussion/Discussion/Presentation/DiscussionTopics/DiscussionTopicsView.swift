@@ -44,9 +44,7 @@ public struct DiscussionTopicsView: View {
                         DynamicOffsetView(
                             coordinate: $coordinate,
                             collapsed: $collapsed,
-                            viewHeight: $viewHeight,
-                            shouldShowUpgradeButton: $shouldShowUpgradeButton,
-                            shouldHideMenuBar: $shouldHideMenuBar
+                            viewHeight: $viewHeight
                         )
                         RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                         // MARK: - Search fake field

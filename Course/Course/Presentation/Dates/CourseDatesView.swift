@@ -19,8 +19,6 @@ public struct CourseDatesView: View {
     private var viewModel: CourseDatesViewModel
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
-    @Binding private var shouldShowUpgradeButton: Bool
-    @Binding private var shouldHideMenuBar: Bool
     @Binding private var viewHeight: CGFloat
     
     public init(
@@ -28,9 +26,7 @@ public struct CourseDatesView: View {
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
         viewHeight: Binding<CGFloat>,
-        viewModel: CourseDatesViewModel,
-        shouldShowUpgradeButton: Binding<Bool>,
-        shouldHideMenuBar: Binding<Bool>
+        viewModel: CourseDatesViewModel
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
@@ -65,9 +61,7 @@ public struct CourseDatesView: View {
                                 DynamicOffsetView(
                                     coordinate: $coordinate,
                                     collapsed: $collapsed,
-                                    viewHeight: $viewHeight,
-                                    shouldShowUpgradeButton: $shouldShowUpgradeButton,
-                                    shouldHideMenuBar: $shouldHideMenuBar
+                                    viewHeight: $viewHeight
                                 )
                                 
                                 FullScreenErrorView(
@@ -197,9 +191,7 @@ struct CourseDateListView: View {
                     DynamicOffsetView(
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewHeight: $viewHeight,
-                        shouldShowUpgradeButton: $shouldShowUpgradeButton,
-                        shouldHideMenuBar: $shouldHideMenuBar
+                        viewHeight: $viewHeight
                     )
                     VStack(alignment: .leading, spacing: 0) {
                         
@@ -517,9 +509,7 @@ struct CourseDatesView_Previews: PreviewProvider {
             coordinate: .constant(0),
             collapsed: .constant(false),
             viewHeight: .constant(0),
-            viewModel: viewModel,
-            shouldShowUpgradeButton: .constant(false),
-            shouldHideMenuBar: .constant(false)
+            viewModel: viewModel
         )
     }
 }
