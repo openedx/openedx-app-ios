@@ -189,40 +189,44 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
+    func getCourseStructure(courseID: String) async throws -> CourseStructure? {
+        if isInternetAvaliable {
+            return try await interactor.getCourseBlocks(courseID: courseID)
+        } else {
+            return try await interactor.getLoadedCourseBlocks(courseID: courseID)
+        }
+    }
+    
+    @MainActor
     func getCourseBlocks(courseID: String, withProgress: Bool = true) async {
         guard let courseStart, courseStart < Date() else { return }
         
         isShowProgress = withProgress
         isShowRefresh = !withProgress
         do {
+            let courseStructure = try await getCourseStructure(courseID: courseID)
+            await setDownloadsStates(courseStructure: courseStructure)
+            self.courseStructure = courseStructure
+
             if isInternetAvaliable {
-                courseStructure = try await interactor.getCourseBlocks(courseID: courseID)
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
-                isShowProgress = false
-                isShowRefresh = false
                 if let courseStructure {
                     try await getResumeBlock(
                         courseID: courseID,
                         courseStructure: courseStructure
                     )
                 }
-            } else {
-                courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
             }
             courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
-            await setDownloadsStates()
             await getDownloadingProgress()
             isShowProgress = false
             isShowRefresh = false
             
-        } catch let error {
+        } catch {
             isShowProgress = false
             isShowRefresh = false
-            if error.isInternetError || error is NoCachedDataError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
+            courseStructure = nil
+            courseVideosStructure = nil
         }
     }
     
@@ -234,11 +238,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 self.courseDeadlineInfo = courseDeadlineInfo
             }
         } catch let error {
-            if error.isInternetError || error is NoCachedDataError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
+            debugLog(error.localizedDescription)
         }
     }
     
@@ -771,7 +771,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     func stopAllDownloads() async {
         do {
             try await manager.cancelAllDownloading()
-            await setDownloadsStates()
+            await setDownloadsStates(courseStructure: self.courseStructure)
             await getDownloadingProgress()
         } catch {
             errorMessage = CoreLocalization.Error.unknownError
@@ -855,7 +855,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
-    func setDownloadsStates() async {
+    func setDownloadsStates(courseStructure: CourseStructure?) async {
         guard let course = courseStructure else { return }
         courseDownloadTasks = await manager.getDownloadTasksForCourse(course.id)
         downloadableVerticals = []
@@ -1080,7 +1080,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                 if case .progress = state { return }
                 Task(priority: .background) {
                     debugLog(state, "--- state ---")
-                    await self.setDownloadsStates()
+                    await self.setDownloadsStates(courseStructure: self.courseStructure)
                     await self.getDownloadingProgress()
                 }
             }

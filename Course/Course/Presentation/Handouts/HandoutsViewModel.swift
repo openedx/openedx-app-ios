@@ -55,11 +55,6 @@ public class HandoutsViewModel: ObservableObject {
             }
         } catch let error {
             isShowProgress = false
-            if error.isInternetError || error is NoCachedDataError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
         }
     }
     
@@ -71,12 +66,6 @@ public class HandoutsViewModel: ObservableObject {
             isShowProgress = false
         } catch let error {
             isShowProgress = false
-            if error.isInternetError || error is NoCachedDataError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
         }
     }
-    
 }

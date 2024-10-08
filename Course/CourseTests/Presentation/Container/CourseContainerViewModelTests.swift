@@ -229,9 +229,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testGetCourseBlocksNoCacheError() async throws {
@@ -270,9 +269,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testGetCourseBlocksUnknownError() async throws {
@@ -311,9 +309,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testTabSelectedAnalytics() {
@@ -485,7 +482,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         await viewModel.download(
             state: .available,
@@ -615,7 +612,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         await viewModel.download(
             state: .available,
@@ -744,7 +741,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         await viewModel.download(
             state: .available,
@@ -874,7 +871,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -1013,7 +1010,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -1152,7 +1149,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -1313,7 +1310,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

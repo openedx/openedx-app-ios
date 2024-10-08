@@ -24,16 +24,19 @@ public struct DynamicOffsetView: View {
     
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var viewHeight: CGFloat
     @State private var collapseHeight: CGFloat = .zero
     
     @Environment(\.isHorizontal) private var isHorizontal
     
     public init(
         coordinate: Binding<CGFloat>,
-        collapsed: Binding<Bool>
+        collapsed: Binding<Bool>,
+        viewHeight: Binding<CGFloat>
     ) {
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
     }
     
     public var body: some View {
@@ -56,28 +59,36 @@ public struct DynamicOffsetView: View {
             }
         )
         .onAppear {
-            changeCollapsedHeight()
+            changeCollapsedHeight(collapsed: collapsed, isHorizontal: isHorizontal)
         }
         .onChange(of: collapsed) { collapsed in
             if !collapsed {
-                changeCollapsedHeight()
+                changeCollapsedHeight(collapsed: collapsed, isHorizontal: isHorizontal)
             }
         }
         .onChange(of: isHorizontal) { isHorizontal in
             if isHorizontal {
                 collapsed = true
             }
-            changeCollapsedHeight()
+            changeCollapsedHeight(collapsed: collapsed, isHorizontal: isHorizontal)
         }
     }
     
-    private func changeCollapsedHeight() {
-        collapseHeight = idiom == .pad
-        ? padHeight
-        : (
-            collapsed
-            ? (isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight)
-            : expandedHeight
-        )
+    private func changeCollapsedHeight(
+        collapsed: Bool,
+        isHorizontal: Bool
+    ) {
+        if idiom == .pad {
+            collapseHeight = padHeight
+        } else if collapsed {
+            if isHorizontal {
+                collapseHeight = collapsedHorizontalHeight
+            } else {
+                collapseHeight = collapsedVerticalHeight
+            }
+        } else {
+            collapseHeight = 240
+        }
+        viewHeight = collapseHeight
     }
 }

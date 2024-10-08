@@ -253,9 +253,9 @@ public class DownloadManager: DownloadManagerProtocol {
 
     public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {
         downloadRequest?.cancel()
-        let downloaded = await getDownloadTasksForCourse(courseId).filter { $0.state == .finished }
+        let downloaded = await getDownloadTasksForCourse(courseId)
         let blocksForDelete = blocks.filter {  block in
-            downloaded.first(where: { $0.blockId == block.id }) == nil
+            downloaded.first(where: { $0.blockId == block.id }) != nil
         }
         await deleteFile(blocks: blocksForDelete)
         downloaded.forEach {
@@ -267,10 +267,10 @@ public class DownloadManager: DownloadManagerProtocol {
     public func cancelDownloading(task: DownloadDataTask) async throws {
         downloadRequest?.cancel()
         do {
-            try await persistence.deleteDownloadDataTask(id: task.id)
-            if let fileUrl = await fileUrl(for: task.id) {
+            if let fileUrl = fileUrl(for: task.id) {
                 try FileManager.default.removeItem(at: fileUrl)
             }
+            try await persistence.deleteDownloadDataTask(id: task.id)
             currentDownloadEventPublisher.send(.canceled(task))
         } catch {
             NSLog("Error deleting file: \(error.localizedDescription)")
@@ -297,7 +297,8 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteFile(blocks: [CourseBlock]) async {
         for block in blocks {
             do {
-                if let fileURL = await fileUrl(for: block.id) {
+                if let fileURL = fileUrl(for: block.id),
+                    FileManager.default.fileExists(atPath: fileURL.path) {
                     try FileManager.default.removeItem(at: fileURL)
                 }
                 try await persistence.deleteDownloadDataTask(id: block.id)
@@ -442,7 +443,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadFileWithProgress(_ download: DownloadDataTask) throws {
-        guard let url = URL(string: download.url) else {
+        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
             return
         }
 
@@ -452,10 +453,14 @@ public class DownloadManager: DownloadManagerProtocol {
             resumeData: download.resumeData
         )
         self.isDownloadingInProgress = true
+        let destination: DownloadRequest.Destination = { _, _ in
+            let file = folderURL.appendingPathComponent(download.fileName)
+            return (file, [.createIntermediateDirectories, .removePreviousFile])
+        }
         if let resumeData = download.resumeData {
-            downloadRequest = AF.download(resumingWith: resumeData)
+            downloadRequest = AF.download(resumingWith: resumeData, to: destination)
         } else {
-            downloadRequest = AF.download(url)
+            downloadRequest = AF.download(url, to: destination)
         }
 
         downloadRequest?.downloadProgress { [weak self] prog in
@@ -479,18 +484,15 @@ public class DownloadManager: DownloadManagerProtocol {
                     return
                 }
             }
-            if let data = data.value, let url = self.filesFolderUrl {
-                self.saveFile(fileName: download.fileName, data: data, folderURL: url)
-                self.persistence.updateDownloadState(
-                    id: download.id,
-                    state: .finished,
-                    resumeData: nil
-                )
-                self.currentDownloadTask?.state = .finished
-                self.currentDownloadEventPublisher.send(.finished(download))
-                Task {
-                    try? await self.newDownload()
-                }
+            self.persistence.updateDownloadState(
+                id: download.id,
+                state: .finished,
+                resumeData: nil
+            )
+            self.currentDownloadTask?.state = .finished
+            self.currentDownloadEventPublisher.send(.finished(download))
+            Task {
+                try? await self.newDownload()
             }
         }
     }
@@ -567,10 +569,10 @@ public class DownloadManager: DownloadManagerProtocol {
     private func cancel(tasks: [DownloadDataTask]) async {
         for task in tasks {
             do {
-                try await persistence.deleteDownloadDataTask(id: task.id)
-                if let fileUrl = await fileUrl(for: task.id) {
+                if let fileUrl = fileUrl(for: task.id) {
                     try FileManager.default.removeItem(at: fileUrl)
                 }
+                try await persistence.deleteDownloadDataTask(id: task.id)
             } catch {
                 debugLog("Error deleting file: \(error.localizedDescription)")
             }
