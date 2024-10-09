@@ -852,7 +852,7 @@ public class Router: AuthorizationRouter,
     public func showSSOWebBrowser(title: String) {
         let config = Container.shared.resolve(ConfigProtocol.self)!
         let webBrowser = ContainerWebView(
-            config.SSOBaseURL.absoluteString,
+            config.baseSSOURL.absoluteString,
             title: title
         )
         let controller = UIHostingController(rootView: webBrowser)

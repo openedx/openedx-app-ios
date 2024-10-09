@@ -9,7 +9,8 @@ import Foundation
 
 public protocol ConfigProtocol {
     var baseURL: URL { get }
-    var SSOBaseURL: URL { get }
+    var baseSSOURL: URL { get }
+    var ssoButtonTitle: [String: Any] { get }
     var oAuthClientId: String { get }
     var tokenType: TokenType { get }
     var feedbackEmail: String { get }
@@ -43,6 +44,7 @@ public enum TokenType: String {
 private enum ConfigKeys: String {
     case baseURL = "API_HOST_URL"
     case SSOBaseURL = "SSO_URL"
+    case ssoButtonTitle = "SSO_BUTTON_TITLE"
     case oAuthClientID = "OAUTH_CLIENT_ID"
     case tokenType = "TOKEN_TYPE"
     case feedbackEmailAddress = "FEEDBACK_EMAIL_ADDRESS"
@@ -122,12 +124,19 @@ extension Config: ConfigProtocol {
         return url
     }
     
-    public var SSOBaseURL: URL {
+    public var baseSSOURL: URL {
         guard let urlString = string(for: ConfigKeys.SSOBaseURL.rawValue),
               let url = URL(string: urlString) else {
             fatalError("Unable to find SSO base url in config.")
         }
         return url
+    }
+    
+    public var ssoButtonTitle: [String: Any] {
+        guard let ssoButtonTitle = dict(for: ConfigKeys.ssoButtonTitle.rawValue) else {
+            return ["en": CoreLocalization.SignIn.logInWithSsoBtn]
+        }
+        return ssoButtonTitle
     }
     
     public var oAuthClientId: String {

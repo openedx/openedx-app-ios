@@ -758,13 +758,14 @@
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -775,7 +776,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage.nelc;
 				PRODUCT_NAME = "$(TARGET_NAME) Stage";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -849,13 +850,14 @@
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -866,7 +868,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage.nelc;
 				PRODUCT_NAME = "$(TARGET_NAME) Stage";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -946,13 +948,14 @@
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -963,7 +966,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev.nelc;
 				PRODUCT_NAME = "$(TARGET_NAME) Dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1037,13 +1040,14 @@
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1054,7 +1058,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev.nelc;
 				PRODUCT_NAME = "$(TARGET_NAME) Dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1188,13 +1192,14 @@
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1205,7 +1210,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.nelc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1225,13 +1230,14 @@
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = L8PG7LC3Y3;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
@@ -1242,7 +1248,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.nelc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;

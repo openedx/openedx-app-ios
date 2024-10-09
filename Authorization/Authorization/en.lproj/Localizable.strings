@@ -14,7 +14,10 @@
 "SIGN_IN.FORGOT_PASS_BTN" = "Forgot password?";
 "SIGN_IN.AGREEMENT" = "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
 accordance with the [Privacy Policy.](%@)";
-
+"SIGN_IN.SSO_HEADING" = "Start today to build your career with confidence";
+"SIGN_IN.SSO_SUPPORTING_TEXT" = "An integrated set of knowledge and empowerment programs to develop the components of the endowment sector and its workers";
+"SIGN_IN.SSO_LOG_IN_TITLE" = "Sign IN";
+"SIGN_IN.SSO_LOG_IN_SUBTITLE" = "Log in through the national unified sign-on service";
 
 "ERROR.INVALID_EMAIL_ADDRESS" = "Invalid email address";
 "ERROR.INVALID_PASSWORD_LENGHT" = "Invalid password lenght";
