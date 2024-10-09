@@ -297,7 +297,7 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteFile(blocks: [CourseBlock]) async {
         for block in blocks {
             do {
-                if let fileURL = fileUrl(for: block.id),
+                if let fileURL = fileOrFolderUrl(for: block.id),
                     FileManager.default.fileExists(atPath: fileURL.path) {
                     try FileManager.default.removeItem(at: fileURL)
                 }
@@ -367,7 +367,7 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteAllFiles() async {
         let downloadsData = await getDownloadTasks()
         for downloadData in downloadsData {
-            if let fileURL = fileUrl(for: downloadData.id) {
+            if let fileURL = fileOrFolderUrl(for: downloadData.id) {
                 do {
                     try FileManager.default.removeItem(at: fileURL)
                 } catch {
@@ -388,6 +388,24 @@ public class DownloadManager: DownloadManagerProtocol {
             if let folderUrl = URL(string: data.url) {
                 let folder = folderUrl.deletingPathExtension().lastPathComponent
                 return path?.appendingPathComponent(folder).appendingPathComponent(indexPage)
+            } else {
+                return nil
+            }
+        case .video:
+            return path?.appendingPathComponent(data.fileName)
+        }
+    }
+    
+    public func fileOrFolderUrl(for blockId: String) -> URL? {
+        guard let data = persistence.downloadDataTask(for: blockId),
+              data.url.count > 0,
+              data.state == .finished else { return nil }
+        let path = filesFolderUrl
+        switch data.type {
+        case .html, .problem:
+            if let folderUrl = URL(string: data.url) {
+                let folder = folderUrl.deletingPathExtension().lastPathComponent
+                return path?.appendingPathComponent(folder)
             } else {
                 return nil
             }
