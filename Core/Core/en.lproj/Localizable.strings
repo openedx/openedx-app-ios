@@ -120,7 +120,8 @@
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 
 "SIGN_IN.LOG_IN_BTN" = "Sign in";
-"REGISTER" = "Register";
+"SIGN_IN.REGISTER_BTN" = "Register";
+"SIGN_IN.LOG_IN_WITH_SSO_BTN" = "Sign in with SSO";
 
 "TOMORROW" = "Tomorrow";
 "YESTERDAY" = "Yesterday";

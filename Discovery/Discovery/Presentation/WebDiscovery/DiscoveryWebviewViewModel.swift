@@ -15,7 +15,7 @@ public class DiscoveryWebviewViewModel: ObservableObject {
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
     @Published var webViewError: Bool = false
-    
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -137,25 +137,14 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         }
         
         if let url = request.url, outsideLink || capturedLink || externalLink, UIApplication.shared.canOpenURL(url) {
-            analytics.externalLinkOpen(url: url.absoluteString, screen: sourceScreen.value ?? "")
             router.presentAlert(
                 alertTitle: DiscoveryLocalization.Alert.leavingAppTitle,
                 alertMessage: DiscoveryLocalization.Alert.leavingAppMessage,
                 positiveAction: CoreLocalization.Webview.Alert.continue,
                 onCloseTapped: { [weak self] in
                     self?.router.dismiss(animated: true)
-                    self?.analytics.externalLinkOpenAction(
-                        url: url.absoluteString,
-                        screen: self?.sourceScreen.value ?? "",
-                        action: "cancel"
-                    )
-                }, okTapped: { [weak self] in
+                }, okTapped: {
                     UIApplication.shared.open(url, options: [:])
-                    self?.analytics.externalLinkOpenAction(
-                        url: url.absoluteString,
-                        screen: self?.sourceScreen.value ?? "",
-                        action: "continue"
-                    )
                 }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue, image: nil)
             )
             return true
@@ -249,7 +238,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
     private func isValidAppURLScheme(_ url: URL) -> Bool {
         return url.scheme ?? "" == config.URIScheme
     }
-    
+
     public func showWebViewError() {
         self.webViewError = true
     }

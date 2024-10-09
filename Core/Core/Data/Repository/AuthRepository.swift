@@ -10,6 +10,7 @@ import Foundation
 public protocol AuthRepositoryProtocol {
     func login(username: String, password: String) async throws -> User
     func login(externalToken: String, backend: String) async throws -> User
+    func SSOlogin(jwtToken: String) async throws -> User
     func getCookies(force: Bool) async throws
     func getRegistrationFields() async throws -> [PickerFields]
     func registerUser(fields: [String: String], isSocial: Bool) async throws -> User
@@ -80,6 +81,18 @@ public class AuthRepository: AuthRepositoryProtocol {
         return user.domain
     }
 
+    public func SSOlogin(jwtToken: String) async throws -> User {
+        if appStorage.accessToken == nil ||
+            appStorage.refreshToken == nil {
+            appStorage.accessToken = jwtToken
+            appStorage.refreshToken = jwtToken
+        }
+        
+        let user = try await api.requestData(AuthEndpoint.getUserInfo).mapResponse(DataLayer.User.self)
+        appStorage.user = user
+        return user.domain
+    }
+    
     public func resetPassword(email: String) async throws -> ResetPassword {
        let response = try await api.requestData(AuthEndpoint.resetPassword(email: email))
             .mapResponse(DataLayer.ResetPassword.self)
@@ -137,6 +150,10 @@ class AuthRepositoryMock: AuthRepositoryProtocol {
         User(id: 1, username: "User", email: "email@gmail.com", name: "User Name", userAvatar: "")
     }
 
+    public func SSOlogin(jwtToken: String) async throws -> User {
+        return User(id: 1, username: "User", email: "email@gmail.com", name: "User Name", userAvatar: "")
+    }
+    
     func resetPassword(email: String) async throws -> ResetPassword {
         ResetPassword(success: true, responseText: "Success reset")
     }

@@ -87,6 +87,14 @@ class ScreenAssembly: Assembly {
                 sourceScreen: sourceScreen
             )
         }
+        container.register(SSOWebViewModel.self) { r in
+            SSOWebViewModel(
+                interactor: r.resolve(AuthInteractorProtocol.self)!,
+                router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!
+                )
+        }
         container.register(SignUpViewModel.self) { r, sourceScreen in
             SignUpViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,

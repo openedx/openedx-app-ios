@@ -10,12 +10,15 @@ import Core
 
 public enum AuthMethod: Equatable {
     case password
+    case SSO
     case socailAuth(SocialAuthMethod)
 
     public var analyticsValue: String {
         switch self {
         case .password:
             "password"
+        case .SSO:
+            "SSO"
         case .socailAuth(let socialAuthMethod):
             socialAuthMethod.rawValue
         }

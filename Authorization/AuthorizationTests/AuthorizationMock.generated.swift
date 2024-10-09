@@ -93,6 +93,23 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 		return __value
     }
 
+    @discardableResult
+    open func SSOlogin(jwtToken: String) async throws -> Core.User {
+        addInvocation(.m_login__SSO__username_password(Parameter<String>.value(`jwtToken`)))
+        let perform = methodPerformValue(.m_login__SSO__username_password(Parameter<String>.value(`jwtToken`))) as? (String) -> Void
+        perform?(`jwtToken`)
+        var __value: User
+        do {
+            __value = try methodReturnValue(.m_login__SSO__username_password(Parameter<String>.value(jwtToken))).casted()
+        } catch MockError.notStubed {
+            onFatalFailure("Stub return value not specified for login(username: String, password: String). Use given")
+            Failure("Stub return value not specified for login(username: String, password: String). Use given")
+        } catch {
+            throw error
+        }
+        return __value
+    }
+    
     open func resetPassword(email: String) throws -> ResetPassword {
         addInvocation(.m_resetPassword__email_email(Parameter<String>.value(`email`)))
 		let perform = methodPerformValue(.m_resetPassword__email_email(Parameter<String>.value(`email`))) as? (String) -> Void
@@ -173,6 +190,7 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 
     fileprivate enum MethodType {
         case m_login__username_usernamepassword_password(Parameter<String>, Parameter<String>)
+        case m_login__SSO__username_password(Parameter<String>)
         case m_login__externalToken_externalTokenbackend_backend(Parameter<String>, Parameter<String>)
         case m_resetPassword__email_email(Parameter<String>)
         case m_getCookies__force_force(Parameter<Bool>)
@@ -188,6 +206,11 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPassword, rhs: rhsPassword, with: matcher), lhsPassword, rhsPassword, "password"))
 				return Matcher.ComparisonResult(results)
 
+            case (.m_login__SSO__username_password(let lhsJwtToken), .m_login__SSO__username_password(let rhsJwtToken)):
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsJwtToken, rhs: rhsJwtToken, with: matcher), lhsJwtToken, rhsJwtToken, "jwtToken"))
+                return Matcher.ComparisonResult(results)
+                
             case (.m_login__externalToken_externalTokenbackend_backend(let lhsExternaltoken, let lhsBackend), .m_login__externalToken_externalTokenbackend_backend(let rhsExternaltoken, let rhsBackend)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsExternaltoken, rhs: rhsExternaltoken, with: matcher), lhsExternaltoken, rhsExternaltoken, "externalToken"))
@@ -223,6 +246,7 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         func intValue() -> Int {
             switch self {
             case let .m_login__username_usernamepassword_password(p0, p1): return p0.intValue + p1.intValue
+            case let .m_login__SSO__username_password(p0): return p0.intValue
             case let .m_login__externalToken_externalTokenbackend_backend(p0, p1): return p0.intValue + p1.intValue
             case let .m_resetPassword__email_email(p0): return p0.intValue
             case let .m_getCookies__force_force(p0): return p0.intValue
@@ -234,6 +258,7 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         func assertionName() -> String {
             switch self {
             case .m_login__username_usernamepassword_password: return ".login(username:password:)"
+            case .m_login__SSO__username_password: return ".loginSSO(username:password:)"
             case .m_login__externalToken_externalTokenbackend_backend: return ".login(externalToken:backend:)"
             case .m_resetPassword__email_email: return ".resetPassword(email:)"
             case .m_getCookies__force_force: return ".getCookies(force:)"
@@ -260,6 +285,10 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         @discardableResult
 		public static func login(externalToken: Parameter<String>, backend: Parameter<String>, willReturn: User...) -> MethodStub {
             return Given(method: .m_login__externalToken_externalTokenbackend_backend(`externalToken`, `backend`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        @discardableResult
+        public static func ssoLogin(title: Parameter<String>, willReturn: User...) -> MethodStub {
+            return Given(method: .m_login__SSO__username_password(`title`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func resetPassword(email: Parameter<String>, willReturn: ResetPassword...) -> MethodStub {
             return Given(method: .m_resetPassword__email_email(`email`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -353,7 +382,8 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
         fileprivate var method: MethodType
 
         @discardableResult
-		public static func login(username: Parameter<String>, password: Parameter<String>) -> Verify { return Verify(method: .m_login__username_usernamepassword_password(`username`, `password`))}
+        public static func login(username: Parameter<String>, password: Parameter<String>) -> Verify { return Verify(method: .m_login__username_usernamepassword_password(`username`, `password`))}
+        public static func ssoLogin(title: Parameter<String>) -> Verify { return Verify(method: .m_login__SSO__username_password(`title`))}
         @discardableResult
 		public static func login(externalToken: Parameter<String>, backend: Parameter<String>) -> Verify { return Verify(method: .m_login__externalToken_externalTokenbackend_backend(`externalToken`, `backend`))}
         public static func resetPassword(email: Parameter<String>) -> Verify { return Verify(method: .m_resetPassword__email_email(`email`))}
@@ -579,6 +609,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
     fileprivate enum MethodType {
         case m_identify__id_idusername_usernameemail_email(Parameter<String>, Parameter<String>, Parameter<String>)
         case m_userLogin__method_method(Parameter<AuthMethod>)
+        case m_ssoLogin__method_method(Parameter<AuthMethod>)
         case m_registerClicked
         case m_signInClicked
         case m_userSignInClicked
@@ -638,6 +669,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
             switch self {
             case let .m_identify__id_idusername_usernameemail_email(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_userLogin__method_method(p0): return p0.intValue
+            case let .m_ssoLogin__method_method(p0): return p0.intValue
             case .m_registerClicked: return 0
             case .m_signInClicked: return 0
             case .m_userSignInClicked: return 0
@@ -653,6 +685,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
             switch self {
             case .m_identify__id_idusername_usernameemail_email: return ".identify(id:username:email:)"
             case .m_userLogin__method_method: return ".userLogin(method:)"
+            case .m_ssoLogin__method_method: return ".ssoLogin(method:)"
             case .m_registerClicked: return ".registerClicked()"
             case .m_signInClicked: return ".signInClicked()"
             case .m_userSignInClicked: return ".userSignInClicked()"
@@ -682,6 +715,7 @@ open class AuthorizationAnalyticsMock: AuthorizationAnalytics, Mock {
 
         public static func identify(id: Parameter<String>, username: Parameter<String>, email: Parameter<String>) -> Verify { return Verify(method: .m_identify__id_idusername_usernameemail_email(`id`, `username`, `email`))}
         public static func userLogin(method: Parameter<AuthMethod>) -> Verify { return Verify(method: .m_userLogin__method_method(`method`))}
+        public static func ssoLogin(method: Parameter<AuthMethod>) -> Verify { return Verify(method: .m_ssoLogin__method_method(`method`))}
         public static func registerClicked() -> Verify { return Verify(method: .m_registerClicked)}
         public static func signInClicked() -> Verify { return Verify(method: .m_signInClicked)}
         public static func userSignInClicked() -> Verify { return Verify(method: .m_userSignInClicked)}
@@ -927,6 +961,12 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 		perform?(`title`, `url`)
     }
 
+    open func showSSOWebBrowser(title: String) {
+        addInvocation(.m_showWebBrowser__SSO(Parameter<String>.value(`title`)))
+        let perform = methodPerformValue(.m_showWebBrowser__SSO(Parameter<String>.value(`title`))) as? (String) -> Void
+        perform?(`title`)
+    }
+    
     open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, type: AlertViewType) {
         addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`positiveAction`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<AlertViewType>.value(`type`)))
 		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`positiveAction`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<AlertViewType>.value(`type`))) as? (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void
@@ -966,6 +1006,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         case m_showForgotPasswordScreen
         case m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>, Parameter<LogistrationSourceScreen>)
         case m_showWebBrowser__title_titleurl_url(Parameter<String>, Parameter<URL>)
+        case m_showWebBrowser__SSO(Parameter<String>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
@@ -1085,6 +1126,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_showForgotPasswordScreen: return 0
             case let .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(p0, p1): return p0.intValue + p1.intValue
             case let .m_showWebBrowser__title_titleurl_url(p0, p1): return p0.intValue + p1.intValue
+            case let .m_showWebBrowser__SSO(p0): return p0.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
@@ -1106,6 +1148,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
             case .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen: return ".showDiscoveryScreen(searchQuery:sourceScreen:)"
             case .m_showWebBrowser__title_titleurl_url: return ".showWebBrowser(title:url:)"
+            case .m_showWebBrowser__SSO: return ".showSSOWebBrowser(title:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"
@@ -1189,6 +1232,9 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         }
         public static func showWebBrowser(title: Parameter<String>, url: Parameter<URL>, perform: @escaping (String, URL) -> Void) -> Perform {
             return Perform(method: .m_showWebBrowser__title_titleurl_url(`title`, `url`), performs: perform)
+        }
+        public static func showSSOWebBrowser(title: Parameter<String>, perform: @escaping (String, URL) -> Void) -> Perform {
+            return Perform(method: .m_showWebBrowser__SSO(`title`), performs: perform)
         }
         public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
             return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)
@@ -1389,8 +1435,14 @@ open class BaseRouterMock: BaseRouter, Mock {
 
     open func showWebBrowser(title: String, url: URL) {
         addInvocation(.m_showWebBrowser__title_titleurl_url(Parameter<String>.value(`title`), Parameter<URL>.value(`url`)))
-		let perform = methodPerformValue(.m_showWebBrowser__title_titleurl_url(Parameter<String>.value(`title`), Parameter<URL>.value(`url`))) as? (String, URL) -> Void
-		perform?(`title`, `url`)
+        let perform = methodPerformValue(.m_showWebBrowser__title_titleurl_url(Parameter<String>.value(`title`), Parameter<URL>.value(`url`))) as? (String, URL) -> Void
+        perform?(`title`, `url`)
+    }
+    
+    open func showSSOWebBrowser(title: String) {
+        addInvocation(.m_showWebBrowser__SSO(Parameter<String>.value(`title`)))
+        let perform = methodPerformValue(.m_showWebBrowser__SSO(Parameter<String>.value(`title`))) as? (String) -> Void
+        perform?(`title`)
     }
 
     open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, type: AlertViewType) {
@@ -1431,6 +1483,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_showForgotPasswordScreen
         case m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>, Parameter<LogistrationSourceScreen>)
         case m_showWebBrowser__title_titleurl_url(Parameter<String>, Parameter<URL>)
+        case m_showWebBrowser__SSO(Parameter<String>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
         case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
@@ -1544,6 +1597,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_showForgotPasswordScreen: return 0
             case let .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(p0, p1): return p0.intValue + p1.intValue
             case let .m_showWebBrowser__title_titleurl_url(p0, p1): return p0.intValue + p1.intValue
+            case let .m_showWebBrowser__SSO(p0): return p0.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
@@ -1564,6 +1618,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_showForgotPasswordScreen: return ".showForgotPasswordScreen()"
             case .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen: return ".showDiscoveryScreen(searchQuery:sourceScreen:)"
             case .m_showWebBrowser__title_titleurl_url: return ".showWebBrowser(title:url:)"
+            case .m_showWebBrowser__SSO: return ".showSSOWebBrowser(title:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
             case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"

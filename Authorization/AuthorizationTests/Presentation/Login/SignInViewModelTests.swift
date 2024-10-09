@@ -93,7 +93,33 @@ final class SignInViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
     }
-
+    
+    func testSSOLoginSuccess() async throws {
+        let interactor = AuthInteractorProtocolMock()
+        let router = AuthorizationRouterMock()
+        let validator = Validator()
+        let analytics = AuthorizationAnalyticsMock()
+        let viewModel = SignInViewModel(
+            interactor: interactor,
+            router: router,
+            config: ConfigMock(),
+            analytics: analytics,
+            validator: validator,
+            sourceScreen: .default
+        )
+        let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
+        
+        Given(interactor, .ssoLogin(title: .any, willReturn: user))
+        
+        await viewModel.ssoLogin(title: "Riyadah")
+        
+        Verify(interactor, 1, .ssoLogin(title: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any))
+        
+        XCTAssertEqual(viewModel.errorMessage, nil)
+        XCTAssertEqual(viewModel.isShowProgress, true)
+    }
+    
     func testSocialLoginSuccess() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()

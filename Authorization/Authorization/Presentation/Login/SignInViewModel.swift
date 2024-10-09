@@ -89,6 +89,21 @@ public class SignInViewModel: ObservableObject {
     }
 
     @MainActor
+    func ssoLogin(title: String) async {
+        
+        analytics.userSignInClicked()
+        isShowProgress = true
+        do {
+            let user = try await interactor.SSOlogin(jwtToken: "239i2oi3jrf2jflkj23lf2f")
+            analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
+            analytics.userLogin(method: .password)
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+        } catch let error {
+            failure(error)
+        }
+    }
+    
+    @MainActor
     func login(with result: Result<SocialAuthDetails, Error>) async {
         switch result {
         case .success(let result):
