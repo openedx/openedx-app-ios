@@ -297,7 +297,7 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteFile(blocks: [CourseBlock]) async {
         for block in blocks {
             do {
-                if let fileURL = fileUrl(for: block.id),
+                if let fileURL = fileOrFolderUrl(for: block.id),
                     FileManager.default.fileExists(atPath: fileURL.path) {
                     try FileManager.default.removeItem(at: fileURL)
                 }
@@ -367,7 +367,7 @@ public class DownloadManager: DownloadManagerProtocol {
     public func deleteAllFiles() async {
         let downloadsData = await getDownloadTasks()
         for downloadData in downloadsData {
-            if let fileURL = fileUrl(for: downloadData.id) {
+            if let fileURL = fileOrFolderUrl(for: downloadData.id) {
                 do {
                     try FileManager.default.removeItem(at: fileURL)
                 } catch {
@@ -388,6 +388,24 @@ public class DownloadManager: DownloadManagerProtocol {
             if let folderUrl = URL(string: data.url) {
                 let folder = folderUrl.deletingPathExtension().lastPathComponent
                 return path?.appendingPathComponent(folder).appendingPathComponent(indexPage)
+            } else {
+                return nil
+            }
+        case .video:
+            return path?.appendingPathComponent(data.fileName)
+        }
+    }
+    
+    public func fileOrFolderUrl(for blockId: String) -> URL? {
+        guard let data = persistence.downloadDataTask(for: blockId),
+              data.url.count > 0,
+              data.state == .finished else { return nil }
+        let path = filesFolderUrl
+        switch data.type {
+        case .html, .problem:
+            if let folderUrl = URL(string: data.url) {
+                let folder = folderUrl.deletingPathExtension().lastPathComponent
+                return path?.appendingPathComponent(folder)
             } else {
                 return nil
             }
@@ -453,10 +471,72 @@ public class DownloadManager: DownloadManagerProtocol {
             resumeData: download.resumeData
         )
         self.isDownloadingInProgress = true
+
         let destination: DownloadRequest.Destination = { _, _ in
             let file = folderURL.appendingPathComponent(download.fileName)
             return (file, [.createIntermediateDirectories, .removePreviousFile])
         }
+
+        if let resumeData = download.resumeData {
+            downloadRequest = AF.download(resumingWith: resumeData, to: destination)
+        } else {
+            downloadRequest = AF.download(url, to: destination)
+        }
+
+        downloadRequest?.downloadProgress { [weak self] prog in
+            guard let self = self else { return }
+            let fractionCompleted = prog.fractionCompleted
+            self.currentDownloadTask?.progress = fractionCompleted
+            self.currentDownloadTask?.state = .inProgress
+            self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
+            let completed = Double(fractionCompleted * 100)
+            debugLog(">>>>> Downloading File", download.url, completed, "%")
+        }
+
+        downloadRequest?.responseURL { [weak self] response in
+            guard let self = self else { return }
+            if let error = response.error {
+                if error.asAFError?.isExplicitlyCancelledError == false {
+                    self.failedDownloads.append(download)
+                    Task {
+                        try? await self.newDownload()
+                    }
+                    return
+                }
+            }
+            if response.fileURL != nil {
+                self.persistence.updateDownloadState(
+                    id: download.id,
+                    state: .finished,
+                    resumeData: nil
+                )
+                self.currentDownloadTask?.state = .finished
+                self.currentDownloadEventPublisher.send(.finished(download))
+                Task {
+                    try? await self.newDownload()
+                }
+            }
+        }
+    }
+
+    private func downloadHTMLWithProgress(_ download: DownloadDataTask) throws {
+        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
+            return
+        }
+
+        persistence.updateDownloadState(
+            id: download.id,
+            state: .inProgress,
+            resumeData: download.resumeData
+        )
+        self.isDownloadingInProgress = true
+
+        let destination: DownloadRequest.Destination = { _, _ in
+            let fileName = URL(string: download.url)?.lastPathComponent ?? "file.zip"
+            let file = folderURL.appendingPathComponent(fileName)
+            return (file, [.createIntermediateDirectories, .removePreviousFile])
+        }
+
         if let resumeData = download.resumeData {
             downloadRequest = AF.download(resumingWith: resumeData, to: destination)
         } else {
@@ -470,12 +550,12 @@ public class DownloadManager: DownloadManagerProtocol {
             self.currentDownloadTask?.state = .inProgress
             self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
             let completed = Double(fractionCompleted * 100)
-            debugLog(">>>>> Downloading", download.url, completed, "%")
+            debugLog(">>>>> Downloading HTML", download.url, completed, "%")
         }
 
-        downloadRequest?.responseData { [weak self] data in
+        downloadRequest?.responseURL { [weak self] response in
             guard let self else { return }
-            if let error = data.error {
+            if let error = response.error {
                 if error.asAFError?.isExplicitlyCancelledError == false {
                     failedDownloads.append(download)
                     Task {
@@ -484,61 +564,8 @@ public class DownloadManager: DownloadManagerProtocol {
                     return
                 }
             }
-            self.persistence.updateDownloadState(
-                id: download.id,
-                state: .finished,
-                resumeData: nil
-            )
-            self.currentDownloadTask?.state = .finished
-            self.currentDownloadEventPublisher.send(.finished(download))
-            Task {
-                try? await self.newDownload()
-            }
-        }
-    }
-
-    private func downloadHTMLWithProgress(_ download: DownloadDataTask) throws {
-        guard let url = URL(string: download.url) else {
-            return
-        }
-
-        persistence.updateDownloadState(
-            id: download.id,
-            state: .inProgress,
-            resumeData: download.resumeData
-        )
-        self.isDownloadingInProgress = true
-        if let resumeData = download.resumeData {
-            downloadRequest = AF.download(resumingWith: resumeData)
-        } else {
-            downloadRequest = AF.download(url)
-        }
-
-        downloadRequest?.downloadProgress { [weak self] prog in
-            guard let self else { return }
-            let fractionCompleted = prog.fractionCompleted
-            self.currentDownloadTask?.progress = fractionCompleted
-            self.currentDownloadTask?.state = .inProgress
-            self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
-            let completed = Double(fractionCompleted * 100)
-            debugLog(">>>>> Downloading", download.url, completed, "%")
-        }
-
-        downloadRequest?.responseData { [weak self] data in
-            guard let self else { return }
-            if let error = data.error {
-                if error.asAFError?.isExplicitlyCancelledError == false {
-                    failedDownloads.append(download)
-                    Task {
-                        try? await self.newDownload()
-                    }
-                    return
-                }
-            }
-            if let data = data.value, let url = self.filesFolderUrl,
-               let fileName = URL(string: download.url)?.lastPathComponent {
-                self.saveFile(fileName: fileName, data: data, folderURL: url)
-                self.unzipFile(url: url.appendingPathComponent(fileName))
+            if let fileURL = response.fileURL {
+                self.unzipFile(url: fileURL)
                 self.persistence.updateDownloadState(
                     id: download.id,
                     state: .finished,
