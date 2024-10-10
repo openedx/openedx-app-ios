@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 public enum DashboardConfigType: String {
     case gallery

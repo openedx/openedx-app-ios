@@ -7,6 +7,7 @@
 
 import Swinject
 import UIKit
+import OEXFoundation
 
 public protocol BackNavigationProtocol {
     func getBackMenuItems() -> [BackNavigationMenuItem]

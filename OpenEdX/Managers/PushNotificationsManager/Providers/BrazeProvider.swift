@@ -8,6 +8,7 @@
 import Foundation
 import SegmentBrazeUI
 import Swinject
+import OEXFoundation
 
 class BrazeProvider: PushNotificationsProvider {
     

@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 public protocol DashboardRepositoryProtocol {
     func getEnrollments(page: Int) async throws -> [CourseItem]

@@ -9,6 +9,7 @@ import Alamofire
 import SwiftUI
 import Combine
 import ZipArchive
+import OEXFoundation
 
 public enum DownloadState: String {
     case waiting

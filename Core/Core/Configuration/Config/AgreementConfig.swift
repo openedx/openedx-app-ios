@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 private enum AgreementKeys: String, RawStringExtractable {
     case privacyPolicyURL = "PRIVACY_POLICY_URL"

@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import FirebaseAnalytics
 
 private let MaxParameterValueCharacters = 100

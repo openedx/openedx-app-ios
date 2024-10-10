@@ -8,6 +8,7 @@
 import Foundation
 import AuthenticationServices
 import Swinject
+import OEXFoundation
 
 public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegate {
 

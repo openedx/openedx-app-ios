@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 enum DeepLinkType: String {
     case courseDashboard = "course_dashboard"

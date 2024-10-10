@@ -9,6 +9,7 @@ import Foundation
 import WebKit
 import Combine
 import Swinject
+import OEXFoundation
 
 public protocol OfflineSyncManagerProtocol {
     func handleMessage(message: WKScriptMessage, blockID: String)

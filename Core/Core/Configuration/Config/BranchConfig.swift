@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 private enum BranchKeys: String, RawStringExtractable {
     case enabled = "ENABLED"
