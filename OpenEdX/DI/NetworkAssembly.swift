@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import Alamofire
 import Swinject
 
@@ -38,7 +39,7 @@ class NetworkAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(API.self) {r in
-            API(session: r.resolve(Alamofire.Session.self)!, config: r.resolve(ConfigProtocol.self)!)
+            API(session: r.resolve(Alamofire.Session.self)!, baseURL: r.resolve(ConfigProtocol.self)!.baseURL)
         }.inObjectScope(.container)
     }
 }

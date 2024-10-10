@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import OEXFoundation
 import Discussion
 import Combine
 import Theme

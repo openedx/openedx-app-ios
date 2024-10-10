@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 private enum Keys: String, RawStringExtractable {
     case courseDropDownNavigationEnabled = "COURSE_DROPDOWN_NAVIGATION_ENABLED"

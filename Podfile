@@ -16,15 +16,8 @@ abstract_target "App" do
   target "Core" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
-    #Networking
-    pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :tag => '5.10.0'
-#Keychain
+  #Keychain
     pod 'KeychainSwift', '~> 24.0'
-    #SwiftUI backward UIKit access
-    #pod 'Introspect', '~> 0.6'
-    pod 'SwiftUIIntrospect', '~> 1.3'
-    pod 'Kingfisher', '~> 8.0'
-    pod 'Swinject', '2.9.1'
 
     target 'CoreTests' do
       pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'

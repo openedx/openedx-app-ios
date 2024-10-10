@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Kingfisher
 import Theme
+import OEXFoundation
 
 public struct ProfileView: View {
     

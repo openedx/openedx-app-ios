@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 private enum BrazeKeys: String, RawStringExtractable {
     case enabled = "ENABLED"

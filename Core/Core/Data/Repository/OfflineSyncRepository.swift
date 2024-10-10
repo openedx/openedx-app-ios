@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 public protocol OfflineSyncRepositoryProtocol {
     func submitOfflineProgress(courseID: String, blockID: String, data: String) async throws -> Bool

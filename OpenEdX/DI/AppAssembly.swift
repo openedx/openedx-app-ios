@@ -7,6 +7,7 @@
 
 import UIKit
 import Core
+import OEXFoundation
 import Swinject
 import KeychainSwift
 import Discovery
@@ -208,18 +209,8 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(SegmentAnalyticsService.self) { r in
-            SegmentAnalyticsService(
-                config: r.resolve(ConfigProtocol.self)!
-            )
-        }.inObjectScope(.container)
-        
         container.register(FirebaseAnalyticsService.self) { _ in
             FirebaseAnalyticsService()
-        }.inObjectScope(.container)
-        
-        container.register(FullStoryAnalyticsService.self) { r in
-            FullStoryAnalyticsService()
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { r in

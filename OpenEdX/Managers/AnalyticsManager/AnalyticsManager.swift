@@ -48,17 +48,6 @@ class AnalyticsManager: AuthorizationAnalytics,
             analyticsServices.append(firebaseService)
         }
         
-        // add Segment Analytics Service
-        if config.segment.enabled,
-           let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
-            analyticsServices.append(segmentService)
-        }
-        
-        if config.fullStory.enabled,
-           let fullStoryService = Container.shared.resolve(FullStoryAnalyticsService.self) {
-            analyticsServices.append(fullStoryService)
-        }
-        
         return analyticsServices
     }
     
