@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Theme
 import Core
+import OEXFoundation
 
 public enum ProgramViewType: String, Equatable {
     case program

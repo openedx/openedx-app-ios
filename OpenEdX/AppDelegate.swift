@@ -7,6 +7,7 @@
 
 import UIKit
 import Core
+import OEXFoundation
 import Swinject
 import Profile
 import GoogleSignIn
