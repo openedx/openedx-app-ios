@@ -165,6 +165,7 @@
 		CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */; };
 		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
 		CE7E66002CB7DD0100B9234F /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7E65FF2CB7DD0100B9234F /* OEXFoundation */; };
+		CEE886B32CB928010092A175 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEE886B22CB928010092A175 /* OEXFoundation */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
 		DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */; };
@@ -387,7 +388,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE7E66002CB7DD0100B9234F /* OEXFoundation in Frameworks */,
+				CEE886B32CB928010092A175 /* OEXFoundation in Frameworks */,
 				BAF0D4CB2AD6AE14007AC334 /* FacebookLogin in Frameworks */,
 				025EF2F62971740000B838AB /* YouTubePlayerKit in Frameworks */,
 				C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */,
@@ -961,7 +962,7 @@
 				BAF0D4CA2AD6AE14007AC334 /* FacebookLogin */,
 				142EDD6B2B831D1400F9F320 /* BranchSDK */,
 				02AA27932C2C1B88006F5B6A /* ZipArchive */,
-				CE7E65FF2CB7DD0100B9234F /* OEXFoundation */,
+				CEE886B22CB928010092A175 /* OEXFoundation */,
 			);
 			productName = Core;
 			productReference = 0770DE0828D07831006D8A5D /* Core.framework */;
@@ -1003,7 +1004,7 @@
 				BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				142EDD6A2B831D1400F9F320 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */,
 				02AA27922C2C1B61006F5B6A /* XCRemoteSwiftPackageReference "ZipArchive" */,
-				CE7E65FE2CB7DD0100B9234F /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
+				CEE886B12CB928010092A175 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
 			);
 			productRefGroup = 0770DE0928D07831006D8A5D /* Products */;
 			projectDirPath = "";
@@ -2361,12 +2362,12 @@
 				minimumVersion = 17.4.0;
 			};
 		};
-		CE7E65FE2CB7DD0100B9234F /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
+		CEE886B12CB928010092A175 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/raccoongang/openedx-app-foundation-ios";
+			repositoryURL = "https://github.com/raccoongang/openedx-app-foundation-ios/";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.0.0;
+				minimumVersion = 0.1.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -2397,9 +2398,9 @@
 			package = BA8FA6712AD6ABA300EA029A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
 			productName = FacebookLogin;
 		};
-		CE7E65FF2CB7DD0100B9234F /* OEXFoundation */ = {
+		CEE886B22CB928010092A175 /* OEXFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CE7E65FE2CB7DD0100B9234F /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			package = CEE886B12CB928010092A175 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
 			productName = OEXFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
