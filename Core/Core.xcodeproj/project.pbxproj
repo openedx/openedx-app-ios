@@ -2365,8 +2365,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/raccoongang/openedx-app-foundation-ios";
 			requirement = {
-				kind = revision;
-				revision = ab2748ed7f7977c02ec834de3bfd2630574d20e9;
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
