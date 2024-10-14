@@ -46,6 +46,7 @@ public enum ThemeAssets {
   public static let pastDueTimelineColor = ColorAsset(name: "pastDueTimelineColor")
   public static let primaryHeaderColor = ColorAsset(name: "primaryHeaderColor")
   public static let secondaryHeaderColor = ColorAsset(name: "secondaryHeaderColor")
+  public static let courseProgressBG = ColorAsset(name: "CourseProgressBG")
   public static let deleteAccountBG = ColorAsset(name: "DeleteAccountBG")
   public static let infoColor = ColorAsset(name: "InfoColor")
   public static let irreversibleAlert = ColorAsset(name: "IrreversibleAlert")
