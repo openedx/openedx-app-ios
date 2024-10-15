@@ -76,6 +76,9 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var shade = ThemeAssets.shade.swiftUIColor
         nonisolated(unsafe) public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
         nonisolated(unsafe) public private(set) static var deleteAccountBG = ThemeAssets.deleteAccountBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardCautionBG = ThemeAssets.primaryCardCautionBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardUpgradeBG = ThemeAssets.primaryCardCourseUpgradeBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardProgressBG = ThemeAssets.primaryCardProgressBG.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
