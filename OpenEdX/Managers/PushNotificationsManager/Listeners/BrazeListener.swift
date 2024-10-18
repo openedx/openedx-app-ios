@@ -26,9 +26,13 @@ class BrazeListener: PushNotificationsListener {
         guard let dictionary = userInfo as? [String: AnyHashable],
               shouldListenNotification(userinfo: userInfo) else { return }
         
-        if let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
-            segmentService.analytics?.receivedRemoteNotification(userInfo: userInfo)
-        }
+        // Removed as part of the move to a plugin architecture, this code should be called from the plugin.
+        
+//        if let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
+//            segmentService.analytics?.receivedRemoteNotification(userInfo: userInfo)
+//        }
+        
+        
         
         let link = PushLink(dictionary: dictionary)
         deepLinkManager.processLinkFromNotification(link)

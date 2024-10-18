@@ -26,6 +26,8 @@
 		02EC90AC2AE90C64007DE1E0 /* WhatsNewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EC90AB2AE90C64007DE1E0 /* WhatsNewPage.swift */; };
 		14769D3E2B99713800AB36D4 /* WhatsNewAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14769D3D2B99713800AB36D4 /* WhatsNewAnalytics.swift */; };
 		B3BB9B06B226989A619C6440 /* Pods_App_WhatsNew.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05AC45C7050E30F8394E0C76 /* Pods_App_WhatsNew.framework */; };
+		CE7CAF352CC1560900E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF342CC1560900E0AC9D /* OEXFoundation */; };
+		CEB1E2672CC14E6400921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2662CC14E6400921517 /* OEXFoundation */; };
 		EF5CA11A55CB49F2DA030D25 /* Pods_App_WhatsNew_WhatsNewTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F8D1A5DF016EC4630637336C /* Pods_App_WhatsNew_WhatsNewTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -38,6 +40,19 @@
 			remoteInfo = WhatsNew;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CE7CAF372CC1560900E0AC9D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		020A7B5E2AE131A9000BAF70 /* WhatsNewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewModel.swift; sourceTree = "<group>"; };
@@ -86,6 +101,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				028A373A2ADFF425008CA604 /* Core.framework in Frameworks */,
+				CEB1E2672CC14E6400921517 /* OEXFoundation in Frameworks */,
 				B3BB9B06B226989A619C6440 /* Pods_App_WhatsNew.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -95,6 +111,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				028A37262ADFF3F8008CA604 /* WhatsNew.framework in Frameworks */,
+				CE7CAF352CC1560900E0AC9D /* OEXFoundation in Frameworks */,
 				EF5CA11A55CB49F2DA030D25 /* Pods_App_WhatsNew_WhatsNewTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -277,6 +294,7 @@
 				028A37222ADFF3F7008CA604 /* Frameworks */,
 				028A37232ADFF3F7008CA604 /* Resources */,
 				8A74692D666D8FF13F7BA64F /* [CP] Copy Pods Resources */,
+				CE7CAF372CC1560900E0AC9D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -317,6 +335,9 @@
 				uk,
 			);
 			mainGroup = 028A37132ADFF3F7008CA604;
+			packageReferences = (
+				CEB1E2652CC14E6400921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
+			);
 			productRefGroup = 028A371E2ADFF3F7008CA604 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1504,6 +1525,30 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CEB1E2652CC14E6400921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raccoongang/openedx-app-foundation-ios/";
+			requirement = {
+				kind = exactVersion;
+				version = 0.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CE7CAF342CC1560900E0AC9D /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB1E2652CC14E6400921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
+		};
+		CEB1E2662CC14E6400921517 /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB1E2652CC14E6400921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 028A37142ADFF3F7008CA604 /* Project object */;
 }

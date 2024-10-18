@@ -136,11 +136,9 @@ public struct CourseOutlineView: View {
                         .frameLimit(width: proxy.size.width)
                     }
                     .refreshable {
-                        await withTaskGroup(of: Void.self) { group in
-                            group.addTask {
+                        Task {
                                 await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
                             }
-                        }
                     }
                     .onRightSwipeGesture {
                         viewModel.router.back()

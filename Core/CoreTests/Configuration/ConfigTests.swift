@@ -140,11 +140,4 @@ class ConfigTests: XCTestCase {
         XCTAssertTrue(config.branch.enabled)
         XCTAssertEqual(config.branch.key, "testBranchKey")
     }
-    
-    func testSegmentConfigInitialization() {
-        let config = Config(properties: properties)
-
-        XCTAssertTrue(config.segment.enabled)
-        XCTAssertEqual(config.segment.writeKey, "testSegmentKey")
-    }
 }
