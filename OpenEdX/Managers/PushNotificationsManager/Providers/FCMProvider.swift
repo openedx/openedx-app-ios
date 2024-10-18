@@ -7,6 +7,8 @@
 
 import Foundation
 import Core
+import OEXFoundation
+import OEXFirebaseAnalytics
 import FirebaseCore
 import FirebaseMessaging
 

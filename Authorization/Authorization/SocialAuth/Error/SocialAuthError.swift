@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 public enum SocialAuthError: Error {
     case error(text: String)

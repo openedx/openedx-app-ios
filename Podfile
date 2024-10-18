@@ -16,15 +16,8 @@ abstract_target "App" do
   target "Core" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
-    #Networking
-    pod 'Alamofire', '~> 5.9'
     #Keychain
     pod 'KeychainSwift', '~> 24.0'
-    #SwiftUI backward UIKit access
-    #pod 'Introspect', '~> 0.6'
-    pod 'SwiftUIIntrospect', '~> 1.3'
-    pod 'Kingfisher', '~> 8.0'
-    pod 'Swinject', '2.9.1'
   end
   
   target "Authorization" do

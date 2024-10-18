@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 //sourcery: AutoMockable
 public protocol ProfileAnalytics {

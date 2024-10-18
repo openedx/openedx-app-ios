@@ -8,6 +8,8 @@
 import Foundation
 import MSAL
 import Swinject
+import OEXFoundation
+import Core
 
 public typealias MSLoginCompletionHandler = (account: MSALAccount, token: String)
 

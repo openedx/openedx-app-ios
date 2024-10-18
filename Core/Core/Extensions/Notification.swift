@@ -13,7 +13,6 @@ public extension Notification.Name {
     static let onCourseEnrolled = Notification.Name("onCourseEnrolled")
     static let onblockCompletionRequested = Notification.Name("onblockCompletionRequested")
     static let onTokenRefreshFailed = Notification.Name("onTokenRefreshFailed")
-    static let onActualVersionReceived = Notification.Name("onActualVersionReceived")
     static let onAppUpgradeAccountSettingsTapped = Notification.Name("onAppUpgradeAccountSettingsTapped")
     static let onNewVersionAvaliable = Notification.Name("onNewVersionAvaliable")
     static let webviewReloadNotification = Notification.Name("webviewReloadNotification")
@@ -25,10 +24,3 @@ public extension Notification.Name {
     static let tryDownloadAgain = Notification.Name("tryDownloadAgain")
     static let refreshEnrollments = Notification.Name("refreshEnrollments")
 }
-
-public extension Notification {
-    enum UserInfoKey: String {
-        case isForced
-    }
-}
-

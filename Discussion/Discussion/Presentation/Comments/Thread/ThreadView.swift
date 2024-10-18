@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import OEXFoundation
 import Theme
 
 public struct ThreadView: View {

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import OEXFoundation
 
 public class ResetPasswordViewModel: ObservableObject {
     

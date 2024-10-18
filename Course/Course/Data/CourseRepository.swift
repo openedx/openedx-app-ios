@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 public protocol CourseRepositoryProtocol {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import OEXFoundation
 import Kingfisher
 import Theme
 
@@ -132,8 +133,8 @@ struct VideoQualityView_Previews: PreviewProvider {
             router: router,
             analytics: ProfileAnalyticsMock(),
             coreAnalytics: CoreAnalyticsMock(),
-            config: ConfigMock(), 
-            corePersistence: CorePersistenceMock(), 
+            config: ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         

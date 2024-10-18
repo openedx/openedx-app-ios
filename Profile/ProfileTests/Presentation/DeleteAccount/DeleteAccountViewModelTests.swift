@@ -9,6 +9,7 @@ import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Profile
+import OEXFoundation
 import Alamofire
 import SwiftUI
 

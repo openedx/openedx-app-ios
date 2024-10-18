@@ -5,10 +5,11 @@
 //  Created by  Stepanok Ivan on 08.03.2023.
 //
 
-import Alamofire
 import SwiftUI
 import Combine
 import ZipArchive
+import OEXFoundation
+import Alamofire
 
 public enum DownloadState: String {
     case waiting

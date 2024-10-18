@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 public protocol AuthRepositoryProtocol {
     func login(username: String, password: String) async throws -> User
