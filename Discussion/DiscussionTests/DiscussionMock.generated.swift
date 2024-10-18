@@ -13,6 +13,7 @@ import Discussion
 import Foundation
 import SwiftUI
 import Combine
+import OEXFoundation
 
 
 // MARK: - AuthInteractorProtocol

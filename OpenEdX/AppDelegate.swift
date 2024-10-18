@@ -14,6 +14,7 @@ import GoogleSignIn
 import FacebookCore
 import MSAL
 import UserNotifications
+import OEXFirebaseAnalytics
 import FirebaseCore
 import FirebaseMessaging
 import Theme
@@ -30,6 +31,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
         
+    private let pluginManager = PluginManager()
     private var assembler: Assembler?
     
     private var lastForceLogoutTime: TimeInterval = 0
@@ -39,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
         initDI()
+        initPlugins()
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
@@ -130,6 +133,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         return false
     }
+    
+    private func initPlugins() {
+        guard let config = Container.shared.resolve(ConfigProtocol.self) else { return }
+        if config.firebase.enabled && config.firebase.isAnalyticsSourceFirebase {
+            pluginManager.addPlugin(analyticsService: FirebaseAnalyticsService())
+        }
+        
+        // Initialize your plugins here
+    }
 
     private func initDI() {
         let navigation = UINavigationController()
@@ -137,7 +149,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         assembler = Assembler(
             [
-                AppAssembly(navigation: navigation),
+                AppAssembly(navigation: navigation, pluginManager: pluginManager),
                 NetworkAssembly(),
                 ScreenAssembly()
             ],

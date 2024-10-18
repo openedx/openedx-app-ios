@@ -8,6 +8,7 @@
 import Foundation
 import Core
 import SwiftUI
+import OEXFoundation
 
 public class CourseDatesViewModel: ObservableObject {
     

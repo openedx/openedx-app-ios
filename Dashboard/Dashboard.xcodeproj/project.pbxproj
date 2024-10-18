@@ -38,6 +38,7 @@
 		9AD4A6A1AAF97092CF457FE2 /* Pods_App_Dashboard_DashboardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22905947A936093AD23D4CF8 /* Pods_App_Dashboard_DashboardTests.framework */; };
 		CE1735062CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735052CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift */; };
 		CE17350A2CD26CB500F9606A /* AllCoursesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735092CD26CB500F9606A /* AllCoursesViewModelTests.swift */; };
+		CEB1E26D2CC14E9B00921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E26C2CC14E9B00921517 /* OEXFoundation */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -116,6 +117,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				027DB33F28D8E605002B6862 /* Core.framework in Frameworks */,
+				CEB1E26D2CC14E9B00921517 /* OEXFoundation in Frameworks */,
 				214DA1AADABC7BF4FB8EA1D7 /* Pods_App_Dashboard.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -372,6 +374,9 @@
 				uk,
 			);
 			mainGroup = 02EF39DD28D89F560058F6BD;
+			packageReferences = (
+				CEB1E26B2CC14E9B00921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
+			);
 			productRefGroup = 02EF39E828D89F560058F6BD /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1527,6 +1532,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CEB1E26B2CC14E9B00921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raccoongang/openedx-app-foundation-ios/";
+			requirement = {
+				kind = exactVersion;
+				version = 0.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CEB1E26C2CC14E9B00921517 /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB1E26B2CC14E9B00921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		02A48B16295ACE200033D5E0 /* DashboardCoreModel.xcdatamodeld */ = {

@@ -7,6 +7,7 @@
 
 import Foundation
 import FacebookLogin
+import Core
 
 public final class FacebookAuthProvider {
 
