@@ -4,18 +4,9 @@
 //
 //  Created by Rawan Matar on 02/06/2024.
 //
-
-
 import SwiftUI
-import WebKit
+@preconcurrency import WebKit
 import Core
-
-public struct SAMLConstants {
-    
-    public init() {}
-    
-    public let samlLoginSuccess = URL(string: "https://blue.zeitlabs.com/auth/complete/tpa-saml")!
-}
 
 public struct SSOWebView: UIViewRepresentable {
 
@@ -69,28 +60,24 @@ public struct SSOWebView: UIViewRepresentable {
             super.init()
         }
         
-        // WKScriptMessageHandler
-    public func userContentController(_ userContentController: WKUserContentController,
-                                          didReceive message: WKScriptMessage) {
+            // WKScriptMessageHandler
+        public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         }
-        
+            
         // WKNavigationDelegate
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            guard let _ = webView.url?.absoluteString else {
+            if webView.url?.absoluteString == nil {
                 return
             }
-            
         }
 
-        public func webView(_ webView: WKWebView,
-                            decidePolicyFor navigationAction: WKNavigationAction,
-                            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
             guard let url = webView.url?.absoluteString else {
                 decisionHandler(.allow)
                 return
             }
-            
-            if url.contains(SAMLConstants().samlLoginSuccess.absoluteString) {
+                
+            if url.contains(viewModel.config.successfulSSOURLLogin.absoluteString) {
                 webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
                     Task {
                         await self.viewModel.SSOLogin(cookies: cookies)

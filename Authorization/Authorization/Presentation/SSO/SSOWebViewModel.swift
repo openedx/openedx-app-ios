@@ -40,17 +40,20 @@ public class SSOWebViewModel: ObservableObject {
     let config: ConfigProtocol
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
-
+    let ssoHelper: SSOHelper
+    
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
         config: ConfigProtocol,
-        analytics: AuthorizationAnalytics
+        analytics: AuthorizationAnalytics,
+        ssoHelper: SSOHelper
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
         self.analytics = analytics
+        self.ssoHelper = ssoHelper
     }
 
     @MainActor
@@ -64,15 +67,15 @@ public class SSOWebViewModel: ObservableObject {
         for cookie in cookies {
             
             /// Store cookies in UserDefaults
-            if cookie.name == SSOHelper.UserDefaultKeys.cookiePayload.description {
-                SSOHelper.shared.cookiePayload = cookie.value
+            if cookie.name == SSOHelper.SSOHelperKeys.cookiePayload.description {
+                self.ssoHelper.cookiePayload = cookie.value
             }
             
-            if cookie.name == SSOHelper.UserDefaultKeys.cookieSignature.description {
-                SSOHelper.shared.cookieSignature = cookie.value
+            if cookie.name == SSOHelper.SSOHelperKeys.cookieSignature.description {
+                self.ssoHelper.cookieSignature = cookie.value
             }
-            if let signature = SSOHelper.shared.cookieSignature,
-               let payload = SSOHelper.shared.cookiePayload {
+            if let signature = self.ssoHelper.cookieSignature,
+               let payload = self.ssoHelper.cookiePayload {
                 isShowProgress = true
                 do {
                     let user = try await interactor.SSOlogin(jwtToken: "\(payload).\(signature)")

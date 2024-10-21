@@ -94,7 +94,7 @@ public class SignInViewModel: ObservableObject {
         analytics.userSignInClicked()
         isShowProgress = true
         do {
-            let user = try await interactor.SSOlogin(jwtToken: "239i2oi3jrf2jflkj23lf2f")
+            let user = try await interactor.SSOlogin(jwtToken: "")
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: .password)
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)

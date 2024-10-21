@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import KeychainSwift
 
 // https://developer.apple.com/documentation/ios-ipados-release-notes/foundation-release-notes
 
@@ -15,7 +16,8 @@ import Foundation
  */
 public class SSOHelper: NSObject {
 
-    public enum UserDefaultKeys: String, CaseIterable {
+    private let keychain: KeychainSwift
+    public enum SSOHelperKeys: String, CaseIterable {
         case cookiePayload
         case cookieSignature
         case userInfo
@@ -31,22 +33,24 @@ public class SSOHelper: NSObject {
             }
         }
     }
-
-    // MARK: - Singleton
     
-    public static let shared = SSOHelper()
-            
+    public init(keychain: KeychainSwift) {
+        self.keychain = keychain
+    }
     // MARK: - Public Properties
     
     /// Authentication
     public var cookiePayload: String? {
         get {
             let defaults = UserDefaults.standard
-            return defaults.string(forKey: UserDefaultKeys.cookiePayload.rawValue)
+            return keychain.get(SSOHelperKeys.cookiePayload.rawValue)
         }
-        set (newValue) {
-            let defaults = UserDefaults.standard
-            defaults.set(newValue, forKey: UserDefaultKeys.cookiePayload.rawValue)
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: SSOHelperKeys.cookiePayload.rawValue)
+            } else {
+                keychain.delete(SSOHelperKeys.cookiePayload.rawValue)
+            }
         }
     }
 
@@ -54,11 +58,14 @@ public class SSOHelper: NSObject {
     public var cookieSignature: String? {
         get {
             let defaults = UserDefaults.standard
-            return defaults.string(forKey: UserDefaultKeys.cookieSignature.rawValue)
+            return keychain.get(SSOHelperKeys.cookieSignature.rawValue)
         }
-        set (newValue) {
-            let defaults = UserDefaults.standard
-            defaults.set(newValue, forKey: UserDefaultKeys.cookieSignature.rawValue)
+        set(newValue) {
+            if let newValue {
+                keychain.set(newValue, forKey: SSOHelperKeys.cookieSignature.rawValue)
+            } else {
+                keychain.delete(SSOHelperKeys.cookieSignature.rawValue)
+            }
         }
     }
     
