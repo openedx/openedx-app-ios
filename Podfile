@@ -17,8 +17,8 @@ abstract_target "App" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
     #Networking
-    pod 'Alamofire', '~> 5.9'
-    #Keychain
+    pod 'Alamofire', :git => 'https://github.com/Alamofire/Alamofire.git', :tag => '5.10.0'
+#Keychain
     pod 'KeychainSwift', '~> 24.0'
     #SwiftUI backward UIKit access
     #pod 'Introspect', '~> 0.6'

@@ -7,6 +7,7 @@
 
 import Foundation
 import Swinject
+import UIKit
 
 public extension Container {
     static var shared: Container = {

@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import Foundation
 
 public extension Error {
     var isUpdateRequeiredError: Bool {

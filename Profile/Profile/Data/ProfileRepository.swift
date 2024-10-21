@@ -257,15 +257,15 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
     
     public func enrollmentsStatus() async throws -> [CourseForSync] {
         let result = [
-            DataLayer.EnrollmentsStatusElement(courseID: "1", courseName: "Course 1", isActive: true),
-            DataLayer.EnrollmentsStatusElement(courseID: "2", courseName: "Course 2", isActive: false),
-            DataLayer.EnrollmentsStatusElement(courseID: "3", courseName: "Course 3", isActive: false),
-            DataLayer.EnrollmentsStatusElement(courseID: "4", courseName: "Course 4", isActive: true),
-            DataLayer.EnrollmentsStatusElement(courseID: "5", courseName: "Course 5", isActive: true),
-            DataLayer.EnrollmentsStatusElement(courseID: "6", courseName: "Course 6", isActive: false),
-            DataLayer.EnrollmentsStatusElement(courseID: "7", courseName: "Course 7", isActive: true),
-            DataLayer.EnrollmentsStatusElement(courseID: "8", courseName: "Course 8", isActive: true),
-            DataLayer.EnrollmentsStatusElement(courseID: "9", courseName: "Course 9", isActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "1", courseName: "Course 1", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "2", courseName: "Course 2", recentlyActive: false),
+            DataLayer.EnrollmentsStatusElement(courseID: "3", courseName: "Course 3", recentlyActive: false),
+            DataLayer.EnrollmentsStatusElement(courseID: "4", courseName: "Course 4", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "5", courseName: "Course 5", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "6", courseName: "Course 6", recentlyActive: false),
+            DataLayer.EnrollmentsStatusElement(courseID: "7", courseName: "Course 7", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "8", courseName: "Course 8", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "9", courseName: "Course 9", recentlyActive: true),
         ]
         
         return result.domain

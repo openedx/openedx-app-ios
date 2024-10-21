@@ -7,6 +7,7 @@
 
 import Alamofire
 import Combine
+import Foundation
 
 public enum InternetState {
     case reachable

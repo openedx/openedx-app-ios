@@ -6,6 +6,7 @@
 //
 
 import Alamofire
+import Foundation
 
 public class NetworkLogger: EventMonitor {
     

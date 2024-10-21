@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (5.9.1)
+  - Alamofire (5.10.0)
   - KeychainSwift (24.0.0)
   - Kingfisher (8.0.3)
   - Sourcery (1.8.0):
@@ -13,7 +13,7 @@ PODS:
   - Swinject (2.9.1)
 
 DEPENDENCIES:
-  - Alamofire (~> 5.9)
+  - Alamofire (from `https://github.com/Alamofire/Alamofire.git`, tag `5.10.0`)
   - KeychainSwift (~> 24.0)
   - Kingfisher (~> 8.0)
   - SwiftGen (~> 6.6)
@@ -24,7 +24,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - Alamofire
     - KeychainSwift
     - Kingfisher
     - Sourcery
@@ -34,17 +33,23 @@ SPEC REPOS:
     - Swinject
 
 EXTERNAL SOURCES:
+  Alamofire:
+    :git: https://github.com/Alamofire/Alamofire.git
+    :tag: 5.10.0
   SwiftyMocky:
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
     :tag: 4.2.0
 
 CHECKOUT OPTIONS:
+  Alamofire:
+    :git: https://github.com/Alamofire/Alamofire.git
+    :tag: 5.10.0
   SwiftyMocky:
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
     :tag: 4.2.0
 
 SPEC CHECKSUMS:
-  Alamofire: f36a35757af4587d8e4f4bfa223ad10be2422b8c
+  Alamofire: cd0b98508df05796dd2ff278f3bb055a631b5390
   KeychainSwift: 007c4647486e4563adca839cf02cef00deb3b670
   Kingfisher: bbf78af014cc845cf9a799363f627b5212784165
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
@@ -54,6 +59,6 @@ SPEC CHECKSUMS:
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
   Swinject: a827d508c6270da03ec74e558e728917a888fa9b
 
-PODFILE CHECKSUM: b3183e95d2b3bf330c512113a847f9a5485c23a5
+PODFILE CHECKSUM: 1873e8ac2c331deb6c08b61ef4cd18d56e060c40
 
 COCOAPODS: 1.15.2
