@@ -16,6 +16,8 @@ public enum CoreLocalization {
   public static let close = CoreLocalization.tr("Localizable", "CLOSE", fallback: "Close")
   /// Done
   public static let done = CoreLocalization.tr("Localizable", "DONE", fallback: "Done")
+  /// Ok
+  public static let ok = CoreLocalization.tr("Localizable", "OK", fallback: "Ok")
   /// View in Safari
   public static let openInBrowser = CoreLocalization.tr("Localizable", "OPEN_IN_BROWSER", fallback: "View in Safari")
   /// Register
