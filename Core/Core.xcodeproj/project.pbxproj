@@ -188,6 +188,7 @@
 		BAFB99902B14B377007D09F9 /* GoogleConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB998F2B14B377007D09F9 /* GoogleConfig.swift */; };
 		BAFB99922B14E23D007D09F9 /* AppleSignInConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFB99912B14E23D007D09F9 /* AppleSignInConfig.swift */; };
 		C8C446EF233F81B9FABB77D2 /* Pods_App_Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */; };
+		CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
 		DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */; };
@@ -395,6 +396,7 @@
 		BAFB998F2B14B377007D09F9 /* GoogleConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleConfig.swift; sourceTree = "<group>"; };
 		BAFB99912B14E23D007D09F9 /* AppleSignInConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleSignInConfig.swift; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
+		CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerTests.swift; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
 		DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementConfig.swift; sourceTree = "<group>"; };
@@ -879,6 +881,14 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		CE54C2CE2CC80B4A00E529F9 /* DownloadManager */ = {
+			isa = PBXGroup;
+			children = (
+				CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */,
+			);
+			path = DownloadManager;
+			sourceTree = "<group>";
+		};
 		CFC84955299FAC4D0055E497 /* Combine */ = {
 			isa = PBXGroup;
 			children = (
@@ -913,6 +923,7 @@
 		E09179FA2B0F204D002AB695 /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
+				CE54C2CE2CC80B4A00E529F9 /* DownloadManager */,
 				E09179FB2B0F204D002AB695 /* Configuration */,
 			);
 			path = CoreTests;
@@ -1133,6 +1144,7 @@
 				BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */,
 				14D912DB2C257E9E0077CCCE /* FullStoryConfigTests.swift in Sources */,
 				E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */,
+				CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
