@@ -60,7 +60,7 @@ public struct SSOWebView: UIViewRepresentable {
             super.init()
         }
         
-            // WKScriptMessageHandler
+        // WKScriptMessageHandler
         public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         }
             
@@ -77,7 +77,7 @@ public struct SSOWebView: UIViewRepresentable {
                 return
             }
                 
-            if url.contains(viewModel.config.successfulSSOURLLogin.absoluteString) {
+            if url.contains(viewModel.config.ssoFinishedURL.absoluteString) {
                 webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
                     Task {
                         await self.viewModel.SSOLogin(cookies: cookies)

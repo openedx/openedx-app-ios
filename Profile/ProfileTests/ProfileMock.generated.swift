@@ -77,13 +77,13 @@ open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
     }
     
     @discardableResult
-    open func SSOlogin(jwtToken: String) async throws -> Core.User {
-        addInvocation(.m_login__SSO__username_password(Parameter<String>.value(`jwtToken`)))
-        let perform = methodPerformValue(.m_login__SSO__username_password(Parameter<String>.value(`jwtToken`))) as? (String) -> Void
-        perform?(`jwtToken`)
+    open func login(ssoToken: String) async throws -> Core.User {
+        addInvocation(.m_login__SSO__username_password(Parameter<String>.value(`ssoToken`)))
+        let perform = methodPerformValue(.m_login__SSO__username_password(Parameter<String>.value(`ssoToken`))) as? (String) -> Void
+        perform?(`ssoToken`)
         var __value: User
         do {
-            __value = try methodReturnValue(.m_login__SSO__username_password(Parameter<String>.value(jwtToken))).casted()
+            __value = try methodReturnValue(.m_login__SSO__username_password(Parameter<String>.value(ssoToken))).casted()
         } catch MockError.notStubed {
             onFatalFailure("Stub return value not specified for login(username: String, password: String). Use given")
             Failure("Stub return value not specified for login(username: String, password: String). Use given")

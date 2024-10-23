@@ -10,7 +10,7 @@ import Foundation
 public protocol ConfigProtocol {
     var baseURL: URL { get }
     var baseSSOURL: URL { get }
-    var successfulSSOURLLogin: URL { get }
+    var ssoFinishedURL: URL { get }
     var ssoButtonTitle: [String: Any] { get }
     var oAuthClientId: String { get }
     var tokenType: TokenType { get }
@@ -44,8 +44,8 @@ public enum TokenType: String {
 
 private enum ConfigKeys: String {
     case baseURL = "API_HOST_URL"
-    case SSOBaseURL = "SSO_URL"
-    case SuccessfulSSOLoginURL = "SSO_URL_SUCCESSFUL_LOGIN"
+    case ssoBaseURL = "SSO_URL"
+    case ssoFinishedURL = "SSO_FINISHED_URL"
     case ssoButtonTitle = "SSO_BUTTON_TITLE"
     case oAuthClientID = "OAUTH_CLIENT_ID"
     case tokenType = "TOKEN_TYPE"
@@ -127,15 +127,15 @@ extension Config: ConfigProtocol {
     }
     
     public var baseSSOURL: URL {
-        guard let urlString = string(for: ConfigKeys.SSOBaseURL.rawValue),
+        guard let urlString = string(for: ConfigKeys.ssoBaseURL.rawValue),
               let url = URL(string: urlString) else {
             fatalError("Unable to find SSO base url in config.")
         }
         return url
     }
     
-    public var successfulSSOURLLogin: URL {
-        guard let urlString = string(for: ConfigKeys.SuccessfulSSOLoginURL.rawValue),
+    public var ssoFinishedURL: URL {
+        guard let urlString = string(for: ConfigKeys.ssoFinishedURL.rawValue),
               let url = URL(string: urlString) else {
             fatalError("Unable to find SSO successful login url in config.")
         }

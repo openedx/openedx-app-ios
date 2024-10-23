@@ -65,7 +65,6 @@ public class SSOWebViewModel: ObservableObject {
         
         isShowProgress = true
         for cookie in cookies {
-            
             /// Store cookies in UserDefaults
             if cookie.name == SSOHelper.SSOHelperKeys.cookiePayload.description {
                 self.ssoHelper.cookiePayload = cookie.value
@@ -78,7 +77,7 @@ public class SSOWebViewModel: ObservableObject {
                let payload = self.ssoHelper.cookiePayload {
                 isShowProgress = true
                 do {
-                    let user = try await interactor.SSOlogin(jwtToken: "\(payload).\(signature)")
+                    let user = try await interactor.login(ssoToken: "\(payload).\(signature)")
                     analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
                     analytics.userLogin(method: .SSO)
                     router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)

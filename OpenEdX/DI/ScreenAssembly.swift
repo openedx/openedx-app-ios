@@ -94,7 +94,7 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 ssoHelper: r.resolve(SSOHelper.self)!
-                )
+            )
         }
         container.register(SignUpViewModel.self) { r, sourceScreen in
             SignUpViewModel(

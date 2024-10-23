@@ -158,7 +158,7 @@ public struct SignInView: View {
                                         .accessibilityIdentifier("signin_button")
                                     }
                                 }
-                                if viewModel.config.uiComponents.SAMLSSOLoginEnabled {
+                                if viewModel.config.uiComponents.samlSSOLoginEnabled {
                                     if !viewModel.config.uiComponents.loginRegistrationEnabled{
                                         VStack(alignment: .center) {
                                             Text(AuthLocalization.SignIn.ssoHeading)
@@ -201,7 +201,7 @@ public struct SignInView: View {
                                             }.frame(maxWidth: .infinity)
                                         } else {
                                             let languageCode = Locale.current.language.languageCode?.identifier ?? "en"
-                                            if viewModel.config.uiComponents.SAMLSSODefaultLoginButton {
+                                            if viewModel.config.uiComponents.samlSSODefaultLoginButton {
                                                 StyledButton(viewModel.config.ssoButtonTitle[languageCode] as! String, action: {
                                                     viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
                                                 })
