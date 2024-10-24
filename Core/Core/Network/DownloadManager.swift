@@ -340,7 +340,7 @@ public class DownloadManager: DownloadManagerProtocol {
         return updatedSequentials
     }
 
-    private func calculateFolderSize(at url: URL) throws -> Int {
+    func calculateFolderSize(at url: URL) throws -> Int {
         let fileManager = FileManager.default
         let resourceKeys: [URLResourceKey] = [.isDirectoryKey, .fileSizeKey]
         var totalSize: Int64 = 0
@@ -705,7 +705,7 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    private func isMD5Hash(_ folderName: String) -> Bool {
+    func isMD5Hash(_ folderName: String) -> Bool {
         let md5Regex = "^[a-fA-F0-9]{32}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", md5Regex)
         return predicate.evaluate(with: folderName)
