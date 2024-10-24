@@ -217,7 +217,7 @@ public class CalendarManager: CalendarManagerProtocol {
                 !fetchedCourses.contains { $0.courseID == course.courseID }
             }
             let inactiveCourses = fetchedCourses.filter { course in
-                courseCalendarStates.contains { $0.courseID == course.courseID } && !course.active
+                courseCalendarStates.contains { $0.courseID == course.courseID } && !course.recentlyActive
             }
             
             for course in coursesToDelete {
@@ -229,11 +229,11 @@ public class CalendarManager: CalendarManagerProtocol {
             }
             
             let newlyActiveCourses = fetchedCourses.filter { fetchedCourse in
-                courseCalendarStates.contains { $0.courseID == fetchedCourse.courseID } && fetchedCourse.active
+                courseCalendarStates.contains { $0.courseID == fetchedCourse.courseID } && fetchedCourse.recentlyActive
             }
             
             return fetchedCourses.filter { course in
-                courseCalendarStates.contains { $0.courseID == course.courseID }  && course.active
+                courseCalendarStates.contains { $0.courseID == course.courseID }  && course.recentlyActive
             }
         } else {
             return fetchedCourses

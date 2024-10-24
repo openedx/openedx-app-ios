@@ -90,9 +90,9 @@ public struct CoursesToSyncView: View {
                 ForEach(
                     Array(
                         viewModel.coursesForSync.filter({ course in
-                            course.synced == viewModel.synced && (!viewModel.hideInactiveCourses || course.active)
+                            course.synced == viewModel.synced && (!viewModel.hideInactiveCourses || course.recentlyActive)
                         })
-                        .sorted { $0.active && !$1.active }
+                        .sorted { $0.recentlyActive && !$1.recentlyActive }
                             .enumerated()
                     ),
                     id: \.offset
@@ -104,10 +104,10 @@ public struct CoursesToSyncView: View {
                                 set: { _ in viewModel.toggleSync(for: course) }
                             ),
                             text: course.name,
-                            color: Theme.Colors.textPrimary.opacity(course.active ? 1 : 0.8)
+                            color: Theme.Colors.textPrimary.opacity(course.recentlyActive ? 1 : 0.8)
                         )
                         
-                        if !course.active {
+                        if !course.recentlyActive {
                             Text(ProfileLocalization.CoursesToSync.inactive)
                                 .font(Theme.Fonts.labelSmall)
                                 .foregroundStyle(Theme.Colors.textPrimary.opacity(0.8))

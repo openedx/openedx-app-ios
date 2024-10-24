@@ -13,14 +13,14 @@ public struct CourseForSync: Identifiable {
     public let courseID: String
     public let name: String
     public var synced: Bool
-    public var active: Bool
+    public var recentlyActive: Bool
 
-    public init(id: UUID = UUID(), courseID: String, name: String, synced: Bool, active: Bool) {
+    public init(id: UUID = UUID(), courseID: String, name: String, synced: Bool, recentlyActive: Bool) {
         self.id = id
         self.courseID = courseID
         self.name = name
         self.synced = synced
-        self.active = active
+        self.recentlyActive = recentlyActive
     }
 }
 
@@ -29,13 +29,13 @@ extension DataLayer.EnrollmentsStatus {
         self.compactMap {
             guard let courseID = $0.courseID,
                   let courseName = $0.courseName,
-                  let isActive = $0.isActive else { return nil }
+                  let recentlyActive = $0.recentlyActive else { return nil }
             return CourseForSync(
                 id: UUID(),
                 courseID: courseID,
                 name: courseName,
                 synced: false,
-                active: isActive
+                recentlyActive: recentlyActive
             )
         }
     }

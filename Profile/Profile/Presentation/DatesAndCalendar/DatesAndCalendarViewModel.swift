@@ -214,7 +214,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
                     var updatedCourse = course
                     updatedCourse.synced = courseCalendarStates.contains {
                         $0.courseID == course.courseID
-                    } && course.active
+                    } && course.recentlyActive
                     return updatedCourse
                 }
                
@@ -235,7 +235,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
                             courseID: course.courseID,
                             courseName: course.name,
                             courseDates: courseDates,
-                            active: course.active
+                            active: course.recentlyActive
                         )
                     } catch {
                         assignmentStatus = .failed
@@ -253,7 +253,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     }
     
     private func updateCoursesCount() {
-        syncingCoursesCount = coursesForSync.filter { $0.active && $0.synced }.count
+        syncingCoursesCount = coursesForSync.filter { $0.recentlyActive && $0.synced }.count
     }
     
     @MainActor
@@ -266,7 +266,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
             return
         }
         let selectedCourses = await calendarManager.filterCoursesBySelected(fetchedCourses: coursesForSync)
-        let activeSelectedCourses = selectedCourses.filter { $0.active }
+        let activeSelectedCourses = selectedCourses.filter { $0.recentlyActive }
         assignmentStatus = .loading
         for course in activeSelectedCourses {
             do {
@@ -275,7 +275,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
                     courseID: course.courseID,
                     courseName: course.name,
                     courseDates: courseDates,
-                    active: course.active
+                    active: course.recentlyActive
                 )
             } catch {
                 assignmentStatus = .failed
@@ -289,7 +289,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     }
     
     private func filterCoursesBySynced() -> [CourseForSync] {
-        let syncedCourses = coursesForSync.filter { $0.synced && $0.active }
+        let syncedCourses = coursesForSync.filter { $0.synced && $0.recentlyActive }
         return syncedCourses
     }
     
@@ -328,7 +328,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         }
 
         await calendarManager.syncCourse(courseID: courseID, courseName: courseName, dates: courseDates)
-        if let index = self.coursesForSync.firstIndex(where: { $0.courseID == courseID && $0.active }) {
+        if let index = self.coursesForSync.firstIndex(where: { $0.courseID == courseID && $0.recentlyActive }) {
             await MainActor.run {
                 self.coursesForSync[index].synced = true
             }
@@ -354,7 +354,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     }
     
     func toggleSync(for course: CourseForSync) {
-        guard course.active else { return }
+        guard course.recentlyActive else { return }
         if coursesForSyncBeforeChanges.isEmpty {
             coursesForSyncBeforeChanges = coursesForSync
         }
