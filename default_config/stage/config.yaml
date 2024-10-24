@@ -6,7 +6,7 @@ FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
 OAUTH_CLIENT_ID: ''
 
 SSO_BUTTON_TITLE:
-    ar: "الدخول عبر SSO",
+    ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
 
 
