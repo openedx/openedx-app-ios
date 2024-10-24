@@ -18,6 +18,8 @@ public enum ProfileLocalization {
   public static let contact = ProfileLocalization.tr("Localizable", "CONTACT", fallback: "Contact support")
   /// Cookie policy
   public static let cookiePolicy = ProfileLocalization.tr("Localizable", "COOKIE_POLICY", fallback: "Cookie policy")
+  /// Dates & Calendar
+  public static let datesAndCalendar = ProfileLocalization.tr("Localizable", "DATES_AND_CALENDAR", fallback: "Dates & Calendar")
   /// Do not sell my personal information
   public static let doNotSellInformation = ProfileLocalization.tr("Localizable", "DO_NOT_SELL_INFORMATION", fallback: "Do not sell my personal information")
   /// Edit Profile

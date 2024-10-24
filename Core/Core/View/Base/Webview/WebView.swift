@@ -177,20 +177,23 @@ public struct WebView: UIViewRepresentable {
             }
             
             let baseURL = await parent.viewModel.baseURL
-            if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
-                if navigationAction.navigationType == .other {
-                    return .allow
-                } else if navigationAction.navigationType == .linkActivated {
-                    await MainActor.run {
+            switch navigationAction.navigationType {
+            case .other, .formSubmitted, .formResubmitted:
+                return .allow
+            case .linkActivated:
+                await MainActor.run {
+                    if UIApplication.shared.canOpenURL(url) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                } else if navigationAction.navigationType == .formSubmitted {
-                    return .allow
                 }
                 return .cancel
+            default:
+                if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
+                    return .cancel
+                } else {
+                    return .allow
+                }
             }
-            
-            return .allow
         }
 
         public func webView(
