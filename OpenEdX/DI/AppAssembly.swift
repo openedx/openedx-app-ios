@@ -168,6 +168,12 @@ class AppAssembly: Assembly {
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         
+        container.register(SSOHelper.self){ r in
+            SSOHelper(
+                keychain: r.resolve(KeychainSwift.self)!
+            )
+        }
+        
         container.register(Validator.self) { _ in
             Validator()
         }.inObjectScope(.container)
