@@ -62,7 +62,6 @@ public protocol CourseRouter: BaseRouter {
     )
     
     func showDatesAndCalendar()
-    func showTabScreen(tab: MainTab)
     
     func showGatedContentError(url: String)
 }
@@ -125,7 +124,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     ) {}
     
     public func showDatesAndCalendar() {}
-    public func showTabScreen(tab: MainTab) {}
     
     public func showGatedContentError(url: String) {}
 }
