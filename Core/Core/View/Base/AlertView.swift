@@ -344,7 +344,7 @@ public struct AlertView: View {
                     })
                     .background(
                         Theme.Shapes.buttonShape
-                            .fill(.clear)
+                            .fill(Theme.Colors.background)
                     )
                     .overlay(
                         Theme.Shapes.buttonShape
@@ -354,7 +354,7 @@ public struct AlertView: View {
                                 lineJoin: .round,
                                 miterLimit: 1
                             ))
-                            .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
+                            .foregroundColor(Theme.Colors.accentColor)
                     )
                     .frame(maxWidth: 215)
                 }
@@ -411,7 +411,7 @@ public struct AlertView: View {
             } label: {
                 ZStack {
                     Text(primaryButtonTitle)
-                        .foregroundColor(Theme.Colors.styledButtonText)
+                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
                         .font(Theme.Fonts.labelLarge)
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 16)
@@ -420,7 +420,7 @@ public struct AlertView: View {
             }
             .background(
                 Theme.Shapes.buttonShape
-                    .fill(Theme.Colors.accentButtonColor)
+                    .fill(Theme.Colors.accentColor)
             )
             .overlay(
                 Theme.Shapes.buttonShape
@@ -439,7 +439,7 @@ public struct AlertView: View {
             }, label: {
                 ZStack {
                     Text(secondaryButtonTitle)
-                        .foregroundColor(Theme.Colors.secondaryButtonTextColor)
+                        .foregroundColor(Theme.Colors.accentColor)
                         .font(Theme.Fonts.labelLarge)
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 16)
@@ -448,7 +448,7 @@ public struct AlertView: View {
             })
             .background(
                 Theme.Shapes.buttonShape
-                    .fill(Theme.Colors.secondaryButtonBGColor)
+                    .fill(Theme.Colors.background)
             )
             .overlay(
                 Theme.Shapes.buttonShape
@@ -458,7 +458,7 @@ public struct AlertView: View {
                         lineJoin: .round,
                         miterLimit: 1
                     ))
-                    .foregroundColor(Theme.Colors.secondaryButtonBorderColor)
+                    .foregroundColor(Theme.Colors.accentColor)
             )
             .frame(maxWidth: 215)
         }
