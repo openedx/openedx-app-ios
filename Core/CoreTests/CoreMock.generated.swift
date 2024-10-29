@@ -15,7 +15,7 @@ import Combine
 
 
 // MARK: - AuthInteractorProtocol
-// swiftlint:disable file_length
+
 open class AuthInteractorProtocolMock: AuthInteractorProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
