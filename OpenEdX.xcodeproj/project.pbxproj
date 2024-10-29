@@ -60,9 +60,9 @@
 		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7468752B96201D00793145 /* DeepLinkRouter.swift */; };
 		CE3BD14E2CBEB0DA0026F4E3 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */; };
-		CEB1E2612CC14E1D00921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2602CC14E1D00921517 /* OEXFoundation */; };
-		CEB1E2782CC1512400921517 /* OEXFoundation in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2602CC14E1D00921517 /* OEXFoundation */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		CEDF49D72CC13F1D005566EC /* OEXFirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEDF49D62CC13F1D005566EC /* OEXFirebaseAnalytics */; };
+		CE5712792CD1099B00D4AB17 /* OEXFirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */; };
+		CE57127A2CD109A800D4AB17 /* OEXFoundation in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CE9C07D82CD104E5009C44D1 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -78,7 +78,7 @@
 				072787B228D34D83002E9142 /* Discovery.framework in Embed Frameworks */,
 				0218196528F734FA00202564 /* Discussion.framework in Embed Frameworks */,
 				07A7D79028F5C9060000BE81 /* Core.framework in Embed Frameworks */,
-				CEB1E2782CC1512400921517 /* OEXFoundation in Embed Frameworks */,
+				CE57127A2CD109A800D4AB17 /* OEXFoundation in Embed Frameworks */,
 				0770DE4C28D0A462006D8A5D /* Authorization.framework in Embed Frameworks */,
 				0219C67828F4347600D64452 /* Course.framework in Embed Frameworks */,
 				025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */,
@@ -157,11 +157,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEDF49D72CC13F1D005566EC /* OEXFirebaseAnalytics in Frameworks */,
 				E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */,
+				CE5712792CD1099B00D4AB17 /* OEXFirebaseAnalytics in Frameworks */,
 				07A7D78F28F5C9060000BE81 /* Core.framework in Frameworks */,
 				028A37362ADFF404008CA604 /* WhatsNew.framework in Frameworks */,
-				CEB1E2612CC14E1D00921517 /* OEXFoundation in Frameworks */,
+				CE9C07D82CD104E5009C44D1 /* OEXFoundation in Frameworks */,
 				025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */,
 				0770DE4B28D0A462006D8A5D /* Authorization.framework in Frameworks */,
 				072787B128D34D83002E9142 /* Discovery.framework in Frameworks */,
@@ -396,8 +396,8 @@
 			);
 			name = OpenEdX;
 			packageProductDependencies = (
-				CEDF49D62CC13F1D005566EC /* OEXFirebaseAnalytics */,
-				CEB1E2602CC14E1D00921517 /* OEXFoundation */,
+				CE9C07D72CD104E5009C44D1 /* OEXFoundation */,
+				CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */,
 			);
 			productName = OpenEdX;
 			productReference = 07D5DA3128D075AA00752FD9 /* OpenEdX.app */;
@@ -429,8 +429,8 @@
 			);
 			mainGroup = 07D5DA2828D075AA00752FD9;
 			packageReferences = (
-				CEDF49D52CC13F1D005566EC /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */,
-				CEB1E25F2CC14E1D00921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
+				CE9C07D62CD104E5009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
+				CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
 			projectDirPath = "";
@@ -1221,15 +1221,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		CEB1E25F2CC14E1D00921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
+		CE9C07D62CD104E5009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/raccoongang/openedx-app-foundation-ios/";
+			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 0.1.0;
+				version = 1.0.0;
 			};
 		};
-		CEDF49D52CC13F1D005566EC /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */ = {
+		CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/raccoongang/openedx-app-firebase-analytics-ios";
 			requirement = {
@@ -1240,15 +1240,15 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		CEB1E2602CC14E1D00921517 /* OEXFoundation */ = {
+		CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = CEB1E25F2CC14E1D00921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
-			productName = OEXFoundation;
-		};
-		CEDF49D62CC13F1D005566EC /* OEXFirebaseAnalytics */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CEDF49D52CC13F1D005566EC /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */;
+			package = CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */;
 			productName = OEXFirebaseAnalytics;
+		};
+		CE9C07D72CD104E5009C44D1 /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE9C07D62CD104E5009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
