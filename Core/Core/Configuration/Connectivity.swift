@@ -64,36 +64,3 @@ public class Connectivity: ConnectivityProtocol {
         }
     }
 }
-
-public class ConnectivityMock: ConnectivityProtocol {
-    
-    // Default values that can be changed in tests
-    public var isInternetAvaliable: Bool = true
-    public var isMobileData: Bool = false
-    
-    // Allow changing internet state in tests
-    public var internetReachableSubject: CurrentValueSubject<InternetState?, Never>
-    
-    public init(
-        isInternetAvaliable: Bool = true,
-        isMobileData: Bool = false,
-        initialState: InternetState? = .reachable
-    ) {
-        self.isInternetAvaliable = isInternetAvaliable
-        self.isMobileData = isMobileData
-        self.internetReachableSubject = CurrentValueSubject<InternetState?, Never>(initialState)
-    }
-    
-    // Helper method to simulate network state changes
-    public func simulateNetworkStateChange(_ state: InternetState) {
-        DispatchQueue.main.async { [weak self] in
-            self?.internetReachableSubject.send(state)
-            self?.isInternetAvaliable = state == .reachable
-        }
-    }
-    
-    // Helper method to simulate connection type changes
-    public func simulateConnectionTypeChange(isMobileData: Bool) {
-        self.isMobileData = isMobileData
-    }
-}

@@ -25,6 +25,10 @@ abstract_target "App" do
     pod 'SwiftUIIntrospect', '~> 1.3'
     pod 'Kingfisher', '~> 8.0'
     pod 'Swinject', '2.9.1'
+
+    target 'CoreTests' do
+      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+    end
   end
   
   target "Authorization" do

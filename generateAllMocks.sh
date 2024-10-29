@@ -1,6 +1,8 @@
 #!/bin/bash
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd "${DIR}"
+cd ./Core
+./../Pods/SwiftyMocky/bin/swiftymocky generate
 cd ./Authorization
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
 cd ../Course

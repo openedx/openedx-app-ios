@@ -2100,6 +2100,406 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
     }
 }
 
+// MARK: - CoreStorage
+
+open class CoreStorageMock: CoreStorage, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+    public var accessToken: String? {
+		get {	invocations.append(.p_accessToken_get); return __p_accessToken ?? optionalGivenGetterValue(.p_accessToken_get, "CoreStorageMock - stub value for accessToken was not defined") }
+		set {	invocations.append(.p_accessToken_set(.value(newValue))); __p_accessToken = newValue }
+	}
+	private var __p_accessToken: (String)?
+
+    public var refreshToken: String? {
+		get {	invocations.append(.p_refreshToken_get); return __p_refreshToken ?? optionalGivenGetterValue(.p_refreshToken_get, "CoreStorageMock - stub value for refreshToken was not defined") }
+		set {	invocations.append(.p_refreshToken_set(.value(newValue))); __p_refreshToken = newValue }
+	}
+	private var __p_refreshToken: (String)?
+
+    public var pushToken: String? {
+		get {	invocations.append(.p_pushToken_get); return __p_pushToken ?? optionalGivenGetterValue(.p_pushToken_get, "CoreStorageMock - stub value for pushToken was not defined") }
+		set {	invocations.append(.p_pushToken_set(.value(newValue))); __p_pushToken = newValue }
+	}
+	private var __p_pushToken: (String)?
+
+    public var appleSignFullName: String? {
+		get {	invocations.append(.p_appleSignFullName_get); return __p_appleSignFullName ?? optionalGivenGetterValue(.p_appleSignFullName_get, "CoreStorageMock - stub value for appleSignFullName was not defined") }
+		set {	invocations.append(.p_appleSignFullName_set(.value(newValue))); __p_appleSignFullName = newValue }
+	}
+	private var __p_appleSignFullName: (String)?
+
+    public var appleSignEmail: String? {
+		get {	invocations.append(.p_appleSignEmail_get); return __p_appleSignEmail ?? optionalGivenGetterValue(.p_appleSignEmail_get, "CoreStorageMock - stub value for appleSignEmail was not defined") }
+		set {	invocations.append(.p_appleSignEmail_set(.value(newValue))); __p_appleSignEmail = newValue }
+	}
+	private var __p_appleSignEmail: (String)?
+
+    public var cookiesDate: Date? {
+		get {	invocations.append(.p_cookiesDate_get); return __p_cookiesDate ?? optionalGivenGetterValue(.p_cookiesDate_get, "CoreStorageMock - stub value for cookiesDate was not defined") }
+		set {	invocations.append(.p_cookiesDate_set(.value(newValue))); __p_cookiesDate = newValue }
+	}
+	private var __p_cookiesDate: (Date)?
+
+    public var reviewLastShownVersion: String? {
+		get {	invocations.append(.p_reviewLastShownVersion_get); return __p_reviewLastShownVersion ?? optionalGivenGetterValue(.p_reviewLastShownVersion_get, "CoreStorageMock - stub value for reviewLastShownVersion was not defined") }
+		set {	invocations.append(.p_reviewLastShownVersion_set(.value(newValue))); __p_reviewLastShownVersion = newValue }
+	}
+	private var __p_reviewLastShownVersion: (String)?
+
+    public var lastReviewDate: Date? {
+		get {	invocations.append(.p_lastReviewDate_get); return __p_lastReviewDate ?? optionalGivenGetterValue(.p_lastReviewDate_get, "CoreStorageMock - stub value for lastReviewDate was not defined") }
+		set {	invocations.append(.p_lastReviewDate_set(.value(newValue))); __p_lastReviewDate = newValue }
+	}
+	private var __p_lastReviewDate: (Date)?
+
+    public var user: DataLayer.User? {
+		get {	invocations.append(.p_user_get); return __p_user ?? optionalGivenGetterValue(.p_user_get, "CoreStorageMock - stub value for user was not defined") }
+		set {	invocations.append(.p_user_set(.value(newValue))); __p_user = newValue }
+	}
+	private var __p_user: (DataLayer.User)?
+
+    public var userSettings: UserSettings? {
+		get {	invocations.append(.p_userSettings_get); return __p_userSettings ?? optionalGivenGetterValue(.p_userSettings_get, "CoreStorageMock - stub value for userSettings was not defined") }
+		set {	invocations.append(.p_userSettings_set(.value(newValue))); __p_userSettings = newValue }
+	}
+	private var __p_userSettings: (UserSettings)?
+
+    public var resetAppSupportDirectoryUserData: Bool? {
+		get {	invocations.append(.p_resetAppSupportDirectoryUserData_get); return __p_resetAppSupportDirectoryUserData ?? optionalGivenGetterValue(.p_resetAppSupportDirectoryUserData_get, "CoreStorageMock - stub value for resetAppSupportDirectoryUserData was not defined") }
+		set {	invocations.append(.p_resetAppSupportDirectoryUserData_set(.value(newValue))); __p_resetAppSupportDirectoryUserData = newValue }
+	}
+	private var __p_resetAppSupportDirectoryUserData: (Bool)?
+
+    public var useRelativeDates: Bool {
+		get {	invocations.append(.p_useRelativeDates_get); return __p_useRelativeDates ?? givenGetterValue(.p_useRelativeDates_get, "CoreStorageMock - stub value for useRelativeDates was not defined") }
+		set {	invocations.append(.p_useRelativeDates_set(.value(newValue))); __p_useRelativeDates = newValue }
+	}
+	private var __p_useRelativeDates: (Bool)?
+
+
+
+
+
+    open func clear() {
+        addInvocation(.m_clear)
+		let perform = methodPerformValue(.m_clear) as? () -> Void
+		perform?()
+    }
+
+
+    fileprivate enum MethodType {
+        case m_clear
+        case p_accessToken_get
+		case p_accessToken_set(Parameter<String?>)
+        case p_refreshToken_get
+		case p_refreshToken_set(Parameter<String?>)
+        case p_pushToken_get
+		case p_pushToken_set(Parameter<String?>)
+        case p_appleSignFullName_get
+		case p_appleSignFullName_set(Parameter<String?>)
+        case p_appleSignEmail_get
+		case p_appleSignEmail_set(Parameter<String?>)
+        case p_cookiesDate_get
+		case p_cookiesDate_set(Parameter<Date?>)
+        case p_reviewLastShownVersion_get
+		case p_reviewLastShownVersion_set(Parameter<String?>)
+        case p_lastReviewDate_get
+		case p_lastReviewDate_set(Parameter<Date?>)
+        case p_user_get
+		case p_user_set(Parameter<DataLayer.User?>)
+        case p_userSettings_get
+		case p_userSettings_set(Parameter<UserSettings?>)
+        case p_resetAppSupportDirectoryUserData_get
+		case p_resetAppSupportDirectoryUserData_set(Parameter<Bool?>)
+        case p_useRelativeDates_get
+		case p_useRelativeDates_set(Parameter<Bool>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_clear, .m_clear): return .match
+            case (.p_accessToken_get,.p_accessToken_get): return Matcher.ComparisonResult.match
+			case (.p_accessToken_set(let left),.p_accessToken_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_refreshToken_get,.p_refreshToken_get): return Matcher.ComparisonResult.match
+			case (.p_refreshToken_set(let left),.p_refreshToken_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_pushToken_get,.p_pushToken_get): return Matcher.ComparisonResult.match
+			case (.p_pushToken_set(let left),.p_pushToken_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_appleSignFullName_get,.p_appleSignFullName_get): return Matcher.ComparisonResult.match
+			case (.p_appleSignFullName_set(let left),.p_appleSignFullName_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_appleSignEmail_get,.p_appleSignEmail_get): return Matcher.ComparisonResult.match
+			case (.p_appleSignEmail_set(let left),.p_appleSignEmail_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_cookiesDate_get,.p_cookiesDate_get): return Matcher.ComparisonResult.match
+			case (.p_cookiesDate_set(let left),.p_cookiesDate_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Date?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_reviewLastShownVersion_get,.p_reviewLastShownVersion_get): return Matcher.ComparisonResult.match
+			case (.p_reviewLastShownVersion_set(let left),.p_reviewLastShownVersion_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_lastReviewDate_get,.p_lastReviewDate_get): return Matcher.ComparisonResult.match
+			case (.p_lastReviewDate_set(let left),.p_lastReviewDate_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Date?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_user_get,.p_user_get): return Matcher.ComparisonResult.match
+			case (.p_user_set(let left),.p_user_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<DataLayer.User?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_userSettings_get,.p_userSettings_get): return Matcher.ComparisonResult.match
+			case (.p_userSettings_set(let left),.p_userSettings_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<UserSettings?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_resetAppSupportDirectoryUserData_get,.p_resetAppSupportDirectoryUserData_get): return Matcher.ComparisonResult.match
+			case (.p_resetAppSupportDirectoryUserData_set(let left),.p_resetAppSupportDirectoryUserData_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_useRelativeDates_get,.p_useRelativeDates_get): return Matcher.ComparisonResult.match
+			case (.p_useRelativeDates_set(let left),.p_useRelativeDates_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_clear: return 0
+            case .p_accessToken_get: return 0
+			case .p_accessToken_set(let newValue): return newValue.intValue
+            case .p_refreshToken_get: return 0
+			case .p_refreshToken_set(let newValue): return newValue.intValue
+            case .p_pushToken_get: return 0
+			case .p_pushToken_set(let newValue): return newValue.intValue
+            case .p_appleSignFullName_get: return 0
+			case .p_appleSignFullName_set(let newValue): return newValue.intValue
+            case .p_appleSignEmail_get: return 0
+			case .p_appleSignEmail_set(let newValue): return newValue.intValue
+            case .p_cookiesDate_get: return 0
+			case .p_cookiesDate_set(let newValue): return newValue.intValue
+            case .p_reviewLastShownVersion_get: return 0
+			case .p_reviewLastShownVersion_set(let newValue): return newValue.intValue
+            case .p_lastReviewDate_get: return 0
+			case .p_lastReviewDate_set(let newValue): return newValue.intValue
+            case .p_user_get: return 0
+			case .p_user_set(let newValue): return newValue.intValue
+            case .p_userSettings_get: return 0
+			case .p_userSettings_set(let newValue): return newValue.intValue
+            case .p_resetAppSupportDirectoryUserData_get: return 0
+			case .p_resetAppSupportDirectoryUserData_set(let newValue): return newValue.intValue
+            case .p_useRelativeDates_get: return 0
+			case .p_useRelativeDates_set(let newValue): return newValue.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_clear: return ".clear()"
+            case .p_accessToken_get: return "[get] .accessToken"
+			case .p_accessToken_set: return "[set] .accessToken"
+            case .p_refreshToken_get: return "[get] .refreshToken"
+			case .p_refreshToken_set: return "[set] .refreshToken"
+            case .p_pushToken_get: return "[get] .pushToken"
+			case .p_pushToken_set: return "[set] .pushToken"
+            case .p_appleSignFullName_get: return "[get] .appleSignFullName"
+			case .p_appleSignFullName_set: return "[set] .appleSignFullName"
+            case .p_appleSignEmail_get: return "[get] .appleSignEmail"
+			case .p_appleSignEmail_set: return "[set] .appleSignEmail"
+            case .p_cookiesDate_get: return "[get] .cookiesDate"
+			case .p_cookiesDate_set: return "[set] .cookiesDate"
+            case .p_reviewLastShownVersion_get: return "[get] .reviewLastShownVersion"
+			case .p_reviewLastShownVersion_set: return "[set] .reviewLastShownVersion"
+            case .p_lastReviewDate_get: return "[get] .lastReviewDate"
+			case .p_lastReviewDate_set: return "[set] .lastReviewDate"
+            case .p_user_get: return "[get] .user"
+			case .p_user_set: return "[set] .user"
+            case .p_userSettings_get: return "[get] .userSettings"
+			case .p_userSettings_set: return "[set] .userSettings"
+            case .p_resetAppSupportDirectoryUserData_get: return "[get] .resetAppSupportDirectoryUserData"
+			case .p_resetAppSupportDirectoryUserData_set: return "[set] .resetAppSupportDirectoryUserData"
+            case .p_useRelativeDates_get: return "[get] .useRelativeDates"
+			case .p_useRelativeDates_set: return "[set] .useRelativeDates"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+        public static func accessToken(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_accessToken_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func refreshToken(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_refreshToken_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func pushToken(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_pushToken_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func appleSignFullName(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_appleSignFullName_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func appleSignEmail(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_appleSignEmail_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func cookiesDate(getter defaultValue: Date?...) -> PropertyStub {
+            return Given(method: .p_cookiesDate_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func reviewLastShownVersion(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_reviewLastShownVersion_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func lastReviewDate(getter defaultValue: Date?...) -> PropertyStub {
+            return Given(method: .p_lastReviewDate_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func user(getter defaultValue: DataLayer.User?...) -> PropertyStub {
+            return Given(method: .p_user_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func userSettings(getter defaultValue: UserSettings?...) -> PropertyStub {
+            return Given(method: .p_userSettings_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func resetAppSupportDirectoryUserData(getter defaultValue: Bool?...) -> PropertyStub {
+            return Given(method: .p_resetAppSupportDirectoryUserData_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func useRelativeDates(getter defaultValue: Bool...) -> PropertyStub {
+            return Given(method: .p_useRelativeDates_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func clear() -> Verify { return Verify(method: .m_clear)}
+        public static var accessToken: Verify { return Verify(method: .p_accessToken_get) }
+		public static func accessToken(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_accessToken_set(newValue)) }
+        public static var refreshToken: Verify { return Verify(method: .p_refreshToken_get) }
+		public static func refreshToken(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_refreshToken_set(newValue)) }
+        public static var pushToken: Verify { return Verify(method: .p_pushToken_get) }
+		public static func pushToken(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_pushToken_set(newValue)) }
+        public static var appleSignFullName: Verify { return Verify(method: .p_appleSignFullName_get) }
+		public static func appleSignFullName(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_appleSignFullName_set(newValue)) }
+        public static var appleSignEmail: Verify { return Verify(method: .p_appleSignEmail_get) }
+		public static func appleSignEmail(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_appleSignEmail_set(newValue)) }
+        public static var cookiesDate: Verify { return Verify(method: .p_cookiesDate_get) }
+		public static func cookiesDate(set newValue: Parameter<Date?>) -> Verify { return Verify(method: .p_cookiesDate_set(newValue)) }
+        public static var reviewLastShownVersion: Verify { return Verify(method: .p_reviewLastShownVersion_get) }
+		public static func reviewLastShownVersion(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_reviewLastShownVersion_set(newValue)) }
+        public static var lastReviewDate: Verify { return Verify(method: .p_lastReviewDate_get) }
+		public static func lastReviewDate(set newValue: Parameter<Date?>) -> Verify { return Verify(method: .p_lastReviewDate_set(newValue)) }
+        public static var user: Verify { return Verify(method: .p_user_get) }
+		public static func user(set newValue: Parameter<DataLayer.User?>) -> Verify { return Verify(method: .p_user_set(newValue)) }
+        public static var userSettings: Verify { return Verify(method: .p_userSettings_get) }
+		public static func userSettings(set newValue: Parameter<UserSettings?>) -> Verify { return Verify(method: .p_userSettings_set(newValue)) }
+        public static var resetAppSupportDirectoryUserData: Verify { return Verify(method: .p_resetAppSupportDirectoryUserData_get) }
+		public static func resetAppSupportDirectoryUserData(set newValue: Parameter<Bool?>) -> Verify { return Verify(method: .p_resetAppSupportDirectoryUserData_set(newValue)) }
+        public static var useRelativeDates: Verify { return Verify(method: .p_useRelativeDates_get) }
+		public static func useRelativeDates(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_useRelativeDates_set(newValue)) }
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func clear(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_clear, performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - DownloadManagerProtocol
 
 open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {

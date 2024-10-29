@@ -17,9 +17,10 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
     func testSearchSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
+        let storage = CoreStorageMock()
         let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
                                                         interactor: interactor, 
-                                                        storage: CoreStorageMock(),
+                                                        storage: storage,
                                                         router: router,
                                                         debounce: .test)
         
@@ -48,7 +49,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                            numPages: 1)
             ]
         )
-
+        Given(storage, .useRelativeDates(getter: false))
         Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willReturn: items))
 
         viewModel.searchText = "Test"
