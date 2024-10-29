@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol CoreStorage {
     var accessToken: String? {get set}
     var refreshToken: String? {get set}

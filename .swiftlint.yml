@@ -18,6 +18,7 @@ opt_in_rules: # some rules are only opt-in
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - Pods
+  - Core/CoreTests
   - Authorization/AuthorizationTests
   - Course/CourseTests
   - Dashboard/DashboardTests

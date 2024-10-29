@@ -114,14 +114,17 @@ final class PostViewModelTests: XCTestCase {
         interactor = DiscussionInteractorProtocolMock()
         router = DiscussionRouterMock()
         config = ConfigMock()
+        let storage = CoreStorageMock()
+
+        Given(storage, .useRelativeDates(getter: false))
+        
         viewModel = PostsViewModel(
             interactor: interactor,
             router: router,
             config: config,
-            storage: CoreStorageMock()
+            storage: storage
         )
     }
-
 
     func testGetThreadListSuccess() async throws {
         var result = false
