@@ -12,18 +12,18 @@ extension DataLayer {
     public struct EnrollmentsStatusElement: Codable {
         public let courseID: String?
         public let courseName: String?
-        public let isActive: Bool?
+        public let recentlyActive: Bool?
         
         public enum CodingKeys: String, CodingKey {
             case courseID = "course_id"
             case courseName = "course_name"
-            case isActive = "is_active"
+            case recentlyActive = "recently_active"
         }
         
-        public init(courseID: String?, courseName: String?, isActive: Bool?) {
+        public init(courseID: String?, courseName: String?, recentlyActive: Bool?) {
             self.courseID = courseID
             self.courseName = courseName
-            self.isActive = isActive
+            self.recentlyActive = recentlyActive
         }
     }
     
