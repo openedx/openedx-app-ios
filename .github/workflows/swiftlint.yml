@@ -1,4 +1,4 @@
-name: Unit Tests
+name: SwiftLint
 
 on:
   workflow_dispatch:
@@ -6,14 +6,14 @@ on:
   pull_request:
 
 jobs:
-  tests:
-    name: Tests
+  lint:
+    name: Lint
     runs-on: macos-latest
 
     concurrency:
       # When running on develop, use the sha to allow all runs of this workflow to run concurrently.
       # Otherwise only allow a single run of this workflow on each branch, automatically cancelling older runs.
-      group: ${{ github.ref == 'refs/heads/develop' && format('unit-tests-develop-{0}', github.sha) || format('unit-tests-{0}', github.ref) }}
+      group: ${{ github.ref == 'refs/heads/develop' && format('swiftlint-develop-{0}', github.sha) || format('swiftlint-{0}', github.ref) }}
       cancel-in-progress: true
 
     steps:
@@ -32,19 +32,6 @@ jobs:
         run:
           source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
 
-      - name: Run tests
-        run: bundle exec fastlane unit_tests
-
-      - name: Archive artifacts
-        uses: actions/upload-artifact@v3
-        if: always()
-        with:
-          name: test-output
-          path: fastlane/test_output
-          retention-days: 7
-          if-no-files-found: ignore
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          flags: unittests
+      - name: SwiftLint
+        run:
+          bundle exec fastlane linting
