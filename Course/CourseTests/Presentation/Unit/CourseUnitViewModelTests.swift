@@ -85,23 +85,27 @@ final class CourseUnitViewModelTests: XCTestCase {
         displayName: "0",
         type: .chapter,
         childs: [
-            CourseSequential(blockId: "5",
-                             id: "5",
-                             displayName: "5",
-                             type: .sequential,
-                             completion: 0,
-                             childs: [
-                                CourseVertical(blockId: "6",
-                                               id: "6",
-                                               courseId: "123",
-                                               displayName: "6",
-                                               type: .vertical,
-                                               completion: 0,
-                                               childs: blocks)
-                             ], 
-                             sequentialProgress: nil, 
-                             due: Date()
-                            )
+            CourseSequential(
+                blockId: "5",
+                id: "5",
+                displayName: "5",
+                type: .sequential,
+                completion: 0,
+                childs: [
+                    CourseVertical(
+                        blockId: "6",
+                        id: "6",
+                        courseId: "123",
+                        displayName: "6",
+                        type: .vertical,
+                        completion: 0,
+                        childs: blocks,
+                        webUrl: ""
+                    )
+                ],
+                sequentialProgress: nil,
+                due: Date()
+            )
             
         ]),
         CourseChapter(
@@ -110,23 +114,27 @@ final class CourseUnitViewModelTests: XCTestCase {
         displayName: "2",
         type: .chapter,
         childs: [
-            CourseSequential(blockId: "3",
-                             id: "3",
-                             displayName: "3",
-                             type: .sequential,
-                             completion: 0,
-                             childs: [
-                                CourseVertical(blockId: "4",
-                                               id: "4",
-                                               courseId: "123",
-                                               displayName: "4",
-                                               type: .vertical,
-                                               completion: 0,
-                                               childs: blocks)
-                             ],
-                             sequentialProgress: nil,
-                             due: Date()
-                            )
+            CourseSequential(
+                blockId: "3",
+                id: "3",
+                displayName: "3",
+                type: .sequential,
+                completion: 0,
+                childs: [
+                    CourseVertical(
+                        blockId: "4",
+                        id: "4",
+                        courseId: "123",
+                        displayName: "4",
+                        type: .vertical,
+                        completion: 0,
+                        childs: blocks,
+                        webUrl: ""
+                    )
+                ],
+                sequentialProgress: nil,
+                due: Date()
+            )
             
         ])
         ]

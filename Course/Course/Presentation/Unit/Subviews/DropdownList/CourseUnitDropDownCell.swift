@@ -87,7 +87,8 @@ struct CourseUnitDropDownCell_Previews: PreviewProvider {
                     multiDevice: true,
                     offlineDownload: nil
                 )
-            ]
+            ],
+            webUrl: ""
         )
                
         CourseUnitDropDownCell(

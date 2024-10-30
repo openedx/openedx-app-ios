@@ -62,6 +62,8 @@ public protocol CourseRouter: BaseRouter {
     )
     
     func showDatesAndCalendar()
+    
+    func showGatedContentError(url: String)
 }
 
 // Mark - For testing and SwiftUI preview
@@ -122,5 +124,7 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
     ) {}
     
     public func showDatesAndCalendar() {}
+    
+    public func showGatedContentError(url: String) {}
 }
 #endif

@@ -544,6 +544,13 @@ public class Router: AuthorizationRouter,
             }
         }
     
+    public func showGatedContentError(url: String) {
+        let view = NotAvailableOnMobileView(url: url)
+        
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     private func openBlockInBrowser(blockURL: URL) {
         presentAlert(
             alertTitle: "",

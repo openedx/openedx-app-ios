@@ -170,7 +170,8 @@ public class CourseInteractor: CourseInteractorProtocol {
             displayName: vertical.displayName,
             type: vertical.type,
             completion: vertical.completion,
-            childs: newChilds
+            childs: newChilds,
+            webUrl: vertical.webUrl
         )
     }
     
