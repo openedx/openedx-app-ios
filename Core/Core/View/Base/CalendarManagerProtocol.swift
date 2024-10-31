@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol CalendarManagerProtocol {
     func createCalendarIfNeeded()
     func filterCoursesBySelected(fetchedCourses: [CourseForSync]) async -> [CourseForSync]

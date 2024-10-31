@@ -41,3 +41,11 @@ extension DataLayer.EnrollmentsStatus {
     }
 }
 
+extension CourseForSync: Equatable {
+    public static func == (lhs: CourseForSync, rhs: CourseForSync) -> Bool {
+        return lhs.courseID == rhs.courseID &&
+        lhs.name == rhs.name &&
+        lhs.synced == rhs.synced &&
+        lhs.recentlyActive == rhs.recentlyActive
+    }
+}
