@@ -290,7 +290,7 @@ public struct AlertView: View {
                         .fill(Theme.Colors.warning)
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8)
+                    Theme.Shapes.buttonShape
                         .stroke(style: .init(
                             lineWidth: 1,
                             lineCap: .round,
@@ -319,7 +319,7 @@ public struct AlertView: View {
                             .fill(Theme.Colors.accentColor)
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
+                        Theme.Shapes.buttonShape
                             .stroke(style: .init(
                                 lineWidth: 1,
                                 lineCap: .round,
@@ -347,7 +347,7 @@ public struct AlertView: View {
                             .fill(.clear)
                     )
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
+                        Theme.Shapes.buttonShape
                             .stroke(style: .init(
                                 lineWidth: 1,
                                 lineCap: .round,
@@ -423,7 +423,7 @@ public struct AlertView: View {
                     .fill(Theme.Colors.accentButtonColor)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                Theme.Shapes.buttonShape
                     .stroke(style: .init(
                         lineWidth: 1,
                         lineCap: .round,
@@ -451,7 +451,7 @@ public struct AlertView: View {
                     .fill(Theme.Colors.secondaryButtonBGColor)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                Theme.Shapes.buttonShape
                     .stroke(style: .init(
                         lineWidth: 1,
                         lineCap: .round,

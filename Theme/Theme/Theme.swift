@@ -254,6 +254,7 @@ public struct Theme: Sendable {
     
     public struct Shapes: Sendable {
         nonisolated(unsafe) public static var isRoundedCorners: Bool = true
+        nonisolated(unsafe) public static var buttonCornersRadius: Double = 8.0
         public static let screenBackgroundRadius = 24.0
         public static let cardImageRadius = 10.0
         public static let textInputShape =  {
@@ -261,7 +262,7 @@ public struct Theme: Sendable {
             return RoundedRectangle(cornerRadius: radius)
         }()
         public static let buttonShape = {
-            let radius: CGFloat = isRoundedCorners ? 8 : 0
+            let radius: CGFloat = isRoundedCorners ? buttonCornersRadius : 0
             return RoundedCorners(tl: radius, tr: radius, bl: radius, br: radius)
         }()
         public static let unitButtonShape = RoundedCorners(tl: 21, tr: 21, bl: 21, br: 21)
