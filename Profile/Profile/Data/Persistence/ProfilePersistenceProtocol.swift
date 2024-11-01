@@ -8,6 +8,7 @@
 import CoreData
 import Core
 
+//sourcery: AutoMockable
 public protocol ProfilePersistenceProtocol {
     func getCourseState(courseID: String) -> CourseCalendarState?
     func getAllCourseStates() -> [CourseCalendarState]

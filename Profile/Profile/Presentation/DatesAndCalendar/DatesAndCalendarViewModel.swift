@@ -39,8 +39,8 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     private var coursesForSyncBeforeChanges = [CourseForSync]()
     
-    private var coursesForDeleting = [CourseForSync]()
-    private var coursesForAdding = [CourseForSync]()
+    private(set) var coursesForDeleting = [CourseForSync]()
+    private(set) var coursesForAdding = [CourseForSync]()
     
     @Published var synced: Bool = true
     @Published var hideInactiveCourses: Bool = false

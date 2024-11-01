@@ -978,6 +978,899 @@ open class BaseRouterMock: BaseRouter, Mock {
     }
 }
 
+// MARK: - CalendarManagerProtocol
+
+open class CalendarManagerProtocolMock: CalendarManagerProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func createCalendarIfNeeded() {
+        addInvocation(.m_createCalendarIfNeeded)
+		let perform = methodPerformValue(.m_createCalendarIfNeeded) as? () -> Void
+		perform?()
+    }
+
+    open func filterCoursesBySelected(fetchedCourses: [CourseForSync]) -> [CourseForSync] {
+        addInvocation(.m_filterCoursesBySelected__fetchedCourses_fetchedCourses(Parameter<[CourseForSync]>.value(`fetchedCourses`)))
+		let perform = methodPerformValue(.m_filterCoursesBySelected__fetchedCourses_fetchedCourses(Parameter<[CourseForSync]>.value(`fetchedCourses`))) as? ([CourseForSync]) -> Void
+		perform?(`fetchedCourses`)
+		var __value: [CourseForSync]
+		do {
+		    __value = try methodReturnValue(.m_filterCoursesBySelected__fetchedCourses_fetchedCourses(Parameter<[CourseForSync]>.value(`fetchedCourses`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for filterCoursesBySelected(fetchedCourses: [CourseForSync]). Use given")
+			Failure("Stub return value not specified for filterCoursesBySelected(fetchedCourses: [CourseForSync]). Use given")
+		}
+		return __value
+    }
+
+    open func removeOldCalendar() {
+        addInvocation(.m_removeOldCalendar)
+		let perform = methodPerformValue(.m_removeOldCalendar) as? () -> Void
+		perform?()
+    }
+
+    open func removeOutdatedEvents(courseID: String) {
+        addInvocation(.m_removeOutdatedEvents__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_removeOutdatedEvents__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+    }
+
+    open func syncCourse(courseID: String, courseName: String, dates: CourseDates) {
+        addInvocation(.m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(Parameter<String>.value(`courseID`), Parameter<String>.value(`courseName`), Parameter<CourseDates>.value(`dates`)))
+		let perform = methodPerformValue(.m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(Parameter<String>.value(`courseID`), Parameter<String>.value(`courseName`), Parameter<CourseDates>.value(`dates`))) as? (String, String, CourseDates) -> Void
+		perform?(`courseID`, `courseName`, `dates`)
+    }
+
+    open func requestAccess() -> Bool {
+        addInvocation(.m_requestAccess)
+		let perform = methodPerformValue(.m_requestAccess) as? () -> Void
+		perform?()
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_requestAccess).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for requestAccess(). Use given")
+			Failure("Stub return value not specified for requestAccess(). Use given")
+		}
+		return __value
+    }
+
+    open func courseStatus(courseID: String) -> SyncStatus {
+        addInvocation(.m_courseStatus__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_courseStatus__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: SyncStatus
+		do {
+		    __value = try methodReturnValue(.m_courseStatus__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for courseStatus(courseID: String). Use given")
+			Failure("Stub return value not specified for courseStatus(courseID: String). Use given")
+		}
+		return __value
+    }
+
+    open func clearAllData(removeCalendar: Bool) {
+        addInvocation(.m_clearAllData__removeCalendar_removeCalendar(Parameter<Bool>.value(`removeCalendar`)))
+		let perform = methodPerformValue(.m_clearAllData__removeCalendar_removeCalendar(Parameter<Bool>.value(`removeCalendar`))) as? (Bool) -> Void
+		perform?(`removeCalendar`)
+    }
+
+    open func isDatesChanged(courseID: String, checksum: String) -> Bool {
+        addInvocation(.m_isDatesChanged__courseID_courseIDchecksum_checksum(Parameter<String>.value(`courseID`), Parameter<String>.value(`checksum`)))
+		let perform = methodPerformValue(.m_isDatesChanged__courseID_courseIDchecksum_checksum(Parameter<String>.value(`courseID`), Parameter<String>.value(`checksum`))) as? (String, String) -> Void
+		perform?(`courseID`, `checksum`)
+		var __value: Bool
+		do {
+		    __value = try methodReturnValue(.m_isDatesChanged__courseID_courseIDchecksum_checksum(Parameter<String>.value(`courseID`), Parameter<String>.value(`checksum`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for isDatesChanged(courseID: String, checksum: String). Use given")
+			Failure("Stub return value not specified for isDatesChanged(courseID: String, checksum: String). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_createCalendarIfNeeded
+        case m_filterCoursesBySelected__fetchedCourses_fetchedCourses(Parameter<[CourseForSync]>)
+        case m_removeOldCalendar
+        case m_removeOutdatedEvents__courseID_courseID(Parameter<String>)
+        case m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(Parameter<String>, Parameter<String>, Parameter<CourseDates>)
+        case m_requestAccess
+        case m_courseStatus__courseID_courseID(Parameter<String>)
+        case m_clearAllData__removeCalendar_removeCalendar(Parameter<Bool>)
+        case m_isDatesChanged__courseID_courseIDchecksum_checksum(Parameter<String>, Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_createCalendarIfNeeded, .m_createCalendarIfNeeded): return .match
+
+            case (.m_filterCoursesBySelected__fetchedCourses_fetchedCourses(let lhsFetchedcourses), .m_filterCoursesBySelected__fetchedCourses_fetchedCourses(let rhsFetchedcourses)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFetchedcourses, rhs: rhsFetchedcourses, with: matcher), lhsFetchedcourses, rhsFetchedcourses, "fetchedCourses"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_removeOldCalendar, .m_removeOldCalendar): return .match
+
+            case (.m_removeOutdatedEvents__courseID_courseID(let lhsCourseid), .m_removeOutdatedEvents__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(let lhsCourseid, let lhsCoursename, let lhsDates), .m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(let rhsCourseid, let rhsCoursename, let rhsDates)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDates, rhs: rhsDates, with: matcher), lhsDates, rhsDates, "dates"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_requestAccess, .m_requestAccess): return .match
+
+            case (.m_courseStatus__courseID_courseID(let lhsCourseid), .m_courseStatus__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_clearAllData__removeCalendar_removeCalendar(let lhsRemovecalendar), .m_clearAllData__removeCalendar_removeCalendar(let rhsRemovecalendar)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsRemovecalendar, rhs: rhsRemovecalendar, with: matcher), lhsRemovecalendar, rhsRemovecalendar, "removeCalendar"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_isDatesChanged__courseID_courseIDchecksum_checksum(let lhsCourseid, let lhsChecksum), .m_isDatesChanged__courseID_courseIDchecksum_checksum(let rhsCourseid, let rhsChecksum)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsChecksum, rhs: rhsChecksum, with: matcher), lhsChecksum, rhsChecksum, "checksum"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .m_createCalendarIfNeeded: return 0
+            case let .m_filterCoursesBySelected__fetchedCourses_fetchedCourses(p0): return p0.intValue
+            case .m_removeOldCalendar: return 0
+            case let .m_removeOutdatedEvents__courseID_courseID(p0): return p0.intValue
+            case let .m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
+            case .m_requestAccess: return 0
+            case let .m_courseStatus__courseID_courseID(p0): return p0.intValue
+            case let .m_clearAllData__removeCalendar_removeCalendar(p0): return p0.intValue
+            case let .m_isDatesChanged__courseID_courseIDchecksum_checksum(p0, p1): return p0.intValue + p1.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_createCalendarIfNeeded: return ".createCalendarIfNeeded()"
+            case .m_filterCoursesBySelected__fetchedCourses_fetchedCourses: return ".filterCoursesBySelected(fetchedCourses:)"
+            case .m_removeOldCalendar: return ".removeOldCalendar()"
+            case .m_removeOutdatedEvents__courseID_courseID: return ".removeOutdatedEvents(courseID:)"
+            case .m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates: return ".syncCourse(courseID:courseName:dates:)"
+            case .m_requestAccess: return ".requestAccess()"
+            case .m_courseStatus__courseID_courseID: return ".courseStatus(courseID:)"
+            case .m_clearAllData__removeCalendar_removeCalendar: return ".clearAllData(removeCalendar:)"
+            case .m_isDatesChanged__courseID_courseIDchecksum_checksum: return ".isDatesChanged(courseID:checksum:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func filterCoursesBySelected(fetchedCourses: Parameter<[CourseForSync]>, willReturn: [CourseForSync]...) -> MethodStub {
+            return Given(method: .m_filterCoursesBySelected__fetchedCourses_fetchedCourses(`fetchedCourses`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func requestAccess(willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_requestAccess, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func courseStatus(courseID: Parameter<String>, willReturn: SyncStatus...) -> MethodStub {
+            return Given(method: .m_courseStatus__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func isDatesChanged(courseID: Parameter<String>, checksum: Parameter<String>, willReturn: Bool...) -> MethodStub {
+            return Given(method: .m_isDatesChanged__courseID_courseIDchecksum_checksum(`courseID`, `checksum`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func filterCoursesBySelected(fetchedCourses: Parameter<[CourseForSync]>, willProduce: (Stubber<[CourseForSync]>) -> Void) -> MethodStub {
+            let willReturn: [[CourseForSync]] = []
+			let given: Given = { return Given(method: .m_filterCoursesBySelected__fetchedCourses_fetchedCourses(`fetchedCourses`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([CourseForSync]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func requestAccess(willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_requestAccess, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func courseStatus(courseID: Parameter<String>, willProduce: (Stubber<SyncStatus>) -> Void) -> MethodStub {
+            let willReturn: [SyncStatus] = []
+			let given: Given = { return Given(method: .m_courseStatus__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (SyncStatus).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func isDatesChanged(courseID: Parameter<String>, checksum: Parameter<String>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
+            let willReturn: [Bool] = []
+			let given: Given = { return Given(method: .m_isDatesChanged__courseID_courseIDchecksum_checksum(`courseID`, `checksum`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Bool).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func createCalendarIfNeeded() -> Verify { return Verify(method: .m_createCalendarIfNeeded)}
+        public static func filterCoursesBySelected(fetchedCourses: Parameter<[CourseForSync]>) -> Verify { return Verify(method: .m_filterCoursesBySelected__fetchedCourses_fetchedCourses(`fetchedCourses`))}
+        public static func removeOldCalendar() -> Verify { return Verify(method: .m_removeOldCalendar)}
+        public static func removeOutdatedEvents(courseID: Parameter<String>) -> Verify { return Verify(method: .m_removeOutdatedEvents__courseID_courseID(`courseID`))}
+        public static func syncCourse(courseID: Parameter<String>, courseName: Parameter<String>, dates: Parameter<CourseDates>) -> Verify { return Verify(method: .m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(`courseID`, `courseName`, `dates`))}
+        public static func requestAccess() -> Verify { return Verify(method: .m_requestAccess)}
+        public static func courseStatus(courseID: Parameter<String>) -> Verify { return Verify(method: .m_courseStatus__courseID_courseID(`courseID`))}
+        public static func clearAllData(removeCalendar: Parameter<Bool>) -> Verify { return Verify(method: .m_clearAllData__removeCalendar_removeCalendar(`removeCalendar`))}
+        public static func isDatesChanged(courseID: Parameter<String>, checksum: Parameter<String>) -> Verify { return Verify(method: .m_isDatesChanged__courseID_courseIDchecksum_checksum(`courseID`, `checksum`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func createCalendarIfNeeded(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_createCalendarIfNeeded, performs: perform)
+        }
+        public static func filterCoursesBySelected(fetchedCourses: Parameter<[CourseForSync]>, perform: @escaping ([CourseForSync]) -> Void) -> Perform {
+            return Perform(method: .m_filterCoursesBySelected__fetchedCourses_fetchedCourses(`fetchedCourses`), performs: perform)
+        }
+        public static func removeOldCalendar(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_removeOldCalendar, performs: perform)
+        }
+        public static func removeOutdatedEvents(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_removeOutdatedEvents__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func syncCourse(courseID: Parameter<String>, courseName: Parameter<String>, dates: Parameter<CourseDates>, perform: @escaping (String, String, CourseDates) -> Void) -> Perform {
+            return Perform(method: .m_syncCourse__courseID_courseIDcourseName_courseNamedates_dates(`courseID`, `courseName`, `dates`), performs: perform)
+        }
+        public static func requestAccess(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_requestAccess, performs: perform)
+        }
+        public static func courseStatus(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_courseStatus__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func clearAllData(removeCalendar: Parameter<Bool>, perform: @escaping (Bool) -> Void) -> Perform {
+            return Perform(method: .m_clearAllData__removeCalendar_removeCalendar(`removeCalendar`), performs: perform)
+        }
+        public static func isDatesChanged(courseID: Parameter<String>, checksum: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_isDatesChanged__courseID_courseIDchecksum_checksum(`courseID`, `checksum`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - ConfigProtocol
+
+open class ConfigProtocolMock: ConfigProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+    public var baseURL: URL {
+		get {	invocations.append(.p_baseURL_get); return __p_baseURL ?? givenGetterValue(.p_baseURL_get, "ConfigProtocolMock - stub value for baseURL was not defined") }
+	}
+	private var __p_baseURL: (URL)?
+
+    public var baseSSOURL: URL {
+		get {	invocations.append(.p_baseSSOURL_get); return __p_baseSSOURL ?? givenGetterValue(.p_baseSSOURL_get, "ConfigProtocolMock - stub value for baseSSOURL was not defined") }
+	}
+	private var __p_baseSSOURL: (URL)?
+
+    public var ssoFinishedURL: URL {
+		get {	invocations.append(.p_ssoFinishedURL_get); return __p_ssoFinishedURL ?? givenGetterValue(.p_ssoFinishedURL_get, "ConfigProtocolMock - stub value for ssoFinishedURL was not defined") }
+	}
+	private var __p_ssoFinishedURL: (URL)?
+
+    public var ssoButtonTitle: [String: Any] {
+		get {	invocations.append(.p_ssoButtonTitle_get); return __p_ssoButtonTitle ?? givenGetterValue(.p_ssoButtonTitle_get, "ConfigProtocolMock - stub value for ssoButtonTitle was not defined") }
+	}
+	private var __p_ssoButtonTitle: ([String: Any])?
+
+    public var oAuthClientId: String {
+		get {	invocations.append(.p_oAuthClientId_get); return __p_oAuthClientId ?? givenGetterValue(.p_oAuthClientId_get, "ConfigProtocolMock - stub value for oAuthClientId was not defined") }
+	}
+	private var __p_oAuthClientId: (String)?
+
+    public var tokenType: TokenType {
+		get {	invocations.append(.p_tokenType_get); return __p_tokenType ?? givenGetterValue(.p_tokenType_get, "ConfigProtocolMock - stub value for tokenType was not defined") }
+	}
+	private var __p_tokenType: (TokenType)?
+
+    public var feedbackEmail: String {
+		get {	invocations.append(.p_feedbackEmail_get); return __p_feedbackEmail ?? givenGetterValue(.p_feedbackEmail_get, "ConfigProtocolMock - stub value for feedbackEmail was not defined") }
+	}
+	private var __p_feedbackEmail: (String)?
+
+    public var appStoreLink: String {
+		get {	invocations.append(.p_appStoreLink_get); return __p_appStoreLink ?? givenGetterValue(.p_appStoreLink_get, "ConfigProtocolMock - stub value for appStoreLink was not defined") }
+	}
+	private var __p_appStoreLink: (String)?
+
+    public var faq: URL? {
+		get {	invocations.append(.p_faq_get); return __p_faq ?? optionalGivenGetterValue(.p_faq_get, "ConfigProtocolMock - stub value for faq was not defined") }
+	}
+	private var __p_faq: (URL)?
+
+    public var platformName: String {
+		get {	invocations.append(.p_platformName_get); return __p_platformName ?? givenGetterValue(.p_platformName_get, "ConfigProtocolMock - stub value for platformName was not defined") }
+	}
+	private var __p_platformName: (String)?
+
+    public var agreement: AgreementConfig {
+		get {	invocations.append(.p_agreement_get); return __p_agreement ?? givenGetterValue(.p_agreement_get, "ConfigProtocolMock - stub value for agreement was not defined") }
+	}
+	private var __p_agreement: (AgreementConfig)?
+
+    public var firebase: FirebaseConfig {
+		get {	invocations.append(.p_firebase_get); return __p_firebase ?? givenGetterValue(.p_firebase_get, "ConfigProtocolMock - stub value for firebase was not defined") }
+	}
+	private var __p_firebase: (FirebaseConfig)?
+
+    public var facebook: FacebookConfig {
+		get {	invocations.append(.p_facebook_get); return __p_facebook ?? givenGetterValue(.p_facebook_get, "ConfigProtocolMock - stub value for facebook was not defined") }
+	}
+	private var __p_facebook: (FacebookConfig)?
+
+    public var microsoft: MicrosoftConfig {
+		get {	invocations.append(.p_microsoft_get); return __p_microsoft ?? givenGetterValue(.p_microsoft_get, "ConfigProtocolMock - stub value for microsoft was not defined") }
+	}
+	private var __p_microsoft: (MicrosoftConfig)?
+
+    public var google: GoogleConfig {
+		get {	invocations.append(.p_google_get); return __p_google ?? givenGetterValue(.p_google_get, "ConfigProtocolMock - stub value for google was not defined") }
+	}
+	private var __p_google: (GoogleConfig)?
+
+    public var appleSignIn: AppleSignInConfig {
+		get {	invocations.append(.p_appleSignIn_get); return __p_appleSignIn ?? givenGetterValue(.p_appleSignIn_get, "ConfigProtocolMock - stub value for appleSignIn was not defined") }
+	}
+	private var __p_appleSignIn: (AppleSignInConfig)?
+
+    public var features: FeaturesConfig {
+		get {	invocations.append(.p_features_get); return __p_features ?? givenGetterValue(.p_features_get, "ConfigProtocolMock - stub value for features was not defined") }
+	}
+	private var __p_features: (FeaturesConfig)?
+
+    public var theme: ThemeConfig {
+		get {	invocations.append(.p_theme_get); return __p_theme ?? givenGetterValue(.p_theme_get, "ConfigProtocolMock - stub value for theme was not defined") }
+	}
+	private var __p_theme: (ThemeConfig)?
+
+    public var uiComponents: UIComponentsConfig {
+		get {	invocations.append(.p_uiComponents_get); return __p_uiComponents ?? givenGetterValue(.p_uiComponents_get, "ConfigProtocolMock - stub value for uiComponents was not defined") }
+	}
+	private var __p_uiComponents: (UIComponentsConfig)?
+
+    public var discovery: DiscoveryConfig {
+		get {	invocations.append(.p_discovery_get); return __p_discovery ?? givenGetterValue(.p_discovery_get, "ConfigProtocolMock - stub value for discovery was not defined") }
+	}
+	private var __p_discovery: (DiscoveryConfig)?
+
+    public var dashboard: DashboardConfig {
+		get {	invocations.append(.p_dashboard_get); return __p_dashboard ?? givenGetterValue(.p_dashboard_get, "ConfigProtocolMock - stub value for dashboard was not defined") }
+	}
+	private var __p_dashboard: (DashboardConfig)?
+
+    public var braze: BrazeConfig {
+		get {	invocations.append(.p_braze_get); return __p_braze ?? givenGetterValue(.p_braze_get, "ConfigProtocolMock - stub value for braze was not defined") }
+	}
+	private var __p_braze: (BrazeConfig)?
+
+    public var branch: BranchConfig {
+		get {	invocations.append(.p_branch_get); return __p_branch ?? givenGetterValue(.p_branch_get, "ConfigProtocolMock - stub value for branch was not defined") }
+	}
+	private var __p_branch: (BranchConfig)?
+
+    public var segment: SegmentConfig {
+		get {	invocations.append(.p_segment_get); return __p_segment ?? givenGetterValue(.p_segment_get, "ConfigProtocolMock - stub value for segment was not defined") }
+	}
+	private var __p_segment: (SegmentConfig)?
+
+    public var program: DiscoveryConfig {
+		get {	invocations.append(.p_program_get); return __p_program ?? givenGetterValue(.p_program_get, "ConfigProtocolMock - stub value for program was not defined") }
+	}
+	private var __p_program: (DiscoveryConfig)?
+
+    public var URIScheme: String {
+		get {	invocations.append(.p_URIScheme_get); return __p_URIScheme ?? givenGetterValue(.p_URIScheme_get, "ConfigProtocolMock - stub value for URIScheme was not defined") }
+	}
+	private var __p_URIScheme: (String)?
+
+    public var fullStory: FullStoryConfig {
+		get {	invocations.append(.p_fullStory_get); return __p_fullStory ?? givenGetterValue(.p_fullStory_get, "ConfigProtocolMock - stub value for fullStory was not defined") }
+	}
+	private var __p_fullStory: (FullStoryConfig)?
+
+
+
+
+
+
+    fileprivate enum MethodType {
+        case p_baseURL_get
+        case p_baseSSOURL_get
+        case p_ssoFinishedURL_get
+        case p_ssoButtonTitle_get
+        case p_oAuthClientId_get
+        case p_tokenType_get
+        case p_feedbackEmail_get
+        case p_appStoreLink_get
+        case p_faq_get
+        case p_platformName_get
+        case p_agreement_get
+        case p_firebase_get
+        case p_facebook_get
+        case p_microsoft_get
+        case p_google_get
+        case p_appleSignIn_get
+        case p_features_get
+        case p_theme_get
+        case p_uiComponents_get
+        case p_discovery_get
+        case p_dashboard_get
+        case p_braze_get
+        case p_branch_get
+        case p_segment_get
+        case p_program_get
+        case p_URIScheme_get
+        case p_fullStory_get
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {            case (.p_baseURL_get,.p_baseURL_get): return Matcher.ComparisonResult.match
+            case (.p_baseSSOURL_get,.p_baseSSOURL_get): return Matcher.ComparisonResult.match
+            case (.p_ssoFinishedURL_get,.p_ssoFinishedURL_get): return Matcher.ComparisonResult.match
+            case (.p_ssoButtonTitle_get,.p_ssoButtonTitle_get): return Matcher.ComparisonResult.match
+            case (.p_oAuthClientId_get,.p_oAuthClientId_get): return Matcher.ComparisonResult.match
+            case (.p_tokenType_get,.p_tokenType_get): return Matcher.ComparisonResult.match
+            case (.p_feedbackEmail_get,.p_feedbackEmail_get): return Matcher.ComparisonResult.match
+            case (.p_appStoreLink_get,.p_appStoreLink_get): return Matcher.ComparisonResult.match
+            case (.p_faq_get,.p_faq_get): return Matcher.ComparisonResult.match
+            case (.p_platformName_get,.p_platformName_get): return Matcher.ComparisonResult.match
+            case (.p_agreement_get,.p_agreement_get): return Matcher.ComparisonResult.match
+            case (.p_firebase_get,.p_firebase_get): return Matcher.ComparisonResult.match
+            case (.p_facebook_get,.p_facebook_get): return Matcher.ComparisonResult.match
+            case (.p_microsoft_get,.p_microsoft_get): return Matcher.ComparisonResult.match
+            case (.p_google_get,.p_google_get): return Matcher.ComparisonResult.match
+            case (.p_appleSignIn_get,.p_appleSignIn_get): return Matcher.ComparisonResult.match
+            case (.p_features_get,.p_features_get): return Matcher.ComparisonResult.match
+            case (.p_theme_get,.p_theme_get): return Matcher.ComparisonResult.match
+            case (.p_uiComponents_get,.p_uiComponents_get): return Matcher.ComparisonResult.match
+            case (.p_discovery_get,.p_discovery_get): return Matcher.ComparisonResult.match
+            case (.p_dashboard_get,.p_dashboard_get): return Matcher.ComparisonResult.match
+            case (.p_braze_get,.p_braze_get): return Matcher.ComparisonResult.match
+            case (.p_branch_get,.p_branch_get): return Matcher.ComparisonResult.match
+            case (.p_segment_get,.p_segment_get): return Matcher.ComparisonResult.match
+            case (.p_program_get,.p_program_get): return Matcher.ComparisonResult.match
+            case (.p_URIScheme_get,.p_URIScheme_get): return Matcher.ComparisonResult.match
+            case (.p_fullStory_get,.p_fullStory_get): return Matcher.ComparisonResult.match
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .p_baseURL_get: return 0
+            case .p_baseSSOURL_get: return 0
+            case .p_ssoFinishedURL_get: return 0
+            case .p_ssoButtonTitle_get: return 0
+            case .p_oAuthClientId_get: return 0
+            case .p_tokenType_get: return 0
+            case .p_feedbackEmail_get: return 0
+            case .p_appStoreLink_get: return 0
+            case .p_faq_get: return 0
+            case .p_platformName_get: return 0
+            case .p_agreement_get: return 0
+            case .p_firebase_get: return 0
+            case .p_facebook_get: return 0
+            case .p_microsoft_get: return 0
+            case .p_google_get: return 0
+            case .p_appleSignIn_get: return 0
+            case .p_features_get: return 0
+            case .p_theme_get: return 0
+            case .p_uiComponents_get: return 0
+            case .p_discovery_get: return 0
+            case .p_dashboard_get: return 0
+            case .p_braze_get: return 0
+            case .p_branch_get: return 0
+            case .p_segment_get: return 0
+            case .p_program_get: return 0
+            case .p_URIScheme_get: return 0
+            case .p_fullStory_get: return 0
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .p_baseURL_get: return "[get] .baseURL"
+            case .p_baseSSOURL_get: return "[get] .baseSSOURL"
+            case .p_ssoFinishedURL_get: return "[get] .ssoFinishedURL"
+            case .p_ssoButtonTitle_get: return "[get] .ssoButtonTitle"
+            case .p_oAuthClientId_get: return "[get] .oAuthClientId"
+            case .p_tokenType_get: return "[get] .tokenType"
+            case .p_feedbackEmail_get: return "[get] .feedbackEmail"
+            case .p_appStoreLink_get: return "[get] .appStoreLink"
+            case .p_faq_get: return "[get] .faq"
+            case .p_platformName_get: return "[get] .platformName"
+            case .p_agreement_get: return "[get] .agreement"
+            case .p_firebase_get: return "[get] .firebase"
+            case .p_facebook_get: return "[get] .facebook"
+            case .p_microsoft_get: return "[get] .microsoft"
+            case .p_google_get: return "[get] .google"
+            case .p_appleSignIn_get: return "[get] .appleSignIn"
+            case .p_features_get: return "[get] .features"
+            case .p_theme_get: return "[get] .theme"
+            case .p_uiComponents_get: return "[get] .uiComponents"
+            case .p_discovery_get: return "[get] .discovery"
+            case .p_dashboard_get: return "[get] .dashboard"
+            case .p_braze_get: return "[get] .braze"
+            case .p_branch_get: return "[get] .branch"
+            case .p_segment_get: return "[get] .segment"
+            case .p_program_get: return "[get] .program"
+            case .p_URIScheme_get: return "[get] .URIScheme"
+            case .p_fullStory_get: return "[get] .fullStory"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+        public static func baseURL(getter defaultValue: URL...) -> PropertyStub {
+            return Given(method: .p_baseURL_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func baseSSOURL(getter defaultValue: URL...) -> PropertyStub {
+            return Given(method: .p_baseSSOURL_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func ssoFinishedURL(getter defaultValue: URL...) -> PropertyStub {
+            return Given(method: .p_ssoFinishedURL_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func ssoButtonTitle(getter defaultValue: [String: Any]...) -> PropertyStub {
+            return Given(method: .p_ssoButtonTitle_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func oAuthClientId(getter defaultValue: String...) -> PropertyStub {
+            return Given(method: .p_oAuthClientId_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func tokenType(getter defaultValue: TokenType...) -> PropertyStub {
+            return Given(method: .p_tokenType_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func feedbackEmail(getter defaultValue: String...) -> PropertyStub {
+            return Given(method: .p_feedbackEmail_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func appStoreLink(getter defaultValue: String...) -> PropertyStub {
+            return Given(method: .p_appStoreLink_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func faq(getter defaultValue: URL?...) -> PropertyStub {
+            return Given(method: .p_faq_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func platformName(getter defaultValue: String...) -> PropertyStub {
+            return Given(method: .p_platformName_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func agreement(getter defaultValue: AgreementConfig...) -> PropertyStub {
+            return Given(method: .p_agreement_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func firebase(getter defaultValue: FirebaseConfig...) -> PropertyStub {
+            return Given(method: .p_firebase_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func facebook(getter defaultValue: FacebookConfig...) -> PropertyStub {
+            return Given(method: .p_facebook_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func microsoft(getter defaultValue: MicrosoftConfig...) -> PropertyStub {
+            return Given(method: .p_microsoft_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func google(getter defaultValue: GoogleConfig...) -> PropertyStub {
+            return Given(method: .p_google_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func appleSignIn(getter defaultValue: AppleSignInConfig...) -> PropertyStub {
+            return Given(method: .p_appleSignIn_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func features(getter defaultValue: FeaturesConfig...) -> PropertyStub {
+            return Given(method: .p_features_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func theme(getter defaultValue: ThemeConfig...) -> PropertyStub {
+            return Given(method: .p_theme_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func uiComponents(getter defaultValue: UIComponentsConfig...) -> PropertyStub {
+            return Given(method: .p_uiComponents_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func discovery(getter defaultValue: DiscoveryConfig...) -> PropertyStub {
+            return Given(method: .p_discovery_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func dashboard(getter defaultValue: DashboardConfig...) -> PropertyStub {
+            return Given(method: .p_dashboard_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func braze(getter defaultValue: BrazeConfig...) -> PropertyStub {
+            return Given(method: .p_braze_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func branch(getter defaultValue: BranchConfig...) -> PropertyStub {
+            return Given(method: .p_branch_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func segment(getter defaultValue: SegmentConfig...) -> PropertyStub {
+            return Given(method: .p_segment_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func program(getter defaultValue: DiscoveryConfig...) -> PropertyStub {
+            return Given(method: .p_program_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func URIScheme(getter defaultValue: String...) -> PropertyStub {
+            return Given(method: .p_URIScheme_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func fullStory(getter defaultValue: FullStoryConfig...) -> PropertyStub {
+            return Given(method: .p_fullStory_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static var baseURL: Verify { return Verify(method: .p_baseURL_get) }
+        public static var baseSSOURL: Verify { return Verify(method: .p_baseSSOURL_get) }
+        public static var ssoFinishedURL: Verify { return Verify(method: .p_ssoFinishedURL_get) }
+        public static var ssoButtonTitle: Verify { return Verify(method: .p_ssoButtonTitle_get) }
+        public static var oAuthClientId: Verify { return Verify(method: .p_oAuthClientId_get) }
+        public static var tokenType: Verify { return Verify(method: .p_tokenType_get) }
+        public static var feedbackEmail: Verify { return Verify(method: .p_feedbackEmail_get) }
+        public static var appStoreLink: Verify { return Verify(method: .p_appStoreLink_get) }
+        public static var faq: Verify { return Verify(method: .p_faq_get) }
+        public static var platformName: Verify { return Verify(method: .p_platformName_get) }
+        public static var agreement: Verify { return Verify(method: .p_agreement_get) }
+        public static var firebase: Verify { return Verify(method: .p_firebase_get) }
+        public static var facebook: Verify { return Verify(method: .p_facebook_get) }
+        public static var microsoft: Verify { return Verify(method: .p_microsoft_get) }
+        public static var google: Verify { return Verify(method: .p_google_get) }
+        public static var appleSignIn: Verify { return Verify(method: .p_appleSignIn_get) }
+        public static var features: Verify { return Verify(method: .p_features_get) }
+        public static var theme: Verify { return Verify(method: .p_theme_get) }
+        public static var uiComponents: Verify { return Verify(method: .p_uiComponents_get) }
+        public static var discovery: Verify { return Verify(method: .p_discovery_get) }
+        public static var dashboard: Verify { return Verify(method: .p_dashboard_get) }
+        public static var braze: Verify { return Verify(method: .p_braze_get) }
+        public static var branch: Verify { return Verify(method: .p_branch_get) }
+        public static var segment: Verify { return Verify(method: .p_segment_get) }
+        public static var program: Verify { return Verify(method: .p_program_get) }
+        public static var URIScheme: Verify { return Verify(method: .p_URIScheme_get) }
+        public static var fullStory: Verify { return Verify(method: .p_fullStory_get) }
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - ConnectivityProtocol
 
 open class ConnectivityProtocolMock: ConnectivityProtocol, Mock {
@@ -4477,6 +5370,369 @@ open class ProfileInteractorProtocolMock: ProfileInteractorProtocol, Mock {
     }
 }
 
+// MARK: - ProfilePersistenceProtocol
+
+open class ProfilePersistenceProtocolMock: ProfilePersistenceProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func getCourseState(courseID: String) -> CourseCalendarState? {
+        addInvocation(.m_getCourseState__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getCourseState__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseCalendarState? = nil
+		do {
+		    __value = try methodReturnValue(.m_getCourseState__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
+    open func getAllCourseStates() -> [CourseCalendarState] {
+        addInvocation(.m_getAllCourseStates)
+		let perform = methodPerformValue(.m_getAllCourseStates) as? () -> Void
+		perform?()
+		var __value: [CourseCalendarState]
+		do {
+		    __value = try methodReturnValue(.m_getAllCourseStates).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for getAllCourseStates(). Use given")
+			Failure("Stub return value not specified for getAllCourseStates(). Use given")
+		}
+		return __value
+    }
+
+    open func saveCourseState(state: CourseCalendarState) {
+        addInvocation(.m_saveCourseState__state_state(Parameter<CourseCalendarState>.value(`state`)))
+		let perform = methodPerformValue(.m_saveCourseState__state_state(Parameter<CourseCalendarState>.value(`state`))) as? (CourseCalendarState) -> Void
+		perform?(`state`)
+    }
+
+    open func removeCourseState(courseID: String) {
+        addInvocation(.m_removeCourseState__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_removeCourseState__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+    }
+
+    open func deleteAllCourseStatesAndEvents() {
+        addInvocation(.m_deleteAllCourseStatesAndEvents)
+		let perform = methodPerformValue(.m_deleteAllCourseStatesAndEvents) as? () -> Void
+		perform?()
+    }
+
+    open func saveCourseCalendarEvent(_ event: CourseCalendarEvent) {
+        addInvocation(.m_saveCourseCalendarEvent__event(Parameter<CourseCalendarEvent>.value(`event`)))
+		let perform = methodPerformValue(.m_saveCourseCalendarEvent__event(Parameter<CourseCalendarEvent>.value(`event`))) as? (CourseCalendarEvent) -> Void
+		perform?(`event`)
+    }
+
+    open func removeCourseCalendarEvents(for courseId: String) {
+        addInvocation(.m_removeCourseCalendarEvents__for_courseId(Parameter<String>.value(`courseId`)))
+		let perform = methodPerformValue(.m_removeCourseCalendarEvents__for_courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
+		perform?(`courseId`)
+    }
+
+    open func removeAllCourseCalendarEvents() {
+        addInvocation(.m_removeAllCourseCalendarEvents)
+		let perform = methodPerformValue(.m_removeAllCourseCalendarEvents) as? () -> Void
+		perform?()
+    }
+
+    open func getCourseCalendarEvents(for courseId: String) -> [CourseCalendarEvent] {
+        addInvocation(.m_getCourseCalendarEvents__for_courseId(Parameter<String>.value(`courseId`)))
+		let perform = methodPerformValue(.m_getCourseCalendarEvents__for_courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
+		perform?(`courseId`)
+		var __value: [CourseCalendarEvent]
+		do {
+		    __value = try methodReturnValue(.m_getCourseCalendarEvents__for_courseId(Parameter<String>.value(`courseId`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for getCourseCalendarEvents(for courseId: String). Use given")
+			Failure("Stub return value not specified for getCourseCalendarEvents(for courseId: String). Use given")
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_getCourseState__courseID_courseID(Parameter<String>)
+        case m_getAllCourseStates
+        case m_saveCourseState__state_state(Parameter<CourseCalendarState>)
+        case m_removeCourseState__courseID_courseID(Parameter<String>)
+        case m_deleteAllCourseStatesAndEvents
+        case m_saveCourseCalendarEvent__event(Parameter<CourseCalendarEvent>)
+        case m_removeCourseCalendarEvents__for_courseId(Parameter<String>)
+        case m_removeAllCourseCalendarEvents
+        case m_getCourseCalendarEvents__for_courseId(Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_getCourseState__courseID_courseID(let lhsCourseid), .m_getCourseState__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getAllCourseStates, .m_getAllCourseStates): return .match
+
+            case (.m_saveCourseState__state_state(let lhsState), .m_saveCourseState__state_state(let rhsState)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsState, rhs: rhsState, with: matcher), lhsState, rhsState, "state"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_removeCourseState__courseID_courseID(let lhsCourseid), .m_removeCourseState__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_deleteAllCourseStatesAndEvents, .m_deleteAllCourseStatesAndEvents): return .match
+
+            case (.m_saveCourseCalendarEvent__event(let lhsEvent), .m_saveCourseCalendarEvent__event(let rhsEvent)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsEvent, rhs: rhsEvent, with: matcher), lhsEvent, rhsEvent, "_ event"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_removeCourseCalendarEvents__for_courseId(let lhsCourseid), .m_removeCourseCalendarEvents__for_courseId(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "for courseId"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_removeAllCourseCalendarEvents, .m_removeAllCourseCalendarEvents): return .match
+
+            case (.m_getCourseCalendarEvents__for_courseId(let lhsCourseid), .m_getCourseCalendarEvents__for_courseId(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "for courseId"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_getCourseState__courseID_courseID(p0): return p0.intValue
+            case .m_getAllCourseStates: return 0
+            case let .m_saveCourseState__state_state(p0): return p0.intValue
+            case let .m_removeCourseState__courseID_courseID(p0): return p0.intValue
+            case .m_deleteAllCourseStatesAndEvents: return 0
+            case let .m_saveCourseCalendarEvent__event(p0): return p0.intValue
+            case let .m_removeCourseCalendarEvents__for_courseId(p0): return p0.intValue
+            case .m_removeAllCourseCalendarEvents: return 0
+            case let .m_getCourseCalendarEvents__for_courseId(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_getCourseState__courseID_courseID: return ".getCourseState(courseID:)"
+            case .m_getAllCourseStates: return ".getAllCourseStates()"
+            case .m_saveCourseState__state_state: return ".saveCourseState(state:)"
+            case .m_removeCourseState__courseID_courseID: return ".removeCourseState(courseID:)"
+            case .m_deleteAllCourseStatesAndEvents: return ".deleteAllCourseStatesAndEvents()"
+            case .m_saveCourseCalendarEvent__event: return ".saveCourseCalendarEvent(_:)"
+            case .m_removeCourseCalendarEvents__for_courseId: return ".removeCourseCalendarEvents(for:)"
+            case .m_removeAllCourseCalendarEvents: return ".removeAllCourseCalendarEvents()"
+            case .m_getCourseCalendarEvents__for_courseId: return ".getCourseCalendarEvents(for:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func getCourseState(courseID: Parameter<String>, willReturn: CourseCalendarState?...) -> MethodStub {
+            return Given(method: .m_getCourseState__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getAllCourseStates(willReturn: [CourseCalendarState]...) -> MethodStub {
+            return Given(method: .m_getAllCourseStates, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCourseCalendarEvents(for courseId: Parameter<String>, willReturn: [CourseCalendarEvent]...) -> MethodStub {
+            return Given(method: .m_getCourseCalendarEvents__for_courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCourseState(courseID: Parameter<String>, willProduce: (Stubber<CourseCalendarState?>) -> Void) -> MethodStub {
+            let willReturn: [CourseCalendarState?] = []
+			let given: Given = { return Given(method: .m_getCourseState__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (CourseCalendarState?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getAllCourseStates(willProduce: (Stubber<[CourseCalendarState]>) -> Void) -> MethodStub {
+            let willReturn: [[CourseCalendarState]] = []
+			let given: Given = { return Given(method: .m_getAllCourseStates, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([CourseCalendarState]).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getCourseCalendarEvents(for courseId: Parameter<String>, willProduce: (Stubber<[CourseCalendarEvent]>) -> Void) -> MethodStub {
+            let willReturn: [[CourseCalendarEvent]] = []
+			let given: Given = { return Given(method: .m_getCourseCalendarEvents__for_courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([CourseCalendarEvent]).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func getCourseState(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseState__courseID_courseID(`courseID`))}
+        public static func getAllCourseStates() -> Verify { return Verify(method: .m_getAllCourseStates)}
+        public static func saveCourseState(state: Parameter<CourseCalendarState>) -> Verify { return Verify(method: .m_saveCourseState__state_state(`state`))}
+        public static func removeCourseState(courseID: Parameter<String>) -> Verify { return Verify(method: .m_removeCourseState__courseID_courseID(`courseID`))}
+        public static func deleteAllCourseStatesAndEvents() -> Verify { return Verify(method: .m_deleteAllCourseStatesAndEvents)}
+        public static func saveCourseCalendarEvent(_ event: Parameter<CourseCalendarEvent>) -> Verify { return Verify(method: .m_saveCourseCalendarEvent__event(`event`))}
+        public static func removeCourseCalendarEvents(for courseId: Parameter<String>) -> Verify { return Verify(method: .m_removeCourseCalendarEvents__for_courseId(`courseId`))}
+        public static func removeAllCourseCalendarEvents() -> Verify { return Verify(method: .m_removeAllCourseCalendarEvents)}
+        public static func getCourseCalendarEvents(for courseId: Parameter<String>) -> Verify { return Verify(method: .m_getCourseCalendarEvents__for_courseId(`courseId`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func getCourseState(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseState__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func getAllCourseStates(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_getAllCourseStates, performs: perform)
+        }
+        public static func saveCourseState(state: Parameter<CourseCalendarState>, perform: @escaping (CourseCalendarState) -> Void) -> Perform {
+            return Perform(method: .m_saveCourseState__state_state(`state`), performs: perform)
+        }
+        public static func removeCourseState(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_removeCourseState__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func deleteAllCourseStatesAndEvents(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_deleteAllCourseStatesAndEvents, performs: perform)
+        }
+        public static func saveCourseCalendarEvent(_ event: Parameter<CourseCalendarEvent>, perform: @escaping (CourseCalendarEvent) -> Void) -> Perform {
+            return Perform(method: .m_saveCourseCalendarEvent__event(`event`), performs: perform)
+        }
+        public static func removeCourseCalendarEvents(for courseId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_removeCourseCalendarEvents__for_courseId(`courseId`), performs: perform)
+        }
+        public static func removeAllCourseCalendarEvents(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_removeAllCourseCalendarEvents, performs: perform)
+        }
+        public static func getCourseCalendarEvents(for courseId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseCalendarEvents__for_courseId(`courseId`), performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
 // MARK: - ProfileRouter
 
 open class ProfileRouterMock: ProfileRouter, Mock {
@@ -5037,6 +6293,315 @@ open class ProfileRouterMock: ProfileRouter, Mock {
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>, perform: @escaping (UIModalTransitionStyle, Bool, () -> any View) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`), performs: perform)
         }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - ProfileStorage
+
+open class ProfileStorageMock: ProfileStorage, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+    public var userProfile: DataLayer.UserProfile? {
+		get {	invocations.append(.p_userProfile_get); return __p_userProfile ?? optionalGivenGetterValue(.p_userProfile_get, "ProfileStorageMock - stub value for userProfile was not defined") }
+		set {	invocations.append(.p_userProfile_set(.value(newValue))); __p_userProfile = newValue }
+	}
+	private var __p_userProfile: (DataLayer.UserProfile)?
+
+    public var useRelativeDates: Bool {
+		get {	invocations.append(.p_useRelativeDates_get); return __p_useRelativeDates ?? givenGetterValue(.p_useRelativeDates_get, "ProfileStorageMock - stub value for useRelativeDates was not defined") }
+		set {	invocations.append(.p_useRelativeDates_set(.value(newValue))); __p_useRelativeDates = newValue }
+	}
+	private var __p_useRelativeDates: (Bool)?
+
+    public var calendarSettings: CalendarSettings? {
+		get {	invocations.append(.p_calendarSettings_get); return __p_calendarSettings ?? optionalGivenGetterValue(.p_calendarSettings_get, "ProfileStorageMock - stub value for calendarSettings was not defined") }
+		set {	invocations.append(.p_calendarSettings_set(.value(newValue))); __p_calendarSettings = newValue }
+	}
+	private var __p_calendarSettings: (CalendarSettings)?
+
+    public var hideInactiveCourses: Bool? {
+		get {	invocations.append(.p_hideInactiveCourses_get); return __p_hideInactiveCourses ?? optionalGivenGetterValue(.p_hideInactiveCourses_get, "ProfileStorageMock - stub value for hideInactiveCourses was not defined") }
+		set {	invocations.append(.p_hideInactiveCourses_set(.value(newValue))); __p_hideInactiveCourses = newValue }
+	}
+	private var __p_hideInactiveCourses: (Bool)?
+
+    public var lastLoginUsername: String? {
+		get {	invocations.append(.p_lastLoginUsername_get); return __p_lastLoginUsername ?? optionalGivenGetterValue(.p_lastLoginUsername_get, "ProfileStorageMock - stub value for lastLoginUsername was not defined") }
+		set {	invocations.append(.p_lastLoginUsername_set(.value(newValue))); __p_lastLoginUsername = newValue }
+	}
+	private var __p_lastLoginUsername: (String)?
+
+    public var lastCalendarName: String? {
+		get {	invocations.append(.p_lastCalendarName_get); return __p_lastCalendarName ?? optionalGivenGetterValue(.p_lastCalendarName_get, "ProfileStorageMock - stub value for lastCalendarName was not defined") }
+		set {	invocations.append(.p_lastCalendarName_set(.value(newValue))); __p_lastCalendarName = newValue }
+	}
+	private var __p_lastCalendarName: (String)?
+
+    public var lastCalendarUpdateDate: Date? {
+		get {	invocations.append(.p_lastCalendarUpdateDate_get); return __p_lastCalendarUpdateDate ?? optionalGivenGetterValue(.p_lastCalendarUpdateDate_get, "ProfileStorageMock - stub value for lastCalendarUpdateDate was not defined") }
+		set {	invocations.append(.p_lastCalendarUpdateDate_set(.value(newValue))); __p_lastCalendarUpdateDate = newValue }
+	}
+	private var __p_lastCalendarUpdateDate: (Date)?
+
+    public var firstCalendarUpdate: Bool? {
+		get {	invocations.append(.p_firstCalendarUpdate_get); return __p_firstCalendarUpdate ?? optionalGivenGetterValue(.p_firstCalendarUpdate_get, "ProfileStorageMock - stub value for firstCalendarUpdate was not defined") }
+		set {	invocations.append(.p_firstCalendarUpdate_set(.value(newValue))); __p_firstCalendarUpdate = newValue }
+	}
+	private var __p_firstCalendarUpdate: (Bool)?
+
+
+
+
+
+
+    fileprivate enum MethodType {
+        case p_userProfile_get
+		case p_userProfile_set(Parameter<DataLayer.UserProfile?>)
+        case p_useRelativeDates_get
+		case p_useRelativeDates_set(Parameter<Bool>)
+        case p_calendarSettings_get
+		case p_calendarSettings_set(Parameter<CalendarSettings?>)
+        case p_hideInactiveCourses_get
+		case p_hideInactiveCourses_set(Parameter<Bool?>)
+        case p_lastLoginUsername_get
+		case p_lastLoginUsername_set(Parameter<String?>)
+        case p_lastCalendarName_get
+		case p_lastCalendarName_set(Parameter<String?>)
+        case p_lastCalendarUpdateDate_get
+		case p_lastCalendarUpdateDate_set(Parameter<Date?>)
+        case p_firstCalendarUpdate_get
+		case p_firstCalendarUpdate_set(Parameter<Bool?>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {            case (.p_userProfile_get,.p_userProfile_get): return Matcher.ComparisonResult.match
+			case (.p_userProfile_set(let left),.p_userProfile_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<DataLayer.UserProfile?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_useRelativeDates_get,.p_useRelativeDates_get): return Matcher.ComparisonResult.match
+			case (.p_useRelativeDates_set(let left),.p_useRelativeDates_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_calendarSettings_get,.p_calendarSettings_get): return Matcher.ComparisonResult.match
+			case (.p_calendarSettings_set(let left),.p_calendarSettings_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<CalendarSettings?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_hideInactiveCourses_get,.p_hideInactiveCourses_get): return Matcher.ComparisonResult.match
+			case (.p_hideInactiveCourses_set(let left),.p_hideInactiveCourses_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_lastLoginUsername_get,.p_lastLoginUsername_get): return Matcher.ComparisonResult.match
+			case (.p_lastLoginUsername_set(let left),.p_lastLoginUsername_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_lastCalendarName_get,.p_lastCalendarName_get): return Matcher.ComparisonResult.match
+			case (.p_lastCalendarName_set(let left),.p_lastCalendarName_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_lastCalendarUpdateDate_get,.p_lastCalendarUpdateDate_get): return Matcher.ComparisonResult.match
+			case (.p_lastCalendarUpdateDate_set(let left),.p_lastCalendarUpdateDate_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Date?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_firstCalendarUpdate_get,.p_firstCalendarUpdate_get): return Matcher.ComparisonResult.match
+			case (.p_firstCalendarUpdate_set(let left),.p_firstCalendarUpdate_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case .p_userProfile_get: return 0
+			case .p_userProfile_set(let newValue): return newValue.intValue
+            case .p_useRelativeDates_get: return 0
+			case .p_useRelativeDates_set(let newValue): return newValue.intValue
+            case .p_calendarSettings_get: return 0
+			case .p_calendarSettings_set(let newValue): return newValue.intValue
+            case .p_hideInactiveCourses_get: return 0
+			case .p_hideInactiveCourses_set(let newValue): return newValue.intValue
+            case .p_lastLoginUsername_get: return 0
+			case .p_lastLoginUsername_set(let newValue): return newValue.intValue
+            case .p_lastCalendarName_get: return 0
+			case .p_lastCalendarName_set(let newValue): return newValue.intValue
+            case .p_lastCalendarUpdateDate_get: return 0
+			case .p_lastCalendarUpdateDate_set(let newValue): return newValue.intValue
+            case .p_firstCalendarUpdate_get: return 0
+			case .p_firstCalendarUpdate_set(let newValue): return newValue.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .p_userProfile_get: return "[get] .userProfile"
+			case .p_userProfile_set: return "[set] .userProfile"
+            case .p_useRelativeDates_get: return "[get] .useRelativeDates"
+			case .p_useRelativeDates_set: return "[set] .useRelativeDates"
+            case .p_calendarSettings_get: return "[get] .calendarSettings"
+			case .p_calendarSettings_set: return "[set] .calendarSettings"
+            case .p_hideInactiveCourses_get: return "[get] .hideInactiveCourses"
+			case .p_hideInactiveCourses_set: return "[set] .hideInactiveCourses"
+            case .p_lastLoginUsername_get: return "[get] .lastLoginUsername"
+			case .p_lastLoginUsername_set: return "[set] .lastLoginUsername"
+            case .p_lastCalendarName_get: return "[get] .lastCalendarName"
+			case .p_lastCalendarName_set: return "[set] .lastCalendarName"
+            case .p_lastCalendarUpdateDate_get: return "[get] .lastCalendarUpdateDate"
+			case .p_lastCalendarUpdateDate_set: return "[set] .lastCalendarUpdateDate"
+            case .p_firstCalendarUpdate_get: return "[get] .firstCalendarUpdate"
+			case .p_firstCalendarUpdate_set: return "[set] .firstCalendarUpdate"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+        public static func userProfile(getter defaultValue: DataLayer.UserProfile?...) -> PropertyStub {
+            return Given(method: .p_userProfile_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func useRelativeDates(getter defaultValue: Bool...) -> PropertyStub {
+            return Given(method: .p_useRelativeDates_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func calendarSettings(getter defaultValue: CalendarSettings?...) -> PropertyStub {
+            return Given(method: .p_calendarSettings_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func hideInactiveCourses(getter defaultValue: Bool?...) -> PropertyStub {
+            return Given(method: .p_hideInactiveCourses_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func lastLoginUsername(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_lastLoginUsername_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func lastCalendarName(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_lastCalendarName_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func lastCalendarUpdateDate(getter defaultValue: Date?...) -> PropertyStub {
+            return Given(method: .p_lastCalendarUpdateDate_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func firstCalendarUpdate(getter defaultValue: Bool?...) -> PropertyStub {
+            return Given(method: .p_firstCalendarUpdate_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static var userProfile: Verify { return Verify(method: .p_userProfile_get) }
+		public static func userProfile(set newValue: Parameter<DataLayer.UserProfile?>) -> Verify { return Verify(method: .p_userProfile_set(newValue)) }
+        public static var useRelativeDates: Verify { return Verify(method: .p_useRelativeDates_get) }
+		public static func useRelativeDates(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_useRelativeDates_set(newValue)) }
+        public static var calendarSettings: Verify { return Verify(method: .p_calendarSettings_get) }
+		public static func calendarSettings(set newValue: Parameter<CalendarSettings?>) -> Verify { return Verify(method: .p_calendarSettings_set(newValue)) }
+        public static var hideInactiveCourses: Verify { return Verify(method: .p_hideInactiveCourses_get) }
+		public static func hideInactiveCourses(set newValue: Parameter<Bool?>) -> Verify { return Verify(method: .p_hideInactiveCourses_set(newValue)) }
+        public static var lastLoginUsername: Verify { return Verify(method: .p_lastLoginUsername_get) }
+		public static func lastLoginUsername(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_lastLoginUsername_set(newValue)) }
+        public static var lastCalendarName: Verify { return Verify(method: .p_lastCalendarName_get) }
+		public static func lastCalendarName(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_lastCalendarName_set(newValue)) }
+        public static var lastCalendarUpdateDate: Verify { return Verify(method: .p_lastCalendarUpdateDate_get) }
+		public static func lastCalendarUpdateDate(set newValue: Parameter<Date?>) -> Verify { return Verify(method: .p_lastCalendarUpdateDate_set(newValue)) }
+        public static var firstCalendarUpdate: Verify { return Verify(method: .p_firstCalendarUpdate_get) }
+		public static func firstCalendarUpdate(set newValue: Parameter<Bool?>) -> Verify { return Verify(method: .p_firstCalendarUpdate_set(newValue)) }
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
     }
 
     public func given(_ method: Given) {

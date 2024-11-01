@@ -36,6 +36,8 @@
 		214DA1AADABC7BF4FB8EA1D7 /* Pods_App_Dashboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B008B2F0762EF35CADE3DD4 /* Pods_App_Dashboard.framework */; };
 		97E7DF0B2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */; };
 		9AD4A6A1AAF97092CF457FE2 /* Pods_App_Dashboard_DashboardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22905947A936093AD23D4CF8 /* Pods_App_Dashboard_DashboardTests.framework */; };
+		CE1735062CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735052CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift */; };
+		CE17350A2CD26CB500F9606A /* AllCoursesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735092CD26CB500F9606A /* AllCoursesViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseEnrollmentsMock.swift; sourceTree = "<group>"; };
 		BBABB135366FFB1DAEFA0D16 /* Pods-App-Dashboard-DashboardTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CCF4C665AD91B6B96F6A11DF /* Pods-App-Dashboard-DashboardTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugdev.xcconfig"; sourceTree = "<group>"; };
+		CE1735052CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryCourseDashboardViewModelTests.swift; sourceTree = "<group>"; };
+		CE1735092CD26CB500F9606A /* AllCoursesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCoursesViewModelTests.swift; sourceTree = "<group>"; };
 		DE6CF4F983BBF52606807F9A /* Pods-App-Dashboard-DashboardTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 		E36D702D7E3F9A8B3303AD0A /* Pods-App-Dashboard-DashboardTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.releasedev.xcconfig"; sourceTree = "<group>"; };
 		E5B672C28C8F9279BB4E5C9B /* Pods-App-Dashboard.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard.releasestage.xcconfig"; sourceTree = "<group>"; };
@@ -237,6 +241,8 @@
 		0766DFD2299AD99B00EBEF6A /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				CE1735092CD26CB500F9606A /* AllCoursesViewModelTests.swift */,
+				CE1735052CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift */,
 				02A9A90A2978194100B55797 /* DashboardViewModelTests.swift */,
 			);
 			path = Presentation;
@@ -483,7 +489,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				02A9A90B2978194100B55797 /* DashboardViewModelTests.swift in Sources */,
+				CE17350A2CD26CB500F9606A /* AllCoursesViewModelTests.swift in Sources */,
 				02A9A92929781A4D00B55797 /* DashboardMock.generated.swift in Sources */,
+				CE1735062CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -100,6 +100,9 @@ final class DownloadManagerTests: XCTestCase {
         // When
         try await downloadManager.resumeDownloading()
         
+        // Wait a bit for async operations to complete
+        try? await Task.sleep(nanoseconds: 100_000_000)
+        
         // Then
         Verify(persistence, 2, .nextBlockForDownloading())
         XCTAssertEqual(downloadManager.currentDownloadTask?.id, mockTask.id)

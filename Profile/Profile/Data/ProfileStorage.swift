@@ -9,6 +9,7 @@ import Foundation
 import Core
 import UIKit
 
+//sourcery: AutoMockable
 public protocol ProfileStorage {
     var userProfile: DataLayer.UserProfile? {get set}
     var useRelativeDates: Bool {get set}

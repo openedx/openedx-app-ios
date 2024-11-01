@@ -7,6 +7,7 @@
 
 import Foundation
 
+//sourcery: AutoMockable
 public protocol ConfigProtocol {
     var baseURL: URL { get }
     var baseSSOURL: URL { get }

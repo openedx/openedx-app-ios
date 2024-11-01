@@ -109,11 +109,11 @@ final class SignInViewModelTests: XCTestCase {
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
         
-        Given(interactor, .ssoLogin(title: .any, willReturn: user))
+        Given(interactor, .login(ssoToken: .any, willReturn: user))
         
         await viewModel.ssoLogin(title: "Riyadah")
         
-        Verify(interactor, 1, .ssoLogin(title: .any))
+        Verify(interactor, 1, .login(ssoToken: .any))
         Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any))
         
         XCTAssertEqual(viewModel.errorMessage, nil)
