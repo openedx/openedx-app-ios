@@ -57,11 +57,11 @@
 		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
-		BA3042792B1F7147009B64B7 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = BA3042782B1F7147009B64B7 /* MSAL */; };
 		BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7468752B96201D00793145 /* DeepLinkRouter.swift */; };
 		CE3BD14E2CBEB0DA0026F4E3 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */; };
 		CE5712792CD1099B00D4AB17 /* OEXFirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */; };
 		CE57127A2CD109A800D4AB17 /* OEXFoundation in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CE924BE72CD8FAB3000137CA /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CE924BE62CD8FAB3000137CA /* FirebaseMessaging */; };
 		CE9C07D82CD104E5009C44D1 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -165,6 +165,7 @@
 				025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */,
 				0770DE4B28D0A462006D8A5D /* Authorization.framework in Frameworks */,
 				072787B128D34D83002E9142 /* Discovery.framework in Frameworks */,
+				CE924BE72CD8FAB3000137CA /* FirebaseMessaging in Frameworks */,
 				0218196428F734FA00202564 /* Discussion.framework in Frameworks */,
 				0219C67728F4347600D64452 /* Course.framework in Frameworks */,
 				027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */,
@@ -398,6 +399,7 @@
 			packageProductDependencies = (
 				CE9C07D72CD104E5009C44D1 /* OEXFoundation */,
 				CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */,
+				CE924BE62CD8FAB3000137CA /* FirebaseMessaging */,
 			);
 			productName = OpenEdX;
 			productReference = 07D5DA3128D075AA00752FD9 /* OpenEdX.app */;
@@ -431,6 +433,7 @@
 			packageReferences = (
 				CE9C07D62CD104E5009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
 				CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */,
+				CE924BE52CD8FAB3000137CA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
 			projectDirPath = "";
@@ -1221,6 +1224,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CE924BE52CD8FAB3000137CA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = exactVersion;
+				version = 11.3.0;
+			};
+		};
 		CE9C07D62CD104E5009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
@@ -1231,10 +1242,10 @@
 		};
 		CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/raccoongang/openedx-app-firebase-analytics-ios";
+			repositoryURL = "https://github.com/openedx/openedx-app-firebase-analytics-ios";
 			requirement = {
 				kind = exactVersion;
-				version = 0.1.0;
+				version = 1.0.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1244,6 +1255,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */;
 			productName = OEXFirebaseAnalytics;
+		};
+		CE924BE62CD8FAB3000137CA /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE924BE52CD8FAB3000137CA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		CE9C07D72CD104E5009C44D1 /* OEXFoundation */ = {
 			isa = XCSwiftPackageProductDependency;
