@@ -42,7 +42,6 @@
 		CEB25A052CC13A36007FC792 /* SocialAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB25A002CC13A36007FC792 /* SocialAuthResponse.swift */; };
 		CEB25A062CC13A36007FC792 /* MicrosoftAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB259FF2CC13A36007FC792 /* MicrosoftAuthProvider.swift */; };
 		CEB25A072CC13A36007FC792 /* SocialAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB259FA2CC13A36007FC792 /* SocialAuthError.swift */; };
-		CEBCA42E2CC13C9900076589 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA42D2CC13C9900076589 /* MSAL */; };
 		DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */; };
 		E03261642AE64676002CA7EB /* StartupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261632AE64676002CA7EB /* StartupViewModel.swift */; };
 		E03261662AE64AF4002CA7EB /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261652AE64AF4002CA7EB /* StartupView.swift */; };
@@ -143,7 +142,6 @@
 				0770DE4728D0A3DA006D8A5D /* Core.framework in Frameworks */,
 				DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */,
 				CE7FB8772CC13C0B0088001A /* FacebookLogin in Frameworks */,
-				CEBCA42E2CC13C9900076589 /* MSAL in Frameworks */,
 				CEB1E2642CC14E3100921517 /* OEXFoundation in Frameworks */,
 				CE7FB87A2CC13C3C0088001A /* GoogleSignInSwift in Frameworks */,
 			);
@@ -448,7 +446,6 @@
 			packageReferences = (
 				CE7FB8752CC13C0B0088001A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 				CE7FB8782CC13C3C0088001A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
-				CEBCA42C2CC13C9900076589 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 				CEB1E2622CC14E3100921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
 			);
 			productRefGroup = 0770DE3C28D0A319006D8A5D /* Products */;
@@ -1611,14 +1608,6 @@
 				version = 1.0.0;
 			};
 		};
-		CEBCA42C2CC13C9900076589 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.6.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1641,11 +1630,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = CEB1E2622CC14E3100921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
 			productName = OEXFoundation;
-		};
-		CEBCA42D2CC13C9900076589 /* MSAL */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = CEBCA42C2CC13C9900076589 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;
-			productName = MSAL;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

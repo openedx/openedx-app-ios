@@ -58,6 +58,7 @@
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
 		BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7468752B96201D00793145 /* DeepLinkRouter.swift */; };
+		CE0BF0BA2CD9203A00D10289 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = CE0BF0B92CD9203A00D10289 /* MSAL */; };
 		CE3BD14E2CBEB0DA0026F4E3 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */; };
 		CE5712792CD1099B00D4AB17 /* OEXFirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */; };
 		CE57127A2CD109A800D4AB17 /* OEXFoundation in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -162,6 +163,7 @@
 				07A7D78F28F5C9060000BE81 /* Core.framework in Frameworks */,
 				028A37362ADFF404008CA604 /* WhatsNew.framework in Frameworks */,
 				CE9C07D82CD104E5009C44D1 /* OEXFoundation in Frameworks */,
+				CE0BF0BA2CD9203A00D10289 /* MSAL in Frameworks */,
 				025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */,
 				0770DE4B28D0A462006D8A5D /* Authorization.framework in Frameworks */,
 				072787B128D34D83002E9142 /* Discovery.framework in Frameworks */,
@@ -400,6 +402,7 @@
 				CE9C07D72CD104E5009C44D1 /* OEXFoundation */,
 				CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */,
 				CE924BE62CD8FAB3000137CA /* FirebaseMessaging */,
+				CE0BF0B92CD9203A00D10289 /* MSAL */,
 			);
 			productName = OpenEdX;
 			productReference = 07D5DA3128D075AA00752FD9 /* OpenEdX.app */;
@@ -434,6 +437,7 @@
 				CE9C07D62CD104E5009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
 				CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */,
 				CE924BE52CD8FAB3000137CA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				CE0BF0B82CD9203A00D10289 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */,
 			);
 			productRefGroup = 07D5DA3228D075AA00752FD9 /* Products */;
 			projectDirPath = "";
@@ -1224,6 +1228,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		CE0BF0B82CD9203A00D10289 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AzureAD/microsoft-authentication-library-for-objc";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.6.1;
+			};
+		};
 		CE924BE52CD8FAB3000137CA /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -1251,6 +1263,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		CE0BF0B92CD9203A00D10289 /* MSAL */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE0BF0B82CD9203A00D10289 /* XCRemoteSwiftPackageReference "microsoft-authentication-library-for-objc" */;
+			productName = MSAL;
+		};
 		CE5712782CD1099B00D4AB17 /* OEXFirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = CE9C07D92CD10581009C44D1 /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */;
