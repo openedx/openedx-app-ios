@@ -31,7 +31,8 @@ public struct NotAvailableOnMobileView: View {
                     .padding(.top, 12)
                 StyledButton(CourseLocalization.NotAvaliable.button, action: {
                     if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
-                        UIApplication.shared.open(url)
+                        // Added empty options to avoid calling overridden open(url) function in facebook sdk
+                        UIApplication.shared.open(url, options: [:])
                     }
                 })
                 .frame(width: 215)
