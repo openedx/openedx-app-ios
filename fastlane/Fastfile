@@ -39,6 +39,6 @@ lane :unit_tests do
     workspace: "OpenEdX.xcworkspace",
     device: "iPhone 16",
     scheme: "OpenEdXDev",
-    xcargs: "-skipPackagePluginValidation -skipMacroValidation"
+    xcargs: "-skipPackagePluginValidation -skipMacroValidation" # Ignore swiftLint plugin validation
   )
 end
