@@ -10,7 +10,6 @@ import Core
 import OEXFoundation
 import UIKit
 import UserNotifications
-import OEXFirebaseAnalytics
 import FirebaseCore
 import FirebaseMessaging
 

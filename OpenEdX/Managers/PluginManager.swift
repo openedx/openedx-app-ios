@@ -6,10 +6,7 @@
 //
 
 import Foundation
-import Core
 import OEXFoundation
-import OEXFirebaseAnalytics
-import Swinject
 
 public class PluginManager {
     

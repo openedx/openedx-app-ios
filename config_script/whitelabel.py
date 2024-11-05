@@ -561,6 +561,18 @@ class WhitelabelApp:
                 with open(self.config_project_path, 'r') as openfile:
                     project_file_string = openfile.read()
                 errors_texts = []
+                # iterate for all configurations
+                for name, config in configurations.items():
+                    if 'env_config' in config:
+                        # get folder name for mobile config for current configuration by env_config
+                        config_folder = config_settings.get(self.CONFIG_MAPPINGS, {}).get(config['env_config'])
+                        if config_folder:
+                            # example of usage
+                            # project_file_string = self.replace_fullstory_flag(project_file_string, config_directory, name, config_folder, errors_texts)
+                        else:
+                            logging.error("Config folder for '"+config['env_config']+"' is not defined in config_settings.yaml->config_mapping")
+                    else:
+                        logging.error("'env_config' is not defined for "+name)
                 # write to project file
                 with open(self.config_project_path, 'w') as openfile:
                     openfile.write(project_file_string)
@@ -575,6 +587,20 @@ class WhitelabelApp:
         else:
             logging.error("Mobile config directory not found")
 
+#    def replace_fullstory_flag(self, project_file_string, config_directory, config_name,  config_folder, errors_texts):
+#        # get mobile config
+#        mobile_config = self.get_mobile_config(config_directory,  config_folder, errors_texts)
+#        if mobile_config:
+#            # get FULLSTORY settings from mobile config
+#            fullstory_config = mobile_config.get('FULLSTORY', {})
+#            if fullstory_config:
+#                fullstory_config_enabled = fullstory_config.get('ENABLED')
+#                fullstory_string = "FULLSTORY_ENABLED = YES;" if fullstory_config_enabled else "FULLSTORY_ENABLED = NO;"
+#                fullstory_regex = "FULLSTORY_ENABLED = .*;"
+#                # serach by regex and replace
+#                project_file_string = self.replace_parameter_for_build_config(project_file_string, config_name, fullstory_string, fullstory_regex, errors_texts)
+#        return project_file_string
+#
 def main():
     """
     Parse the command line arguments, and pass them to WhitelabelApp.
