@@ -8,6 +8,7 @@
 import Foundation
 import Swinject
 import Core
+import OEXFoundation
 import Authorization
 import Discovery
 import Dashboard

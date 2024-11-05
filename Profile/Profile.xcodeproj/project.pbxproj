@@ -60,6 +60,9 @@
 		BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfoView.swift */; };
 		CE1735042CD23D7A00F9606A /* DatesAndCalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735032CD23D7A00F9606A /* DatesAndCalendarViewModelTests.swift */; };
 		CE961F032CD163FD00799B9F /* CalendarManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE961F022CD163FD00799B9F /* CalendarManagerTests.swift */; };
+		CE7CAF3D2CC1562C00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF3C2CC1562C00E0AC9D /* OEXFoundation */; };
+		CEB1E2702CC14EB000921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E26F2CC14EB000921517 /* OEXFoundation */; };
+		CEBCA4312CC13CB900076589 /* BranchSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA4302CC13CB900076589 /* BranchSDK */; };
 		E8264C634DD8AD314ECE8905 /* Pods_App_Profile_ProfileTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +75,19 @@
 			remoteInfo = Profile;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CE7CAF3F2CC1562C00E0AC9D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		020102D029784B3100BBF80C /* EditProfileViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewModelTests.swift; sourceTree = "<group>"; };
@@ -152,6 +168,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEB1E2702CC14EB000921517 /* OEXFoundation in Frameworks */,
+				CEBCA4312CC13CB900076589 /* BranchSDK in Frameworks */,
 				025DE1A028DB4D9D0053E0F4 /* Core.framework in Frameworks */,
 				25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */,
 			);
@@ -162,6 +180,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				02A9A91E2978194A00B55797 /* Profile.framework in Frameworks */,
+				CE7CAF3D2CC1562C00E0AC9D /* OEXFoundation in Frameworks */,
 				E8264C634DD8AD314ECE8905 /* Pods_App_Profile_ProfileTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -497,6 +516,7 @@
 				02A9A9172978194A00B55797 /* Frameworks */,
 				02A9A9182978194A00B55797 /* Resources */,
 				E4D48C711DA7F62E34A40309 /* [CP] Copy Pods Resources */,
+				CE7CAF3F2CC1562C00E0AC9D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -547,6 +567,10 @@
 				uk,
 			);
 			mainGroup = 020F834028DB4CCD0062FA70;
+			packageReferences = (
+				CEBCA42F2CC13CB900076589 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */,
+				CEB1E26E2CC14EB000921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
+			);
 			productRefGroup = 020F834B28DB4CCD0062FA70 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1717,6 +1741,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CEB1E26E2CC14EB000921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.0;
+			};
+		};
+		CEBCA42F2CC13CB900076589 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/BranchMetrics/ios-branch-sdk-spm";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.6.4;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CE7CAF3C2CC1562C00E0AC9D /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB1E26E2CC14EB000921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
+		};
+		CEB1E26F2CC14EB000921517 /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB1E26E2CC14EB000921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
+		};
+		CEBCA4302CC13CB900076589 /* BranchSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEBCA42F2CC13CB900076589 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */;
+			productName = BranchSDK;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		022213D32C0E092300B917E6 /* ProfileCoreModel.xcdatamodeld */ = {

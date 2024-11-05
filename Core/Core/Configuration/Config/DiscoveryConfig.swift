@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 public enum DiscoveryConfigType: String {
     case native

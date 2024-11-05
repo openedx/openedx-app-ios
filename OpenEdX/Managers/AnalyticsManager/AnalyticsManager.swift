@@ -15,12 +15,8 @@ import Course
 import Discussion
 import WhatsNew
 import Swinject
-
-protocol AnalyticsService {
-    func identify(id: String, username: String?, email: String?)
-    func logEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
-    func logScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
-}
+import OEXFoundation
+import OEXFirebaseAnalytics
 
 // swiftlint:disable type_body_length file_length
 class AnalyticsManager: AuthorizationAnalytics,
@@ -33,33 +29,11 @@ class AnalyticsManager: AuthorizationAnalytics,
                         CoreAnalytics,
                         WhatsNewAnalytics {
     
-    private var services: [AnalyticsService] = []
+    private var services: [AnalyticsService]
     
     // Init Analytics Manager
-    public init(config: ConfigProtocol) {
-        services = servicesFor(config: config)
-    }
-
-    private func servicesFor(config: ConfigProtocol) -> [AnalyticsService] {
-        var analyticsServices: [AnalyticsService] = []
-        // add Firebase Analytics Service
-        if config.firebase.enabled && config.firebase.isAnalyticsSourceFirebase,
-           let firebaseService = Container.shared.resolve(FirebaseAnalyticsService.self) {
-            analyticsServices.append(firebaseService)
-        }
-        
-        // add Segment Analytics Service
-        if config.segment.enabled,
-           let segmentService = Container.shared.resolve(SegmentAnalyticsService.self) {
-            analyticsServices.append(segmentService)
-        }
-        
-        if config.fullStory.enabled,
-           let fullStoryService = Container.shared.resolve(FullStoryAnalyticsService.self) {
-            analyticsServices.append(fullStoryService)
-        }
-        
-        return analyticsServices
+    public init(services: [AnalyticsService]) {
+        self.services = services
     }
     
     public func identify(id: String, username: String, email: String) {
@@ -70,13 +44,13 @@ class AnalyticsManager: AuthorizationAnalytics,
     
     private func logEvent(_ event: AnalyticsEvent, parameters: [String: Any]? = nil) {
         for service in services {
-            service.logEvent(event, parameters: parameters)
+            service.logEvent(event.rawValue, parameters: parameters)
         }
     }
     
     private func logScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]? = nil) {
         for service in services {
-            service.logScreenEvent(event, parameters: parameters)
+            service.logScreenEvent(event.rawValue, parameters: parameters)
         }
     }
     

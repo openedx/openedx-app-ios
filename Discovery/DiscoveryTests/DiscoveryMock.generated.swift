@@ -13,6 +13,7 @@ import Discovery
 import Foundation
 import SwiftUI
 import Combine
+import OEXFoundation
 
 
 // MARK: - AuthInteractorProtocol
@@ -1518,11 +1519,6 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 	}
 	private var __p_branch: (BranchConfig)?
 
-    public var segment: SegmentConfig {
-		get {	invocations.append(.p_segment_get); return __p_segment ?? givenGetterValue(.p_segment_get, "ConfigProtocolMock - stub value for segment was not defined") }
-	}
-	private var __p_segment: (SegmentConfig)?
-
     public var program: DiscoveryConfig {
 		get {	invocations.append(.p_program_get); return __p_program ?? givenGetterValue(.p_program_get, "ConfigProtocolMock - stub value for program was not defined") }
 	}
@@ -1532,11 +1528,6 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 		get {	invocations.append(.p_URIScheme_get); return __p_URIScheme ?? givenGetterValue(.p_URIScheme_get, "ConfigProtocolMock - stub value for URIScheme was not defined") }
 	}
 	private var __p_URIScheme: (String)?
-
-    public var fullStory: FullStoryConfig {
-		get {	invocations.append(.p_fullStory_get); return __p_fullStory ?? givenGetterValue(.p_fullStory_get, "ConfigProtocolMock - stub value for fullStory was not defined") }
-	}
-	private var __p_fullStory: (FullStoryConfig)?
 
 
 
@@ -1567,10 +1558,8 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         case p_dashboard_get
         case p_braze_get
         case p_branch_get
-        case p_segment_get
         case p_program_get
         case p_URIScheme_get
-        case p_fullStory_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {            case (.p_baseURL_get,.p_baseURL_get): return Matcher.ComparisonResult.match
@@ -1596,10 +1585,8 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case (.p_dashboard_get,.p_dashboard_get): return Matcher.ComparisonResult.match
             case (.p_braze_get,.p_braze_get): return Matcher.ComparisonResult.match
             case (.p_branch_get,.p_branch_get): return Matcher.ComparisonResult.match
-            case (.p_segment_get,.p_segment_get): return Matcher.ComparisonResult.match
             case (.p_program_get,.p_program_get): return Matcher.ComparisonResult.match
             case (.p_URIScheme_get,.p_URIScheme_get): return Matcher.ComparisonResult.match
-            case (.p_fullStory_get,.p_fullStory_get): return Matcher.ComparisonResult.match
             default: return .none
             }
         }
@@ -1629,10 +1616,8 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_dashboard_get: return 0
             case .p_braze_get: return 0
             case .p_branch_get: return 0
-            case .p_segment_get: return 0
             case .p_program_get: return 0
             case .p_URIScheme_get: return 0
-            case .p_fullStory_get: return 0
             }
         }
         func assertionName() -> String {
@@ -1660,10 +1645,8 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_dashboard_get: return "[get] .dashboard"
             case .p_braze_get: return "[get] .braze"
             case .p_branch_get: return "[get] .branch"
-            case .p_segment_get: return "[get] .segment"
             case .p_program_get: return "[get] .program"
             case .p_URIScheme_get: return "[get] .URIScheme"
-            case .p_fullStory_get: return "[get] .fullStory"
             }
         }
     }
@@ -1745,17 +1728,11 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static func branch(getter defaultValue: BranchConfig...) -> PropertyStub {
             return Given(method: .p_branch_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
-        public static func segment(getter defaultValue: SegmentConfig...) -> PropertyStub {
-            return Given(method: .p_segment_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
-        }
         public static func program(getter defaultValue: DiscoveryConfig...) -> PropertyStub {
             return Given(method: .p_program_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
         public static func URIScheme(getter defaultValue: String...) -> PropertyStub {
             return Given(method: .p_URIScheme_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
-        }
-        public static func fullStory(getter defaultValue: FullStoryConfig...) -> PropertyStub {
-            return Given(method: .p_fullStory_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
 
     }
@@ -1786,10 +1763,8 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static var dashboard: Verify { return Verify(method: .p_dashboard_get) }
         public static var braze: Verify { return Verify(method: .p_braze_get) }
         public static var branch: Verify { return Verify(method: .p_branch_get) }
-        public static var segment: Verify { return Verify(method: .p_segment_get) }
         public static var program: Verify { return Verify(method: .p_program_get) }
         public static var URIScheme: Verify { return Verify(method: .p_URIScheme_get) }
-        public static var fullStory: Verify { return Verify(method: .p_fullStory_get) }
     }
 
     public struct Perform {

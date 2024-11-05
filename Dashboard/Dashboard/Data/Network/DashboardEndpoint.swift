@@ -8,6 +8,8 @@
 import Foundation
 import Core
 import Alamofire
+import OEXFoundation
+import UIKit
 
 enum DashboardEndpoint: EndPointType {
     case getEnrollments(username: String, page: Int)

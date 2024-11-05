@@ -7,6 +7,8 @@
 
 import UIKit
 import Core
+import OEXFoundation
+import OEXFirebaseAnalytics
 import Swinject
 import KeychainSwift
 import Discovery
@@ -21,9 +23,11 @@ import WhatsNew
 class AppAssembly: Assembly {
     
     private let navigation: UINavigationController
+    private let pluginManager: PluginManager
     
-    init(navigation: UINavigationController) {
+    init(navigation: UINavigationController, pluginManager: PluginManager) {
         self.navigation = navigation
+        self.pluginManager = pluginManager
     }
     
     func assemble(container: Container) {
@@ -31,14 +35,16 @@ class AppAssembly: Assembly {
             self.navigation
         }.inObjectScope(.container)
         
+        container.register(PluginManager.self) { _ in
+            self.pluginManager
+        }.inObjectScope(.container)
+        
         container.register(Router.self) { r in
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
         
         container.register(AnalyticsManager.self) { r in
-            AnalyticsManager(
-                config: r.resolve(ConfigProtocol.self)!
-            )
+            AnalyticsManager(services: r.resolve(PluginManager.self)!.analyticsServices)
         }
         
         container.register(AuthorizationAnalytics.self) { r in
@@ -208,18 +214,8 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(SegmentAnalyticsService.self) { r in
-            SegmentAnalyticsService(
-                config: r.resolve(ConfigProtocol.self)!
-            )
-        }.inObjectScope(.container)
-        
         container.register(FirebaseAnalyticsService.self) { _ in
             FirebaseAnalyticsService()
-        }.inObjectScope(.container)
-        
-        container.register(FullStoryAnalyticsService.self) { r in
-            FullStoryAnalyticsService()
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { r in

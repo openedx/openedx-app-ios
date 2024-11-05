@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import OEXFoundation
 
 enum OfflineSyncEndpoint: EndPointType {
     case submitOfflineProgress(courseID: String, blockID: String, data: String)

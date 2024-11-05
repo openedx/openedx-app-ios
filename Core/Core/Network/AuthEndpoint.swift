@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import OEXFoundation
 
 enum AuthEndpoint: EndPointType {
     case getAccessToken(username: String, password: String, clientId: String, tokenType: String)

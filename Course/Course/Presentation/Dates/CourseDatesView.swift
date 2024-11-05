@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import OEXFoundation
 import Theme
 import SwiftUIIntrospect
 
@@ -500,7 +501,7 @@ struct CourseDatesView_Previews: PreviewProvider {
             config: ConfigMock(),
             courseID: "",
             courseName: "",
-            analytics: CourseAnalyticsMock(), 
+            analytics: CourseAnalyticsMock(),
             calendarManager: CalendarManagerMock()
         )
         

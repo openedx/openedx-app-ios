@@ -32,6 +32,16 @@
 		99C165512C0C4F7B00DC384D /* SSOWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C165502C0C4F7B00DC384D /* SSOWebViewModel.swift */; };
 		BA8B3A322AD5487300D25EF5 /* SocialAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B3A312AD5487300D25EF5 /* SocialAuthView.swift */; };
 		BADB3F552AD6DFC3004D5CFA /* SocialAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADB3F542AD6DFC3004D5CFA /* SocialAuthViewModel.swift */; };
+		CE7CAF2D2CC155BE00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF2C2CC155BE00E0AC9D /* OEXFoundation */; };
+		CE7FB8772CC13C0B0088001A /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = CE7FB8762CC13C0B0088001A /* FacebookLogin */; };
+		CE7FB87A2CC13C3C0088001A /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = CE7FB8792CC13C3C0088001A /* GoogleSignInSwift */; };
+		CEB1E2642CC14E3100921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2632CC14E3100921517 /* OEXFoundation */; };
+		CEB25A022CC13A36007FC792 /* AppleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB259FC2CC13A36007FC792 /* AppleAuthProvider.swift */; };
+		CEB25A032CC13A36007FC792 /* FacebookAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB259FE2CC13A36007FC792 /* FacebookAuthProvider.swift */; };
+		CEB25A042CC13A36007FC792 /* GoogleAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB259FD2CC13A36007FC792 /* GoogleAuthProvider.swift */; };
+		CEB25A052CC13A36007FC792 /* SocialAuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB25A002CC13A36007FC792 /* SocialAuthResponse.swift */; };
+		CEB25A062CC13A36007FC792 /* MicrosoftAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB259FF2CC13A36007FC792 /* MicrosoftAuthProvider.swift */; };
+		CEB25A072CC13A36007FC792 /* SocialAuthError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB259FA2CC13A36007FC792 /* SocialAuthError.swift */; };
 		DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */; };
 		E03261642AE64676002CA7EB /* StartupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261632AE64676002CA7EB /* StartupViewModel.swift */; };
 		E03261662AE64AF4002CA7EB /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261652AE64AF4002CA7EB /* StartupView.swift */; };
@@ -46,6 +56,19 @@
 			remoteInfo = Authorization;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		CE7CAF2F2CC155BE00E0AC9D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		02066B432906D72400F4307E /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -88,6 +111,12 @@
 		A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		BA8B3A312AD5487300D25EF5 /* SocialAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthView.swift; sourceTree = "<group>"; };
 		BADB3F542AD6DFC3004D5CFA /* SocialAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthViewModel.swift; sourceTree = "<group>"; };
+		CEB259FA2CC13A36007FC792 /* SocialAuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthError.swift; sourceTree = "<group>"; };
+		CEB259FC2CC13A36007FC792 /* AppleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthProvider.swift; sourceTree = "<group>"; };
+		CEB259FD2CC13A36007FC792 /* GoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthProvider.swift; sourceTree = "<group>"; };
+		CEB259FE2CC13A36007FC792 /* FacebookAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthProvider.swift; sourceTree = "<group>"; };
+		CEB259FF2CC13A36007FC792 /* MicrosoftAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MicrosoftAuthProvider.swift; sourceTree = "<group>"; };
+		CEB25A002CC13A36007FC792 /* SocialAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthResponse.swift; sourceTree = "<group>"; };
 		E03261632AE64676002CA7EB /* StartupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupViewModel.swift; sourceTree = "<group>"; };
 		E03261652AE64AF4002CA7EB /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
 		E78971D8E6ED2116BBF9FD66 /* Pods-App-Authorization.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.release.xcconfig"; sourceTree = "<group>"; };
@@ -101,6 +130,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				07169458296D913400E3DED6 /* Authorization.framework in Frameworks */,
+				CE7CAF2D2CC155BE00E0AC9D /* OEXFoundation in Frameworks */,
 				5FB79D2802949372CDAF08D6 /* Pods_App_Authorization_AuthorizationTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -111,6 +141,9 @@
 			files = (
 				0770DE4728D0A3DA006D8A5D /* Core.framework in Frameworks */,
 				DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */,
+				CE7FB8772CC13C0B0088001A /* FacebookLogin in Frameworks */,
+				CEB1E2642CC14E3100921517 /* OEXFoundation in Frameworks */,
+				CE7FB87A2CC13C3C0088001A /* GoogleSignInSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -227,6 +260,7 @@
 		0770DE3D28D0A319006D8A5D /* Authorization */ = {
 			isa = PBXGroup;
 			children = (
+				CEB25A012CC13A36007FC792 /* SocialAuth */,
 				0770DE6F28D0C08E006D8A5D /* SwiftGen */,
 				071009CC28D1E24000344290 /* Presentation */,
 				0770DE6D28D0C035006D8A5D /* Localizable.strings */,
@@ -296,6 +330,27 @@
 			path = SocialAuth;
 			sourceTree = "<group>";
 		};
+		CEB259FB2CC13A36007FC792 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				CEB259FA2CC13A36007FC792 /* SocialAuthError.swift */,
+			);
+			path = Error;
+			sourceTree = "<group>";
+		};
+		CEB25A012CC13A36007FC792 /* SocialAuth */ = {
+			isa = PBXGroup;
+			children = (
+				CEB259FB2CC13A36007FC792 /* Error */,
+				CEB259FC2CC13A36007FC792 /* AppleAuthProvider.swift */,
+				CEB259FD2CC13A36007FC792 /* GoogleAuthProvider.swift */,
+				CEB259FE2CC13A36007FC792 /* FacebookAuthProvider.swift */,
+				CEB259FF2CC13A36007FC792 /* MicrosoftAuthProvider.swift */,
+				CEB25A002CC13A36007FC792 /* SocialAuthResponse.swift */,
+			);
+			path = SocialAuth;
+			sourceTree = "<group>";
+		};
 		E03261622AE6464A002CA7EB /* Startup */ = {
 			isa = PBXGroup;
 			children = (
@@ -327,6 +382,7 @@
 				07169451296D913300E3DED6 /* Frameworks */,
 				07169452296D913300E3DED6 /* Resources */,
 				95C8CAF0620ABBBAD7ED66D6 /* [CP] Copy Pods Resources */,
+				CE7CAF2F2CC155BE00E0AC9D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -387,6 +443,11 @@
 				uk,
 			);
 			mainGroup = 0770DE3128D0A318006D8A5D;
+			packageReferences = (
+				CE7FB8752CC13C0B0088001A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
+				CE7FB8782CC13C3C0088001A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				CEB1E2622CC14E3100921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
+			);
 			productRefGroup = 0770DE3C28D0A319006D8A5D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -532,6 +593,12 @@
 				071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */,
 				BA8B3A322AD5487300D25EF5 /* SocialAuthView.swift in Sources */,
 				99C1654D2C0C4F2F00DC384D /* SSOHelper.swift in Sources */,
+				CEB25A022CC13A36007FC792 /* AppleAuthProvider.swift in Sources */,
+				CEB25A032CC13A36007FC792 /* FacebookAuthProvider.swift in Sources */,
+				CEB25A042CC13A36007FC792 /* GoogleAuthProvider.swift in Sources */,
+				CEB25A052CC13A36007FC792 /* SocialAuthResponse.swift in Sources */,
+				CEB25A062CC13A36007FC792 /* MicrosoftAuthProvider.swift in Sources */,
+				CEB25A072CC13A36007FC792 /* SocialAuthError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1515,6 +1582,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CE7FB8752CC13C0B0088001A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 16.3.1;
+			};
+		};
+		CE7FB8782CC13C3C0088001A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		CEB1E2622CC14E3100921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
+			requirement = {
+				kind = exactVersion;
+				version = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CE7CAF2C2CC155BE00E0AC9D /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB1E2622CC14E3100921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
+		};
+		CE7FB8762CC13C0B0088001A /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE7FB8752CC13C0B0088001A /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+		CE7FB8792CC13C3C0088001A /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CE7FB8782CC13C3C0088001A /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		CEB1E2632CC14E3100921517 /* OEXFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CEB1E2622CC14E3100921517 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */;
+			productName = OEXFoundation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0770DE3228D0A318006D8A5D /* Project object */;
 }

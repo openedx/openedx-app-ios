@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-
 import Core
+import OEXFoundation
 import Kingfisher
 import Theme
 

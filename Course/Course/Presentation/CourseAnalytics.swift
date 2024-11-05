@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 public enum EnrollmentMode: String {
     case audit

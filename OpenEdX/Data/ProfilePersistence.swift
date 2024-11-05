@@ -7,6 +7,7 @@
 
 import Profile
 import Core
+import OEXFoundation
 import Foundation
 import CoreData
 
