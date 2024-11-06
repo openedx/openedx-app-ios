@@ -95,7 +95,7 @@ public struct DynamicOffsetView: View {
                 collapseHeight = collapsedVerticalHeight
             }
         } else {
-            collapseHeight = 240
+            collapseHeight = expandedHeight
         }
         viewHeight = collapseHeight
     }
