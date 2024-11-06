@@ -262,6 +262,7 @@ public extension DataLayer.PrimaryEnrollment {
             courseID: enrollment.course.id,
             numPages: numPages,
             coursesCount: count,
+            courseRawImage: enrollment.course.media.image?.raw,
             progressEarned: enrollment.progress?.assignmentsCompleted ?? 0,
             progressPossible: enrollment.progress?.totalAssignmentsCount ?? 0
         )

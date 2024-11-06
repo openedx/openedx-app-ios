@@ -34,6 +34,7 @@ public class CoursePersistence: CoursePersistenceProtocol {
                                courseID: $0.courseID ?? "",
                                numPages: Int($0.numPages),
                                coursesCount: Int($0.courseCount),
+                               courseRawImage: $0.courseRawImage,
                                progressEarned: 0,
                                progressPossible: 0)
                 }

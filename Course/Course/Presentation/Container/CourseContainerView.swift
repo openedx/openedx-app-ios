@@ -31,6 +31,7 @@ public struct CourseContainerView: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     private let coordinateBoundaryLower: CGFloat = -115
+    private let courseRawImage: String?
     
     private var coordinateBoundaryHigher: CGFloat {
         let topInset = UIApplication.shared.windowInsets.top
@@ -53,7 +54,8 @@ public struct CourseContainerView: View {
         viewModel: CourseContainerViewModel,
         courseDatesViewModel: CourseDatesViewModel,
         courseID: String,
-        title: String
+        title: String,
+        courseRawImage: String?
     ) {
         self.viewModel = viewModel
         Task {
@@ -69,6 +71,7 @@ public struct CourseContainerView: View {
         self.courseID = courseID
         self.title = title
         self.courseDatesViewModel = courseDatesViewModel
+        self.courseRawImage = courseRawImage
     }
     
     public var body: some View {
@@ -109,7 +112,8 @@ public struct CourseContainerView: View {
                                 collapsed: $collapsed,
                                 containerWidth: proxy.size.width,
                                 animationNamespace: animationNamespace,
-                                isAnimatingForTap: $isAnimatingForTap
+                                isAnimatingForTap: $isAnimatingForTap,
+                                courseRawImage: courseRawImage
                             )
                         }
                         .offset(
@@ -406,7 +410,8 @@ struct CourseScreensView_Previews: PreviewProvider {
                 calendarManager: CalendarManagerMock()
             ),
             courseID: "",
-            title: "Title of Course"
+            title: "Title of Course",
+            courseRawImage: nil
         )
     }
 }

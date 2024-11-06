@@ -24,6 +24,7 @@ struct CourseHeaderView: View {
     private let collapsedVerticalHeight: CGFloat = 260
     private let expandedHeight: CGFloat = 300
     
+    private let courseRawImage: String?
     private enum GeometryName {
         case backButton
         case topTabBar
@@ -38,7 +39,8 @@ struct CourseHeaderView: View {
         collapsed: Binding<Bool>,
         containerWidth: CGFloat,
         animationNamespace: Namespace.ID,
-        isAnimatingForTap: Binding<Bool>
+        isAnimatingForTap: Binding<Bool>,
+        courseRawImage: String?
     ) {
         self.viewModel = viewModel
         self.title = title
@@ -46,6 +48,7 @@ struct CourseHeaderView: View {
         self.containerWidth = containerWidth
         self.animationNamespace = animationNamespace
         self._isAnimatingForTap = isAnimatingForTap
+        self.courseRawImage = courseRawImage
     }
     
     var body: some View {

@@ -226,6 +226,7 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
             enrollmentStart: courseDetails.enrollmentStart,
             enrollmentEnd: courseDetails.enrollmentEnd,
             title: courseDetails.courseTitle,
+            courseRawImage: courseDetails.courseRawImage,
             showDates: false,
             lastVisitedBlockID: nil
         )

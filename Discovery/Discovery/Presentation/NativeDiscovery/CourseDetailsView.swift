@@ -292,6 +292,7 @@ private struct CourseStateView: View {
                         enrollmentStart: courseDetails.enrollmentStart,
                         enrollmentEnd: courseDetails.enrollmentEnd,
                         title: title,
+                        courseRawImage: courseDetails.courseRawImage,
                         showDates: false,
                         lastVisitedBlockID: nil
                     )

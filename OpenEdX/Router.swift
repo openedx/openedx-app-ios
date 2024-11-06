@@ -365,6 +365,7 @@ public class Router: AuthorizationRouter,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
+        courseRawImage: String?,
         showDates: Bool,
         lastVisitedBlockID: String?
     ) {
@@ -376,6 +377,7 @@ public class Router: AuthorizationRouter,
             enrollmentStart: enrollmentStart,
             enrollmentEnd: enrollmentEnd,
             title: title,
+            courseRawImage: courseRawImage,
             showDates: showDates,
             lastVisitedBlockID: lastVisitedBlockID
         )
@@ -394,6 +396,7 @@ public class Router: AuthorizationRouter,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
         title: String,
+        courseRawImage: String?,
         showDates: Bool,
         lastVisitedBlockID: String?
     ) -> UIHostingController<CourseContainerView> {
@@ -418,7 +421,8 @@ public class Router: AuthorizationRouter,
             viewModel: vm,
             courseDatesViewModel: datesVm,
             courseID: courseID,
-            title: title
+            title: title,
+            courseRawImage: courseRawImage
         )
         
         return UIHostingController(rootView: screensView)

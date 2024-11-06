@@ -95,7 +95,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
             courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
+            courseVideoURL: nil,
+            courseRawImage: nil
         )
     }
     
@@ -112,7 +113,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
             courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
+            courseVideoURL: nil,
+            courseRawImage: nil
         )
     }
     

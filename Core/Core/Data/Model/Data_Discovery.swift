@@ -116,6 +116,7 @@ public extension DataLayer.DiscoveryResponce {
                        courseID: $0.courseID ?? "",
                        numPages: pagination.numPages,
                        coursesCount: pagination.count,
+                       courseRawImage: $0.media.image?.raw,
                        progressEarned: 0,
                        progressPossible: 0)
         })
