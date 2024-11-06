@@ -283,12 +283,9 @@ public struct CourseContainerView: View {
                 }
             }
         }
-        .versionedTabStyle()
+        .tabViewStyle(.page(indexDisplayMode: .never))
         .introspect(.scrollView, on: .iOS(.v16...), customize: { tabView in
             tabView.isScrollEnabled = false
-        })
-        .introspect(.viewController, on: .iOS(.v15), customize: { controller in
-            controller.navigationController?.setNavigationBarHidden(true, animated: false)
         })
         .onFirstAppear {
             Task {
@@ -355,24 +352,6 @@ public struct CourseContainerView: View {
     }
 }
 
-struct TabViewStyleModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 16.0, *) {
-            content
-                .tabViewStyle(.page(indexDisplayMode: .never))
-        } else {
-            content
-                .tabViewStyle(.automatic)
-        }
-    }
-}
-
-extension View {
-    func versionedTabStyle() -> some View {
-        modifier(TabViewStyleModifier())
-    }
-}
-
 #if DEBUG
 struct CourseScreensView_Previews: PreviewProvider {
     static var previews: some View {
@@ -402,7 +381,7 @@ struct CourseScreensView_Previews: PreviewProvider {
                 config: ConfigMock(),
                 courseID: "1",
                 courseName: "a",
-                analytics: CourseAnalyticsMock(), 
+                analytics: CourseAnalyticsMock(),
                 calendarManager: CalendarManagerMock()
             ),
             courseID: "",
