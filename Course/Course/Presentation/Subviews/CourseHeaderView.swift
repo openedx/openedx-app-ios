@@ -51,7 +51,7 @@ struct CourseHeaderView: View {
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             ScrollView {
-                if let banner = (courseRawImage ?? viewModel.courseStructure?.media.image.raw)?
+                if let banner = viewModel.courseStructure?.media.image.raw
                     .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
                     KFImage(courseBannerURL(for: banner))
                         .onFailureImage(CoreAssets.noCourseImage.image)
