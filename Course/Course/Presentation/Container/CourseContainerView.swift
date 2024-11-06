@@ -40,9 +40,6 @@ public struct CourseContainerView: View {
 
         return topInset
     }
-    private var additionSpace: CGFloat {
-        viewModel.shouldShowUpgradeButton ? 60 : 0
-    }
     
     private struct GeometryName {
         static let backButton = "backButton"
@@ -118,7 +115,7 @@ public struct CourseContainerView: View {
                         .offset(
                             y: ignoreOffset
                             ? (collapsed ? coordinateBoundaryLower : .zero)
-                            : ((coordinateBoundaryLower-additionSpace...coordinateBoundaryHigher).contains(coordinate)
+                            : ((coordinateBoundaryLower...coordinateBoundaryHigher).contains(coordinate)
                                ? (collapsed ? coordinateBoundaryLower : coordinate)
                                : (collapsed ? coordinateBoundaryLower : .zero))
                         )
@@ -314,7 +311,7 @@ public struct CourseContainerView: View {
     
     private func collapseHeader(_ coordinate: CGFloat) {
         guard !isHorizontal else { return collapsed = true }
-        let lowerBound: CGFloat = -90-additionSpace
+        let lowerBound: CGFloat = -90
         let upperBound: CGFloat = 160
         
         switch coordinate {
