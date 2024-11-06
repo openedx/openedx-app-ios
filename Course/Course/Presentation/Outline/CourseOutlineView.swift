@@ -133,8 +133,8 @@ public struct CourseOutlineView: View {
                                         Spacer(minLength: viewHeight < 200 ? 200 : viewHeight)
                                     }
                                 }
-                                .frameLimit(width: proxy.size.width)
                             }
+                            .frameLimit(width: proxy.size.width)
                         }
                     }
                     .refreshable {

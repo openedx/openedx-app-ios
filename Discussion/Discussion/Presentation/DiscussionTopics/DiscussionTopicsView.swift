@@ -68,6 +68,7 @@ public struct DiscussionTopicsView: View {
                                 .background(
                                     Theme.Shapes.textInputShape
                                         .fill(Theme.Colors.textInputBackground)
+                                )
                                 .overlay(
                                     Theme.Shapes.textInputShape
                                         .stroke(lineWidth: 1)
