@@ -82,20 +82,12 @@ public struct DynamicOffsetView: View {
         }
     }
     
-    private func collapsedHorizontalHeight(shouldHideMenuBar: Bool) -> CGFloat {
-        120 - (shouldHideMenuBar ? 50 : 0)
-    }
-    
-    private func expandedHeight(shouldShowUpgradeButton: Bool, shouldHideMenuBar: Bool) -> CGFloat {
-        expandedHeight + (shouldShowUpgradeButton ? 63 : 0) - (shouldHideMenuBar ? 80 : 0)
-    }
-
     private func changeCollapsedHeight(
         collapsed: Bool,
         isHorizontal: Bool
     ) {
         if idiom == .pad {
-            collapseHeight = padHeight + (shouldShowUpgradeButton ? 63 : 0) - (shouldHideMenuBar ? 80 : 0)
+            collapseHeight = padHeight
         } else if collapsed {
             if isHorizontal {
                 collapseHeight = collapsedHorizontalHeight
