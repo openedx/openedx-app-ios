@@ -58,6 +58,7 @@ final class AllCoursesViewModelTests: XCTestCase {
                 courseID: "2",
                 numPages: 1,
                 coursesCount: 3,
+                courseRawImage: nil,
                 progressEarned: 0,
                 progressPossible: 2
             ),
@@ -74,6 +75,7 @@ final class AllCoursesViewModelTests: XCTestCase {
                 courseID: "3",
                 numPages: 1,
                 coursesCount: 3,
+                courseRawImage: nil,
                 progressEarned: 0,
                 progressPossible: 2
             ),
@@ -90,6 +92,7 @@ final class AllCoursesViewModelTests: XCTestCase {
                 courseID: "4",
                 numPages: 1,
                 coursesCount: 3,
+                courseRawImage: nil,
                 progressEarned: 0,
                 progressPossible: 2
             )
