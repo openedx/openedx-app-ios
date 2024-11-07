@@ -103,16 +103,16 @@ public struct AllCoursesView: View {
                                     .padding(10)
                                     .frameLimit(width: proxy.size.width)
                                 }
-                                // MARK: - ProgressBar
-                                if viewModel.nextPage <= viewModel.totalPages, !viewModel.refresh {
-                                    VStack(alignment: .center) {
-                                        ProgressBar(size: 40, lineWidth: 8)
-                                            .padding(.top, 20)
-                                    }.frame(maxWidth: .infinity,
-                                            maxHeight: .infinity)
-                                }
-                                VStack {}.frame(height: 40)
                             }
+                            // MARK: - ProgressBar
+                            if viewModel.nextPage <= viewModel.totalPages, !viewModel.refresh {
+                                VStack(alignment: .center) {
+                                    ProgressBar(size: 40, lineWidth: 8)
+                                        .padding(.top, 20)
+                                }.frame(maxWidth: .infinity,
+                                        maxHeight: .infinity)
+                            }
+                            VStack {}.frame(height: 40)
                         }
                     }
                     .refreshable {
