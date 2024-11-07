@@ -33,6 +33,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                                   courseID: $0.courseID ?? "",
                                   numPages: Int($0.numPages),
                                   coursesCount: Int($0.courseCount),
+                                  courseRawImage: $0.courseRawImage,
                                   progressEarned: 0,
                                   progressPossible: 0)}
             if let result, !result.isEmpty {
@@ -59,6 +60,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.enrollmentEnd = item.enrollmentEnd
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
+                newItem.courseRawImage = item.courseRawImage
                 
                 do {
                     try context.save()
@@ -131,6 +133,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                             courseID: cdCourse.courseID ?? "",
                             numPages: Int(cdCourse.numPages),
                             coursesCount: Int(cdCourse.courseCount),
+                            courseRawImage: cdCourse.courseRawImage,
                             progressEarned: Int(cdCourse.progressEarned),
                             progressPossible: Int(cdCourse.progressPossible)
                         )

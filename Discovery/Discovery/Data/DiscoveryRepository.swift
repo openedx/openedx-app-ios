@@ -138,6 +138,7 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
                     numPages: 1, coursesCount: 10,
+                    courseRawImage: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )
@@ -162,6 +163,7 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
                     numPages: 1, coursesCount: 10,
+                    courseRawImage: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )
@@ -187,6 +189,7 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     courseID: "course_id_\(i)",
                     numPages: 1,
                     coursesCount: 10,
+                    courseRawImage: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )

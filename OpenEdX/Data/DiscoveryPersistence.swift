@@ -33,6 +33,7 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
                                   courseID: $0.courseID ?? "",
                                   numPages: Int($0.numPages),
                                   coursesCount: Int($0.courseCount),
+                                  courseRawImage: $0.courseRawImage,
                                   progressEarned: 0,
                                   progressPossible: 0)}
             if let result, !result.isEmpty {
@@ -59,6 +60,7 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
                 newItem.enrollmentEnd = item.enrollmentEnd
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
+                newItem.courseRawImage = item.courseRawImage
                 
                 do {
                     try context.save()
@@ -86,7 +88,8 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
                 isEnrolled: courseDetails.isEnrolled,
                 overviewHTML: courseDetails.overviewHTML ?? "",
                 courseBannerURL: courseDetails.courseBannerURL ?? "",
-                courseVideoURL: nil
+                courseVideoURL: nil,
+                courseRawImage: courseDetails.courseRawImage
             )
         }
     }
@@ -105,6 +108,7 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
             newCourseDetails.isEnrolled = course.isEnrolled
             newCourseDetails.overviewHTML = course.overviewHTML
             newCourseDetails.courseBannerURL = course.courseBannerURL
+            newCourseDetails.courseRawImage = course.courseRawImage
             
             do {
                 try context.save()
