@@ -193,9 +193,6 @@ struct MainScreenView: View {
             }
         }
         .accentColor(Theme.Colors.accentXColor)
-        .introspect(.viewController, on: .iOS(.v15)) { controller in
-            controller.navigationController?.setNavigationBarHidden(true, animated: false)
-        }
     }
     
     private func titleBar() -> String {
