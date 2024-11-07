@@ -138,6 +138,7 @@ struct CourseCellView_Previews: PreviewProvider {
         courseID: "1",
         numPages: 1,
         coursesCount: 10,
+        courseRawImage: nil,
         progressEarned: 4,
         progressPossible: 10
     )

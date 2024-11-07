@@ -99,6 +99,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     courseID: "course_id_\(i)",
                     numPages: 1,
                     coursesCount: 0,
+                    courseRawImage: nil,
                     progressEarned: 0,
                     progressPossible: 0
                 )
@@ -127,6 +128,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     courseID: "course_id_\(i)",
                     numPages: 1,
                     coursesCount: 0,
+                    courseRawImage: nil,
                     progressEarned: 4,
                     progressPossible: 10
                 )
@@ -181,6 +183,7 @@ class DashboardRepositoryMock: DashboardRepositoryProtocol {
                     courseID: "course_id_\(i)",
                     numPages: 1,
                     coursesCount: 0,
+                    courseRawImage: nil,
                     progressEarned: 4,
                     progressPossible: 10
                 )

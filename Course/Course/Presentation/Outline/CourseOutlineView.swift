@@ -61,79 +61,81 @@ public struct CourseOutlineView: View {
             GeometryReader { proxy in
                 VStack(alignment: .center) {
                     ScrollView {
-                        DynamicOffsetView(
-                            coordinate: $coordinate,
-                            collapsed: $collapsed,
-                            viewHeight: $viewHeight
-                        )
-                        RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
-                        VStack(alignment: .leading) {
-                            
-                            if isVideo,
-                               viewModel.isShowProgress == false {
-                                downloadQualityBars(proxy: proxy)
-                            }
-                            certificateView
-                            
-                            if viewModel.courseStructure == nil,
-                               viewModel.isShowProgress == false,
-                               !isVideo {
-                                FullScreenErrorView(
-                                    type: .noContent(
-                                        CourseLocalization.Error.coursewareUnavailable,
-                                        image: CoreAssets.information.swiftUIImage
-                                    )
-                                )
-                                .frame(maxWidth: .infinity)
-                                .frame(height: proxy.size.height - viewHeight)
-                            } else {
-                                if let continueWith = viewModel.continueWith,
-                                   let courseStructure = viewModel.courseStructure,
-                                   !isVideo {
-                                    let chapter = courseStructure.childs[continueWith.chapterIndex]
-                                    let sequential = chapter.childs[continueWith.sequentialIndex]
-                                    let continueUnit = sequential.childs[continueWith.verticalIndex]
-                                    
-                                    ContinueWithView(
-                                        data: continueWith,
-                                        courseContinueUnit: continueUnit
-                                    ) {
-                                        viewModel.openLastVisitedBlock()
-                                    }
-                                }
+                        VStack(spacing: 0) {
+                            DynamicOffsetView(
+                                coordinate: $coordinate,
+                                collapsed: $collapsed,
+                                viewHeight: $viewHeight
+                            )
+                            RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+                            VStack(alignment: .leading) {
                                 
-                                if let course = isVideo
-                                    ? viewModel.courseVideosStructure
-                                    : viewModel.courseStructure {
-                                    
-                                    if !isVideo,
-                                       let progress = course.courseProgress,
-                                       progress.totalAssignmentsCount != 0 {
-                                        CourseProgressView(progress: progress)
-                                            .padding(.horizontal, 24)
-                                            .padding(.top, 16)
-                                            .padding(.bottom, 8)
+                                if isVideo,
+                                   viewModel.isShowProgress == false {
+                                    downloadQualityBars(proxy: proxy)
+                                }
+                                certificateView
+                                
+                                if viewModel.courseStructure == nil,
+                                   viewModel.isShowProgress == false,
+                                   !isVideo {
+                                    FullScreenErrorView(
+                                        type: .noContent(
+                                            CourseLocalization.Error.coursewareUnavailable,
+                                            image: CoreAssets.information.swiftUIImage
+                                        )
+                                    )
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: proxy.size.height - viewHeight)
+                                } else {
+                                    if let continueWith = viewModel.continueWith,
+                                       let courseStructure = viewModel.courseStructure,
+                                       !isVideo {
+                                        let chapter = courseStructure.childs[continueWith.chapterIndex]
+                                        let sequential = chapter.childs[continueWith.sequentialIndex]
+                                        let continueUnit = sequential.childs[continueWith.verticalIndex]
+                                        
+                                        ContinueWithView(
+                                            data: continueWith,
+                                            courseContinueUnit: continueUnit
+                                        ) {
+                                            viewModel.openLastVisitedBlock()
+                                        }
                                     }
                                     
-                                    // MARK: - Sections
-                                    CustomDisclosureGroup(
-                                        isVideo: isVideo,
-                                        course: course,
-                                        proxy: proxy,
-                                        viewModel: viewModel
-                                    )
-                                } else {
-                                    if let courseStart = viewModel.courseStart {
-                                        Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
-                                            .frame(maxWidth: .infinity)
-                                            .frame(maxHeight: .infinity)
-                                            .padding(.top, 100)
+                                    if let course = isVideo
+                                        ? viewModel.courseVideosStructure
+                                        : viewModel.courseStructure {
+                                        
+                                        if !isVideo,
+                                           let progress = course.courseProgress,
+                                           progress.totalAssignmentsCount != 0 {
+                                            CourseProgressView(progress: progress)
+                                                .padding(.horizontal, 24)
+                                                .padding(.top, 16)
+                                                .padding(.bottom, 8)
+                                        }
+                                        
+                                        // MARK: - Sections
+                                        CustomDisclosureGroup(
+                                            isVideo: isVideo,
+                                            course: course,
+                                            proxy: proxy,
+                                            viewModel: viewModel
+                                        )
+                                    } else {
+                                        if let courseStart = viewModel.courseStart {
+                                            Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
+                                                .frame(maxWidth: .infinity)
+                                                .frame(maxHeight: .infinity)
+                                                .padding(.top, 100)
+                                        }
+                                        Spacer(minLength: viewHeight < 200 ? 200 : viewHeight)
                                     }
                                 }
-                                Spacer(minLength: 200)
                             }
+                            .frameLimit(width: proxy.size.width)
                         }
-                        .frameLimit(width: proxy.size.width)
                     }
                     .refreshable {
                         Task {

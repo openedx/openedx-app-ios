@@ -29,6 +29,7 @@ public struct DynamicOffsetView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     
+    @State private var isOnTheScreen: Bool = false
     public init(
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
@@ -45,6 +46,9 @@ public struct DynamicOffsetView: View {
         .frame(height: collapseHeight)
         .overlay(
             GeometryReader { geometry -> Color in
+                if !isOnTheScreen {
+                    return .clear
+                }
                 guard idiom != .pad else {
                     return .clear
                 }
@@ -59,7 +63,11 @@ public struct DynamicOffsetView: View {
             }
         )
         .onAppear {
+            isOnTheScreen = true
             changeCollapsedHeight(collapsed: collapsed, isHorizontal: isHorizontal)
+        }
+        .onDisappear {
+            isOnTheScreen = false
         }
         .onChange(of: collapsed) { collapsed in
             if !collapsed {
@@ -87,7 +95,7 @@ public struct DynamicOffsetView: View {
                 collapseHeight = collapsedVerticalHeight
             }
         } else {
-            collapseHeight = 240
+            collapseHeight = expandedHeight
         }
         viewHeight = collapseHeight
     }

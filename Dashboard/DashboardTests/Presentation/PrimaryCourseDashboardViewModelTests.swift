@@ -61,6 +61,7 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
                 courseID: "2",
                 numPages: 1,
                 coursesCount: 3,
+                courseRawImage: nil,
                 progressEarned: 0,
                 progressPossible: 2
             )

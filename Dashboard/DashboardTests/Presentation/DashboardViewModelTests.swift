@@ -38,6 +38,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        courseID: "123",
                        numPages: 2,
                        coursesCount: 2,
+                       courseRawImage: nil,
                        progressEarned: 0,
                        progressPossible: 0),
             CourseItem(name: "Test2",
@@ -52,6 +53,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        courseID: "1243",
                        numPages: 1,
                        coursesCount: 2,
+                       courseRawImage: nil,
                        progressEarned: 0,
                        progressPossible: 0)
         ]
@@ -92,6 +94,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        courseID: "123",
                        numPages: 2,
                        coursesCount: 2,
+                       courseRawImage: nil,
                        progressEarned: 0,
                        progressPossible: 0),
             CourseItem(name: "Test2",
@@ -106,6 +109,7 @@ final class ListDashboardViewModelTests: XCTestCase {
                        courseID: "1243",
                        numPages: 1,
                        coursesCount: 2,
+                       courseRawImage: nil,
                        progressEarned: 0,
                        progressPossible: 0)
         ]

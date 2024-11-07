@@ -24,6 +24,7 @@ struct CourseHeaderView: View {
     private let collapsedVerticalHeight: CGFloat = 260
     private let expandedHeight: CGFloat = 300
     
+    private let courseRawImage: String?
     private enum GeometryName {
         case backButton
         case topTabBar
@@ -38,7 +39,8 @@ struct CourseHeaderView: View {
         collapsed: Binding<Bool>,
         containerWidth: CGFloat,
         animationNamespace: Namespace.ID,
-        isAnimatingForTap: Binding<Bool>
+        isAnimatingForTap: Binding<Bool>,
+        courseRawImage: String?
     ) {
         self.viewModel = viewModel
         self.title = title
@@ -46,14 +48,15 @@ struct CourseHeaderView: View {
         self.containerWidth = containerWidth
         self.animationNamespace = animationNamespace
         self._isAnimatingForTap = isAnimatingForTap
+        self.courseRawImage = courseRawImage
     }
     
     var body: some View {
         ZStack(alignment: .bottomLeading) {
             ScrollView {
-                if let banner = viewModel.courseStructure?.media.image.raw
+                if let banner = (courseRawImage ?? viewModel.courseStructure?.media.image.raw)?
                     .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                    KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                    KFImage(courseBannerURL(for: banner))
                         .onFailureImage(CoreAssets.noCourseImage.image)
                         .resizable()
                         .aspectRatio(contentMode: .fill)
@@ -157,6 +160,13 @@ struct CourseHeaderView: View {
             ) : expandedHeight
         )
         .ignoresSafeArea(edges: .top)
+    }
+    
+    private func courseBannerURL(for path: String) -> URL? {
+        if path.contains("http://") || path.contains("https://") {
+            return URL(string: path)
+        }
+        return URL(string: viewModel.config.baseURL.absoluteString + path)
     }
     
     private func courseMenuBar(containerWidth: CGFloat) -> some View {

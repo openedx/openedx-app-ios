@@ -20,6 +20,7 @@ public struct CourseItem: Hashable {
     public let courseID: String
     public let numPages: Int
     public let coursesCount: Int
+    public let courseRawImage: String?
     public let progressEarned: Int
     public let progressPossible: Int
     
@@ -35,6 +36,7 @@ public struct CourseItem: Hashable {
                 courseID: String,
                 numPages: Int,
                 coursesCount: Int,
+                courseRawImage: String?,
                 progressEarned: Int,
                 progressPossible: Int) {
         self.name = name
@@ -49,6 +51,7 @@ public struct CourseItem: Hashable {
         self.courseID = courseID
         self.numPages = numPages
         self.coursesCount = coursesCount
+        self.courseRawImage = courseRawImage
         self.progressEarned = progressEarned
         self.progressPossible = progressPossible
     }

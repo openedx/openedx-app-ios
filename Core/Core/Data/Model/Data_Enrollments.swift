@@ -260,6 +260,7 @@ public extension DataLayer.CourseEnrollments {
                 courseID: course.id,
                 numPages: enrollments.numPages ?? 1,
                 coursesCount: enrollments.count ?? 0,
+                courseRawImage: course.media.courseImage?.url,
                 progressEarned: 0,
                 progressPossible: 0
             )

@@ -10,6 +10,7 @@ import Core
 import Discussion
 import Swinject
 import Theme
+@_spi(Advanced) import SwiftUIIntrospect
 
 public struct CourseContainerView: View {
     
@@ -30,6 +31,7 @@ public struct CourseContainerView: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     private let coordinateBoundaryLower: CGFloat = -115
+    private let courseRawImage: String?
     
     private var coordinateBoundaryHigher: CGFloat {
         let topInset = UIApplication.shared.windowInsets.top
@@ -52,7 +54,8 @@ public struct CourseContainerView: View {
         viewModel: CourseContainerViewModel,
         courseDatesViewModel: CourseDatesViewModel,
         courseID: String,
-        title: String
+        title: String,
+        courseRawImage: String?
     ) {
         self.viewModel = viewModel
         Task {
@@ -68,6 +71,7 @@ public struct CourseContainerView: View {
         self.courseID = courseID
         self.title = title
         self.courseDatesViewModel = courseDatesViewModel
+        self.courseRawImage = courseRawImage
     }
     
     public var body: some View {
@@ -108,22 +112,24 @@ public struct CourseContainerView: View {
                                 collapsed: $collapsed,
                                 containerWidth: proxy.size.width,
                                 animationNamespace: animationNamespace,
-                                isAnimatingForTap: $isAnimatingForTap
+                                isAnimatingForTap: $isAnimatingForTap,
+                                courseRawImage: courseRawImage
                             )
                         }
                         .offset(
                             y: ignoreOffset
                             ? (collapsed ? coordinateBoundaryLower : .zero)
                             : ((coordinateBoundaryLower...coordinateBoundaryHigher).contains(coordinate)
-                               ? coordinate
+                               ? (collapsed ? coordinateBoundaryLower : coordinate)
                                : (collapsed ? coordinateBoundaryLower : .zero))
                         )
                         backButton(containerWidth: proxy.size.width)
                     }
-                }.ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
-                    .onAppear {
-                        self.collapsed = isHorizontal
-                    }
+                }
+                .ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
+                .onAppear {
+                    self.collapsed = isHorizontal
+                }
             }
         }
         
@@ -282,7 +288,7 @@ public struct CourseContainerView: View {
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
-        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { tabView in
+        .introspect(.scrollView, on: .iOS(.v16...), customize: { tabView in
             tabView.isScrollEnabled = false
         })
         .onFirstAppear {
@@ -379,11 +385,12 @@ struct CourseScreensView_Previews: PreviewProvider {
                 config: ConfigMock(),
                 courseID: "1",
                 courseName: "a",
-                analytics: CourseAnalyticsMock(), 
+                analytics: CourseAnalyticsMock(),
                 calendarManager: CalendarManagerMock()
             ),
             courseID: "",
-            title: "Title of Course"
+            title: "Title of Course",
+            courseRawImage: nil
         )
     }
 }
