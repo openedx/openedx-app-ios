@@ -101,9 +101,9 @@ public struct AllCoursesView: View {
                                             }
                                         }
                                     }
-                                    .padding(10)
-                                    .frameLimit(width: proxy.size.width)
                                 }
+                                .padding(10)
+                                .frameLimit(width: proxy.size.width)
                             }
                             // MARK: - ProgressBar
                             if viewModel.nextPage <= viewModel.totalPages, !viewModel.refresh {
