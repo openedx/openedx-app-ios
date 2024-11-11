@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Combine
 import Theme
+import OEXFoundation
 
 public struct ResponsesView: View {
     
@@ -19,7 +20,7 @@ public struct ResponsesView: View {
     
     @ObservedObject private var viewModel: ResponsesViewModel
     @State private var isShowProgress: Bool = true
-
+    
     public init(
         commentID: String,
         viewModel: ResponsesViewModel,
@@ -46,20 +47,14 @@ public struct ResponsesView: View {
                 ScrollViewReader { scroll in
                     VStack {
                         ZStack(alignment: .top) {
-                            RefreshableScrollViewCompat(action: {
-                                viewModel.comments = []
-                                _ = await viewModel.getResponsesData(
-                                    commentID: commentID,
-                                    parentComment: parentComment,
-                                    page: 1,
-                                    refresh: true
-                                )
-                            }) {
+                            ScrollView {
                                 VStack {
                                     if let comments = viewModel.postComments {
                                         ParentCommentView(
                                             comments: comments,
-                                            isThread: false, onAvatarTap: { username in
+                                            isThread: false,
+                                            useRelativeDates: viewModel.storage.useRelativeDates,
+                                            onAvatarTap: { username in
                                                 viewModel.router.showUserDetails(username: username)
                                             },
                                             onLikeTap: {
@@ -99,12 +94,15 @@ public struct ResponsesView: View {
                                         .padding(.leading, 24)
                                         .font(Theme.Fonts.titleMedium)
                                         .foregroundColor(Theme.Colors.textPrimary)
+                                        let useRelativeDates = viewModel.storage.useRelativeDates
                                         ForEach(
                                             Array(comments.comments.enumerated()), id: \.offset
                                         ) { index, comment in
                                             CommentCell(
                                                 comment: comment,
-                                                addCommentAvailable: false, leftLineEnabled: true,
+                                                addCommentAvailable: false,
+                                                useRelativeDates: useRelativeDates,
+                                                leftLineEnabled: true,
                                                 onAvatarTap: { username in
                                                     viewModel.router.showUserDetails(username: username)
                                                 },
@@ -156,6 +154,17 @@ public struct ResponsesView: View {
                                     viewModel.router.back()
                                 }
                                 .frameLimit(width: proxy.size.width)
+                            }
+                            .refreshable {
+                                viewModel.comments = []
+                                Task {
+                                    _ = await viewModel.getResponsesData(
+                                        commentID: commentID,
+                                        parentComment: parentComment,
+                                        page: 1,
+                                        refresh: true
+                                    )
+                                }
                             }
                             if !(parentComment.closed  || viewModel.isBlackedOut) {
                                 FlexibleKeyboardInputView(
@@ -238,6 +247,7 @@ struct ResponsesView_Previews: PreviewProvider {
             interactor: DiscussionInteractor(repository: DiscussionRepositoryMock()),
             router: DiscussionRouterMock(),
             config: ConfigMock(),
+            storage: CoreStorageMock(),
             threadStateSubject: .init(nil)
         )
         let post = Post(

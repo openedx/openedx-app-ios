@@ -1,0 +1,6 @@
+# Translation processing dependencies
+openedx-atlas==0.6.1
+localizable==0.1.3
+
+# Using `pbxproj==4.2.0` with the ( https://github.com/kronenthaler/mod-pbxproj/pull/356 ) patch to support Localizable.strings files
+https://github.com/kronenthaler/mod-pbxproj/archive/a9187b42dc224827f162c3e7b9b34f4c0d2654ee.zip

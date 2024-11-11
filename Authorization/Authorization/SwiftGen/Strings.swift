@@ -69,6 +69,14 @@ public enum AuthLocalization {
     public static let logInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_TITLE", fallback: "Sign in")
     /// Password
     public static let password = AuthLocalization.tr("Localizable", "SIGN_IN.PASSWORD", fallback: "Password")
+    /// Start today to build your career with confidence
+    public static let ssoHeading = AuthLocalization.tr("Localizable", "SIGN_IN.SSO_HEADING", fallback: "Start today to build your career with confidence")
+    /// Log in through the national unified sign-on service
+    public static let ssoLogInSubtitle = AuthLocalization.tr("Localizable", "SIGN_IN.SSO_LOG_IN_SUBTITLE", fallback: "Log in through the national unified sign-on service")
+    /// Sign in
+    public static let ssoLogInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.SSO_LOG_IN_TITLE", fallback: "Sign in")
+    /// An integrated set of knowledge and empowerment programs to develop the components of the endowment sector and its workers
+    public static let ssoSupportingText = AuthLocalization.tr("Localizable", "SIGN_IN.SSO_SUPPORTING_TEXT", fallback: "An integrated set of knowledge and empowerment programs to develop the components of the endowment sector and its workers")
     /// Welcome back! Sign in to access your courses.
     public static let welcomeBack = AuthLocalization.tr("Localizable", "SIGN_IN.WELCOME_BACK", fallback: "Welcome back! Sign in to access your courses.")
   }

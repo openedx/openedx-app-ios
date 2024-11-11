@@ -12,7 +12,7 @@ public struct FlexibleKeyboardInputView: View {
     
     @State private var commentText: String = ""
     @State private var commentSize: CGFloat = .init(64)
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     public var sendText: ((String) -> Void)
     private let hint: String
     
@@ -54,7 +54,7 @@ public struct FlexibleKeyboardInputView: View {
                                     TextEditor(text: $commentText)
                                         .padding(.horizontal, 8)
                                         .foregroundColor(Theme.Colors.textInputTextColor)
-                                        .hideScrollContentBackground()
+                                        .scrollContentBackground(.hidden)
                                         .frame(maxHeight: commentSize)
                                         .background(
                                             Theme.InputFieldBackground(

@@ -87,9 +87,8 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
 
         XCTAssertNil(viewModel.topics)
         XCTAssertNil(viewModel.discussionTopics)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertFalse(viewModel.isShowProgress)
+        XCTAssertFalse(viewModel.isShowRefresh)
     }
     
     func testGetTopicsUnknownError() async throws {
@@ -113,8 +112,7 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
 
         XCTAssertNil(viewModel.topics)
         XCTAssertNil(viewModel.discussionTopics)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertFalse(viewModel.isShowProgress)
+        XCTAssertFalse(viewModel.isShowRefresh)
     }
 }

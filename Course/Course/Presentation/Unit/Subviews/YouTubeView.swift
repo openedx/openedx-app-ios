@@ -24,7 +24,7 @@ struct YouTubeView: View {
     var body: some View {
         let vm = Container.shared.resolve(
             YouTubeVideoPlayerViewModel.self,
-            arguments: url,
+            arguments: URL(string: url),
             blockID,
             courseID,
             languages,

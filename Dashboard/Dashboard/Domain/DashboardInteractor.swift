@@ -10,8 +10,11 @@ import Core
 
 //sourcery: AutoMockable
 public protocol DashboardInteractorProtocol {
-    func getMyCourses(page: Int) async throws -> [CourseItem]
-    func discoveryOffline() throws -> [CourseItem]
+    func getEnrollments(page: Int) async throws -> [CourseItem]
+    func getEnrollmentsOffline() async throws -> [CourseItem]
+    func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment
+    func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment
+    func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment
 }
 
 public class DashboardInteractor: DashboardInteractorProtocol {
@@ -23,12 +26,24 @@ public class DashboardInteractor: DashboardInteractorProtocol {
     }
     
     @discardableResult
-    public func getMyCourses(page: Int) async throws -> [CourseItem] {
-        return try await repository.getMyCourses(page: page)
+    public func getEnrollments(page: Int) async throws -> [CourseItem] {
+        return try await repository.getEnrollments(page: page)
     }
     
-    public func discoveryOffline() throws -> [CourseItem] {
-        return try repository.getMyCoursesOffline()
+    public func getEnrollmentsOffline() async throws -> [CourseItem] {
+        return try await repository.getEnrollmentsOffline()
+    }
+    
+    public func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment {
+        return try await repository.getPrimaryEnrollment(pageSize: pageSize)
+    }
+    
+    public func getPrimaryEnrollmentOffline() async throws -> PrimaryEnrollment {
+        return try await repository.getPrimaryEnrollmentOffline()
+    }
+    
+    public func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment {
+        return try await repository.getAllCourses(filteredBy: filteredBy, page: page)
     }
 }
 

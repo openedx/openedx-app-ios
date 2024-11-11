@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import Alamofire
 
 enum DiscussionEndpoint: EndPointType {
@@ -186,7 +187,10 @@ enum DiscussionEndpoint: EndPointType {
             }
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case .getThread:
-            return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
+            return .requestParameters(
+                parameters: ["requested_fields": "profile_image"],
+                encoding: URLEncoding.queryString
+            )
         case .getTopics:
             return .requestParameters(encoding: URLEncoding.queryString)
         case let .getTopic(_, topicID):

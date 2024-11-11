@@ -1,6 +1,7 @@
 //
 
 import UIKit
+import OEXFoundation
 
 final class KeyboardScroller {
     static func scroll(
@@ -57,7 +58,7 @@ final class KeyboardScroller {
         self.options = options
         self.partialAvoidingPadding = partialAvoidingPadding
 
-        globalWindow = UIApplication.shared.keyWindow ?? UIWindow()
+        globalWindow = UIApplication.shared.oexKeyWindow ?? UIWindow()
         calculateGlobalFrames()
     }
 

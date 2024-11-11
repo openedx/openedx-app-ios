@@ -13,6 +13,7 @@ public protocol CourseInteractorProtocol {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseVideoBlocks(fullStructure: CourseStructure) -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
+    func getSequentialsContainsBlocks(blockIds: [String], courseID: String) async throws -> [CourseSequential]
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
@@ -55,15 +56,42 @@ public class CourseInteractor: CourseInteractorProtocol {
             media: course.media,
             certificate: course.certificate,
             org: course.org,
-            isSelfPaced: course.isSelfPaced
+            isSelfPaced: course.isSelfPaced,
+            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
+                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
+                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
+            )
         )
     }
     
     public func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure {
-        return try repository.getLoadedCourseBlocks(courseID: courseID)
+        return try await repository.getLoadedCourseBlocks(courseID: courseID)
+    }
+    
+    public func getSequentialsContainsBlocks(blockIds: [String], courseID: String) async throws -> [CourseSequential] {
+        let courseStructure = try await repository.getLoadedCourseBlocks(courseID: courseID)
+        var sequentials: [CourseSequential] = []
+        
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                let filteredChilds = sequential.childs.filter { vertical in
+                    vertical.childs.contains { block in
+                        blockIds.contains(block.id)
+                    }
+                }
+                if !filteredChilds.isEmpty {
+                    var newSequential = sequential
+                    newSequential.childs = filteredChilds
+                    sequentials.append(newSequential)
+                }
+            }
+        }
+        
+        return sequentials
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
+        NotificationCenter.default.post(name: .onblockCompletionRequested, object: courseID)
         return try await repository.blockCompletionRequest(courseID: courseID, blockID: blockID)
     }
     
@@ -127,7 +155,9 @@ public class CourseInteractor: CourseInteractorProtocol {
             displayName: sequential.displayName,
             type: sequential.type,
             completion: sequential.completion,
-            childs: newChilds
+            childs: newChilds,
+            sequentialProgress: sequential.sequentialProgress,
+            due: sequential.due
         )
     }
     
@@ -140,7 +170,8 @@ public class CourseInteractor: CourseInteractorProtocol {
             displayName: vertical.displayName,
             type: vertical.type,
             completion: vertical.completion,
-            childs: newChilds
+            childs: newChilds,
+            webUrl: vertical.webUrl
         )
     }
     
@@ -186,9 +217,15 @@ public class CourseInteractor: CourseInteractorProtocol {
                 let endTime = startAndEndTimes.last ?? "00:00:00,000"
                 let text = lines[2..<lines.count].joined(separator: "\n")
                 
+                let startTimeInterval = Date(subtitleTime: startTime)
+                var endTimeInverval = Date(subtitleTime: endTime)
+                if startTimeInterval > endTimeInverval {
+                    endTimeInverval = startTimeInterval
+                }
+                
                 let subtitle = Subtitle(id: id,
-                                        fromTo: DateInterval(start: Date(subtitleTime: startTime),
-                                                             end: Date(subtitleTime: endTime)),
+                                        fromTo: DateInterval(start: startTimeInterval,
+                                                             end: endTimeInverval),
                                         text: text.decodedHTMLEntities())
                 subtitles.append(subtitle)
             }

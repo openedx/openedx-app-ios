@@ -24,6 +24,7 @@ public struct CourseStructure: Equatable {
     public let certificate: Certificate?
     public let org: String
     public let isSelfPaced: Bool
+    public let courseProgress: CourseProgress?
     
     public init(
         id: String,
@@ -37,7 +38,8 @@ public struct CourseStructure: Equatable {
         media: DataLayer.CourseMedia,
         certificate: Certificate?,
         org: String,
-        isSelfPaced: Bool
+        isSelfPaced: Bool,
+        courseProgress: CourseProgress?
     ) {
         self.id = id
         self.graded = graded
@@ -51,6 +53,7 @@ public struct CourseStructure: Equatable {
         self.certificate = certificate
         self.org = org
         self.isSelfPaced = isSelfPaced
+        self.courseProgress = courseProgress
     }
 
     public func totalVideosSizeInBytes(downloadQuality: DownloadQuality) -> Int {
@@ -75,6 +78,16 @@ public struct CourseStructure: Equatable {
             $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
         }.filter { $0.id == courseBlockId }.first
         return block
+    }
+}
+
+public struct CourseProgress {
+    public let totalAssignmentsCount: Int?
+    public let assignmentsCompleted: Int?
+    
+    public init(totalAssignmentsCount: Int, assignmentsCompleted: Int) {
+        self.totalAssignmentsCount = totalAssignmentsCount
+        self.assignmentsCompleted = assignmentsCompleted
     }
 }
 
@@ -109,9 +122,15 @@ public struct CourseSequential: Identifiable {
     public let type: BlockType
     public let completion: Double
     public var childs: [CourseVertical]
+    public let sequentialProgress: SequentialProgress?
+    public let due: Date?
 
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
+    }
+    
+    public var totalSize: Int {
+        childs.flatMap { $0.childs.filter({ $0.isDownloadable }) }.reduce(0) { $0 + ($1.fileSize ?? 0) }
     }
     
     public init(
@@ -120,7 +139,9 @@ public struct CourseSequential: Identifiable {
         displayName: String,
         type: BlockType,
         completion: Double,
-        childs: [CourseVertical]
+        childs: [CourseVertical],
+        sequentialProgress: SequentialProgress?,
+        due: Date?
     ) {
         self.blockId = blockId
         self.id = id
@@ -128,6 +149,8 @@ public struct CourseSequential: Identifiable {
         self.type = type
         self.completion = completion
         self.childs = childs
+        self.sequentialProgress = sequentialProgress
+        self.due = due
     }
 }
 
@@ -143,6 +166,7 @@ public struct CourseVertical: Identifiable, Hashable {
     public let type: BlockType
     public let completion: Double
     public var childs: [CourseBlock]
+    public var webUrl: String
     
     public var isDownloadable: Bool {
         return childs.first(where: { $0.isDownloadable }) != nil
@@ -155,7 +179,8 @@ public struct CourseVertical: Identifiable, Hashable {
         displayName: String,
         type: BlockType,
         completion: Double,
-        childs: [CourseBlock]
+        childs: [CourseBlock],
+        webUrl: String
     ) {
         self.blockId = blockId
         self.id = id
@@ -164,6 +189,7 @@ public struct CourseVertical: Identifiable, Hashable {
         self.type = type
         self.completion = completion
         self.childs = childs
+        self.webUrl = webUrl
     }
 }
 
@@ -174,6 +200,18 @@ public struct SubtitleUrl: Equatable {
     public init(language: String, url: String) {
         self.language = language
         self.url = url
+    }
+}
+
+public struct SequentialProgress {
+    public let assignmentType: String?
+    public let numPointsEarned: Int?
+    public let numPointsPossible: Int?
+    
+    public init(assignmentType: String?, numPointsEarned: Int?, numPointsPossible: Int?) {
+        self.assignmentType = assignmentType
+        self.numPointsEarned = numPointsEarned
+        self.numPointsPossible = numPointsPossible
     }
 }
 
@@ -193,6 +231,7 @@ public struct CourseBlock: Hashable, Identifiable {
     public let courseId: String
     public let topicId: String?
     public let graded: Bool
+    public let due: Date?
     public var completion: Double
     public let type: BlockType
     public let displayName: String
@@ -201,9 +240,31 @@ public struct CourseBlock: Hashable, Identifiable {
     public let subtitles: [SubtitleUrl]?
     public let encodedVideo: CourseBlockEncodedVideo?
     public let multiDevice: Bool?
+    public var offlineDownload: OfflineDownload?
+    public var actualFileSize: Int?
 
     public var isDownloadable: Bool {
-        encodedVideo?.isDownloadable ?? false
+        encodedVideo?.isDownloadable ?? false || offlineDownload?.isDownloadable ?? false
+    }
+    
+    public var fileSize: Int? {
+        if let actualFileSize {
+            return actualFileSize
+        } else if let fileSize = encodedVideo?.desktopMP4?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.fallback?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.hls?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.mobileHigh?.fileSize {
+            return fileSize
+        } else if let fileSize = encodedVideo?.mobileLow?.fileSize {
+            return fileSize
+        } else if let fileSize = offlineDownload?.fileSize {
+            return fileSize
+        } else {
+            return nil
+        }
     }
 
     public init(
@@ -212,6 +273,7 @@ public struct CourseBlock: Hashable, Identifiable {
         courseId: String,
         topicId: String? = nil,
         graded: Bool,
+        due: Date?,
         completion: Double,
         type: BlockType,
         displayName: String,
@@ -219,13 +281,15 @@ public struct CourseBlock: Hashable, Identifiable {
         webUrl: String,
         subtitles: [SubtitleUrl]? = nil,
         encodedVideo: CourseBlockEncodedVideo?,
-        multiDevice: Bool?
+        multiDevice: Bool?,
+        offlineDownload: OfflineDownload?
     ) {
         self.blockId = blockId
         self.id = id
         self.courseId = courseId
         self.topicId = topicId
         self.graded = graded
+        self.due = due
         self.completion = completion
         self.type = type
         self.displayName = displayName
@@ -234,6 +298,23 @@ public struct CourseBlock: Hashable, Identifiable {
         self.subtitles = subtitles
         self.encodedVideo = encodedVideo
         self.multiDevice = multiDevice
+        self.offlineDownload = offlineDownload
+    }
+}
+
+public struct OfflineDownload {
+    public let fileUrl: String
+    public var lastModified: String
+    public let fileSize: Int
+    
+    public init(fileUrl: String, lastModified: String, fileSize: Int) {
+        self.fileUrl = fileUrl
+        self.lastModified = lastModified
+        self.fileSize = fileSize
+    }
+    
+    public var isDownloadable: Bool {
+        [".zip"].contains(where: { fileUrl.contains($0) == true })
     }
 }
 

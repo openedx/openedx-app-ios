@@ -33,11 +33,16 @@ public struct VideoDownloadQualityView: View {
     @StateObject
     private var viewModel: VideoDownloadQualityViewModel
     private var analytics: CoreAnalytics
+    private var router: BaseRouter
+    private var isModal: Bool
+    @Environment(\.isHorizontal) private var isHorizontal
 
     public init(
         downloadQuality: DownloadQuality,
         didSelect: ((DownloadQuality) -> Void)?,
-        analytics: CoreAnalytics
+        analytics: CoreAnalytics,
+        router: BaseRouter,
+        isModal: Bool = false
     ) {
         self._viewModel = StateObject(
             wrappedValue: .init(
@@ -46,64 +51,99 @@ public struct VideoDownloadQualityView: View {
             )
         )
         self.analytics = analytics
+        self.router = router
+        self.isModal = isModal
     }
 
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                // MARK: - Page Body
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        ForEach(viewModel.downloadQuality, id: \.self) { quality in
-                            Button(action: {
-                                analytics.videoQualityChanged(
-                                    .videoDownloadQualityChanged,
-                                    bivalue: .videoDownloadQualityChanged,
-                                    value: quality.value ?? "",
-                                    oldValue: viewModel.selectedDownloadQuality.value ?? ""
+                if !isModal {
+                    VStack {
+                        ThemeAssets.headerBackground.swiftUIImage
+                            .resizable()
+                            .edgesIgnoringSafeArea(.top)
+                    }
+                    .frame(maxWidth: .infinity, maxHeight: 200)
+                    .accessibilityIdentifier("auth_bg_image")
+                }
+                
+                // MARK: - Page name
+                VStack(alignment: .center) {
+                    if !isModal {
+                        ZStack {
+                            HStack {
+                                Text(CoreLocalization.Settings.videoDownloadQualityTitle)
+                                    .titleSettings(color: Theme.Colors.loginNavigationText)
+                                    .accessibilityIdentifier("manage_account_text")
+                            }
+                            VStack {
+                                BackNavigationButton(
+                                    color: Theme.Colors.loginNavigationText,
+                                    action: {
+                                        router.back()
+                                    }
                                 )
+                                .backViewStyle()
+                                .padding(.leading, isHorizontal ? 48 : 0)
+                                .accessibilityIdentifier("back_button")
                                 
-                                viewModel.selectedDownloadQuality = quality
-                            }, label: {
-                                HStack {
-                                    SettingsCell(
-                                        title: quality.title,
-                                        description: quality.description
-                                    )
-                                    .accessibilityElement(children: .ignore)
-                                    .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
-                                    Spacer()
-                                    CoreAssets.checkmark.swiftUIImage
-                                        .renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.accentXColor)
-                                        .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
-                                        .accessibilityIdentifier("checkmark_image")
-                                    
-                                }
-                                .foregroundColor(Theme.Colors.textPrimary)
-                            })
-                            .accessibilityIdentifier("select_quality_button")
-                            Divider()
+                            }.frame(minWidth: 0,
+                                    maxWidth: .infinity,
+                                    alignment: .topLeading)
                         }
                     }
-                    .frame(
-                        minWidth: 0,
-                        maxWidth: .infinity,
-                        alignment: .topLeading
-                    )
-                    .padding(.horizontal, 24)
-                    .frameLimit(width: proxy.size.width)
+                    // MARK: - Page Body
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 24) {
+                            ForEach(viewModel.downloadQuality, id: \.self) { quality in
+                                Button(action: {
+                                    analytics.videoQualityChanged(
+                                        .videoDownloadQualityChanged,
+                                        bivalue: .videoDownloadQualityChanged,
+                                        value: quality.value ?? "",
+                                        oldValue: viewModel.selectedDownloadQuality.value ?? ""
+                                    )
+                                    
+                                    viewModel.selectedDownloadQuality = quality
+                                }, label: {
+                                    HStack {
+                                        SettingsCell(
+                                            title: quality.title,
+                                            description: quality.description
+                                        )
+                                        .accessibilityElement(children: .ignore)
+                                        .accessibilityLabel("\(quality.title) \(quality.description ?? "")")
+                                        Spacer()
+                                        CoreAssets.checkmark.swiftUIImage
+                                            .renderingMode(.template)
+                                            .foregroundColor(Theme.Colors.accentXColor)
+                                            .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
+                                            .accessibilityIdentifier("checkmark_image")
+                                        
+                                    }
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                                })
+                                .accessibilityIdentifier("select_quality_button")
+                                Divider()
+                            }
+                        }
+                        .frameLimit(width: proxy.size.width)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 24)
+                    }
+                    .roundedBackground(Theme.Colors.background)
                 }
-                .padding(.top, 8)
             }
-            .navigationBarHidden(false)
-            .navigationBarBackButtonHidden(false)
-            .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
-            .background(
-                Theme.Colors.background
-                    .ignoresSafeArea()
-            )
         }
+        .navigationBarHidden(!isModal)
+        .navigationBarBackButtonHidden(!isModal)
+        .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
+        .ignoresSafeArea(.all, edges: .horizontal)
+        .background(
+            Theme.Colors.background
+                .ignoresSafeArea()
+        )
     }
 }
 
@@ -177,3 +217,17 @@ public extension DownloadQuality {
         }
     }
 }
+
+#if DEBUG
+struct VideoDownloadQualityView_Previews: PreviewProvider {
+    static var previews: some View {
+        VideoDownloadQualityView(
+            downloadQuality: .auto,
+            didSelect: nil,
+            analytics: CoreAnalyticsMock(),
+            router: BaseRouterMock(),
+            isModal: true
+        )
+    }
+}
+#endif

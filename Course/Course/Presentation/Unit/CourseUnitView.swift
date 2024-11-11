@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import OEXFoundation
 import Discussion
 import Combine
 import Theme
@@ -33,6 +34,9 @@ public struct CourseUnitView: View {
     @State var showDropdown: Bool = false
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
+    
+    @State private var videoURL: URL?
+    @State private var webURL: URL?
     
     let isDropdownActive: Bool
     
@@ -184,12 +188,14 @@ public struct CourseUnitView: View {
                                     isOnScreen: index == viewModel.index
                                 )
                                 .frameLimit(width: reader.size.width)
-
+                                
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView()
+                                OfflineContentView(
+                                    isDownloadable: false
+                                )
                             }
                             
                         } else {
@@ -214,40 +220,49 @@ public struct CourseUnitView: View {
                                 )
                                 .padding(.top, 5)
                                 .frameLimit(width: reader.size.width)
-
+                                
                                 if !isHorizontal {
                                     Spacer(minLength: 150)
                                 }
                             } else {
-                                NoInternetView()
+                                OfflineContentView(
+                                    isDownloadable: true
+                                )
                             }
                         }
+                        
                         // MARK: Web
-                    case let .web(url, injections):
+                    case let .web(url, injections, blockId, isDownloadable):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            if viewModel.connectivity.isInternetAvaliable {
+                            let localUrl = viewModel.urlForOfflineContent(blockId: blockId)?.absoluteString
+                            if viewModel.connectivity.isInternetAvaliable || localUrl != nil {
+                                // not need to add frame limit there because we did that with injection
                                 WebView(
                                     url: url,
+                                    localUrl: viewModel.connectivity.isInternetAvaliable ? nil : localUrl,
                                     injections: injections,
+                                    blockID: block.id,
                                     roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
                                 )
-                                // not need to add frame limit there because we did that with injection
                             } else {
-                                NoInternetView()
+                                OfflineContentView(
+                                    isDownloadable: isDownloadable
+                                )
                             }
                         } else {
                             EmptyView()
                         }
+
                         // MARK: Unknown
                     case .unknown(let url):
                         if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
                             if viewModel.connectivity.isInternetAvaliable {
-                                UnknownView(url: url, viewModel: viewModel)
+                                NotAvailableOnMobileView(url: url)
                                     .frameLimit(width: reader.size.width)
-                                Spacer()
-                                    .frame(minHeight: 100)
                             } else {
-                                NoInternetView()
+                                OfflineContentView(
+                                    isDownloadable: false
+                                )
                             }
                         } else {
                             EmptyView()
@@ -275,7 +290,7 @@ public struct CourseUnitView: View {
                                 //No need iPad paddings there bacause they were added
                                 //to PostsView that placed inside DiscussionView
                             } else {
-                                NoInternetView()
+                                FullScreenErrorView(type: .noInternet)
                             }
                         } else {
                             EmptyView()
@@ -442,13 +457,15 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "1",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .video,
                 displayName: "Lesson 1",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "2",
@@ -456,13 +473,15 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "2",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .video,
                 displayName: "Lesson 2",
                 studentUrl: "2",
                 webUrl: "2",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "3",
@@ -470,13 +489,15 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "3",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .unknown,
                 displayName: "Lesson 3",
                 studentUrl: "3",
                 webUrl: "3",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "4",
@@ -484,13 +505,15 @@ struct CourseUnitView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "4",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .unknown,
                 displayName: "4",
                 studentUrl: "4",
                 webUrl: "4",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             ),
         ]
         
@@ -515,12 +538,20 @@ struct CourseUnitView_Previews: PreviewProvider {
                                 displayName: "6",
                                 type: .vertical,
                                 completion: 0,
-                                childs: blocks
+                                childs: blocks,
+                                webUrl: ""
                             )
-                        ]
+                        ],
+                        sequentialProgress: SequentialProgress(
+                            assignmentType: "Advanced Assessment Tools",
+                            numPointsEarned: 1,
+                            numPointsPossible: 3
+                        ),
+                        due: Date()
                     )
                     
-                ]),
+                ]
+            ),
             CourseChapter(
                 blockId: "2",
                 id: "2",
@@ -541,9 +572,16 @@ struct CourseUnitView_Previews: PreviewProvider {
                                 displayName: "4",
                                 type: .vertical,
                                 completion: 0,
-                                childs: blocks
+                                childs: blocks,
+                                webUrl: ""
                             )
-                        ]
+                        ],
+                        sequentialProgress: SequentialProgress(
+                            assignmentType: "Basic Assessment Tools",
+                            numPointsEarned: 1,
+                            numPointsPossible: 3
+                        ),
+                        due: Date()
                     )
                     
                 ])
@@ -569,25 +607,3 @@ struct CourseUnitView_Previews: PreviewProvider {
 }
 //swiftlint:enable all
 #endif
-
-struct NoInternetView: View {
-        
-    var body: some View {
-        VStack(spacing: 28) {
-            Spacer()
-            CoreAssets.noWifi.swiftUIImage
-                .renderingMode(.template)
-                .foregroundStyle(Color.primary)
-                .scaledToFit()
-            Text(CoreLocalization.Error.Internet.noInternetTitle)
-                            .font(Theme.Fonts.titleLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
-            Text(CoreLocalization.Error.Internet.noInternetDescription)
-                .font(Theme.Fonts.bodyLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 50)
-            Spacer()
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
-    }
-}

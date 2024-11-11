@@ -15,14 +15,11 @@ public enum LogistrationSourceScreen: Equatable {
     case discovery
     case courseDetail(String, String)
     case programDetails(String)
-    
-    public var value: String? {
-        return String(describing: self).components(separatedBy: "(").first
-    }
 }
 
 public enum LogistrationAction {
     case signIn
+    case signInWithSSO
     case register
 }
 
@@ -34,11 +31,11 @@ public struct LogistrationBottomView: View {
     public init(_ action: @escaping (LogistrationAction) -> Void) {
         self.action = action
     }
-    
+
     public var body: some View {
         VStack(alignment: .leading) {
             HStack(spacing: 24) {
-                StyledButton(CoreLocalization.register) {
+                StyledButton(CoreLocalization.SignIn.registerBtn) {
                     action(.register)
                 }
                 .accessibilityIdentifier("logistration_register_button")
@@ -48,12 +45,24 @@ public struct LogistrationBottomView: View {
                     action: {
                         action(.signIn)
                     },
-                    color: Theme.Colors.background,
+                    color: Theme.Colors.secondaryButtonBGColor,
                     textColor: Theme.Colors.secondaryButtonTextColor,
                     borderColor: Theme.Colors.secondaryButtonBorderColor
                 )
                 .frame(width: 100)
                 .accessibilityIdentifier("logistration_signin_button")
+                
+                StyledButton(
+                    CoreLocalization.SignIn.logInWithSsoBtn,
+                    action: {
+                        action(.signInWithSSO)
+                    },
+                    color: Theme.Colors.white,
+                    textColor: Theme.Colors.secondaryButtonTextColor,
+                    borderColor: Theme.Colors.secondaryButtonBorderColor
+                )
+                .frame(width: 100)
+                .accessibilityIdentifier("logistration_signin_withsso_button")
             }
             .padding(.horizontal, isHorizontal ? 0 :  0)
         }

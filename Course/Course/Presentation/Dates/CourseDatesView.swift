@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import Core
+import OEXFoundation
 import Theme
 import SwiftUIIntrospect
 
@@ -19,16 +20,19 @@ public struct CourseDatesView: View {
     private var viewModel: CourseDatesViewModel
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
+    @Binding private var viewHeight: CGFloat
     
     public init(
         courseID: String,
         coordinate: Binding<CGFloat>,
         collapsed: Binding<Bool>,
+        viewHeight: Binding<CGFloat>,
         viewModel: CourseDatesViewModel
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
+        self._viewHeight = viewHeight
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -46,10 +50,33 @@ public struct CourseDatesView: View {
                         viewModel: viewModel,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         courseDates: courseDates,
                         courseID: courseID
                     )
                     .padding(.top, 10)
+                } else {
+                    GeometryReader { proxy in
+                        VStack {
+                            ScrollView {
+                                DynamicOffsetView(
+                                    coordinate: $coordinate,
+                                    collapsed: $collapsed,
+                                    viewHeight: $viewHeight
+                                )
+                                
+                                FullScreenErrorView(
+                                    type: .noContent(
+                                        CourseLocalization.Error.courseDateUnavailable,
+                                        image: CoreAssets.information.swiftUIImage
+                                    )
+                                )
+                                .frame(maxWidth: .infinity)
+                                .frame(height: proxy.size.height - viewHeight)
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        }
+                    }
                 }
             }
             
@@ -154,6 +181,7 @@ struct CourseDateListView: View {
     @State private var isExpanded = false
     @Binding var coordinate: CGFloat
     @Binding var collapsed: Bool
+    @Binding var viewHeight: CGFloat
     var courseDates: CourseDates
     let courseID: String
     
@@ -163,13 +191,15 @@ struct CourseDateListView: View {
                 ScrollView {
                     DynamicOffsetView(
                         coordinate: $coordinate,
-                        collapsed: $collapsed
+                        collapsed: $collapsed,
+                        viewHeight: $viewHeight
                     )
                     VStack(alignment: .leading, spacing: 0) {
+                        
+                        CalendarSyncStatusView(status: viewModel.syncStatus(), router: viewModel.router)
+                            .padding(.bottom, 16)
+                        
                         if !courseDates.hasEnded {
-                            CalendarSyncView(courseID: courseID, viewModel: viewModel)
-                                .padding(.bottom, 16)
-                            
                             DatesStatusInfoView(
                                 datesBannerInfo: courseDates.datesBannerInfo,
                                 courseID: courseID,
@@ -240,7 +270,7 @@ struct CompletedBlocks: View {
             }) {
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(CompletionStatus.completed.rawValue)
+                        Text(CompletionStatus.completed.localized)
                             .font(Theme.Fonts.titleSmall)
                             .foregroundColor(Theme.Colors.textPrimary)
                         
@@ -288,6 +318,8 @@ struct CompletedBlocks: View {
                                 if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                                     Image(systemName: "chevron.right")
                                         .resizable()
+                                        .flipsForRightToLeftLayoutDirection(true)
+                                        
                                         .scaledToFit()
                                         .frame(width: 6.55, height: 11.15)
                                         .labelStyle(.iconOnly)
@@ -327,6 +359,7 @@ struct BlockStatusView: View {
                     if block.canShowLink && !block.firstComponentBlockID.isEmpty {
                         Image(systemName: "chevron.right")
                             .resizable()
+                            .flipsForRightToLeftLayoutDirection(true)
                             .scaledToFit()
                             .frame(width: 6.55, height: 11.15)
                             .labelStyle(.iconOnly)
@@ -405,42 +438,6 @@ struct StyleBlock: View {
     }
 }
 
-struct CalendarSyncView: View {
-    let courseID: String
-    @ObservedObject var viewModel: CourseDatesViewModel
-    
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Spacer()
-            HStack {
-                CoreAssets.syncToCalendar.swiftUIImage
-                Text(CourseLocalization.CourseDates.syncToCalendar)
-                    .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(Theme.Colors.textPrimary)
-                Toggle("", isOn: .constant(viewModel.isOn))
-                    .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.accentButtonColor))
-                    .padding(.trailing, 0)
-                    .onTapGesture {
-                        viewModel.calendarState = !viewModel.isOn
-                    }
-            }
-            .padding(.horizontal, 16)
-            
-            Text(CourseLocalization.CourseDates.syncToCalendarMessage)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .font(Theme.Fonts.labelLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .padding(.horizontal, 16)
-            Spacer()
-        }
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
-        )
-        .background(Theme.Colors.datesSectionBackground)
-    }
-}
-
 fileprivate extension BlockStatus {
     var title: String {
         switch self {
@@ -504,14 +501,17 @@ struct CourseDatesView_Previews: PreviewProvider {
             config: ConfigMock(),
             courseID: "",
             courseName: "",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(),
+            calendarManager: CalendarManagerMock()
         )
         
         CourseDatesView(
             courseID: "",
             coordinate: .constant(0),
-            collapsed: .constant(false), 
-            viewModel: viewModel)
+            collapsed: .constant(false),
+            viewHeight: .constant(0),
+            viewModel: viewModel
+        )
     }
 }
 #endif

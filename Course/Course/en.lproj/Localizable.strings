@@ -27,16 +27,22 @@
 "ERROR.NO_INTERNET" = "You are not connected to the Internet. Please check your Internet connection.";
 "ERROR.RELOAD" = "Reload";
 "ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
-"ERROR.NO_HANDOUTS" = "There are currently no handouts for this course";
+"ERROR.HANDOUTS_UNAVAILABLE" = "There are currently no handouts for this course.";
+"ERROR.ANNOUNCEMENTS_UNAVAILABLE" = "There are currently no announcements for this course.";
+"ERROR.VIDEOS_UNAVAILABLE" = "There are currently no vidoes for this course.";
+"ERROR.COURSE_DATE_UNAVAILABLE" = "Course dates are not currently available.";
+"ERROR.COURSEWARE_UNAVAILABLE" = "No course content is currently available.";
 
 "ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
 "ALERT.ACCEPT" = "Accept";
 "ALERT.DELETE_ALL_VIDEOS" = "Are you sure you want to delete all video(s) for";
 "ALERT.DELETE_VIDEOS" = "Are you sure you want to delete video(s) for";
 "ALERT.STOP_DOWNLOADING" = "Turning off the switch will stop downloading and delete all downloaded videos for";
+"ALERT.WARNING" = "Warning";
 
 "COURSE_CONTAINER.HOME" =  "Home";
 "COURSE_CONTAINER.VIDEOS" =  "Videos";
+"COURSE_CONTAINER.OFFLINE" =  "Offline";
 "COURSE_CONTAINER.DATES" =  "Dates";
 "COURSE_CONTAINER.DISCUSSIONS" =  "Discussions";
 "COURSE_CONTAINER.HANDOUTS" =  "More";
@@ -102,21 +108,67 @@
 "COURSE_DATES.OPEN_SETTINGS"="Open Settings";
 "COURSE_DATES.SETTINGS" = "Settings";
 
-"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY" = "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.";
-"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON" = "Shift due dates";
-"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.HEADER" = "Missed some deadlines?";
-
-"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.BODY" = "We built a suggested schedule to help you stay on track. But don’t worry – it’s flexible so you can learn at your own pace. If you happen to fall behind, you’ll be able to adjust the dates to keep yourself on track.";
-"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.HEADER" = "";
-
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BODY" = "To complete graded assignments as part of this course, you can upgrade today.";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BUTTON" = "";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.HEADER" = "";
-
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BODY" = "You are auditing this course, which means that you are unable to participate in graded assignments. It looks like you missed some important deadlines based on our suggested schedule. To complete graded assignments as part of this course and shift the past due assignments into the future, you can upgrade today.";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BUTTON" = "";
-"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.HEADER" = "";
-
 "COURSE_DATES.RESET_DATE.ERROR_MESSAGE" = "Your dates could not be shifted. Please try again.";
 "COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE" = "Your dates have been successfully shifted.";
 "COURSE_DATES.RESET_DATE.TITLE" = "Course Dates";
+
+"COURSE.DUE_TODAY" = "Due Today";
+"COURSE.DUE_TOMORROW" = "Due Tomorrow";
+
+"COURSE.PROGRESS_COMPLETED" = "%@ of %@ assignments complete";
+
+"COURSE.ALERT.CANCEL" = "Cancel";
+"COURSE.ALERT.CLOSE" = "Close";
+"COURSE.ALERT.REMOVE" = "Remove";
+"COURSE.ALERT.DOWNLOAD" = "Download";
+"COURSE.ALERT.TRY_AGAIN" = "Try again";
+
+"COURSE.ALERT.REMOVE_TITLE" = "Remove Offline Content?";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_TITLE" = "Confirm Download";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_TITLE" = "Download on Cellular?";
+
+"COURSE.ALERT.REMOVE_DESCRIPTION" = "Removing this content will free up %@.";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_DESCRIPTION" = "Downloading this %@ of content will save available blocks offline.";
+"COURSE.ALERT.CONFIRM_DOWNLOAD_CELLULAR_DESCRIPTION" = "Downloading this content will use %@ of cellular data.";
+
+"COURSE.ERROR.DOWNLOAD_FAILED_TITLE" = "Download Failed";
+"COURSE.ERROR.NO_INTERNET_CONNECTION_TITLE" = "No Internet Connection";
+"COURSE.ERROR.WIFI_REQUIRED_TITLE" = "Wi-Fi Required";
+
+"COURSE.ERROR.DOWNLOAD_FAILED_DESCRIPTION" = "Unfortunately, this content failed to download. Please try again later or report this issue.";
+"COURSE.ERROR.NO_INTERNET_CONNECTION_DESCRIPTION" = "Downloading this content requires an active internet connection. Please connect to the internet and try again.";
+"COURSE.ERROR.WIFI_REQUIRED_DESCRIPTION" = "Downloading this content requires an active WiFi connection. Please connect to a WiFi network and try again.";
+
+"COURSE.STORAGE_ALERT.TITLE" = "Device Storage Full";
+"COURSE.STORAGE_ALERT.DESCRIPTION" = "Your device does not have enough free space to download this content. Please free up some space and try again.";
+"COURSE.STORAGE_ALERT.USED_AND_FREE" = "%@ used, %@ free";
+
+"COURSE.LARGEST_DOWNLOADS.TITLE" = "Largest Downloads";
+"COURSE.LARGEST_DOWNLOADS.DONE" = "Done";
+"COURSE.LARGEST_DOWNLOADS.EDIT" = "Edit";
+"COURSE.LARGEST_DOWNLOADS.REMOVE_DOWNLOADS" = "Remove all downloads";
+
+"COURSE.OFFLINE.VISIBLE" = "%@%% of this course is visible on mobile.";
+"COURSE.OFFLINE.DOWNLOADABLE" = "%@%% of this course is downloadable.";
+"COURSE.OFFLINE.CAN_BE_COMPLETED" = "%@%% of this course can be completed offline.";
+
+"COURSE.TOTAL_PROGRESS.DOWNLOADED" = "Downloaded";
+"COURSE.TOTAL_PROGRESS.DOWNLOADING" = "Downloading";
+"COURSE.TOTAL_PROGRESS.AVALIABLE_TO_DOWNLOAD" = "Available to Download";
+"COURSE.TOTAL_PROGRESS.READY_TO_DOWNLOAD" = "Ready to Download";
+
+
+"COURSE.OFFLINE.DOWNLOAD_ALL" = "Download all";
+"COURSE.OFFLINE.CANCEL_COURSE_DOWNLOAD" = "Cancel Course Download";
+
+"COURSE.OFFLINE.YOU_CAN_DOWNLOAD" = "You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.";
+"COURSE.OFFLINE.YOU_CANT_DOWNLOAD" = "None of this course’s content is currently avaliable to download offline.";
+
+"OFFLINE.NOT_DOWNLOADED.TITLE" = "This component is not downloaded";
+"OFFLINE.NOT_DOWNLOADED.DESCRIPTION" = "Explore other parts of this course or download this when you reconnect.";
+"OFFLINE.NOT_AVALIABLE.TITLE" = "This component is not yet available offline";
+"OFFLINE.NOT_AVALIABLE.DESCRIPTION" = "Explore other parts of this course or view this when you reconnect.";
+
+"CALENDAR_SYNC_STATUS.SYNCED" = "Synced to Calendar";
+"CALENDAR_SYNC_STATUS.FAILED" = "Calendar Sync Failed";
+"CALENDAR_SYNC_STATUS.OFFLINE" = "Offline";

@@ -107,12 +107,15 @@ extension Router: DeepLinkRouter {
             if courseDetails.isEnrolled {
                 showCourseScreens(
                     courseID: courseDetails.courseID,
-                    isActive: nil,
+                    hasAccess: nil,
                     courseStart: courseDetails.courseStart,
                     courseEnd: courseDetails.courseEnd,
                     enrollmentStart: courseDetails.enrollmentStart,
                     enrollmentEnd: courseDetails.enrollmentEnd,
-                    title: courseDetails.courseTitle
+                    title: courseDetails.courseTitle,
+                    courseRawImage: courseDetails.courseRawImage,
+                    showDates: false,
+                    lastVisitedBlockID: nil
                 )
             } else {
                 showCourseDetais(
@@ -129,7 +132,9 @@ extension Router: DeepLinkRouter {
             .courseHandout,
             .courseAnnouncement,
             .courseDashboard,
-            .courseComponent:
+            .courseComponent,
+            .enroll,
+            .addBetaTester:
             popToCourseContainerView(animated: false)
         default:
             break
@@ -167,7 +172,8 @@ extension Router: DeepLinkRouter {
             handouts: nil,
             announcements: updates,
             router: self,
-            cssInjector: cssInjector
+            cssInjector: cssInjector,
+            type: .announcements
         )
     }
 
@@ -183,7 +189,8 @@ extension Router: DeepLinkRouter {
             handouts: handouts,
             announcements: nil,
             router: self,
-            cssInjector: cssInjector
+            cssInjector: cssInjector,
+            type: .handouts
         )
     }
 

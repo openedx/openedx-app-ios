@@ -67,7 +67,7 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             do {
                 switch state {
                 case .available:
-                    try manager.addToDownloadQueue(blocks: blocks)
+                    try await manager.addToDownloadQueue(blocks: blocks)
                     downloadState[vertical.id] = .downloading
                 case .downloading:
                     try await manager.cancelDownloading(courseId: vertical.courseId, blocks: blocks)
@@ -82,19 +82,6 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
                 }
             }
         }
-    }
-
-    func trackVerticalClicked(
-        courseId: String,
-        courseName: String,
-        vertical: CourseVertical
-    ) {
-        analytics.verticalClicked(
-            courseId: courseId,
-            courseName: courseName,
-            blockId: vertical.blockId,
-            blockName: vertical.displayName
-        )
     }
     
     @MainActor
@@ -125,5 +112,18 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
             }
         }
         downloadState = states
+    }
+
+    func trackVerticalClicked(
+        courseId: String,
+        courseName: String,
+        vertical: CourseVertical
+    ) {
+        analytics.verticalClicked(
+            courseId: courseId,
+            courseName: courseName,
+            blockId: vertical.blockId,
+            blockName: vertical.displayName
+        )
     }
 }

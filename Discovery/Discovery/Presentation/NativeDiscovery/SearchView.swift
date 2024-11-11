@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import OEXFoundation
 import Theme
 
 public struct SearchView: View {
@@ -110,12 +111,16 @@ public struct SearchView: View {
                             
                             LazyVStack {
                                 let searchResults = viewModel.searchResults.enumerated()
+                                let useRelativeDates = viewModel.storage.useRelativeDates
                                 ForEach(
                                     Array(searchResults), id: \.offset) { index, course in
-                                        CourseCellView(model: course,
-                                                       type: .discovery,
-                                                       index: index,
-                                                       cellsCount: viewModel.searchResults.count)
+                                        CourseCellView(
+                                            model: course,
+                                            type: .discovery,
+                                            index: index,
+                                            cellsCount: viewModel.searchResults.count,
+                                            useRelativeDates: useRelativeDates
+                                        )
                                         .padding(.horizontal, 24)
                                         .onAppear {
                                             Task {
@@ -173,8 +178,8 @@ public struct SearchView: View {
             .onDisappear {
                 viewModel.searchText = ""
             }
-            .background(Theme.Colors.background.ignoresSafeArea())
             .avoidKeyboard(dismissKeyboardByTap: true)
+            .background(Theme.Colors.background.ignoresSafeArea())
         }
     }
     
@@ -219,7 +224,8 @@ struct SearchView_Previews: PreviewProvider {
             interactor: DiscoveryInteractor.mock,
             connectivity: Connectivity(),
             router: router,
-            analytics: DiscoveryAnalyticsMock(),
+            analytics: DiscoveryAnalyticsMock(), 
+            storage: CoreStorageMock(),
             debounce: .searchDebounce
         )
         

@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 // Define your uri scheme
 public enum URIString: String {

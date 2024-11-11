@@ -17,6 +17,8 @@ public protocol WebViewNavigationDelegate: AnyObject {
         shouldLoad request: URLRequest,
         navigationAction: WKNavigationAction
     ) async -> Bool
+    
+    func showWebViewError()
 }
 
 public struct WebView: UIViewRepresentable {
@@ -26,10 +28,17 @@ public struct WebView: UIViewRepresentable {
         @Published var url: String
         let baseURL: String
         let injections: [WebviewInjection]?
+        var openFile: (String) -> Void
         
-        public init(url: String, baseURL: String, injections: [WebviewInjection]? = nil) {
+        public init(
+            url: String,
+            baseURL: String,
+            openFile: @escaping (String) -> Void,
+            injections: [WebviewInjection]? = nil
+        ) {
             self.url = url
             self.baseURL = baseURL
+            self.openFile = openFile
             self.injections = injections
         }
     }
@@ -37,19 +46,29 @@ public struct WebView: UIViewRepresentable {
     @ObservedObject var viewModel: ViewModel
     @Binding public var isLoading: Bool
     var webViewNavDelegate: WebViewNavigationDelegate?
+    let connectivity: ConnectivityProtocol
+    var message: ((WKScriptMessage) -> Void)
     
     var refreshCookies: () async -> Void
+    var webViewType: String?
+    private let userContentControllerName = "IOSBridge"
 
     public init(
         viewModel: ViewModel,
         isLoading: Binding<Bool>,
         refreshCookies: @escaping () async -> Void,
-        navigationDelegate: WebViewNavigationDelegate? = nil
+        navigationDelegate: WebViewNavigationDelegate? = nil,
+        connectivity: ConnectivityProtocol,
+        message: @escaping ((WKScriptMessage) -> Void) = { _ in },
+        webViewType: String? = nil
     ) {
         self.viewModel = viewModel
         self._isLoading = isLoading
         self.refreshCookies = refreshCookies
         self.webViewNavDelegate = navigationDelegate
+        self.connectivity = connectivity
+        self.message = message
+        self.webViewType = webViewType
     }
 
     public class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate, WKScriptMessageHandler {
@@ -70,6 +89,10 @@ public struct WebView: UIViewRepresentable {
         
         public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
             webView.isHidden = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+                self.parent.webViewNavDelegate?.showWebViewError()
+            }
         }
         
         public func webView(
@@ -78,6 +101,10 @@ public struct WebView: UIViewRepresentable {
             withError error: Error
         ) {
             webView.isHidden = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+                self.parent.webViewNavDelegate?.showWebViewError()
+            }
         }
         
         public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
@@ -109,6 +136,17 @@ public struct WebView: UIViewRepresentable {
                 handler: { _ in
                     completionHandler(false)
                 }))
+            
+            if let presenter = alertController.popoverPresentationController {
+                let view = UIApplication.topViewController()?.view
+                presenter.sourceView = view
+                presenter.sourceRect = CGRect(
+                    x: view?.bounds.midX ?? 0,
+                    y: view?.bounds.midY ?? 0,
+                    width: 0,
+                    height: 0
+                )
+            }
 
             UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
         }
@@ -119,6 +157,13 @@ public struct WebView: UIViewRepresentable {
         ) async -> WKNavigationActionPolicy {
             
             guard let url = navigationAction.request.url else { return .cancel }
+            
+            if url.absoluteString.starts(with: "file:///") {
+                if url.pathExtension == "pdf" {
+                    await parent.viewModel.openFile(url.absoluteString)
+                    return .cancel
+                }
+            }
             
             let isWebViewDelegateHandled = await (
                 parent.webViewNavDelegate?.webView(
@@ -132,38 +177,43 @@ public struct WebView: UIViewRepresentable {
             }
             
             let baseURL = await parent.viewModel.baseURL
-            if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
-                if navigationAction.navigationType == .other {
-                    return .allow
-                } else if navigationAction.navigationType == .linkActivated {
-                    await MainActor.run {
+            switch navigationAction.navigationType {
+            case .other, .formSubmitted, .formResubmitted:
+                return .allow
+            case .linkActivated:
+                await MainActor.run {
+                    if UIApplication.shared.canOpenURL(url) {
                         UIApplication.shared.open(url, options: [:])
                     }
-                } else if navigationAction.navigationType == .formSubmitted {
-                    return .allow
                 }
                 return .cancel
+            default:
+                if !baseURL.isEmpty, !url.absoluteString.starts(with: baseURL) {
+                    return .cancel
+                } else {
+                    return .allow
+                }
             }
-            
-            return .allow
         }
 
         public func webView(
             _ webView: WKWebView,
             decidePolicyFor navigationResponse: WKNavigationResponse
         ) async -> WKNavigationResponsePolicy {
-            guard let response = (navigationResponse.response as? HTTPURLResponse),
-                  let url = response.url else {
-                return .cancel
-            }
-            let baseURL = await parent.viewModel.baseURL
-
-            if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
-                await parent.refreshCookies()
-                DispatchQueue.main.async {
-                    if let url = webView.url {
-                        let request = URLRequest(url: url)
-                        webView.load(request)
+            if parent.connectivity.isInternetAvaliable {
+                guard let response = (navigationResponse.response as? HTTPURLResponse),
+                      let url = response.url else {
+                    return .cancel
+                }
+                let baseURL = await parent.viewModel.baseURL
+                
+                if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
+                    await parent.refreshCookies()
+                    DispatchQueue.main.async {
+                        if let url = webView.url {
+                            let request = URLRequest(url: url)
+                            webView.load(request)
+                        }
                     }
                 }
             }
@@ -172,7 +222,7 @@ public struct WebView: UIViewRepresentable {
         
         private func addObservers() {
             cancellables.removeAll()
-            NotificationCenter.default.publisher(for: .webviewReloadNotification, object: nil)
+            NotificationCenter.default.publisher(for: Notification.Name(parent.webViewType ?? ""), object: nil)
                 .sink { [weak self] _ in
                     self?.reload()
                 }
@@ -188,16 +238,29 @@ public struct WebView: UIViewRepresentable {
         fileprivate var webview: WKWebView?
         
         @objc private func reload() {
-            parent.isLoading = true
-            webview?.reload()
+            DispatchQueue.main.async {
+                self.parent.isLoading = true
+            }
+            if webview?.url?.absoluteString.isEmpty ?? true,
+               let url = URL(string: parent.viewModel.url) {
+                let request = URLRequest(url: url)
+                webview?.load(request)
+            } else {
+                webview?.reload()
+            }
         }
 
         public func userContentController(
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
         ) {
+            self.parent.message(message)
             parent.viewModel.injections?.handle(message: message)
         }
+    }
+    
+    public func webView(_ webView: WKWebView, shouldPreviewElement elementInfo: WKContextMenuElementInfo) -> Bool {
+        return true
     }
 
     private var userAgent: String {
@@ -217,12 +280,13 @@ public struct WebView: UIViewRepresentable {
 
     public func makeUIView(context: UIViewRepresentableContext<WebView>) -> WKWebView {
         let webViewConfig = WKWebViewConfiguration()
+        webViewConfig.userContentController.add(context.coordinator, name: userContentControllerName)
+        webViewConfig.defaultWebpagePreferences.allowsContentJavaScript = true
+        webViewConfig.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         
         let webView = WKWebView(frame: .zero, configuration: webViewConfig)
         #if DEBUG
-        if #available(iOS 16.4, *) {
-            webView.isInspectable = true
-        }
+        webView.isInspectable = true
         #endif
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
@@ -239,7 +303,6 @@ public struct WebView: UIViewRepresentable {
         webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
-        // To add ability to change font size with webkitTextSizeAdjust need to set mode to mobile
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile
         webView.applyInjections(viewModel.injections, toHandler: context.coordinator)
         
@@ -302,8 +365,8 @@ extension WKWebView {
 
 extension Array where Element == WebviewInjection {
     func handle(message: WKScriptMessage) {
-        let messages = compactMap{ $0.messages }
-            .flatMap{ $0 }
+        let messages = compactMap { $0.messages }
+            .flatMap { $0 }
         if let currentMessage = messages.first(where: { $0.name == message.name }) {
             currentMessage.handler(message.body, message.webView)
         }

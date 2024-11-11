@@ -8,17 +8,39 @@
 import Foundation
 import Swinject
 import Core
+import OEXFoundation
 import Authorization
 import Discovery
 import Dashboard
 import Profile
 import Course
 import Discussion
+import Combine
 
 // swiftlint:disable function_body_length type_body_length
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
+        // MARK: OfflineSync
+        container.register(OfflineSyncRepositoryProtocol.self) { r in
+            OfflineSyncRepository(
+                api: r.resolve(API.self)!
+            )
+        }
+        container.register(OfflineSyncInteractorProtocol.self) { r in
+            OfflineSyncInteractor(
+                repository: r.resolve(OfflineSyncRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(OfflineSyncManagerProtocol.self) { r in
+            OfflineSyncManager(
+                persistence: r.resolve(CorePersistenceProtocol.self)!,
+                interactor: r.resolve(OfflineSyncInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }
+
         // MARK: Auth
         container.register(AuthRepositoryProtocol.self) { r in
             AuthRepository(
@@ -38,7 +60,12 @@ class ScreenAssembly: Assembly {
             MainScreenViewModel(
                 analytics: r.resolve(MainScreenAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
+                router: r.resolve(Router.self)!,
+                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!,
                 profileInteractor: r.resolve(ProfileInteractorProtocol.self)!,
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                appStorage: r.resolve(AppStorage.self)!,
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!,
                 sourceScreen: sourceScreen
             )
         }
@@ -59,6 +86,15 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!,
                 sourceScreen: sourceScreen
+            )
+        }
+        container.register(SSOWebViewModel.self) { r in
+            SSOWebViewModel(
+                interactor: r.resolve(AuthInteractorProtocol.self)!,
+                router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!,
+                ssoHelper: r.resolve(SSOHelper.self)!
             )
         }
         container.register(SignUpViewModel.self) { r, sourceScreen in
@@ -139,6 +175,7 @@ class ScreenAssembly: Assembly {
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 router: r.resolve(DiscoveryRouter.self)!,
                 analytics: r.resolve(DiscoveryAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 debounce: .searchDebounce
             )
         }
@@ -161,15 +198,40 @@ class ScreenAssembly: Assembly {
                 repository: r.resolve(DashboardRepositoryProtocol.self)!
             )
         }
-        container.register(DashboardViewModel.self) { r in
-            DashboardViewModel(
+        container.register(ListDashboardViewModel.self) { r in
+            ListDashboardViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                analytics: r.resolve(DashboardAnalytics.self)!
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
+            )
+        }
+        
+        container.register(PrimaryCourseDashboardViewModel.self) { r in
+            PrimaryCourseDashboardViewModel(
+                interactor: r.resolve(DashboardInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!
+            )
+        }
+        
+        container.register(AllCoursesViewModel.self) { r in
+            AllCoursesViewModel(
+                interactor: r.resolve(DashboardInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                analytics: r.resolve(DashboardAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
         // MARK: Profile
+        
+        // MARK: Course
+        container.register(ProfilePersistenceProtocol.self) { r in
+            ProfilePersistence(context: r.resolve(DatabaseManager.self)!.context)
+        }
         
         container.register(ProfileRepositoryProtocol.self) { r in
             ProfileRepository(
@@ -188,7 +250,6 @@ class ScreenAssembly: Assembly {
         container.register(ProfileViewModel.self) { r in
             ProfileViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
-                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -208,8 +269,35 @@ class ScreenAssembly: Assembly {
         container.register(SettingsViewModel.self) { r in
             SettingsViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
-                analytics: r.resolve(CoreAnalytics.self)!
+                analytics: r.resolve(ProfileAnalytics.self)!,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                corePersistence: r.resolve(CorePersistenceProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }
+        
+        container.register(DatesAndCalendarViewModel.self) { r in
+            DatesAndCalendarViewModel(
+                router: r.resolve(ProfileRouter.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                profileStorage: r.resolve(ProfileStorage.self)!,
+                persistence: r.resolve(ProfilePersistenceProtocol.self)!,
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }
+        .inObjectScope(.weak)
+                
+        container.register(ManageAccountViewModel.self) { r in
+            ManageAccountViewModel(
+                router: r.resolve(ProfileRouter.self)!,
+                analytics: r.resolve(ProfileAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!
             )
         }
         
@@ -255,7 +343,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd in
+        ) { r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, selection, lastVisitedBlockID in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -270,7 +358,9 @@ class ScreenAssembly: Assembly {
                 courseEnd: courseEnd,
                 enrollmentStart: enrollmentStart,
                 enrollmentEnd: enrollmentEnd,
-                coreAnalytics: r.resolve(CoreAnalytics.self)!
+                lastVisitedBlockID: lastVisitedBlockID,
+                coreAnalytics: r.resolve(CoreAnalytics.self)!,
+                selection: selection
             )
         }
         
@@ -308,44 +398,113 @@ class ScreenAssembly: Assembly {
         }
         
         container.register(WebUnitViewModel.self) { r in
-            WebUnitViewModel(authInteractor: r.resolve(AuthInteractorProtocol.self)!,
-                             config: r.resolve(ConfigProtocol.self)!)
+            WebUnitViewModel(
+                authInteractor: r.resolve(AuthInteractorProtocol.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!
+            )
         }
         
         container.register(
             YouTubeVideoPlayerViewModel.self
-        ) { r, url, blockID, courseID, languages, playerStateSubject in
-            YouTubeVideoPlayerViewModel(
-                url: url,
-                blockID: blockID,
-                courseID: courseID,
+        ) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) in
+            let router: Router = r.resolve(Router.self)!
+            return YouTubeVideoPlayerViewModel(
                 languages: languages,
                 playerStateSubject: playerStateSubject,
-                interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
-                appStorage: r.resolve(CoreStorage.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                pipManager: r.resolve(PipManagerProtocol.self)!
+                playerHolder: r.resolve(
+                    YoutubePlayerViewControllerHolder.self,
+                    arguments: url,
+                    blockID,
+                    courseID,
+                    router.currentCourseTabSelection
+                )!
             )
         }
         
-        container.register(
-            EncodedVideoPlayerViewModel.self
-        ) { r, url, blockID, courseID, languages, playerStateSubject in
+        container.register(EncodedVideoPlayerViewModel.self) { (r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl], playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>) in
             let router: Router = r.resolve(Router.self)!
+
+            let holder = r.resolve(
+                PlayerViewControllerHolder.self,
+                arguments: url,
+                blockID,
+                courseID,
+                router.currentCourseTabSelection
+            )!
             return EncodedVideoPlayerViewModel(
+                languages: languages,
+                playerStateSubject: playerStateSubject,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                playerHolder: holder
+            )
+        }
+        
+        container.register(PlayerDelegateProtocol.self) { _, manager in
+            PlayerDelegate(pipManager: manager)
+        }
+        
+        container.register(YoutubePlayerTracker.self) { (_, url) in
+            YoutubePlayerTracker(url: url)
+        }
+        
+        container.register(PlayerTracker.self) { (_, url) in
+            PlayerTracker(url: url)
+        }
+        
+        container.register(
+            YoutubePlayerViewControllerHolder.self
+        ) { r, url, blockID, courseID, selectedCourseTab in
+            YoutubePlayerViewControllerHolder(
                 url: url,
                 blockID: blockID,
                 courseID: courseID,
-                languages: languages,
-                playerStateSubject: playerStateSubject,
-                interactor: r.resolve(CourseInteractorProtocol.self)!,
-                router: r.resolve(CourseRouter.self)!,
-                appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                selectedCourseTab: selectedCourseTab,
+                videoResolution: .zero,
                 pipManager: r.resolve(PipManagerProtocol.self)!,
-                selectedCourseTab: router.currentCourseTabSelection
+                playerTracker: r.resolve(YoutubePlayerTracker.self, argument: url)!,
+                playerDelegate: nil,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
             )
+        }
+
+        container.register(
+            PlayerViewControllerHolder.self
+        ) { (r, url: URL?, blockID: String, courseID: String, selectedCourseTab: Int) in
+            let pipManager = r.resolve(PipManagerProtocol.self)!
+            if let holder = pipManager.holder(
+                for: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab
+            ) as? PlayerViewControllerHolder {
+                return holder
+            }
+
+            let storage = r.resolve(CoreStorage.self)!
+            let quality = storage.userSettings?.streamingQuality ?? .auto
+            let tracker = r.resolve(PlayerTracker.self, argument: url)!
+            let delegate = r.resolve(PlayerDelegateProtocol.self, argument: pipManager)!
+            let holder = PlayerViewControllerHolder(
+                url: url,
+                blockID: blockID,
+                courseID: courseID,
+                selectedCourseTab: selectedCourseTab,
+                videoResolution: quality.resolution,
+                pipManager: pipManager,
+                playerTracker: tracker,
+                playerDelegate: delegate,
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+            )
+            delegate.playerHolder = holder
+            return holder
+        }
+        
+        container.register(PlayerServiceProtocol.self) { r, courseID, blockID in
+            let interactor = r.resolve(CourseInteractorProtocol.self)!
+            let router = r.resolve(CourseRouter.self)!
+            return PlayerService(courseID: courseID, blockID: blockID, interactor: interactor, router: router)
         }
         
         container.register(HandoutsViewModel.self) { r, courseID in
@@ -368,7 +527,8 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 courseID: courseID,
                 courseName: courseName,
-                analytics: r.resolve(CourseAnalytics.self)!
+                analytics: r.resolve(CourseAnalytics.self)!,
+                calendarManager: r.resolve(CalendarManagerProtocol.self)!
             )
         }
         
@@ -402,6 +562,7 @@ class ScreenAssembly: Assembly {
             DiscussionSearchTopicsViewModel(
                 courseID: courseID,
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 debounce: .searchDebounce
             )
@@ -411,7 +572,8 @@ class ScreenAssembly: Assembly {
             PostsViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
@@ -420,6 +582,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 postStateSubject: subject
             )
         }
@@ -429,6 +592,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 threadStateSubject: subject
             )
         }

@@ -7,13 +7,14 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import CoreData
 import Alamofire
 
 public protocol DiscoveryRepositoryProtocol {
     func getDiscovery(page: Int) async throws -> [CourseItem]
     func searchCourses(page: Int, searchTerm: String) async throws -> [CourseItem]
-    func getDiscoveryOffline() throws -> [CourseItem]
+    func getDiscoveryOffline() async throws -> [CourseItem]
     func getCourseDetails(courseID: String) async throws -> CourseDetails
     func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails
     func enrollToCourse(courseID: String) async throws -> Bool
@@ -44,8 +45,8 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
         return discoveryResponse
     }
     
-    public func getDiscoveryOffline() throws -> [CourseItem] {
-        return try persistence.loadDiscovery()
+    public func getDiscoveryOffline() async throws -> [CourseItem] {
+        try await persistence.loadDiscovery()
     }
     
     public func searchCourses(page: Int, searchTerm: String) async throws -> [CourseItem] {
@@ -68,7 +69,7 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
     }
     
     public func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails {
-        return try persistence.loadCourseDetails(courseID: courseID)
+        try await persistence.loadCourseDetails(courseID: courseID)
     }
     
     public func enrollToCourse(courseID: String) async throws -> Bool {
@@ -94,7 +95,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
             courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
+            courseVideoURL: nil,
+            courseRawImage: nil
         )
     }
     
@@ -111,7 +113,8 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
             isEnrolled: false,
             overviewHTML: "<b>Course description</b><br><br>Lorem ipsum",
             courseBannerURL: "courseBannerURL",
-            courseVideoURL: nil
+            courseVideoURL: nil,
+            courseRawImage: nil
         )
     }
     
@@ -128,13 +131,16 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10,
+                    courseRawImage: nil,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }
@@ -150,13 +156,16 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: nil,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
-                    numPages: 1, coursesCount: 10
+                    numPages: 1, coursesCount: 10,
+                    courseRawImage: nil,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }
@@ -172,14 +181,17 @@ class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
                     org: "Organization",
                     shortDescription: "shortDescription",
                     imageURL: "",
-                    isActive: true,
+                    hasAccess: true,
                     courseStart: nil,
                     courseEnd: nil,
                     enrollmentStart: nil,
                     enrollmentEnd: nil,
                     courseID: "course_id_\(i)",
                     numPages: 1,
-                    coursesCount: 10
+                    coursesCount: 10,
+                    courseRawImage: nil,
+                    progressEarned: 0,
+                    progressPossible: 0
                 )
             )
         }

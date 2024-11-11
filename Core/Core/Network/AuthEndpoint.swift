@@ -7,6 +7,7 @@
 
 import Foundation
 import Alamofire
+import OEXFoundation
 
 enum AuthEndpoint: EndPointType {
     case getAccessToken(username: String, password: String, clientId: String, tokenType: String)
@@ -29,9 +30,9 @@ enum AuthEndpoint: EndPointType {
         case .getAuthCookies:
             return "/oauth2/login/"
         case .getRegisterFields:
-            return "user_api/v1/account/registration/"
+            return "/user_api/v1/account/registration/"
         case .registerUser:
-            return "user_api/v1/account/registration/"
+            return "/user_api/v1/account/registration/"
         case .validateRegistrationFields:
             return "/api/user/v1/validation/registration"
         case .resetPassword:

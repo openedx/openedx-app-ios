@@ -20,25 +20,26 @@ public struct HandoutsUpdatesDetailView: View {
     private var handouts: String?
     private var announcements: [CourseUpdate]?
     private let title: String
+    private let type: HandoutsItemType
     
     public init(
         handouts: String?,
         announcements: [CourseUpdate]?,
         router: CourseRouter,
-        cssInjector: CSSInjector
+        cssInjector: CSSInjector,
+        type: HandoutsItemType
     ) {
-        let noHandouts = handouts == nil && announcements == nil
-        
-        if announcements == nil {
+        switch type {
+        case .handouts:
             self.title = CourseLocalization.HandoutsCellHandouts.title
-        } else {
+        case .announcements:
             self.title = CourseLocalization.HandoutsCellAnnouncements.title
         }
-        
-        self.handouts = noHandouts ? CourseLocalization.Error.noHandouts : handouts
+        self.handouts = handouts
         self.announcements = announcements
         self.router = router
         self.cssInjector = cssInjector
+        self.type = type
     }
     
     private func updateColorScheme() {
@@ -78,15 +79,31 @@ public struct HandoutsUpdatesDetailView: View {
         ZStack(alignment: .top) {
             Theme.Colors.background
                 .ignoresSafeArea()
-            // MARK: - Page Body
-            WebViewHtml(html(), injections: [.accessibility, .readability])
-                .padding(.top, 8)
-                .frame(
-                    maxHeight: .infinity,
-                    alignment: .topLeading)
-                .onRightSwipeGesture {
-                    router.back()
+            
+            switch type {
+            case .handouts:
+                if handouts?.isEmpty ?? true {
+                    FullScreenErrorView(
+                        type: .noContent(
+                            CourseLocalization.Error.handoutsUnavailable,
+                            image: CoreAssets.noHandouts.swiftUIImage
+                        )
+                    )
+                } else {
+                    webViewHtml
                 }
+            case .announcements:
+                if announcements?.isEmpty ?? true {
+                    FullScreenErrorView(
+                        type: .noContent(
+                            CourseLocalization.Error.announcementsUnavailable,
+                            image: CoreAssets.noAnnouncements.swiftUIImage
+                        )
+                    )
+                } else {
+                    webViewHtml
+                }
+            }
         }
         .navigationBarHidden(false)
         .navigationBarBackButtonHidden(false)
@@ -95,6 +112,19 @@ public struct HandoutsUpdatesDetailView: View {
             guard UIApplication.shared.applicationState == .active else { return }
             updateColorScheme()
         }
+    }
+    
+    private var webViewHtml: some View {
+        // MARK: - Page Body
+        WebViewHtml(html(), injections: [.accessibility, .readability])
+            .padding(.top, 8)
+            .frame(
+                maxHeight: .infinity,
+                alignment: .topLeading
+            )
+            .onRightSwipeGesture {
+                router.back()
+            }
     }
     
     func html() -> String {
@@ -229,7 +259,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
                     content: loremIpsumHtml,
                     status: "nice")],
             router: CourseRouterMock(),
-            cssInjector: CSSInjectorMock()
+            cssInjector: CSSInjectorMock(),
+            type: .handouts
         )
     }
 }

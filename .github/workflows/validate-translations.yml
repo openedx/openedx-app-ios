@@ -1,0 +1,49 @@
+name: Test Makefile
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches: [ develop ]
+
+  pull_request:
+
+jobs:
+  translations:
+    name: "${{ matrix.case.name }}"
+    runs-on: macos-14
+
+    strategy:
+      matrix:
+        case:
+          - name: clean_translations
+            command: |
+              make clean_translations;
+
+          - name: extract_translations
+            command: |
+              make extract_translations;
+              echo "Ensure combined localization file exists";
+              test -f I18N/I18N/en.lproj/Localizable.strings;
+
+          - name: pull_translations
+            command:
+              make pull_translations;
+              echo "Files are split properly";
+              test -f Authorization/Authorization/uk.lproj/Localizable.strings;
+
+    steps:
+      - uses: nschloe/action-cached-lfs-checkout@v1.2.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Use Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install translations requirements
+        run: make translation_requirements
+
+      - name: "${{ matrix.case.name }}"
+        run: "${{ matrix.case.command }}"

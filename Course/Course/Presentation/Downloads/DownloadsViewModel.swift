@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import Combine
 
 final class DownloadsViewModel: ObservableObject {
@@ -15,15 +16,19 @@ final class DownloadsViewModel: ObservableObject {
 
     @Published private(set) var downloads: [DownloadDataTask] = []
     private let courseId: String?
+    
+    let router: CourseRouter
 
     private let manager: DownloadManagerProtocol
     private var cancellables = Set<AnyCancellable>()
 
     init(
+        router: CourseRouter,
         courseId: String? = nil,
         downloads: [DownloadDataTask] = [],
         manager: DownloadManagerProtocol
     ) {
+        self.router = router
         self.courseId = courseId
         self.manager = manager
         self.downloads = downloads

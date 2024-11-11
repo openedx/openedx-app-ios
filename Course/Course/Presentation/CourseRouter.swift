@@ -46,7 +46,8 @@ public protocol CourseRouter: BaseRouter {
         handouts: String?,
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
-        cssInjector: CSSInjector
+        cssInjector: CSSInjector,
+        type: HandoutsItemType
     )
     
     func showCourseComponent(
@@ -59,6 +60,10 @@ public protocol CourseRouter: BaseRouter {
         downloads: [DownloadDataTask],
         manager: DownloadManagerProtocol
     )
+    
+    func showDatesAndCalendar()
+    
+    func showGatedContentError(url: String)
 }
 
 // Mark - For testing and SwiftUI preview
@@ -103,7 +108,8 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         handouts: String?,
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
-        cssInjector: CSSInjector
+        cssInjector: CSSInjector,
+        type: HandoutsItemType
     ) {}
     
     public func showCourseComponent(
@@ -116,5 +122,9 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         downloads: [Core.DownloadDataTask],
         manager: Core.DownloadManagerProtocol
     ) {}
+    
+    public func showDatesAndCalendar() {}
+    
+    public func showGatedContentError(url: String) {}
 }
 #endif

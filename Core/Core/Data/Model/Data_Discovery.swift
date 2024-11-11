@@ -108,14 +108,17 @@ public extension DataLayer.DiscoveryResponce {
             CourseItem(name: $0.name, org: $0.org,
                        shortDescription: $0.shortDescription ?? "",
                        imageURL: $0.media.image?.small ?? "",
-                       isActive: nil,
+                       hasAccess: true,
                        courseStart: Date(iso8601: $0.start ?? ""),
                        courseEnd: Date(iso8601: $0.end ?? ""),
                        enrollmentStart: Date(iso8601: $0.enrollmentStart ?? ""),
                        enrollmentEnd: Date(iso8601: $0.enrollmentEnd ?? ""),
                        courseID: $0.courseID ?? "",
                        numPages: pagination.numPages,
-                       coursesCount: pagination.count)
+                       coursesCount: pagination.count,
+                       courseRawImage: $0.media.image?.raw,
+                       progressEarned: 0,
+                       progressPossible: 0)
         })
         return listReady
     }

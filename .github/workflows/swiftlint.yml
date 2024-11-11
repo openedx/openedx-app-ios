@@ -1,0 +1,37 @@
+name: SwiftLint
+
+on:
+  workflow_dispatch:
+
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: macos-latest
+
+    concurrency:
+      # When running on develop, use the sha to allow all runs of this workflow to run concurrently.
+      # Otherwise only allow a single run of this workflow on each branch, automatically cancelling older runs.
+      group: ${{ github.ref == 'refs/heads/develop' && format('swiftlint-develop-{0}', github.sha) || format('swiftlint-{0}', github.ref) }}
+      cancel-in-progress: true
+
+    steps:
+      - uses: nschloe/action-cached-lfs-checkout@v1.2.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - uses: actions/cache@v3
+        with:
+          path: vendor/bundle
+          key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-gems-
+
+      - name: Setup environment
+        run:
+          source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
+
+      - name: SwiftLint
+        run:
+          bundle exec fastlane linting

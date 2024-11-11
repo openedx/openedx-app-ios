@@ -7,6 +7,8 @@
 
 import UIKit
 import Core
+import OEXFoundation
+import OEXFirebaseAnalytics
 import Swinject
 import KeychainSwift
 import Discovery
@@ -21,9 +23,11 @@ import WhatsNew
 class AppAssembly: Assembly {
     
     private let navigation: UINavigationController
+    private let pluginManager: PluginManager
     
-    init(navigation: UINavigationController) {
+    init(navigation: UINavigationController, pluginManager: PluginManager) {
         self.navigation = navigation
+        self.pluginManager = pluginManager
     }
     
     func assemble(container: Container) {
@@ -31,14 +35,16 @@ class AppAssembly: Assembly {
             self.navigation
         }.inObjectScope(.container)
         
+        container.register(PluginManager.self) { _ in
+            self.pluginManager
+        }.inObjectScope(.container)
+        
         container.register(Router.self) { r in
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
         
         container.register(AnalyticsManager.self) { r in
-            AnalyticsManager(
-                config: r.resolve(ConfigProtocol.self)!
-            )
+            AnalyticsManager(services: r.resolve(PluginManager.self)!.analyticsServices)
         }
         
         container.register(AuthorizationAnalytics.self) { r in
@@ -168,15 +174,33 @@ class AppAssembly: Assembly {
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         
+        container.register(SSOHelper.self){ r in
+            SSOHelper(
+                keychain: r.resolve(KeychainSwift.self)!
+            )
+        }
+        
         container.register(Validator.self) { _ in
             Validator()
         }.inObjectScope(.container)
         
         container.register(PushNotificationsManager.self) { r in
             PushNotificationsManager(
+                deepLinkManager: r.resolve(DeepLinkManager.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                api: r.resolve(API.self)!,
                 config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
+        
+        container.register(CalendarManagerProtocol.self) { r in
+            CalendarManager(
+                persistence: r.resolve(ProfilePersistenceProtocol.self)!,
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                profileStorage: r.resolve(ProfileStorage.self)!
+            )
+        }
+        .inObjectScope(.container)
 
         container.register(DeepLinkManager.self) { r in
             DeepLinkManager(
@@ -190,24 +214,17 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(SegmentAnalyticsService.self) { r in
-            SegmentAnalyticsService(
-                config: r.resolve(ConfigProtocol.self)!
-            )
-        }.inObjectScope(.container)
-        
-        container.register(FirebaseAnalyticsService.self) { r in
-            FirebaseAnalyticsService(
-                config: r.resolve(ConfigProtocol.self)!
-            )
+        container.register(FirebaseAnalyticsService.self) { _ in
+            FirebaseAnalyticsService()
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { r in
-            PipManager(
+            let config = r.resolve(ConfigProtocol.self)!
+            return PipManager(
                 router: r.resolve(Router.self)!,
                 discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
-                isNestedListEnabled: r.resolve(ConfigProtocol.self)?.uiComponents.courseNestedListEnabled ?? false
+                courseDropDownNavigationEnabled: config.uiComponents.courseDropDownNavigationEnabled
             )
         }.inObjectScope(.container)
     }

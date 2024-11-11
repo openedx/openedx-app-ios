@@ -7,12 +7,17 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import UIKit
-import Swinject
+import UserNotifications
+import FirebaseCore
+import FirebaseMessaging
 
 public protocol PushNotificationsProvider {
     func didRegisterWithDeviceToken(deviceToken: Data)
     func didFailToRegisterForRemoteNotificationsWithError(error: Error)
+    func synchronizeToken()
+    func refreshToken()
 }
 
 protocol PushNotificationsListener {
@@ -20,45 +25,53 @@ protocol PushNotificationsListener {
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any])
 }
 
-extension PushNotificationsListener {
-    func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-        guard let dictionary = userInfo as? [String: AnyHashable],
-             shouldListenNotification(userinfo: userInfo),
-             let deepLinkManager = Container.shared.resolve(DeepLinkManager.self)
-        else { return }
-        let link = PushLink(dictionary: dictionary)
-        deepLinkManager.processLinkFromNotification(link)
-   }
-}
-
-class PushNotificationsManager {
+class PushNotificationsManager: NSObject {
+    
+    private let deepLinkManager: DeepLinkManager
+    private let storage: CoreStorage
+    private let api: API
+    
     private var providers: [PushNotificationsProvider] = []
     private var listeners: [PushNotificationsListener] = []
     
+    public var hasProviders: Bool {
+        providers.count > 0
+    }
+    
     // Init manager
-    public init(config: ConfigProtocol) {
+    public init(
+        deepLinkManager: DeepLinkManager,
+        storage: CoreStorage,
+        api: API,
+        config: ConfigProtocol
+    ) {
+        self.deepLinkManager = deepLinkManager
+        self.storage = storage
+        self.api = api
+        
+        super.init()
         providers = providersFor(config: config)
         listeners = listenersFor(config: config)
     }
     
     private func providersFor(config: ConfigProtocol) -> [PushNotificationsProvider] {
         var pushProviders: [PushNotificationsProvider] = []
-        if config.firebase.cloudMessagingEnabled {
-            pushProviders.append(FCMProvider())
-        }
         if config.braze.pushNotificationsEnabled {
             pushProviders.append(BrazeProvider())
+        }
+        if config.firebase.cloudMessagingEnabled {
+            pushProviders.append(FCMProvider(storage: storage, api: api))
         }
         return pushProviders
     }
     
     private func listenersFor(config: ConfigProtocol) -> [PushNotificationsListener] {
         var pushListeners: [PushNotificationsListener] = []
-        if config.firebase.cloudMessagingEnabled {
-            pushListeners.append(FCMListener())
-        }
         if config.braze.pushNotificationsEnabled {
-            pushListeners.append(BrazeListener())
+            pushListeners.append(BrazeListener(deepLinkManager: deepLinkManager))
+        }
+        if config.firebase.cloudMessagingEnabled {
+            pushListeners.append(FCMListener(deepLinkManager: deepLinkManager))
         }
         return pushListeners
     }
@@ -67,9 +80,7 @@ class PushNotificationsManager {
     public func performRegistration() {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
             if granted {
-                DispatchQueue.main.async {
-                    UIApplication.shared.registerForRemoteNotifications()
-                }
+                debugLog("Permission for push notifications granted.")
             } else if let error = error {
                 debugLog("Push notifications permission error: \(error.localizedDescription)")
             } else {
@@ -93,5 +104,51 @@ class PushNotificationsManager {
         for listener in listeners {
             listener.didReceiveRemoteNotification(userInfo: userInfo)
         }
+    }
+    
+    func synchronizeToken() {
+        for provider in providers {
+            provider.synchronizeToken()
+        }
+    }
+    
+    func refreshToken() {
+        for provider in providers {
+            provider.refreshToken()
+        }
+    }
+}
+
+// MARK: - MessagingDelegate
+extension PushNotificationsManager: MessagingDelegate {
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        for provider in providers where provider is MessagingDelegate {
+            (provider as? MessagingDelegate)?.messaging?(messaging, didReceiveRegistrationToken: fcmToken)
+        }
+    }
+}
+
+// MARK: - UNUserNotificationCenterDelegate
+extension PushNotificationsManager: UNUserNotificationCenterDelegate {
+    @MainActor
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        willPresent notification: UNNotification
+    ) async -> UNNotificationPresentationOptions {
+        if UIApplication.shared.applicationState == .active {
+            didReceiveRemoteNotification(userInfo: notification.request.content.userInfo)
+            return []
+        }
+        
+        return [[.list, .banner, .sound]]
+    }
+    
+    @MainActor
+    func userNotificationCenter(
+        _ center: UNUserNotificationCenter,
+        didReceive response: UNNotificationResponse
+    ) async {
+        let userInfo = response.notification.request.content.userInfo
+        didReceiveRemoteNotification(userInfo: userInfo)
     }
 }

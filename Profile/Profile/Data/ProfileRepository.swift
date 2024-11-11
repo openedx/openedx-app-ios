@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import Alamofire
 
 public protocol ProfileRepositoryProtocol {
@@ -22,6 +23,8 @@ public protocol ProfileRepositoryProtocol {
     func deleteAccount(password: String) async throws -> Bool
     func getSettings() -> UserSettings
     func saveSettings(_ settings: UserSettings)
+    func enrollmentsStatus() async throws -> [CourseForSync]
+    func getCourseDates(courseID: String) async throws -> CourseDates
 }
 
 public class ProfileRepository: ProfileRepositoryProtocol {
@@ -149,6 +152,20 @@ public class ProfileRepository: ProfileRepositoryProtocol {
     public func saveSettings(_ settings: UserSettings) {
         storage.userSettings = settings
     }
+    
+    public func enrollmentsStatus() async throws -> [CourseForSync] {
+        let username = storage.user?.username ?? ""
+        let result = try await api.requestData(ProfileEndpoint.enrollmentsStatus(username: username))
+            .mapResponse(DataLayer.EnrollmentsStatus.self).domain
+        return result
+    }
+    
+    public func getCourseDates(courseID: String) async throws -> CourseDates {
+        let courseDates = try await api.requestData(
+            ProfileEndpoint.getCourseDates(courseID: courseID)
+        ).mapResponse(DataLayer.CourseDates.self).domain(useRelativeDates: storage.useRelativeDates)
+        return courseDates
+    }
 }
 
 // Mark - For testing and SwiftUI preview
@@ -164,7 +181,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
                                 yearOfBirth: 0,
                                 country: "",
                                 shortBiography: "",
-                                isFullProfile: false)
+                                isFullProfile: false,
+                                email: "")
     }
     
     func getMyProfileOffline() -> Core.UserProfile? {
@@ -182,7 +200,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
             of his music, writing and drawings, on film, and in interviews. His songwriting partnership with Paul McCartney
             remains the most successful in history
             """,
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
     }
     
@@ -201,7 +220,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
             of his music, writing and drawings, on film, and in interviews. His songwriting partnership with Paul McCartney
             remains the most successful in history
             """,
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
     }
     
@@ -224,7 +244,8 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
             yearOfBirth: 1970,
             country: "USA",
             shortBiography: "Bio",
-            isFullProfile: true
+            isFullProfile: true,
+            email: ""
         )
     }
     
@@ -234,6 +255,38 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
         return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
     }
     public func saveSettings(_ settings: UserSettings) {}
+    
+    public func enrollmentsStatus() async throws -> [CourseForSync] {
+        let result = [
+            DataLayer.EnrollmentsStatusElement(courseID: "1", courseName: "Course 1", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "2", courseName: "Course 2", recentlyActive: false),
+            DataLayer.EnrollmentsStatusElement(courseID: "3", courseName: "Course 3", recentlyActive: false),
+            DataLayer.EnrollmentsStatusElement(courseID: "4", courseName: "Course 4", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "5", courseName: "Course 5", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "6", courseName: "Course 6", recentlyActive: false),
+            DataLayer.EnrollmentsStatusElement(courseID: "7", courseName: "Course 7", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "8", courseName: "Course 8", recentlyActive: true),
+            DataLayer.EnrollmentsStatusElement(courseID: "9", courseName: "Course 9", recentlyActive: true),
+        ]
+        
+        return result.domain
+    }
+    
+    func getCourseDates(courseID: String) async throws -> CourseDates {
+       return CourseDates(
+            datesBannerInfo: DatesBannerInfo(
+                missedDeadlines: false,
+                contentTypeGatingEnabled: false,
+                missedGatedContent: false,
+                verifiedUpgradeLink: "",
+                status: .datesTabInfoBanner
+            ),
+            courseDateBlocks: [],
+            hasEnded: true,
+            learnerIsFullAccess: true,
+            userTimezone: nil
+        )
+    }
 }
 // swiftlint:enable all
 #endif

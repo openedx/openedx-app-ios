@@ -20,53 +20,61 @@ final class CourseUnitViewModelTests: XCTestCase {
                     id: "1",
                     courseId: "123",
                     topicId: "1",
-                    graded: false,
+                    graded: false, 
+                    due: Date(),
                     completion: 0,
                     type: .video,
                     displayName: "Lesson 1",
                     studentUrl: "",
                     webUrl: "",
                     encodedVideo: nil,
-                    multiDevice: true
+                    multiDevice: true,
+                    offlineDownload: nil
                    ),
         CourseBlock(blockId: "2",
                     id: "2",
                     courseId: "123",
                     topicId: "2",
                     graded: false,
+                    due: Date(),
                     completion: 0,
                     type: .video,
                     displayName: "Lesson 2",
                     studentUrl: "2",
                     webUrl: "2",
                     encodedVideo: nil,
-                    multiDevice: false
+                    multiDevice: false,
+                    offlineDownload: nil
                    ),
         CourseBlock(blockId: "3",
                     id: "3",
                     courseId: "123",
                     topicId: "3",
                     graded: false,
+                    due: Date(),
                     completion: 0,
                     type: .unknown,
                     displayName: "Lesson 3",
                     studentUrl: "3",
                     webUrl: "3",
                     encodedVideo: nil,
-                    multiDevice: true
+                    multiDevice: true,
+                    offlineDownload: nil
                    ),
         CourseBlock(blockId: "4",
                     id: "4",
                     courseId: "123",
                     topicId: "4",
                     graded: false,
+                    due: Date(),
                     completion: 0,
                     type: .unknown,
                     displayName: "4",
                     studentUrl: "4",
                     webUrl: "4",
                     encodedVideo: nil,
-                    multiDevice: false
+                    multiDevice: false,
+                    offlineDownload: nil
                    ),
     ]
     
@@ -77,20 +85,27 @@ final class CourseUnitViewModelTests: XCTestCase {
         displayName: "0",
         type: .chapter,
         childs: [
-            CourseSequential(blockId: "5",
-                             id: "5",
-                             displayName: "5",
-                             type: .sequential,
-                             completion: 0,
-                             childs: [
-                                CourseVertical(blockId: "6",
-                                               id: "6",
-                                               courseId: "123",
-                                               displayName: "6",
-                                               type: .vertical,
-                                               completion: 0,
-                                               childs: blocks)
-                             ])
+            CourseSequential(
+                blockId: "5",
+                id: "5",
+                displayName: "5",
+                type: .sequential,
+                completion: 0,
+                childs: [
+                    CourseVertical(
+                        blockId: "6",
+                        id: "6",
+                        courseId: "123",
+                        displayName: "6",
+                        type: .vertical,
+                        completion: 0,
+                        childs: blocks,
+                        webUrl: ""
+                    )
+                ],
+                sequentialProgress: nil,
+                due: Date()
+            )
             
         ]),
         CourseChapter(
@@ -99,20 +114,27 @@ final class CourseUnitViewModelTests: XCTestCase {
         displayName: "2",
         type: .chapter,
         childs: [
-            CourseSequential(blockId: "3",
-                             id: "3",
-                             displayName: "3",
-                             type: .sequential,
-                             completion: 0,
-                             childs: [
-                                CourseVertical(blockId: "4",
-                                               id: "4",
-                                               courseId: "123",
-                                               displayName: "4",
-                                               type: .vertical,
-                                               completion: 0,
-                                               childs: blocks)
-                             ])
+            CourseSequential(
+                blockId: "3",
+                id: "3",
+                displayName: "3",
+                type: .sequential,
+                completion: 0,
+                childs: [
+                    CourseVertical(
+                        blockId: "4",
+                        id: "4",
+                        courseId: "123",
+                        displayName: "4",
+                        type: .vertical,
+                        completion: 0,
+                        childs: blocks,
+                        webUrl: ""
+                    )
+                ],
+                sequentialProgress: nil,
+                due: Date()
+            )
             
         ])
         ]

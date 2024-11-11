@@ -359,62 +359,95 @@ public class Router: AuthorizationRouter,
     
     public func showCourseScreens(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        courseRawImage: String?,
+        showDates: Bool,
+        lastVisitedBlockID: String?
     ) {
         let controller = getCourseScreensController(
             courseID: courseID,
-            isActive: isActive,
+            hasAccess: hasAccess,
             courseStart: courseStart,
             courseEnd: courseEnd,
             enrollmentStart: enrollmentStart,
             enrollmentEnd: enrollmentEnd,
-            title: title
+            title: title,
+            courseRawImage: courseRawImage,
+            showDates: showDates,
+            lastVisitedBlockID: lastVisitedBlockID
         )
         navigationController.pushViewController(controller, animated: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            Container.shared.resolve(PushNotificationsManager.self)?.performRegistration()
+        }
     }
     
     public func getCourseScreensController(
         courseID: String,
-        isActive: Bool?,
+        hasAccess: Bool?,
         courseStart: Date?,
         courseEnd: Date?,
         enrollmentStart: Date?,
         enrollmentEnd: Date?,
-        title: String
+        title: String,
+        courseRawImage: String?,
+        showDates: Bool,
+        lastVisitedBlockID: String?
     ) -> UIHostingController<CourseContainerView> {
         let vm = Container.shared.resolve(
             CourseContainerViewModel.self,
-            arguments: isActive,
+            arguments: hasAccess,
             courseStart,
             courseEnd,
             enrollmentStart,
-            enrollmentEnd
+            enrollmentEnd,
+            showDates ? CourseTab.dates : CourseTab.course,
+            lastVisitedBlockID
         )!
+        
+        let datesVm = Container.shared.resolve(
+            CourseDatesViewModel.self,
+            arguments: courseID,
+            title
+        )!
+        
         let screensView = CourseContainerView(
             viewModel: vm,
+            courseDatesViewModel: datesVm,
             courseID: courseID,
-            title: title
+            title: title,
+            courseRawImage: courseRawImage
         )
         
         return UIHostingController(rootView: screensView)
+    }
+    
+    public func showAllCourses(courses: [CourseItem]) {
+        let vm = Container.shared.resolve(AllCoursesViewModel.self)!
+        let view = AllCoursesView(viewModel: vm, router: self)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     public func showHandoutsUpdatesView(
         handouts: String?,
         announcements: [CourseUpdate]?,
         router: Course.CourseRouter,
-        cssInjector: CSSInjector
+        cssInjector: CSSInjector,
+        type: HandoutsItemType
     ) {
         let view = HandoutsUpdatesDetailView(
             handouts: handouts,
             announcements: announcements,
             router: router,
-            cssInjector: cssInjector
+            cssInjector: cssInjector,
+            type: type
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
@@ -462,7 +495,7 @@ public class Router: AuthorizationRouter,
         )!
         
         let config = Container.shared.resolve(ConfigProtocol.self)
-        let isDropdownActive = config?.uiComponents.courseNestedListEnabled ?? false
+        let isDropdownActive = config?.uiComponents.courseDropDownNavigationEnabled ?? false
 
         let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
         return UIHostingController(rootView: view)
@@ -515,6 +548,13 @@ public class Router: AuthorizationRouter,
             }
         }
     
+    public func showGatedContentError(url: String) {
+        let view = NotAvailableOnMobileView(url: url)
+        
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     private func openBlockInBrowser(blockURL: URL) {
         presentAlert(
             alertTitle: "",
@@ -537,7 +577,12 @@ public class Router: AuthorizationRouter,
         downloads: [DownloadDataTask],
         manager: DownloadManagerProtocol
     ) {
-        let downloadsView = DownloadsView(isSheet: false, downloads: downloads, manager: manager)
+        let downloadsView = DownloadsView(
+            isSheet: false,
+            router: Container.shared.resolve(CourseRouter.self)!,
+            downloads: downloads,
+            manager: manager
+        )
         let controller = UIHostingController(rootView: downloadsView)
         navigationController.pushViewController(controller, animated: true)
     }
@@ -562,13 +607,12 @@ public class Router: AuthorizationRouter,
             chapterIndex: chapterIndex,
             sequentialIndex: sequentialIndex
         )
-
-        let config = Container.shared.resolve(ConfigProtocol.self)
-        let isCourseNestedListEnabled = config?.uiComponents.courseNestedListEnabled ?? false
         
         var controllers = navigationController.viewControllers
+        let config = Container.shared.resolve(ConfigProtocol.self)!
+        let courseDropDownNavigationEnabled = config.uiComponents.courseDropDownNavigationEnabled
 
-        if isCourseNestedListEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
+        if courseDropDownNavigationEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {
@@ -694,6 +738,49 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
+    public func showVideoSettings() {
+        let viewModel = Container.shared.resolve(SettingsViewModel.self)!
+        let view = VideoSettingsView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showDatesAndCalendar() {
+        let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
+        let storage = Container.shared.resolve(ProfileStorage.self)
+        
+        let view: AnyView
+        if storage?.calendarSettings == nil {
+            view = AnyView(DatesAndCalendarView(viewModel: viewModel))
+        } else {
+            view = AnyView(SyncCalendarOptionsView(viewModel: viewModel))
+        }
+        
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showSyncCalendarOptions() {
+        let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
+        let view = SyncCalendarOptionsView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showCoursesToSync() {
+        let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
+        let view = CoursesToSyncView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showManageAccount() {
+        let viewModel = Container.shared.resolve(ManageAccountViewModel.self)!
+        let view = ManageAccountView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
     public func showVideoQualityView(viewModel: SettingsViewModel) {
         let view = VideoQualityView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
@@ -708,7 +795,8 @@ public class Router: AuthorizationRouter,
         let view = VideoDownloadQualityView(
             downloadQuality: downloadQuality,
             didSelect: didSelect,
-            analytics: analytics
+            analytics: analytics,
+            router: self
         )
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
@@ -765,7 +853,18 @@ public class Router: AuthorizationRouter,
         let webBrowser = WebBrowser(
             url: url.absoluteString,
             pageTitle: title,
-            showProgress: true
+            showProgress: true,
+            connectivity: Container.shared.resolve(ConnectivityProtocol.self)!
+        )
+        let controller = UIHostingController(rootView: webBrowser)
+        navigationController.pushViewController(controller, animated: true)
+    }
+    
+    public func showSSOWebBrowser(title: String) {
+        let config = Container.shared.resolve(ConfigProtocol.self)!
+        let webBrowser = ContainerWebView(
+            config.baseSSOURL.absoluteString,
+            title: title
         )
         let controller = UIHostingController(rootView: webBrowser)
         navigationController.pushViewController(controller, animated: true)

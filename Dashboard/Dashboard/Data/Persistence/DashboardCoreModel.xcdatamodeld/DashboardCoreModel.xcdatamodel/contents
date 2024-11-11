@@ -1,22 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21754" systemVersion="22F82" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="CDDashboardCourse" representedClassName=".CDDashboardCourse" syncable="YES" codeGenerationType="class">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="23507" systemVersion="24A348" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="CDAssignment" representedClassName="CDAssignment" syncable="YES" codeGenerationType="class">
+        <attribute name="complete" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="descript" optional="YES" attributeType="String"/>
+        <attribute name="firstComponentBlockId" optional="YES" attributeType="String"/>
+        <attribute name="title" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <relationship name="futureAssignment" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrimaryCourse" inverseName="futureAssignments" inverseEntity="CDPrimaryCourse"/>
+        <relationship name="pastAssignments" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrimaryCourse" inverseName="pastAssignments" inverseEntity="CDPrimaryCourse"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="title"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CDDashboardCourse" representedClassName="CDDashboardCourse" syncable="YES" codeGenerationType="class">
         <attribute name="certificate" optional="YES" attributeType="String"/>
         <attribute name="courseCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="courseEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="courseID" optional="YES" attributeType="String"/>
+        <attribute name="courseRawImage" optional="YES" attributeType="String"/>
         <attribute name="courseStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="desc" optional="YES" attributeType="String"/>
         <attribute name="enrollmentEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="enrollmentStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hasAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="imageURL" optional="YES" attributeType="String"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="numPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="org" optional="YES" attributeType="String"/>
+        <attribute name="progressEarned" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="progressPossible" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>
                 <constraint value="name"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CDMyEnrollments" representedClassName="CDMyEnrollments" syncable="YES" codeGenerationType="class">
+        <attribute name="count" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="totalPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="courses" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDDashboardCourse"/>
+        <relationship name="primaryCourse" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDPrimaryCourse"/>
+    </entity>
+    <entity name="CDPrimaryCourse" representedClassName="CDPrimaryCourse" syncable="YES" codeGenerationType="class">
+        <attribute name="courseBanner" optional="YES" attributeType="String"/>
+        <attribute name="courseEnd" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="courseID" optional="YES" attributeType="String"/>
+        <attribute name="courseStart" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="hasAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="lastVisitedBlockID" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="org" optional="YES" attributeType="String"/>
+        <attribute name="progressEarned" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="progressPossible" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="resumeTitle" optional="YES" attributeType="String"/>
+        <relationship name="futureAssignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDAssignment" inverseName="futureAssignment" inverseEntity="CDAssignment"/>
+        <relationship name="pastAssignments" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDAssignment" inverseName="pastAssignments" inverseEntity="CDAssignment"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="courseID"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

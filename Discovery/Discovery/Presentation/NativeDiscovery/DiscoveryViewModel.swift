@@ -37,7 +37,7 @@ public class DiscoveryViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
-    private let storage: CoreStorage
+    let storage: CoreStorage
     
     public init(
         router: DiscoveryRouter,
@@ -112,7 +112,7 @@ public class DiscoveryViewModel: ObservableObject {
                 
                 fetchInProgress = false
             } else {
-                courses = try interactor.discoveryOffline()
+                courses = try await interactor.discoveryOffline()
                 self.nextPage += 1
                 fetchInProgress = false
             }

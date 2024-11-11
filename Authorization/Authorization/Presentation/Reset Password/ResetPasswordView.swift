@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import OEXFoundation
 import Theme
 
 public struct ResetPasswordView: View {
@@ -15,7 +16,7 @@ public struct ResetPasswordView: View {
     
     @State private var isRecovered: Bool = false
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     
     @ObservedObject
     private var viewModel: ResetPasswordViewModel
@@ -28,7 +29,7 @@ public struct ResetPasswordView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.authBackground.swiftUIImage
+                    ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
                 }
@@ -117,7 +118,7 @@ public struct ResetPasswordView: View {
                                         HStack(alignment: .center) {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(20)
-                                                .accessibilityIdentifier("progressbar")
+                                                .accessibilityIdentifier("progress_bar")
                                         }.frame(maxWidth: .infinity)
                                     } else {
                                         StyledButton(AuthLocalization.Forgot.request) {
@@ -173,10 +174,8 @@ public struct ResetPasswordView: View {
                 }
             }
             .ignoresSafeArea(.all, edges: .horizontal)
-            
             .background(Theme.Colors.background.ignoresSafeArea(.all))
-            
-            .hideNavigationBar()
+            .navigationBarHidden(true)
         }
     }
 }

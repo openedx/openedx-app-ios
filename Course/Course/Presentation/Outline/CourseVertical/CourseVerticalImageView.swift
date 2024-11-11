@@ -34,14 +34,16 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 id: "1",
                 courseId: "123",
                 topicId: "1",
-                graded: false,
+                graded: false, 
+                due: Date(),
                 completion: 1,
                 type: .video,
                 displayName: "Block 1",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             )
         ]
         
@@ -52,13 +54,15 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "1",
                 graded: false,
+                due: Date(),
                 completion: 1,
                 type: .problem,
                 displayName: "Block 1",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             )
         ]
         let blocks3 = [
@@ -68,13 +72,15 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "1",
                 graded: false,
+                due: Date(),
                 completion: 1,
                 type: .discussion,
                 displayName: "Block 1",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             )
         ]
         let blocks4 = [
@@ -84,13 +90,15 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "1",
                 graded: false,
+                due: Date(),
                 completion: 1,
                 type: .html,
                 displayName: "Block 1",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             )
         ]
         let blocks5 = [
@@ -100,13 +108,15 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "1",
                 graded: false,
+                due: Date(),
                 completion: 1,
                 type: .unknown,
                 displayName: "Block 1",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             )
         ]
         HStack {

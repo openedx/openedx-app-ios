@@ -11,6 +11,8 @@ import Foundation
 public protocol CoreAnalytics {
     func trackEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
     func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?)
+    func trackScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
+    func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?)
     func appreview(_ event: AnalyticsEvent, biValue: EventBIValue, action: String?, rating: Int?)
     func videoQualityChanged(
         _ event: AnalyticsEvent,
@@ -28,6 +30,14 @@ public extension CoreAnalytics {
     func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
         trackEvent(event, biValue: biValue, parameters: nil)
     }
+    
+    func trackScreenEvent(_ event: AnalyticsEvent) {
+        trackScreenEvent(event, parameters: nil)
+    }
+    
+    func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {
+        trackScreenEvent(event, biValue: biValue, parameters: nil)
+    }
 }
 
 #if DEBUG
@@ -35,6 +45,8 @@ public class CoreAnalyticsMock: CoreAnalytics {
     public init() {}
     public func trackEvent(_ event: AnalyticsEvent, parameters: [String: Any]? = nil) {}
     public func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?) {}
+    public func trackScreenEvent(_ event: AnalyticsEvent, parameters: [String: Any]?) {}
+    public func trackScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?) {}
     public func appreview(_ event: AnalyticsEvent, biValue: EventBIValue, action: String? = nil, rating: Int? = 0) {}
     public func videoQualityChanged(
         _ event: AnalyticsEvent,
@@ -100,6 +112,7 @@ public enum AnalyticsEvent: String {
     case finishVerticalBackToOutlineClicked = "Course:Unit Finish Back To Outline Clicked"
     case courseOutlineCourseTabClicked = "Course:Home Tab"
     case courseOutlineVideosTabClicked = "Course:Videos Tab"
+    case courseOutlineOfflineTabClicked = "Course:Offline Tab"
     case courseOutlineDatesTabClicked = "Course:Dates Tab"
     case courseOutlineDiscussionTabClicked = "Course:Discussion Tab"
     case courseOutlineHandoutsTabClicked = "Course:Handouts Tab"
@@ -124,6 +137,10 @@ public enum AnalyticsEvent: String {
     case whatnewPopup = "WhatsNew:Pop up Viewed"
     case whatnewDone = "WhatsNew:Done"
     case whatnewClose = "WhatsNew:Close"
+    case logistration = "Logistration"
+    case logistrationSignIn = "Logistration:Sign In"
+    case logistrationRegister = "Logistration:Register"
+    case profileEdit = "Profile:Edit Profile"
 }
 
 public enum EventBIValue: String {
@@ -173,6 +190,7 @@ public enum EventBIValue: String {
     case bulkDeleteVideosSubsection = "edx.bi.app.video.delete.subsection"
     case dashboardCourseClicked = "edx.bi.app.course.dashboard"
     case courseOutlineVideosTabClicked = "edx.bi.app.course.video_tab"
+    case courseOutlineOfflineTabClicked = "edx.bi.app.course.offline_tab"
     case courseOutlineDatesTabClicked = "edx.bi.app.course.dates_tab"
     case courseOutlineDiscussionTabClicked = "edx.bi.app.course.discussion_tab"
     case courseOutlineHandoutsTabClicked = "edx.bi.app.course.handouts_tab"
@@ -205,6 +223,10 @@ public enum EventBIValue: String {
     case whatnewPopup = "edx.bi.app.whats_new.popup.viewed"
     case whatnewDone = "edx.bi.app.whats_new.done"
     case whatnewClose = "edx.bi.app.whats_new.close"
+    case logistration = "edx.bi.app.logistration"
+    case logistrationSignIn = "edx.bi.app.logistration.signin"
+    case logistrationRegister = "edx.bi.app.logistration.register"
+    case profileEdit = "edx.bi.app.profile.edit"
 }
 
 public struct EventParamKey {

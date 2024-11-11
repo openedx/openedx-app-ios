@@ -1,10 +1,10 @@
-platform :ios, '14.0'
+platform :ios, '16.0'
 use_frameworks! :linkage => :static
 
 abstract_target "App" do
   
   #Code style
-  pod 'SwiftLint', '~> 0.5'
+  pod 'SwiftLint', '~> 0.57.0'
   #CodeGen for resources
   pod 'SwiftGen', '~> 6.6'
   
@@ -16,15 +16,12 @@ abstract_target "App" do
   target "Core" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
-    #Networking
-    pod 'Alamofire', '~> 5.7'
-    #Keychain
-    pod 'KeychainSwift', '~> 20.0'
-    #SwiftUI backward UIKit access
-    #pod 'Introspect', '~> 0.6'
-    pod 'SwiftUIIntrospect', '~> 0.8'
-    pod 'Kingfisher', '~> 7.8'
-    pod 'Swinject', '2.8.3'
+  #Keychain
+    pod 'KeychainSwift', '~> 24.0'
+
+    target 'CoreTests' do
+      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+    end
   end
   
   target "Authorization" do

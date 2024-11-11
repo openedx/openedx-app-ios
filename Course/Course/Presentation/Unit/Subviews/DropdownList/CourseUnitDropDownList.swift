@@ -51,13 +51,15 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "1",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .video,
                 displayName: "Lesson 1",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true, 
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "2",
@@ -65,13 +67,15 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "2",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .video,
                 displayName: "Lesson 2",
                 studentUrl: "2",
                 webUrl: "2",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "3",
@@ -79,13 +83,15 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "3",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .unknown,
                 displayName: "Lesson 3",
                 studentUrl: "3",
                 webUrl: "3",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "4",
@@ -93,13 +99,15 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 courseId: "123",
                 topicId: "4",
                 graded: false,
+                due: Date(),
                 completion: 0,
                 type: .unknown,
                 displayName: "4",
                 studentUrl: "4",
                 webUrl: "4",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
             )
         ]
         
@@ -111,7 +119,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "First Unit",
                 type: .vertical,
                 completion: 0,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             ),
             CourseVertical(
                 blockId: "2",
@@ -120,7 +129,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "Second Unit",
                 type: .vertical,
                 completion: 1,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             ),
             CourseVertical(
                 blockId: "3",
@@ -129,7 +139,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "Third Unit",
                 type: .vertical,
                 completion: 0,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             ),
             CourseVertical(
                 blockId: "4",
@@ -138,7 +149,8 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 displayName: "Fourth Unit",
                 type: .vertical,
                 completion: 1,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             )
         ]
         

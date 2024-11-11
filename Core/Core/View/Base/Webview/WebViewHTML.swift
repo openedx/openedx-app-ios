@@ -36,9 +36,7 @@ public struct WebViewHtml: UIViewRepresentable {
 
         context.coordinator.webview = webView
         #if DEBUG
-        if #available(iOS 16.4, *) {
-            webView.isInspectable = true
-        }
+        webView.isInspectable = true
         #endif
         return webView
     }

@@ -109,15 +109,8 @@ public struct AlertView: View {
                 .fixedSize(horizontal: false, vertical: false)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(
-                    style: .init(
-                        lineWidth: 1,
-                        lineCap: .round,
-                        lineJoin: .round,
-                        miterLimit: 1
-                    )
-                )
+            Theme.Shapes.buttonShape
+                .stroke(lineWidth: 1)
                 .foregroundColor(Theme.Colors.backgroundStroke)
                 .fixedSize(horizontal: false, vertical: false)
         )
@@ -256,7 +249,7 @@ public struct AlertView: View {
                                 .frame(maxWidth: 215)
                         }
                         UnitButtonView(type: .custom(action),
-                                       bgColor: .clear,
+                                       bgColor: Theme.Colors.secondaryButtonBGColor,
                                        action: { okTapped() })
                         .frame(maxWidth: 215)
 
@@ -417,7 +410,7 @@ public struct AlertView: View {
             } label: {
                 ZStack {
                     Text(primaryButtonTitle)
-                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                        .foregroundColor(Theme.Colors.styledButtonText)
                         .font(Theme.Fonts.labelLarge)
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 16)
@@ -426,7 +419,7 @@ public struct AlertView: View {
             }
             .background(
                 Theme.Shapes.buttonShape
-                    .fill(Theme.Colors.accentColor)
+                    .fill(Theme.Colors.accentButtonColor)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
@@ -454,7 +447,7 @@ public struct AlertView: View {
             })
             .background(
                 Theme.Shapes.buttonShape
-                    .fill(.clear)
+                    .fill(Theme.Colors.secondaryButtonBGColor)
             )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
@@ -488,7 +481,7 @@ struct AlertView_Previews: PreviewProvider {
         .previewLayout(.sizeThatFits)
         .background(Color.gray)
         
-        AlertView(alertTitle: "Comfirm log out",
+        AlertView(alertTitle: "Confirm log out",
                   alertMessage: "Are you sure you want to log out?",
                   positiveAction: "Yes",
                   onCloseTapped: {},

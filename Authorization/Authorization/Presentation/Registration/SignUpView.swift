@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Core
+import OEXFoundation
 import Theme
 
 public struct SignUpView: View {
@@ -14,7 +15,7 @@ public struct SignUpView: View {
     @State
     private var disclosureGroupOpen: Bool = false
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     
     @ObservedObject
     private var viewModel: SignUpViewModel
@@ -29,7 +30,7 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.authBackground.swiftUIImage
+                ThemeAssets.headerBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
             }
@@ -40,7 +41,7 @@ public struct SignUpView: View {
             VStack(alignment: .center) {
                 ZStack {
                     HStack {
-                        Text(CoreLocalization.register)
+                        Text(CoreLocalization.SignIn.registerBtn)
                             .titleSettings(color: Theme.Colors.loginNavigationText)
                             .accessibilityIdentifier("register_text")
                     }
@@ -64,7 +65,7 @@ public struct SignUpView: View {
                         ScrollView {
                             VStack(alignment: .leading) {
                                 
-                                Text(CoreLocalization.register)
+                                Text(CoreLocalization.SignIn.registerBtn)
                                     .font(Theme.Fonts.displaySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
@@ -195,7 +196,10 @@ public struct SignUpView: View {
         }
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
-        .hideNavigationBar()
+        .navigationBarHidden(true)
+        .onFirstAppear{
+            viewModel.trackScreenEvent()
+        }
     }
 }
 

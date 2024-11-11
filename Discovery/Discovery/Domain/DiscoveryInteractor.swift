@@ -11,7 +11,7 @@ import Core
 //sourcery: AutoMockable
 public protocol DiscoveryInteractorProtocol {
     func discovery(page: Int) async throws -> [CourseItem]
-    func discoveryOffline() throws -> [CourseItem]
+    func discoveryOffline() async throws -> [CourseItem]
     func search(page: Int, searchTerm: String) async throws -> [CourseItem]
     func getLoadedCourseDetails(courseID: String) async throws -> CourseDetails
     func getCourseDetails(courseID: String) async throws -> CourseDetails
@@ -34,8 +34,8 @@ public class DiscoveryInteractor: DiscoveryInteractorProtocol {
         return try await repository.searchCourses(page: page, searchTerm: searchTerm)
     }
     
-    public func discoveryOffline() throws -> [CourseItem] {
-        return try repository.getDiscoveryOffline()
+    public func discoveryOffline() async throws -> [CourseItem] {
+        try await repository.getDiscoveryOffline()
     }
     
     public func getCourseDetails(courseID: String) async throws -> CourseDetails {

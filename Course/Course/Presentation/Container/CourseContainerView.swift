@@ -10,11 +10,14 @@ import Core
 import Discussion
 import Swinject
 import Theme
+@_spi(Advanced) import SwiftUIIntrospect
 
 public struct CourseContainerView: View {
     
     @ObservedObject
     public var viewModel: CourseContainerViewModel
+    @ObservedObject
+    public var courseDatesViewModel: CourseDatesViewModel
     @State private var isAnimatingForTap: Bool = false
     public var courseID: String
     private var title: String
@@ -22,12 +25,22 @@ public struct CourseContainerView: View {
     @State private var coordinate: CGFloat = .zero
     @State private var lastCoordinate: CGFloat = .zero
     @State private var collapsed: Bool = false
+    @State private var viewHeight: CGFloat = .zero
     @Environment(\.isHorizontal) private var isHorizontal
     @Namespace private var animationNamespace
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     private let coordinateBoundaryLower: CGFloat = -115
-    private let coordinateBoundaryHigher: CGFloat = 40
+    private let courseRawImage: String?
+    
+    private var coordinateBoundaryHigher: CGFloat {
+        let topInset = UIApplication.shared.windowInsets.top
+        guard topInset > 0 else {
+            return 40
+        }
+
+        return topInset
+    }
     
     private struct GeometryName {
         static let backButton = "backButton"
@@ -39,8 +52,10 @@ public struct CourseContainerView: View {
     
     public init(
         viewModel: CourseContainerViewModel,
+        courseDatesViewModel: CourseDatesViewModel,
         courseID: String,
-        title: String
+        title: String,
+        courseRawImage: String?
     ) {
         self.viewModel = viewModel
         Task {
@@ -55,6 +70,8 @@ public struct CourseContainerView: View {
         }
         self.courseID = courseID
         self.title = title
+        self.courseDatesViewModel = courseDatesViewModel
+        self.courseRawImage = courseRawImage
     }
     
     public var body: some View {
@@ -81,6 +98,7 @@ public struct CourseContainerView: View {
                     selection: $viewModel.selection,
                     coordinate: $coordinate,
                     collapsed: $collapsed,
+                    viewHeight: $viewHeight,
                     dateTabIndex: CourseTab.dates.rawValue
                 )
             } else {
@@ -94,23 +112,50 @@ public struct CourseContainerView: View {
                                 collapsed: $collapsed,
                                 containerWidth: proxy.size.width,
                                 animationNamespace: animationNamespace,
-                                isAnimatingForTap: $isAnimatingForTap
+                                isAnimatingForTap: $isAnimatingForTap,
+                                courseRawImage: courseRawImage
                             )
                         }
                         .offset(
                             y: ignoreOffset
                             ? (collapsed ? coordinateBoundaryLower : .zero)
                             : ((coordinateBoundaryLower...coordinateBoundaryHigher).contains(coordinate)
-                               ? coordinate
+                               ? (collapsed ? coordinateBoundaryLower : coordinate)
                                : (collapsed ? coordinateBoundaryLower : .zero))
                         )
                         backButton(containerWidth: proxy.size.width)
                     }
-                }.ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
-                    .onAppear {
-                        self.collapsed = isHorizontal
-                    }
+                }
+                .ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
+                .onAppear {
+                    self.collapsed = isHorizontal
+                }
             }
+        }
+        
+        switch courseDatesViewModel.eventState {
+        case .removedCalendar:
+            showDatesSuccessView(
+                title: CourseLocalization.CourseDates.calendarEvents,
+                message: CourseLocalization.CourseDates.calendarEventsRemoved
+            )
+        case .updatedCalendar:
+            showDatesSuccessView(
+                title: CourseLocalization.CourseDates.calendarEvents,
+                message: CourseLocalization.CourseDates.calendarEventsUpdated
+            )
+        default:
+            EmptyView()
+        }
+    }
+    
+    private func showDatesSuccessView(title: String, message: String) -> some View {
+        return DatesSuccessView(
+            title: title,
+            message: message, 
+            selectedTab: .dates
+        ) {
+            courseDatesViewModel.resetEventState()
         }
     }
     
@@ -154,6 +199,7 @@ public struct CourseContainerView: View {
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
@@ -171,6 +217,7 @@ public struct CourseContainerView: View {
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         dateTabIndex: CourseTab.dates.rawValue
                     )
                     .tabItem {
@@ -184,8 +231,22 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewModel: Container.shared.resolve(CourseDatesViewModel.self,
-                                                            arguments: courseID, title)!
+                        viewHeight: $viewHeight,
+                        viewModel: courseDatesViewModel
+                    )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
+                    .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
+                case .offline:
+                    OfflineView(
+                        courseID: courseID,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
+                        viewHeight: $viewHeight,
+                        viewModel: viewModel
                     )
                     .tabItem {
                         tab.image
@@ -198,6 +259,7 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
                                                             argument: title)!,
                         router: Container.shared.resolve(DiscussionRouter.self)!
@@ -213,6 +275,7 @@ public struct CourseContainerView: View {
                         courseID: courseID,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight,
                         viewModel: Container.shared.resolve(HandoutsViewModel.self, argument: courseID)!
                     )
                     .tabItem {
@@ -225,7 +288,7 @@ public struct CourseContainerView: View {
             }
         }
         .tabViewStyle(.page(indexDisplayMode: .never))
-        .introspect(.scrollView, on: .iOS(.v15, .v16, .v17), customize: { tabView in
+        .introspect(.scrollView, on: .iOS(.v16...), customize: { tabView in
             tabView.isScrollEnabled = false
         })
         .onFirstAppear {
@@ -311,9 +374,24 @@ struct CourseScreensView_Previews: PreviewProvider {
                 courseEnd: nil,
                 enrollmentStart: nil,
                 enrollmentEnd: nil,
+                lastVisitedBlockID: nil,
                 coreAnalytics: CoreAnalyticsMock()
             ),
-            courseID: "", title: "Title of Course")
+            courseDatesViewModel: CourseDatesViewModel(
+                interactor: CourseInteractor.mock,
+                router: CourseRouterMock(),
+                cssInjector: CSSInjectorMock(),
+                connectivity: Connectivity(),
+                config: ConfigMock(),
+                courseID: "1",
+                courseName: "a",
+                analytics: CourseAnalyticsMock(),
+                calendarManager: CalendarManagerMock()
+            ),
+            courseID: "",
+            title: "Title of Course",
+            courseRawImage: nil
+        )
     }
 }
 #endif

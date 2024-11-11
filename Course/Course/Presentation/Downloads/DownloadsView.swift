@@ -15,12 +15,14 @@ public struct DownloadsView: View {
     // MARK: - Properties
 
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.isHorizontal) private var isHorizontal
     @StateObject private var viewModel: DownloadsViewModel
 
     var isSheet: Bool = true
 
     public init(
         isSheet: Bool = true,
+        router: CourseRouter,
         courseId: String? = nil,
         downloads: [DownloadDataTask] = [],
         manager: DownloadManagerProtocol
@@ -28,6 +30,7 @@ public struct DownloadsView: View {
         self.isSheet = isSheet
         self._viewModel = .init(
             wrappedValue: .init(
+                router: router,
                 courseId: courseId,
                 downloads: downloads,
                 manager: manager
@@ -38,13 +41,36 @@ public struct DownloadsView: View {
     // MARK: - Body
 
     public var body: some View {
-        ZStack {
+        ZStack(alignment: .top) {
             Theme.Colors.background
                 .ignoresSafeArea()
+            if !isSheet {
+                HStack {
+                    Text(CourseLocalization.Download.downloads)
+                        .titleSettings(color: Theme.Colors.textPrimary)
+                        .accessibilityIdentifier("downloads_text")
+                }
+                .padding(.top, isHorizontal ? 10 : 0)
+                VStack {
+                    BackNavigationButton(
+                        color: Theme.Colors.accentColor,
+                        action: {
+                            viewModel.router.back()
+                        }
+                    )
+                    .backViewStyle()
+                    .padding(.leading, 8)
+                    
+                }
+                .frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
+                .padding(.top, isHorizontal ? 23 : 13)
+                
+            }
             content
                 .sheetNavigation(isSheet: isSheet) {
                     dismiss()
                 }
+                .padding(.top, isSheet ? 0 : 40)
         }
     }
 
@@ -100,6 +126,7 @@ public struct DownloadsView: View {
                         }
                     } label: {
                         DownloadProgressView()
+                            .id("cirle loading indicator " + task.id)
                             .accessibilityElement(children: .ignore)
                             .accessibilityLabel(CourseLocalization.Accessibility.cancelDownload)
                             .accessibilityIdentifier("cancel_download_button")

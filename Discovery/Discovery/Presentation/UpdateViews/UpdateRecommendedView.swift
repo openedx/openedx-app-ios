@@ -11,7 +11,7 @@ import Theme
 
 public struct UpdateRecommendedView: View {
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     private let router: DiscoveryRouter
     private let config: ConfigProtocol
     

@@ -7,17 +7,16 @@
 
 import Foundation
 import Core
+import OEXFoundation
 import _AVKit_SwiftUI
+import Combine
 
 public class VideoPlayerViewModel: ObservableObject {
-    
-    private var blockID: String
-    private var courseID: String
+    @Published var pause: Bool = false
+    @Published var currentTime: Double = 0
+    @Published var isLoading: Bool = true
 
-    private let interactor: CourseInteractorProtocol
     public let connectivity: ConnectivityProtocol
-    public let router: CourseRouter
-    public let appStorage: CoreStorage
 
     private var subtitlesDownloaded: Bool = false
     @Published var subtitles: [Subtitle] = []
@@ -31,53 +30,81 @@ public class VideoPlayerViewModel: ObservableObject {
             showError = errorMessage != nil
         }
     }
+    var isPlayingInPip: Bool {
+        playerHolder.isPlayingInPip
+    }
+
+    var isOtherPlayerInPip: Bool {
+        playerHolder.isOtherPlayerInPipPlaying
+    }
+    public let playerHolder: PlayerViewControllerHolderProtocol
+    internal var subscription = Set<AnyCancellable>()
 
     public init(
-        blockID: String,
-        courseID: String,
         languages: [SubtitleUrl],
-        interactor: CourseInteractorProtocol,
-        router: CourseRouter,
-        appStorage: CoreStorage,
-        connectivity: ConnectivityProtocol
+        playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>? = nil,
+        connectivity: ConnectivityProtocol,
+        playerHolder: PlayerViewControllerHolderProtocol
     ) {
-        self.blockID = blockID
-        self.courseID = courseID
         self.languages = languages
-        self.interactor = interactor
-        self.router = router
-        self.appStorage = appStorage
         self.connectivity = connectivity
+        self.playerHolder = playerHolder
         self.prepareLanguages()
+        
+        observePlayer(with: playerStateSubject)
     }
     
-    @MainActor
-    func blockCompletionRequest() async {
-        do {
-            try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
-            NotificationCenter.default.post(
-                name: NSNotification.blockCompletion,
-                object: nil
-            )
-        } catch let error {
-            if error.isInternetError || error is NoCachedDataError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
+    func observePlayer(with playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>?) {
+        playerStateSubject?.sink { [weak self] state in
+            switch state {
+            case .pause:
+                if self?.playerHolder.isPlayingInPip != true {
+                    self?.playerHolder.playerController?.pause()
+                }
+            case .kill:
+                if self?.playerHolder.isPlayingInPip != true {
+                    self?.playerHolder.playerController?.stop()
+                }
+            case .none:
+                break
             }
         }
+        .store(in: &subscription)
+        
+        playerHolder.getTimePublisher()
+            .sink {[weak self] time in
+                self?.currentTime = time
+            }
+            .store(in: &subscription)
+        playerHolder.getErrorPublisher()
+            .sink {[weak self] error in
+                if error.isInternetError || error is NoCachedDataError {
+                    self?.errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                } else {
+                    self?.errorMessage = CoreLocalization.Error.unknownError
+                }
+            }
+            .store(in: &subscription)
+        playerHolder.getReadyPublisher()
+            .sink {[weak self] isReady in
+                guard isReady else { return }
+                self?.isLoading = false
+            }
+            .store(in: &subscription)
+
     }
     
     @MainActor
     public func getSubtitles(subtitlesUrl: String) async {
         do {
-            let result = try await interactor.getSubtitles(
+            let result = try await playerHolder.getService().getSubtitles(
                 url: subtitlesUrl,
                 selectedLanguage: self.selectedLanguage ?? "en"
             )
+
             subtitles = result
         } catch {
-            print(">>>>> ⛔️⛔️⛔️⛔️⛔️⛔️⛔️⛔️", error)
+            debugLog(">>>>> ⛔️⛔️⛔️⛔️⛔️⛔️⛔️⛔️", error)
         }
     }
     
@@ -92,6 +119,13 @@ public class VideoPlayerViewModel: ObservableObject {
     public func generateLanguageName(code: String) -> String {
         let locale = Locale(identifier: code)
         return locale.localizedString(forLanguageCode: code)?.capitalized ?? ""
+    }
+    
+    func pauseScrolling() {
+        pause = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.pause = false
+        }
     }
     
     private func generateLanguageItems() {
@@ -133,7 +167,9 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     func presentPicker() {
-        router.presentView(
+        let service = playerHolder.getService()
+        let router = service.router
+        service.presentView(
             transitionStyle: .crossDissolve,
             animated: true
         ) {

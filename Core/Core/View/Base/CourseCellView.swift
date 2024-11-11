@@ -27,12 +27,12 @@ public struct CourseCellView: View {
     private var cellsCount: Int
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    public init(model: CourseItem, type: CellType, index: Int, cellsCount: Int) {
+    public init(model: CourseItem, type: CellType, index: Int, cellsCount: Int, useRelativeDates: Bool) {
         self.type = type
         self.courseImage = model.imageURL
         self.courseName = model.name
-        self.courseStart = model.courseStart?.dateToString(style: .startDDMonthYear) ?? ""
-        self.courseEnd = model.courseEnd?.dateToString(style: .endedMonthDay) ?? ""
+        self.courseStart = model.courseStart?.dateToString(style: .startDDMonthYear, useRelativeDates: useRelativeDates) ?? ""
+        self.courseEnd = model.courseEnd?.dateToString(style: .endedMonthDay, useRelativeDates: useRelativeDates) ?? ""
         self.courseOrg =  model.org
         self.index = Double(index) + 1
         self.cellsCount = cellsCount
@@ -116,7 +116,7 @@ public struct CourseCellView: View {
                     .overlay(Theme.Colors.cardViewStroke)
                     .padding(.vertical, 18)
                     .padding(.horizontal, 3)
-                    .accessibilityIdentifier("devider")
+                    .accessibilityIdentifier("divider")
             }
         }
     }
@@ -130,14 +130,18 @@ struct CourseCellView_Previews: PreviewProvider {
         org: "Edx",
         shortDescription: "",
         imageURL: "https://thumbs.dreamstime.com/b/logo-edx-samsung-tablet-edx-massive-open-online-course-mooc-provider-hosts-online-university-level-courses-wide-117763805.jpg",
-        isActive: true,
+        hasAccess: true,
         courseStart: Date(iso8601: "2032-05-26T12:13:14Z"),
         courseEnd: Date(iso8601: "2033-05-26T12:13:14Z"),
         enrollmentStart: nil,
         enrollmentEnd: nil,
         courseID: "1",
         numPages: 1,
-        coursesCount: 10)
+        coursesCount: 10,
+        courseRawImage: nil,
+        progressEarned: 4,
+        progressPossible: 10
+    )
     
     static var previews: some View {
         ZStack {
@@ -145,10 +149,10 @@ struct CourseCellView_Previews: PreviewProvider {
                 .ignoresSafeArea()
             VStack(spacing: 0) {
 //                Divider()
-                CourseCellView(model: course, type: .discovery, index: 1, cellsCount: 3)
+                CourseCellView(model: course, type: .discovery, index: 1, cellsCount: 3, useRelativeDates: true)
                     .previewLayout(.fixed(width: 180, height: 260))
 //                Divider()
-                CourseCellView(model: course, type: .discovery, index: 2, cellsCount: 3)
+                CourseCellView(model: course, type: .discovery, index: 2, cellsCount: 3, useRelativeDates: false)
                     .previewLayout(.fixed(width: 180, height: 260))
 //                Divider()
             }

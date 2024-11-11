@@ -40,6 +40,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -48,14 +49,16 @@ final class CourseContainerViewModelTests: XCTestCase {
             id: "",
             courseId: "123",
             topicId: "",
-            graded: true,
+            graded: true, 
+            due: Date(),
             completion: 0,
             type: .problem,
             displayName: "",
             studentUrl: "",
             webUrl: "",
             encodedVideo: nil,
-            multiDevice: true
+            multiDevice: true, 
+            offlineDownload: nil
         )
         let vertical = CourseVertical(
             blockId: "",
@@ -64,7 +67,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
         let sequential = CourseSequential(
             blockId: "",
@@ -72,7 +76,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical], 
+            sequentialProgress: nil,
+            due: Date()
         )
         let chapter = CourseChapter(
             blockId: "",
@@ -98,7 +104,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                                                                 large: "")),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
         
         let resumeBlock = ResumeBlock(blockID: "123")
@@ -148,6 +155,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -165,7 +173,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                                                                 large: "")),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
         
         Given(interactor, .getLoadedCourseBlocks(courseID: .any, willReturn: courseStructure))
@@ -207,6 +216,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -220,9 +230,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testGetCourseBlocksNoCacheError() async throws {
@@ -250,6 +259,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -260,9 +270,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testGetCourseBlocksUnknownError() async throws {
@@ -290,6 +299,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -300,9 +310,8 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         Verify(interactor, .getCourseBlocks(courseID: .any))
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertNil(viewModel.courseStructure)
+        XCTAssertNil(viewModel.courseVideosStructure)
     }
     
     func testTabSelectedAnalytics() {
@@ -330,6 +339,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         
@@ -363,6 +373,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -376,8 +387,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
-
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -387,7 +398,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -396,7 +408,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical],
+            sequentialProgress: nil,
+            due: Date()
         )
 
         let chapter = CourseChapter(
@@ -423,7 +437,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
 
         let downloadData = DownloadDataTask(
@@ -438,15 +453,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .inProgress,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000,
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -462,16 +480,17 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
-        await viewModel.onDownloadViewTap(
-             chapter: chapter,
-             blockId: blockId,
-             state: .available
-         )
+        await viewModel.download(
+            state: .available,
+            blocks: [block],
+            sequentials: [sequential]
+        )
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -482,6 +501,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.sequentialsDownloadState[blockId], .downloading)
     }
+
     
     func testOnDownloadViewDownloadingTap() async {
         let interactor = CourseInteractorProtocolMock()
@@ -500,6 +520,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -513,7 +534,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -523,7 +545,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -532,7 +555,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical],
+            sequentialProgress: nil,
+            due: Date()
         )
 
         let chapter = CourseChapter(
@@ -559,15 +584,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -583,16 +611,17 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
-        await viewModel.onDownloadViewTap(
-             chapter: chapter,
-             blockId: blockId,
-             state: .downloading
-         )
+        await viewModel.download(
+            state: .available,
+            blocks: [block],
+            sequentials: [sequential]
+        )
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -621,6 +650,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -634,7 +664,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -644,7 +675,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -653,7 +685,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical],
+            sequentialProgress: nil,
+            due: Date()
         )
 
         let chapter = CourseChapter(
@@ -680,15 +714,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -704,16 +741,17 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
-        await viewModel.onDownloadViewTap(
-             chapter: chapter,
-             blockId: blockId,
-             state: .finished
-         )
+        await viewModel.download(
+            state: .available,
+            blocks: [block],
+            sequentials: [sequential]
+        )
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -743,6 +781,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -756,7 +795,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -766,7 +806,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -775,7 +816,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical],
+            sequentialProgress: nil,
+            due: Date()
         )
 
         let chapter = CourseChapter(
@@ -802,15 +845,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: []))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: []))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -826,10 +872,11 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -858,6 +905,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -871,7 +919,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -881,7 +930,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -890,7 +940,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical],
+            sequentialProgress: nil,
+            due: Date()
         )
 
         let chapter = CourseChapter(
@@ -917,7 +969,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
 
         let downloadData = DownloadDataTask(
@@ -932,15 +985,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .inProgress,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000,
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -956,10 +1012,11 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -988,6 +1045,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -1001,7 +1059,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -1011,7 +1070,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block]
+            childs: [block],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -1020,7 +1080,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical],
+            sequentialProgress: nil,
+            due: Date()
         )
 
         let chapter = CourseChapter(
@@ -1047,7 +1109,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
 
         let downloadData = DownloadDataTask(
@@ -1062,15 +1125,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .finished,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000,
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -1086,10 +1152,11 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -1117,6 +1184,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -1130,7 +1198,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
         let block2 = CourseBlock(
             blockId: "123",
@@ -1138,6 +1207,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseId: "123",
             topicId: "",
             graded: false,
+            due: Date(),
             completion: 0,
             type: .video,
             displayName: "",
@@ -1151,7 +1221,8 @@ final class CourseContainerViewModelTests: XCTestCase {
                 mobileLow: nil,
                 hls: nil
             ),
-            multiDevice: true
+            multiDevice: true,
+            offlineDownload: nil
         )
 
         let vertical = CourseVertical(
@@ -1161,7 +1232,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .vertical,
             completion: 0,
-            childs: [block, block2]
+            childs: [block, block2],
+            webUrl: ""
         )
 
         let sequential = CourseSequential(
@@ -1170,7 +1242,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             type: .chapter,
             completion: 0,
-            childs: [vertical]
+            childs: [vertical],
+            sequentialProgress: nil,
+            due: Date()
         )
 
         let chapter = CourseChapter(
@@ -1197,7 +1271,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             )),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
 
         let downloadData = DownloadDataTask(
@@ -1212,15 +1287,18 @@ final class CourseContainerViewModelTests: XCTestCase {
             resumeData: nil,
             state: .finished,
             type: .video,
-            fileSize: 1000
+            fileSize: 1000,
+            lastModified: ""
         )
 
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .publisher(willReturn: Empty().eraseToAnyPublisher()))
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasksForCourse(.any, willReturn: [downloadData]))
+        Given(downloadManager, .updateUnzippedFileSize(for: .any, willReturn: [sequential]))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -1236,10 +1314,11 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseEnd: nil,
             enrollmentStart: nil,
             enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock()
         )
         viewModel.courseStructure = courseStructure
-        await viewModel.setDownloadsStates()
+        await viewModel.setDownloadsStates(courseStructure: courseStructure)
 
         let exp = expectation(description: "Task Starting")
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

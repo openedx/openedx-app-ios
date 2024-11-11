@@ -66,8 +66,6 @@ final class HandoutsViewModelTests: XCTestCase {
         
         XCTAssert(viewModel.handouts == nil)
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
     }
     
     func testGetHandoutsUnknownError() async throws {
@@ -92,8 +90,6 @@ final class HandoutsViewModelTests: XCTestCase {
         
         XCTAssert(viewModel.handouts == nil)
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
     }
     
     func testGetUpdatesSuccess() async throws {
@@ -146,8 +142,6 @@ final class HandoutsViewModelTests: XCTestCase {
         
         XCTAssertTrue(viewModel.updates.isEmpty)
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
     }
     
     func testGetUpdatesUnknownError() async throws {
@@ -172,8 +166,6 @@ final class HandoutsViewModelTests: XCTestCase {
         
         XCTAssertTrue(viewModel.updates.isEmpty)
         XCTAssertFalse(viewModel.isShowProgress)
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
     }
     
 }

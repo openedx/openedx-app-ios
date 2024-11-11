@@ -11,12 +11,21 @@ import Core
 public protocol DashboardRouter: BaseRouter {
     
     func showCourseScreens(courseID: String,
-                           isActive: Bool?,
+                           hasAccess: Bool?,
                            courseStart: Date?,
                            courseEnd: Date?,
                            enrollmentStart: Date?,
                            enrollmentEnd: Date?,
-                           title: String)
+                           title: String,
+                           courseRawImage: String?,
+                           showDates: Bool,
+                           lastVisitedBlockID: String?)
+    
+    func showAllCourses(courses: [CourseItem])
+    
+    func showDiscoverySearch(searchQuery: String?)
+    
+    func showSettings()
     
 }
 
@@ -27,12 +36,20 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
     public override init() {}
     
     public func showCourseScreens(courseID: String,
-                                  isActive: Bool?,
+                                  hasAccess: Bool?,
                                   courseStart: Date?,
                                   courseEnd: Date?,
                                   enrollmentStart: Date?,
                                   enrollmentEnd: Date?,
-                                  title: String) {}
+                                  title: String,
+                                  courseRawImage: String?,
+                                  showDates: Bool,
+                                  lastVisitedBlockID: String?) {}
     
+    public func showAllCourses(courses: [CourseItem]) {}
+    
+    public func showDiscoverySearch(searchQuery: String?) {}
+    
+    public func showSettings() {}
 }
 #endif

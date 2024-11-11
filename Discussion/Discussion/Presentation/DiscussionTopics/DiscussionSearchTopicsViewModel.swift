@@ -39,16 +39,19 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
     
     let router: DiscussionRouter
     private let interactor: DiscussionInteractorProtocol
+    private let storage: CoreStorage
     private let debounce: Debounce<S>
     
     public init(
         courseID: String,
         interactor: DiscussionInteractorProtocol,
+        storage: CoreStorage,
         router: DiscussionRouter,
         debounce: Debounce<S>
     ) {
         self.courseID = courseID
         self.interactor = interactor
+        self.storage = storage
         self.router = router
         self.debounce = debounce
 
@@ -157,11 +160,11 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
     private func generatePosts(threads: [UserThread]) -> [DiscussionPost] {
         var result: [DiscussionPost] = []
         for thread in threads {
-            result.append(thread.discussionPost(action: { [weak self] in
+            result.append(thread.discussionPost(useRelativeDates: storage.useRelativeDates, action: { [weak self] in
                 guard let self else { return }
                 self.router.showThread(
                     thread: thread,
-                    postStateSubject: self.postStateSubject, 
+                    postStateSubject: self.postStateSubject,
                     isBlackedOut: false,
                     animated: true
                 )

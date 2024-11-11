@@ -24,7 +24,6 @@ public typealias AssetImageTypeAlias = ImageAsset.Image
 
 // swiftlint:disable identifier_name line_length nesting type_body_length type_name
 public enum ThemeAssets {
-  public static let authBackground = ImageAsset(name: "authBackground")
   public static let accentButtonColor = ColorAsset(name: "AccentButtonColor")
   public static let accentColor = ColorAsset(name: "AccentColor")
   public static let accentXColor = ColorAsset(name: "AccentXColor")
@@ -36,6 +35,8 @@ public enum ThemeAssets {
   public static let cardViewStroke = ColorAsset(name: "CardViewStroke")
   public static let certificateForeground = ColorAsset(name: "CertificateForeground")
   public static let commentCellBackground = ColorAsset(name: "CommentCellBackground")
+  public static let courseCardBackground = ColorAsset(name: "CourseCardBackground")
+  public static let courseCardShadow = ColorAsset(name: "CourseCardShadow")
   public static let datesSectionBackground = ColorAsset(name: "DatesSectionBackground")
   public static let datesSectionStroke = ColorAsset(name: "DatesSectionStroke")
   public static let nextWeekTimelineColor = ColorAsset(name: "NextWeekTimelineColor")
@@ -54,9 +55,11 @@ public enum ThemeAssets {
   public static let progressDone = ColorAsset(name: "ProgressDone")
   public static let progressSkip = ColorAsset(name: "ProgressSkip")
   public static let selectedAndDone = ColorAsset(name: "SelectedAndDone")
+  public static let secondaryButtonBGColor = ColorAsset(name: "SecondaryButtonBGColor")
   public static let secondaryButtonBorderColor = ColorAsset(name: "SecondaryButtonBorderColor")
   public static let secondaryButtonTextColor = ColorAsset(name: "SecondaryButtonTextColor")
   public static let shadowColor = ColorAsset(name: "ShadowColor")
+  public static let slidingSelectedTextColor = ColorAsset(name: "slidingSelectedTextColor")
   public static let slidingStrokeColor = ColorAsset(name: "slidingStrokeColor")
   public static let slidingTextColor = ColorAsset(name: "slidingTextColor")
   public static let snackbarErrorColor = ColorAsset(name: "SnackbarErrorColor")
@@ -64,6 +67,8 @@ public enum ThemeAssets {
   public static let snackbarTextColor = ColorAsset(name: "SnackbarTextColor")
   public static let snackbarWarningColor = ColorAsset(name: "SnackbarWarningColor")
   public static let styledButtonText = ColorAsset(name: "StyledButtonText")
+  public static let disabledButton = ColorAsset(name: "disabledButton")
+  public static let disabledButtonText = ColorAsset(name: "disabledButtonText")
   public static let success = ColorAsset(name: "Success")
   public static let tabbarColor = ColorAsset(name: "TabbarColor")
   public static let textPrimary = ColorAsset(name: "TextPrimary")
@@ -77,10 +82,12 @@ public enum ThemeAssets {
   public static let textInputUnfocusedStroke = ColorAsset(name: "TextInputUnfocusedStroke")
   public static let toggleSwitchColor = ColorAsset(name: "ToggleSwitchColor")
   public static let navigationBarTintColor = ColorAsset(name: "navigationBarTintColor")
+  public static let shade = ColorAsset(name: "shade")
   public static let warning = ColorAsset(name: "warning")
   public static let warningText = ColorAsset(name: "warningText")
   public static let white = ColorAsset(name: "white")
   public static let appLogo = ImageAsset(name: "appLogo")
+  public static let headerBackground = ImageAsset(name: "headerBackground")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
 

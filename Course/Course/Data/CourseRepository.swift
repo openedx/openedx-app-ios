@@ -7,10 +7,11 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 public protocol CourseRepositoryProtocol {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
-    func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure
+    func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func blockCompletionRequest(courseID: String, blockID: String) async throws
     func getHandouts(courseID: String) async throws -> String?
     func getUpdates(courseID: String) async throws -> [CourseUpdate]
@@ -50,8 +51,8 @@ public class CourseRepository: CourseRepositoryProtocol {
         return parsedStructure
     }
     
-    public func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
-        let localData = try persistence.loadCourseStructure(courseID: courseID)
+    public func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure {
+        let localData = try await persistence.loadCourseStructure(courseID: courseID)
         return parseCourseStructure(course: localData)
     }
     
@@ -85,7 +86,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getSubtitles(url: String, selectedLanguage: String) async throws -> String {
-        if let subtitlesOffline = persistence.loadSubtitles(url: url + selectedLanguage) {
+        if let subtitlesOffline = await persistence.loadSubtitles(url: url + selectedLanguage) {
             return subtitlesOffline
         } else {
             let result = try await api.requestData(CourseEndpoint.getSubtitles(
@@ -101,7 +102,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     public func getCourseDates(courseID: String) async throws -> CourseDates {
         let courseDates = try await api.requestData(
             CourseEndpoint.getCourseDates(courseID: courseID)
-        ).mapResponse(DataLayer.CourseDates.self).domain
+        ).mapResponse(DataLayer.CourseDates.self).domain(useRelativeDates: coreStorage.useRelativeDates)
         persistence.saveCourseDates(courseID: courseID, courseDates: courseDates)
         return courseDates
     }
@@ -139,7 +140,11 @@ public class CourseRepository: CourseRepositoryProtocol {
             media: course.media,
             certificate: course.certificate?.domain,
             org: course.org ?? "",
-            isSelfPaced: course.isSelfPaced
+            isSelfPaced: course.isSelfPaced,
+            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
+                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
+                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
+            )
         )
     }
     
@@ -173,7 +178,13 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: sequential.displayName,
             type: BlockType(rawValue: sequential.type) ?? .unknown,
             completion: sequential.completion ?? 0,
-            childs: childs
+            childs: childs,
+            sequentialProgress: SequentialProgress(
+                assignmentType: sequential.assignmentProgress?.assignmentType,
+                numPointsEarned: Int(sequential.assignmentProgress?.numPointsEarned ?? 0),
+                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0)
+            ),
+            due: sequential.due == nil ? nil : Date(iso8601: sequential.due!)
         )
     }
     
@@ -192,7 +203,8 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: sequential.displayName,
             type: BlockType(rawValue: sequential.type) ?? .unknown,
             completion: sequential.completion ?? 0,
-            childs: childs
+            childs: childs,
+            webUrl: sequential.webUrl
         )
     }
     
@@ -204,6 +216,20 @@ public class CourseRepository: CourseRepositoryProtocol {
                 .replacingOccurrences(of: "?lang=\($0.key)", with: "")
             return SubtitleUrl(language: $0.key, url: url)
         }
+        
+        var offlineDownload: OfflineDownload?
+        
+        if let offlineData = block.offlineDownload,
+           let fileUrl = offlineData.fileUrl,
+           let lastModified = offlineData.lastModified,
+           let fileSize = offlineData.fileSize {
+            let fullUrl = fileUrl.starts(with: "http") ? fileUrl : config.baseURL.absoluteString + fileUrl
+            offlineDownload = OfflineDownload(
+                fileUrl: fullUrl,
+                lastModified: lastModified,
+                fileSize: fileSize
+            )
+        }
             
         return CourseBlock(
             blockId: block.blockId,
@@ -211,6 +237,7 @@ public class CourseRepository: CourseRepositoryProtocol {
             courseId: courseId,
             topicId: block.userViewData?.topicID,
             graded: block.graded,
+            due: block.due == nil ? nil : Date(iso8601: block.due!),
             completion: block.completion ?? 0,
             type: BlockType(rawValue: block.type) ?? .unknown,
             displayName: block.displayName,
@@ -225,12 +252,13 @@ public class CourseRepository: CourseRepositoryProtocol {
                 mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
                 hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
             ),
-            multiDevice: block.multiDevice
+            multiDevice: block.multiDevice,
+            offlineDownload: offlineDownload
         )
     }
     
     private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
-        guard let encodedVideo else {
+        guard let encodedVideo, encodedVideo.url?.isEmpty == false else {
             return nil
         }
         return .init(
@@ -265,7 +293,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
         do {
             let courseDates = try
             CourseRepository.courseDatesJSON.data(using: .utf8)!.mapResponse(DataLayer.CourseDates.self)
-            return courseDates.domain
+            return courseDates.domain(useRelativeDates: true)
         } catch {
             throw error
         }
@@ -350,7 +378,11 @@ And there are various ways of describing it-- call it oral poetry or
             media: course.media,
             certificate: course.certificate?.domain,
             org: course.org ?? "",
-            isSelfPaced: course.isSelfPaced
+            isSelfPaced: course.isSelfPaced, 
+            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
+                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
+                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
+            )
         )
     }
     
@@ -385,7 +417,13 @@ And there are various ways of describing it-- call it oral poetry or
             displayName: sequential.displayName,
             type: BlockType(rawValue: sequential.type) ?? .unknown,
             completion: sequential.completion ?? 0,
-            childs: childs
+            childs: childs, 
+            sequentialProgress: SequentialProgress(
+                assignmentType: sequential.assignmentProgress?.assignmentType,
+                numPointsEarned: Int(sequential.assignmentProgress?.numPointsEarned ?? 0),
+                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0)
+            ),
+            due: sequential.due == nil ? nil : Date(iso8601: sequential.due!)
         )
     }
     
@@ -404,7 +442,8 @@ And there are various ways of describing it-- call it oral poetry or
             displayName: sequential.displayName,
             type: BlockType(rawValue: sequential.type) ?? .unknown,
             completion: sequential.completion ?? 0,
-            childs: childs
+            childs: childs,
+            webUrl: sequential.webUrl
         )
     }
     
@@ -414,6 +453,19 @@ And there are various ways of describing it-- call it oral poetry or
             let url = $0.value
             return SubtitleUrl(language: $0.key, url: url)
         }
+        
+        var offlineDownload: OfflineDownload?
+        
+        if let offlineData = block.offlineDownload,
+           let fileUrl = offlineData.fileUrl,
+           let lastModified = offlineData.lastModified,
+           let fileSize = offlineData.fileSize {
+            offlineDownload = OfflineDownload(
+                fileUrl: fileUrl,
+                lastModified: lastModified,
+                fileSize: fileSize
+            )
+        }
             
         return CourseBlock(
             blockId: block.blockId,
@@ -421,6 +473,7 @@ And there are various ways of describing it-- call it oral poetry or
             courseId: courseId,
             topicId: block.userViewData?.topicID,
             graded: block.graded,
+            due: block.due == nil ? nil : Date(iso8601: block.due!),
             completion: block.completion ?? 0,
             type: BlockType(rawValue: block.type) ?? .unknown,
             displayName: block.displayName,
@@ -435,7 +488,8 @@ And there are various ways of describing it-- call it oral poetry or
                 mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
                 hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
             ),
-            multiDevice: block.multiDevice
+            multiDevice: block.multiDevice, 
+            offlineDownload: offlineDownload
         )
     }
 

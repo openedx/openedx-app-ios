@@ -14,6 +14,7 @@ public class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProt
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
+    @Published var webViewError: Bool = false
     @Published public var updatingCookies: Bool = false
     @Published public var cookiesReady: Bool = false
     
@@ -219,12 +220,15 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
         
         router.showCourseScreens(
             courseID: courseDetails.courseID,
-            isActive: nil,
+            hasAccess: nil,
             courseStart: courseDetails.courseStart,
             courseEnd: courseDetails.courseEnd,
             enrollmentStart: courseDetails.enrollmentStart,
             enrollmentEnd: courseDetails.enrollmentEnd,
-            title: courseDetails.courseTitle
+            title: courseDetails.courseTitle,
+            courseRawImage: courseDetails.courseRawImage,
+            showDates: false,
+            lastVisitedBlockID: nil
         )
         
         return true
@@ -232,5 +236,9 @@ extension ProgramWebviewViewModel: WebViewNavigationDelegate {
     
     private func isValidAppURLScheme(_ url: URL) -> Bool {
         return url.scheme ?? "" == config.URIScheme
+    }
+    
+    public func showWebViewError() {
+        self.webViewError = true
     }
 }

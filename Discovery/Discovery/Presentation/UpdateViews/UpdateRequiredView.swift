@@ -11,7 +11,7 @@ import Theme
 
 public struct UpdateRequiredView: View {
     
-    @Environment (\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontal) private var isHorizontal
     private let router: DiscoveryRouter
     private let config: ConfigProtocol
     private let showAccountLink: Bool

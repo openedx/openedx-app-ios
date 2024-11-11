@@ -8,20 +8,28 @@
 import Foundation
 import Core
 import Alamofire
+import OEXFoundation
+import UIKit
 
 enum DashboardEndpoint: EndPointType {
-    case getMyCourses(username: String, page: Int)
+    case getEnrollments(username: String, page: Int)
+    case getPrimaryEnrollment(username: String, pageSize: Int)
+    case getAllCourses(username: String, filteredBy: String, page: Int)
     
     var path: String {
         switch self {
-        case let .getMyCourses(username, _):
+        case let .getEnrollments(username, _):
             return "/api/mobile/v3/users/\(username)/course_enrollments"
+        case let .getPrimaryEnrollment(username, _):
+            return "/api/mobile/v4/users/\(username)/course_enrollments"
+        case let .getAllCourses(username, _, _):
+            return "/api/mobile/v4/users/\(username)/course_enrollments"
         }
     }
     
     var httpMethod: HTTPMethod {
         switch self {
-        case .getMyCourses:
+        case .getEnrollments, .getPrimaryEnrollment, .getAllCourses:
             return .get
         }
     }
@@ -32,8 +40,24 @@ enum DashboardEndpoint: EndPointType {
     
     var task: HTTPTask {
         switch self {
-        case let .getMyCourses(_, page):
+        case let .getEnrollments(_, page):
             let params: Parameters = [
+                "page": page
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            
+        case let .getPrimaryEnrollment(_, pageSize):
+            let params: Parameters = [
+                "page_size": pageSize
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            
+        case let .getAllCourses(_, filteredBy, page):
+            var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+            let params: Parameters = [
+                "page_size": idiom == .pad ? 24 : 12,
+                "status": filteredBy,
+                "requested_fields": "course_progress",
                 "page": page
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)

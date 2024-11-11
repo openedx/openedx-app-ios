@@ -15,7 +15,7 @@ update_fastlane
 
 before_all do
   xcodes(
-    version: '15.3',
+    version: '16.1',
     select_for_current_build_only: true,
   )
 
@@ -37,7 +37,8 @@ end
 lane :unit_tests do
   run_tests(
     workspace: "OpenEdX.xcworkspace",
-    device: "iPhone 15",
-    scheme: "OpenEdXDev"
+    device: "iPhone 16",
+    scheme: "OpenEdXDev",
+    xcargs: "-skipPackagePluginValidation -skipMacroValidation" # Ignore swiftLint plugin validation
   )
 end

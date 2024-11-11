@@ -41,7 +41,6 @@ struct ContinueWithView: View {
                         .frame(width: 200)
                 }
                 .padding(.horizontal, 24)
-                .padding(.top, 32)
             } else {
                 VStack(alignment: .leading) {
                     ContinueTitle(vertical: courseContinueUnit)
@@ -83,26 +82,30 @@ struct ContinueWithView_Previews: PreviewProvider {
                 id: "1",
                 courseId: "123",
                 graded: true,
+                due: Date(),
                 completion: 0,
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true
+                multiDevice: true,
+                offlineDownload: nil
             ),
             CourseBlock(
                 blockId: "2",
                 id: "2",
                 courseId: "123",
                 graded: true,
+                due: Date(),
                 completion: 0,
                 type: .html,
                 displayName: "Continue lesson",
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: false
+                multiDevice: false,
+                offlineDownload: nil
                 
             )
         ]
@@ -121,7 +124,8 @@ struct ContinueWithView_Previews: PreviewProvider {
                 displayName: "Second Unit",
                 type: .vertical,
                 completion: 1,
-                childs: blocks
+                childs: blocks,
+                webUrl: ""
             )
         ) { }
     }

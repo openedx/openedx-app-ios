@@ -182,14 +182,10 @@ public class DiscussionTopicsViewModel: ObservableObject {
             discussionTopics = generateTopics(topics: topics)
             isShowProgress = false
             isShowRefresh = false
-        } catch let error {
+        } catch {
             isShowProgress = false
             isShowRefresh = false
-            if error.isInternetError {
-                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-            } else {
-                errorMessage = CoreLocalization.Error.unknownError
-            }
+            discussionTopics = nil
         }
     }
 }

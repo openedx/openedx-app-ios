@@ -20,7 +20,7 @@ struct ProfileSupportInfoView: View {
         let title: String
     }
 
-    @ObservedObject var viewModel: ProfileViewModel
+    @ObservedObject var viewModel: SettingsViewModel
 
     var body: some View {
         Text(ProfileLocalization.supportInfo)
@@ -28,6 +28,7 @@ struct ProfileSupportInfoView: View {
             .font(Theme.Fonts.labelLarge)
             .foregroundColor(Theme.Colors.textSecondary)
             .accessibilityIdentifier("support_info_text")
+            .padding(.top, 12)
         
         VStack(alignment: .leading, spacing: 24) {
             viewModel.contactSupport().map(supportInfo)
@@ -118,7 +119,8 @@ struct ProfileSupportInfoView: View {
             WebBrowser(
                 url: viewModel.url.absoluteString,
                 pageTitle: viewModel.title,
-                showProgress: true
+                showProgress: true, 
+                connectivity: self.viewModel.connectivity
             )
             
         } label: {
@@ -129,6 +131,7 @@ struct ProfileSupportInfoView: View {
                     .foregroundColor(Theme.Colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
+                    .flipsForRightToLeftLayoutDirection(true)
             }
         }
         .simultaneousGesture(TapGesture().onEnded {
@@ -186,6 +189,7 @@ struct ProfileSupportInfoView: View {
                     .font(Theme.Fonts.titleMedium)
                 Spacer()
                 Image(systemName: "chevron.right")
+                    .flipsForRightToLeftLayoutDirection(true)
             }
         }
         .foregroundColor(.primary)

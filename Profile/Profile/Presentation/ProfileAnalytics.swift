@@ -7,6 +7,7 @@
 
 import Foundation
 import Core
+import OEXFoundation
 
 //sourcery: AutoMockable
 public protocol ProfileAnalytics {
@@ -25,7 +26,8 @@ public protocol ProfileAnalytics {
     func profileWifiToggle(action: String)
     func profileUserDeleteAccountClicked()
     func profileDeleteAccountSuccess(success: Bool)
-    func profileEvent(_ event: AnalyticsEvent, biValue: EventBIValue)
+    func profileTrackEvent(_ event: AnalyticsEvent, biValue: EventBIValue)
+    func profileScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue)
 }
 
 #if DEBUG
@@ -45,6 +47,7 @@ class ProfileAnalyticsMock: ProfileAnalytics {
     public func profileWifiToggle(action: String) {}
     public func profileUserDeleteAccountClicked() {}
     public func profileDeleteAccountSuccess(success: Bool) {}
-    public func profileEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {}
+    public func profileTrackEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {}
+    public func profileScreenEvent(_ event: AnalyticsEvent, biValue: EventBIValue) {}
 }
 #endif

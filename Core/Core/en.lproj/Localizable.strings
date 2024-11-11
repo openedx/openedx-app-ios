@@ -11,6 +11,7 @@
 "MAINSCREEN.IN_DEVELOPING" = "In developing";
 "MAINSCREEN.PROGRAMS" = "Programs";
 "MAINSCREEN.PROFILE" = "Profile";
+"MAINSCREEN.LEARN" = "Learn";
 
 "VIEW.SNACKBAR.TRY_AGAIN_BTN" = "Try Again";
 
@@ -44,10 +45,20 @@
 
 "ERROR.RELOAD" = "Reload";
 
+"DATE.COURSE_STARTS" = "Course Starts";
+"DATE.COURSE_ENDS" = "Course Ends";
+"DATE.COURSE_ENDED" = "Course Ended";
+
 "DATE.ENDED" = "Ended";
 "DATE.START" = "Start";
 "DATE.STARTED" = "Started";
 "DATE.JUST_NOW" = "Just now";
+"DATE.TODAY" = "Today";
+"DATE.NEXT" = "Next %@";
+"DATE.DAYS_AGO" = "%@ Days Ago";
+"DATE.DUE" = "Due ";
+"DATE.DUE_IN" = "Due in ";
+"DATE.DUE_IN_DAYS" = "Due in %@ Days";
 
 "ALERT.ACCEPT" = "ACCEPT";
 "ALERT.CANCEL" = "CANCEL";
@@ -65,6 +76,7 @@
 
 "DATE_FORMAT.MMMM_DD" = "MMMM dd";
 "DATE_FORMAT.MMM_DD_YYYY" = "MMM dd, yyyy";
+"DATE_FORMAT.MMMM_DD_YYYY" = "MMMM dd, yyyy";
 
 "DOWNLOAD_MANAGER.DOWNLOAD" = "Download";
 "DOWNLOAD_MANAGER.DOWNLOADED" = "Downloaded";
@@ -80,7 +92,10 @@
 "SETTINGS.DOWNLOAD_QUALITY_720_DESCRIPTION" = "Best quality";
 
 "DONE" = "Done";
-"VIEW " = "View";
+"VIEW" = "View";
+"BACK" = "Back";
+"OK" = "Ok";
+"CLOSE" = "Close";
 
 "PICKER.SEARCH" = "Search";
 "PICKER.ACCEPT" = "Accept";
@@ -108,9 +123,36 @@
 "SOCIAL_SIGN_CANCELED" = "The user canceled the sign-in flow.";
 
 "SIGN_IN.LOG_IN_BTN" = "Sign in";
-"REGISTER" = "Register";
+"SIGN_IN.REGISTER_BTN" = "Register";
+"SIGN_IN.LOG_IN_WITH_SSO_BTN" = "Sign in with SSO";
 
 "TOMORROW" = "Tomorrow";
 "YESTERDAY" = "Yesterday";
 
 "OPEN_IN_BROWSER"="View in Safari";
+
+"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY" = "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.";
+"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON" = "Shift due dates";
+"COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.HEADER" = "Missed some deadlines?";
+
+"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.BODY" = "We built a suggested schedule to help you stay on track. But don’t worry – it’s flexible so you can learn at your own pace. If you happen to fall behind, you’ll be able to adjust the dates to keep yourself on track.";
+"COURSE_DATES.RESET_DATE.TAB_INFO_BANNER.HEADER" = "";
+
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BODY" = "To complete graded assignments as part of this course, you can upgrade today.";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.BUTTON" = "";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_COMPLETE_GRADED_BANNER.HEADER" = "";
+
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BODY" = "You are auditing this course, which means that you are unable to participate in graded assignments. It looks like you missed some important deadlines based on our suggested schedule. To complete graded assignments as part of this course and shift the past due assignments into the future, you can upgrade today.";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.BUTTON" = "";
+"COURSE_DATES.RESET_DATE.UPGRADE_TO_RESET_BANNER.HEADER" = "";
+
+"COURSE_DATES.RESET_DATE.ERROR_MESSAGE" = "Your dates could not be shifted. Please try again.";
+"COURSE_DATES.RESET_DATE.SUCCESS_MESSAGE" = "Your dates have been successfully shifted.";
+"COURSE_DATES.RESET_DATE.TITLE" = "Course Dates";
+
+"COURSE_DATES.TODAY" = "Today";
+"COURSE_DATES.COMPLETED" = "Completed";
+"COURSE_DATES.PAST_DUE" = "Past due";
+"COURSE_DATES.THIS_WEEK" = "This week";
+"COURSE_DATES.NEXT_WEEK" = "Next week";
+"COURSE_DATES.UPCOMING" = "Upcoming";

@@ -46,7 +46,8 @@ final class CourseDateViewModelTests: XCTestCase {
                                                                 large: "")),
             certificate: nil,
             org: "",
-            isSelfPaced: true
+            isSelfPaced: true,
+            courseProgress: nil
         )
         
         Given(interactor, .getCourseDates(courseID: .any, willReturn: courseDates))
@@ -60,7 +61,8 @@ final class CourseDateViewModelTests: XCTestCase {
             config: config,
             courseID: "1",
             courseName: "a",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(), 
+            calendarManager: CalendarManagerMock()
         )
         
         await viewModel.getCourseDates(courseID: "1")
@@ -90,15 +92,16 @@ final class CourseDateViewModelTests: XCTestCase {
             config: config,
             courseID: "1",
             courseName: "a",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(),
+            calendarManager: CalendarManagerMock()
         )
         
         await viewModel.getCourseDates(courseID: "1")
         
         Verify(interactor, .getCourseDates(courseID: .any))
         
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError, "Error view should be shown on unknown error.")
+        XCTAssertNil(viewModel.courseDates)
+        XCTAssertFalse(viewModel.isShowProgress)
     }
     
     func testNoInternetConnectionError() async throws {
@@ -120,15 +123,16 @@ final class CourseDateViewModelTests: XCTestCase {
             config: config,
             courseID: "1",
             courseName: "a",
-            analytics: CourseAnalyticsMock()
+            analytics: CourseAnalyticsMock(),
+            calendarManager: CalendarManagerMock()
         )
         
         await viewModel.getCourseDates(courseID: "1")
         
         Verify(interactor, .getCourseDates(courseID: .any))
         
-        XCTAssertTrue(viewModel.showError)
-        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection, "Error message should be set to 'slow or no internet connection'.")
+        XCTAssertNil(viewModel.courseDates)
+        XCTAssertFalse(viewModel.isShowProgress)
     }
     
     func testSortedDateTodayToCourseDateBlockDict() {
@@ -143,7 +147,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockID1"
+            firstComponentBlockID: "blockID1",
+            useRelativeDates: true
         )
         
         let block2 = CourseDateBlock(
@@ -157,7 +162,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockID1"
+            firstComponentBlockID: "blockID1",
+            useRelativeDates: true
         )
         
         let courseDates = CourseDates(
@@ -191,7 +197,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockID1"
+            firstComponentBlockID: "blockID1", 
+            useRelativeDates: true
         )
         
         let block2 = CourseDateBlock(
@@ -205,7 +212,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockID1"
+            firstComponentBlockID: "blockID1",
+            useRelativeDates: true
         )
         
         let courseDates = CourseDates(
@@ -238,7 +246,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestAssignment",
             extraInfo: nil,
-            firstComponentBlockID: "blockID3"
+            firstComponentBlockID: "blockID3",
+            useRelativeDates: true
         )
                 
         XCTAssertEqual(block.blockStatus, .dueNext)
@@ -256,7 +265,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: CourseLocalization.CourseDates.today,
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertEqual(block.title, "Today", "Block title for 'today' should be 'Today'")
@@ -274,7 +284,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         XCTAssertEqual(block.blockStatus, .completed, "Block status for a completed assignment should be 'completed'")
     }
@@ -291,7 +302,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertEqual(block.blockStatus, .verifiedOnly, "Block status for a block without learner access should be 'verifiedOnly'")
@@ -309,7 +321,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertEqual(block.blockStatus, .pastDue, "Block status for a past due assignment should be 'pastDue'")
@@ -327,7 +340,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         XCTAssertTrue(availableAssignment.canShowLink, "Available assignments should be hyperlinked.")
     }
@@ -344,7 +358,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertTrue(block.isAssignment)
@@ -362,7 +377,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
                 
         XCTAssertEqual(block.blockStatus, BlockStatus.courseStartDate)
@@ -380,7 +396,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertEqual(block.blockStatus, BlockStatus.courseEndDate)
@@ -398,7 +415,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertTrue(block.isVerifiedOnly, "Block should be identified as 'verified only' when the learner has no access.")
@@ -416,7 +434,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertTrue(block.isComplete, "Block should be marked as completed.")
@@ -434,7 +453,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertEqual(block.blockStatus, .unreleased, "Block status should be set to 'unreleased' for unreleased assignments.")
@@ -452,7 +472,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertEqual(block.blockStatus, .verifiedOnly)
@@ -471,7 +492,8 @@ final class CourseDateViewModelTests: XCTestCase {
             linkText: nil,
             title: "TestBlock",
             extraInfo: nil,
-            firstComponentBlockID: "blockIDTest"
+            firstComponentBlockID: "blockIDTest",
+            useRelativeDates: true
         )
         
         XCTAssertEqual(block.blockStatus, .unreleased)

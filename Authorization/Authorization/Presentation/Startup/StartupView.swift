@@ -105,6 +105,8 @@ public struct StartupView: View {
                         switch buttonAction {
                         case .signIn:
                             viewModel.router.showLoginScreen(sourceScreen: .startup)
+                        case .signInWithSSO:
+                            viewModel.router.showLoginScreen(sourceScreen: .startup)
                         case .register:
                             viewModel.router.showRegisterScreen(sourceScreen: .startup)
                         }
@@ -119,12 +121,15 @@ public struct StartupView: View {
             .frameLimit()
         }
         .navigationTitle(AuthLocalization.Startup.title)
-        .hideNavigationBar()
+        .navigationBarHidden(true)
         .padding(.all, isHorizontal ? 1 : 0)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onTapGesture {
             UIApplication.shared.endEditing()
+        }
+        .onFirstAppear {
+            viewModel.trackScreenEvent()
         }
     }
 }

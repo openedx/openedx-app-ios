@@ -7,125 +7,214 @@
 
 import AVKit
 import Combine
-import Swinject
 
-public protocol PipManagerProtocol {
-    var isPipActive: Bool { get }
-    
-    func holder(for url: URL?, blockID: String, courseID: String, selectedCourseTab: Int) -> PlayerViewControllerHolder?
-    func set(holder: PlayerViewControllerHolder)
-    func remove(holder: PlayerViewControllerHolder)
-    func restore(holder: PlayerViewControllerHolder) async throws
-    func pipRatePublisher() -> AnyPublisher<Float, Never>?
-    func pauseCurrentPipVideo()
-}
+public protocol PlayerViewControllerHolderProtocol: AnyObject {
+    var url: URL? { get }
+    var blockID: String { get }
+    var courseID: String { get }
+    var selectedCourseTab: Int { get }
+    var playerController: PlayerControllerProtocol? { get }
+    var isPlaying: Bool { get }
+    var isPlayingInPip: Bool { get }
+    var isOtherPlayerInPipPlaying: Bool { get }
 
-#if DEBUG
-public class PipManagerProtocolMock: PipManagerProtocol {
-    public var isPipActive: Bool {
-        false
-    }
-
-    public init() {}
-    public func holder(
-        for url: URL?,
+    init(
+        url: URL?,
         blockID: String,
         courseID: String,
-        selectedCourseTab: Int
-    ) -> PlayerViewControllerHolder? {
-        return nil
-    }
-    public func set(holder: PlayerViewControllerHolder) {}
-    public func remove(holder: PlayerViewControllerHolder) {}
-    public func restore(holder: PlayerViewControllerHolder) async throws {}
-    public func pipRatePublisher() -> AnyPublisher<Float, Never>? { nil }
-    public func pauseCurrentPipVideo() {}
+        selectedCourseTab: Int,
+        videoResolution: CGSize,
+        pipManager: PipManagerProtocol,
+        playerTracker: any PlayerTrackerProtocol,
+        playerDelegate: PlayerDelegateProtocol?,
+        playerService: PlayerServiceProtocol
+    )
+    func getTimePublisher() -> AnyPublisher<Double, Never>
+    func getErrorPublisher() -> AnyPublisher<Error, Never>
+    func getRatePublisher() -> AnyPublisher<Float, Never>
+    func getReadyPublisher() -> AnyPublisher<Bool, Never>
+    func getService() -> PlayerServiceProtocol
+    func sendCompletion() async
 }
-#endif
 
-public class PlayerViewControllerHolder: NSObject, AVPlayerViewControllerDelegate {
+public class PlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     public let url: URL?
     public let blockID: String
     public let courseID: String
     public let selectedCourseTab: Int
-    public var isPlayingInPip: Bool = false
-    public var isOtherPlayerInPip: Bool {
+    
+    public var isPlaying: Bool {
+        playerTracker.isPlaying
+    }
+    public var timePublisher: AnyPublisher<Double, Never> {
+        playerTracker.getTimePublisher()
+    }
+
+    public var isPlayingInPip: Bool {
+        playerDelegate?.isPlayingInPip ?? false
+    }
+
+    public var isOtherPlayerInPipPlaying: Bool {
         let holder = pipManager.holder(
             for: url,
             blockID: blockID,
             courseID: courseID,
             selectedCourseTab: selectedCourseTab
         )
-        return holder == nil && pipManager.isPipActive
+        return holder == nil && pipManager.isPipActive && pipManager.isPipPlaying
     }
-    
-    private let pipManager: PipManagerProtocol
-    
-    public lazy var playerController: AVPlayerViewController = {
+    public var duration: Double {
+        playerTracker.duration
+    }
+    private let playerTracker: any PlayerTrackerProtocol
+    private let playerDelegate: PlayerDelegateProtocol?
+    private let playerService: PlayerServiceProtocol
+    private let videoResolution: CGSize
+    private let errorPublisher = PassthroughSubject<Error, Never>()
+    private var isViewedOnce: Bool = false
+    private var cancellations: [AnyCancellable] = []
+
+    let pipManager: PipManagerProtocol
+
+    public lazy var playerController: PlayerControllerProtocol? = {
         let playerController = AVPlayerViewController()
-        playerController.delegate = self
+        playerController.modalPresentationStyle = .fullScreen
+        playerController.allowsPictureInPicturePlayback = true
+        playerController.canStartPictureInPictureAutomaticallyFromInline = true
+        playerController.delegate = playerDelegate
+        playerController.player = playerTracker.player as? AVPlayer
+        playerController.player?.currentItem?.preferredMaximumResolution = videoResolution
         return playerController
     }()
-    
-    public init(
+
+    required public init(
         url: URL?,
         blockID: String,
         courseID: String,
-        selectedCourseTab: Int
+        selectedCourseTab: Int,
+        videoResolution: CGSize,
+        pipManager: PipManagerProtocol,
+        playerTracker: any PlayerTrackerProtocol,
+        playerDelegate: PlayerDelegateProtocol?,
+        playerService: PlayerServiceProtocol
     ) {
         self.url = url
         self.blockID = blockID
         self.courseID = courseID
         self.selectedCourseTab = selectedCourseTab
-        self.pipManager = Container.shared.resolve(PipManagerProtocol.self)!
+        self.videoResolution = videoResolution
+        self.pipManager = pipManager
+        self.playerTracker = playerTracker
+        self.playerDelegate = playerDelegate
+        self.playerService = playerService
+        addObservers()
     }
     
-    public func playerViewControllerWillStartPictureInPicture(_ playerViewController: AVPlayerViewController) {
-        isPlayingInPip = true
-        pipManager.set(holder: self)
+    private func addObservers() {
+        timePublisher
+            .sink {[weak self] _ in
+                guard let strongSelf = self else { return }
+                if strongSelf.playerTracker.progress > 0.8 && !strongSelf.isViewedOnce {
+                    strongSelf.isViewedOnce = true
+                    Task {
+                        await strongSelf.sendCompletion()
+                    }
+                }
+            }
+            .store(in: &cancellations)
+        playerTracker.getFinishPublisher()
+            .sink { [weak self] in
+                self?.playerService.presentAppReview()
+            }
+            .store(in: &cancellations)
+        playerTracker.getRatePublisher()
+            .sink {[weak self] rate in
+                guard rate > 0 else { return }
+                self?.pausePipIfNeed()
+            }
+            .store(in: &cancellations)
+        pipManager.pipRatePublisher()?
+            .sink {[weak self] rate in
+                guard rate > 0, self?.isPlayingInPip == false else { return }
+                self?.playerController?.pause()
+            }
+            .store(in: &cancellations)
     }
-    
-    public func playerViewController(
-        _ playerViewController: AVPlayerViewController,
-        failedToStartPictureInPictureWithError error: any Error
-    ) {
-        isPlayingInPip = false
-        pipManager.remove(holder: self)
-    }
-    
-    public func playerViewControllerDidStopPictureInPicture(_ playerViewController: AVPlayerViewController) {
-        isPlayingInPip = false
-        pipManager.remove(holder: self)
-    }
-    
-    public func playerViewControllerRestoreUserInterfaceForPictureInPictureStop(
-        _ playerViewController: AVPlayerViewController
-    ) async -> Bool {
-        do {
-            try await Container.shared.resolve(PipManagerProtocol.self)?.restore(holder: self)
-            return true
-        } catch {
-            return false
-        }
-    }
-    
-    public override func isEqual(_ object: Any?) -> Bool {
-        guard let object = object as? PlayerViewControllerHolder else {
-            return false
-        }
-        return url?.absoluteString == object.url?.absoluteString &&
-        courseID == object.courseID &&
-        blockID == object.blockID &&
-        selectedCourseTab == object.selectedCourseTab
-    }
-    
+
     public func pausePipIfNeed() {
         if !isPlayingInPip {
             pipManager.pauseCurrentPipVideo()
         }
     }
     
-    public func pipRatePublisher() -> AnyPublisher<Float, Never>? {
-        pipManager.pipRatePublisher()
+    public func getTimePublisher() -> AnyPublisher<Double, Never> {
+        playerTracker.getTimePublisher()
+    }
+
+    public func getErrorPublisher() -> AnyPublisher<Error, Never> {
+        errorPublisher
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
+    
+    public func getRatePublisher() -> AnyPublisher<Float, Never> {
+        playerTracker.getRatePublisher()
+    }
+    
+    public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
+        playerTracker.getReadyPublisher()
+    }
+
+    public func getService() -> PlayerServiceProtocol {
+        playerService
+    }
+    
+    public func sendCompletion() async {
+        do {
+            try await playerService.blockCompletionRequest()
+        } catch {
+            errorPublisher.send(error)
+        }
     }
 }
+
+extension AVPlayerViewController: PlayerControllerProtocol {
+    public func play() {
+        player?.play()
+    }
+    
+    public func pause() {
+        player?.pause()
+    }
+    
+    public func seekTo(to date: Date) {
+        player?.seek(to: date)
+    }
+    
+    public func stop() {
+        player?.replaceCurrentItem(with: nil)
+    }
+}
+
+#if DEBUG
+extension PlayerViewControllerHolder {
+    static var mock: PlayerViewControllerHolder {
+        PlayerViewControllerHolder(
+            url: URL(string: "")!,
+            blockID: "",
+            courseID: "",
+            selectedCourseTab: 0,
+            videoResolution: .zero,
+            pipManager: PipManagerProtocolMock(),
+            playerTracker: PlayerTrackerProtocolMock(url: URL(string: "")),
+            playerDelegate: nil,
+            playerService: PlayerService(
+                courseID: "",
+                blockID: "",
+                interactor: CourseInteractor.mock,
+                router: CourseRouterMock()
+            )
+        )
+    }
+}
+#endif
