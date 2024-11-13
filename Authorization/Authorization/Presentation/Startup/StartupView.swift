@@ -62,6 +62,7 @@ public struct StartupView: View {
                                     searchQuery: searchQuery,
                                     sourceScreen: .startup
                                 )
+                                viewModel.logAnalytics(searchQuery: searchQuery)
                             })
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
@@ -89,6 +90,7 @@ public struct StartupView: View {
                                 searchQuery: searchQuery,
                                 sourceScreen: .startup
                             )
+                            viewModel.logAnalytics()
                         } label: {
                             Text(AuthLocalization.Startup.exploreAllCourses)
                                 .underline()

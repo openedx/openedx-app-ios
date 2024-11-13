@@ -741,6 +741,110 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.bulkDeleteVideosSubsection, parameters: parameters)
     }
     
+    public func bulkDeleteVideosSection(
+        courseID: String,
+        sectionId: String,
+        videos: Int
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.courseSection: sectionId,
+            EventParamKey.noOfVideos: videos,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.bulkDeleteVideosSection.rawValue
+        ]
+        
+        logEvent(.bulkDeleteVideosSection, parameters: parameters)
+    }
+    
+    public func videoLoaded(courseID: String, blockID: String, videoURL: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.blockID: blockID,
+            EventParamKey.videoURL: videoURL,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.videoLoaded.rawValue
+        ]
+        
+        logEvent(.videoLoaded, parameters: parameters)
+    }
+    
+    public func videoPlayed(courseID: String, blockID: String, videoURL: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.blockID: blockID,
+            EventParamKey.videoURL: videoURL,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.videoPlayed.rawValue
+        ]
+        
+        logEvent(.videoPlayed, parameters: parameters)
+    }
+    
+    public func videoSpeedChange(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        oldSpeed: Float,
+        newSpeed: Float,
+        currentTime: Double,
+        duration: Double
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.blockID: blockID,
+            EventParamKey.videoURL: videoURL,
+            EventParamKey.oldSpeed: oldSpeed,
+            EventParamKey.newSpeed: newSpeed,
+            EventParamKey.currentTime: currentTime,
+            EventParamKey.duration: duration,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.videoSpeedChange.rawValue
+        ]
+        
+        logEvent(.videoSpeedChange, parameters: parameters)
+    }
+    
+    public func videoPaused(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        currentTime: Double,
+        duration: Double
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.blockID: blockID,
+            EventParamKey.videoURL: videoURL,
+            EventParamKey.currentTime: currentTime,
+            EventParamKey.duration: duration,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.videoPaused.rawValue
+        ]
+        
+        logEvent(.videoPaused, parameters: parameters)
+    }
+    
+    public func videoCompleted(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        currentTime: Double,
+        duration: Double
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.blockID: blockID,
+            EventParamKey.videoURL: videoURL,
+            EventParamKey.currentTime: currentTime,
+            EventParamKey.duration: duration,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.videoCompleted.rawValue
+        ]
+        
+        logEvent(.videoCompleted, parameters: parameters)
+    }
+    
     // MARK: Discussion
     public func discussionAllPostsClicked(courseId: String, courseName: String) {
         let parameters = [
@@ -769,6 +873,123 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.name: EventBIValue.discussionTopicClicked.rawValue
         ]
         logEvent(.discussionTopicClicked, parameters: parameters)
+    }
+    
+    public func discussionCreateNewPost(
+        courseID: String,
+        topicID: String,
+        postType: String,
+        followPost: Bool,
+        author: String
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.topicID: topicID,
+            EventParamKey.postType: postType,
+            EventParamKey.followPost: followPost,
+            EventParamKey.author: author,
+            EventParamKey.name: EventBIValue.discussionPostCreated.rawValue
+        ]
+        logEvent(.discussionPostCreated, parameters: parameters)
+    }
+    
+    public func discussionResponseAdded(
+        courseID: String,
+        threadID: String,
+        responseID: String,
+        author: String
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.threadID: threadID,
+            EventParamKey.responseID: responseID,
+            EventParamKey.author: author,
+            EventParamKey.name: EventBIValue.discussionResponseAdded.rawValue
+        ]
+        logEvent(.discussionResponseAdded, parameters: parameters)
+    }
+    
+    public func discussionCommentAdded(
+        courseID: String,
+        threadID: String,
+        responseID: String,
+        commentID: String,
+        author: String
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.threadID: threadID,
+            EventParamKey.responseID: responseID,
+            EventParamKey.commentID: commentID,
+            EventParamKey.author: author,
+            EventParamKey.name: EventBIValue.discussionCommentAdded.rawValue
+        ]
+        logEvent(.discussionCommentAdded, parameters: parameters)
+    }
+    
+    public func discussionFollowToggle(
+        courseID: String,
+        threadID: String,
+        author: String,
+        follow: Bool
+    ) {
+        var parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.threadID: threadID,
+            EventParamKey.author: author,
+            EventParamKey.follow: follow,
+            EventParamKey.name: EventBIValue.discussionFollowToggle.rawValue
+        ]
+        
+        logEvent(.discussionFollowToggle, parameters: parameters)
+    }
+    
+    public func discussionLikeToggle(
+        courseID: String,
+        threadID: String,
+        responseID: String? = nil,
+        commentID: String? = nil,
+        author: String,
+        discussionType: String,
+        like: Bool
+    ) {
+        var parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.threadID: threadID,
+            EventParamKey.author: author,
+            EventParamKey.like: like,
+            EventParamKey.discussionType: discussionType,
+            EventParamKey.name: EventBIValue.discussionLikeToggle.rawValue
+        ]
+        
+        parameters.setObjectOrNil(responseID, forKey: EventParamKey.responseID)
+        parameters.setObjectOrNil(commentID, forKey: EventParamKey.commentID)
+        
+        logEvent(.discussionLikeToggle, parameters: parameters)
+    }
+    
+    public func discussionReportToggle(
+        courseID: String,
+        threadID: String,
+        responseID: String? = nil,
+        commentID: String? = nil,
+        author: String,
+        discussionType: String,
+        report: Bool
+    ) {
+        var parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.threadID: threadID,
+            EventParamKey.author: author,
+            EventParamKey.report: report,
+            EventParamKey.discussionType: discussionType,
+            EventParamKey.name: EventBIValue.discussionReportToggle.rawValue
+        ]
+        
+        parameters.setObjectOrNil(responseID, forKey: EventParamKey.responseID)
+        parameters.setObjectOrNil(commentID, forKey: EventParamKey.commentID)
+        
+        logEvent(.discussionReportToggle, parameters: parameters)
     }
     
     // MARK: app review

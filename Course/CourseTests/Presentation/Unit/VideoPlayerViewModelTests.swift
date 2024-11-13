@@ -37,7 +37,13 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let tracker = PlayerTrackerProtocolMock(url: nil)
         let service = PlayerService(courseID: "", blockID: "", interactor: interactor, router: router)
         let playerHolder = PlayerViewControllerHolder(url: nil, blockID: "", courseID: "", selectedCourseTab: 0, pipManager: PipManagerProtocolMock(), playerTracker: tracker, playerDelegate: nil, playerService: service, appStorage: CoreStorageMock())
-        let viewModel = VideoPlayerViewModel(languages: [], connectivity: connectivity, playerHolder: playerHolder)
+        let viewModel = VideoPlayerViewModel(
+            languages: [],
+            connectivity: connectivity,
+            playerHolder: playerHolder,
+            appStorage: CoreStorageMock(),
+            analytics: CourseAnalyticsMock()
+        )
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
         
@@ -61,7 +67,13 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let tracker = PlayerTrackerProtocolMock(url: nil)
         let service = PlayerService(courseID: "", blockID: "", interactor: interactor, router: router)
         let playerHolder = PlayerViewControllerHolder(url: nil, blockID: "", courseID: "", selectedCourseTab: 0, pipManager: PipManagerProtocolMock(), playerTracker: tracker, playerDelegate: nil, playerService: service, appStorage: CoreStorageMock())
-        let viewModel = VideoPlayerViewModel(languages: [], connectivity: connectivity, playerHolder: playerHolder)
+        let viewModel = VideoPlayerViewModel(
+            languages: [],
+            connectivity: connectivity,
+            playerHolder: playerHolder,
+            appStorage: CoreStorageMock(),
+            analytics: CourseAnalyticsMock()
+        )
         
         await viewModel.getSubtitles(subtitlesUrl: "url")
         
@@ -80,7 +92,13 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let tracker = PlayerTrackerProtocolMock(url: nil)
         let service = PlayerService(courseID: "", blockID: "", interactor: interactor, router: router)
         let playerHolder = PlayerViewControllerHolder(url: nil, blockID: "", courseID: "", selectedCourseTab: 0, pipManager: PipManagerProtocolMock(), playerTracker: tracker, playerDelegate: nil, playerService: service, appStorage: CoreStorageMock())
-        let viewModel = VideoPlayerViewModel(languages: [], connectivity: connectivity, playerHolder: playerHolder)
+        let viewModel = VideoPlayerViewModel(
+            languages: [],
+            connectivity: connectivity,
+            playerHolder: playerHolder,
+            appStorage: CoreStorageMock(),
+            analytics: CourseAnalyticsMock()
+        )
 
         viewModel.languages = [
         SubtitleUrl(language: "en", url: "url"),
@@ -132,7 +150,13 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let tracker = PlayerTrackerProtocolMock(url: nil)
         let service = PlayerService(courseID: "", blockID: "", interactor: interactor, router: router)
         let playerHolder = PlayerViewControllerHolder(url: nil, blockID: "", courseID: "", selectedCourseTab: 0, pipManager: PipManagerProtocolMock(), playerTracker: tracker, playerDelegate: nil, playerService: service, appStorage: CoreStorageMock())
-        let viewModel = VideoPlayerViewModel(languages: [], connectivity: connectivity, playerHolder: playerHolder)
+        let viewModel = VideoPlayerViewModel(
+            languages: [],
+            connectivity: connectivity,
+            playerHolder: playerHolder,
+            appStorage: CoreStorageMock(),
+            analytics: CourseAnalyticsMock()
+        )
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: NSError()))
         
@@ -155,7 +179,13 @@ final class VideoPlayerViewModelTests: XCTestCase {
         let tracker = PlayerTrackerProtocolMock(url: nil)
         let service = PlayerService(courseID: "", blockID: "", interactor: interactor, router: router)
         let playerHolder = PlayerViewControllerHolder(url: nil, blockID: "", courseID: "", selectedCourseTab: 0, pipManager: PipManagerProtocolMock(), playerTracker: tracker, playerDelegate: nil, playerService: service, appStorage: CoreStorageMock())
-        let viewModel = VideoPlayerViewModel(languages: [], connectivity: connectivity, playerHolder: playerHolder)
+        let viewModel = VideoPlayerViewModel(
+            languages: [],
+            connectivity: connectivity,
+            playerHolder: playerHolder,
+            appStorage: CoreStorageMock(),
+            analytics: CourseAnalyticsMock()
+        )
         
         Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: noInternetError))
         
