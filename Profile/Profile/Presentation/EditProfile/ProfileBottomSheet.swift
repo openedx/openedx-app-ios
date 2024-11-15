@@ -159,9 +159,16 @@ struct ProfileBottomSheet: View {
                 .fill(type.bgColor())
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                .foregroundColor(type.frameColor())
+            Theme.Shapes.buttonShape
+                .stroke(style: .init(
+                    lineWidth: 1,
+                    lineCap: .round,
+                    lineJoin: .round,
+                    miterLimit: 1)
+                )
+                .foregroundColor(
+                    type.frameColor()
+                )
         )
     }
 }
