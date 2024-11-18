@@ -167,6 +167,7 @@ public struct AlertView: View {
                     .font(Theme.Fonts.titleLarge)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.horizontal, 40)
+                    .fixedSize(horizontal: false, vertical: true)
                 Text(alertMessage)
                     .font(Theme.Fonts.bodyMedium)
                     .foregroundColor(Theme.Colors.textPrimary)

@@ -104,9 +104,8 @@ public struct SignInView: View {
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.top, 18)
                                         .accessibilityIdentifier("password_text")
-                                    SecureField("", text: $password)
+                                    SecureInputView($password)
                                         .font(Theme.Fonts.bodyLarge)
-                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .padding(.all, 14)
                                         .background(
                                             Theme.InputFieldBackground(
@@ -280,7 +279,7 @@ public struct SignInView: View {
         .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
-        .onFirstAppear{
+        .onFirstAppear {
             viewModel.trackScreenEvent()
         }
     }
@@ -309,7 +308,7 @@ public struct SignInView: View {
     }
 
     private func handleURL(_ url: URL) -> OpenURLAction.Result {
-        viewModel.router.showWebBrowser(title: url.host ?? "", url: url)
+        viewModel.router.showWebBrowser(title: "", url: url)
         return .handled
     }
 }
