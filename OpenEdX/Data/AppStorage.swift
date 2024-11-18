@@ -347,7 +347,7 @@ public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseSto
         user = nil
         userProfile = nil
         // delete all cookies
-        if  let cookies = HTTPCookieStorage.shared.cookies {
+        if let cookies = HTTPCookieStorage.shared.cookies {
             for cookie in cookies {
                 HTTPCookieStorage.shared.deleteCookie(cookie)
             }
