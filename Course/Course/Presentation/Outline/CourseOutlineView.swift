@@ -222,12 +222,14 @@ public struct CourseOutlineView: View {
                   let blockID = userInfo["blockID"] as? String else {
                 return
             }
-            viewModel.completeBlock(
-                chapterID: chapterID,
-                sequentialID: sequentialID,
-                verticalID: verticalID,
-                blockID: blockID
-            )
+            Task {
+                await viewModel.completeBlock(
+                    chapterID: chapterID,
+                    sequentialID: sequentialID,
+                    verticalID: verticalID,
+                    blockID: blockID
+                )
+            }
         }
     }
     

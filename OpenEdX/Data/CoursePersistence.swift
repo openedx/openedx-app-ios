@@ -20,7 +20,6 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func loadEnrollments() async throws -> [CourseItem] {
-//        guard let context = contextState.context else { throw InvalidCoreDataContextError() }
         return try await container.performBackgroundTask { context in
             let result = try? context.fetch(CDCourseItem.fetchRequest())
                 .map {
@@ -49,7 +48,6 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func saveEnrollments(items: [CourseItem]) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             for item in items {
                 let newItem = CDCourseItem(context: context)
@@ -75,7 +73,6 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func loadCourseStructure(courseID: String) async throws -> DataLayer.CourseStructure {
-//        guard let context = contextState.context else { throw InvalidCoreDataContextError() }
         let request = CDCourseStructure.fetchRequest()
         request.predicate = NSPredicate(format: "id = %@", courseID)
         return try await container.performBackgroundTask { context in
@@ -169,7 +166,6 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
         
     public func saveCourseStructure(structure: DataLayer.CourseStructure) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let newStructure = CDCourseStructure(context: context)
@@ -270,7 +266,6 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func saveSubtitles(url: String, subtitlesString: String) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let newSubtitle = CDSubtitle(context: context)
             newSubtitle.url = url
@@ -286,7 +281,6 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func loadSubtitles(url: String) async -> String? {
-//        guard let context = contextState.context else { return nil }
         let request = CDSubtitle.fetchRequest()
         request.predicate = NSPredicate(format: "url = %@", url)
         return await container.performBackgroundTask { context in

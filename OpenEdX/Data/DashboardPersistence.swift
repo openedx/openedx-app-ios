@@ -19,7 +19,6 @@ public final class DashboardPersistence: DashboardPersistenceProtocol {
     }
     
     public func loadEnrollments() async throws -> [CourseItem] {
-//        guard let context = contextState.context else { throw InvalidCoreDataContextError() }
         return try await container.performBackgroundTask { context in
             let result = try? context.fetch(CDDashboardCourse.fetchRequest())
                 .map { CourseItem(name: $0.name ?? "",
@@ -46,7 +45,6 @@ public final class DashboardPersistence: DashboardPersistenceProtocol {
     }
     
     public func saveEnrollments(items: [CourseItem]) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             for item in items {
                 let newItem = CDDashboardCourse(context: context)
@@ -73,7 +71,6 @@ public final class DashboardPersistence: DashboardPersistenceProtocol {
     }
 
     public func loadPrimaryEnrollment() async throws -> PrimaryEnrollment {
-//        guard let context = contextState.context else { throw InvalidCoreDataContextError() }
         let request = CDMyEnrollments.fetchRequest()
         return try await container.performBackgroundTask { context in
             if let result = try context.fetch(request).first {
@@ -155,7 +152,6 @@ public final class DashboardPersistence: DashboardPersistenceProtocol {
     
     // swiftlint:disable function_body_length
     public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) async {
-//        guard let context = contextState.context else { return }
         // Deleting all old data before saving new ones
         await clearOldEnrollmentsData()
         await container.performBackgroundTask { context in
@@ -237,7 +233,6 @@ public final class DashboardPersistence: DashboardPersistenceProtocol {
     // swiftlint:enable function_body_length
     
     func clearOldEnrollmentsData() async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
             let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)

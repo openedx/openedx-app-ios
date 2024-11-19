@@ -7,7 +7,7 @@
 
 import Foundation
 @preconcurrency import Swinject
-@preconcurrency import CoreData
+import CoreData
 import Core
 import OEXFoundation
 import Authorization

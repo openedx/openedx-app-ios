@@ -20,7 +20,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func getCourseState(courseID: String) async -> CourseCalendarState? {
-//        guard let context = contextState.context else { return nil }
         return await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<CDCourseCalendarState> = CDCourseCalendarState.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseID)
@@ -38,7 +37,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func getAllCourseStates() async -> [CourseCalendarState] {
-//        guard let context = contextState.context else { return [] }
         return await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<CDCourseCalendarState> = CDCourseCalendarState.fetchRequest()
             do {
@@ -57,7 +55,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func saveCourseState(state: CourseCalendarState) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let newState = CDCourseCalendarState(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -72,7 +69,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func removeCourseState(courseID: String) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarState.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseID)
@@ -91,7 +87,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func deleteAllCourseStatesAndEvents() async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let fetchRequestCalendarStates: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarState.fetchRequest()
             let deleteRequestCalendarStates = NSBatchDeleteRequest(fetchRequest: fetchRequestCalendarStates)
@@ -109,7 +104,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func saveCourseCalendarEvent(_ event: CourseCalendarEvent) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let newEvent = CDCourseCalendarEvent(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -124,7 +118,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func removeCourseCalendarEvents(for courseId: String) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarEvent.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseId)
@@ -143,7 +136,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func removeAllCourseCalendarEvents() async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarEvent.fetchRequest()
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
@@ -157,7 +149,6 @@ public final class ProfilePersistence: ProfilePersistenceProtocol {
     }
     
     public func getCourseCalendarEvents(for courseId: String) async -> [CourseCalendarEvent] {
-//        guard let context = contextState.context else { return [] }
         return await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<CDCourseCalendarEvent> = CDCourseCalendarEvent.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseId)

@@ -162,17 +162,20 @@ public final class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObje
     private func generatePosts(threads: [UserThread]) -> [DiscussionPost] {
         var result: [DiscussionPost] = []
         for thread in threads {
-            result.append(thread.discussionPost(useRelativeDates: storage.useRelativeDates, action: { [weak self] in
+            result
+                .append(
+                    thread.discussionPost(
+                        useRelativeDates: storage.useRelativeDates,
+                        action: { [weak self] in
                 guard let self else { return }
-                Task {
-                    await self.router.showThread(
+                    self.router.showThread(
                         thread: thread,
                         postStateSubject: self.postStateSubject,
                         isBlackedOut: false,
                         animated: true
                     )
-                }
-            }))
+            })
+)
         }
         return result
     }

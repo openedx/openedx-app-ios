@@ -87,7 +87,7 @@ public struct UserThread: Sendable {
 }
 
 public extension UserThread {
-    func discussionPost(useRelativeDates: Bool, action: @escaping (@Sendable () -> Void)) -> DiscussionPost {
+    func discussionPost(useRelativeDates: Bool, action: @escaping (@MainActor @Sendable () -> Void)) -> DiscussionPost {
         return DiscussionPost(
             id: id,
             title: title,

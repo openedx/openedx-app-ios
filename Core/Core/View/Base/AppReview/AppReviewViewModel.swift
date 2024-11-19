@@ -8,6 +8,7 @@
 import SwiftUI
 import StoreKit
 
+@MainActor
 public class AppReviewViewModel: ObservableObject {
     
     enum ReviewState {
@@ -86,7 +87,6 @@ public class AppReviewViewModel: ObservableObject {
         return false
       }
     
-    @MainActor
     func reviewAction() {
         withAnimation(Animation.easeIn(duration: 0.2)) {
             if rating <= 3 {
@@ -102,7 +102,6 @@ public class AppReviewViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func writeFeedbackToMail() {
         self.clients = allClients.filter({ ThirdPartyMailer.isMailClientAvailable($0) })
         if !clients.isEmpty {
@@ -114,7 +113,6 @@ public class AppReviewViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func openMailClient(_ with: ThirdPartyMailClient) {
         
         let osVersion = UIDevice.current.systemVersion

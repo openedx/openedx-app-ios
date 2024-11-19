@@ -6,7 +6,6 @@
 //
 
 import Foundation
-@preconcurrency import CoreData
 
 public protocol CoreDataHandlerProtocol: Sendable {
     func clear() async

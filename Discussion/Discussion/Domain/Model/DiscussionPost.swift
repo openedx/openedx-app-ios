@@ -45,7 +45,7 @@ public struct DiscussionPost: Equatable, Sendable {
     public var isFavorite: Bool
     public let type: PostType
     public let unreadCommentCount: Int
-    public let action: (@Sendable () -> Void)
+    public let action: (@MainActor @Sendable () -> Void)
     public let hasEndorsed: Bool
     public let voteCount: Int
     public let numPages: Int
@@ -60,7 +60,7 @@ public struct DiscussionPost: Equatable, Sendable {
         type: PostType,
         unreadCommentCount: Int,
         action: @escaping (
-            @Sendable () -> Void
+            @MainActor @Sendable () -> Void
         ),
         hasEndorsed: Bool,
         voteCount: Int,

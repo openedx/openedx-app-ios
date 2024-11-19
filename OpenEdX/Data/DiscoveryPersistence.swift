@@ -19,7 +19,6 @@ public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     }
 
     public func loadDiscovery() async throws -> [CourseItem] {
-//        guard let context = contextState.context else { throw InvalidCoreDataContextError() }
         return try await container.performBackgroundTask { context in
             let result = try? context.fetch(CDDiscoveryCourse.fetchRequest())
                 .map { CourseItem(name: $0.name ?? "",
@@ -46,7 +45,6 @@ public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     }
     
     public func saveDiscovery(items: [CourseItem]) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             for item in items {
                 let newItem = CDDiscoveryCourse(context: context)
@@ -73,7 +71,6 @@ public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     }
     
     public func loadCourseDetails(courseID: String) async throws -> CourseDetails {
-//        guard let context = contextState.context else { throw InvalidCoreDataContextError() }
             let request = CDCourseDetails.fetchRequest()
             request.predicate = NSPredicate(format: "courseID = %@", courseID)
         return try await container.performBackgroundTask { context in
@@ -97,7 +94,6 @@ public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     }
     
     public func saveCourseDetails(course: CourseDetails) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
         let newCourseDetails = CDCourseDetails(context: context)
             newCourseDetails.courseID = course.courseID

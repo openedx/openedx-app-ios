@@ -9,7 +9,7 @@ import SwiftUI
 @preconcurrency import Combine
 import ZipArchive
 import OEXFoundation
-@preconcurrency import Alamofire
+import Alamofire
 
 public enum DownloadState: String, Sendable {
     case waiting

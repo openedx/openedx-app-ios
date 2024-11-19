@@ -80,7 +80,6 @@ public final class CorePersistence: CorePersistenceProtocol {
         blocks: [CourseBlock],
         downloadQuality: DownloadQuality
     ) async {
-//        guard let context = contextState.context else { return }
         let userId = getUserId32() ?? 0
         await container.performBackgroundTask { context in
             for block in blocks {
@@ -151,7 +150,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
 
     public func addToDownloadQueue(tasks: [DownloadDataTask]) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
         for task in tasks {
                 let newDownloadData = CDDownloadData(context: context)
@@ -174,7 +172,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
 
     public func getDownloadDataTasks() async -> [DownloadDataTask] {
-//        guard let context = contextState.context else { return [] }
         let userId = getUserId32() ?? 0
         return await container.performBackgroundTask { context in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
@@ -193,7 +190,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     public func getDownloadDataTasksForCourse(
         _ courseId: String
     ) async -> [DownloadDataTask] {
-//        guard let context = contextState.context else { return [] }
         let uID = userId
         let int32Id = getUserId32()
         return await container.performBackgroundTask { context in
@@ -218,7 +214,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
 
     public func downloadDataTask(for blockId: String) async -> DownloadDataTask? {
-//        guard let context = contextState.context else { return nil }
         let dataId = downloadDataId(from: blockId)
         let userId = getUserId32()
         return await container.performBackgroundTask { context in
@@ -237,7 +232,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
 
     public func nextBlockForDownloading() async -> DownloadDataTask? {
-//        guard let context = contextState.context else { return nil }
         let userId = getUserId32()
         return await container.performBackgroundTask { context in
             let data = try? CorePersistenceHelper.fetchCDDownloadData(
@@ -260,7 +254,6 @@ public final class CorePersistence: CorePersistenceProtocol {
         state: DownloadState,
         resumeData: Data?
     ) async {
-//        guard let context = contextState.context else { return }
         let dataId = downloadDataId(from: id)
         let userId = getUserId32()
         return await container.performBackgroundTask { context in
@@ -287,7 +280,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
 
     public func deleteDownloadDataTask(id: String) async throws {
-//        guard let context = contextState.context else { throw InvalidCoreDataContextError() }
         let dataId = downloadDataId(from: id)
         let userId = getUserId32()
         await container.performBackgroundTask { context in
@@ -311,7 +303,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func saveDownloadDataTask(_ task: DownloadDataTask) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let newDownloadData = CDDownloadData(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -361,7 +352,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     
     // MARK: - Offline Progress
     public func saveOfflineProgress(progress: OfflineProgress) async {
-//        guard let context = contextState.context else { return }
         await container.performBackgroundTask { context in
             let progressForSaving = CDOfflineProgress(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -377,7 +367,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func loadProgress(for blockID: String) async -> OfflineProgress? {
-//        guard let context = contextState.context else { return nil }
         return await container.performBackgroundTask { context in
             let request = CDOfflineProgress.fetchRequest()
             request.predicate = NSPredicate(format: "blockID = %@", blockID)
@@ -393,7 +382,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func loadAllOfflineProgress() async -> [OfflineProgress] {
-//        guard let context = contextState.context else { return [] }
         return await container.performBackgroundTask { context in
             let result = try? context.fetch(CDOfflineProgress.fetchRequest())
                 .map {
@@ -409,7 +397,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func deleteProgress(for blockID: String) async {
-//        guard let context = contextState.context else { return }
         return await container.performBackgroundTask { context in
             let request = CDOfflineProgress.fetchRequest()
             request.predicate = NSPredicate(format: "blockID = %@", blockID)
@@ -426,7 +413,6 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func deleteAllProgress() async {
-//        guard let context = contextState.context else { return }
         return await container.performBackgroundTask { context in
             let request = CDOfflineProgress.fetchRequest()
             guard let allProgress = try? context.fetch(request) else { return }

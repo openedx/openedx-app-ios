@@ -408,7 +408,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         sequentialID: String,
         verticalID: String,
         blockID: String
-    ) {
+    ) async {
         guard let chapterIndex = courseStructure?
             .childs.firstIndex(where: { $0.id == chapterID }) else {
             return
@@ -439,10 +439,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             .childs[sequentialIndex]
             .childs[verticalIndex]
             .childs[blockIndex].completion = 1
-        courseStructure.map { structure in
-            Task {
-                courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: structure)
-            }
+        
+        if let courseStructure {
+            courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
         }
     }
     

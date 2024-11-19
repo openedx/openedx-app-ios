@@ -138,18 +138,16 @@ public final class PostsViewModel: ObservableObject {
                     thread.discussionPost(
                         useRelativeDates: storage.useRelativeDates,
                         action: { [weak self] in
-                            Task { @MainActor in
-                                guard let self,
-                                      let actualThread = self.threads.threads
-                                    .first(where: {$0.id  == thread.id }) else { return }
-                                
-                                self.router.showThread(
-                                    thread: actualThread,
-                                    postStateSubject: self.postStateSubject,
-                                    isBlackedOut: self.isBlackedOut ?? false,
-                                    animated: true
-                                )
-                            }
+                            guard let self,
+                                  let actualThread = self.threads.threads
+                                .first(where: {$0.id  == thread.id }) else { return }
+                            
+                            self.router.showThread(
+                                thread: actualThread,
+                                postStateSubject: self.postStateSubject,
+                                isBlackedOut: self.isBlackedOut ?? false,
+                                animated: true
+                            )
                         }
                     )
                 )
