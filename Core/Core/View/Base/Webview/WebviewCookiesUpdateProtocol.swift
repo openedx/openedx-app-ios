@@ -8,6 +8,8 @@
 import Foundation
 
 //sourcery: AutoMockable
+
+@MainActor
 public protocol WebviewCookiesUpdateProtocol: AnyObject {
     var authInteractor: AuthInteractorProtocol { get }
     var cookiesReady: Bool { get set }

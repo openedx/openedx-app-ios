@@ -9,7 +9,7 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
-public protocol DiscoveryInteractorProtocol {
+public protocol DiscoveryInteractorProtocol: Sendable {
     func discovery(page: Int) async throws -> [CourseItem]
     func discoveryOffline() async throws -> [CourseItem]
     func search(page: Int, searchTerm: String) async throws -> [CourseItem]
@@ -18,7 +18,7 @@ public protocol DiscoveryInteractorProtocol {
     func enrollToCourse(courseID: String) async throws -> Bool
 }
 
-public class DiscoveryInteractor: DiscoveryInteractorProtocol {
+public actor DiscoveryInteractor: DiscoveryInteractorProtocol {
     
     private let repository: DiscoveryRepositoryProtocol
     

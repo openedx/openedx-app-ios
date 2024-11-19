@@ -9,7 +9,7 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
-public protocol DiscussionInteractorProtocol {
+public protocol DiscussionInteractorProtocol: Sendable {
     func getCourseDiscussionInfo(courseID: String) async throws -> DiscussionInfo
     func getThreadsList(courseID: String,
                         type: ThreadType,
@@ -34,7 +34,7 @@ public protocol DiscussionInteractorProtocol {
     func readBody(threadID: String) async throws
 }
 
-public class DiscussionInteractor: DiscussionInteractorProtocol {
+public actor DiscussionInteractor: DiscussionInteractorProtocol {
     
     private let repository: DiscussionRepositoryProtocol
     

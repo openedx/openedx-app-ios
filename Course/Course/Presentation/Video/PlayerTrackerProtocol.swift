@@ -6,10 +6,12 @@
 //
 
 import AVKit
-import Combine
+@preconcurrency import Combine
+@preconcurrency import YouTubePlayerKit
 import Foundation
 
-public protocol PlayerTrackerProtocol {
+@MainActor
+public protocol PlayerTrackerProtocol: Sendable {
     associatedtype Player
     var player: Player? { get }
     var duration: Double { get }
@@ -25,7 +27,7 @@ public protocol PlayerTrackerProtocol {
 }
 
 #if DEBUG
-class PlayerTrackerProtocolMock: PlayerTrackerProtocol {
+class PlayerTrackerProtocolMock: PlayerTrackerProtocol, @unchecked Sendable {
     let player: AVPlayer?
     var duration: Double {
         1
@@ -78,7 +80,8 @@ class PlayerTrackerProtocolMock: PlayerTrackerProtocol {
 }
 #endif
 // MARK: Video
-public class PlayerTracker: PlayerTrackerProtocol {
+@MainActor
+public final class PlayerTracker: PlayerTrackerProtocol {
     public var isReady: Bool = false
     public let player: AVPlayer?
     public var duration: Double {
@@ -99,7 +102,7 @@ public class PlayerTracker: PlayerTrackerProtocol {
     }
 
     private var cancellations: [AnyCancellable] = []
-    private var timeObserver: Any?
+    private nonisolated(unsafe) var timeObserver: Any?
     private let timePublisher: CurrentValueSubject<Double, Never>
     private let ratePublisher: CurrentValueSubject<Float, Never>
     private let finishPublisher: PassthroughSubject<Void, Never>
@@ -125,9 +128,13 @@ public class PlayerTracker: PlayerTrackerProtocol {
     }
 
     deinit {
-        clear()
+        if let observer = timeObserver {
+            player?.removeTimeObserver(observer)
+        }
+        cancellations.removeAll()
     }
     
+    @MainActor
     private func observe() {
         let interval = CMTime(
             seconds: 0.1,
@@ -135,7 +142,9 @@ public class PlayerTracker: PlayerTrackerProtocol {
         )
         
         timeObserver = player?.addPeriodicTimeObserver(forInterval: interval, queue: .main) {[weak self] time in
-            self?.timePublisher.send(time.seconds)
+            MainActor.assumeIsolated {
+                self?.timePublisher.send(time.seconds)
+            }
         }
         
         player?.publisher(for: \.rate)
@@ -164,13 +173,6 @@ public class PlayerTracker: PlayerTrackerProtocol {
             .store(in: &cancellations)
     }
     
-    private func clear() {
-        if let observer = timeObserver {
-            player?.removeTimeObserver(observer)
-        }
-        cancellations.removeAll()
-    }
-    
     public func getTimePublisher() -> AnyPublisher<Double, Never> {
         timePublisher
             .receive(on: DispatchQueue.main)
@@ -197,8 +199,7 @@ public class PlayerTracker: PlayerTrackerProtocol {
 }
 
 // MARK: YouTube
-import YouTubePlayerKit
-public class YoutubePlayerTracker: PlayerTrackerProtocol {
+public class YoutubePlayerTracker: PlayerTrackerProtocol, @unchecked Sendable {
     public var isReady: Bool = false
     
     public let player: YouTubePlayer?
@@ -249,7 +250,7 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
     }
 
     deinit {
-        clear()
+        cancellations.removeAll()
     }
 
     private func observe() {
@@ -292,10 +293,6 @@ public class YoutubePlayerTracker: PlayerTrackerProtocol {
                 }
             }
             .store(in: &cancellations)
-    }
-    
-    private func clear() {
-        cancellations.removeAll()
     }
     
     public func getTimePublisher() -> AnyPublisher<Double, Never> {

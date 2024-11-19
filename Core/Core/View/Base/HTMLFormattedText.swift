@@ -68,7 +68,7 @@ public struct HTMLFormattedText: UIViewRepresentable {
         Coordinator(self)
     }
     
-    private func convertHTML(text: String) -> NSAttributedString? {
+    private nonisolated(unsafe) func convertHTML(text: String) -> NSAttributedString? {
         guard let data = text.data(using: .utf8) else { return nil }
         
         if let attributedString = try? NSAttributedString(

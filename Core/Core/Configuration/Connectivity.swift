@@ -9,18 +9,20 @@ import Alamofire
 import Combine
 import Foundation
 
-public enum InternetState {
+public enum InternetState: Sendable {
     case reachable
     case notReachable
 }
 
 //sourcery: AutoMockable
-public protocol ConnectivityProtocol {
+@MainActor
+public protocol ConnectivityProtocol: Sendable {
     var isInternetAvaliable: Bool { get }
     var isMobileData: Bool { get }
     var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
 }
 
+@MainActor
 public class Connectivity: ConnectivityProtocol {
     let networkManager = NetworkReachabilityManager()
     

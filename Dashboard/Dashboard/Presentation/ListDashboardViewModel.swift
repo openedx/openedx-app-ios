@@ -10,6 +10,7 @@ import Core
 import SwiftUI
 import Combine
 
+@MainActor
 public class ListDashboardViewModel: ObservableObject {
     
     public var nextPage = 1

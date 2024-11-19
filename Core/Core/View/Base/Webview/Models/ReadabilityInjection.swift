@@ -7,7 +7,7 @@
 
 import WebKit
 
-public struct ReadabilityInjection: WebViewScriptInjectionProtocol, CSSInjectionProtocol {
+public struct ReadabilityInjection: @preconcurrency WebViewScriptInjectionProtocol, CSSInjectionProtocol {
     public var id: String = "ReadabilityInjection"
     public var script: String {
         let uniqueId = UUID().uuidString.replacingOccurrences(of: "-", with: "")
@@ -27,6 +27,8 @@ public struct ReadabilityInjection: WebViewScriptInjectionProtocol, CSSInjection
             });
         """
     }
+    
+    @MainActor
     public var messages: [WebviewMessage]? {
         let message = WebviewMessage(name: "readability") { _, webview in
             guard let webview = webview else { return }

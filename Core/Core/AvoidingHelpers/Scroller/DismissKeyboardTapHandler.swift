@@ -5,6 +5,8 @@ import UIKit
 /**
  Applies keyboard dismissal tap to the whole view
  */
+
+@MainActor
 final class DismissKeyboardTapHandler: NSObject {
     var isEnabled: Bool {
         didSet {

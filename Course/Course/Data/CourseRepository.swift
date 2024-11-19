@@ -9,7 +9,7 @@ import Foundation
 import Core
 import OEXFoundation
 
-public protocol CourseRepositoryProtocol {
+public protocol CourseRepositoryProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func blockCompletionRequest(courseID: String, blockID: String) async throws
@@ -23,7 +23,7 @@ public protocol CourseRepositoryProtocol {
     func shiftDueDates(courseID: String) async throws
 }
 
-public class CourseRepository: CourseRepositoryProtocol {
+public actor CourseRepository: CourseRepositoryProtocol {
     
     private let api: API
     private let coreStorage: CoreStorage
@@ -46,7 +46,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         let course = try await api.requestData(
             CourseEndpoint.getCourseBlocks(courseID: courseID, userName: coreStorage.user?.username ?? "")
         ).mapResponse(DataLayer.CourseStructure.self)
-        persistence.saveCourseStructure(structure: course)
+        await persistence.saveCourseStructure(structure: course)
         let parsedStructure = parseCourseStructure(course: course)
         return parsedStructure
     }
@@ -94,7 +94,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                 selectedLanguage: selectedLanguage
             ))
             let subtitles = String(data: result, encoding: .utf8) ?? ""
-            persistence.saveSubtitles(url: url + selectedLanguage, subtitlesString: subtitles)
+            await persistence.saveSubtitles(url: url + selectedLanguage, subtitlesString: subtitles)
             return subtitles
         }
     }
@@ -103,7 +103,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         let courseDates = try await api.requestData(
             CourseEndpoint.getCourseDates(courseID: courseID)
         ).mapResponse(DataLayer.CourseDates.self).domain(useRelativeDates: coreStorage.useRelativeDates)
-        persistence.saveCourseDates(courseID: courseID, courseDates: courseDates)
+        await persistence.saveCourseDates(courseID: courseID, courseDates: courseDates)
         return courseDates
     }
     
@@ -115,7 +115,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
-        return try persistence.loadCourseDates(courseID: courseID)
+        return try await persistence.loadCourseDates(courseID: courseID)
     }
     
     private func parseCourseStructure(course: DataLayer.CourseStructure) -> CourseStructure {
@@ -272,6 +272,7 @@ public class CourseRepository: CourseRepositoryProtocol {
 // Mark - For testing and SwiftUI preview
 // swiftlint:disable all
 #if DEBUG
+@MainActor
 class CourseRepositoryMock: CourseRepositoryProtocol {
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
         throw NoCachedDataError()

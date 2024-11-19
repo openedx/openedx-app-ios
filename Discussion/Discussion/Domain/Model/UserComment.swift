@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserComment: Hashable {
+public struct UserComment: Hashable, Sendable {
     public let authorName: String
     public let authorAvatar: String
     public let postDate: Date

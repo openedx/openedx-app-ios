@@ -16,7 +16,8 @@ import OEXFoundation
 
 // MARK: - DatesAndCalendarViewModel
 
-public class DatesAndCalendarViewModel: ObservableObject {
+@MainActor
+public final class DatesAndCalendarViewModel: ObservableObject {
     @Published var showCalendaAccessDenied: Bool = false
     @Published var showDisableCalendarSync: Bool = false
     @Published var showError: Bool = false
@@ -144,8 +145,9 @@ public class DatesAndCalendarViewModel: ObservableObject {
         updateCoursesCount()
     }
     
-    func clearAllData() {
-        calendarManager.clearAllData(removeCalendar: true)
+    @MainActor
+    func clearAllData() async {
+        await calendarManager.clearAllData(removeCalendar: true)
         router.back(animated: false)
         courseCalendarSync = true
         showDisableCalendarSync = false
@@ -207,7 +209,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         do {
             let fetchedCourses = try await interactor.enrollmentsStatus()
             self.coursesForSync = fetchedCourses
-            let courseCalendarStates = persistence.getAllCourseStates()
+            let courseCalendarStates = await persistence.getAllCourseStates()
             if profileStorage.firstCalendarUpdate == false && courseCalendarStates.isEmpty {
                 await syncAllActiveCourses()
             } else {
@@ -229,7 +231,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
                     return updatedCourse
                 }
                 
-                for course in coursesForSync.filter { $0.synced } {
+                for course in coursesForSync.filter{ $0.synced } {
                     do {
                         let courseDates = try await interactor.getCourseDates(courseID: course.courseID)
                         await syncSelectedCourse(
@@ -296,7 +298,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     func deleteOldCalendarIfNeeded() async {
         guard let calSettings = profileStorage.calendarSettings else { return }
-        let courseCalendarStates = persistence.getAllCourseStates()
+        let courseCalendarStates = await persistence.getAllCourseStates()
         let courseCountChanges = courseCalendarStates.count != coursesForSync.count
         let nameChanged = oldCalendarName != calendarName
         let colorChanged = colorSelection != colors.first(where: { $0.colorString == calSettings.colorSelection })
@@ -306,7 +308,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         
         calendarManager.removeOldCalendar()
         saveCalendarOptions()
-        persistence.removeAllCourseCalendarEvents()
+        await persistence.removeAllCourseCalendarEvents()
         await fetchCourses()
     }
     
@@ -316,9 +318,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         courseDates: CourseDates,
         active: Bool
     ) async {
-        await MainActor.run {
-            self.assignmentStatus = .loading
-        }
+            assignmentStatus = .loading
         
         await calendarManager.removeOutdatedEvents(courseID: courseID)
         guard active else {
@@ -329,22 +329,19 @@ public class DatesAndCalendarViewModel: ObservableObject {
         }
 
         await calendarManager.syncCourse(courseID: courseID, courseName: courseName, dates: courseDates)
-        if let index = self.coursesForSync.firstIndex(where: { $0.courseID == courseID && $0.recentlyActive }) {
-            await MainActor.run {
+        Task {
+            if let index = self.coursesForSync.firstIndex(where: { $0.courseID == courseID && $0.recentlyActive }) {
                 self.coursesForSync[index].synced = true
             }
-        }
-        await MainActor.run {
             self.assignmentStatus = .synced
         }
     }
 
-    @MainActor
     func removeDeselectedCoursesFromCalendar() async {
         for course in coursesForDeleting {
             await calendarManager.removeOutdatedEvents(courseID: course.courseID)
-            persistence.removeCourseState(courseID: course.courseID)
-            persistence.removeCourseCalendarEvents(for: course.courseID)
+            await persistence.removeCourseState(courseID: course.courseID)
+            await persistence.removeCourseCalendarEvents(for: course.courseID)
             if let index = self.coursesForSync.firstIndex(where: { $0.courseID == course.courseID }) {
                 self.coursesForSync[index].synced = false
             }
@@ -427,6 +424,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
             }
     }
     
+    @MainActor
     func openAppSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)

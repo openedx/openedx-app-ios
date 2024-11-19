@@ -9,7 +9,8 @@ import Combine
 import Core
 import SwiftUI
 
-public class ProfileViewModel: ObservableObject {
+@MainActor
+public final class ProfileViewModel: ObservableObject {
 
     @Published public var userModel: UserProfile?
     @Published public var updatedAvatar: UIImage?
@@ -47,7 +48,7 @@ public class ProfileViewModel: ObservableObject {
     @MainActor
     public func getMyProfile(withProgress: Bool = true) async {
         do {
-            let userModel = interactor.getMyProfileOffline()
+            let userModel = await interactor.getMyProfileOffline()
             if userModel == nil && connectivity.isInternetAvaliable {
                 isShowProgress = withProgress
             } else {

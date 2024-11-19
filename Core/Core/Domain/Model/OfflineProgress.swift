@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct OfflineProgress {
+public struct OfflineProgress: Sendable {
     public let blockID: String
     public let data: String
     public let courseID: String

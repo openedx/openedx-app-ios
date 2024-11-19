@@ -13,6 +13,7 @@ import XCTest
 import Combine
 import SwiftUI
 
+@MainActor
 final class AllCoursesViewModelTests: XCTestCase {
     
     var interactor: DashboardInteractorProtocolMock!

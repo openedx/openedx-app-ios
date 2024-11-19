@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Pagination {
+public struct Pagination: Sendable {
     public let next: String?
     public let previous: String?
     public let count: Int

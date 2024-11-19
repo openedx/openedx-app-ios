@@ -11,6 +11,7 @@ import SwiftyMocky
 @testable import Core
 @testable import Course
 
+@MainActor
 final class CourseDateViewModelTests: XCTestCase {
     func testGetCourseDatesSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()

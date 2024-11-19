@@ -7,17 +7,22 @@
 
 import SwiftUI
 
-public protocol PlayerServiceProtocol {
+@MainActor
+public protocol PlayerServiceProtocol: Sendable {
     var router: CourseRouter { get }
 
     init(courseID: String, blockID: String, interactor: CourseInteractorProtocol, router: CourseRouter)
     func blockCompletionRequest() async throws
     func presentAppReview()
-    func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View)
+    func presentView(
+        transitionStyle: UIModalTransitionStyle,
+        animated: Bool,
+        content: @MainActor () -> any View
+    )
     func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle]
 }
 
-public class PlayerService: PlayerServiceProtocol {
+public final class PlayerService: PlayerServiceProtocol {
     private let courseID: String
     private let blockID: String
     private let interactor: CourseInteractorProtocol
@@ -35,8 +40,8 @@ public class PlayerService: PlayerServiceProtocol {
         self.router = router
     }
     
-    @MainActor
     public func blockCompletionRequest() async throws {
+        NotificationCenter.default.post(name: .onblockCompletionRequested, object: courseID)
         try await interactor.blockCompletionRequest(courseID: courseID, blockID: blockID)
         NotificationCenter.default.post(
             name: NSNotification.blockCompletion,
@@ -44,13 +49,15 @@ public class PlayerService: PlayerServiceProtocol {
         )
     }
 
-    @MainActor
     public func presentAppReview() {
         router.presentAppReview()
     }
     
-    @MainActor
-    public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: () -> any View) {
+    public func presentView(
+        transitionStyle: UIModalTransitionStyle,
+        animated: Bool,
+        content: @MainActor () -> any View
+    ) {
         router.presentView(transitionStyle: transitionStyle, animated: animated, content: content)
     }
 

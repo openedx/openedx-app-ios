@@ -7,14 +7,14 @@
 
 import Foundation
 
-public enum ThreadType {
+public enum ThreadType: Sendable {
     case allPosts
     case followingPosts
     case nonCourseTopics
     case courseTopics(topicID: String)
 }
 
-public enum ThreadsFilter: Identifiable {
+public enum ThreadsFilter: Identifiable, Sendable {
     public var id: String {
         localizedValue
     }
@@ -35,7 +35,7 @@ public enum ThreadsFilter: Identifiable {
     }
 }
 
-public enum SortType: Identifiable {
+public enum SortType: Identifiable, Sendable {
     public var id: String {
         localizedValue
     }

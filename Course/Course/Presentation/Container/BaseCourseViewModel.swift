@@ -10,6 +10,7 @@ import SwiftUI
 import Core
 import Combine
 
+@MainActor
 open class BaseCourseViewModel: ObservableObject {
     
     let manager: DownloadManagerProtocol

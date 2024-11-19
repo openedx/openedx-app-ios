@@ -8,7 +8,7 @@
 import Foundation
 import OEXFoundation
 
-public protocol AuthRepositoryProtocol {
+public protocol AuthRepositoryProtocol: Sendable {
     func login(username: String, password: String) async throws -> User
     func login(externalToken: String, backend: String) async throws -> User
     func login(ssoToken: String) async throws -> User
@@ -19,7 +19,7 @@ public protocol AuthRepositoryProtocol {
     func resetPassword(email: String) async throws -> ResetPassword
 }
 
-public class AuthRepository: AuthRepositoryProtocol {
+public actor AuthRepository: AuthRepositoryProtocol {
     
     private let api: API
     private var appStorage: CoreStorage
@@ -83,7 +83,7 @@ public class AuthRepository: AuthRepositoryProtocol {
     }
 
     public func login(ssoToken: String) async throws -> User {
-        if appStorage.accessToken == nil  {
+        if appStorage.accessToken == nil {
             appStorage.accessToken = ssoToken
         }
         
@@ -140,7 +140,7 @@ public class AuthRepository: AuthRepositoryProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-class AuthRepositoryMock: AuthRepositoryProtocol {
+final class AuthRepositoryMock: AuthRepositoryProtocol {
     func login(username: String, password: String) async throws -> User {
         User(id: 1, username: "User", email: "email@gmail.com", name: "User Name", userAvatar: "")
     }

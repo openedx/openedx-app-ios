@@ -8,7 +8,7 @@
 import SwiftUI
 import Theme
 
-public enum DownloadViewState {
+public enum DownloadViewState: Sendable {
     case available
     case downloading
     case finished

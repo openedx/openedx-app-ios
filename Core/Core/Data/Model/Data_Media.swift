@@ -10,7 +10,7 @@ import Foundation
 public extension DataLayer {
     
     // MARK: - CourseMedia
-    struct CourseMedia: Decodable {
+    struct CourseMedia: Decodable, Sendable {
         public let image: DataLayer.Image
         
         public init(image: DataLayer.Image) {
@@ -61,7 +61,7 @@ public extension DataLayer {
 
 public extension DataLayer {
     // MARK: - Image
-    struct Image: Codable {
+    struct Image: Codable, Sendable {
         public let raw: String
         public let small: String
         public let large: String

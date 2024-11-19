@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DiscussionNewThread {
+public struct DiscussionNewThread: Sendable {
     public let courseID: String
     public let topicID: String
     public let type: PostType

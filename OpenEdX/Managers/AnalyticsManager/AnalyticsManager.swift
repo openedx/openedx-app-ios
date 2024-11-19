@@ -16,7 +16,7 @@ import Discussion
 import WhatsNew
 import Swinject
 import OEXFoundation
-import OEXFirebaseAnalytics
+//import OEXFirebaseAnalytics
 
 // swiftlint:disable type_body_length file_length
 class AnalyticsManager: AuthorizationAnalytics,

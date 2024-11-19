@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class DiscoveryViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {

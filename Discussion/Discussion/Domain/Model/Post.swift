@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Post {
+public struct Post: Sendable {
     public let authorName: String
     public var authorAvatar: String
     public let postDate: Date

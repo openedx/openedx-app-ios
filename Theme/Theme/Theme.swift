@@ -8,74 +8,74 @@
 import Foundation
 import SwiftUI
 
-private var fontsParser = FontParser()
+private let fontsParser = FontParser()
 
-public struct Theme {
+public struct Theme: Sendable {
     
     // swiftlint:disable line_length
-    public struct Colors {
-        public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
-        public private(set) static var accentXColor = ThemeAssets.accentXColor.swiftUIColor
-        public private(set) static var accentButtonColor = ThemeAssets.accentButtonColor.swiftUIColor
-        public private(set) static var alert = ThemeAssets.alert.swiftUIColor
-        public private(set) static var avatarStroke = ThemeAssets.avatarStroke.swiftUIColor
-        public private(set) static var background = ThemeAssets.background.swiftUIColor
-        public private(set) static var loginBackground = ThemeAssets.loginBackground.swiftUIColor
-        public private(set) static var backgroundStroke = ThemeAssets.backgroundStroke.swiftUIColor
-        public private(set) static var cardViewBackground = ThemeAssets.cardViewBackground.swiftUIColor
-        public private(set) static var cardViewStroke = ThemeAssets.cardViewStroke.swiftUIColor
-        public private(set) static var certificateForeground = ThemeAssets.certificateForeground.swiftUIColor
-        public private(set) static var commentCellBackground = ThemeAssets.commentCellBackground.swiftUIColor
-        public private(set) static var nextWeekTimelineColor = ThemeAssets.nextWeekTimelineColor.swiftUIColor
-        public private(set) static var pastDueTimelineColor = ThemeAssets.pastDueTimelineColor.swiftUIColor
-        public private(set) static var thisWeekTimelineColor = ThemeAssets.thisWeekTimelineColor.swiftUIColor
-        public private(set) static var todayTimelineColor = ThemeAssets.todayTimelineColor.swiftUIColor
-        public private(set) static var upcomingTimelineColor = ThemeAssets.upcomingTimelineColor.swiftUIColor
-        public private(set) static var shadowColor = ThemeAssets.shadowColor.swiftUIColor
-        public private(set) static var snackbarErrorColor = ThemeAssets.snackbarErrorColor.swiftUIColor
-        public private(set) static var snackbarWarningColor = ThemeAssets.snackbarWarningColor.swiftUIColor
-        public private(set) static var snackbarInfoColor = ThemeAssets.snackbarInfoColor.swiftUIColor
-        public private(set) static var snackbarTextColor = ThemeAssets.snackbarTextColor.swiftUIColor
-        public private(set) static var styledButtonText = ThemeAssets.styledButtonText.swiftUIColor
-        public private(set) static var disabledButton = ThemeAssets.disabledButton.swiftUIColor
-        public private(set) static var disabledButtonText = ThemeAssets.disabledButtonText.swiftUIColor
-        public private(set) static var textPrimary = ThemeAssets.textPrimary.swiftUIColor
-        public private(set) static var textSecondary = ThemeAssets.textSecondary.swiftUIColor
-        public private(set) static var textSecondaryLight = ThemeAssets.textSecondaryLight.swiftUIColor
-        public private(set) static var textInputBackground = ThemeAssets.textInputBackground.swiftUIColor
-        public private(set) static var textInputStroke = ThemeAssets.textInputStroke.swiftUIColor
-        public private(set) static var textInputUnfocusedBackground = ThemeAssets.textInputUnfocusedBackground.swiftUIColor
-        public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
-        public private(set) static var warning = ThemeAssets.warning.swiftUIColor
-        public private(set) static var warningText = ThemeAssets.warningText.swiftUIColor
-        public private(set) static var white = ThemeAssets.white.swiftUIColor
-        public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
-        public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor
-        public private(set) static var progressSkip = ThemeAssets.progressSkip.swiftUIColor
-        public private(set) static var progressSelectedAndDone = ThemeAssets.selectedAndDone.swiftUIColor
-        public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
-        public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
-        public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
-        public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
-        public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
-        public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
-        public private(set) static var secondaryButtonBGColor = ThemeAssets.secondaryButtonBGColor.swiftUIColor
-        public private(set) static var success = ThemeAssets.success.swiftUIColor
-        public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
-        public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
-        public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
-        public private(set) static var textInputTextColor = ThemeAssets.textInputTextColor.swiftUIColor
-        public private(set) static var textInputPlaceholderColor = ThemeAssets.textInputPlaceholderColor.swiftUIColor
-        public private(set) static var infoColor = ThemeAssets.infoColor.swiftUIColor
-        public private(set) static var irreversibleAlert = ThemeAssets.irreversibleAlert.swiftUIColor
-        public private(set) static var slidingTextColor = ThemeAssets.slidingTextColor.swiftUIColor
-        public private(set) static var slidingSelectedTextColor = ThemeAssets.slidingSelectedTextColor.swiftUIColor
-        public private(set) static var slidingStrokeColor = ThemeAssets.slidingStrokeColor.swiftUIColor
-        public private(set) static var primaryHeaderColor = ThemeAssets.primaryHeaderColor.swiftUIColor
-        public private(set) static var secondaryHeaderColor = ThemeAssets.secondaryHeaderColor.swiftUIColor
-        public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
-        public private(set) static var shade = ThemeAssets.shade.swiftUIColor
-        public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
+    public struct Colors: Sendable {
+        nonisolated(unsafe) public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var accentXColor = ThemeAssets.accentXColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var accentButtonColor = ThemeAssets.accentButtonColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var alert = ThemeAssets.alert.swiftUIColor
+        nonisolated(unsafe) public private(set) static var avatarStroke = ThemeAssets.avatarStroke.swiftUIColor
+        nonisolated(unsafe) public private(set) static var background = ThemeAssets.background.swiftUIColor
+        nonisolated(unsafe) public private(set) static var loginBackground = ThemeAssets.loginBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var backgroundStroke = ThemeAssets.backgroundStroke.swiftUIColor
+        nonisolated(unsafe) public private(set) static var cardViewBackground = ThemeAssets.cardViewBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var cardViewStroke = ThemeAssets.cardViewStroke.swiftUIColor
+        nonisolated(unsafe) public private(set) static var certificateForeground = ThemeAssets.certificateForeground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var commentCellBackground = ThemeAssets.commentCellBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var nextWeekTimelineColor = ThemeAssets.nextWeekTimelineColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var pastDueTimelineColor = ThemeAssets.pastDueTimelineColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var thisWeekTimelineColor = ThemeAssets.thisWeekTimelineColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var todayTimelineColor = ThemeAssets.todayTimelineColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var upcomingTimelineColor = ThemeAssets.upcomingTimelineColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var shadowColor = ThemeAssets.shadowColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var snackbarErrorColor = ThemeAssets.snackbarErrorColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var snackbarWarningColor = ThemeAssets.snackbarWarningColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var snackbarInfoColor = ThemeAssets.snackbarInfoColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var snackbarTextColor = ThemeAssets.snackbarTextColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var styledButtonText = ThemeAssets.styledButtonText.swiftUIColor
+        nonisolated(unsafe) public private(set) static var disabledButton = ThemeAssets.disabledButton.swiftUIColor
+        nonisolated(unsafe) public private(set) static var disabledButtonText = ThemeAssets.disabledButtonText.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textPrimary = ThemeAssets.textPrimary.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textSecondary = ThemeAssets.textSecondary.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textSecondaryLight = ThemeAssets.textSecondaryLight.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textInputBackground = ThemeAssets.textInputBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textInputStroke = ThemeAssets.textInputStroke.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textInputUnfocusedBackground = ThemeAssets.textInputUnfocusedBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textInputUnfocusedStroke = ThemeAssets.textInputUnfocusedStroke.swiftUIColor
+        nonisolated(unsafe) public private(set) static var warning = ThemeAssets.warning.swiftUIColor
+        nonisolated(unsafe) public private(set) static var warningText = ThemeAssets.warningText.swiftUIColor
+        nonisolated(unsafe) public private(set) static var white = ThemeAssets.white.swiftUIColor
+        nonisolated(unsafe) public private(set) static var onProgress = ThemeAssets.onProgress.swiftUIColor
+        nonisolated(unsafe) public private(set) static var progressDone = ThemeAssets.progressDone.swiftUIColor
+        nonisolated(unsafe) public private(set) static var progressSkip = ThemeAssets.progressSkip.swiftUIColor
+        nonisolated(unsafe) public private(set) static var progressSelectedAndDone = ThemeAssets.selectedAndDone.swiftUIColor
+        nonisolated(unsafe) public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.swiftUIColor
+        nonisolated(unsafe) public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
+        nonisolated(unsafe) public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var secondaryButtonBGColor = ThemeAssets.secondaryButtonBGColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var success = ThemeAssets.success.swiftUIColor
+        nonisolated(unsafe) public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textInputTextColor = ThemeAssets.textInputTextColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textInputPlaceholderColor = ThemeAssets.textInputPlaceholderColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var infoColor = ThemeAssets.infoColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var irreversibleAlert = ThemeAssets.irreversibleAlert.swiftUIColor
+        nonisolated(unsafe) public private(set) static var slidingTextColor = ThemeAssets.slidingTextColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var slidingSelectedTextColor = ThemeAssets.slidingSelectedTextColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var slidingStrokeColor = ThemeAssets.slidingStrokeColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryHeaderColor = ThemeAssets.primaryHeaderColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var secondaryHeaderColor = ThemeAssets.secondaryHeaderColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
+        nonisolated(unsafe) public private(set) static var shade = ThemeAssets.shade.swiftUIColor
+        nonisolated(unsafe) public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -175,10 +175,10 @@ public struct Theme {
     
     // Use this structure where the computed Color.uiColor() extension is not appropriate.
     public struct UIColors {
-        public private(set) static var textPrimary = ThemeAssets.textPrimary.color
-        public private(set) static var accentColor = ThemeAssets.accentColor.color
-        public private(set) static var accentXColor = ThemeAssets.accentXColor.color
-        public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.color
+        nonisolated(unsafe) public private(set) static var textPrimary = ThemeAssets.textPrimary.color
+        nonisolated(unsafe) public private(set) static var accentColor = ThemeAssets.accentColor.color
+        nonisolated(unsafe) public private(set) static var accentXColor = ThemeAssets.accentXColor.color
+        nonisolated(unsafe) public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.color
 
         public static func update(
             textPrimary: UIColor = ThemeAssets.textPrimary.color,
@@ -193,7 +193,7 @@ public struct Theme {
         }
     }
 
-    public struct Fonts {
+    public struct Fonts: Sendable {
         
         public static let displayLarge: Font = .custom(fontsParser.fontName(for: .regular), size: 57)
         public static let displayMedium: Font = .custom(fontsParser.fontName(for: .regular), size: 45)
@@ -217,7 +217,7 @@ public struct Theme {
         public static let labelSmall: Font = .custom(fontsParser.fontName(for: .regular), size: 10)
     }
     
-    public struct UIFonts {
+    public struct UIFonts: Sendable {
         public static func labelSmall() -> UIFont {
             guard let font = UIFont(name: fontsParser.fontName(for: .regular), size: 10) else {
                 assert(false, "Could not find the required font")
@@ -246,8 +246,8 @@ public struct Theme {
         }
     }
     
-    public struct Shapes {
-        public static var isRoundedCorners: Bool = true
+    public struct Shapes: Sendable {
+        nonisolated(unsafe) public static var isRoundedCorners: Bool = true
         public static let screenBackgroundRadius = 24.0
         public static let cardImageRadius = 10.0
         public static let textInputShape =  {

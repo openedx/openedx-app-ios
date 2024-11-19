@@ -8,8 +8,8 @@
 import UIKit
 import Core
 import OEXFoundation
-import OEXFirebaseAnalytics
-import Swinject
+//import OEXFirebaseAnalytics
+@preconcurrency import Swinject
 import KeychainSwift
 import Discovery
 import Dashboard
@@ -39,7 +39,7 @@ class AppAssembly: Assembly {
             self.pluginManager
         }.inObjectScope(.container)
         
-        container.register(Router.self) { r in
+        container.register(Router.self) { @MainActor r in
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
         
@@ -83,7 +83,7 @@ class AppAssembly: Assembly {
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
-        container.register(ConnectivityProtocol.self) { _ in
+        container.register(ConnectivityProtocol.self) { @MainActor _ in
             Connectivity()
         }
         
@@ -96,14 +96,16 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(CorePersistenceProtocol.self) { r in
-            CorePersistence(context: r.resolve(DatabaseManager.self)!.context)
+            CorePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
         }.inObjectScope(.container)
         
-        container.register(DownloadManagerProtocol.self, factory: { r in
-            DownloadManager(persistence: r.resolve(CorePersistenceProtocol.self)!,
-                            appStorage: r.resolve(CoreStorage.self)!,
-                            connectivity: r.resolve(ConnectivityProtocol.self)!)
-        }).inObjectScope(.container)
+        container.register(DownloadManagerProtocol.self) { @MainActor r in
+            DownloadManager(
+                persistence: r.resolve(CorePersistenceProtocol.self)!,
+                appStorage: r.resolve(CoreStorage.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }.inObjectScope(.container)
         
         container.register(AuthorizationRouter.self) { r in
             r.resolve(Router.self)!
@@ -184,7 +186,7 @@ class AppAssembly: Assembly {
             Validator()
         }.inObjectScope(.container)
         
-        container.register(PushNotificationsManager.self) { r in
+        container.register(PushNotificationsManager.self) { @MainActor r in
             PushNotificationsManager(
                 deepLinkManager: r.resolve(DeepLinkManager.self)!,
                 storage: r.resolve(CoreStorage.self)!,
@@ -193,7 +195,7 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(CalendarManagerProtocol.self) { r in
+        container.register(CalendarManagerProtocol.self) { @MainActor r in
             CalendarManager(
                 persistence: r.resolve(ProfilePersistenceProtocol.self)!,
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
@@ -202,7 +204,7 @@ class AppAssembly: Assembly {
         }
         .inObjectScope(.container)
 
-        container.register(DeepLinkManager.self) { r in
+        container.register(DeepLinkManager.self) { @MainActor r in
             DeepLinkManager(
                 config: r.resolve(ConfigProtocol.self)!,
                 router: r.resolve(Router.self)!,
@@ -214,11 +216,7 @@ class AppAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(FirebaseAnalyticsService.self) { _ in
-            FirebaseAnalyticsService()
-        }.inObjectScope(.container)
-        
-        container.register(PipManagerProtocol.self) { r in
+        container.register(PipManagerProtocol.self) { @MainActor r in
             let config = r.resolve(ConfigProtocol.self)!
             return PipManager(
                 router: r.resolve(Router.self)!,

@@ -16,7 +16,7 @@ public extension Date {
         dateFormatter = DateFormatter()
         dateFormatter?.locale = .current
         
-        date = formats.compactMap { format in
+        date = formats.compactMap { format -> Date? in
             dateFormatter?.dateFormat = format
             guard let formattedDate = dateFormatter?.date(from: iso8601) else { return nil }
             let components = calender.dateComponents(

@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+@MainActor
 public class StartupViewModel: ObservableObject {
     let router: AuthorizationRouter
     let analytics: CoreAnalytics

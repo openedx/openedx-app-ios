@@ -14,7 +14,8 @@ import FacebookLogin
 import GoogleSignIn
 import MSAL
 
-public class SignUpViewModel: ObservableObject {
+@MainActor
+public final class SignUpViewModel: ObservableObject {
     
     @Published var isShowProgress = false
     @Published var scrollTo: Int?

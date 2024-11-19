@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CourseDetails {
+public struct CourseDetails: Sendable {
     public let courseID: String
     public let org: String
     public let courseTitle: String

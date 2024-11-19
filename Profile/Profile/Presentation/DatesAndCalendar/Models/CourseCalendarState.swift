@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CourseCalendarState {
+public struct CourseCalendarState: Sendable {
     public let courseID: String
     public var checksum: String
     

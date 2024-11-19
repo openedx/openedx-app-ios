@@ -144,8 +144,8 @@ public enum CoreAssets {
 
 // MARK: - Implementation Details
 
-public final class ColorAsset {
-  public fileprivate(set) var name: String
+public final class ColorAsset: Sendable {
+  public let name: String
 
   #if os(macOS)
   public typealias Color = NSColor
@@ -154,12 +154,7 @@ public final class ColorAsset {
   #endif
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  public private(set) lazy var color: Color = {
-    guard let color = Color(asset: self) else {
-      fatalError("Unable to load color asset named \(name).")
-    }
-    return color
-  }()
+  public let color: Color
 
   #if os(iOS) || os(tvOS)
   @available(iOS 11.0, tvOS 11.0, *)
@@ -174,26 +169,30 @@ public final class ColorAsset {
 
   #if canImport(SwiftUI)
   @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-  public private(set) lazy var swiftUIColor: SwiftUI.Color = {
-    SwiftUI.Color(asset: self)
-  }()
+  public var swiftUIColor: SwiftUI.Color {
+    SwiftUI.Color(uiColor: color)
+  }
   #endif
 
   fileprivate init(name: String) {
     self.name = name
+    guard let color = Color(assetName: name) else {
+      fatalError("Unable to load color asset named \(name).")
+    }
+    self.color = color
   }
 }
 
 public extension ColorAsset.Color {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  convenience init?(asset: ColorAsset) {
+  convenience init?(assetName: String) {
     let bundle = BundleToken.bundle
     #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    self.init(named: assetName, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
-    self.init(named: NSColor.Name(asset.name), bundle: bundle)
+    self.init(named: NSColor.Name(assetName), bundle: bundle)
     #elseif os(watchOS)
-    self.init(named: asset.name)
+    self.init(named: assetName)
     #endif
   }
 }
@@ -201,15 +200,15 @@ public extension ColorAsset.Color {
 #if canImport(SwiftUI)
 @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
 public extension SwiftUI.Color {
-  init(asset: ColorAsset) {
+  init(assetName: String) {
     let bundle = BundleToken.bundle
-    self.init(asset.name, bundle: bundle)
+    self.init(assetName, bundle: bundle)
   }
 }
 #endif
 
-public struct ImageAsset {
-  public fileprivate(set) var name: String
+public struct ImageAsset: Sendable {
+  public let name: String
 
   #if os(macOS)
   public typealias Image = NSImage

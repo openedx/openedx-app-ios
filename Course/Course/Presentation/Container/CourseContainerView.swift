@@ -132,7 +132,6 @@ public struct CourseContainerView: View {
                 }
             }
         }
-        
         switch courseDatesViewModel.eventState {
         case .removedCalendar:
             showDatesSuccessView(
@@ -152,7 +151,7 @@ public struct CourseContainerView: View {
     private func showDatesSuccessView(title: String, message: String) -> some View {
         return DatesSuccessView(
             title: title,
-            message: message, 
+            message: message,
             selectedTab: .dates
         ) {
             courseDatesViewModel.resetEventState()

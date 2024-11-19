@@ -7,6 +7,7 @@
 
 import Foundation
 
+@MainActor
 public protocol PlayerControllerProtocol {
     func play()
     func pause()

@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 //sourcery: AutoMockable
-public protocol BaseRouter {
+@MainActor
+public protocol BaseRouter: Sendable {
     
     func backToRoot(animated: Bool)
     

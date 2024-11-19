@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ProfileType {
+public enum ProfileType: Sendable {
     case full
     case limited
     

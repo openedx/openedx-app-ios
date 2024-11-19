@@ -10,7 +10,8 @@ import SwiftUI
 import Combine
 import Core
 
-public class PostsViewModel: ObservableObject {
+@MainActor
+public final class PostsViewModel: ObservableObject {
     
     public var nextPage = 1
     public var totalPages = 1
@@ -136,18 +137,19 @@ public class PostsViewModel: ObservableObject {
                 result.append(
                     thread.discussionPost(
                         useRelativeDates: storage.useRelativeDates,
-                        action: {
-                            [weak self] in
-                            guard let self,
-                                  let actualThread = self.threads.threads
-                                .first(where: {$0.id  == thread.id }) else { return }
-                            
-                            self.router.showThread(
-                                thread: actualThread,
-                                postStateSubject: self.postStateSubject,
-                                isBlackedOut: self.isBlackedOut ?? false,
-                                animated: true
-                            )
+                        action: { [weak self] in
+                            Task { @MainActor in
+                                guard let self,
+                                      let actualThread = self.threads.threads
+                                    .first(where: {$0.id  == thread.id }) else { return }
+                                
+                                self.router.showThread(
+                                    thread: actualThread,
+                                    postStateSubject: self.postStateSubject,
+                                    isBlackedOut: self.isBlackedOut ?? false,
+                                    animated: true
+                                )
+                            }
                         }
                     )
                 )
@@ -157,7 +159,6 @@ public class PostsViewModel: ObservableObject {
         return result
     }
     
-    @MainActor
     func getPostsPagination(index: Int, withProgress: Bool = true) async {
         guard !fetchInProgress else { return }
         if totalPages > 1, index >= filteredPosts.count - 3, nextPage <= totalPages {
@@ -168,7 +169,6 @@ public class PostsViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     public func getPosts(pageNumber: Int, withProgress: Bool = true) async -> Bool {
         fetchInProgress = true
         isShowProgress = withProgress
@@ -208,7 +208,6 @@ public class PostsViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     private func getThreadsList(type: ThreadType, page: Int) async throws -> [UserThread] {
         guard let courseID else { return [] }
         return try await interactor.getThreadsList(

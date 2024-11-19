@@ -11,7 +11,7 @@ import Core
 import OEXFoundation
 import Combine
 
-public enum CourseTab: Int, CaseIterable, Identifiable {
+public enum CourseTab: Int, CaseIterable, Identifiable, Sendable {
     public var id: Int {
         rawValue
     }
@@ -59,7 +59,8 @@ extension CourseTab {
     }
 }
 
-public class CourseContainerViewModel: BaseCourseViewModel {
+@MainActor
+public final class CourseContainerViewModel: BaseCourseViewModel {
     
     @Published public var selection: Int
     @Published var isShowProgress = true
@@ -218,7 +219,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     )
                 }
             }
-            courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
+            courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
             await getDownloadingProgress()
             isShowProgress = false
             isShowRefresh = false
@@ -438,8 +439,10 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             .childs[sequentialIndex]
             .childs[verticalIndex]
             .childs[blockIndex].completion = 1
-        courseStructure.map {
-            courseVideosStructure = interactor.getCourseVideoBlocks(fullStructure: $0)
+        courseStructure.map { structure in
+            Task {
+                courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: structure)
+            }
         }
     }
     
@@ -489,7 +492,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
             case .downloading:
                 try await manager.cancelDownloading(courseId: courseStructure?.id ?? "", blocks: blocks)
             case .finished:
-                presentRemoveDownloadAlert(blocks: blocks, sequentials: sequentials)
+                await presentRemoveDownloadAlert(blocks: blocks, sequentials: sequentials)
             }
         } catch let error {
             if error is NoWiFiError {
@@ -584,7 +587,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         totalFileSize: Int,
         action: @escaping () -> Void = {}
     ) async {
-        router.presentView(
+        await router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .confirmDownload,
@@ -611,8 +614,8 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         )
     }
     
-    private func presentRemoveDownloadAlert(blocks: [CourseBlock], sequentials: [CourseSequential]) {
-        router.presentView(
+    private func presentRemoveDownloadAlert(blocks: [CourseBlock], sequentials: [CourseSequential]) async {
+        await router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .remove,
@@ -621,8 +624,9 @@ public class CourseContainerViewModel: BaseCourseViewModel {
                     guard let self else { return }
                     Task {
                         await self.manager.deleteFile(blocks: blocks)
+                        self.router.dismiss(animated: true)
                     }
-                    self.router.dismiss(animated: true)
+                    
                 },
                 cancel: { [weak self] in
                     guard let self else { return }
@@ -755,12 +759,15 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    @MainActor
-    func filterNotDownloadedBlocks(_ blocks: [CourseBlock]) -> [CourseBlock] {
-        return blocks.filter { block in
-            let fileUrl = manager.fileUrl(for: block.id)
-            return fileUrl == nil
+    func filterNotDownloadedBlocks(_ blocks: [CourseBlock]) async -> [CourseBlock] {
+        var result: [CourseBlock] = []
+        for block in blocks {
+            let fileUrl = await manager.fileUrl(for: block.id)
+            if fileUrl == nil {
+                result.append(block)
+            }
         }
+        return result
     }
     
     @MainActor
@@ -816,14 +823,14 @@ public class CourseContainerViewModel: BaseCourseViewModel {
         }
         
         if connectivity.isInternetAvaliable {
-            let updatedSequentials = manager.updateUnzippedFileSize(for: sequentials)
+            let updatedSequentials = await manager.updateUnzippedFileSize(for: sequentials)
             realDownloadedFilesSize = updatedSequentials.flatMap {
                 $0.childs.flatMap { $0.childs.compactMap { $0.actualFileSize } }
             }.reduce(0, { $0 + $1 })
         }
         
         for task in courseDownloadTasks where task.state == .finished {
-            if let fileUrl = manager.fileUrl(for: task.blockId),
+            if let fileUrl = await manager.fileUrl(for: task.blockId),
                 let fileSize = getFileSize(at: fileUrl),
                task.type == .video {
                 if fileSize > 0 {
@@ -1007,7 +1014,7 @@ public class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func updateFileSizeIfNeeded(for block: CourseBlock) async -> CourseBlock {
         var updatedBlock = block
-        if let fileUrl = manager.fileUrl(for: block.id),
+        if let fileUrl = await manager.fileUrl(for: block.id),
             let fileSize = getFileSize(at: fileUrl), fileSize > 0,
            block.type == .video {
             updatedBlock.actualFileSize = fileSize

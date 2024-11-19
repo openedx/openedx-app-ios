@@ -79,7 +79,7 @@ enum CourseEndpoint: EndPointType {
     var task: HTTPTask {
         switch self {
         case let .getCourseBlocks(courseID, userName):
-            let params: [String: Encodable] = [
+            let params: [String: Encodable & Sendable] = [
                 "username": userName,
                 "course_id": courseID,
                 "depth": "all",
@@ -95,7 +95,7 @@ enum CourseEndpoint: EndPointType {
         case .pageHTML:
             return .request
         case let .blockCompletionRequest(username, courseID, blockID):
-            let params: [String: Any] = [
+            let params: [String: any Any & Sendable] = [
                 "username": username,
                 "course_key": courseID,
                 "blocks": [blockID: 1.0]
@@ -109,7 +109,7 @@ enum CourseEndpoint: EndPointType {
             return .requestParameters(encoding: JSONEncoding.default)
         case let .getSubtitles(_, subtitleLanguage):
             //           let languageCode = Locale.current.languageCode ?? "en"
-            let params: [String: Any] = [
+            let params: [String: any Any & Sendable] = [
                 "lang": subtitleLanguage
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)

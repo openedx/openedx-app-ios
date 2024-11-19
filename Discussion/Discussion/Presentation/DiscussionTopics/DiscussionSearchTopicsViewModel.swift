@@ -8,9 +8,10 @@
 import Foundation
 import SwiftUI
 import Core
-import Combine
+@preconcurrency import Combine
 
-public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
+@MainActor
+public final class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
     
     @Published private(set) var fetchInProgress = false
     @Published var isSearchActive = false
@@ -76,15 +77,18 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         $searchText
             .debounce(for: debounce.dueTime, scheduler: debounce.scheduler)
             .removeDuplicates()
-            .sink { str in
+            .sink { [weak self] str in
+                guard let self else { return }
                 let term = str
                     .trimmingCharacters(in: .whitespaces)
                 Task.detached(priority: .high) {
                     if !term.isEmpty {
-                        if term == self.prevQuery {
+                        if await term == self.prevQuery {
                             return
                         }
-                        self.nextPage = 1
+                        await MainActor.run {
+                            self.nextPage = 1
+                        }
                         await self.search(page: self.nextPage, searchTerm: str)
                     } else {
                         await MainActor.run {
@@ -97,7 +101,6 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
             .store(in: &subscription)
     }
     
-    @MainActor
     func searchCourses(index: Int, searchTerm: String) async {
         if !fetchInProgress {
             if totalPages > 1 {
@@ -112,7 +115,6 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         }
     }
     
-    @MainActor
     private func search(page: Int, searchTerm: String) async {
         self.prevQuery = searchTerm
         fetchInProgress = true
@@ -162,12 +164,14 @@ public class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
         for thread in threads {
             result.append(thread.discussionPost(useRelativeDates: storage.useRelativeDates, action: { [weak self] in
                 guard let self else { return }
-                self.router.showThread(
-                    thread: thread,
-                    postStateSubject: self.postStateSubject,
-                    isBlackedOut: false,
-                    animated: true
-                )
+                Task {
+                    await self.router.showThread(
+                        thread: thread,
+                        postStateSubject: self.postStateSubject,
+                        isBlackedOut: false,
+                        animated: true
+                    )
+                }
             }))
         }
         return result

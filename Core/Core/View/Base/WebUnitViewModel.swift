@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-public class WebUnitViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
+public final class WebUnitViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
     
     public let authInteractor: AuthInteractorProtocol
     let config: ConfigProtocol

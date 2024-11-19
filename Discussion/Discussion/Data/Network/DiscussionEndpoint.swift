@@ -139,7 +139,7 @@ enum DiscussionEndpoint: EndPointType {
         case .getCourseDiscussionInfo:
             return .requestParameters(encoding: URLEncoding.queryString)
         case let .getThreads(courseID, type, sort, filter, page):
-            var parameters: [String: Encodable]
+            var parameters: [String: Encodable & Sendable]
             switch type {
             case .allPosts:
                 parameters = [
@@ -194,19 +194,19 @@ enum DiscussionEndpoint: EndPointType {
         case .getTopics:
             return .requestParameters(encoding: URLEncoding.queryString)
         case let .getTopic(_, topicID):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "topic_id": topicID
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case let .getDiscussionComments(threadID, page):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "thread_id": threadID,
                 "requested_fields": "profile_image",
                 "page": page
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case let .getQuestionComments(threadID, page):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "thread_id": threadID,
                 "endorsed": false,
                 "requested_fields": "profile_image",
@@ -214,7 +214,7 @@ enum DiscussionEndpoint: EndPointType {
             ]
             return .requestParameters(parameters: parameters, encoding: URLEncoding.queryString)
         case let .getCommentResponses(_, page):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "requested_fields": "profile_image",
                 "page": page
             ]
@@ -222,7 +222,7 @@ enum DiscussionEndpoint: EndPointType {
         case .getResponse:
             return .requestParameters(parameters: [:], encoding: URLEncoding.queryString)
         case let .addCommentTo(threadID, rawBody, parentID):
-            var parameters: [String: Encodable] = [
+            var parameters: [String: Encodable & Sendable] = [
                 "thread_id": threadID,
                 "raw_body": rawBody
             ]
@@ -231,32 +231,32 @@ enum DiscussionEndpoint: EndPointType {
             }
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case let .voteThread(voted, _):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "voted": !voted
             ]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case let .voteResponse(voted, _):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "voted": !voted
             ]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case let .flagThread(abuseFlagged, _):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "abuse_flagged": !abuseFlagged
             ]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case let .flagComment(abuseFlagged, _):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "abuse_flagged": !abuseFlagged
             ]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case let .followThread(following, _):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "following": !following
             ]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case let .createNewThread(newThread):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "course_id": newThread.courseID,
                 "topic_id": newThread.topicID,
                 "type": newThread.type.rawValue,
@@ -266,12 +266,12 @@ enum DiscussionEndpoint: EndPointType {
             ]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .readBody:
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "read": true
             ]
             return .requestParameters(parameters: parameters, encoding: JSONEncoding.default)
         case .searchThreads(courseID: let courseID, searchText: let searchText, pageNumber: let pageNumber):
-            let parameters: [String: Encodable] = [
+            let parameters: [String: Encodable & Sendable] = [
                 "course_id": courseID,
                 "text_search": searchText,
                 "page": pageNumber,

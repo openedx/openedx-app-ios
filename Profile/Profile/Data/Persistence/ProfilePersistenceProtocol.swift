@@ -9,29 +9,29 @@ import CoreData
 import Core
 
 //sourcery: AutoMockable
-public protocol ProfilePersistenceProtocol {
-    func getCourseState(courseID: String) -> CourseCalendarState?
-    func getAllCourseStates() -> [CourseCalendarState]
-    func saveCourseState(state: CourseCalendarState)
-    func removeCourseState(courseID: String)
-    func deleteAllCourseStatesAndEvents()
-    func saveCourseCalendarEvent(_ event: CourseCalendarEvent)
-    func removeCourseCalendarEvents(for courseId: String)
-    func removeAllCourseCalendarEvents()
-    func getCourseCalendarEvents(for courseId: String) -> [CourseCalendarEvent]
+public protocol ProfilePersistenceProtocol: Sendable {
+    func getCourseState(courseID: String) async -> CourseCalendarState?
+    func getAllCourseStates() async -> [CourseCalendarState]
+    func saveCourseState(state: CourseCalendarState) async
+    func removeCourseState(courseID: String) async
+    func deleteAllCourseStatesAndEvents() async
+    func saveCourseCalendarEvent(_ event: CourseCalendarEvent) async
+    func removeCourseCalendarEvents(for courseId: String) async
+    func removeAllCourseCalendarEvents() async
+    func getCourseCalendarEvents(for courseId: String) async -> [CourseCalendarEvent]
 }
 
 #if DEBUG
 public struct ProfilePersistenceMock: ProfilePersistenceProtocol {
-    public func getCourseState(courseID: String) -> CourseCalendarState? { nil }
-    public func getAllCourseStates() -> [CourseCalendarState] {[]}
-    public func saveCourseState(state: CourseCalendarState) {}
-    public func removeCourseState(courseID: String) {}
-    public func deleteAllCourseStatesAndEvents() {}
-    public func saveCourseCalendarEvent(_ event: CourseCalendarEvent) {}
-    public func removeCourseCalendarEvents(for courseId: String) {}
-    public func removeAllCourseCalendarEvents() {}
-    public func getCourseCalendarEvents(for courseId: String) -> [CourseCalendarEvent] { [] }
+    public func getCourseState(courseID: String) async -> CourseCalendarState? { nil }
+    public func getAllCourseStates() async -> [CourseCalendarState] {[]}
+    public func saveCourseState(state: CourseCalendarState) async {}
+    public func removeCourseState(courseID: String) async {}
+    public func deleteAllCourseStatesAndEvents() async {}
+    public func saveCourseCalendarEvent(_ event: CourseCalendarEvent) async {}
+    public func removeCourseCalendarEvents(for courseId: String) async {}
+    public func removeAllCourseCalendarEvents() async {}
+    public func getCourseCalendarEvents(for courseId: String) async -> [CourseCalendarEvent] { [] }
 }
 #endif
 

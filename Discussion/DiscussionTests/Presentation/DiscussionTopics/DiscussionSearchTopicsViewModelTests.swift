@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class DiscussionSearchTopicsViewModelTests: XCTestCase {
 
     func testSearchSuccess() async throws {
@@ -54,13 +55,9 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
         
-        
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        // Wait for debounce + next event loop iteration
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        await Task.yield()
 
         Verify(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
 
@@ -83,13 +80,9 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
         
-        
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        // Wait for debounce + next event loop iteration
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        await Task.yield()
 
         Verify(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
 
@@ -111,13 +104,9 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
         
-        
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        // Wait for debounce + next event loop iteration
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        await Task.yield()
 
         Verify(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
 
@@ -137,13 +126,9 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
         
         viewModel.searchText = ""
         
-        
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        // Wait for debounce + next event loop iteration
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        await Task.yield()
 
         Verify(interactor, 0, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
 

@@ -66,16 +66,19 @@ enum DiscoveryEndpoint: EndPointType {
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             
         case .enrollToCourse(courseID: let courseID):
-            let params: [String: Any] = [
-                "course_details": [
-                    "course_id": courseID,
-                    "email_opt_in": true
-                ]
+            
+            let details: [String: any Any & Sendable] = [
+                "course_id": courseID,
+                "email_opt_in": true
+            ]
+            
+            let params: [String: any Any & Sendable] = [
+                "course_details": details
             ]
             return .requestParameters(parameters: params, encoding: JSONEncoding.default)
             
         case let .getCourseDetail(_, username):
-            let params: [String: Encodable] = ["username": username]
+            let params: [String: Encodable & Sendable] = ["username": username]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
         }
     }

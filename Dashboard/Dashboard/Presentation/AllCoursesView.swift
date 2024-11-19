@@ -10,6 +10,7 @@ import Core
 import OEXFoundation
 import Theme
 
+@MainActor
 public struct AllCoursesView: View {
     
     @ObservedObject
@@ -144,7 +145,7 @@ public struct AllCoursesView: View {
                     .transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
+                                viewModel.errorMessage = nil
                         }
                     }
                 }

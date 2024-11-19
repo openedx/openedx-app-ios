@@ -10,7 +10,8 @@ import Core
 import SwiftUI
 import Combine
 
-public class SearchViewModel<S: Scheduler>: ObservableObject {
+@MainActor
+public final class SearchViewModel<S: Scheduler>: ObservableObject {
     var nextPage = 1
     var totalPages = 1
     @Published private(set) var fetchInProgress = false
@@ -58,8 +59,10 @@ public class SearchViewModel<S: Scheduler>: ObservableObject {
                     .trimmingCharacters(in: .whitespaces)
                 Task.detached(priority: .high) {
                     if !term.isEmpty {
-                        if term == self.prevQuery { return }
-                        self.nextPage = 1
+                        if await term == self.prevQuery { return }
+                        await MainActor.run {
+                            self.nextPage = 1
+                        }
                         await self.search(page: self.nextPage, searchTerm: str)
                     } else {
                         await MainActor.run {

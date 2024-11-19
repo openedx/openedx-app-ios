@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class CourseUnitViewModelTests: XCTestCase {
     var config = Config()
 

@@ -8,11 +8,11 @@
 import CoreData
 import Core
 
-public protocol DiscoveryPersistenceProtocol {
+public protocol DiscoveryPersistenceProtocol: Sendable {
     func loadDiscovery() async throws -> [CourseItem]
-    func saveDiscovery(items: [CourseItem])
+    func saveDiscovery(items: [CourseItem]) async
     func loadCourseDetails(courseID: String) async throws -> CourseDetails
-    func saveCourseDetails(course: CourseDetails)
+    func saveCourseDetails(course: CourseDetails) async
 }
 
 public final class DiscoveryBundle {

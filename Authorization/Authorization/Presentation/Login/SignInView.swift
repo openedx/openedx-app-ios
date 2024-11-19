@@ -259,7 +259,9 @@ public struct SignInView: View {
                 .transition(.move(edge: .top))
                 .onAppear {
                     doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.alertMessage = nil
+                        Task { @MainActor in
+                            viewModel.alertMessage = nil
+                        }
                     }
                 }
             }
@@ -272,7 +274,9 @@ public struct SignInView: View {
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
+                            Task { @MainActor in
+                                viewModel.errorMessage = nil
+                            }
                         }
                     }
             }
@@ -280,7 +284,7 @@ public struct SignInView: View {
         .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
-        .onFirstAppear{
+        .onFirstAppear {
             viewModel.trackScreenEvent()
         }
     }

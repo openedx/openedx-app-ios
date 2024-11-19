@@ -8,7 +8,7 @@
 import SwiftUI
 import Theme
 
-public struct PickerItem: Hashable {
+public struct PickerItem: Hashable, Sendable {
     public let key: String
     public let value: String
 

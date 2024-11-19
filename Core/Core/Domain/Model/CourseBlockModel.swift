@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CourseStructure: Equatable {
+public struct CourseStructure: Equatable, Sendable {
     public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
         return lhs.id == rhs.id
     }
@@ -81,7 +81,7 @@ public struct CourseStructure: Equatable {
     }
 }
 
-public struct CourseProgress {
+public struct CourseProgress: Sendable {
     public let totalAssignmentsCount: Int?
     public let assignmentsCompleted: Int?
     
@@ -91,7 +91,7 @@ public struct CourseProgress {
     }
 }
 
-public struct CourseChapter: Identifiable {
+public struct CourseChapter: Identifiable, Sendable {
 
     public let blockId: String
     public let id: String
@@ -114,7 +114,7 @@ public struct CourseChapter: Identifiable {
     }
 }
 
-public struct CourseSequential: Identifiable {
+public struct CourseSequential: Identifiable, Sendable {
 
     public let blockId: String
     public let id: String
@@ -154,7 +154,7 @@ public struct CourseSequential: Identifiable {
     }
 }
 
-public struct CourseVertical: Identifiable, Hashable {
+public struct CourseVertical: Identifiable, Hashable, Sendable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -193,7 +193,7 @@ public struct CourseVertical: Identifiable, Hashable {
     }
 }
 
-public struct SubtitleUrl: Equatable {
+public struct SubtitleUrl: Equatable, Sendable {
     public let language: String
     public let url: String
     
@@ -203,7 +203,7 @@ public struct SubtitleUrl: Equatable {
     }
 }
 
-public struct SequentialProgress {
+public struct SequentialProgress: Sendable {
     public let assignmentType: String?
     public let numPointsEarned: Int?
     public let numPointsPossible: Int?
@@ -215,7 +215,7 @@ public struct SequentialProgress {
     }
 }
 
-public struct CourseBlock: Hashable, Identifiable {
+public struct CourseBlock: Hashable, Identifiable, Sendable {
     public static func == (lhs: CourseBlock, rhs: CourseBlock) -> Bool {
         lhs.id == rhs.id &&
         lhs.blockId == rhs.blockId &&
@@ -302,7 +302,7 @@ public struct CourseBlock: Hashable, Identifiable {
     }
 }
 
-public struct OfflineDownload {
+public struct OfflineDownload: Sendable {
     public let fileUrl: String
     public var lastModified: String
     public let fileSize: Int
@@ -318,7 +318,7 @@ public struct OfflineDownload {
     }
 }
 
-public struct CourseBlockEncodedVideo {
+public struct CourseBlockEncodedVideo: Sendable {
 
     public let fallback: CourseBlockVideo?
     public let desktopMP4: CourseBlockVideo?
@@ -401,7 +401,7 @@ public struct CourseBlockEncodedVideo {
 
 }
 
-public struct CourseBlockVideo: Equatable {
+public struct CourseBlockVideo: Equatable, Sendable {
     public let url: String?
     public let fileSize: Int?
     public let streamPriority: Int?

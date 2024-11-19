@@ -9,7 +9,8 @@ import Combine
 import Core
 import SwiftUI
 
-public class DiscoveryViewModel: ObservableObject {
+@MainActor
+public final class DiscoveryViewModel: ObservableObject {
     
     var nextPage = 1
     var totalPages = 1

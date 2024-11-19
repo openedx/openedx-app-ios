@@ -141,22 +141,22 @@ extension Router: DeepLinkRouter {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + (isCourseOpened ? 0 : 1)) {
-            switch link.type {
-            case .courseDashboard:
-                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.course.rawValue
-            case .courseVideos:
-                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
-            case .courseDates, .courseComponent:
-                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
-            case .discussions, .discussionTopic, .discussionPost, .discussionComment:
-                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.discussion.rawValue
-            case .courseHandout, .courseAnnouncement:
-                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.handounds.rawValue
-            default:
-                break
-            }
-
-            completion()
+//            switch link.type {
+//            case .courseDashboard:
+//                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.course.rawValue
+//            case .courseVideos:
+//                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
+//            case .courseDates, .courseComponent:
+//                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
+//            case .discussions, .discussionTopic, .discussionPost, .discussionComment:
+//                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.discussion.rawValue
+//            case .courseHandout, .courseAnnouncement:
+//                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.handounds.rawValue
+//            default:
+//                break
+//            }
+//
+//            completion()
         }
     }
 

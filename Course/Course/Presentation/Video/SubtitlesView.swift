@@ -9,7 +9,7 @@ import SwiftUI
 import Core
 import Theme
 
-public struct Subtitle {
+public struct Subtitle: Sendable {
     var id: Int
     var fromTo: DateInterval
     var text: String

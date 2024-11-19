@@ -9,18 +9,19 @@ import Profile
 import Core
 import OEXFoundation
 import Foundation
-import CoreData
+@preconcurrency import CoreData
 
-public class ProfilePersistence: ProfilePersistenceProtocol {
+public final class ProfilePersistence: ProfilePersistenceProtocol {
     
-    private var context: NSManagedObjectContext
+    private let container: NSPersistentContainer
     
-    public init(context: NSManagedObjectContext) {
-        self.context = context
+    public init(container: NSPersistentContainer) {
+        self.container = container
     }
     
-    public func getCourseState(courseID: String) -> CourseCalendarState? {
-        context.performAndWait {
+    public func getCourseState(courseID: String) async -> CourseCalendarState? {
+//        guard let context = contextState.context else { return nil }
+        return await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<CDCourseCalendarState> = CDCourseCalendarState.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseID)
             do {
@@ -36,13 +37,13 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
         }
     }
     
-    public func getAllCourseStates() -> [CourseCalendarState] {
-        var states: [CourseCalendarState] = []
-        context.performAndWait {
+    public func getAllCourseStates() async -> [CourseCalendarState] {
+//        guard let context = contextState.context else { return [] }
+        return await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<CDCourseCalendarState> = CDCourseCalendarState.fetchRequest()
             do {
                 let results = try context.fetch(fetchRequest)
-                states = results.compactMap { result in
+                return results.compactMap { result in
                     if let courseID = result.courseID, let checksum = result.checksum {
                         return CourseCalendarState(courseID: courseID, checksum: checksum)
                     }
@@ -50,13 +51,14 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
                 }
             } catch {
                 debugLog("⛔️ Error fetching CourseCalendarEvents: \(error)")
+                return []
             }
         }
-        return states
     }
     
-    public func saveCourseState(state: CourseCalendarState) {
-        context.performAndWait {
+    public func saveCourseState(state: CourseCalendarState) async {
+//        guard let context = contextState.context else { return }
+        await container.performBackgroundTask { context in
             let newState = CDCourseCalendarState(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             newState.courseID = state.courseID
@@ -69,10 +71,12 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
         }
     }
     
-    public func removeCourseState(courseID: String) {
-        context.performAndWait {
+    public func removeCourseState(courseID: String) async {
+//        guard let context = contextState.context else { return }
+        await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarState.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseID)
+            
             do {
                 if let result = try context.fetch(fetchRequest).first {
                     if let object = result as? NSManagedObject {
@@ -86,23 +90,27 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
         }
     }
     
-    public func deleteAllCourseStatesAndEvents() {
-        let fetchRequestCalendarStates: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarState.fetchRequest()
-        let deleteRequestCalendarStates = NSBatchDeleteRequest(fetchRequest: fetchRequestCalendarStates)
-        let fetchRequestCalendarEvents: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarEvent.fetchRequest()
-        let deleteRequestCalendarEvents = NSBatchDeleteRequest(fetchRequest: fetchRequestCalendarEvents)
-        
-        do {
-            try context.execute(deleteRequestCalendarStates)
-            try context.execute(deleteRequestCalendarEvents)
-            try context.save()
-        } catch {
-            debugLog("⛔️⛔️⛔️⛔️⛔️", error)
+    public func deleteAllCourseStatesAndEvents() async {
+//        guard let context = contextState.context else { return }
+        await container.performBackgroundTask { context in
+            let fetchRequestCalendarStates: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarState.fetchRequest()
+            let deleteRequestCalendarStates = NSBatchDeleteRequest(fetchRequest: fetchRequestCalendarStates)
+            let fetchRequestCalendarEvents: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarEvent.fetchRequest()
+            let deleteRequestCalendarEvents = NSBatchDeleteRequest(fetchRequest: fetchRequestCalendarEvents)
+            
+            do {
+                try context.execute(deleteRequestCalendarStates)
+                try context.execute(deleteRequestCalendarEvents)
+                try context.save()
+            } catch {
+                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
+            }
         }
     }
     
-    public func saveCourseCalendarEvent(_ event: CourseCalendarEvent) {
-        context.performAndWait {
+    public func saveCourseCalendarEvent(_ event: CourseCalendarEvent) async {
+//        guard let context = contextState.context else { return }
+        await container.performBackgroundTask { context in
             let newEvent = CDCourseCalendarEvent(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             newEvent.courseID = event.courseID
@@ -114,9 +122,10 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
             }
         }
     }
-
-    public func removeCourseCalendarEvents(for courseId: String) {
-        context.performAndWait {
+    
+    public func removeCourseCalendarEvents(for courseId: String) async {
+//        guard let context = contextState.context else { return }
+        await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarEvent.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseId)
             do {
@@ -133,8 +142,9 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
         }
     }
     
-    public func removeAllCourseCalendarEvents() {
-        context.performAndWait {
+    public func removeAllCourseCalendarEvents() async {
+//        guard let context = contextState.context else { return }
+        await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDCourseCalendarEvent.fetchRequest()
             let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
             do {
@@ -145,15 +155,15 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
             }
         }
     }
-
-    public func getCourseCalendarEvents(for courseId: String) -> [CourseCalendarEvent] {
-        var events: [CourseCalendarEvent] = []
-        context.performAndWait {
+    
+    public func getCourseCalendarEvents(for courseId: String) async -> [CourseCalendarEvent] {
+//        guard let context = contextState.context else { return [] }
+        return await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<CDCourseCalendarEvent> = CDCourseCalendarEvent.fetchRequest()
             fetchRequest.predicate = NSPredicate(format: "courseID == %@", courseId)
             do {
                 let results = try context.fetch(fetchRequest)
-                events = results.compactMap { result in
+                return results.compactMap { result in
                     if let courseID = result.courseID, let eventIdentifier = result.eventIdentifier {
                         return CourseCalendarEvent(courseID: courseID, eventIdentifier: eventIdentifier)
                     }
@@ -161,9 +171,8 @@ public class ProfilePersistence: ProfilePersistenceProtocol {
                 }
             } catch {
                 debugLog("⛔️ Error fetching CourseCalendarEvents: \(error)")
+                return []
             }
         }
-        return events
     }
-
 }

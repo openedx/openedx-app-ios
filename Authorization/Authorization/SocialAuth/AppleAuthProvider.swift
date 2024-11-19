@@ -11,7 +11,7 @@ import Swinject
 import OEXFoundation
 import Core
 
-public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegate {
+public final class AppleAuthProvider: NSObject, ASAuthorizationControllerDelegate, Sendable {
 
     private let config: ConfigProtocol
 

@@ -8,13 +8,13 @@
 import Foundation
 import Core
 
-public protocol CourseStorage {
+public protocol CourseStorage: Sendable {
     var allowedDownloadLargeFile: Bool? { get set }
     var userSettings: UserSettings? { get set }
 }
 
 #if DEBUG
-public class CourseStorageMock: CourseStorage {
+public final class CourseStorageMock: CourseStorage, @unchecked Sendable {
     
     public var userSettings: UserSettings?
 

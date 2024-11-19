@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CourseCalendarEvent {
+public struct CourseCalendarEvent: Sendable {
     public let courseID: String
     public let eventIdentifier: String
     

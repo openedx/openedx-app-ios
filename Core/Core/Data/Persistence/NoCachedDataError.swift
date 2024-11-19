@@ -7,6 +7,6 @@
 
 import Foundation
 
-public class NoCachedDataError: LocalizedError {
+public class NoCachedDataError: LocalizedError, @unchecked Sendable {
     public init() {}
 }

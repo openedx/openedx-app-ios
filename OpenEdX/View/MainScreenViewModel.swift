@@ -20,6 +20,7 @@ public enum MainTab {
     case profile
 }
 
+@MainActor
 final class MainScreenViewModel: ObservableObject {
     
     private let analytics: MainScreenAnalytics
@@ -115,7 +116,7 @@ final class MainScreenViewModel: ObservableObject {
 
     @MainActor
     func prefetchDataForOffline() async {
-        if profileInteractor.getMyProfileOffline() == nil {
+        if await profileInteractor.getMyProfileOffline() == nil {
             _ = try? await profileInteractor.getMyProfile()
         }
     }
@@ -157,7 +158,7 @@ extension MainScreenViewModel {
                 
                 for course in selectedCourses {
                     if let courseDates = try? await profileInteractor.getCourseDates(courseID: course.courseID),
-                       calendarManager.isDatesChanged(courseID: course.courseID, checksum: courseDates.checksum) {
+                       await calendarManager.isDatesChanged(courseID: course.courseID, checksum: courseDates.checksum) {
                         debugLog("Calendar needs update for courseID: \(course.courseID)")
                         await calendarManager.removeOutdatedEvents(courseID: course.courseID)
                         await calendarManager.syncCourse(
@@ -173,13 +174,13 @@ extension MainScreenViewModel {
             }
         } else {
             appStorage.lastLoginUsername = username
-            calendarManager.clearAllData(removeCalendar: false)
+            await calendarManager.clearAllData(removeCalendar: false)
         }
     }
     
     private func updateCourseDates(courseID: String, courseName: String) async {
         if let courseDates = try? await profileInteractor.getCourseDates(courseID: courseID),
-           calendarManager.isDatesChanged(courseID: courseID, checksum: courseDates.checksum) {
+           await calendarManager.isDatesChanged(courseID: courseID, checksum: courseDates.checksum) {
             debugLog("Calendar update needed for courseID: \(courseID)")
             await calendarManager.removeOutdatedEvents(courseID: courseID)
             await calendarManager.syncCourse(courseID: courseID, courseName: courseName, dates: courseDates)

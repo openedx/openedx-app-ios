@@ -9,7 +9,8 @@ import Foundation
 import Core
 import SwiftUI
 
-public class HandoutsViewModel: ObservableObject {
+@MainActor
+public final class HandoutsViewModel: ObservableObject {
     
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
@@ -45,7 +46,6 @@ public class HandoutsViewModel: ObservableObject {
         self.analytics = analytics
     }
     
-    @MainActor
     func getHandouts(courseID: String) async {
         isShowProgress = true
         do {
@@ -58,7 +58,6 @@ public class HandoutsViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     func getUpdates(courseID: String) async {
         isShowProgress = true
         do {

@@ -10,7 +10,8 @@ import Core
 import SwiftUI
 import Combine
 
-public class SettingsViewModel: ObservableObject {
+@MainActor
+public final class SettingsViewModel: ObservableObject {
     
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
@@ -18,7 +19,9 @@ public class SettingsViewModel: ObservableObject {
         willSet {
             if newValue != wifiOnly {
                 userSettings.wifiOnly = newValue
-                interactor.saveSettings(userSettings)
+                Task {
+                    await interactor.saveSettings(userSettings)
+                }
             }
         }
     }
@@ -27,7 +30,9 @@ public class SettingsViewModel: ObservableObject {
         willSet {
             if newValue != selectedQuality {
                 userSettings.streamingQuality = newValue
-                interactor.saveSettings(userSettings)
+                Task {
+                    await interactor.saveSettings(userSettings)
+                }
             }
         }
     }
@@ -106,7 +111,7 @@ public class SettingsViewModel: ObservableObject {
         NotificationCenter.default.publisher(for: .onActualVersionReceived)
             .sink { [weak self] notification in
                 guard let latestVersion = notification.object as? String else { return }
-                DispatchQueue.main.async { [weak self] in
+                Task {
                     self?.latestVersion = latestVersion
                     
                     if latestVersion != currentVersion {
@@ -116,6 +121,7 @@ public class SettingsViewModel: ObservableObject {
             }.store(in: &cancellables)
     }
     
+    @MainActor
     func contactSupport() -> URL? {
         let osVersion = UIDevice.current.systemVersion
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
@@ -131,9 +137,12 @@ public class SettingsViewModel: ObservableObject {
 
     func update(downloadQuality: DownloadQuality) {
         self.userSettings.downloadQuality = downloadQuality
-        interactor.saveSettings(userSettings)
+        Task {
+            await interactor.saveSettings(userSettings)
+        }
     }
     
+    @MainActor
     func openAppStore() {
         guard let appStoreURL = URL(string: config.appStoreLink) else { return }
         UIApplication.shared.open(appStoreURL)
@@ -143,7 +152,7 @@ public class SettingsViewModel: ObservableObject {
     func logOut() async {
         try? await interactor.logOut()
         try? await downloadManager.cancelAllDownloading()
-        corePersistence.deleteAllProgress()
+        await corePersistence.deleteAllProgress()
         router.showStartupScreen()
         analytics.userLogout(force: false)
         NotificationCenter.default.post(

@@ -8,11 +8,11 @@
 import Foundation
 
 //sourcery: AutoMockable
-public protocol OfflineSyncInteractorProtocol {
+public protocol OfflineSyncInteractorProtocol: Sendable {
     func submitOfflineProgress(courseID: String, blockID: String, data: String) async throws -> Bool
 }
 
-public class OfflineSyncInteractor: OfflineSyncInteractorProtocol {
+public actor OfflineSyncInteractor: OfflineSyncInteractorProtocol {
     private let repository: OfflineSyncRepositoryProtocol
     
     public init(repository: OfflineSyncRepositoryProtocol) {

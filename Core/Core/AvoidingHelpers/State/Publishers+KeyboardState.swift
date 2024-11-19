@@ -3,6 +3,7 @@
 import Combine
 import SwiftUI
 
+@MainActor
 public extension Publishers {
     static var keyboardStatePublisher: AnyPublisher<KeyboardState, Never> {
         let notificationCenter: NotificationCenter = .default

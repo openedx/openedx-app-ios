@@ -10,6 +10,7 @@ import Core
 import OEXFoundation
 import Combine
 
+@MainActor
 final class CourseVideoDownloadBarViewModel: ObservableObject {
 
     // MARK: - Properties
