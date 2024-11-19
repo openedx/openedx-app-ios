@@ -60,7 +60,7 @@ public struct ListDashboardView: View {
                                             model: course,
                                             type: .dashboard,
                                             index: index,
-                                            cellsCount: viewModel.courses.count, 
+                                            cellsCount: viewModel.courses.count,
                                             useRelativeDates: useRelativeDates
                                         )
                                         .padding(.horizontal, 20)
@@ -164,7 +164,7 @@ struct ListDashboardView_Previews: PreviewProvider {
         let vm = ListDashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock(), 
+            analytics: DashboardAnalyticsMock(),
             storage: CoreStorageMock()
         )
         let router = DashboardRouterMock()

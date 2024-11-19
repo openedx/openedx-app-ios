@@ -259,9 +259,7 @@ public struct SignInView: View {
                 .transition(.move(edge: .top))
                 .onAppear {
                     doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        Task { @MainActor in
                             viewModel.alertMessage = nil
-                        }
                     }
                 }
             }
@@ -274,9 +272,7 @@ public struct SignInView: View {
                 }.transition(.move(edge: .bottom))
                     .onAppear {
                         doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            Task { @MainActor in
                                 viewModel.errorMessage = nil
-                            }
                         }
                     }
             }
