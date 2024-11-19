@@ -29,7 +29,6 @@ public struct OfflineSnackBarView: View {
                 HStack(spacing: 12) {
                     Text(CoreLocalization.NoInternet.offline)
                         .accessibilityIdentifier("no_internet_text")
-                        .foregroundColor(Theme.Colors.snackbarTextColor)
                     Spacer()
                     Button(action: {
                         withAnimation {
@@ -37,7 +36,6 @@ public struct OfflineSnackBarView: View {
                         }
                     }, label: {
                         Text(CoreLocalization.NoInternet.dismiss)
-                            .foregroundColor(Theme.Colors.snackbarTextColor)
                     })
                     .accessibilityIdentifier("no_internet_dismiss_button")
                     Button(action: {
@@ -49,7 +47,6 @@ public struct OfflineSnackBarView: View {
                         }
                     }, label: {
                         Text(CoreLocalization.NoInternet.reload)
-                            .foregroundColor(Theme.Colors.snackbarTextColor)
                     }
                     )
                     .accessibilityIdentifier("no_internet_reload_button")
