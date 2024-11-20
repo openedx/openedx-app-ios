@@ -102,7 +102,7 @@ public struct CourseUnitView: View {
                                           textColor: Theme.Colors.white)
                         .transition(.move(edge: .bottom))
                         .onAppear {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + Theme.Timeout.snackbarMessageLongTimeout) {
+                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
                                 alertMessage = nil
                                 showAlert = false
                             }

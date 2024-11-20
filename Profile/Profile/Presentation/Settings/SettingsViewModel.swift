@@ -135,11 +135,9 @@ public final class SettingsViewModel: ObservableObject {
         return emailURL
     }
 
-    func update(downloadQuality: DownloadQuality) {
+    func update(downloadQuality: DownloadQuality) async {
         self.userSettings.downloadQuality = downloadQuality
-        Task {
-            await interactor.saveSettings(userSettings)
-        }
+        await interactor.saveSettings(userSettings)
     }
     
     @MainActor

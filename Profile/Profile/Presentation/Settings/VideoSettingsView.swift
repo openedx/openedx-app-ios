@@ -90,7 +90,11 @@ public struct VideoSettingsView: View {
                                 Button {
                                     viewModel.router.showVideoDownloadQualityView(
                                         downloadQuality: viewModel.userSettings.downloadQuality,
-                                        didSelect: viewModel.update(downloadQuality:),
+                                        didSelect: { quality in
+                                            Task {
+                                                await viewModel.update(downloadQuality: quality)
+                                            }
+                                        },
                                         analytics: viewModel.coreAnalytics
                                     )
                                 } label: {
