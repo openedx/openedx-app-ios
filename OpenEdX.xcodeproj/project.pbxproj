@@ -395,7 +395,6 @@
 				0770DE1528D07845006D8A5D /* Embed Frameworks */,
 				DB97C0542B002EF00035C36F /* Process Config */,
 				02F175442A4E3B320019CD70 /* FirebaseCrashlytics */,
-				3E8DA9F0CA4047CE9E415745 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -508,23 +507,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\"\n";
-		};
-		3E8DA9F0CA4047CE9E415745 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		B2F937DF587D9697AF13B3F9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

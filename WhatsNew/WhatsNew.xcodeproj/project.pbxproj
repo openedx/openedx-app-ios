@@ -275,7 +275,6 @@
 				028A37192ADFF3F7008CA604 /* Sources */,
 				028A371A2ADFF3F7008CA604 /* Frameworks */,
 				028A371B2ADFF3F7008CA604 /* Resources */,
-				9154343F6CC0078730F79B91 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -426,23 +425,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-WhatsNew-WhatsNewTests/Pods-App-WhatsNew-WhatsNewTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9154343F6CC0078730F79B91 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-WhatsNew/Pods-App-WhatsNew-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-WhatsNew/Pods-App-WhatsNew-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-WhatsNew/Pods-App-WhatsNew-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E5055BD989FEEC50EF87C814 /* [CP] Check Pods Manifest.lock */ = {

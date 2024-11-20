@@ -335,7 +335,6 @@
 				02EF39E328D89F560058F6BD /* Sources */,
 				02EF39E428D89F560058F6BD /* Frameworks */,
 				02EF39E528D89F560058F6BD /* Resources */,
-				C52414C8C32595C831BBB633 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -485,23 +484,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C52414C8C32595C831BBB633 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

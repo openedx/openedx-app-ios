@@ -938,7 +938,6 @@
 				0770DE0528D07831006D8A5D /* Frameworks */,
 				0770DE0628D07831006D8A5D /* Resources */,
 				CE57127E2CD109DB00D4AB17 /* Embed Frameworks */,
-				1E714D29C0AE1C041AC41D20 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1037,23 +1036,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
-		};
-		1E714D29C0AE1C041AC41D20 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Core/Pods-App-Core-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Core/Pods-App-Core-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Core/Pods-App-Core-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		C9AA9371F83D4B112F310DB8 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
