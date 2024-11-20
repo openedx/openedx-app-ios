@@ -115,7 +115,7 @@ struct FieldsView: View {
     }
 
     private func handleURL(_ url: URL) -> OpenURLAction.Result {
-        router.showWebBrowser(title: url.host ?? "", url: url)
+        router.showWebBrowser(title: "", url: url)
         return .handled
     }
 }

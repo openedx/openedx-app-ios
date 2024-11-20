@@ -134,6 +134,7 @@
 		9784D47E2BF7762800AFEFFF /* FullScreenErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9784D47D2BF7762800AFEFFF /* FullScreenErrorView.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A595689A2B6173DF00ED4F90 /* BranchConfig.swift */; };
+		A5D4B3DE2CDD0A9700688951 /* SecureInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D4B3DD2CDD0A9700688951 /* SecureInputView.swift */; };
 		A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */; };
 		BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */; };
 		BA4AFB442B6A5AF100A21367 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */; };
@@ -342,6 +343,7 @@
 		9E0B33614CBD791307FFDEAE /* Pods-App-Core-CoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core-CoreTests.release.xcconfig"; path = "Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		A53A32342B233DEC005FE38A /* ThemeConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeConfig.swift; sourceTree = "<group>"; };
 		A595689A2B6173DF00ED4F90 /* BranchConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BranchConfig.swift; sourceTree = "<group>"; };
+		A5D4B3DD2CDD0A9700688951 /* SecureInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureInputView.swift; sourceTree = "<group>"; };
 		A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BrazeConfig.swift; sourceTree = "<group>"; };
 		B2556B4A2D4F84F402A7A7D9 /* Pods-CoreTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-CoreTests/Pods-CoreTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityView.swift; sourceTree = "<group>"; };
@@ -741,6 +743,7 @@
 				06DEA4A22BBD66A700110D20 /* BackNavigationButton.swift */,
 				06DEA4A42BBD66D700110D20 /* BackNavigationButtonViewModel.swift */,
 				0267F8502C3C256F0089D810 /* FileWebView.swift */,
+				A5D4B3DD2CDD0A9700688951 /* SecureInputView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -1127,6 +1130,7 @@
 				06619EAA2B8F2936001FAADE /* ReadabilityModifier.swift in Sources */,
 				BAFB99902B14B377007D09F9 /* GoogleConfig.swift in Sources */,
 				029A132C2C2471F8005FB830 /* OfflineSyncEndpoint.swift in Sources */,
+				A5D4B3DE2CDD0A9700688951 /* SecureInputView.swift in Sources */,
 				02CF46C829546AA200A698EE /* NoCachedDataError.swift in Sources */,
 				0727877728D23847002E9142 /* DataLayer.swift in Sources */,
 				0241666B28F5A78B00082765 /* HTMLFormattedText.swift in Sources */,

@@ -114,7 +114,7 @@ struct CourseVideoDownloadBarView: View {
                                 .accessibilityIdentifier("remaining_videos_text")
                         }
                         if let totalSize = viewModel.totalSize {
-                            let text = ", \(totalSize)MB \(CourseLocalization.Download.total)"
+                            let text = ", \(totalSize) \(CourseLocalization.Download.total)"
                             Text(text)
                                 .accessibilityElement(children: .ignore)
                                 .accessibilityLabel(text)

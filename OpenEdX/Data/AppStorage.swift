@@ -346,6 +346,12 @@ public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, Cou
         cookiesDate = nil
         user = nil
         userProfile = nil
+        // delete all cookies
+        if let cookies = HTTPCookieStorage.shared.cookies {
+            for cookie in cookies {
+                HTTPCookieStorage.shared.deleteCookie(cookie)
+            }
+        }
     }
 
     private let KEY_ACCESS_TOKEN = "accessToken"

@@ -89,9 +89,9 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         if isOn {
             let size =  mb - calculateSize(value: mb, percentage: progress * 100)
             if size == 0 {
-                return String(format: "%.2f", mb)
+                return sizeInMbOrGb(size: mb)
             }
-            return String(format: "%.2f", size)
+            return sizeInMbOrGb(size: size)
         }
 
         let size = blockToMB(
@@ -102,7 +102,15 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
             downloadQuality: downloadQuality
         )
 
-        return String(format: "%.2f", size)
+        return sizeInMbOrGb(size: size)
+    }
+
+    private func sizeInMbOrGb(size: Double) -> String {
+        if size >= 1024.0 {
+            return String(format: "%.2fGB", size / 1024.0)
+        } else {
+            return String(format: "%.2fMB", size)
+        }
     }
 
     init(
