@@ -1085,7 +1085,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             .sink { [weak self] state in
                 guard let self else { return }
                 if case .progress = state { return }
-                Task(priority: .background) {
+                Task {
                     debugLog(state, "--- state ---")
                     await self.setDownloadsStates(courseStructure: self.courseStructure)
                     await self.getDownloadingProgress()
