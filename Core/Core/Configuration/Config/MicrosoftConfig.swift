@@ -9,19 +9,19 @@ import Foundation
 
 private enum MicrosoftKeys: String {
     case enabled = "ENABLED"
-    case appID = "APP_ID"
+    case clientID = "CLIENT_ID"
 }
 
 public final class MicrosoftConfig: NSObject {
     public var enabled: Bool = false
-    public private(set) var appID: String?
+    private(set) var clientID: String?
 
     private var requiredKeysAvailable: Bool {
-        return appID != nil
+        return clientID != nil
     }
 
     init(dictionary: [String: AnyObject]) {
-        appID = dictionary[MicrosoftKeys.appID.rawValue] as? String
+        clientID = dictionary[MicrosoftKeys.clientID.rawValue] as? String
         super.init()
         enabled = requiredKeysAvailable && dictionary[MicrosoftKeys.enabled.rawValue] as? Bool == true
     }
