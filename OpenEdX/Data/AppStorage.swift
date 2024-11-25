@@ -275,6 +275,19 @@ public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, Cou
             }
         }
     }
+
+    public var lastUsedSocialAuth: String? {
+        get {
+            return userDefaults.string(forKey: KEY_LAST_USED_SOCIAL_AUTH)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_LAST_USED_SOCIAL_AUTH)
+            } else {
+                userDefaults.removeObject(forKey: KEY_LAST_USED_SOCIAL_AUTH)
+            }
+        }
+    }
     
     public var lastLoginUsername: String? {
         get {
@@ -382,4 +395,5 @@ public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, Cou
     private let KEY_FIRST_CALENDAR_UPDATE = "firstCalendarUpdate"
     private let KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA = "resetAppSupportDirectoryUserData"
     private let KEY_USE_RELATIVE_DATES = "useRelativeDates"
+    private let KEY_LAST_USED_SOCIAL_AUTH = "lastUsedSocialAuth"
 }

@@ -43,6 +43,7 @@ public class SignInViewModel: ObservableObject {
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
+    let storage: CoreStorage
 
     public init(
         interactor: AuthInteractorProtocol,
@@ -50,6 +51,7 @@ public class SignInViewModel: ObservableObject {
         config: ConfigProtocol,
         analytics: AuthorizationAnalytics,
         validator: Validator,
+        storage: CoreStorage,
         sourceScreen: LogistrationSourceScreen
     ) {
         self.interactor = interactor
@@ -57,6 +59,7 @@ public class SignInViewModel: ObservableObject {
         self.config = config
         self.analytics = analytics
         self.validator = validator
+        self.storage = storage
         self.sourceScreen = sourceScreen
     }
 
@@ -83,7 +86,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(username: username, password: password)
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: .password)
-            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, authMethod: nil)
             NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             failure(error)
@@ -129,7 +132,14 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(externalToken: externalToken, backend: backend)
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
-            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            var socialAuthMethod: String?
+            if case AuthMethod.socailAuth(let method) = authMethod {
+                socialAuthMethod = method.rawValue
+            }
+            router.showMainOrWhatsNewScreen(
+                sourceScreen: sourceScreen,
+                authMethod: socialAuthMethod
+            )
             NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             failure(error, authMethod: authMethod)

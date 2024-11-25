@@ -90,6 +90,21 @@ public struct SignUpView: View {
 
                                 let requiredFields = viewModel.requiredFields
                                 let optionalFields = viewModel.optionalFields
+                                
+                                if viewModel.socialAuthEnabled,
+                                    !requiredFields.isEmpty {
+                                    SocialAuthView(
+                                        authType: .register,
+                                        viewModel: .init(
+                                            config: viewModel.config,
+                                            lastUsedOption: viewModel.storage.lastUsedSocialAuth
+                                        ) { result in
+                                            Task { await viewModel.register(with: result) }
+                                        }
+                                    )
+                                    .padding(.top, 22)
+                                    .padding(.bottom, -2)
+                                }
 
                                 FieldsView(
                                     fields: requiredFields,
@@ -149,18 +164,6 @@ public struct SignUpView: View {
                                     .frame(maxWidth: .infinity)
                                     .accessibilityLabel("signup_button")
                                 }
-                                if viewModel.socialAuthEnabled,
-                                    !requiredFields.isEmpty {
-                                    SocialAuthView(
-                                        authType: .register,
-                                        viewModel: .init(
-                                            config: viewModel.config
-                                        ) { result in
-                                            Task { await viewModel.register(with: result) }
-                                        }
-                                    )
-                                    .padding(.bottom, 30)
-                                }
                                 Spacer()
                             }
                             .padding(.horizontal, 24)
@@ -214,6 +217,7 @@ struct SignUpView_Previews: PreviewProvider {
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             validator: Validator(),
+            storage: CoreStorageMock(),
             sourceScreen: .default
         )
         

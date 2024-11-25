@@ -12,18 +12,22 @@ import Foundation
 public enum AuthLocalization {
   /// Apple
   public static let apple = AuthLocalization.tr("Localizable", "APPLE", fallback: "Apple")
+  /// Continue with:
+  public static let continueWith = AuthLocalization.tr("Localizable", "CONTINUE_WITH", fallback: "Continue with:")
   /// Facebook
   public static let facebook = AuthLocalization.tr("Localizable", "FACEBOOK", fallback: "Facebook")
   /// Google
   public static let google = AuthLocalization.tr("Localizable", "GOOGLE", fallback: "Google")
+  /// Last sign in
+  public static let lastSignIn = AuthLocalization.tr("Localizable", "LAST_SIGN_IN", fallback: "Last sign in")
   /// Microsoft
   public static let microsoft = AuthLocalization.tr("Localizable", "MICROSOFT", fallback: "Microsoft")
   /// Or
   public static let or = AuthLocalization.tr("Localizable", "OR", fallback: "Or")
-  /// Register with
-  public static let registerWith = AuthLocalization.tr("Localizable", "REGISTER_WITH", fallback: "Register with")
-  /// Sign in with
-  public static let signInWith = AuthLocalization.tr("Localizable", "SIGN_IN_WITH", fallback: "Sign in with")
+  /// Or register below:
+  public static let orRegisterWith = AuthLocalization.tr("Localizable", "OR_REGISTER_WITH", fallback: "Or register below:")
+  /// Or sign in with email:
+  public static let orSignInWith = AuthLocalization.tr("Localizable", "OR_SIGN_IN_WITH", fallback: "Or sign in with email:")
   public enum Error {
     /// This %@ account is not linked with any %@ account. Please register.
     public static func accountNotRegistered(_ p1: Any, _ p2: Any) -> String {

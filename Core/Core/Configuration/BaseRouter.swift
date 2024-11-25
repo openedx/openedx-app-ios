@@ -22,7 +22,10 @@ public protocol BaseRouter: Sendable {
     
     func removeLastView(controllers: Int)
 
-    func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen)
+    func showMainOrWhatsNewScreen(
+        sourceScreen: LogistrationSourceScreen,
+        authMethod: String?
+    )
     
     func showStartupScreen()
     
@@ -82,7 +85,10 @@ open class BaseRouterMock: BaseRouter {
 
     public func dismiss(animated: Bool) {}
 
-    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {}
+    public func showMainOrWhatsNewScreen(
+        sourceScreen: LogistrationSourceScreen,
+        authMethod: String?
+    ) {}
     
     public func showStartupScreen() {}
 

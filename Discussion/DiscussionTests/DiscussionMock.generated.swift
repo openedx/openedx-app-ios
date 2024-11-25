@@ -581,10 +581,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
-        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
-		perform?(`sourceScreen`)
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, authMethod: String?) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<String?>.value(`authMethod`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<String?>.value(`authMethod`))) as? (LogistrationSourceScreen, String?) -> Void
+		perform?(`sourceScreen`, `authMethod`)
     }
 
     open func showStartupScreen() {
@@ -660,7 +660,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(Parameter<LogistrationSourceScreen>, Parameter<String?>)
         case m_showStartupScreen
         case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
@@ -697,9 +697,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(let lhsSourcescreen, let lhsAuthmethod), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(let rhsSourcescreen, let rhsAuthmethod)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthmethod, rhs: rhsAuthmethod, with: matcher), lhsAuthmethod, rhsAuthmethod, "authMethod"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
@@ -779,7 +780,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(p0, p1): return p0.intValue + p1.intValue
             case .m_showStartupScreen: return 0
             case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
@@ -800,7 +801,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod: return ".showMainOrWhatsNewScreen(sourceScreen:authMethod:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
             case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
@@ -835,7 +836,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, authMethod: Parameter<String?>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(`sourceScreen`, `authMethod`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
@@ -868,8 +869,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, authMethod: Parameter<String?>, perform: @escaping (LogistrationSourceScreen, String?) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(`sourceScreen`, `authMethod`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)
@@ -4739,10 +4740,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
-        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
-		perform?(`sourceScreen`)
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, authMethod: String?) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<String?>.value(`authMethod`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<String?>.value(`authMethod`))) as? (LogistrationSourceScreen, String?) -> Void
+		perform?(`sourceScreen`, `authMethod`)
     }
 
     open func showStartupScreen() {
@@ -4824,7 +4825,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(Parameter<LogistrationSourceScreen>, Parameter<String?>)
         case m_showStartupScreen
         case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
@@ -4907,9 +4908,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(let lhsSourcescreen, let lhsAuthmethod), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(let rhsSourcescreen, let rhsAuthmethod)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthmethod, rhs: rhsAuthmethod, with: matcher), lhsAuthmethod, rhsAuthmethod, "authMethod"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
@@ -4995,7 +4997,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(p0, p1): return p0.intValue + p1.intValue
             case .m_showStartupScreen: return 0
             case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
@@ -5022,7 +5024,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod: return ".showMainOrWhatsNewScreen(sourceScreen:authMethod:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
             case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
@@ -5063,7 +5065,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, authMethod: Parameter<String?>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(`sourceScreen`, `authMethod`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
@@ -5114,8 +5116,8 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, authMethod: Parameter<String?>, perform: @escaping (LogistrationSourceScreen, String?) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenauthMethod_authMethod(`sourceScreen`, `authMethod`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)

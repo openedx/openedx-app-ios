@@ -64,16 +64,23 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(viewControllers, animated: true)
     }
     
-    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
+    public func showMainOrWhatsNewScreen(
+        sourceScreen: LogistrationSourceScreen,
+        authMethod: String?
+    ) {
         showToolBar()
         var whatsNewStorage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
         let persistence = Container.shared.resolve(CorePersistenceProtocol.self)!
-        let coreStorage = Container.shared.resolve(CoreStorage.self)!
+        var coreStorage = Container.shared.resolve(CoreStorage.self)!
         let analytics = Container.shared.resolve(WhatsNewAnalytics.self)!
 
         if let userId = coreStorage.user?.id {
             persistence.set(userId: userId)
+        }
+        
+        if let authMethod = authMethod {
+            coreStorage.lastUsedSocialAuth = authMethod
         }
 
         let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen, analytics: analytics)

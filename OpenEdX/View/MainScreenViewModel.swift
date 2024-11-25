@@ -79,10 +79,9 @@ final class MainScreenViewModel: ObservableObject {
             .sink { [weak self] object in
                 guard let self,
                       let dict = object.object as? [String: Any],
-                      let authMethod = dict["authMethod"] as? AuthMethod,
-                      let shouldShowBanner = dict["showSocialRegisterBanner"] as? Bool
+                      let authMethod = dict["authMethod"] as? AuthMethod
                 else { return }
-                self.shouldShowRegisterBanner = shouldShowBanner
+                self.shouldShowRegisterBanner = dict["showSocialRegisterBanner"] as? Bool ?? false
                 self.authMethod = authMethod
             }
             .store(in: &cancellations)
