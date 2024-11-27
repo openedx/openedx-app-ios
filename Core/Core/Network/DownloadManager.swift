@@ -103,10 +103,21 @@ public struct DownloadDataTask: Identifiable, Hashable, Sendable {
     }
     
     public init?(block: CourseBlock, userId: Int, downloadQuality: DownloadQuality) {
-        guard let video = block.encodedVideo?.video(downloadQuality: downloadQuality),
-              let url = video.url,
-              let fileExtension = URL(string: url)?.pathExtension
-        else { return nil }
+        let url: URL
+        let fileExtension: String
+        let fileSize: Int
+        if let html = block.offlineDownload, let htmlUrl = URL(string: html.fileUrl) {
+            url = htmlUrl
+            fileExtension = url.pathExtension
+            fileSize = html.fileSize
+        } else if let video = block.encodedVideo?.video(downloadQuality: downloadQuality),
+                  let videoUrlString = video.url,
+                  let videoUrl = URL(string: videoUrlString) {
+            url = videoUrl
+            fileExtension = videoUrl.pathExtension
+            fileSize = video.fileSize ?? 0
+            self.lastModified = block.offlineDownload?.lastModified
+        } else { return nil }
         let fileName = "\(block.id).\(fileExtension)"
         
         let downloadDataId = "\(userId)_\(block.id)"
@@ -114,14 +125,14 @@ public struct DownloadDataTask: Identifiable, Hashable, Sendable {
         self.blockId = block.id
         self.userId = userId
         self.courseId = block.courseId
-        self.url = url
+        self.url = url.absoluteString
         self.fileName = fileName
         self.displayName = block.displayName
         self.progress = Double.zero
         self.resumeData = nil
         self.state = .waiting
         self.type = .video
-        self.fileSize = video.fileSize ?? 0
+        self.fileSize = fileSize
     }
 }
 
@@ -1015,8 +1026,6 @@ public class DownloadManagerMock: DownloadManagerProtocol {
 
     public func deleteFile(blocks: [CourseBlock]) {}
 
-    public func deleteAllFiles() {}
-    
     public func deleteAll() {}
                 
     public func fileUrl(for blockId: String) async -> URL? {
