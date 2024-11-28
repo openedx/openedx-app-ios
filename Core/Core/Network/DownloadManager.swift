@@ -221,7 +221,6 @@ public class DownloadManager: DownloadManagerProtocol {
     private var state: DownloadManagerState = .idle
     // MARK: - Init
     
-    
     public init(
         persistence: CorePersistenceProtocol,
         appStorage: CoreStorage,
@@ -656,6 +655,10 @@ public class DownloadManager: DownloadManagerProtocol {
         guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
             return
         }
+        
+        if let index = queue.firstIndex(where: {$0.id == download.id}) {
+            queue[index].state = .inProgress
+        }
 
         await persistence.updateDownloadState(
             id: download.id,
@@ -700,6 +703,11 @@ public class DownloadManager: DownloadManagerProtocol {
             if let fileURL = response.fileURL {
                 Task {
                     await unzipFile(url: fileURL)
+                    await MainActor.run {
+                        if let index = self.queue.firstIndex(where: {$0.id == download.id}) {
+                            self.queue[index].state = .finished
+                        }
+                    }
                     await self.persistence.updateDownloadState(
                         id: download.id,
                         state: .finished,

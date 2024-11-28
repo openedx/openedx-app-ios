@@ -40,14 +40,13 @@ public final class CorePersistenceMock: CorePersistenceProtocol, @unchecked Send
     public func addToDownloadQueue(tasks: [DownloadDataTask]) async {}
     public func nextBlockForDownloading() async -> DownloadDataTask? { nil }
     public func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) async {}
-    public func deleteDownloadDataTask(id: String) async throws {}
     public func downloadDataTask(for blockId: String) async -> DownloadDataTask? { nil }
     public func saveOfflineProgress(progress: OfflineProgress) async {}
     public func loadProgress(for blockID: String) async -> OfflineProgress? { nil }
     public func loadAllOfflineProgress() async -> [OfflineProgress] { [] }
     public func deleteProgress(for blockID: String) async {}
     public func deleteAllProgress() async {}
-    public func saveDownloadDataTask(_ task: DownloadDataTask) {}
+    public func saveDownloadDataTask(_ task: DownloadDataTask) async {}
     public func getDownloadDataTasks() async -> [DownloadDataTask] {[]}
     public func getDownloadDataTasksForCourse(_ courseId: String) async -> [DownloadDataTask] {[]}
     public func deleteDownloadDataTasks(ids: [String]) async {}
