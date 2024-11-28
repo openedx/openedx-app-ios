@@ -652,10 +652,13 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadHTMLWithProgress(_ download: DownloadDataTask) async throws {
+        guard state != .paused else { return }
         guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
+            await delete(tasks: [download])
+            try await newDownload()
             return
         }
-        
+        currentDownloadEventPublisher.send(.started(download))
         if let index = queue.firstIndex(where: {$0.id == download.id}) {
             queue[index].state = .inProgress
         }
@@ -671,7 +674,8 @@ public class DownloadManager: DownloadManagerProtocol {
             let file = folderURL.appendingPathComponent(fileName)
             return (file, [.createIntermediateDirectories, .removePreviousFile])
         }
-
+        currentDownloadTask = download
+        currentDownloadTask?.state = .inProgress
         if let resumeData = download.resumeData {
             downloadRequest = AF.download(resumingWith: resumeData, to: destination)
         } else {
