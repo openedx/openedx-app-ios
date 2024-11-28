@@ -2547,19 +2547,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 		perform?(`id`, `state`, `resumeData`)
     }
 
-    open func deleteDownloadDataTask(id: String) throws {
-        addInvocation(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`)))
-		let perform = methodPerformValue(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`))) as? (String) -> Void
-		perform?(`id`)
-		do {
-		    _ = try methodReturnValue(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`))).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
-    }
-
     open func saveDownloadDataTask(_ task: DownloadDataTask) {
         addInvocation(.m_saveDownloadDataTask__task(Parameter<DownloadDataTask>.value(`task`)))
 		let perform = methodPerformValue(.m_saveDownloadDataTask__task(Parameter<DownloadDataTask>.value(`task`))) as? (DownloadDataTask) -> Void
@@ -2607,6 +2594,12 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 		return __value
     }
 
+    open func deleteDownloadDataTasks(ids: [String]) {
+        addInvocation(.m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>.value(`ids`)))
+		let perform = methodPerformValue(.m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>.value(`ids`))) as? ([String]) -> Void
+		perform?(`ids`)
+    }
+
 
     fileprivate enum MethodType {
         case m_set__userId_userId(Parameter<Int>)
@@ -2621,11 +2614,11 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         case m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>, Parameter<DownloadQuality>)
         case m_nextBlockForDownloading
         case m_updateDownloadState__id_idstate_stateresumeData_resumeData(Parameter<String>, Parameter<DownloadState>, Parameter<Data?>)
-        case m_deleteDownloadDataTask__id_id(Parameter<String>)
         case m_saveDownloadDataTask__task(Parameter<DownloadDataTask>)
         case m_downloadDataTask__for_blockId(Parameter<String>)
         case m_getDownloadDataTasks
         case m_getDownloadDataTasksForCourse__courseId(Parameter<String>)
+        case m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -2677,11 +2670,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResumedata, rhs: rhsResumedata, with: matcher), lhsResumedata, rhsResumedata, "resumeData"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_deleteDownloadDataTask__id_id(let lhsId), .m_deleteDownloadDataTask__id_id(let rhsId)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher), lhsId, rhsId, "id"))
-				return Matcher.ComparisonResult(results)
-
             case (.m_saveDownloadDataTask__task(let lhsTask), .m_saveDownloadDataTask__task(let rhsTask)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "_ task"))
@@ -2697,6 +2685,11 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case (.m_getDownloadDataTasksForCourse__courseId(let lhsCourseid), .m_getDownloadDataTasksForCourse__courseId(let rhsCourseid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_deleteDownloadDataTasks__ids_ids(let lhsIds), .m_deleteDownloadDataTasks__ids_ids(let rhsIds)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIds, rhs: rhsIds, with: matcher), lhsIds, rhsIds, "ids"))
 				return Matcher.ComparisonResult(results)
             default: return .none
             }
@@ -2716,11 +2709,11 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case let .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(p0, p1): return p0.intValue + p1.intValue
             case .m_nextBlockForDownloading: return 0
             case let .m_updateDownloadState__id_idstate_stateresumeData_resumeData(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
-            case let .m_deleteDownloadDataTask__id_id(p0): return p0.intValue
             case let .m_saveDownloadDataTask__task(p0): return p0.intValue
             case let .m_downloadDataTask__for_blockId(p0): return p0.intValue
             case .m_getDownloadDataTasks: return 0
             case let .m_getDownloadDataTasksForCourse__courseId(p0): return p0.intValue
+            case let .m_deleteDownloadDataTasks__ids_ids(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -2737,11 +2730,11 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality: return ".addToDownloadQueue(blocks:downloadQuality:)"
             case .m_nextBlockForDownloading: return ".nextBlockForDownloading()"
             case .m_updateDownloadState__id_idstate_stateresumeData_resumeData: return ".updateDownloadState(id:state:resumeData:)"
-            case .m_deleteDownloadDataTask__id_id: return ".deleteDownloadDataTask(id:)"
             case .m_saveDownloadDataTask__task: return ".saveDownloadDataTask(_:)"
             case .m_downloadDataTask__for_blockId: return ".downloadDataTask(for:)"
             case .m_getDownloadDataTasks: return ".getDownloadDataTasks()"
             case .m_getDownloadDataTasksForCourse__courseId: return ".getDownloadDataTasksForCourse(_:)"
+            case .m_deleteDownloadDataTasks__ids_ids: return ".deleteDownloadDataTasks(ids:)"
             }
         }
     }
@@ -2841,16 +2834,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
-        public static func deleteDownloadDataTask(id: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_deleteDownloadDataTask__id_id(`id`), products: willThrow.map({ StubProduct.throw($0) }))
-        }
-        public static func deleteDownloadDataTask(id: Parameter<String>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
-            let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_deleteDownloadDataTask__id_id(`id`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
-        }
     }
 
     public struct Verify {
@@ -2869,11 +2852,11 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, downloadQuality: Parameter<DownloadQuality>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(`blocks`, `downloadQuality`))}
         public static func nextBlockForDownloading() -> Verify { return Verify(method: .m_nextBlockForDownloading)}
         public static func updateDownloadState(id: Parameter<String>, state: Parameter<DownloadState>, resumeData: Parameter<Data?>) -> Verify { return Verify(method: .m_updateDownloadState__id_idstate_stateresumeData_resumeData(`id`, `state`, `resumeData`))}
-        public static func deleteDownloadDataTask(id: Parameter<String>) -> Verify { return Verify(method: .m_deleteDownloadDataTask__id_id(`id`))}
         public static func saveDownloadDataTask(_ task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_saveDownloadDataTask__task(`task`))}
         public static func downloadDataTask(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_downloadDataTask__for_blockId(`blockId`))}
         public static func getDownloadDataTasks() -> Verify { return Verify(method: .m_getDownloadDataTasks)}
         public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadDataTasksForCourse__courseId(`courseId`))}
+        public static func deleteDownloadDataTasks(ids: Parameter<[String]>) -> Verify { return Verify(method: .m_deleteDownloadDataTasks__ids_ids(`ids`))}
     }
 
     public struct Perform {
@@ -2917,9 +2900,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         public static func updateDownloadState(id: Parameter<String>, state: Parameter<DownloadState>, resumeData: Parameter<Data?>, perform: @escaping (String, DownloadState, Data?) -> Void) -> Perform {
             return Perform(method: .m_updateDownloadState__id_idstate_stateresumeData_resumeData(`id`, `state`, `resumeData`), performs: perform)
         }
-        public static func deleteDownloadDataTask(id: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_deleteDownloadDataTask__id_id(`id`), performs: perform)
-        }
         public static func saveDownloadDataTask(_ task: Parameter<DownloadDataTask>, perform: @escaping (DownloadDataTask) -> Void) -> Perform {
             return Perform(method: .m_saveDownloadDataTask__task(`task`), performs: perform)
         }
@@ -2931,6 +2911,9 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         }
         public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getDownloadDataTasksForCourse__courseId(`courseId`), performs: perform)
+        }
+        public static func deleteDownloadDataTasks(ids: Parameter<[String]>, perform: @escaping ([String]) -> Void) -> Perform {
+            return Perform(method: .m_deleteDownloadDataTasks__ids_ids(`ids`), performs: perform)
         }
     }
 
@@ -3579,15 +3562,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		}
     }
 
-    open func deleteFile(blocks: [CourseBlock]) {
-        addInvocation(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
-		perform?(`blocks`)
-    }
-
-    open func deleteAllFiles() {
-        addInvocation(.m_deleteAllFiles)
-		let perform = methodPerformValue(.m_deleteAllFiles) as? () -> Void
+    open func deleteAll() {
+        addInvocation(.m_deleteAll)
+		let perform = methodPerformValue(.m_deleteAll) as? () -> Void
 		perform?()
     }
 
@@ -3651,6 +3628,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		perform?()
     }
 
+    open func delete(blocks: [CourseBlock], courseId: String) {
+        addInvocation(.m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>.value(`blocks`), Parameter<String>.value(`courseId`)))
+		let perform = methodPerformValue(.m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>.value(`blocks`), Parameter<String>.value(`courseId`))) as? ([CourseBlock], String) -> Void
+		perform?(`blocks`, `courseId`)
+    }
+
 
     fileprivate enum MethodType {
         case m_publisher
@@ -3662,13 +3645,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_cancelDownloading__task_task(Parameter<DownloadDataTask>)
         case m_cancelDownloading__courseId_courseId(Parameter<String>)
         case m_cancelAllDownloading
-        case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
-        case m_deleteAllFiles
+        case m_deleteAll
         case m_fileUrl__for_blockId(Parameter<String>)
         case m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>)
         case m_resumeDownloading
         case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
         case m_removeAppSupportDirectoryUnusedContent
+        case m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>, Parameter<String>)
         case p_currentDownloadTask_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -3707,12 +3690,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 
             case (.m_cancelAllDownloading, .m_cancelAllDownloading): return .match
 
-            case (.m_deleteFile__blocks_blocks(let lhsBlocks), .m_deleteFile__blocks_blocks(let rhsBlocks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_deleteAllFiles, .m_deleteAllFiles): return .match
+            case (.m_deleteAll, .m_deleteAll): return .match
 
             case (.m_fileUrl__for_blockId(let lhsBlockid), .m_fileUrl__for_blockId(let rhsBlockid)):
 				var results: [Matcher.ParameterComparisonResult] = []
@@ -3732,6 +3710,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_removeAppSupportDirectoryUnusedContent, .m_removeAppSupportDirectoryUnusedContent): return .match
+
+            case (.m_delete__blocks_blockscourseId_courseId(let lhsBlocks, let lhsCourseid), .m_delete__blocks_blockscourseId_courseId(let rhsBlocks, let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				return Matcher.ComparisonResult(results)
             case (.p_currentDownloadTask_get,.p_currentDownloadTask_get): return Matcher.ComparisonResult.match
             default: return .none
             }
@@ -3748,13 +3732,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case let .m_cancelDownloading__task_task(p0): return p0.intValue
             case let .m_cancelDownloading__courseId_courseId(p0): return p0.intValue
             case .m_cancelAllDownloading: return 0
-            case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
-            case .m_deleteAllFiles: return 0
+            case .m_deleteAll: return 0
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
             case let .m_updateUnzippedFileSize__for_sequentials(p0): return p0.intValue
             case .m_resumeDownloading: return 0
             case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
             case .m_removeAppSupportDirectoryUnusedContent: return 0
+            case let .m_delete__blocks_blockscourseId_courseId(p0, p1): return p0.intValue + p1.intValue
             case .p_currentDownloadTask_get: return 0
             }
         }
@@ -3769,13 +3753,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_cancelDownloading__task_task: return ".cancelDownloading(task:)"
             case .m_cancelDownloading__courseId_courseId: return ".cancelDownloading(courseId:)"
             case .m_cancelAllDownloading: return ".cancelAllDownloading()"
-            case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
-            case .m_deleteAllFiles: return ".deleteAllFiles()"
+            case .m_deleteAll: return ".deleteAll()"
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
             case .m_updateUnzippedFileSize__for_sequentials: return ".updateUnzippedFileSize(for:)"
             case .m_resumeDownloading: return ".resumeDownloading()"
             case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
             case .m_removeAppSupportDirectoryUnusedContent: return ".removeAppSupportDirectoryUnusedContent()"
+            case .m_delete__blocks_blockscourseId_courseId: return ".delete(blocks:courseId:)"
             case .p_currentDownloadTask_get: return "[get] .currentDownloadTask"
             }
         }
@@ -3940,13 +3924,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelDownloading(task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_cancelDownloading__task_task(`task`))}
         public static func cancelDownloading(courseId: Parameter<String>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseId(`courseId`))}
         public static func cancelAllDownloading() -> Verify { return Verify(method: .m_cancelAllDownloading)}
-        public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
-        public static func deleteAllFiles() -> Verify { return Verify(method: .m_deleteAllFiles)}
+        public static func deleteAll() -> Verify { return Verify(method: .m_deleteAll)}
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
         public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>) -> Verify { return Verify(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`))}
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
         public static func removeAppSupportDirectoryUnusedContent() -> Verify { return Verify(method: .m_removeAppSupportDirectoryUnusedContent)}
+        public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>) -> Verify { return Verify(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`))}
         public static var currentDownloadTask: Verify { return Verify(method: .p_currentDownloadTask_get) }
     }
 
@@ -3981,11 +3965,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelAllDownloading(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_cancelAllDownloading, performs: perform)
         }
-        public static func deleteFile(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
-            return Perform(method: .m_deleteFile__blocks_blocks(`blocks`), performs: perform)
-        }
-        public static func deleteAllFiles(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_deleteAllFiles, performs: perform)
+        public static func deleteAll(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_deleteAll, performs: perform)
         }
         public static func fileUrl(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_fileUrl__for_blockId(`blockId`), performs: perform)
@@ -4001,6 +3982,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func removeAppSupportDirectoryUnusedContent(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_removeAppSupportDirectoryUnusedContent, performs: perform)
+        }
+        public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>, perform: @escaping ([CourseBlock], String) -> Void) -> Perform {
+            return Perform(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`), performs: perform)
         }
     }
 
