@@ -110,13 +110,15 @@ public struct DownloadDataTask: Identifiable, Hashable, Sendable {
             url = htmlUrl
             fileExtension = url.pathExtension
             fileSize = html.fileSize
+            self.lastModified = html.lastModified
+            self.type = .html
         } else if let video = block.encodedVideo?.video(downloadQuality: downloadQuality),
                   let videoUrlString = video.url,
                   let videoUrl = URL(string: videoUrlString) {
             url = videoUrl
             fileExtension = videoUrl.pathExtension
             fileSize = video.fileSize ?? 0
-            self.lastModified = block.offlineDownload?.lastModified
+            self.type = .video
         } else { return nil }
         let fileName = "\(block.id).\(fileExtension)"
         
@@ -131,7 +133,6 @@ public struct DownloadDataTask: Identifiable, Hashable, Sendable {
         self.progress = Double.zero
         self.resumeData = nil
         self.state = .waiting
-        self.type = .video
         self.fileSize = fileSize
     }
 }
@@ -248,24 +249,43 @@ public class DownloadManager: DownloadManagerProtocol {
                 .store(in: &cancellables)
             self.backgroundTask()
         }
-        //TODO: Check is we need that
+
         NotificationCenter.default.publisher(for: .tryDownloadAgain)
             .compactMap { $0.object as? [DownloadDataTask] }
             .sink { [weak self] downloads in
-//                Task {
-//                    await self?.tryDownloadAgain(downloads: downloads)
-//                }
+                Task {
+                    await self?.tryDownloadAgain(downloads: downloads)
+                }
             }
             .store(in: &cancellables)
     }
     
-    //TODO: Check is we need that
-//    private func tryDownloadAgain(downloads: [DownloadDataTask]) async {
-//        await persistence.addToDownloadQueue(tasks: downloads)
-//        Task {
-//            try? await newDownload()
-//        }
-//    }
+    private func tryDownloadAgain(downloads: [DownloadDataTask]) async {
+        var tasksToInsert: [DownloadDataTask] = []
+
+        if queue.isEmpty {
+            _ = await getDownloadTasks()
+        }
+
+        for task in downloads {
+            if let index = queue.firstIndex(where: { $0.id == task.id }) {
+                queue[index].state = .waiting
+            } else {
+                queue.append(task)
+                var newTask = task
+                newTask.state = .waiting
+                tasksToInsert.append(newTask)
+            }
+        }
+
+        if !tasksToInsert.isEmpty {
+            await persistence.addToDownloadQueue(tasks: tasksToInsert)
+        }
+
+        Task {
+            try? await newDownload()
+        }
+    }
 
     // MARK: - Publishers
 

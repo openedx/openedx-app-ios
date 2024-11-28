@@ -125,6 +125,30 @@ public final class CorePersistence: CorePersistenceProtocol {
             }
             return dictionary
         }
+        
+        await insertDownloadData(objects: objects)
+    }
+    
+    public func addToDownloadQueue(tasks: [DownloadDataTask]) async {
+        let objects: [[String: Any]] = tasks.map { task in
+            [
+                "id":  downloadDataId(from: task.id),
+                "blockId": task.blockId,
+                "userId": task.userId,
+                "courseId": task.courseId,
+                "url": task.url,
+                "fileName": task.fileName,
+                "displayName": task.displayName,
+                "progress": task.progress,
+                "state": task.state,
+                "type": task.type,
+                "fileSize": task.fileSize,
+            ]
+        }
+        await insertDownloadData(objects: objects)
+    }
+    
+    func insertDownloadData(objects: [[String: Any]]) async {
         let batchInsertRequest = NSBatchInsertRequest(entityName: "CDDownloadData", objects: objects)
         batchInsertRequest.resultType = .objectIDs
         await container.performBackgroundTask { context in

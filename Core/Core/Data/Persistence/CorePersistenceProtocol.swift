@@ -13,7 +13,7 @@ public protocol CorePersistenceProtocol: Sendable {
     func set(userId: Int)
     func getUserID() -> Int?
     @MainActor func publisher() throws -> AnyPublisher<Int, Never>
-//    func addToDownloadQueue(tasks: [DownloadDataTask]) async
+    func addToDownloadQueue(tasks: [DownloadDataTask]) async
     func saveOfflineProgress(progress: OfflineProgress) async
     func loadProgress(for blockID: String) async -> OfflineProgress?
     func loadAllOfflineProgress() async -> [OfflineProgress]
@@ -37,7 +37,7 @@ public final class CorePersistenceMock: CorePersistenceProtocol, @unchecked Send
     public func getUserID() -> Int? {1}
     public func publisher() -> AnyPublisher<Int, Never> { Just(0).eraseToAnyPublisher() }
     public func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) async {}
-//    public func addToDownloadQueue(tasks: [DownloadDataTask]) async {}
+    public func addToDownloadQueue(tasks: [DownloadDataTask]) async {}
     public func nextBlockForDownloading() async -> DownloadDataTask? { nil }
     public func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) async {}
     public func deleteDownloadDataTask(id: String) async throws {}
