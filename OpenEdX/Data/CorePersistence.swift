@@ -78,7 +78,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     public func addToDownloadQueue(
         blocks: [CourseBlock],
         downloadQuality: DownloadQuality
-    ) async {
+    ) {
         let userId = getUserId32() ?? 0
         let objects: [[String: Any]] = blocks.compactMap { block -> [String: Any]? in
             let downloadDataId = downloadDataId(from: block.id)
@@ -118,7 +118,7 @@ public final class CorePersistence: CorePersistenceProtocol {
                 "progress": Double.zero,
                 "state": DownloadState.waiting.rawValue,
                 "type": block.offlineDownload != nil ? DownloadType.html.rawValue : DownloadType.video.rawValue,
-                "fileSize": fileSize ?? 0,
+                "fileSize": fileSize ?? 0
             ]
             if let lastModified = block.offlineDownload?.lastModified {
                 dictionary["lastModified"] = lastModified
@@ -126,13 +126,13 @@ public final class CorePersistence: CorePersistenceProtocol {
             return dictionary
         }
         
-        await insertDownloadData(objects: objects)
+        insertDownloadData(objects: objects)
     }
     
-    public func addToDownloadQueue(tasks: [DownloadDataTask]) async {
+    public func addToDownloadQueue(tasks: [DownloadDataTask]) {
         let objects: [[String: Any]] = tasks.map { task in
             [
-                "id":  downloadDataId(from: task.id),
+                "id": downloadDataId(from: task.id),
                 "blockId": task.blockId,
                 "userId": task.userId,
                 "courseId": task.courseId,
@@ -142,16 +142,16 @@ public final class CorePersistence: CorePersistenceProtocol {
                 "progress": task.progress,
                 "state": task.state,
                 "type": task.type,
-                "fileSize": task.fileSize,
+                "fileSize": task.fileSize
             ]
         }
-        await insertDownloadData(objects: objects)
+        insertDownloadData(objects: objects)
     }
     
-    func insertDownloadData(objects: [[String: Any]]) async {
+    func insertDownloadData(objects: [[String: Any]]) {
         let batchInsertRequest = NSBatchInsertRequest(entityName: "CDDownloadData", objects: objects)
         batchInsertRequest.resultType = .objectIDs
-        await container.performBackgroundTask { context in
+        container.performBackgroundTask { context in
             do {
                 let batchInsertResult = try context.execute(batchInsertRequest) as? NSBatchInsertResult
                 if let objectIDs = batchInsertResult?.result as? [NSManagedObjectID] {
@@ -248,10 +248,10 @@ public final class CorePersistence: CorePersistenceProtocol {
         id: String,
         state: DownloadState,
         resumeData: Data?
-    ) async {
+    ) {
         let dataId = downloadDataId(from: id)
         let userId = getUserId32()
-        return await container.performBackgroundTask { context in
+        container.performBackgroundTask { context in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .id(dataId),
                 context: context,
@@ -274,8 +274,8 @@ public final class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func deleteDownloadDataTasks(ids: [String]) async {
-        await container.performBackgroundTask { context in
+    public func deleteDownloadDataTasks(ids: [String]) {
+        container.performBackgroundTask { context in
             let request: NSFetchRequest<any NSFetchRequestResult> = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id IN %@", ids)
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: request)
@@ -437,7 +437,7 @@ public final class CorePersistence: CorePersistenceProtocol {
         guard let userId else {
             return id
         }
-        if id.contains(String(userId)) {
+        if id.contains(String("\(userId)_")) {
             return id
         }
         return "\(userId)_\(id)"

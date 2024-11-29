@@ -237,7 +237,7 @@ public class DownloadManager: DownloadManagerProtocol {
                     Task {
                         switch state {
                         case .notReachable:
-                            await self.waitingAll()
+                            self.waitingAll()
                         case .reachable:
                             try? await self.resumeDownloading()
                         case .none:
@@ -278,12 +278,10 @@ public class DownloadManager: DownloadManagerProtocol {
         }
 
         if !tasksToInsert.isEmpty {
-            await persistence.addToDownloadQueue(tasks: tasksToInsert)
+            persistence.addToDownloadQueue(tasks: tasksToInsert)
         }
 
-        Task {
-            try? await newDownload()
-        }
+        try? newDownload()
     }
 
     // MARK: - Publishers
@@ -329,7 +327,7 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    public func addToDownloadQueue(blocks: [CourseBlock]) async throws {
+    public func addToDownloadQueue(blocks: [CourseBlock]) throws {
         if userCanDownload() {
             let newTasks = blocks.compactMap {
                 DownloadDataTask(
@@ -343,12 +341,12 @@ public class DownloadManager: DownloadManagerProtocol {
                 queue.append(task)
             }
 
-            await persistence.addToDownloadQueue(
+            persistence.addToDownloadQueue(
                 blocks: blocks,
                 downloadQuality: downloadQuality
             )
             currentDownloadEventPublisher.send(.added)
-            try await newDownload()
+            try newDownload()
         } else {
             throw NoWiFiError()
         }
@@ -360,7 +358,7 @@ public class DownloadManager: DownloadManagerProtocol {
         if queue.isEmpty {
             queue = await persistence.getDownloadDataTasks()
         }
-        try await newDownload()
+        try newDownload()
     }
 
     private func cancelCurrentTask() {
@@ -372,16 +370,16 @@ public class DownloadManager: DownloadManagerProtocol {
             cancelCurrentTask()
         }
         await delete(blocks: blocks, courseId: courseId)
-        try await newDownload()
+        try newDownload()
     }
 
-    public func cancelDownloading(task: DownloadDataTask) async throws {
+    public func cancelDownloading(task: DownloadDataTask) throws {
         if task.id == currentDownloadTask?.id {
             cancelCurrentTask()
         }
 
-        await delete(tasks: [task])
-        try await newDownload()
+        delete(tasks: [task])
+        try newDownload()
     }
 
     public func cancelDownloading(courseId: String) async throws {
@@ -390,18 +388,18 @@ public class DownloadManager: DownloadManagerProtocol {
         }
 
         let tasks = await getDownloadTasksForCourse(courseId)
-        await delete(tasks: tasks)
+        delete(tasks: tasks)
         currentDownloadEventPublisher.send(.courseCanceled(courseId))
-        try await newDownload()
+        try newDownload()
     }
 
     public func cancelAllDownloading() async throws {
         cancelCurrentTask()
 
         let tasks = await getDownloadTasks().filter { $0.state != .finished }
-        await delete(tasks: tasks)
+        delete(tasks: tasks)
         currentDownloadEventPublisher.send(.allCanceled)
-        try await newDownload()
+        try newDownload()
     }
 
 
@@ -410,7 +408,7 @@ public class DownloadManager: DownloadManagerProtocol {
         let tasksForDelete = tasks.filter {  task in
             blocks.first(where: { $0.id == task.blockId }) != nil
         }
-        await delete(tasks: tasksForDelete)
+        delete(tasks: tasksForDelete)
     }
 
 //swift6
@@ -471,7 +469,7 @@ public class DownloadManager: DownloadManagerProtocol {
     
     public func deleteAll() async {
         let downloadsData = await getDownloadTasks()
-        await delete(tasks: downloadsData)
+        delete(tasks: downloadsData)
         currentDownloadEventPublisher.send(.clearedAll)
     }
 
@@ -521,7 +519,7 @@ public class DownloadManager: DownloadManagerProtocol {
     // MARK: - Private Intents
 
     @MainActor
-    private func newDownload() async throws {
+    private func newDownload() throws {
         guard state != .paused else { return }
         guard userCanDownload() else {
             throw NoWiFiError()
@@ -545,13 +543,13 @@ public class DownloadManager: DownloadManagerProtocol {
         }
         if !connectivity.isInternetAvaliable {
             failedDownloads.append(downloadTask)
-            try await cancelDownloading(task: downloadTask)
+            try cancelDownloading(task: downloadTask)
             return
         }
         if downloadTask.type == .html || downloadTask.type == .problem {
-            try await downloadHTMLWithProgress(downloadTask)
+            try downloadHTMLWithProgress(downloadTask)
         } else {
-            try await downloadFileWithProgress(downloadTask)
+            try downloadFileWithProgress(downloadTask)
         }
     }
 
@@ -567,11 +565,11 @@ public class DownloadManager: DownloadManagerProtocol {
         }
     }
 
-    private func downloadFileWithProgress(_ download: DownloadDataTask) async throws {
+    private func downloadFileWithProgress(_ download: DownloadDataTask) throws {
         guard state != .paused else { return }
         guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
-            await delete(tasks: [download])
-            try await newDownload()
+            delete(tasks: [download])
+            try newDownload()
             return
         }
 
@@ -581,7 +579,7 @@ public class DownloadManager: DownloadManagerProtocol {
             queue[index].state = .inProgress
         }
         
-        await persistence.updateDownloadState(
+        persistence.updateDownloadState(
             id: download.id,
             state: .inProgress,
             resumeData: download.resumeData
@@ -625,37 +623,34 @@ public class DownloadManager: DownloadManagerProtocol {
                     return
                 }
             }
-            Task {
-                await self.persistence.updateDownloadState(
+            
+                self.persistence.updateDownloadState(
                     id: download.id,
                     state: state,
                     resumeData: nil
                 )
-                await MainActor.run {
-                    if let index = self.queue.firstIndex(where: {$0.id == download.id}) {
-                        self.queue[index].state = state
-                    }
-                    self.currentDownloadTask?.state = state
-                    
-                    if state != .waiting {
-                        self.currentDownloadEventPublisher.send(.finished(download))
-                        Task {
-                            try? await self.newDownload()
-                        }
-                    } else {
-                        self.currentDownloadEventPublisher.send(.paused(download))
-                    }
+            DispatchQueue.main.async {
+                if let index = self.queue.firstIndex(where: {$0.id == download.id}) {
+                    self.queue[index].state = state
+                }
+                self.currentDownloadTask?.state = state
+                
+                if state != .waiting {
+                    self.currentDownloadEventPublisher.send(.finished(download))
+                    try? self.newDownload()
+                } else {
+                    self.currentDownloadEventPublisher.send(.paused(download))
                 }
             }
         }
         state = .downloading
     }
 
-    private func downloadHTMLWithProgress(_ download: DownloadDataTask) async throws {
+    private func downloadHTMLWithProgress(_ download: DownloadDataTask) throws {
         guard state != .paused else { return }
         guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
-            await delete(tasks: [download])
-            try await newDownload()
+            delete(tasks: [download])
+            try newDownload()
             return
         }
         currentDownloadEventPublisher.send(.started(download))
@@ -663,7 +658,7 @@ public class DownloadManager: DownloadManagerProtocol {
             queue[index].state = .inProgress
         }
 
-        await persistence.updateDownloadState(
+        persistence.updateDownloadState(
             id: download.id,
             state: .inProgress,
             resumeData: download.resumeData
@@ -681,7 +676,6 @@ public class DownloadManager: DownloadManagerProtocol {
         } else {
             downloadRequest = AF.download(url, to: destination)
         }
-
         downloadRequest?.downloadProgress { [weak self] prog in
             guard let self else { return }
             let fractionCompleted = prog.fractionCompleted
@@ -694,25 +688,25 @@ public class DownloadManager: DownloadManagerProtocol {
         }
 
         downloadRequest?.responseURL { [weak self] response in
-            guard let self else { return }
+            guard let self else {
+                return
+            }
             if let error = response.error {
                 if error.asAFError?.isExplicitlyCancelledError == false {
                     failedDownloads.append(download)
-                    Task {
-                        try? await self.newDownload()
+                    DispatchQueue.main.async {
+                        try? self.newDownload()
                     }
                     return
                 }
             }
             if let fileURL = response.fileURL {
-                Task {
-                    await unzipFile(url: fileURL)
-                    await MainActor.run {
-                        if let index = self.queue.firstIndex(where: {$0.id == download.id}) {
-                            self.queue[index].state = .finished
-                        }
+                DispatchQueue.main.async {
+                    self.unzipFile(url: fileURL)
+                    if let index = self.queue.firstIndex(where: {$0.id == download.id}) {
+                        self.queue[index].state = .finished
                     }
-                    await self.persistence.updateDownloadState(
+                    self.persistence.updateDownloadState(
                         id: download.id,
                         state: .finished,
                         resumeData: nil
@@ -721,21 +715,21 @@ public class DownloadManager: DownloadManagerProtocol {
                     DispatchQueue.main.async {
                         self.currentDownloadEventPublisher.send(.finished(download))
                     }
-                    try? await self.newDownload()
+                    try? self.newDownload()
                 }
             }
         }
         state = .downloading
     }
 
-    private func waitingAll() async {
+    private func waitingAll() {
         guard state != .paused else { return }
         downloadRequest?.suspend()
 
         for i in 0 ..< queue.count where queue[i].state == .inProgress {
             queue[i].state = .waiting
 
-            await self.persistence.updateDownloadState(
+            self.persistence.updateDownloadState(
                 id: queue[i].id,
                 state: .waiting,
                 resumeData: nil
@@ -745,18 +739,18 @@ public class DownloadManager: DownloadManagerProtocol {
         state = .paused
     }
 
-    private func delete(tasks: [DownloadDataTask]) async {
+    private func delete(tasks: [DownloadDataTask]) {
         let ids = tasks.map { $0.id }
         let names = tasks.map { $0.fileName }
 
-        await deleteTasks(with: ids, and: names)
+        deleteTasks(with: ids, and: names)
         currentDownloadEventPublisher.send(.deletedFile(tasks.map({$0.blockId})))
     }
     
-    private func deleteTasks(with ids: [String], and names: [String]) async {
+    private func deleteTasks(with ids: [String], and names: [String]) {
         queue.removeAll(where: {ids.contains($0.id)})
         removeFiles(names: names)
-        await persistence.deleteDownloadDataTasks(ids: ids)
+        persistence.deleteDownloadDataTasks(ids: ids)
     }
     
     private func removeFiles(names: [String]) {
@@ -780,7 +774,7 @@ public class DownloadManager: DownloadManagerProtocol {
                 Task {
                     switch state {
                     case.didBecomeActive: try? await self.resumeDownloading()
-                    case .didEnterBackground: await self.waitingAll()
+                    case .didEnterBackground: self.waitingAll()
                     }
                 }
             }
