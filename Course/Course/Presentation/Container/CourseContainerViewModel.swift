@@ -10,6 +10,7 @@ import SwiftUI
 import Core
 import OEXFoundation
 import Combine
+// swiftlint:disable file_length
 
 public enum CourseTab: Int, CaseIterable, Identifiable, Sendable {
     public var id: Int {
