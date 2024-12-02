@@ -402,7 +402,6 @@ public class DownloadManager: DownloadManagerProtocol {
         try newDownload()
     }
 
-
     public func delete(blocks: [CourseBlock], courseId: String) async {
         let tasks = await getDownloadTasksForCourse(courseId)
         let tasksForDelete = tasks.filter {  task in

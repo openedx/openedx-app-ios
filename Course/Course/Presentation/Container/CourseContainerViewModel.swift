@@ -775,9 +775,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func stopAllDownloads() async {
         do {
-            if let courseID = self.courseStructure?.id {
-                try await manager.cancelDownloading(courseId: courseID)
-            }
+            try await manager.cancelAllDownloading()
             await setDownloadsStates(courseStructure: self.courseStructure)
             await getDownloadingProgress()
         } catch {
@@ -1069,6 +1067,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                     guard let self else { return }
                     Task {
                         await self.stopAllDownloads()
+                        if let courseID = self.courseStructure?.id {
+                            await self.manager.delete(blocks: blocksToRemove, courseId: courseID)
+                        }
                     }
                     self.router.dismiss(animated: true)
                 },
