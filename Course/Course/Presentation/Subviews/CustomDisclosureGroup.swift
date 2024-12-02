@@ -222,21 +222,13 @@ struct CustomDisclosureGroup: View {
         
         guard let sequentialProgress = sequential.sequentialProgress,
               let assignmentType = sequentialProgress.assignmentType,
-              let numPointsEarned = sequentialProgress.numPointsEarned,
-              let numPointsPossible = sequentialProgress.numPointsPossible,
               let due = sequential.due else {
             return nil
         }
         
         let daysRemaining = getAssignmentStatus(for: due)
         
-        if let courseVertical = sequential.childs.first,
-           courseVertical.childs.isEmpty {
-            return "\(assignmentType) - \(daysRemaining)"
-        }
-        
-        return "\(assignmentType) - \(daysRemaining) - \(numPointsEarned) / \(numPointsPossible)"
-        
+        return "\(assignmentType) - \(daysRemaining)"
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
