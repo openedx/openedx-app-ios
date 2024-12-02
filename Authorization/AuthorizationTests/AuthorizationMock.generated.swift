@@ -2744,6 +2744,12 @@ open class CoreAnalyticsMock: CoreAnalytics, Mock {
 // MARK: - CorePersistenceProtocol
 
 open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
+    open func deleteDownloadDataTasks(ids: [String]) {
+        addInvocation(.m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>.value(`ids`)))
+        let perform = methodPerformValue(.m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>.value(`ids`))) as? ([String]) -> Void
+        perform?(`ids`)
+    }
+    
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy
@@ -2973,6 +2979,7 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         case m_downloadDataTask__for_blockId(Parameter<String>)
         case m_getDownloadDataTasks
         case m_getDownloadDataTasksForCourse__courseId(Parameter<String>)
+        case m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3045,6 +3052,10 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
 				return Matcher.ComparisonResult(results)
+            case (.m_deleteDownloadDataTasks__ids_ids(let lhsIds), .m_deleteDownloadDataTasks__ids_ids(let rhsIds)):
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIds, rhs: rhsIds, with: matcher), lhsIds, rhsIds, "ids"))
+                return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -3068,6 +3079,7 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case let .m_downloadDataTask__for_blockId(p0): return p0.intValue
             case .m_getDownloadDataTasks: return 0
             case let .m_getDownloadDataTasksForCourse__courseId(p0): return p0.intValue
+            case let .m_deleteDownloadDataTasks__ids_ids(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -3089,6 +3101,7 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case .m_downloadDataTask__for_blockId: return ".downloadDataTask(for:)"
             case .m_getDownloadDataTasks: return ".getDownloadDataTasks()"
             case .m_getDownloadDataTasksForCourse__courseId: return ".getDownloadDataTasksForCourse(_:)"
+            case .m_deleteDownloadDataTasks__ids_ids: return ".deleteDownloadDataTasks(ids:)"
             }
         }
     }

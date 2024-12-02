@@ -226,24 +226,6 @@ public final class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func nextBlockForDownloading() async -> DownloadDataTask? {
-        let userId = getUserId32()
-        return await container.performBackgroundTask { context in
-            let data = try? CorePersistenceHelper.fetchCDDownloadData(
-                predicate: .state(DownloadState.finished.rawValue),
-                fetchLimit: 1,
-                context: context,
-                userId: userId
-            )
-            
-            guard let downloadData = data?.first else {
-                return nil
-            }
-            
-            return DownloadDataTask(sourse: downloadData)
-        }
-    }
-
     public func updateDownloadState(
         id: String,
         state: DownloadState,

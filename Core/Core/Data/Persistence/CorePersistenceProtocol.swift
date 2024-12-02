@@ -21,7 +21,6 @@ public protocol CorePersistenceProtocol: Sendable {
     func deleteAllProgress() async
 
     func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality)
-    func nextBlockForDownloading() async -> DownloadDataTask?
     func updateDownloadState(id: String, state: DownloadState, resumeData: Data?)
     func saveDownloadDataTask(_ task: DownloadDataTask) async
     func downloadDataTask(for blockId: String) async -> DownloadDataTask?
@@ -38,7 +37,6 @@ public final class CorePersistenceMock: CorePersistenceProtocol, @unchecked Send
     public func publisher() -> AnyPublisher<Int, Never> { Just(0).eraseToAnyPublisher() }
     public func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) {}
     public func addToDownloadQueue(tasks: [DownloadDataTask]) {}
-    public func nextBlockForDownloading() async -> DownloadDataTask? { nil }
     public func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) {}
     public func downloadDataTask(for blockId: String) async -> DownloadDataTask? { nil }
     public func saveOfflineProgress(progress: OfflineProgress) async {}
