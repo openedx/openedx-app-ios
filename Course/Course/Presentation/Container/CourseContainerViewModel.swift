@@ -669,6 +669,45 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     }
 
     @MainActor
+    func collectBlocks(
+        chapter: CourseChapter,
+        blockId: String,
+        state: DownloadViewState,
+        videoOnly: Bool = false
+    ) async -> [CourseBlock] {
+        let sequentials = chapter.childs.filter { $0.id == blockId }
+        guard !sequentials.isEmpty else { return [] }
+        
+        let blocks = sequentials.flatMap { $0.childs.flatMap { $0.childs } }
+            .filter { $0.isDownloadable && (!videoOnly || $0.type == .video) }
+        
+        if state == .available, isShowedAllowLargeDownloadAlert(blocks: blocks) {
+            return []
+        }
+        
+        guard let sequential = chapter.childs.first(where: { $0.id == blockId }) else {
+            return []
+        }
+        
+        if state == .available {
+            analytics.bulkDownloadVideosSubsection(
+                courseID: courseStructure?.id ?? "",
+                sectionID: chapter.id,
+                subSectionID: sequential.id,
+                videos: blocks.count
+            )
+        } else if state == .finished {
+            analytics.bulkDeleteVideosSubsection(
+                courseID: courseStructure?.id ?? "",
+                subSectionID: sequential.id,
+                videos: blocks.count
+            )
+        }
+        
+        return blocks
+    }
+
+    @MainActor
     func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) -> Bool {
         waitingDownloads = nil
         if storage.allowedDownloadLargeFile == false, manager.isLargeVideosSize(blocks: blocks) {
