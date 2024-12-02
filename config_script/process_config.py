@@ -240,7 +240,7 @@ class ConfigurationManager:
 
     def add_microsoft_config(self, config, plist):
         microsoft = config.get('MICROSOFT', {})
-        key = microsoft.get('APP_ID')
+        key = microsoft.get('CLIENT_ID')
 
         if key:
             bundle_identifier = self.plist_manager.get_bundle_identifier()
