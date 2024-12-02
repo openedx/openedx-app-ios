@@ -91,7 +91,11 @@ public struct CourseProgress: Sendable {
     }
 }
 
-public struct CourseChapter: Identifiable, Sendable {
+public struct CourseChapter: Identifiable, Sendable, Equatable {
+    public static func == (lhs: CourseChapter, rhs: CourseChapter) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.blockId == rhs.blockId
+    }
 
     public let blockId: String
     public let id: String
@@ -114,7 +118,11 @@ public struct CourseChapter: Identifiable, Sendable {
     }
 }
 
-public struct CourseSequential: Identifiable, Sendable {
+public struct CourseSequential: Identifiable, Sendable, Equatable {
+    public static func == (lhs: CourseSequential, rhs: CourseSequential) -> Bool {
+        lhs.id == rhs.id &&
+        lhs.blockId == rhs.blockId
+    }
 
     public let blockId: String
     public let id: String
@@ -154,7 +162,7 @@ public struct CourseSequential: Identifiable, Sendable {
     }
 }
 
-public struct CourseVertical: Identifiable, Hashable, Sendable {
+public struct CourseVertical: Identifiable, Hashable, Sendable, Equatable {
     public func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
@@ -215,7 +223,7 @@ public struct SequentialProgress: Sendable {
     }
 }
 
-public struct CourseBlock: Hashable, Identifiable, Sendable {
+public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
     public static func == (lhs: CourseBlock, rhs: CourseBlock) -> Bool {
         lhs.id == rhs.id &&
         lhs.blockId == rhs.blockId &&

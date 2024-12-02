@@ -10,7 +10,11 @@ import Foundation
 public extension DataLayer {
     
     // MARK: - CourseMedia
-    struct CourseMedia: Decodable, Sendable {
+    struct CourseMedia: Decodable, Sendable, Equatable {
+        public static func == (lhs: DataLayer.CourseMedia, rhs: DataLayer.CourseMedia) -> Bool {
+            lhs.image == rhs.image
+        }
+
         public let image: DataLayer.Image
         
         public init(image: DataLayer.Image) {
@@ -61,7 +65,7 @@ public extension DataLayer {
 
 public extension DataLayer {
     // MARK: - Image
-    struct Image: Codable, Sendable {
+    struct Image: Codable, Sendable, Equatable {
         public let raw: String
         public let small: String
         public let large: String

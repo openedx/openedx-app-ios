@@ -637,12 +637,17 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     @MainActor
-    func collectBlocks(chapter: CourseChapter, blockId: String, state: DownloadViewState) async -> [CourseBlock] {
-        let sequentials = chapter.childs.filter({ $0.id == blockId })
+    func collectBlocks(
+        chapter: CourseChapter,
+        blockId: String,
+        state: DownloadViewState,
+        videoOnly: Bool = false
+    ) async -> [CourseBlock] {
+        let sequentials = chapter.childs.filter { $0.id == blockId }
         guard !sequentials.isEmpty else { return [] }
         
         let blocks = sequentials.flatMap { $0.childs.flatMap { $0.childs } }
-            .filter { $0.isDownloadable }
+            .filter { $0.isDownloadable && (!videoOnly || $0.type == .video) }
         
         if state == .available, isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return []
