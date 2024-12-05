@@ -15,6 +15,7 @@ public protocol MainScreenAnalytics {
     func mainProgramsTabClicked()
     func mainCoursesClicked()
     func mainProgramsClicked()
+    func notificationPermissionStatus(status: String)
 }
 
 #if DEBUG
@@ -25,5 +26,6 @@ public class MainScreenAnalyticsMock: MainScreenAnalytics {
     public func mainProgramsTabClicked() {}
     public func mainProgramsClicked() {}
     public func mainCoursesClicked() {}
+    public func notificationPermissionStatus(status: String) {}
 }
 #endif

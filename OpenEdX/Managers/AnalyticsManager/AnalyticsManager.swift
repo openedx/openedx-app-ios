@@ -166,6 +166,16 @@ class AnalyticsManager: AuthorizationAnalytics,
         trackScreenEvent(.mainDashboardProgramsClicked, biValue: .mainDashboardProgramsClicked)
     }
     
+    public func notificationPermissionStatus(status: String) {
+        trackEvent(
+            .notificationSettingPermissionStatus,
+            biValue: .notificationSettingPermissionStatus,
+            parameters: [
+                EventParamKey.status: status
+            ]
+        )
+    }
+    
     // MARK: Discovery
     
     public func discoverySearchBarClicked() {

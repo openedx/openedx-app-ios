@@ -154,6 +154,7 @@ public enum AnalyticsEvent: String {
     case discussionFollowToggle = "Dicussion:Post Follow Toggle"
     case discussionLikeToggle = "Discussion:Like Toggle"
     case discussionReportToggle = "Discussion:Report Toggle"
+    case notificationSettingPermissionStatus = "Notification:Setting Permission Status"    
 }
 
 public enum EventBIValue: String {
@@ -253,6 +254,7 @@ public enum EventBIValue: String {
     case discussionFollowToggle = "edx.bi.app.discussion.follow_toggle"
     case discussionLikeToggle = "edx.bi.app.discussion.like_toggle"
     case discussionReportToggle = "edx.bi.app.discussion.report_toggle"
+    case notificationSettingPermissionStatus = "edx.bi.app.notification.setting_permission.status"
 }
 
 public struct EventParamKey {
@@ -308,6 +310,7 @@ public struct EventParamKey {
     public static let like = "like"
     public static let report = "report"
     public static let discussionType = "discussion_type"
+    public static let status = "status"
 }
 
 public struct EventCategory {
