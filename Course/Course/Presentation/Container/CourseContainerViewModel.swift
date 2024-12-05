@@ -154,7 +154,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         addObservers()
     }
     
-    @MainActor
     func updateCourseIfNeeded(courseID: String) async {
         if updateCourseProgress {
             await getCourseBlocks(courseID: courseID, withProgress: false)

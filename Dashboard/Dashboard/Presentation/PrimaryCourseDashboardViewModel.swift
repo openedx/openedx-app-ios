@@ -82,7 +82,6 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
-    @MainActor
     private func updateEnrollmentsIfNeeded() {
         guard updateNeeded else { return }
         Task {
