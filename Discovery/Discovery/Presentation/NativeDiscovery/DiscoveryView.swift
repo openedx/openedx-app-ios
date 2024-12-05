@@ -149,7 +149,9 @@ public struct DiscoveryView: View {
                 }.accessibilityAction {}
 
                 if !viewModel.userloggedIn {
-                    LogistrationBottomView { buttonAction in
+                    LogistrationBottomView(
+                        ssoEnabled: viewModel.config.uiComponents.samlSSOLoginEnabled
+                    ) { buttonAction in
                         switch buttonAction {
                         case .signIn:
                             viewModel.router.showLoginScreen(sourceScreen: .discovery)

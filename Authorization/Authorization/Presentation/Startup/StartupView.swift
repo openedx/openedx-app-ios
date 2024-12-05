@@ -101,7 +101,9 @@ public struct StartupView: View {
                     }
                     .padding(.horizontal, isHorizontal ? 10 : 24)
                     
-                    LogistrationBottomView { buttonAction in
+                    LogistrationBottomView(
+                        ssoEnabled: viewModel.config.uiComponents.samlSSOLoginEnabled
+                    ) { buttonAction in
                         switch buttonAction {
                         case .signIn:
                             viewModel.router.showLoginScreen(sourceScreen: .startup)
@@ -139,7 +141,8 @@ struct StartupView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = StartupViewModel(
             router: AuthorizationRouterMock(),
-            analytics: CoreAnalyticsMock()
+            analytics: CoreAnalyticsMock(),
+            config: ConfigMock()
         )
         
         StartupView(viewModel: vm)
