@@ -12,15 +12,18 @@ import Core
 public class StartupViewModel: ObservableObject {
     let router: AuthorizationRouter
     let analytics: CoreAnalytics
+    let config: ConfigProtocol
     
     @Published var searchQuery: String?
     
     public init(
         router: AuthorizationRouter,
-        analytics: CoreAnalytics
+        analytics: CoreAnalytics,
+        config: ConfigProtocol
     ) {
         self.router = router
         self.analytics = analytics
+        self.config = config
     }
     
     func logAnalytics(searchQuery: String?) {
