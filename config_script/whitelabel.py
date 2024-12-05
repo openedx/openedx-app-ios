@@ -430,7 +430,7 @@ class WhitelabelApp:
             logging.debug("DEVELOPMENT_TEAM for '"+target+"' target was set successfuly")
         # if nothing was found
         elif re.search(parameter_regex, config_file_string) is None:
-                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+" target project file")
+                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+"' target project file")
         else:
             logging.debug("Looks like DEVELOPMENT_TEAM for '"+target+"' target is set already")
     
