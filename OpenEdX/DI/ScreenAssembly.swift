@@ -74,7 +74,8 @@ class ScreenAssembly: Assembly {
         container.register(StartupViewModel.self) { @MainActor r in
             StartupViewModel(
                 router: r.resolve(AuthorizationRouter.self)!,
-                analytics: r.resolve(CoreAnalytics.self)!
+                analytics: r.resolve(CoreAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
         
