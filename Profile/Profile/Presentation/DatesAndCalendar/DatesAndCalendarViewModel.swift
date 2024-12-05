@@ -99,7 +99,6 @@ public final class DatesAndCalendarViewModel: ObservableObject {
         self.calendarNameHint = ProfileLocalization.Calendar.courseDates((Bundle.main.applicationName ?? ""))
     }
     
-    @MainActor
     var isInternetAvaliable: Bool {
         let avaliable = connectivity.isInternetAvaliable
         if !avaliable {
@@ -125,10 +124,10 @@ public final class DatesAndCalendarViewModel: ObservableObject {
         $hideInactiveCourses
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] hide in
-            guard let self = self else { return }
-            self.profileStorage.hideInactiveCourses = hide
-        })
-        .store(in: &cancellables)
+                guard let self = self else { return }
+                self.profileStorage.hideInactiveCourses = hide
+            })
+            .store(in: &cancellables)
         
         $courseCalendarSync
             .receive(on: DispatchQueue.main)
@@ -145,7 +144,6 @@ public final class DatesAndCalendarViewModel: ObservableObject {
         updateCoursesCount()
     }
     
-    @MainActor
     func clearAllData() async {
         await calendarManager.clearAllData(removeCalendar: true)
         router.back(animated: false)
@@ -195,9 +193,8 @@ public final class DatesAndCalendarViewModel: ObservableObject {
             }
         }
     }
-
+    
     // MARK: - Fetch Courses and Sync
-    @MainActor
     func fetchCourses() async {
         guard connectivity.isInternetAvaliable else { return }
         assignmentStatus = .loading
@@ -220,9 +217,9 @@ public final class DatesAndCalendarViewModel: ObservableObject {
                     } && course.recentlyActive
                     return updatedCourse
                 }
-               
+                
                 let addingIDs = Set(coursesForAdding.map { $0.courseID })
-
+                
                 coursesForSync = coursesForSync.map { course in
                     var updatedCourse = course
                     if addingIDs.contains(course.courseID) {
@@ -231,7 +228,7 @@ public final class DatesAndCalendarViewModel: ObservableObject {
                     return updatedCourse
                 }
                 
-                for course in coursesForSync.filter{ $0.synced } {
+                for course in coursesForSync.filter { $0.synced } {
                     do {
                         let courseDates = try await interactor.getCourseDates(courseID: course.courseID)
                         await syncSelectedCourse(
@@ -259,7 +256,6 @@ public final class DatesAndCalendarViewModel: ObservableObject {
         syncingCoursesCount = coursesForSync.filter { $0.recentlyActive && $0.synced }.count
     }
     
-    @MainActor
     private func syncAllActiveCourses() async {
         guard profileStorage.firstCalendarUpdate == false else {
             coursesForAdding = []
@@ -318,7 +314,7 @@ public final class DatesAndCalendarViewModel: ObservableObject {
         courseDates: CourseDates,
         active: Bool
     ) async {
-            assignmentStatus = .loading
+        assignmentStatus = .loading
         
         await calendarManager.removeOutdatedEvents(courseID: courseID)
         guard active else {
@@ -327,7 +323,7 @@ public final class DatesAndCalendarViewModel: ObservableObject {
             }
             return
         }
-
+        
         await calendarManager.syncCourse(courseID: courseID, courseName: courseName, dates: courseDates)
         Task {
             if let index = self.coursesForSync.firstIndex(where: { $0.courseID == courseID && $0.recentlyActive }) {
@@ -336,7 +332,7 @@ public final class DatesAndCalendarViewModel: ObservableObject {
             self.assignmentStatus = .synced
         }
     }
-
+    
     func removeDeselectedCoursesFromCalendar() async {
         for course in coursesForDeleting {
             await calendarManager.removeOutdatedEvents(courseID: course.courseID)
@@ -361,7 +357,7 @@ public final class DatesAndCalendarViewModel: ObservableObject {
             updateCoursesForSyncAndDeletion(course: coursesForSync[index])
         }
     }
-
+    
     private func updateCoursesForSyncAndDeletion(course: CourseForSync) {
         guard let initialCourse = coursesForSyncBeforeChanges.first(where: {
             $0.courseID == course.courseID
@@ -394,7 +390,6 @@ public final class DatesAndCalendarViewModel: ObservableObject {
     }
     
     // MARK: - Request Calendar Permission
-    @MainActor
     func requestCalendarPermission() async {
         if await calendarManager.requestAccess() {
             await showNewCalendarSetup()
@@ -403,28 +398,24 @@ public final class DatesAndCalendarViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     private func showCalendarAccessDenied() async {
-            withAnimation(.bouncy(duration: 0.3)) {
-                self.showCalendaAccessDenied = true
-            }
+        withAnimation(.bouncy(duration: 0.3)) {
+            self.showCalendaAccessDenied = true
+        }
     }
     
-    @MainActor
     private func showDisableCalendarSync() async {
         withAnimation(.bouncy(duration: 0.3)) {
             self.showDisableCalendarSync = true
         }
     }
     
-    @MainActor
     private func showNewCalendarSetup() async {
-            withAnimation(.bouncy(duration: 0.3)) {
-                self.openNewCalendarView = true
-            }
+        withAnimation(.bouncy(duration: 0.3)) {
+            self.openNewCalendarView = true
+        }
     }
     
-    @MainActor
     func openAppSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
             UIApplication.shared.open(url, options: [:], completionHandler: nil)

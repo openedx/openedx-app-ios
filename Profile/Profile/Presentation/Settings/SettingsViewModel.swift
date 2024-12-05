@@ -121,7 +121,6 @@ public final class SettingsViewModel: ObservableObject {
             }.store(in: &cancellables)
     }
     
-    @MainActor
     func contactSupport() -> URL? {
         let osVersion = UIDevice.current.systemVersion
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
@@ -140,13 +139,11 @@ public final class SettingsViewModel: ObservableObject {
         await interactor.saveSettings(userSettings)
     }
     
-    @MainActor
     func openAppStore() {
         guard let appStoreURL = URL(string: config.appStoreLink) else { return }
         UIApplication.shared.open(appStoreURL)
     }
     
-    @MainActor
     func logOut() async {
         try? await interactor.logOut()
         try? await downloadManager.cancelAllDownloading()

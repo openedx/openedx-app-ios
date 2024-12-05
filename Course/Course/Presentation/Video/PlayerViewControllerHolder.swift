@@ -7,7 +7,6 @@
 
 @preconcurrency import AVKit
 @preconcurrency import Combine
-import Core
 
 @MainActor
 public protocol PlayerViewControllerHolderProtocol: AnyObject, Sendable {

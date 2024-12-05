@@ -74,7 +74,6 @@ public final class PipManager: PipManagerProtocol {
         controllerHolder?.getRatePublisher()
     }
     
-    @MainActor
     public func restore(holder: PlayerViewControllerHolderProtocol) async throws {
         let courseID = holder.courseID
         
@@ -92,12 +91,11 @@ public final class PipManager: PipManagerProtocol {
         try await navigate(to: holder)
     }
     
-    @MainActor public func pauseCurrentPipVideo() {
+    public func pauseCurrentPipVideo() {
         guard let holder = controllerHolder else { return }
         holder.playerController?.pause()
     }
     
-    @MainActor
     private func navigate(to holder: PlayerViewControllerHolderProtocol) async throws {
         let currentControllers = router.getNavigationController().viewControllers
         guard let mainController = currentControllers.first as? UIHostingController<MainScreenView> else {
@@ -125,7 +123,6 @@ public final class PipManager: PipManagerProtocol {
         router.getNavigationController().setViewControllers(viewControllers, animated: true)
     }
 
-    @MainActor
     private func courseVerticalController(
         for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseVerticalView> {
@@ -148,7 +145,6 @@ public final class PipManager: PipManagerProtocol {
         throw PipManagerError.cantCreateCourseVerticalView
     }
     
-    @MainActor
     private func courseUnitController(
         for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseUnitView> {
@@ -176,7 +172,6 @@ public final class PipManager: PipManagerProtocol {
         throw PipManagerError.cantCreateCourseUnitView
     }
     
-    @MainActor
     private func containerController(
         for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseContainerView> {
@@ -210,7 +205,6 @@ public final class PipManager: PipManagerProtocol {
         }
     }
 
-    @MainActor
     private var topCourseUnitController: UIHostingController<CourseUnitView>? {
         router.getNavigationController().visibleViewController as? UIHostingController<CourseUnitView>
     }
