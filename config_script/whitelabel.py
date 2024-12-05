@@ -569,6 +569,7 @@ class WhitelabelApp:
                         if config_folder:
                             # example of usage
                             # project_file_string = self.replace_fullstory_flag(project_file_string, config_directory, name, config_folder, errors_texts)
+                            pass
                         else:
                             logging.error("Config folder for '"+config['env_config']+"' is not defined in config_settings.yaml->config_mapping")
                     else:
