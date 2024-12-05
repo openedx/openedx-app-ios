@@ -364,7 +364,7 @@ class WhitelabelApp:
                 # define regex rule and replacement string for every possible parameter
                 if parameter == "dev_team":
                     parameter_string = 'DEVELOPMENT_TEAM = '+parameter_value+';'
-                    parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+                    parameter_regex = 'DEVELOPMENT_TEAM = (.{10}|\"\");'
                 elif parameter == "marketing_version":
                     parameter_string = 'MARKETING_VERSION = '+parameter_value+';'
                     parameter_regex = 'MARKETING_VERSION = .*;'
@@ -419,7 +419,7 @@ class WhitelabelApp:
         config_file_string_out = config_file_string
         # string and regex for dev team
         parameter_string = 'DEVELOPMENT_TEAM = '+dev_team+';'
-        parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+        parameter_regex = 'DEVELOPMENT_TEAM = (.{10}|\"\");'
         # replace all regex findings with new parameters string
         config_file_string_out = re.sub(parameter_regex, parameter_string, config_file_string)
         # if something was changed
@@ -430,7 +430,7 @@ class WhitelabelApp:
             logging.debug("DEVELOPMENT_TEAM for '"+target+"' target was set successfuly")
         # if nothing was found
         elif re.search(parameter_regex, config_file_string) is None:
-                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+" target project file")
+                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+"' target project file")
         else:
             logging.debug("Looks like DEVELOPMENT_TEAM for '"+target+"' target is set already")
     
@@ -569,6 +569,7 @@ class WhitelabelApp:
                         if config_folder:
                             # example of usage
                             # project_file_string = self.replace_fullstory_flag(project_file_string, config_directory, name, config_folder, errors_texts)
+                            pass
                         else:
                             logging.error("Config folder for '"+config['env_config']+"' is not defined in config_settings.yaml->config_mapping")
                     else:
