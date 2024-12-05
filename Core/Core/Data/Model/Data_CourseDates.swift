@@ -93,7 +93,7 @@ public extension DataLayer {
         }
     }
     
-    enum BannerInfoStatus {
+    enum BannerInfoStatus: Sendable {
         case datesTabInfoBanner
         case upgradeToCompleteGradedBanner
         case upgradeToResetBanner

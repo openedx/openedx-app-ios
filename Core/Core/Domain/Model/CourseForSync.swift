@@ -8,7 +8,7 @@
 import Foundation
 
 // MARK: - CourseForSync
-public struct CourseForSync: Identifiable {
+public struct CourseForSync: Identifiable, Sendable {
     public let id: UUID
     public let courseID: String
     public let name: String

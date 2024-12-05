@@ -8,8 +8,9 @@
 import Foundation
 import Core
 import OEXFoundation
-import Combine
+@preconcurrency import Combine
 
+@MainActor
 final class DownloadsViewModel: ObservableObject {
 
     // MARK: - Properties
@@ -32,7 +33,9 @@ final class DownloadsViewModel: ObservableObject {
         self.courseId = courseId
         self.manager = manager
         self.downloads = downloads
-        Task { await configure() }
+        Task {
+            await configure()
+        }
         observers()
     }
 

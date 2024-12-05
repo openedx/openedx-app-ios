@@ -1,5 +1,4 @@
 PODS:
-  - KeychainSwift (24.0.0)
   - Sourcery (1.8.0):
     - Sourcery/CLI-Only (= 1.8.0)
   - Sourcery/CLI-Only (1.8.0)
@@ -9,14 +8,12 @@ PODS:
     - Sourcery (= 1.8.0)
 
 DEPENDENCIES:
-  - KeychainSwift (~> 24.0)
   - SwiftGen (~> 6.6)
   - SwiftLint (~> 0.57.0)
   - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, tag `4.2.0`)
 
 SPEC REPOS:
   trunk:
-    - KeychainSwift
     - Sourcery
     - SwiftGen
     - SwiftLint
@@ -32,12 +29,11 @@ CHECKOUT OPTIONS:
     :tag: 4.2.0
 
 SPEC CHECKSUMS:
-  KeychainSwift: 007c4647486e4563adca839cf02cef00deb3b670
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
   SwiftGen: 4993cbf71cbc4886f775e26f8d5c3a1188ec9f99
   SwiftLint: eb47480d47c982481592c195c221d11013a679cc
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
 
-PODFILE CHECKSUM: fe79196bcbd67eb66f3dd20e3a90c1210980722d
+PODFILE CHECKSUM: 231e03216f446b4695e43a4c85a29e2127fd674b
 
 COCOAPODS: 1.15.2

@@ -11,9 +11,9 @@ import OEXFoundation
 import FirebaseCore
 import FirebaseMessaging
 
-class FCMProvider: NSObject, PushNotificationsProvider, MessagingDelegate {
+final class FCMProvider: NSObject, PushNotificationsProvider, MessagingDelegate {
     
-    private var storage: CoreStorage
+    private let storage: CoreStorage
     private let api: API
     
     init(storage: CoreStorage, api: API) {
@@ -50,7 +50,8 @@ class FCMProvider: NSObject, PushNotificationsProvider, MessagingDelegate {
     }
     
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
-        storage.pushToken = fcmToken
+        var localStorage = storage
+        localStorage.pushToken = fcmToken
         
         guard let fcmToken, storage.user != nil else { return }
         sendFCMToken(fcmToken)

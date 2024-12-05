@@ -15,6 +15,7 @@ import FacebookLogin
 import GoogleSignIn
 import MSAL
 
+@MainActor
 public class SSOWebViewModel: ObservableObject {
 
     @Published private(set) var isShowProgress = false

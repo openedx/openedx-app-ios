@@ -8,6 +8,7 @@
 import Core
 import SwiftUI
 
+@MainActor
 public class CreateNewThreadViewModel: ObservableObject {
     
     @Published private(set) var isShowProgress = false

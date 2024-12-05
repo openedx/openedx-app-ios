@@ -176,7 +176,9 @@ public struct SyncCalendarOptionsView: View {
                         calendarCircleColor: viewModel.colorSelection?.color,
                         calendarName: viewModel.calendarName,
                         action: {
-                            viewModel.clearAllData()
+                            Task {
+                               await viewModel.clearAllData()
+                            }
                         },
                         onCloseTapped: {
                             viewModel.showDisableCalendarSync = false

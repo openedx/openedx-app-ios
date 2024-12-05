@@ -7,12 +7,12 @@
 
 import Foundation
 
-public protocol WhatsNewStorage {
+public protocol WhatsNewStorage: Sendable {
     var whatsNewVersion: String? {get set}
 }
 
 #if DEBUG
-public class WhatsNewStorageMock: WhatsNewStorage {
+public final class WhatsNewStorageMock: WhatsNewStorage, @unchecked Sendable {
   
     public var whatsNewVersion: String?
     

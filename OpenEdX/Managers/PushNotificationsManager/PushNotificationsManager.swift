@@ -13,18 +13,20 @@ import UserNotifications
 import FirebaseCore
 import FirebaseMessaging
 
-public protocol PushNotificationsProvider {
+public protocol PushNotificationsProvider: Sendable {
     func didRegisterWithDeviceToken(deviceToken: Data)
     func didFailToRegisterForRemoteNotificationsWithError(error: Error)
     func synchronizeToken()
     func refreshToken()
 }
 
-protocol PushNotificationsListener {
+@MainActor
+protocol PushNotificationsListener: Sendable {
     func shouldListenNotification(userinfo: [AnyHashable: Any]) -> Bool
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any])
 }
 
+@MainActor
 class PushNotificationsManager: NSObject {
     
     private let deepLinkManager: DeepLinkManager
@@ -77,15 +79,18 @@ class PushNotificationsManager: NSObject {
     }
     
     // Register for push notifications
-    public func performRegistration() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+    public func performRegistration() async {
+        do {
+            let granted = try await UNUserNotificationCenter.current().requestAuthorization(
+                options: [.alert, .sound, .badge]
+            )
             if granted {
                 debugLog("Permission for push notifications granted.")
-            } else if let error = error {
-                debugLog("Push notifications permission error: \(error.localizedDescription)")
             } else {
                 debugLog("Permission for push notifications denied.")
             }
+        } catch {
+            debugLog("Push notifications permission error: \(error.localizedDescription)")
         }
     }
     
@@ -120,7 +125,7 @@ class PushNotificationsManager: NSObject {
 }
 
 // MARK: - MessagingDelegate
-extension PushNotificationsManager: MessagingDelegate {
+extension PushNotificationsManager: @preconcurrency MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         for provider in providers where provider is MessagingDelegate {
             (provider as? MessagingDelegate)?.messaging?(messaging, didReceiveRegistrationToken: fcmToken)
@@ -129,8 +134,7 @@ extension PushNotificationsManager: MessagingDelegate {
 }
 
 // MARK: - UNUserNotificationCenterDelegate
-extension PushNotificationsManager: UNUserNotificationCenterDelegate {
-    @MainActor
+extension PushNotificationsManager: @preconcurrency UNUserNotificationCenterDelegate {
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
@@ -143,7 +147,6 @@ extension PushNotificationsManager: UNUserNotificationCenterDelegate {
         return [[.list, .banner, .sound]]
     }
     
-    @MainActor
     func userNotificationCenter(
         _ center: UNUserNotificationCenter,
         didReceive response: UNNotificationResponse

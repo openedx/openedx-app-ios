@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserSettings: Codable, Hashable {
+public struct UserSettings: Codable, Hashable, Sendable {
     public var wifiOnly: Bool
     public var streamingQuality: StreamingQuality
     public var downloadQuality: DownloadQuality
@@ -23,7 +23,7 @@ public struct UserSettings: Codable, Hashable {
     }
 }
 
-public enum StreamingQuality: Codable {
+public enum StreamingQuality: Codable, Sendable {
     case auto
     case low
     case medium
@@ -47,7 +47,7 @@ public enum StreamingQuality: Codable {
     }
 }
 
-public enum DownloadQuality: Codable, CaseIterable {
+public enum DownloadQuality: Codable, CaseIterable, Sendable {
     case auto
     case low
     case medium

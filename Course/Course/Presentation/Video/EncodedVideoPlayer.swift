@@ -11,7 +11,7 @@ import Core
 import Swinject
 import Combine
 
-public enum VideoPlayerState {
+public enum VideoPlayerState: Sendable {
     case pause
     case kill
 }

@@ -11,6 +11,7 @@ import Core
 import Combine
 import Swinject
 
+@MainActor
 public class BaseResponsesViewModel {
     
     @Published public var postComments: Post?

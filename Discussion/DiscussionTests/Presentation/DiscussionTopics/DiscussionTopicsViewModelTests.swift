@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class DiscussionTopicsViewModelTests: XCTestCase {
     
     let topics = Topics(coursewareTopics: [

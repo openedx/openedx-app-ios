@@ -2,6 +2,7 @@
 
 import Combine
 
+@MainActor
 final class KeyboardStateObserver: ObservableObject {
     @Published private(set) var keyboardState: KeyboardState = .default
 

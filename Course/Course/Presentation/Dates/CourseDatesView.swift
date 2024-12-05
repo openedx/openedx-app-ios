@@ -196,8 +196,13 @@ struct CourseDateListView: View {
                     )
                     VStack(alignment: .leading, spacing: 0) {
                         
-                        CalendarSyncStatusView(status: viewModel.syncStatus(), router: viewModel.router)
+                        @State var status: SyncStatus = .offline
+                        
+                        CalendarSyncStatusView(status: status, router: viewModel.router)
                             .padding(.bottom, 16)
+                            .task {
+                                status = await viewModel.syncStatus()
+                            }
                         
                         if !courseDates.hasEnded {
                             DatesStatusInfoView(

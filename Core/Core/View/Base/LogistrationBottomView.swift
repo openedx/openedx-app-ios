@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Theme
 
-public enum LogistrationSourceScreen: Equatable {
+public enum LogistrationSourceScreen: Equatable, Sendable {
     case `default`
     case startup
     case discovery
@@ -17,7 +17,7 @@ public enum LogistrationSourceScreen: Equatable {
     case programDetails(String)
 }
 
-public enum LogistrationAction {
+public enum LogistrationAction: Sendable {
     case signIn
     case signInWithSSO
     case register

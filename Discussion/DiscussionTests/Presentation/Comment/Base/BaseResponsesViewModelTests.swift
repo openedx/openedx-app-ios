@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class BaseResponsesViewModelTests: XCTestCase {
     
     let post = Post(authorName: "1",

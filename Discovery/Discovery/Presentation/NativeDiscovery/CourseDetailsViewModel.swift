@@ -15,7 +15,8 @@ public enum CourseState {
     case alreadyEnrolled
 }
 
-public class CourseDetailsViewModel: ObservableObject {
+@MainActor
+public final class CourseDetailsViewModel: ObservableObject {
     
     @Published var courseDetails: CourseDetails?
     @Published private(set) var isShowProgress = false

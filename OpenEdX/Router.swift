@@ -383,8 +383,9 @@ public class Router: AuthorizationRouter,
         )
         navigationController.pushViewController(controller, animated: true)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            Container.shared.resolve(PushNotificationsManager.self)?.performRegistration()
+        Task {
+            try? await Task.sleep(for: .seconds(1))
+            await Container.shared.resolve(PushNotificationsManager.self)?.performRegistration()
         }
     }
     
@@ -506,7 +507,6 @@ public class Router: AuthorizationRouter,
         courseStructure: CourseStructure,
         blockLink: String) {
             var courseBlock: CourseBlock?
-            var courseName: String?
             var chapterPosition: Int?
             var sequentialPosition: Int?
             var verticalPosition: Int?
@@ -517,7 +517,6 @@ public class Router: AuthorizationRouter,
                         vertical.childs.forEach { block in
                             if block.id == componentID {
                                 courseBlock = block
-                                courseName = sequential.displayName
                                 chapterPosition = chapterIndex
                                 sequentialPosition = sequentialIndex
                                 verticalPosition = verticalIndex

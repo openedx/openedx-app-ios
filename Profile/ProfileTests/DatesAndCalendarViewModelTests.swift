@@ -15,6 +15,7 @@ import Theme
 import SwiftUICore
 import Combine
 
+@MainActor
 final class DatesAndCalendarViewModelTests: XCTestCase {
     
     var cancellables: Set<AnyCancellable>!
@@ -64,7 +65,7 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.hideInactiveCourses)
     }
     
-    func testClearAllData() {
+    func testClearAllData() async {
         // Given
         let router = ProfileRouterMock()
         let interactor = ProfileInteractorProtocolMock()
@@ -83,7 +84,7 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
         )
         
         // When
-        viewModel.clearAllData()
+        await viewModel.clearAllData()
         
         // Then
         Verify(calendarManager, 1, .clearAllData(removeCalendar: .value(true)))

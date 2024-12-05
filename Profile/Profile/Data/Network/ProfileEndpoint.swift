@@ -12,7 +12,7 @@ import Alamofire
 
 enum ProfileEndpoint: EndPointType {
     case getUserProfile(username: String)
-    case updateUserProfile(username: String, parameters: [String: Any])
+    case updateUserProfile(username: String, parameters: [String: any Any & Sendable])
     case uploadProfilePicture(username: String, pictureData: Data)
     case deleteProfilePicture(username: String)
     case logOut(refreshToken: String, clientID: String)

@@ -118,7 +118,7 @@ struct FlexibleKeyboardInputView_Previews: PreviewProvider {
 }
 
 private struct ViewSizePreferenceKey: PreferenceKey {
-    public static var defaultValue: CGSize = .zero
+    public static let defaultValue: CGSize = .zero
     public static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
         value = value.width + value.height > nextValue().width + nextValue().height ? value : nextValue()
     }

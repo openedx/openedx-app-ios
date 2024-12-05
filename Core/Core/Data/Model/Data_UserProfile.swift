@@ -11,7 +11,7 @@ import Foundation
 
 // MARK: - UserProfile
 public extension DataLayer {
-    struct UserProfile: Codable {
+    struct UserProfile: Codable, Sendable {
         public let id: Int?
         public let accountPrivacy: AccountPrivacy?
         public let profileImage: ProfileImage?
@@ -67,7 +67,7 @@ public extension DataLayer {
 }
 
 // MARK: - AccountPrivacy
-public enum AccountPrivacy: String, Codable {
+public enum AccountPrivacy: String, Codable, Sendable {
     case privateAccess = "private"
     case allUsers = "all_users"
     case allUsersBig = "ALL_USERS"
@@ -84,14 +84,14 @@ public enum AccountPrivacy: String, Codable {
 
 // MARK: - LanguageProficiency
 public extension DataLayer {
-    struct LanguageProficiency: Codable {
+    struct LanguageProficiency: Codable, Sendable {
         public let code: String
     }
 }
 
 // MARK: - ProfileImage
 public extension DataLayer {
-    struct ProfileImage: Codable {
+    struct ProfileImage: Codable, Sendable {
         public let hasImage: Bool?
         public let imageURLFull: String?
         public let imageURLLarge: String?
@@ -110,7 +110,7 @@ public extension DataLayer {
 
 // MARK: - SocialLink
 public extension DataLayer {
-    struct SocialLink: Codable {
+    struct SocialLink: Codable, Sendable {
         public let platform: String
         public let socialLink: String
         

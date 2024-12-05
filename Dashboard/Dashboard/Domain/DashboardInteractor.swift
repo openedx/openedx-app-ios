@@ -9,7 +9,7 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
-public protocol DashboardInteractorProtocol {
+public protocol DashboardInteractorProtocol: Sendable {
     func getEnrollments(page: Int) async throws -> [CourseItem]
     func getEnrollmentsOffline() async throws -> [CourseItem]
     func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment
@@ -17,7 +17,7 @@ public protocol DashboardInteractorProtocol {
     func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment
 }
 
-public class DashboardInteractor: DashboardInteractorProtocol {
+public actor DashboardInteractor: DashboardInteractorProtocol {
     
     private let repository: DashboardRepositoryProtocol
     

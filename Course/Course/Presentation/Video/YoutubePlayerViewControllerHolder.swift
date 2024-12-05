@@ -5,11 +5,12 @@
 //  Created by Vadim Kuznetsov on 22.04.24.
 //
 
-import Combine
+@preconcurrency import Combine
 import Foundation
-import YouTubePlayerKit
+@preconcurrency import YouTubePlayerKit
 
-public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
+@MainActor
+public final class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     public let url: URL?
     public let blockID: String
     public let courseID: String
@@ -72,33 +73,43 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
         addObservers()
     }
     
+    @MainActor
     private func addObservers() {
         timePublisher
             .sink {[weak self] _ in
-                guard let strongSelf = self else { return }
-                if strongSelf.playerTracker.progress > 0.8 && !strongSelf.isViewedOnce {
-                    strongSelf.isViewedOnce = true
+                guard let self else { return }
+                if self.playerTracker.progress > 0.8 && !self.isViewedOnce {
+                    self.isViewedOnce = true
                     Task {
-                        await strongSelf.sendCompletion()
+                        await self.sendCompletion()
                     }
                 }
             }
             .store(in: &cancellations)
         playerTracker.getFinishPublisher()
             .sink { [weak self] in
-                self?.playerService.presentAppReview()
+                guard let self else { return }
+                MainActor.assumeIsolated {
+                   self.playerService.presentAppReview()
+                }
             }
             .store(in: &cancellations)
         playerTracker.getRatePublisher()
             .sink {[weak self] rate in
                 guard rate > 0 else { return }
-                self?.pausePipIfNeed()
+                guard let self else { return }
+                MainActor.assumeIsolated {
+                    self.pausePipIfNeed()
+                }
             }
             .store(in: &cancellations)
         pipManager.pipRatePublisher()?
             .sink {[weak self] rate in
-                guard rate > 0, self?.isPlayingInPip == false else { return }
-                self?.playerController?.pause()
+                guard let self else { return }
+                MainActor.assumeIsolated {
+                    guard rate > 0, self.isPlayingInPip == false else { return }
+                    self.playerController?.pause()
+                }
             }
             .store(in: &cancellations)
     }
@@ -131,6 +142,7 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
         playerService
     }
     
+    @MainActor
     public func sendCompletion() async {
         do {
             try await playerService.blockCompletionRequest()
@@ -162,6 +174,7 @@ extension YouTubePlayer: PlayerControllerProtocol {
 }
 
 #if DEBUG
+@MainActor
 extension YoutubePlayerViewControllerHolder {
     static var mock: YoutubePlayerViewControllerHolder {
         YoutubePlayerViewControllerHolder(

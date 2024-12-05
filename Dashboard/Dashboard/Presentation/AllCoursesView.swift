@@ -10,6 +10,7 @@ import Core
 import OEXFoundation
 import Theme
 
+@MainActor
 public struct AllCoursesView: View {
     
     @ObservedObject

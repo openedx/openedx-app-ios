@@ -10,6 +10,7 @@ import Core
 import SwiftUI
 import Combine
 
+@MainActor
 public class AllCoursesViewModel: ObservableObject {
     
     var nextPage = 1

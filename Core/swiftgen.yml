@@ -11,7 +11,7 @@ xcassets:
   inputs:
     - Core/Assets.xcassets
   outputs:
-    templateName: swift5
+    templatePath: ../Template/structured-swift6.stencil
     params:
         publicAccess: true
         enumName: CoreAssets

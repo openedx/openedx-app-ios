@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-public struct ThreadLists {
+public struct ThreadLists: Sendable {
     public var threads: [UserThread]
     
     public init(threads: [UserThread]) {
@@ -16,7 +16,7 @@ public struct ThreadLists {
     }
 }
 
-public struct UserThread {
+public struct UserThread: Sendable {
     public let id: String
     public let author: String
     public let authorLabel: String
@@ -87,7 +87,7 @@ public struct UserThread {
 }
 
 public extension UserThread {
-    func discussionPost(useRelativeDates: Bool, action: @escaping () -> Void) -> DiscussionPost {
+    func discussionPost(useRelativeDates: Bool, action: @escaping (@MainActor @Sendable () -> Void)) -> DiscussionPost {
         return DiscussionPost(
             id: id,
             title: title,

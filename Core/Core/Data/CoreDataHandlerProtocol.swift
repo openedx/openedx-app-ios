@@ -7,6 +7,6 @@
 
 import Foundation
 
-public protocol CoreDataHandlerProtocol {
-    func clear()
+public protocol CoreDataHandlerProtocol: Sendable {
+    func clear() async
 }

@@ -35,7 +35,7 @@ enum NotificationsEndpoints: EndPointType {
     var task: HTTPTask {
         switch self {
         case let .syncFirebaseToken(token):
-            let params: [String: Encodable] = [
+            let params: [String: Encodable & Sendable] = [
                 "registration_id": token,
                 "active": true
             ]

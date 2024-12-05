@@ -14,9 +14,10 @@ import EventKit
 import Theme
 import SwiftUICore
 
+@MainActor
 final class CalendarManagerTests: XCTestCase {
     
-    func testCourseStatusSynced() {
+    func testCourseStatusSynced() async {
         let persistence = ProfilePersistenceProtocolMock()
         let interactor = ProfileInteractorProtocolMock()
         let profileStorage = ProfileStorageMock()
@@ -30,13 +31,13 @@ final class CalendarManagerTests: XCTestCase {
         let states = [CourseCalendarState(courseID: "course-1", checksum: "checksum-1")]
         Given(persistence, .getAllCourseStates(willReturn: states))
         
-        let status = manager.courseStatus(courseID: "course-1")
+        let status = await manager.courseStatus(courseID: "course-1")
         
         Verify(persistence, 1, .getAllCourseStates())
         XCTAssertEqual(status, .synced)
     }
     
-    func testCourseStatusOffline() {
+    func testCourseStatusOffline() async {
         let persistence = ProfilePersistenceProtocolMock()
         let interactor = ProfileInteractorProtocolMock()
         let profileStorage = ProfileStorageMock()
@@ -50,13 +51,13 @@ final class CalendarManagerTests: XCTestCase {
         let states = [CourseCalendarState(courseID: "course-2", checksum: "checksum-2")]
         Given(persistence, .getAllCourseStates(willReturn: states))
         
-        let status = manager.courseStatus(courseID: "course-1")
+        let status = await manager.courseStatus(courseID: "course-1")
         
         Verify(persistence, 1, .getAllCourseStates())
         XCTAssertEqual(status, .offline)
     }
     
-    func testIsDatesChanged() {
+    func testIsDatesChanged() async {
         let persistence = ProfilePersistenceProtocolMock()
         let interactor = ProfileInteractorProtocolMock()
         let profileStorage = ProfileStorageMock()
@@ -70,13 +71,13 @@ final class CalendarManagerTests: XCTestCase {
         let state = CourseCalendarState(courseID: "course-1", checksum: "old-checksum")
         Given(persistence, .getCourseState(courseID: .value("course-1"), willReturn: state))
         
-        let changed = manager.isDatesChanged(courseID: "course-1", checksum: "new-checksum")
+        let changed = await manager.isDatesChanged(courseID: "course-1", checksum: "new-checksum")
         
         Verify(persistence, 1, .getCourseState(courseID: .value("course-1")))
         XCTAssertTrue(changed)
     }
     
-    func testIsDatesNotChanged() {
+    func testIsDatesNotChanged() async {
         let persistence = ProfilePersistenceProtocolMock()
         let interactor = ProfileInteractorProtocolMock()
         let profileStorage = ProfileStorageMock()
@@ -90,13 +91,13 @@ final class CalendarManagerTests: XCTestCase {
         let state = CourseCalendarState(courseID: "course-1", checksum: "same-checksum")
         Given(persistence, .getCourseState(courseID: .value("course-1"), willReturn: state))
         
-        let changed = manager.isDatesChanged(courseID: "course-1", checksum: "same-checksum")
+        let changed = await manager.isDatesChanged(courseID: "course-1", checksum: "same-checksum")
         
         Verify(persistence, 1, .getCourseState(courseID: .value("course-1")))
         XCTAssertFalse(changed)
     }
     
-    func testClearAllData() {
+    func testClearAllData() async {
         let persistence = ProfilePersistenceProtocolMock()
         let interactor = ProfileInteractorProtocolMock()
         let profileStorage = ProfileStorageMock()
@@ -126,7 +127,7 @@ final class CalendarManagerTests: XCTestCase {
             profileStorage: profileStorage
         )
         
-        manager.clearAllData(removeCalendar: true)
+        await manager.clearAllData(removeCalendar: true)
         
         // Verify persistence method was called
         Verify(persistence, 1, .deleteAllCourseStatesAndEvents())

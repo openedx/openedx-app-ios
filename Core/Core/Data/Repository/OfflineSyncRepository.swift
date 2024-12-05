@@ -8,11 +8,11 @@
 import Foundation
 import OEXFoundation
 
-public protocol OfflineSyncRepositoryProtocol {
+public protocol OfflineSyncRepositoryProtocol: Sendable {
     func submitOfflineProgress(courseID: String, blockID: String, data: String) async throws -> Bool
 }
 
-public class OfflineSyncRepository: OfflineSyncRepositoryProtocol {
+public actor OfflineSyncRepository: OfflineSyncRepositoryProtocol {
     
     private let api: API
     
@@ -35,6 +35,7 @@ public class OfflineSyncRepository: OfflineSyncRepositoryProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
+@MainActor
 class OfflineSyncRepositoryMock: OfflineSyncRepositoryProtocol {
     public func submitOfflineProgress(courseID: String, blockID: String, data: String) async throws -> Bool {
         true

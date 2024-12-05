@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Core
 
-public enum PostType: String, Codable {
+public enum PostType: String, Codable, Sendable {
     case question
     case discussion
     
@@ -32,7 +32,7 @@ public enum PostType: String, Codable {
     }
 }
 
-public struct DiscussionPost: Equatable {
+public struct DiscussionPost: Equatable, Sendable {
     public static func == (lhs: DiscussionPost, rhs: DiscussionPost) -> Bool {
         return lhs.id == rhs.id
     }
@@ -45,14 +45,27 @@ public struct DiscussionPost: Equatable {
     public var isFavorite: Bool
     public let type: PostType
     public let unreadCommentCount: Int
-    public let action: (() -> Void)
+    public let action: (@MainActor @Sendable () -> Void)
     public let hasEndorsed: Bool
     public let voteCount: Int
     public let numPages: Int
     
-    public init(id: String, title: String, replies: Int, lastPostDate: Date, lastPostDateFormatted: String,
-                isFavorite: Bool, type: PostType, unreadCommentCount: Int, action: @escaping () -> Void,
-                hasEndorsed: Bool, voteCount: Int, numPages: Int) {
+    public init(
+        id: String,
+        title: String,
+        replies: Int,
+        lastPostDate: Date,
+        lastPostDateFormatted: String,
+        isFavorite: Bool,
+        type: PostType,
+        unreadCommentCount: Int,
+        action: @escaping (
+            @MainActor @Sendable () -> Void
+        ),
+        hasEndorsed: Bool,
+        voteCount: Int,
+        numPages: Int
+    ) {
         self.id = id
         self.title = title
         self.replies = replies

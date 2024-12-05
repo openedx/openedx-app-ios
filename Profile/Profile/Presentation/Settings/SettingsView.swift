@@ -244,30 +244,20 @@ public struct SettingsView: View {
 }
 
 #if DEBUG
-struct SettingsView_Previews: PreviewProvider {
-    static var previews: some View {
-        let router = ProfileRouterMock()
-        let vm = SettingsViewModel(
-            interactor: ProfileInteractor.mock,
-            downloadManager: DownloadManagerMock(),
-            router: router,
-            analytics: ProfileAnalyticsMock(),
-            coreAnalytics: CoreAnalyticsMock(),
-            config: ConfigMock(),
-            corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity()
-        )
-        
-        SettingsView(viewModel: vm)
-            .preferredColorScheme(.light)
-            .previewDisplayName("SettingsView Light")
-            .loadFonts()
-        
-        SettingsView(viewModel: vm)
-            .preferredColorScheme(.dark)
-            .previewDisplayName("SettingsView Dark")
-            .loadFonts()
-    }
+#Preview {
+    let router = ProfileRouterMock()
+    let vm = SettingsViewModel(
+        interactor: ProfileInteractor.mock,
+        downloadManager: DownloadManagerMock(),
+        router: router,
+        analytics: ProfileAnalyticsMock(),
+        coreAnalytics: CoreAnalyticsMock(),
+        config: ConfigMock(),
+        corePersistence: CorePersistenceMock(),
+        connectivity: Connectivity()
+    )
+    
+    SettingsView(viewModel: vm)
 }
 #endif
 

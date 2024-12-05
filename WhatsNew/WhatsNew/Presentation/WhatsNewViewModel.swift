@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Swinject
 
+@MainActor
 public class WhatsNewViewModel: ObservableObject {
     @Published var index: Int = 0
     @Published var newItems: [WhatsNewPage] = []

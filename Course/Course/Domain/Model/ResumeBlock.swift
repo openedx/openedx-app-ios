@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ResumeBlock {
+public struct ResumeBlock: Sendable {
     let blockID: String
     
     public init(blockID: String) {

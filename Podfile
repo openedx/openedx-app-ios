@@ -16,8 +16,6 @@ abstract_target "App" do
   target "Core" do
     project './Core/Core.xcodeproj'
     workspace './Core/Core.xcodeproj'
-  #Keychain
-    pod 'KeychainSwift', '~> 24.0'
 
     target 'CoreTests' do
       pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'

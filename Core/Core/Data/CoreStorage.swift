@@ -8,7 +8,7 @@
 import Foundation
 
 //sourcery: AutoMockable
-public protocol CoreStorage {
+public protocol CoreStorage: Sendable {
     var accessToken: String? {get set}
     var refreshToken: String? {get set}
     var pushToken: String? {get set}
@@ -25,7 +25,7 @@ public protocol CoreStorage {
 }
 
 #if DEBUG
-public class CoreStorageMock: CoreStorage {
+public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
     public var accessToken: String?
     public var refreshToken: String?
     public var pushToken: String?

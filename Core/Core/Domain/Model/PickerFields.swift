@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum RegistrationFieldType: String, Hashable {
+public enum RegistrationFieldType: String, Hashable, Sendable {
     case text
     case email
     case confirm_email
@@ -19,7 +19,7 @@ public enum RegistrationFieldType: String, Hashable {
     case unknown
 }
 
-public struct PickerFields {
+public struct PickerFields: Sendable {
     public let type: RegistrationFieldType
     public let label: String
     public let required: Bool
@@ -31,7 +31,7 @@ public struct PickerFields {
         name == "honor_code"
     }
 
-    public struct Option {
+    public struct Option: Sendable {
         public let value: String
         public let name: String
         public var optionDefault: Bool

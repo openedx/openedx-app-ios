@@ -10,6 +10,7 @@ import Core
 import Combine
 
 //sourcery: AutoMockable
+@MainActor
 public protocol DiscussionRouter: BaseRouter {
     
     func showUserDetails(username: String)

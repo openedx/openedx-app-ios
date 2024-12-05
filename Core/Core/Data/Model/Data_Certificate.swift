@@ -8,7 +8,7 @@
 import Foundation
 
 public extension DataLayer {
-    struct Certificate: Codable {
+    struct Certificate: Codable, Sendable {
         public let url: String?
         
         public init(url: String?) {

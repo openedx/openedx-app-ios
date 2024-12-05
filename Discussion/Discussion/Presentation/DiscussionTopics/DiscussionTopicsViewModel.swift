@@ -10,7 +10,8 @@ import SwiftUI
 import Core
 
 // swiftlint:disable function_body_length
-public class DiscussionTopicsViewModel: ObservableObject {
+@MainActor
+public final class DiscussionTopicsViewModel: ObservableObject {
     
     @Published var topics: Topics?
     @Published var isShowProgress = true
@@ -106,7 +107,6 @@ public class DiscussionTopicsViewModel: ObservableObject {
                                 isBlackedOut: self.isBlackedOut,
                                 animated: true
                             )
-
                         },
                         style: .basic)
                 )
@@ -169,7 +169,6 @@ public class DiscussionTopicsViewModel: ObservableObject {
         return result
     }
 
-    @MainActor
     public func getTopics(courseID: String, withProgress: Bool = true) async {
         self.courseID = courseID
         isShowProgress = withProgress

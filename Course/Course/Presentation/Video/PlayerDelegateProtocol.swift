@@ -7,26 +7,30 @@
 
 import AVKit
 
-public protocol PlayerDelegateProtocol: AVPlayerViewControllerDelegate {
+public protocol PlayerDelegateProtocol: AVPlayerViewControllerDelegate, Sendable {
     var isPlayingInPip: Bool { get }
     var playerHolder: PlayerViewControllerHolderProtocol? { get set }
     init(pipManager: PipManagerProtocol)
 }
 
-public class PlayerDelegate: NSObject, PlayerDelegateProtocol {
-    private(set) public var isPlayingInPip: Bool = false
+public final class PlayerDelegate: NSObject, PlayerDelegateProtocol {
+    private(set) public nonisolated(unsafe) var isPlayingInPip: Bool = false
     private let pipManager: PipManagerProtocol
-    weak public var playerHolder: PlayerViewControllerHolderProtocol?
+    weak public nonisolated(unsafe) var playerHolder: PlayerViewControllerHolderProtocol?
     
     required public init(pipManager: PipManagerProtocol) {
         self.pipManager = pipManager
         super.init()
     }
     
-    public func playerViewControllerWillStartPictureInPicture(_ playerViewController: AVPlayerViewController) {
+    nonisolated public func playerViewControllerWillStartPictureInPicture(
+        _ playerViewController: AVPlayerViewController
+    ) {
         isPlayingInPip = true
         if let holder = playerHolder {
-            pipManager.set(holder: holder)
+            Task { @MainActor in
+                pipManager.set(holder: holder)
+            }
         }
     }
     
@@ -34,16 +38,20 @@ public class PlayerDelegate: NSObject, PlayerDelegateProtocol {
         _ playerViewController: AVPlayerViewController,
         failedToStartPictureInPictureWithError error: any Error
     ) {
-        isPlayingInPip = false
-        if let holder = playerHolder {
-            pipManager.remove(holder: holder)
+        Task { @MainActor in
+            isPlayingInPip = false
+            if let holder = playerHolder {
+                pipManager.remove(holder: holder)
+            }
         }
     }
     
     public func playerViewControllerDidStopPictureInPicture(_ playerViewController: AVPlayerViewController) {
         isPlayingInPip = false
-        if let holder = playerHolder {
-            pipManager.remove(holder: holder)
+        Task { @MainActor in
+            if let holder = playerHolder {
+                pipManager.remove(holder: holder)
+            }
         }
     }
     

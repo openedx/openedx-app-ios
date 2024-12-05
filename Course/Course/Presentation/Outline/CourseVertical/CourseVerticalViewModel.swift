@@ -8,8 +8,9 @@
 import SwiftUI
 import Core
 import Combine
+import OEXFoundation
 
-public class CourseVerticalViewModel: BaseCourseViewModel {
+public final class CourseVerticalViewModel: BaseCourseViewModel {
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
@@ -46,17 +47,20 @@ public class CourseVerticalViewModel: BaseCourseViewModel {
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         super.init(manager: manager)
         
-        manager.publisher()
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-                Task {
-                    await self.setDownloadsStates()
-                }
-            })
-            .store(in: &cancellables)
-        
-        Task {
-            await setDownloadsStates()
+        do {
+            try manager.publisher()
+                .sink(receiveValue: { [weak self] _ in
+                    guard let self else { return }
+                    Task {
+                        await self.setDownloadsStates()
+                    }
+                })
+                .store(in: &cancellables)
+            Task {
+                await setDownloadsStates()
+            }
+        } catch {
+            debugLog(error)
         }
     }
     

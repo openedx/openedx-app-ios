@@ -15,6 +15,7 @@ import FacebookLogin
 import GoogleSignIn
 import MSAL
 
+@MainActor
 public class SignInViewModel: ObservableObject {
 
     @Published private(set) var isShowProgress = false

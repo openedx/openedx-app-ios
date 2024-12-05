@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+@MainActor
 public protocol CourseRouter: BaseRouter {
     
     func presentAppReview()

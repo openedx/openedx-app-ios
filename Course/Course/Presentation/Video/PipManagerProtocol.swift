@@ -8,7 +8,8 @@
 import Combine
 import Foundation
 
-public protocol PipManagerProtocol {
+@MainActor
+public protocol PipManagerProtocol: Sendable {
     var isPipActive: Bool { get }
     var isPipPlaying: Bool { get }
     
@@ -26,7 +27,7 @@ public protocol PipManagerProtocol {
 }
 
 #if DEBUG
-public class PipManagerProtocolMock: PipManagerProtocol {
+public final class PipManagerProtocolMock: PipManagerProtocol {
     public var isPipActive: Bool {
         false
     }

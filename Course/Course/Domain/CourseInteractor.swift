@@ -9,9 +9,9 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
-public protocol CourseInteractorProtocol {
+public protocol CourseInteractorProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
-    func getCourseVideoBlocks(fullStructure: CourseStructure) -> CourseStructure
+    func getCourseVideoBlocks(fullStructure: CourseStructure) async -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func getSequentialsContainsBlocks(blockIds: [String], courseID: String) async throws -> [CourseSequential]
     func blockCompletionRequest(courseID: String, blockID: String) async throws
@@ -24,7 +24,7 @@ public protocol CourseInteractorProtocol {
     func shiftDueDates(courseID: String) async throws
 }
 
-public class CourseInteractor: CourseInteractorProtocol {
+public actor CourseInteractor: CourseInteractorProtocol {
     
     private let repository: CourseRepositoryProtocol
     
@@ -36,7 +36,7 @@ public class CourseInteractor: CourseInteractorProtocol {
         return try await repository.getCourseBlocks(courseID: courseID)
     }
     
-    public func getCourseVideoBlocks(fullStructure course: CourseStructure) -> CourseStructure {
+    public func getCourseVideoBlocks(fullStructure course: CourseStructure) async -> CourseStructure {
         var newChilds = [CourseChapter]()
         for chapter in course.childs {
             let newChapter = filterChapter(chapter: chapter)
@@ -91,7 +91,6 @@ public class CourseInteractor: CourseInteractorProtocol {
     }
     
     public func blockCompletionRequest(courseID: String, blockID: String) async throws {
-        NotificationCenter.default.post(name: .onblockCompletionRequested, object: courseID)
         return try await repository.blockCompletionRequest(courseID: courseID, blockID: blockID)
     }
     

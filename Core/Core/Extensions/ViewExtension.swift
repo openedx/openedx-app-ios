@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 import Theme
 
+@MainActor
 public extension View {
     func cardStyle(
         top: CGFloat? = 0,
@@ -163,6 +164,7 @@ public extension View {
 }
 
 public extension Image {
+    @MainActor
     func backButtonStyle(topPadding: CGFloat = -10, color: Color = Theme.Colors.accentColor) -> some View {
         return self
             .renderingMode(.template)

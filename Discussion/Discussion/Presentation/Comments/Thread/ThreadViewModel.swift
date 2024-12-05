@@ -9,7 +9,7 @@ import Foundation
 import Combine
 import Core
 
-public class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
+public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     
     @Published var scrollTrigger: Bool = false
     

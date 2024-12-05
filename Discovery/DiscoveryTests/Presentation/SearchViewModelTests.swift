@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class SearchViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -73,12 +74,9 @@ final class SearchViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
         
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        // Wait for debounce + next event loop iteration
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        await Task.yield()
         
         Verify(interactor, .search(page: 1, searchTerm: .any))
         Verify(analytics, .discoveryCoursesSearch(label: .any, coursesCount: .any))
@@ -103,12 +101,7 @@ final class SearchViewModelTests: XCTestCase {
 
         viewModel.searchText = ""
 
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        await Task.yield()
         
         Verify(interactor, 0, .search(page: 1, searchTerm: .any))
 
@@ -136,12 +129,10 @@ final class SearchViewModelTests: XCTestCase {
         
         viewModel.searchText = "Test"
 
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            exp.fulfill()
-        }
+        // Wait for debounce + next event loop iteration
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        await Task.yield()
         
-        wait(for: [exp], timeout: 1)
         
         Verify(interactor, 1, .search(page: 1, searchTerm: .any))
 
@@ -170,12 +161,9 @@ final class SearchViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
         
-        let exp = expectation(description: "Task Starting")
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            exp.fulfill()
-        }
-        
-        wait(for: [exp], timeout: 1)
+        // Wait for debounce + next event loop iteration
+        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
+        await Task.yield()
 
         Verify(interactor, 1, .search(page: 1, searchTerm: .any))
 

@@ -13,10 +13,10 @@ import WhatsNew
 import Course
 import Theme
 
-public class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseStorage {
+public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseStorage {
 
-    private let keychain: KeychainSwift
-    private let userDefaults: UserDefaults
+    private nonisolated(unsafe) let keychain: KeychainSwift
+    private nonisolated(unsafe) let userDefaults: UserDefaults
 
     public init(keychain: KeychainSwift, userDefaults: UserDefaults) {
         self.keychain = keychain

@@ -8,10 +8,15 @@
 import Foundation
 import Alamofire
 
+private struct MutableState {
+    var isRefreshing = false
+    var requestsToRetry: [@Sendable (RetryResult) -> Void] = []
+}
+
 final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
     private let config: ConfigProtocol
-    private var storage: CoreStorage
+    private let storage: CoreStorage
     
     public init(config: ConfigProtocol, storage: CoreStorage) {
         self.config = config
@@ -19,9 +24,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
     }
     
     private let lock = NSLock()
-    
-    private var isRefreshing = false
-    private var requestsToRetry: [(RetryResult) -> Void] = []
+    private let mutableState = Protected<MutableState>(MutableState())
     
     public func adapt(
         _ urlRequest: URLRequest,
@@ -62,7 +65,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
         _ request: Request,
         for session: Session,
         dueTo error: Error,
-        completion: @escaping (RetryResult) -> Void) {
+        completion: @escaping @Sendable (RetryResult) -> Void) {
             lock.lock(); defer { lock.unlock() }
             
             guard let response = request.task?.response as? HTTPURLResponse,
@@ -78,9 +81,9 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
                 return completion(.doNotRetryWithError(error))
             }
             
-            requestsToRetry.append(completion)
+            mutableState.requestsToRetry.append(completion)
             
-            if !isRefreshing {
+            if !mutableState.isRefreshing {
                 refreshToken(refreshToken: token) { [weak self] succeeded in
                     guard let self = self else { return }
                     
@@ -88,10 +91,10 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
                     
                     if succeeded {
                         //Retry all requests
-                        self.requestsToRetry.forEach { request in
+                        self.mutableState.requestsToRetry.forEach { request in
                             request(.retry)
                         }
-                        self.requestsToRetry.removeAll()
+                        self.mutableState.requestsToRetry.removeAll()
                     } else {
                         NotificationCenter.default.post(
                             name: .userLoggedOut,
@@ -105,15 +108,15 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
     private func refreshToken(
         refreshToken: String,
-        completion: @escaping (_ succeeded: Bool) -> Void
+        completion: @escaping @Sendable (_ succeeded: Bool) -> Void
     ) {
-        guard !isRefreshing else { return }
+        guard !mutableState.isRefreshing else { return }
         
-        isRefreshing = true
+        mutableState.isRefreshing = true
         
         let url = config.baseURL.appendingPathComponent("/oauth2/access_token")
         
-        let parameters: [String: Encodable] = [
+        let parameters: [String: Encodable & Sendable] = [
             "grant_type": Constants.GrantTypeRefreshToken,
             "client_id": config.oAuthClientId,
             "refresh_token": refreshToken,
@@ -141,8 +144,9 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
                           refreshToken.count > 0 else {
                         return completion(false)
                     }
-                    self.storage.accessToken = accessToken
-                    self.storage.refreshToken = refreshToken
+                    var localStorage = self.storage
+                    localStorage.accessToken = accessToken
+                    localStorage.refreshToken = refreshToken
                     completion(true)
                 } catch {
                     completion(false)
@@ -150,7 +154,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
             case .failure:
                 completion(false)
             }
-            self.isRefreshing = false
+            self.mutableState.isRefreshing = false
         }
     }
 }

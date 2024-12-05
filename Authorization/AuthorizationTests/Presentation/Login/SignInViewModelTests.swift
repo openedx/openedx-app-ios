@@ -13,6 +13,7 @@ import OEXFoundation
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class SignInViewModelTests: XCTestCase {
     
     override func setUpWithError() throws {

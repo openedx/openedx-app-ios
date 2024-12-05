@@ -56,6 +56,7 @@ enum SocialAuthDetails {
     }
 }
 
+@MainActor
 final public class SocialAuthViewModel: ObservableObject {
 
     // MARK: - Properties

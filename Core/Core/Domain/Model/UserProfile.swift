@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct UserProfile: Hashable {
+public struct UserProfile: Hashable, Sendable {
     public let avatarUrl: String
     public let name: String
     public let username: String
