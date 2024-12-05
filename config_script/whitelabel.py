@@ -364,7 +364,7 @@ class WhitelabelApp:
                 # define regex rule and replacement string for every possible parameter
                 if parameter == "dev_team":
                     parameter_string = 'DEVELOPMENT_TEAM = '+parameter_value+';'
-                    parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+                    parameter_regex = 'DEVELOPMENT_TEAM = (.{10}|\"\");'
                 elif parameter == "marketing_version":
                     parameter_string = 'MARKETING_VERSION = '+parameter_value+';'
                     parameter_regex = 'MARKETING_VERSION = .*;'
@@ -419,7 +419,7 @@ class WhitelabelApp:
         config_file_string_out = config_file_string
         # string and regex for dev team
         parameter_string = 'DEVELOPMENT_TEAM = '+dev_team+';'
-        parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+        parameter_regex = 'DEVELOPMENT_TEAM = (.{10}|\"\");'
         # replace all regex findings with new parameters string
         config_file_string_out = re.sub(parameter_regex, parameter_string, config_file_string)
         # if something was changed
