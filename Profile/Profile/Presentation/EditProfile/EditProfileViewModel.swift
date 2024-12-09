@@ -9,7 +9,6 @@ import Foundation
 import Core
 import SwiftUI
 
-// swiftlint:disable type_body_length
 public struct Changes: Equatable, Sendable {
     public var shortBiography: String
     public var profileType: ProfileType
@@ -373,4 +372,3 @@ public class EditProfileViewModel: ObservableObject {
         analytics.profileScreenEvent(.profileEdit, biValue: .profileEdit)
     }
 }
-// swiftlint:enable type_body_length

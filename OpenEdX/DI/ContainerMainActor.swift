@@ -8,6 +8,7 @@
 import Foundation
 @preconcurrency import Swinject
 
+//swiftlint:disable line_length
 // MARK: - MainActor registration
 @available(iOS 13.0, macOS 10.15, *)
 extension Container {
@@ -277,3 +278,4 @@ extension Container {
     }
 
 }
+//swiftlint:enable line_length

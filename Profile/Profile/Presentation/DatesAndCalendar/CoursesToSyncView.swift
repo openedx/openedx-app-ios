@@ -89,10 +89,14 @@ public struct CoursesToSyncView: View {
             } else {
                 ForEach(
                     Array(
-                        viewModel.coursesForSync.filter({ course in
-                            course.synced == viewModel.synced && (!viewModel.hideInactiveCourses || course.recentlyActive)
-                        })
-                        .sorted { $0.recentlyActive && !$1.recentlyActive }
+                        viewModel.coursesForSync.filter(
+                            { course in
+                                course.synced == viewModel.synced && (
+                                    !viewModel.hideInactiveCourses || course.recentlyActive
+                                )
+                            })
+                        .sorted { $0.recentlyActive && !$1.recentlyActive
+                        }
                             .enumerated()
                     ),
                     id: \.offset
@@ -153,7 +157,7 @@ struct CoursesToSyncView_Previews: PreviewProvider {
             interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
             profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
-            calendarManager: CalendarManagerMock(), 
+            calendarManager: CalendarManagerMock(),
             connectivity: Connectivity()
         )
         return CoursesToSyncView(viewModel: vm)

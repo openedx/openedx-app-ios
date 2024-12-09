@@ -18,13 +18,21 @@ struct AppReviewButton: View {
     }
     
     var body: some View {
-        Button(action: {
-            if isActive { action() }
-        }, label: {
-        Group {
-            HStack(spacing: 4) {
-                Text(type == .submit ? CoreLocalization.Review.Button.submit
-                     : (type == .shareFeedback ? CoreLocalization.Review.Button.shareFeedback : CoreLocalization.Review.Button.rateUs ))
+        Button(
+            action: {
+                if isActive { action() }
+            },
+            label: {
+                Group {
+                    HStack(spacing: 4) {
+                        Text(
+                            type == .submit ? CoreLocalization.Review.Button.submit
+                            : (
+                                type == .shareFeedback
+                                ? CoreLocalization.Review.Button.shareFeedback
+                                : CoreLocalization.Review.Button.rateUs
+                            )
+                        )
                 .foregroundColor(isActive ? Color.white : Color.black.opacity(0.6))
                 .font(Theme.Fonts.labelLarge)
                 .padding(3)
@@ -36,8 +44,14 @@ struct AppReviewButton: View {
                         ? Theme.Colors.accentColor
                         : Theme.Colors.cardViewStroke)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(type == .submit ? CoreLocalization.Review.Button.submit
-                                : (type == .shareFeedback ? CoreLocalization.Review.Button.shareFeedback : CoreLocalization.Review.Button.rateUs ))
+            .accessibilityLabel(
+                type == .submit ? CoreLocalization.Review.Button.submit
+                : (
+                    type == .shareFeedback
+                    ? CoreLocalization.Review.Button.shareFeedback
+                    : CoreLocalization.Review.Button.rateUs
+                )
+            )
             .cornerRadius(8)
         })
     }

@@ -125,10 +125,14 @@ public struct CourseOutlineView: View {
                                         )
                                     } else {
                                         if let courseStart = viewModel.courseStart {
-                                            Text(courseStart > Date() ? CourseLocalization.Outline.courseHasntStarted : "")
-                                                .frame(maxWidth: .infinity)
-                                                .frame(maxHeight: .infinity)
-                                                .padding(.top, 100)
+                                            Text(
+                                                courseStart > Date()
+                                                ? CourseLocalization.Outline.courseHasntStarted
+                                                : ""
+                                            )
+                                            .frame(maxWidth: .infinity)
+                                            .frame(maxHeight: .infinity)
+                                            .padding(.top, 100)
                                         }
                                         Spacer(minLength: viewHeight < 200 ? 200 : viewHeight)
                                     }
@@ -139,8 +143,8 @@ public struct CourseOutlineView: View {
                     }
                     .refreshable {
                         Task {
-                                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-                            }
+                            await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                        }
                     }
                     .onRightSwipeGesture {
                         viewModel.router.back()
@@ -189,7 +193,7 @@ public struct CourseOutlineView: View {
         }
         .onAppear {
             Task {
-               await viewModel.updateCourseIfNeeded(courseID: courseID)
+                await viewModel.updateCourseIfNeeded(courseID: courseID)
             }
         }
         .background(
@@ -293,7 +297,7 @@ public struct CourseOutlineView: View {
                 content: {
                     WebBrowser(
                         url: url,
-                        pageTitle: CourseLocalization.Outline.certificate, 
+                        pageTitle: CourseLocalization.Outline.certificate,
                         connectivity: viewModel.connectivity
                     )
                 }

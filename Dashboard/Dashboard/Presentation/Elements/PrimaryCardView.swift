@@ -150,14 +150,9 @@ public struct PrimaryCardView: View {
             // futureAssignment
             if !futureAssignments.isEmpty {
                 if futureAssignments.count == 1, let futureAssignment = futureAssignments.first {
-                    let daysRemaining = Calendar.current.dateComponents(
-                        [.day],
-                        from: Date(),
-                        to: futureAssignment.date
-                    ).day ?? 0
                     courseButton(
                         title: futureAssignment.title,
-                        description:  futureAssignment.date.dateToString(
+                        description: futureAssignment.date.dateToString(
                             style: .shortWeekdayMonthDayYear,
                             useRelativeDates: useRelativeDates,
                             dueIn: true
@@ -296,6 +291,7 @@ public struct PrimaryCardView: View {
     }
 }
 
+//swiftlint:disable line_length
 #if DEBUG
 struct PrimaryCardView_Previews: PreviewProvider {
     static var previews: some View {
@@ -332,3 +328,4 @@ struct PrimaryCardView_Previews: PreviewProvider {
     }
 }
 #endif
+//swiftlint:enable line_length

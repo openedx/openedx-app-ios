@@ -17,7 +17,7 @@ import WhatsNew
 import Swinject
 import OEXFoundation
 
-// swiftlint:disable type_body_length file_length
+// swiftlint:disable type_body_length
 class AnalyticsManager: AuthorizationAnalytics,
                         MainScreenAnalytics,
                         DiscoveryAnalytics,
@@ -318,7 +318,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.name: EventBIValue.cookiePolicyClicked.rawValue,
             EventParamKey.category: EventCategory.profile
         ]
-        logEvent(.cookiePolicyClicked)
+        logEvent(.cookiePolicyClicked, parameters: parameters)
     }
     
     public func emailSupportClicked() {
@@ -826,4 +826,4 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.whatnewClose, parameters: parameters)
     }
 }
-// swiftlint:enable type_body_length file_length
+// swiftlint:enable type_body_length

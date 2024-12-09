@@ -38,6 +38,18 @@ public extension DataLayer {
     }
 }
 
+public extension DataLayer.CourseMedia {
+    var domain: CourseMedia {
+        return CourseMedia(
+            image: CourseImage(
+                raw: image.raw,
+                small: image.small,
+                large: image.large
+            )
+        )
+    }
+}
+
 public extension DataLayer {
     // MARK: - BannerImage
     struct BannerImage: Codable {

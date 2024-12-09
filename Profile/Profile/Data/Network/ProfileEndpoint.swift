@@ -94,7 +94,7 @@ enum ProfileEndpoint: EndPointType {
                 "password": password
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
-        case let .enrollmentsStatus(username):
+        case .enrollmentsStatus:
             return .requestParameters(parameters: nil, encoding: JSONEncoding.default)
         case .getCourseDates:
             return .requestParameters(encoding: JSONEncoding.default)

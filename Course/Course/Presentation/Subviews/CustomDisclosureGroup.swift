@@ -457,7 +457,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         encodedVideo: "",
                         displayName: "Course",
                         childs: sampleCourseChapters,
-                        media: DataLayer.CourseMedia.init(image: DataLayer.Image(raw: "", small: "", large: "")),
+                        media: CourseMedia.init(image: CourseImage(raw: "", small: "", large: "")),
                         certificate: nil,
                         org: "org",
                         isSelfPaced: false,

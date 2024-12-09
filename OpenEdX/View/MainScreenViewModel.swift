@@ -159,7 +159,7 @@ extension MainScreenViewModel {
             }
             
             do {
-                var coursesForSync = try await profileInteractor.enrollmentsStatus().filter { $0.recentlyActive }
+                let coursesForSync = try await profileInteractor.enrollmentsStatus().filter { $0.recentlyActive }
                 
                 let selectedCourses = await calendarManager.filterCoursesBySelected(fetchedCourses: coursesForSync)
                 

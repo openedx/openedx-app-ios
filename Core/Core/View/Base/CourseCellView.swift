@@ -31,8 +31,14 @@ public struct CourseCellView: View {
         self.type = type
         self.courseImage = model.imageURL
         self.courseName = model.name
-        self.courseStart = model.courseStart?.dateToString(style: .startDDMonthYear, useRelativeDates: useRelativeDates) ?? ""
-        self.courseEnd = model.courseEnd?.dateToString(style: .endedMonthDay, useRelativeDates: useRelativeDates) ?? ""
+        self.courseStart = model.courseStart?.dateToString(
+            style: .startDDMonthYear,
+            useRelativeDates: useRelativeDates
+        ) ?? ""
+        self.courseEnd = model.courseEnd?.dateToString(
+            style: .endedMonthDay,
+            useRelativeDates: useRelativeDates
+        ) ?? ""
         self.courseOrg =  model.org
         self.index = Double(index) + 1
         self.cellsCount = cellsCount
@@ -99,7 +105,13 @@ public struct CourseCellView: View {
             .opacity(showView ? 1 : 0)
             .offset(y: showView ? 0 : 20)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(courseName + " " + (type == .dashboard ? (courseEnd == "" ? courseStart : courseEnd) : ""))
+            .accessibilityLabel(
+                courseName + " " + (
+                    type == .dashboard ? (
+                        courseEnd == "" ? courseStart : courseEnd
+                    ) : ""
+                )
+            )
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     withAnimation(.easeInOut(duration: (index <= 5 ? 0.3 : 0.1))

@@ -935,8 +935,8 @@
 			buildConfigurationList = 0770DE0F28D07831006D8A5D /* Build configuration list for PBXNativeTarget "Core" */;
 			buildPhases = (
 				ED83AD5255805030E042D62A /* [CP] Check Pods Manifest.lock */,
-				0770DE5A28D0B1E5006D8A5D /* SwiftGen */,
 				0770DE0328D07831006D8A5D /* Headers */,
+				0770DE5A28D0B1E5006D8A5D /* SwiftGen */,
 				0770DE0428D07831006D8A5D /* Sources */,
 				0770DE0528D07831006D8A5D /* Frameworks */,
 				0770DE0628D07831006D8A5D /* Resources */,

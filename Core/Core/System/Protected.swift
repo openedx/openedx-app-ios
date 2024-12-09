@@ -5,7 +5,6 @@
 //  Created by Ivan Stepanok on 14.11.2024.
 //
 
-
 import Foundation
 
 private protocol Lock: Sendable {

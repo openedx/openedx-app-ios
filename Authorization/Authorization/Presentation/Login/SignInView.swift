@@ -123,7 +123,9 @@ public struct SignInView: View {
                                     HStack {
                                         if !viewModel.config.features.startupScreenEnabled {
                                             Button(CoreLocalization.SignIn.registerBtn) {
-                                                viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
+                                                viewModel.router.showRegisterScreen(
+                                                    sourceScreen: viewModel.sourceScreen
+                                                )
                                             }
                                             .foregroundColor(Theme.Colors.accentColor)
                                             .accessibilityIdentifier("register_button")
@@ -159,7 +161,7 @@ public struct SignInView: View {
                                     }
                                 }
                                 if viewModel.config.uiComponents.samlSSOLoginEnabled {
-                                    if !viewModel.config.uiComponents.loginRegistrationEnabled{
+                                    if !viewModel.config.uiComponents.loginRegistrationEnabled {
                                         VStack(alignment: .center) {
                                             Text(AuthLocalization.SignIn.ssoHeading)
                                                 .font(Theme.Fonts.headlineSmall)
@@ -202,15 +204,21 @@ public struct SignInView: View {
                                         } else {
                                             let languageCode = Locale.current.language.languageCode?.identifier ?? "en"
                                             if viewModel.config.uiComponents.samlSSODefaultLoginButton {
-                                                StyledButton(viewModel.config.ssoButtonTitle[languageCode] as! String, action: {
-                                                    viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
+                                                StyledButton(
+                                                    viewModel.config.ssoButtonTitle[languageCode] as! String,
+                                                    action: {
+                                                        viewModel.router
+                                                            .showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
                                                 })
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.top, 20)
                                                 .accessibilityIdentifier("signin_SSO_button")
                                             } else {
-                                                StyledButton(viewModel.config.ssoButtonTitle[languageCode] as! String, action: {
-                                                    viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
+                                                StyledButton(
+                                                    viewModel.config.ssoButtonTitle[languageCode] as! String,
+                                                    action: {
+                                                        viewModel.router
+                                                            .showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
                                                 },
                                                              color: .white,
                                                              textColor: Theme.Colors.accentColor,

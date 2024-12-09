@@ -150,7 +150,6 @@ public final class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
     
-    // swiftlint:disable function_body_length
     public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) async {
         // Deleting all old data before saving new ones
         await clearOldEnrollmentsData()
@@ -230,7 +229,6 @@ public final class DashboardPersistence: DashboardPersistenceProtocol {
             }
         }
     }
-    // swiftlint:enable function_body_length
     
     func clearOldEnrollmentsData() async {
         await container.performBackgroundTask { context in

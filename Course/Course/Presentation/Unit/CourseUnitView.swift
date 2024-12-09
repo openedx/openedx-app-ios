@@ -13,6 +13,7 @@ import Discussion
 import Combine
 import Theme
 
+// swiftlint:disable type_body_length
 public struct CourseUnitView: View {
     
     @ObservedObject public var viewModel: CourseUnitViewModel
@@ -318,8 +319,7 @@ public struct CourseUnitView: View {
                     if !isHorizontal {
                         Spacer(minLength: 150)
                     }
-                }
-                else if let offlineURL = videoURLs[blockID] {
+                } else if let offlineURL = videoURLs[blockID] {
                     EncodedVideoView(
                         name: block.displayName,
                         url: offlineURL,
@@ -575,7 +575,6 @@ public struct CourseUnitView: View {
 }
 
 #if DEBUG
-// swiftlint:disable all
 struct CourseUnitView_Previews: PreviewProvider {
     static var previews: some View {
         let blocks = [
@@ -642,7 +641,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 encodedVideo: nil,
                 multiDevice: false,
                 offlineDownload: nil
-            ),
+            )
         ]
         
         let chapters = [
@@ -731,5 +730,5 @@ struct CourseUnitView_Previews: PreviewProvider {
         ))
     }
 }
-// swiftlint:enable all
 #endif
+// swiftlint:enable type_body_length

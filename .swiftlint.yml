@@ -31,6 +31,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Core/Core/SwiftGen
   - Authorization/Authorization/SwiftGen
   - Course/Course/SwiftGen
+  - Discussion/Discussion/SwiftGen
   - Discovery/Discovery/SwiftGen
   - Dashboard/Dashboard/SwiftGen
   - Profile/Profile/SwiftGen
@@ -48,14 +49,15 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
 force_try: error
 
 line_length: 120
-type_body_length: 300
+type_body_length: 600
+function_body_length: 100
 
 trailing_whitespace:
   ignores_empty_lines: true
 
 file_length:
-  warning: 500
-  error: 1200
+  warning: 1200
+  error: 1500
   
 function_parameter_count:
   warning: 10

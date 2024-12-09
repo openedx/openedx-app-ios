@@ -112,6 +112,7 @@ struct CourseCardView: View {
     }
 }
 
+//swiftlint:disable line_length
 #if DEBUG
 #Preview {
     CourseCardView(
@@ -122,8 +123,9 @@ struct CourseCardView: View {
         courseStartDate: nil,
         courseEndDate: Date(),
         hasAccess: true,
-        showProgress: true, 
+        showProgress: true,
         useRelativeDates: true
     ).frame(width: 170)
 }
 #endif
+//swiftlint:enable line_length

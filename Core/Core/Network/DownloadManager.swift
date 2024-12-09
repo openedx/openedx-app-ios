@@ -158,7 +158,8 @@ public class DownloadManager: DownloadManagerProtocol {
     private let connectivity: ConnectivityProtocol
     private var downloadRequest: DownloadRequest?
     private var isDownloadingInProgress: Bool = false
-    private nonisolated(unsafe) var currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
+    private nonisolated(unsafe) var currentDownloadEventPublisher:
+    PassthroughSubject<DownloadManagerEvent, Never> = .init()
     private let backgroundTaskProvider = BackgroundTaskProvider()
     private var cancellables = Set<AnyCancellable>()
     private nonisolated(unsafe) var failedDownloads: [DownloadDataTask] = []
@@ -467,9 +468,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadFileWithProgress(_ download: DownloadDataTask) async throws {
-        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
-            return
-        }
+        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else { return }
 
         await persistence.updateDownloadState(
             id: download.id,
@@ -495,8 +494,7 @@ public class DownloadManager: DownloadManagerProtocol {
             self.currentDownloadTask?.progress = fractionCompleted
             self.currentDownloadTask?.state = .inProgress
             self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
-            let completed = Double(fractionCompleted * 100)
-            debugLog(">>>>> Downloading File", download.url, completed, "%")
+            debugLog(">>>>> Downloading File", download.url, Double(fractionCompleted * 100), "%")
         }
 
         downloadRequest?.responseURL { [weak self] response in
@@ -526,9 +524,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadHTMLWithProgress(_ download: DownloadDataTask) async throws {
-        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
-            return
-        }
+        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else { return }
 
         await persistence.updateDownloadState(
             id: download.id,
@@ -555,8 +551,7 @@ public class DownloadManager: DownloadManagerProtocol {
             self.currentDownloadTask?.progress = fractionCompleted
             self.currentDownloadTask?.state = .inProgress
             self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
-            let completed = Double(fractionCompleted * 100)
-            debugLog(">>>>> Downloading HTML", download.url, completed, "%")
+            debugLog(">>>>> Downloading HTML", download.url, Double(fractionCompleted * 100), "%")
         }
 
         downloadRequest?.responseURL { [weak self] response in
@@ -831,7 +826,6 @@ public final class BackgroundTaskProvider: @unchecked Sendable {
 }
 
 // Mark - For testing and SwiftUI preview
-// swiftlint:disable file_length
 #if DEBUG
 public class DownloadManagerMock: DownloadManagerProtocol {
 
@@ -906,4 +900,3 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     public func removeAppSupportDirectoryUnusedContent() {}
 }
 #endif
-// swiftlint:enable file_length

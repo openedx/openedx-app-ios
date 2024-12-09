@@ -270,7 +270,7 @@ struct SyncCalendarOptionsView_Previews: PreviewProvider {
             interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
             profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
-            calendarManager: CalendarManagerMock(), 
+            calendarManager: CalendarManagerMock(),
             connectivity: Connectivity()
         )
         SyncCalendarOptionsView(viewModel: vm)
