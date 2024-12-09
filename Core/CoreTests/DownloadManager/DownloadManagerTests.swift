@@ -40,7 +40,8 @@ final class DownloadManagerTests: XCTestCase {
         Given(storage, .userSettings(getter: UserSettings(
             wifiOnly: true,
             streamingQuality: .auto,
-            downloadQuality: .auto
+            downloadQuality: .auto,
+            playbackSpeed: 1.0
         )))
         
         let blocks = [createMockCourseBlock()]
@@ -57,7 +58,8 @@ final class DownloadManagerTests: XCTestCase {
         Given(storage, .userSettings(getter: UserSettings(
             wifiOnly: true,
             streamingQuality: .auto,
-            downloadQuality: .auto
+            downloadQuality: .auto,
+            playbackSpeed: 1.0
         )))
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: true))

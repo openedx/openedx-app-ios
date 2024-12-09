@@ -73,12 +73,15 @@ final class MainScreenViewModel: ObservableObject {
     func trackMainDiscoveryTabClicked() {
         analytics.mainDiscoveryTabClicked()
     }
-    func trackMainDashboardTabClicked() {
-        analytics.mainDashboardTabClicked()
+    
+    func trackMainDashboardLearnTabClicked() {
+        analytics.mainLearnTabClicked()
     }
+    
     func trackMainProgramsTabClicked() {
         analytics.mainProgramsTabClicked()
     }
+    
     func trackMainProfileTabClicked() {
         analytics.mainProfileTabClicked()
     }
@@ -112,6 +115,10 @@ final class MainScreenViewModel: ObservableObject {
                 completion: {}
             )
         }
+    }
+
+    func trackMainDashboardMyCoursesClicked() {
+        analytics.mainCoursesClicked()
     }
 
     @MainActor

@@ -11,15 +11,18 @@ public struct UserSettings: Codable, Hashable, Sendable {
     public var wifiOnly: Bool
     public var streamingQuality: StreamingQuality
     public var downloadQuality: DownloadQuality
+    public var videoPlaybackSpeed: Float
 
     public init(
         wifiOnly: Bool,
         streamingQuality: StreamingQuality,
-        downloadQuality: DownloadQuality
+        downloadQuality: DownloadQuality,
+        playbackSpeed: Float
     ) {
         self.wifiOnly = wifiOnly
         self.streamingQuality = streamingQuality
         self.downloadQuality = downloadQuality
+        self.videoPlaybackSpeed = playbackSpeed
     }
 }
 

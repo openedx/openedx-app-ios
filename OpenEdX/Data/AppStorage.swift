@@ -170,15 +170,22 @@ public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, Cou
 
     public var userSettings: UserSettings? {
         get {
-            guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
-                let defaultSettings = UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
+            if let userSettings = userDefaults.data(forKey: KEY_SETTINGS),
+                let settings = try? JSONDecoder().decode(UserSettings.self, from: userSettings) {
+                return settings
+            } else {
+                let defaultSettings = UserSettings(
+                    wifiOnly: true,
+                    streamingQuality: .auto,
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
+                )
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(defaultSettings) {
                     userDefaults.set(encoded, forKey: KEY_SETTINGS)
                 }
                 return defaultSettings
             }
-            return try? JSONDecoder().decode(UserSettings.self, from: userSettings)
         }
         set(newValue) {
             if let settings = newValue {

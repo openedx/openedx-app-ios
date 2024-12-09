@@ -460,11 +460,11 @@ class ScreenAssembly: Assembly {
                 blockID: blockID,
                 courseID: courseID,
                 selectedCourseTab: selectedCourseTab,
-                videoResolution: .zero,
                 pipManager: r.resolve(PipManagerProtocol.self)!,
                 playerTracker: r.resolve(YoutubePlayerTracker.self, argument: url)!,
                 playerDelegate: nil,
-                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!,
+                appStorage: nil
             )
         }
 
@@ -482,7 +482,6 @@ class ScreenAssembly: Assembly {
                 }
                 
                 let storage = r.resolve(CoreStorage.self)!
-                let quality = storage.userSettings?.streamingQuality ?? .auto
                 let tracker = r.resolve(PlayerTracker.self, argument: url)!
                 let delegate = r.resolve(PlayerDelegateProtocol.self)!
                 let holder = PlayerViewControllerHolder(
@@ -490,15 +489,16 @@ class ScreenAssembly: Assembly {
                     blockID: blockID,
                     courseID: courseID,
                     selectedCourseTab: selectedCourseTab,
-                    videoResolution: quality.resolution,
                     pipManager: pipManager,
                     playerTracker: tracker,
                     playerDelegate: delegate,
-                    playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+                    playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!,
+                    appStorage: storage
                 )
                 delegate.playerHolder = holder
                 return holder
-            })
+            }
+        )
         
         container.register(PlayerServiceProtocol.self) { @MainActor r, courseID, blockID in
             let interactor = r.resolve(CourseInteractorProtocol.self)!
