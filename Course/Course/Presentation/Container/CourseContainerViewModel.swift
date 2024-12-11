@@ -59,7 +59,7 @@ extension CourseTab {
     }
 }
 
-//swiftlint:disable type_body_length
+//swiftlint:disable type_body_length file_length
 @MainActor
 public final class CourseContainerViewModel: BaseCourseViewModel {
     
@@ -1163,4 +1163,4 @@ struct VerticalsDownloadState: Hashable {
         vertical.childs.filter { $0.isDownloadable && $0.type == .video }
     }
 }
-//swiftlint:enable type_body_length
+//swiftlint:enable type_body_length file_length

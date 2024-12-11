@@ -1,3 +1,4 @@
+warning_threshold: 1
 disabled_rules: # rule identifiers to exclude from running
   - identifier_name
   - comment_spacing
@@ -56,7 +57,7 @@ trailing_whitespace:
   ignores_empty_lines: true
 
 file_length:
-  warning: 1200
+  warning: 850
   error: 1500
   
 function_parameter_count:
@@ -72,11 +73,4 @@ type_name:
     - iPhone
     - API 
 
-identifier_name:
-  min_length: # only min_length
-    error: 1 # only error
- # excluded: # excluded via string array
-#    - id
-#    - URL
-#    - GlobalAPIKey
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji, sonarqube, markdown)

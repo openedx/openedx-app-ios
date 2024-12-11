@@ -122,7 +122,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
         let url = config.baseURL.appendingPathComponent("/oauth2/access_token")
         
         let parameters: [String: Encodable & Sendable] = [
-            "grant_type": Constants.GrantTypeRefreshToken,
+            "grant_type": AuthConstants.GrantTypeRefreshToken,
             "client_id": config.oAuthClientId,
             "refresh_token": refreshToken,
             "token_type": config.tokenType.rawValue,

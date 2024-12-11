@@ -13,7 +13,6 @@ import Discussion
 import Combine
 import Theme
 
-// swiftlint:disable type_body_length
 public struct CourseUnitView: View {
     
     @ObservedObject public var viewModel: CourseUnitViewModel
@@ -731,4 +730,3 @@ struct CourseUnitView_Previews: PreviewProvider {
     }
 }
 #endif
-// swiftlint:enable type_body_length
