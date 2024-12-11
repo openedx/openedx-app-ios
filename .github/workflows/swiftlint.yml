@@ -36,6 +36,7 @@ jobs:
 
       - name: SwiftLint
         run: |
+          export PODS_ROOT=$(pwd)/Pods
           "${PODS_ROOT}/SwiftLint/swiftlint" --reporter sarif > swiftlint.report.sarif
 
       - name: Prepare swiftlint.report.sarif
