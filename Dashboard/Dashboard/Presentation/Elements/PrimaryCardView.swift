@@ -291,6 +291,7 @@ public struct PrimaryCardView: View {
     }
 }
 
+//swiftlint:disable line_length
 #if DEBUG
 struct PrimaryCardView_Previews: PreviewProvider {
     static var previews: some View {
@@ -327,3 +328,4 @@ struct PrimaryCardView_Previews: PreviewProvider {
     }
 }
 #endif
+//swiftlint:enable line_length
