@@ -30,10 +30,6 @@ jobs:
           source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
           xcodes select 16.1
 
-      - name: Install pods
-        run: |
-          pod install
-
       - name: SwiftLint
         run: |
           export PODS_ROOT=$(pwd)/Pods
