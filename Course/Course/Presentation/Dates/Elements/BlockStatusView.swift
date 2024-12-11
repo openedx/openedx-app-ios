@@ -38,12 +38,4 @@ struct BlockStatusView: View {
             .padding(.top, 0.2)
         }
     }
-    
-    func applyStyle(string: String, forgroundColor: Color, backgroundColor: Color) -> AttributedString {
-        var attributedString = AttributedString(string)
-        attributedString.font = Theme.Fonts.bodySmall
-        attributedString.foregroundColor = forgroundColor
-        attributedString.backgroundColor = backgroundColor
-        return attributedString
-    }
 }

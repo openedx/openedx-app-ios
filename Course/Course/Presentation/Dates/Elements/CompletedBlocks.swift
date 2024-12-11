@@ -73,7 +73,6 @@ struct CompletedBlocks: View {
                                     Image(systemName: "chevron.right")
                                         .resizable()
                                         .flipsForRightToLeftLayoutDirection(true)
-                                        
                                         .scaledToFit()
                                         .frame(width: 6.55, height: 11.15)
                                         .labelStyle(.iconOnly)

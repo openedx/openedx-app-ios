@@ -158,8 +158,7 @@ public class DownloadManager: DownloadManagerProtocol {
     private let connectivity: ConnectivityProtocol
     private var downloadRequest: DownloadRequest?
     private var isDownloadingInProgress: Bool = false
-    private nonisolated(unsafe) var currentDownloadEventPublisher:
-    PassthroughSubject<DownloadManagerEvent, Never> = .init()
+    private nonisolated(unsafe) var currentDownloadEventPublisher = PassthroughSubject<DownloadManagerEvent, Never>()
     private let backgroundTaskProvider = BackgroundTaskProvider()
     private var cancellables = Set<AnyCancellable>()
     private nonisolated(unsafe) var failedDownloads: [DownloadDataTask] = []

@@ -6,21 +6,6 @@
 	<array>
 		<string>openEdx.offlineProgressSync</string>
 	</array>
-	<key>CFBundleURLTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeRole</key>
-			<string>Viewer</string>
-			<key>CFBundleURLIconFile</key>
-			<string></string>
-			<key>CFBundleURLName</key>
-			<string>test</string>
-			<key>CFBundleURLSchemes</key>
-			<array>
-				<string>test</string>
-			</array>
-		</dict>
-	</array>
 	<key>Configuration</key>
 	<string>$(CONFIGURATION)</string>
 	<key>FirebaseAppDelegateProxyEnabled</key>

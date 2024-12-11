@@ -94,9 +94,9 @@ public struct CoursesToSyncView: View {
                                 course.synced == viewModel.synced && (
                                     !viewModel.hideInactiveCourses || course.recentlyActive
                                 )
-                            })
-                        .sorted { $0.recentlyActive && !$1.recentlyActive
-                        }
+                            }
+                        )
+                        .sorted { $0.recentlyActive && !$1.recentlyActive }
                             .enumerated()
                     ),
                     id: \.offset
@@ -140,11 +140,11 @@ public struct CoursesToSyncView: View {
             Text(ProfileLocalization.Sync.noSynced)
                 .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)
-                Text(ProfileLocalization.Sync.noSyncedDescription)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Theme.Colors.textPrimary)
-                    .font(Theme.Fonts.labelMedium)
-                    .frame(width: 245)
+            Text(ProfileLocalization.Sync.noSyncedDescription)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Theme.Colors.textPrimary)
+                .font(Theme.Fonts.labelMedium)
+                .frame(width: 245)
         }
     }
 }

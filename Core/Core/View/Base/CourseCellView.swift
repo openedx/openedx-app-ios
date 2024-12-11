@@ -99,7 +99,7 @@ public struct CourseCellView: View {
                     .padding(.vertical, type == .discovery ? 10 : 0)
                 Spacer()
             }
-           
+            
         }.frame(height: 105)
             .background(Theme.Colors.background)
             .opacity(showView ? 1 : 0)
@@ -107,9 +107,9 @@ public struct CourseCellView: View {
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(
                 courseName + " " + (
-                    type == .dashboard ? (
-                        courseEnd == "" ? courseStart : courseEnd
-                    ) : ""
+                    type == .dashboard
+                    ? (courseEnd == "" ? courseStart : courseEnd)
+                    : ""
                 )
             )
             .onAppear {
@@ -120,7 +120,7 @@ public struct CourseCellView: View {
                         }
                 }
             }
-           
+        
         VStack {
             if Int(index) != cellsCount {
                 Divider()
@@ -169,7 +169,6 @@ struct CourseCellView_Previews: PreviewProvider {
 //                Divider()
             }
         }
-
     }
 }
 // swiftlint:enable all

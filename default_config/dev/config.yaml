@@ -1,12 +1,9 @@
-API_HOST_URL: 'https://axim-mobile.raccoongang.net'
+API_HOST_URL: 'http://localhost:8000'
 SSO_URL: 'http://localhost:8000'
 SSO_FINISHED_URL:  'http://localhost:8000'
-ENVIRONMENT_DISPLAY_NAME: 'lms-axim-stage'
+ENVIRONMENT_DISPLAY_NAME: 'Localhost'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
-OAUTH_CLIENT_ID: 'zP3vPz00c8fTRpYjNbVSlA1fxt9LnCxTM4JK1KQ0'
-
-DISCOVERY:
-    TYPE: "native"
+OAUTH_CLIENT_ID: ''
 
 SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"

@@ -18,9 +18,7 @@ final class DismissKeyboardTapHandler: NSObject {
                 let recognizer = makeTapGestureRecognizer()
                 UIApplication
                     .shared
-                    .connectedScenes
-                    .compactMap { ($0 as? UIWindowScene)?.keyWindow }
-                    .last?
+                    .oexKeyWindow?
                     .addGestureRecognizer(recognizer)
                 tapRecognizer = recognizer
                 return
@@ -29,9 +27,7 @@ final class DismissKeyboardTapHandler: NSObject {
             if let recognizer = tapRecognizer {
                 UIApplication
                     .shared
-                    .connectedScenes
-                    .compactMap { ($0 as? UIWindowScene)?.keyWindow }
-                    .last?
+                    .oexKeyWindow?
                     .removeGestureRecognizer(recognizer)
                 tapRecognizer = nil
             }
