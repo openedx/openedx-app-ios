@@ -26,14 +26,17 @@ jobs:
             ${{ runner.os }}-gems-
 
       - name: Setup environment
-        run:
+        run: |
           source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
           xcodes select 16.1
 
+      - name: Install pods
+        run: |
+          pod install
+
       - name: SwiftLint
         run: |
-          bundle exec fastlane linting -- --reporter sarif --output swiftlint.report.sarif
-        continue-on-error: true
+          "${PODS_ROOT}/SwiftLint/swiftlint" --reporter sarif > swiftlint.report.sarif
 
       - name: Prepare swiftlint.report.sarif
         if: success() || failure()
