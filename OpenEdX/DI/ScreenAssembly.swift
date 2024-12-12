@@ -410,7 +410,8 @@ class ScreenAssembly: Assembly {
                         router.currentCourseTabSelection
                     )!
                 )
-            })
+            }
+        )
         
         container.register(
             EncodedVideoPlayerViewModel.self,
@@ -438,7 +439,8 @@ class ScreenAssembly: Assembly {
                     connectivity: r.resolve(ConnectivityProtocol.self)!,
                     playerHolder: holder
                 )
-            })
+            }
+        )
         
         container.register(PlayerDelegateProtocol.self) { r in
             PlayerDelegate(pipManager: r.resolve(PipManagerProtocol.self)!)

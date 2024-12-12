@@ -20,7 +20,7 @@ struct BlockStatusView: View {
                 HStack(alignment: .top) {
                     block.blockImage?.swiftUIImage
                         .foregroundColor(Theme.Colors.textPrimary)
-                    StyleBlock(block: block, viewModel: viewModel)
+                    CourseDateStyleBlock(block: block, viewModel: viewModel)
                         .padding(.bottom, 15)
                     Spacer()
                     if block.canShowLink && !block.firstComponentBlockID.isEmpty {

@@ -104,7 +104,7 @@
 		CE6386682D07219B00C01D69 /* CourseDateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386672D07219B00C01D69 /* CourseDateListView.swift */; };
 		CE63866A2D0721B600C01D69 /* CompletedBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386692D0721B600C01D69 /* CompletedBlocks.swift */; };
 		CE63866C2D0721D600C01D69 /* BlockStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866B2D0721D600C01D69 /* BlockStatusView.swift */; };
-		CE63866E2D07220600C01D69 /* StyleBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866D2D07220600C01D69 /* StyleBlock.swift */; };
+		CE63866E2D07220600C01D69 /* CourseDateStyleBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */; };
 		CE7CAF412CC1563500E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF402CC1563500E0AC9D /* OEXFoundation */; };
 		CEB1E2732CC14EC400921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2722CC14EC400921517 /* OEXFoundation */; };
 		CEBCA4342CC13CDE00076589 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA4332CC13CDE00076589 /* YouTubePlayerKit */; };
@@ -251,7 +251,7 @@
 		CE6386672D07219B00C01D69 /* CourseDateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateListView.swift; sourceTree = "<group>"; };
 		CE6386692D0721B600C01D69 /* CompletedBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedBlocks.swift; sourceTree = "<group>"; };
 		CE63866B2D0721D600C01D69 /* BlockStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStatusView.swift; sourceTree = "<group>"; };
-		CE63866D2D07220600C01D69 /* StyleBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyleBlock.swift; sourceTree = "<group>"; };
+		CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateStyleBlock.swift; sourceTree = "<group>"; };
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
 		DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDatesView.swift; sourceTree = "<group>"; };
 		DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesViewModel.swift; sourceTree = "<group>"; };
@@ -668,7 +668,7 @@
 		CE6386622D07215100C01D69 /* Elements */ = {
 			isa = PBXGroup;
 			children = (
-				CE63866D2D07220600C01D69 /* StyleBlock.swift */,
+				CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */,
 				CE63866B2D0721D600C01D69 /* BlockStatusView.swift */,
 				CE6386692D0721B600C01D69 /* CompletedBlocks.swift */,
 				CE6386672D07219B00C01D69 /* CourseDateListView.swift */,
@@ -996,7 +996,7 @@
 				BAC0E0DB2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift in Sources */,
 				DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */,
 				067B7B522BED339200D1768F /* SubtitlesView.swift in Sources */,
-				CE63866E2D07220600C01D69 /* StyleBlock.swift in Sources */,
+				CE63866E2D07220600C01D69 /* CourseDateStyleBlock.swift in Sources */,
 				CE63866C2D0721D600C01D69 /* BlockStatusView.swift in Sources */,
 				02868AE52C19FE0B0003E339 /* DownloadActionView.swift in Sources */,
 				07DE59862BECB868001CBFBC /* CourseAnalytics.swift in Sources */,

@@ -40,7 +40,7 @@ public extension DataLayer {
 
 public extension DataLayer.CourseMedia {
     var domain: CourseMedia {
-        return CourseMedia(
+        CourseMedia(
             image: CourseImage(
                 raw: image.raw,
                 small: image.small,

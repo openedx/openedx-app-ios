@@ -1,5 +1,5 @@
 //
-//  StyleBlock.swift
+//  CourseDateStyleBlock.swift
 //  Course
 //
 //  Created by Ivan Stepanok on 09.12.2024.
@@ -9,7 +9,7 @@ import SwiftUI
 import Core
 import Theme
 
-struct StyleBlock: View {
+struct CourseDateStyleBlock: View {
     let block: CourseDateBlock
     let viewModel: CourseDatesViewModel
     
