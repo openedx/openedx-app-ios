@@ -69,7 +69,6 @@ public class CSSInjector {
         }
     }
 
-    //swiftlint:disable line_length
     public func injectCSS(
         colorScheme: ColorScheme,
         html: String,
@@ -148,9 +147,7 @@ public class CSSInjector {
         <td>
         """
         return style + replacedHTML
-    }
-    //swiftlint:enable line_length
-    
+    }    
 }
 
 // Mark - For testing and SwiftUI preview
