@@ -18,7 +18,7 @@ import Course
 import Discussion
 @preconcurrency import Combine
 
-// swiftlint:disable function_body_length type_body_length
+// swiftlint:disable function_body_length closure_parameter_position
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
@@ -291,7 +291,7 @@ class ScreenAssembly: Assembly {
             )
         }
         .inObjectScope(.weak)
-                
+        
         container.register(ManageAccountViewModel.self) { @MainActor r in
             ManageAccountViewModel(
                 router: r.resolve(ProfileRouter.self)!,
@@ -331,7 +331,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { @MainActor r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, selection, lastVisitedBlockID in
+        ) { @MainActor r, isActive, courseStart, courseEnd, enrollStart, enrollEnd, selection, lastVisitedBlockID in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -344,8 +344,8 @@ class ScreenAssembly: Assembly {
                 isActive: isActive,
                 courseStart: courseStart,
                 courseEnd: courseEnd,
-                enrollmentStart: enrollmentStart,
-                enrollmentEnd: enrollmentEnd,
+                enrollmentStart: enrollStart,
+                enrollmentEnd: enrollEnd,
                 lastVisitedBlockID: lastVisitedBlockID,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
                 selection: selection
@@ -395,22 +395,23 @@ class ScreenAssembly: Assembly {
         container.register(
             YouTubeVideoPlayerViewModel.self,
             mainActorFactory: { ( r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl],
-                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+                                  playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
             ) in
-            let router: Router = r.resolve(Router.self)!
-            return YouTubeVideoPlayerViewModel(
-                languages: languages,
-                playerStateSubject: playerStateSubject,
-                connectivity: r.resolve(ConnectivityProtocol.self)!,
-                playerHolder: r.resolve(
-                    YoutubePlayerViewControllerHolder.self,
-                    arguments: url,
-                    blockID,
-                    courseID,
-                    router.currentCourseTabSelection
-                )!
-            )
-        })
+                let router: Router = r.resolve(Router.self)!
+                return YouTubeVideoPlayerViewModel(
+                    languages: languages,
+                    playerStateSubject: playerStateSubject,
+                    connectivity: r.resolve(ConnectivityProtocol.self)!,
+                    playerHolder: r.resolve(
+                        YoutubePlayerViewControllerHolder.self,
+                        arguments: url,
+                        blockID,
+                        courseID,
+                        router.currentCourseTabSelection
+                    )!
+                )
+            }
+        )
         
         container.register(
             EncodedVideoPlayerViewModel.self,
@@ -423,22 +424,23 @@ class ScreenAssembly: Assembly {
                     languages: [SubtitleUrl],
                     playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
                 ) in
-            let router: Router = r.resolve(Router.self)!
-
-            let holder = r.resolve(
-                PlayerViewControllerHolder.self,
-                arguments: url,
-                blockID,
-                courseID,
-                router.currentCourseTabSelection
-            )!
-            return EncodedVideoPlayerViewModel(
-                languages: languages,
-                playerStateSubject: playerStateSubject,
-                connectivity: r.resolve(ConnectivityProtocol.self)!,
-                playerHolder: holder
-            )
-        })
+                let router: Router = r.resolve(Router.self)!
+                
+                let holder = r.resolve(
+                    PlayerViewControllerHolder.self,
+                    arguments: url,
+                    blockID,
+                    courseID,
+                    router.currentCourseTabSelection
+                )!
+                return EncodedVideoPlayerViewModel(
+                    languages: languages,
+                    playerStateSubject: playerStateSubject,
+                    connectivity: r.resolve(ConnectivityProtocol.self)!,
+                    playerHolder: holder
+                )
+            }
+        )
         
         container.register(PlayerDelegateProtocol.self) { r in
             PlayerDelegate(pipManager: r.resolve(PipManagerProtocol.self)!)
@@ -467,7 +469,7 @@ class ScreenAssembly: Assembly {
                 appStorage: nil
             )
         }
-
+        
         container.register(
             PlayerViewControllerHolder.self,
             mainActorFactory: { (r, url: URL?, blockID: String, courseID: String, selectedCourseTab: Int) in
@@ -623,4 +625,4 @@ class ScreenAssembly: Assembly {
         }
     }
 }
-// swiftlint:enable function_body_length type_body_length
+// swiftlint:enable function_body_length closure_parameter_position

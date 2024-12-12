@@ -48,7 +48,9 @@ public struct FlexibleKeyboardInputView: View {
                                     }
                                 )
                                 .onPreferenceChange(ViewSizePreferenceKey.self) { size in
-                                    commentSize = size.height
+                                    Task { @MainActor in
+                                        commentSize = size.height
+                                    }
                                 }
                                 .overlay(
                                     TextEditor(text: $commentText)

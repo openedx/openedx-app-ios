@@ -158,7 +158,7 @@ public class DownloadManager: DownloadManagerProtocol {
     private let connectivity: ConnectivityProtocol
     private var downloadRequest: DownloadRequest?
     private var isDownloadingInProgress: Bool = false
-    private nonisolated(unsafe) var currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
+    private nonisolated(unsafe) var currentDownloadEventPublisher = PassthroughSubject<DownloadManagerEvent, Never>()
     private let backgroundTaskProvider = BackgroundTaskProvider()
     private var cancellables = Set<AnyCancellable>()
     private nonisolated(unsafe) var failedDownloads: [DownloadDataTask] = []
@@ -436,7 +436,6 @@ public class DownloadManager: DownloadManagerProtocol {
                     self.failedDownloads = []
                 }
             }
-            print(">>> IS NIL")
             return
         }
         if !connectivity.isInternetAvaliable {
@@ -467,9 +466,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadFileWithProgress(_ download: DownloadDataTask) async throws {
-        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
-            return
-        }
+        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else { return }
 
         await persistence.updateDownloadState(
             id: download.id,
@@ -495,8 +492,7 @@ public class DownloadManager: DownloadManagerProtocol {
             self.currentDownloadTask?.progress = fractionCompleted
             self.currentDownloadTask?.state = .inProgress
             self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
-            let completed = Double(fractionCompleted * 100)
-            debugLog(">>>>> Downloading File", download.url, completed, "%")
+            debugLog(">>>>> Downloading File", download.url, Double(fractionCompleted * 100), "%")
         }
 
         downloadRequest?.responseURL { [weak self] response in
@@ -526,9 +522,7 @@ public class DownloadManager: DownloadManagerProtocol {
     }
 
     private func downloadHTMLWithProgress(_ download: DownloadDataTask) async throws {
-        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else {
-            return
-        }
+        guard let url = URL(string: download.url), let folderURL = self.filesFolderUrl else { return }
 
         await persistence.updateDownloadState(
             id: download.id,
@@ -555,8 +549,7 @@ public class DownloadManager: DownloadManagerProtocol {
             self.currentDownloadTask?.progress = fractionCompleted
             self.currentDownloadTask?.state = .inProgress
             self.currentDownloadEventPublisher.send(.progress(fractionCompleted, download))
-            let completed = Double(fractionCompleted * 100)
-            debugLog(">>>>> Downloading HTML", download.url, completed, "%")
+            debugLog(">>>>> Downloading HTML", download.url, Double(fractionCompleted * 100), "%")
         }
 
         downloadRequest?.responseURL { [weak self] response in
@@ -829,81 +822,3 @@ public final class BackgroundTaskProvider: @unchecked Sendable {
         }
     }
 }
-
-// Mark - For testing and SwiftUI preview
-// swiftlint:disable file_length
-#if DEBUG
-public class DownloadManagerMock: DownloadManagerProtocol {
-
-    public init() {}
-
-    public func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential] {[]}
-
-    public var currentDownloadTask: DownloadDataTask? {
-        return nil
-    }
-
-    public func publisher() -> AnyPublisher<Int, Never> {
-        return Just(1).eraseToAnyPublisher()
-    }
-
-    public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
-        return Just(
-            .canceled(
-                .init(
-                    id: "",
-                    blockId: "",
-                    courseId: "",
-                    userId: 0,
-                    url: "",
-                    fileName: "",
-                    displayName: "",
-                    progress: 1,
-                    resumeData: nil,
-                    state: .inProgress,
-                    type: .video,
-                    fileSize: 0,
-                    lastModified: ""
-                )
-            )
-        ).eraseToAnyPublisher()
-    }
-
-    public func addToDownloadQueue(blocks: [CourseBlock]) {}
-
-    public func getDownloadTasks() -> [DownloadDataTask] {
-        []
-    }
-
-    public func getDownloadTasksForCourse(_ courseId: String) async -> [DownloadDataTask] {
-        await withCheckedContinuation { continuation in
-            continuation.resume(returning: [])
-        }
-    }
-
-    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {}
-
-    public func cancelDownloading(task: DownloadDataTask) {}
-
-    public func cancelDownloading(courseId: String) async {}
-
-    public func cancelAllDownloading() async throws {}
-
-    public func resumeDownloading() {}
-
-    public func deleteFile(blocks: [CourseBlock]) {}
-
-    public func deleteAllFiles() {}
-
-    public func fileUrl(for blockId: String) -> URL? {
-        return nil
-    }
-
-    public func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
-        false
-    }
-
-    public func removeAppSupportDirectoryUnusedContent() {}
-}
-#endif
-// swiftlint:enable file_length

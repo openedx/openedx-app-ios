@@ -228,7 +228,7 @@ public final class DatesAndCalendarViewModel: ObservableObject {
                     return updatedCourse
                 }
                 
-                for course in coursesForSync.filter { $0.synced } {
+                for course in coursesForSync.filter({ $0.synced }) {
                     do {
                         let courseDates = try await interactor.getCourseDates(courseID: course.courseID)
                         await syncSelectedCourse(

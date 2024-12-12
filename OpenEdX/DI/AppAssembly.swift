@@ -175,7 +175,7 @@ class AppAssembly: Assembly {
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
         
-        container.register(SSOHelper.self){ r in
+        container.register(SSOHelper.self) { r in
             SSOHelper(
                 keychain: r.resolve(KeychainSwift.self)!
             )

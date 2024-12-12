@@ -20,7 +20,7 @@ public struct CourseStructure: Equatable, Sendable {
     public let displayName: String
     public let topicID: String?
     public var childs: [CourseChapter]
-    public let media: DataLayer.CourseMedia //FIXME Domain model
+    public let media: CourseMedia
     public let certificate: Certificate?
     public let org: String
     public let isSelfPaced: Bool
@@ -35,7 +35,7 @@ public struct CourseStructure: Equatable, Sendable {
         displayName: String,
         topicID: String? = nil,
         childs: [CourseChapter],
-        media: DataLayer.CourseMedia,
+        media: CourseMedia,
         certificate: Certificate?,
         org: String,
         isSelfPaced: Bool,
@@ -78,6 +78,26 @@ public struct CourseStructure: Equatable, Sendable {
             $0.childs.flatMap { $0.childs.flatMap { $0.childs.compactMap { $0 } } }
         }.filter { $0.id == courseBlockId }.first
         return block
+    }
+}
+
+public struct CourseMedia: Decodable, Sendable, Equatable {
+    public let image: CourseImage
+    
+    public init(image: CourseImage) {
+        self.image = image
+    }
+}
+
+public struct CourseImage: Decodable, Sendable, Equatable {
+    public let raw: String
+    public let small: String
+    public let large: String
+    
+    public init(raw: String, small: String, large: String) {
+        self.raw = raw
+        self.small = small
+        self.large = large
     }
 }
 

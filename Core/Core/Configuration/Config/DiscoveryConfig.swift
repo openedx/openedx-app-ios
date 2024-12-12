@@ -38,9 +38,7 @@ public class DiscoveryConfig: NSObject {
     public let type: DiscoveryConfigType
     public let webview: DiscoveryWebviewConfig
     public var isWebViewConfigured: Bool {
-        get {
-            return type == .webview && webview.baseURL != nil
-        }
+        type == .webview && webview.baseURL != nil
     }
     
     init(dictionary: [String: AnyObject]) {

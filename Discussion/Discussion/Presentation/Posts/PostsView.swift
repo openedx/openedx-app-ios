@@ -329,7 +329,7 @@ struct PostsView_Previews: PreviewProvider {
         let vm = PostsViewModel(
             interactor: DiscussionInteractor.mock,
             router: router,
-            config: ConfigMock(), 
+            config: ConfigMock(),
             storage: CoreStorageMock()
         )
         

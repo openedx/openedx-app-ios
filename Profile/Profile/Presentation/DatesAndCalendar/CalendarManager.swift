@@ -240,10 +240,6 @@ public final class CalendarManager: CalendarManagerProtocol {
                 await removeOutdatedEvents(courseID: course.courseID)
             }
             
-            let newlyActiveCourses = fetchedCourses.filter { fetchedCourse in
-                courseCalendarStates.contains { $0.courseID == fetchedCourse.courseID } && fetchedCourse.recentlyActive
-            }
-            
             return fetchedCourses.filter { course in
                 courseCalendarStates.contains { $0.courseID == course.courseID }  && course.recentlyActive
             }
@@ -319,7 +315,7 @@ public final class CalendarManager: CalendarManagerProtocol {
             startDate: startDate,
             endDate: endDate,
             secondAlert: secondAlert,
-            notes: notes, 
+            notes: notes,
             location: courseName,
             calendar: calendar
         )

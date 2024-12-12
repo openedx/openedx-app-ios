@@ -184,16 +184,14 @@ struct CommentView_Previews: PreviewProvider {
                 addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
-                onAvatarTap: {
-                    _ in
-                },
+                onAvatarTap: { _ in },
                 onLikeTap: {},
                 onReportTap: {},
                 onCommentsTap: {},
                 onFetchMore: {})
             CommentCell(
                 comment: comment,
-                addCommentAvailable: true, 
+                addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
                 onAvatarTap: {_ in},
@@ -209,7 +207,7 @@ struct CommentView_Previews: PreviewProvider {
         VStack(spacing: 0) {
             CommentCell(
                 comment: comment,
-                addCommentAvailable: true, 
+                addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
                 onAvatarTap: {_ in},
@@ -219,7 +217,7 @@ struct CommentView_Previews: PreviewProvider {
                 onFetchMore: {})
             CommentCell(
                 comment: comment,
-                addCommentAvailable: true, 
+                addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
                 onAvatarTap: {_ in},

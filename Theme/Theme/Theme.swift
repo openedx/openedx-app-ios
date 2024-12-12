@@ -178,7 +178,8 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var textPrimary = ThemeAssets.textPrimary.color
         nonisolated(unsafe) public private(set) static var accentColor = ThemeAssets.accentColor.color
         nonisolated(unsafe) public private(set) static var accentXColor = ThemeAssets.accentXColor.color
-        nonisolated(unsafe) public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.color
+        nonisolated(unsafe) public private(set) static var navigationBarTintColor =
+        ThemeAssets.navigationBarTintColor.color
 
         public static func update(
             textPrimary: UIColor = ThemeAssets.textPrimary.color,

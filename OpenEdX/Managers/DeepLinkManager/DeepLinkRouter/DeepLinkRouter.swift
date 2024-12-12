@@ -118,10 +118,7 @@ extension Router: DeepLinkRouter {
                     lastVisitedBlockID: nil
                 )
             } else {
-                showCourseDetais(
-                    courseID: courseDetails.courseID,
-                    title: courseDetails.courseTitle
-                )
+                showCourseDetais(courseID: courseDetails.courseID, title: courseDetails.courseTitle)
             }
         }
 
@@ -155,7 +152,6 @@ extension Router: DeepLinkRouter {
             default:
                 break
             }
-
             completion()
         }
     }

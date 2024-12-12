@@ -14,7 +14,7 @@ public struct SnackBarView: View {
     var action: (() -> Void)?
     
     private var safeArea: CGFloat {
-        UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        UIApplication.shared.oexKeyWindow?.safeAreaInsets.bottom ?? 0
     }
     
     private let minHeight: CGFloat = 50

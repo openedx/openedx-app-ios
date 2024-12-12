@@ -89,9 +89,13 @@ public struct CoursesToSyncView: View {
             } else {
                 ForEach(
                     Array(
-                        viewModel.coursesForSync.filter({ course in
-                            course.synced == viewModel.synced && (!viewModel.hideInactiveCourses || course.recentlyActive)
-                        })
+                        viewModel.coursesForSync.filter(
+                            { course in
+                                course.synced == viewModel.synced && (
+                                    !viewModel.hideInactiveCourses || course.recentlyActive
+                                )
+                            }
+                        )
                         .sorted { $0.recentlyActive && !$1.recentlyActive }
                             .enumerated()
                     ),
@@ -136,11 +140,11 @@ public struct CoursesToSyncView: View {
             Text(ProfileLocalization.Sync.noSynced)
                 .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)
-                Text(ProfileLocalization.Sync.noSyncedDescription)
-                    .multilineTextAlignment(.center)
-                    .foregroundStyle(Theme.Colors.textPrimary)
-                    .font(Theme.Fonts.labelMedium)
-                    .frame(width: 245)
+            Text(ProfileLocalization.Sync.noSyncedDescription)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Theme.Colors.textPrimary)
+                .font(Theme.Fonts.labelMedium)
+                .frame(width: 245)
         }
     }
 }
@@ -153,7 +157,7 @@ struct CoursesToSyncView_Previews: PreviewProvider {
             interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
             profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
-            calendarManager: CalendarManagerMock(), 
+            calendarManager: CalendarManagerMock(),
             connectivity: Connectivity()
         )
         return CoursesToSyncView(viewModel: vm)

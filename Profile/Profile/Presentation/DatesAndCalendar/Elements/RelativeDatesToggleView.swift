@@ -25,7 +25,7 @@ struct RelativeDatesToggleView: View {
                     .foregroundColor(Theme.Colors.textPrimary)
             }
             Text(
-                useRelativeDates 
+                useRelativeDates
                 ? ProfileLocalization.Options.showRelativeDates
                 : ProfileLocalization.Options.showFullDates
             )

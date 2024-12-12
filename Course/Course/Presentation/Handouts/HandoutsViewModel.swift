@@ -53,7 +53,7 @@ public final class HandoutsViewModel: ObservableObject {
                 self.handouts = handouts
                 isShowProgress = false
             }
-        } catch let error {
+        } catch {
             isShowProgress = false
         }
     }
@@ -63,7 +63,7 @@ public final class HandoutsViewModel: ObservableObject {
         do {
             updates = try await interactor.getUpdates(courseID: courseID)
             isShowProgress = false
-        } catch let error {
+        } catch {
             isShowProgress = false
         }
     }

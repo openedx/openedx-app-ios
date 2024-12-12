@@ -19,7 +19,7 @@ import Profile
 import WhatsNew
 import Combine
 
-// swiftlint:disable file_length type_body_length
+// swiftlint:disable type_body_length file_length
 public class Router: AuthorizationRouter,
                      WhatsNewRouter,
                      DiscoveryRouter,
@@ -893,4 +893,4 @@ extension Router {
         navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
-// swiftlint:enable file_length type_body_length
+// swiftlint:enable type_body_length file_length

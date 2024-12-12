@@ -193,7 +193,7 @@ extension Config: ConfigProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public class ConfigMock: Config {
+public class ConfigMock: Config, @unchecked Sendable {
     private let config: [String: Any] = [
         "API_HOST_URL": "https://www.example.com",
         "SSO_URL": "https://www.example.com",

@@ -2,7 +2,6 @@ name: SwiftLint
 
 on:
   workflow_dispatch:
-
   pull_request:
 
 jobs:
@@ -11,8 +10,6 @@ jobs:
     runs-on: macos-latest
 
     concurrency:
-      # When running on develop, use the sha to allow all runs of this workflow to run concurrently.
-      # Otherwise only allow a single run of this workflow on each branch, automatically cancelling older runs.
       group: ${{ github.ref == 'refs/heads/develop' && format('swiftlint-develop-{0}', github.sha) || format('swiftlint-{0}', github.ref) }}
       cancel-in-progress: true
 
@@ -29,9 +26,22 @@ jobs:
             ${{ runner.os }}-gems-
 
       - name: Setup environment
-        run:
+        run: |
           source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
+          xcodes select 16.1
 
       - name: SwiftLint
-        run:
-          bundle exec fastlane linting
+        run: |
+          export PODS_ROOT=$(pwd)/Pods
+          "${PODS_ROOT}/SwiftLint/swiftlint" --reporter sarif > swiftlint.report.sarif
+
+      - name: Prepare swiftlint.report.sarif
+        if: success() || failure()
+        run: |
+          swift PrepareSarifToUpload.swift
+
+      - name: Upload report
+        uses: github/codeql-action/upload-sarif@v3
+        if: success() || failure()
+        with:
+          sarif_file: swiftlint.report.sarif

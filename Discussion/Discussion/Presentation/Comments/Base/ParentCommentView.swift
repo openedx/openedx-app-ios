@@ -172,7 +172,7 @@ struct ParentCommentView_Previews: PreviewProvider {
         return VStack {
             ParentCommentView(
                 comments: comment,
-                isThread: true, 
+                isThread: true,
                 useRelativeDates: true,
                 onAvatarTap: {_ in},
                 onLikeTap: {},
