@@ -47,12 +47,10 @@ public struct EditProfileView: View {
                                 .padding(.top, 30)
                                 .overlay(
                                     ZStack {
-                                        if !viewModel.userModel.requiresParentalConsent {
-                                            Circle().frame(width: 36, height: 36)
-                                                .foregroundColor(Theme.Colors.accentXColor)
-                                            CoreAssets.addPhoto.swiftUIImage.renderingMode(.template)
-                                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
-                                        }
+                                        Circle().frame(width: 36, height: 36)
+                                            .foregroundColor(Theme.Colors.accentXColor)
+                                        CoreAssets.addPhoto.swiftUIImage.renderingMode(.template)
+                                            .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                     }.offset(x: 36, y: 50)
                                 )
                         })
