@@ -14,6 +14,7 @@ import Profile
 import WhatsNew
 import SwiftUIIntrospect
 import Theme
+import OEXFoundation
 
 struct MainScreenView: View {
     
@@ -208,11 +209,7 @@ struct MainScreenView: View {
     private var registerBanner: some View {
         if viewModel.showRegisterBanner {
             VStack {
-                SnackBarView(
-                    message: viewModel.registerBannerText,
-                    textColor: Theme.Colors.primaryButtonTextColor,
-                    bgColor: Theme.Colors.accentColor
-                )
+                SnackBarView(message: viewModel.registerBannerText)
                 Spacer()
             }.transition(.move(edge: .top))
                 .onAppear {
