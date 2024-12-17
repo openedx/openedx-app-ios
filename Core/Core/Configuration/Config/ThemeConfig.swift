@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 private enum ThemeKeys: String, RawStringExtractable {
     case isRoundedCorners = "ROUNDED_CORNERS_STYLE"
