@@ -112,7 +112,8 @@ struct CustomDisclosureGroup: View {
                                                 VStack(alignment: .leading) {
                                                     HStack {
                                                         if sequential.completion == 1 {
-                                                            CoreAssets.finishedSequence.swiftUIImage.renderingMode(.template)
+                                                            CoreAssets.finishedSequence.swiftUIImage
+                                                                .renderingMode(.template)
                                                                 .resizable()
                                                                 .foregroundColor(Theme.Colors.success)
                                                                 .frame(width: 20, height: 20)
