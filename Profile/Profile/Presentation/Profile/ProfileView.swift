@@ -202,14 +202,16 @@ struct ProfileView_Previews: PreviewProvider {
 
 struct UserAvatar: View {
     private var url: URL?
+    private var borderColor: Color
     @Binding private var image: UIImage?
-    init(url: String, image: Binding<UIImage?>) {
+    init(url: String, image: Binding<UIImage?>, borderColor: Color = Theme.Colors.avatarStroke) {
         if let rightUrl = URL(string: url) {
             self.url = rightUrl
         } else {
             self.url = nil
         }
         self._image = image
+        self.borderColor = borderColor
     }
     var body: some View {
         ZStack {
@@ -219,6 +221,10 @@ struct UserAvatar: View {
                     .scaledToFill()
                     .frame(width: 80, height: 80)
                     .cornerRadius(40)
+                    .overlay {
+                        Circle()
+                            .stroke(borderColor, lineWidth: 1)
+                    }
             } else {
                 KFImage(url)
                     .onFailureImage(CoreAssets.noCourseImage.image)
@@ -226,6 +232,10 @@ struct UserAvatar: View {
                     .scaledToFill()
                     .frame(width: 80, height: 80)
                     .cornerRadius(40)
+                    .overlay {
+                        Circle()
+                            .stroke(borderColor, lineWidth: 1)
+                    }
             }
         }
     }

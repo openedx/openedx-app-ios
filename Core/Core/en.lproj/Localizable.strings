@@ -12,6 +12,7 @@
 "MAINSCREEN.PROGRAMS" = "Programs";
 "MAINSCREEN.PROFILE" = "Profile";
 "MAINSCREEN.LEARN" = "Learn";
+"MAINSCREEN.SOCIAL_REGISTER_BANNER" = "You already set up an %@ account with your %@ account. You have been logged in with that account.";
 
 "VIEW.SNACKBAR.TRY_AGAIN_BTN" = "Try Again";
 

@@ -195,7 +195,13 @@ public final class SignUpViewModel: ObservableObject {
             analytics.userLogin(method: authMethod)
             isShowProgress = false
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
-            NotificationCenter.default.post(name: .userAuthorized, object: nil)
+            NotificationCenter.default.post(
+                name: .userAuthorized,
+                object: [
+                    "authMethod": authMethod,
+                    "showSocialRegisterBanner": true
+                    ]
+            )
         } catch {
             update(fullName: response.name, email: response.email)
             self.externalToken = response.token
