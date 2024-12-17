@@ -15,6 +15,10 @@ public enum LogistrationSourceScreen: Equatable, Sendable {
     case discovery
     case courseDetail(String, String)
     case programDetails(String)
+    
+    public var value: String? {
+        return String(describing: self).components(separatedBy: "(").first
+    }
 }
 
 public enum LogistrationAction: Sendable {

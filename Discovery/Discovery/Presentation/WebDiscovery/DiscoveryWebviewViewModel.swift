@@ -150,7 +150,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
                         screen: self?.sourceScreen.value ?? "",
                         action: "cancel"
                     )
-                }, okTapped: {
+                }, okTapped: { [weak self] in
                     UIApplication.shared.open(url, options: [:])
                     self?.analytics.externalLinkOpenAction(
                         url: url.absoluteString,
