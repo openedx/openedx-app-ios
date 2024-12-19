@@ -28,7 +28,7 @@ struct ProgressLineView: View {
         ZStack(alignment: .leading) {
                 GeometryReader { geometry in
                     Rectangle()
-                        .foregroundStyle(Theme.Colors.cardViewStroke)
+                        .foregroundStyle(Theme.Colors.primaryCardProgressBG)
                     Rectangle()
                         .foregroundStyle(Theme.Colors.accentButtonColor)
                         .frame(width: geometry.size.width * progressValue)

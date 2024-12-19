@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
+            Theme.Shapes.buttonCornersRadius = config.theme.buttonCornersRadius
             
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(

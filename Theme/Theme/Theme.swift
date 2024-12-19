@@ -76,6 +76,12 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var shade = ThemeAssets.shade.swiftUIColor
         nonisolated(unsafe) public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
         nonisolated(unsafe) public private(set) static var deleteAccountBG = ThemeAssets.deleteAccountBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardCautionBG = ThemeAssets.primaryCardCautionBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardUpgradeBG = ThemeAssets.primaryCardCourseUpgradeBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardProgressBG = ThemeAssets.primaryCardProgressBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var courseProgressBG = ThemeAssets.courseProgressBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var resumeButtonBG = ThemeAssets.resumeButtonBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var resumeButtonText = ThemeAssets.resumeButtonText.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -250,6 +256,7 @@ public struct Theme: Sendable {
     
     public struct Shapes: Sendable {
         nonisolated(unsafe) public static var isRoundedCorners: Bool = true
+        nonisolated(unsafe) public static var buttonCornersRadius: Double = 8.0
         public static let screenBackgroundRadius = 24.0
         public static let cardImageRadius = 10.0
         public static let textInputShape =  {
@@ -257,7 +264,7 @@ public struct Theme: Sendable {
             return RoundedRectangle(cornerRadius: radius)
         }()
         public static let buttonShape = {
-            let radius: CGFloat = isRoundedCorners ? 8 : 0
+            let radius: CGFloat = isRoundedCorners ? buttonCornersRadius : 0
             return RoundedCorners(tl: radius, tr: radius, bl: radius, br: radius)
         }()
         public static let unitButtonShape = RoundedCorners(tl: 21, tr: 21, bl: 21, br: 21)

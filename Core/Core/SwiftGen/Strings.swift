@@ -29,16 +29,16 @@ public enum CoreLocalization {
   /// Yesterday
   public static let yesterday = CoreLocalization.tr("Localizable", "YESTERDAY", fallback: "Yesterday")
   public enum Alert {
-    /// ACCEPT
-    public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "ACCEPT")
+    /// Accept
+    public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "Accept")
     /// Add
     public static let add = CoreLocalization.tr("Localizable", "ALERT.ADD", fallback: "Add")
     /// Remove course calendar
     public static let calendarShiftPromptRemoveCourseCalendar = CoreLocalization.tr("Localizable", "ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR", fallback: "Remove course calendar")
-    /// CANCEL
-    public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "CANCEL")
-    /// DELETE
-    public static let delete = CoreLocalization.tr("Localizable", "ALERT.DELETE", fallback: "DELETE")
+    /// Cancel
+    public static let cancel = CoreLocalization.tr("Localizable", "ALERT.CANCEL", fallback: "Cancel")
+    /// Delete
+    public static let delete = CoreLocalization.tr("Localizable", "ALERT.DELETE", fallback: "Delete")
     /// Keep editing
     public static let keepEditing = CoreLocalization.tr("Localizable", "ALERT.KEEP_EDITING", fallback: "Keep editing")
     /// Leave

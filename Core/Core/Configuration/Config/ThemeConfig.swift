@@ -6,16 +6,20 @@
 //
 
 import Foundation
+import OEXFoundation
 
-private enum ThemeKeys: String {
+private enum ThemeKeys: String, RawStringExtractable {
     case isRoundedCorners = "ROUNDED_CORNERS_STYLE"
+    case buttonCornersRadius = "BUTTON_CORNERS_RADIUS"
 }
 
 public final class ThemeConfig: NSObject {
     public var isRoundedCorners: Bool
-
+    public var buttonCornersRadius: Double
+    
     init(dictionary: [String: AnyObject]) {
-        isRoundedCorners = dictionary[ThemeKeys.isRoundedCorners.rawValue] as? Bool != false
+        isRoundedCorners = dictionary[ThemeKeys.isRoundedCorners] as? Bool != false
+        buttonCornersRadius = dictionary[ThemeKeys.buttonCornersRadius] as? Double ?? 8.0
         super.init()
     }
 }
