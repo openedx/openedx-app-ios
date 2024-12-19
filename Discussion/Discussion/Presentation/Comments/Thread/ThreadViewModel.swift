@@ -30,7 +30,7 @@ public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
         self.postStateSubject = postStateSubject
         self.analytics = analytics
         
-        super.init(interactor: interactor, router: router, config: config, analytics: analytics)
+        super.init(interactor: interactor, router: router, config: config, storage: storage, analytics: analytics)
         
         cancellable = threadStateSubject
             .receive(on: RunLoop.main)

@@ -66,7 +66,8 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
-            storage: CoreStorageMock()
+            storage: CoreStorageMock(),
+            analytics: DiscussionAnalyticsMock()
         )
     }
     
@@ -78,6 +79,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
         var result = false
@@ -105,6 +107,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -134,6 +137,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -162,6 +166,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -192,6 +197,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -219,6 +225,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -244,6 +251,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -272,6 +280,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -300,6 +309,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -327,6 +337,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -352,6 +363,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -380,6 +392,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -407,6 +420,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
 
@@ -432,6 +446,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
             interactor: interactor,
             router: router,
             config: config,
+            storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
         

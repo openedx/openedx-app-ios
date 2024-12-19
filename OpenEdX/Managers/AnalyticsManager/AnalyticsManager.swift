@@ -17,7 +17,7 @@ import WhatsNew
 import Swinject
 import OEXFoundation
 
-// swiftlint:disable type_body_length
+// swiftlint:disable type_body_length file_length
 class AnalyticsManager: AuthorizationAnalytics,
                         MainScreenAnalytics,
                         DiscoveryAnalytics,
@@ -1047,4 +1047,4 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.whatnewClose, parameters: parameters)
     }
 }
-// swiftlint:enable type_body_length
+// swiftlint:enable type_body_length file_length

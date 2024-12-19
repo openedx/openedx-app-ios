@@ -408,7 +408,9 @@ class ScreenAssembly: Assembly {
                         blockID,
                         courseID,
                         router.currentCourseTabSelection
-                    )!
+                    )!,
+                    appStorage: r.resolve(CoreStorage.self)!,
+                    analytics: r.resolve(CourseAnalytics.self)!
                 )
             }
         )
