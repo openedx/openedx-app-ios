@@ -1748,7 +1748,7 @@
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.1;
+				version = 1.0.2;
 			};
 		};
 		CEBCA42F2CC13CB900076589 /* XCRemoteSwiftPackageReference "ios-branch-sdk-spm" */ = {
