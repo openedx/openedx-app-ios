@@ -135,12 +135,12 @@ struct CourseVideoDownloadBarView: View {
         Toggle("", isOn: .constant(viewModel.isOn))
             .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
             .padding(.trailing, 15)
-            .highPriorityGesture(
+            .simultaneousGesture(
                 DragGesture(minimumDistance: 20, coordinateSpace: .local).onEnded { _ in
                     toggleAction()
                 }
             )
-            .highPriorityGesture(
+            .simultaneousGesture(
                 TapGesture().onEnded {
                     toggleAction()
                 }
