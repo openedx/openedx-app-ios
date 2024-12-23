@@ -72,7 +72,7 @@ class CustomAVPlayerViewController: AVPlayerViewController {
     }
 }
 
-extension CustomAVPlayerViewController: AVPlayerViewControllerDelegate {
+extension CustomAVPlayerViewController: @preconcurrency AVPlayerViewControllerDelegate {
     func playerViewController(
         _ playerViewController: AVPlayerViewController,
         willBeginFullScreenPresentationWithAnimationCoordinator coordinator: any UIViewControllerTransitionCoordinator
