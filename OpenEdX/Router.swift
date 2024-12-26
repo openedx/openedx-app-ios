@@ -64,10 +64,7 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(viewControllers, animated: true)
     }
     
-    public func showMainOrWhatsNewScreen(
-        sourceScreen: LogistrationSourceScreen,
-        authMethod: String?
-    ) {
+    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {
         showToolBar()
         var whatsNewStorage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
@@ -79,11 +76,16 @@ public class Router: AuthorizationRouter,
             persistence.set(userId: userId)
         }
         
-        if let authMethod = authMethod {
+        if let authMethod = postLoginData?.authMethod {
             coreStorage.lastUsedSocialAuth = authMethod
         }
 
-        let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen, analytics: analytics)
+        let viewModel = WhatsNewViewModel(
+            storage: whatsNewStorage,
+            sourceScreen: sourceScreen,
+            analytics: analytics,
+            postLoginData: postLoginData
+        )
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
@@ -97,7 +99,8 @@ public class Router: AuthorizationRouter,
         } else {
             let viewModel = Container.shared.resolve(
                 MainScreenViewModel.self,
-                argument: sourceScreen
+                arguments: sourceScreen,
+                postLoginData
             )!
             
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))

@@ -16,15 +16,18 @@ public class WhatsNewViewModel: ObservableObject {
     private let storage: WhatsNewStorage
     var sourceScreen: LogistrationSourceScreen
     let analytics: WhatsNewAnalytics
+    let postLoginData: PostLoginData?
     
     public init(
         storage: WhatsNewStorage,
         sourceScreen: LogistrationSourceScreen = .default,
-        analytics: WhatsNewAnalytics
+        analytics: WhatsNewAnalytics,
+        postLoginData: PostLoginData? = nil
     ) {
         self.storage = storage
         self.sourceScreen = sourceScreen
         self.analytics = analytics
+        self.postLoginData = postLoginData
         newItems = loadWhatsNew()
     }
     

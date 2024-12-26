@@ -86,7 +86,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(username: username, password: password)
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: .password)
-            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, authMethod: nil)
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, postLoginData: nil)
             NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             failure(error)
@@ -101,7 +101,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(ssoToken: "")
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: .password)
-            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, authMethod: nil)
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, postLoginData: nil)
         } catch let error {
             failure(error)
         }
@@ -132,14 +132,11 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(externalToken: externalToken, backend: backend)
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
-            var socialAuthMethod: String?
-            if case AuthMethod.socailAuth(let method) = authMethod {
-                socialAuthMethod = method.rawValue
+            var postLoginData: PostLoginData?
+            if case .socailAuth(let socialMethod) = authMethod {
+                postLoginData = PostLoginData(authMethod: socialMethod.rawValue, showSocialRegisterBanner: false)
             }
-            router.showMainOrWhatsNewScreen(
-                sourceScreen: sourceScreen,
-                authMethod: socialAuthMethod
-            )
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, postLoginData: postLoginData)
             NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             failure(error, authMethod: authMethod)
