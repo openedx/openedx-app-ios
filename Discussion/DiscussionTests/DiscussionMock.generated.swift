@@ -3122,6 +3122,12 @@ open class CoreStorageMock: CoreStorage, Mock {
 	}
 	private var __p_useRelativeDates: (Bool)?
 
+    public var lastUsedSocialAuth: String? {
+		get {	invocations.append(.p_lastUsedSocialAuth_get); return __p_lastUsedSocialAuth ?? optionalGivenGetterValue(.p_lastUsedSocialAuth_get, "CoreStorageMock - stub value for lastUsedSocialAuth was not defined") }
+		set {	invocations.append(.p_lastUsedSocialAuth_set(.value(newValue))); __p_lastUsedSocialAuth = newValue }
+	}
+	private var __p_lastUsedSocialAuth: (String)?
+
 
 
 
@@ -3159,6 +3165,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 		case p_resetAppSupportDirectoryUserData_set(Parameter<Bool?>)
         case p_useRelativeDates_get
 		case p_useRelativeDates_set(Parameter<Bool>)
+        case p_lastUsedSocialAuth_get
+		case p_lastUsedSocialAuth_set(Parameter<String?>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3187,6 +3195,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case (.p_resetAppSupportDirectoryUserData_set(let left),.p_resetAppSupportDirectoryUserData_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             case (.p_useRelativeDates_get,.p_useRelativeDates_get): return Matcher.ComparisonResult.match
 			case (.p_useRelativeDates_set(let left),.p_useRelativeDates_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_lastUsedSocialAuth_get,.p_lastUsedSocialAuth_get): return Matcher.ComparisonResult.match
+			case (.p_lastUsedSocialAuth_set(let left),.p_lastUsedSocialAuth_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             default: return .none
             }
         }
@@ -3218,6 +3228,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_resetAppSupportDirectoryUserData_set(let newValue): return newValue.intValue
             case .p_useRelativeDates_get: return 0
 			case .p_useRelativeDates_set(let newValue): return newValue.intValue
+            case .p_lastUsedSocialAuth_get: return 0
+			case .p_lastUsedSocialAuth_set(let newValue): return newValue.intValue
             }
         }
         func assertionName() -> String {
@@ -3247,6 +3259,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_resetAppSupportDirectoryUserData_set: return "[set] .resetAppSupportDirectoryUserData"
             case .p_useRelativeDates_get: return "[get] .useRelativeDates"
 			case .p_useRelativeDates_set: return "[set] .useRelativeDates"
+            case .p_lastUsedSocialAuth_get: return "[get] .lastUsedSocialAuth"
+			case .p_lastUsedSocialAuth_set: return "[set] .lastUsedSocialAuth"
             }
         }
     }
@@ -3295,6 +3309,9 @@ open class CoreStorageMock: CoreStorage, Mock {
         public static func useRelativeDates(getter defaultValue: Bool...) -> PropertyStub {
             return Given(method: .p_useRelativeDates_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
+        public static func lastUsedSocialAuth(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_lastUsedSocialAuth_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
 
     }
 
@@ -3326,6 +3343,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 		public static func resetAppSupportDirectoryUserData(set newValue: Parameter<Bool?>) -> Verify { return Verify(method: .p_resetAppSupportDirectoryUserData_set(newValue)) }
         public static var useRelativeDates: Verify { return Verify(method: .p_useRelativeDates_get) }
 		public static func useRelativeDates(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_useRelativeDates_set(newValue)) }
+        public static var lastUsedSocialAuth: Verify { return Verify(method: .p_lastUsedSocialAuth_get) }
+		public static func lastUsedSocialAuth(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_lastUsedSocialAuth_set(newValue)) }
     }
 
     public struct Perform {
