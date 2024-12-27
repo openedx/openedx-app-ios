@@ -101,7 +101,7 @@ public class SignInViewModel: ObservableObject {
             let user = try await interactor.login(ssoToken: "")
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: .password)
-            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, authMethod: nil)
         } catch let error {
             failure(error)
         }

@@ -204,7 +204,7 @@ public final class SignUpViewModel: ObservableObject {
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
             isShowProgress = false
-            var socialAuthMethod: String? = nil
+            var socialAuthMethod: String?
             if case AuthMethod.socailAuth(let method) = authMethod {
                 socialAuthMethod = method.rawValue
             }
