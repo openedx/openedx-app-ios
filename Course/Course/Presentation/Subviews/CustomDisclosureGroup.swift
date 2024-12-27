@@ -213,6 +213,7 @@ struct CustomDisclosureGroup: View {
                 return true
             }
         }
+        return false
     }
 
     private func assignmentStatusText(
@@ -236,14 +237,6 @@ struct CustomDisclosureGroup: View {
         
         return "\(assignmentType) - \(daysRemaining) - \(numPointsEarned) / \(numPointsPossible)"
         
-    }
-    
-    private func canDownloadAllSections(in chapter: CourseChapter) -> Bool {
-        for sequential in chapter.childs where viewModel.sequentialsDownloadState[sequential.id] != nil {
-            return true
-        }
-        
-        return false
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
