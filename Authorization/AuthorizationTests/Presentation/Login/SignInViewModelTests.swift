@@ -110,6 +110,7 @@ final class SignInViewModelTests: XCTestCase {
             config: ConfigMock(),
             analytics: analytics,
             validator: validator,
+            storage: CoreStorageMock(),
             sourceScreen: .default
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
@@ -119,7 +120,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.ssoLogin(title: "Riyadah")
         
         Verify(interactor, 1, .login(ssoToken: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
         
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
