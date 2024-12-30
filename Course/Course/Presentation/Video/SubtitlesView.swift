@@ -61,7 +61,7 @@ public struct SubtitlesView: View {
                     
                     ScrollView {
                         if viewModel.subtitles.count > 0 {
-                            VStack(alignment: .leading, spacing: 0) {
+                            LazyVStack(alignment: .leading, spacing: 0) {
                                 ForEach(viewModel.subtitles, id: \.id) { subtitle in
                                     HStack {
                                         Button(action: {
@@ -125,7 +125,9 @@ struct SubtittlesView_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 connectivity: Connectivity(),
-                playerHolder: PlayerViewControllerHolder.mock
+                playerHolder: PlayerViewControllerHolder.mock,
+                appStorage: CoreStorageMock(),
+                analytics: CourseAnalyticsMock()
             ), scrollTo: {_ in }
         )
     }

@@ -674,6 +674,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func showComments(
+        courseID: String,
         commentID: String,
         parentComment: Post,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
@@ -681,7 +682,7 @@ public class Router: AuthorizationRouter,
         animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
-        let viewModel = Container.shared.resolve(ResponsesViewModel.self, argument: threadStateSubject)!
+        let viewModel = Container.shared.resolve(ResponsesViewModel.self, arguments: threadStateSubject, courseID)!
         viewModel.isBlackedOut = isBlackedOut
         let view = ResponsesView(
             commentID: commentID,

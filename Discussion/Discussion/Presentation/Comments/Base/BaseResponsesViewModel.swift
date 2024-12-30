@@ -47,21 +47,32 @@ public class BaseResponsesViewModel {
     internal let config: ConfigProtocol
     internal let storage: CoreStorage
     internal let addPostSubject = CurrentValueSubject<Post?, Never>(nil)
+    private let analytics: DiscussionAnalytics?
     
     init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
         config: ConfigProtocol,
-        storage: CoreStorage
+        storage: CoreStorage,
+        analytics: DiscussionAnalytics?
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
         self.storage = storage
+        self.analytics = analytics
     }
     
     @MainActor
-    public func vote(id: String, isThread: Bool, voted: Bool, index: Int?) async -> Bool {
+    public func vote(
+        id: String,
+        isThread: Bool,
+        voted: Bool,
+        index: Int?,
+        courseID: String,
+        responseID: String? = nil,
+        isComment: Bool = false
+    ) async -> Bool {
         if let index {
             toggleLike(index: index)
         } else {
@@ -70,8 +81,17 @@ public class BaseResponsesViewModel {
         do {
             if isThread {
                 try await interactor.voteThread(voted: voted, threadID: id)
+                trackThreadToggleLike(courseID: courseID)
             } else {
                 try await interactor.voteResponse(voted: voted, responseID: id)
+                if let index {
+                    trackResponseCommentToggleLike(
+                        courseID: courseID,
+                        post: postComments?.comments[index],
+                        responseID: responseID,
+                        isComment: isComment
+                    )
+                }
             }
             return true
         } catch let error {
@@ -90,7 +110,15 @@ public class BaseResponsesViewModel {
     }
     
     @MainActor
-    public func flag(id: String, isThread: Bool, abuseFlagged: Bool, index: Int?) async -> Bool {
+    public func flag(
+        id: String,
+        isThread: Bool,
+        abuseFlagged: Bool,
+        index: Int?,
+        courseID: String,
+        responseID: String? = nil,
+        isComment: Bool = false
+    ) async -> Bool {
         if let index {
             postComments?.comments[index].abuseFlagged.toggle()
         } else {
@@ -99,8 +127,17 @@ public class BaseResponsesViewModel {
         do {
             if isThread {
                 try await interactor.flagThread(abuseFlagged: abuseFlagged, threadID: id)
+                trackThreadToggleReport(courseID: courseID)
             } else {
                 try await interactor.flagComment(abuseFlagged: abuseFlagged, commentID: id)
+                if let index {
+                    trackResponseToggleReport(
+                        courseID: courseID,
+                        post: postComments?.comments[index],
+                        responseID: responseID,
+                        isComment: isComment
+                    )
+                }
             }
             
             return true
@@ -161,5 +198,91 @@ public class BaseResponsesViewModel {
                 postComments?.comments[index].votesCount -= 1
             }
         }
+    }
+    
+    func trackToggleFollowThread(
+        courseID: String,
+        threadID: String,
+        author: String,
+        follow: Bool
+    ) {
+        analytics?.discussionFollowToggle(
+            courseID: courseID,
+            threadID: threadID,
+            author: author,
+            follow: follow
+        )
+    }
+    
+    func trackThreadToggleLike(
+        courseID: String
+    ) {
+        guard let postComments else {
+            return
+        }
+        
+        analytics?.discussionLikeToggle(
+            courseID: courseID,
+            threadID: postComments.threadID,
+            responseID: nil,
+            commentID: nil,
+            author: postComments.authorName,
+            discussionType: "thread",
+            like: postComments.voted
+        )
+    }
+    
+    func trackThreadToggleReport(
+        courseID: String
+    ) {
+        guard let postComments else { return }
+        
+        analytics?.discussionReportToggle(
+            courseID: courseID,
+            threadID: postComments.threadID,
+            responseID: nil,
+            commentID: nil,
+            author: postComments.authorName,
+            discussionType: "thread",
+            report: postComments.abuseFlagged
+        )
+    }
+    
+    func trackResponseToggleReport(
+        courseID: String,
+        post: Post?,
+        responseID: String? = nil,
+        isComment: Bool
+    ) {
+        guard let post else { return }
+        
+        analytics?.discussionReportToggle(
+            courseID: courseID,
+            threadID: post.threadID,
+            responseID: isComment ? responseID : post.commentID,
+            commentID: isComment ? post.commentID : nil,
+            author: post.authorName,
+            discussionType: isComment ? "comment" : "response",
+            report: post.abuseFlagged
+        )
+    }
+    
+    func trackResponseCommentToggleLike(
+        courseID: String,
+        post: Post?,
+        responseID: String? = nil,
+        isComment: Bool
+    ) {
+        guard let post else { return }
+        
+        analytics?.discussionLikeToggle(
+            courseID: courseID,
+            threadID: post.threadID,
+            responseID: isComment ? responseID : post.commentID,
+            commentID: isComment ? post.commentID : nil,
+            author: post.authorName,
+            discussionType: isComment ? "comment" : "response",
+            like: post.voted
+        )
     }
 }

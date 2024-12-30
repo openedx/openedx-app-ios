@@ -19,6 +19,7 @@ public protocol PlayerViewControllerHolderProtocol: AnyObject, Sendable {
     var isPlaying: Bool { get }
     var isPlayingInPip: Bool { get }
     var isOtherPlayerInPipPlaying: Bool { get }
+    var duration: TimeInterval { get }
 
     init(
         url: URL?,
@@ -35,6 +36,7 @@ public protocol PlayerViewControllerHolderProtocol: AnyObject, Sendable {
     func getErrorPublisher() -> AnyPublisher<Error, Never>
     func getRatePublisher() -> AnyPublisher<Float, Never>
     func getReadyPublisher() -> AnyPublisher<Bool, Never>
+    func getFinishPublisher() -> AnyPublisher<Void, Never>
     func getService() -> PlayerServiceProtocol
     func sendCompletion() async
 }
@@ -80,7 +82,7 @@ public final class PlayerViewControllerHolder: PlayerViewControllerHolderProtoco
     let pipManager: PipManagerProtocol
 
     public lazy var playerController: PlayerControllerProtocol? = {
-        let playerController = AVPlayerViewController()
+        let playerController = CustomAVPlayerViewController()
         playerController.modalPresentationStyle = .fullScreen
         playerController.allowsPictureInPicturePlayback = true
         playerController.canStartPictureInPictureAutomaticallyFromInline = true
@@ -198,6 +200,10 @@ public final class PlayerViewControllerHolder: PlayerViewControllerHolderProtoco
     
     public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
         playerTracker.getReadyPublisher()
+    }
+    
+    public func getFinishPublisher() -> AnyPublisher<Void, Never> {
+        playerTracker.getFinishPublisher()
     }
 
     public func getService() -> PlayerServiceProtocol {

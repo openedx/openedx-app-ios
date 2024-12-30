@@ -17,16 +17,20 @@ public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     private var cancellable: AnyCancellable?
     private let postStateSubject: CurrentValueSubject<PostState?, Never>
     public var isBlackedOut: Bool = false
+    private let analytics: DiscussionAnalytics?
 
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
         config: ConfigProtocol,
         storage: CoreStorage,
-        postStateSubject: CurrentValueSubject<PostState?, Never>
+        postStateSubject: CurrentValueSubject<PostState?, Never>,
+        analytics: DiscussionAnalytics?
     ) {
         self.postStateSubject = postStateSubject
-        super.init(interactor: interactor, router: router, config: config, storage: storage)
+        self.analytics = analytics
+        
+        super.init(interactor: interactor, router: router, config: config, storage: storage, analytics: analytics)
         
         cancellable = threadStateSubject
             .receive(on: RunLoop.main)
@@ -89,7 +93,12 @@ public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     }
     
     @MainActor
-    public func postComment(threadID: String, rawBody: String, parentID: String?) async {
+    public func postComment(
+        courseID: String,
+        threadID: String,
+        rawBody: String,
+        parentID: String?
+    ) async {
         isShowProgress = true
         do {
             let newComment = try await interactor.addCommentTo(threadID: threadID,
@@ -97,6 +106,12 @@ public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                                                                parentID: parentID)
             isShowProgress = false
             addPostSubject.send(newComment)
+            trackResponseAdded(
+                courseID: courseID,
+                threadID: threadID,
+                responseID: newComment.commentID,
+                author: newComment.authorName
+            )
         } catch let error {
             isShowProgress = false
             if error.isInternetError {
@@ -241,5 +256,19 @@ public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
         comment.responsesCount += 1
         comments.comments[index] = comment
         postComments = comments
+    }
+    
+    private func trackResponseAdded(
+        courseID: String,
+        threadID: String,
+        responseID: String,
+        author: String
+    ) {
+        analytics?.discussionResponseAdded(
+            courseID: courseID,
+            threadID: threadID,
+            responseID: responseID,
+            author: author
+        )
     }
 }

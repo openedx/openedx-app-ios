@@ -89,7 +89,9 @@ struct YouTubeVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 connectivity: Connectivity(),
-                playerHolder: YoutubePlayerViewControllerHolder.mock
+                playerHolder: YoutubePlayerViewControllerHolder.mock,
+                appStorage: CoreStorageMock(),
+                analytics: CourseAnalyticsMock()
             ),
             isOnScreen: true
         )

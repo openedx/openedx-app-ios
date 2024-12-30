@@ -120,6 +120,36 @@ public protocol CourseAnalytics {
         subSectionID: String,
         videos: Int
     )
+    
+    func videoLoaded(courseID: String, blockID: String, videoURL: String)
+    
+    func videoPlayed(courseID: String, blockID: String, videoURL: String)
+    
+    func videoSpeedChange(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        oldSpeed: Float,
+        newSpeed: Float,
+        currentTime: Double,
+        duration: Double
+    )
+    
+    func videoPaused(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        currentTime: Double,
+        duration: Double
+    )
+    
+    func videoCompleted(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        currentTime: Double,
+        duration: Double
+    )
 }
 
 #if DEBUG
@@ -198,6 +228,36 @@ class CourseAnalyticsMock: CourseAnalytics {
         courseID: String,
         subSectionID: String,
         videos: Int
+    ) {}
+    
+    public func videoLoaded(courseID: String, blockID: String, videoURL: String) {}
+    
+    public func videoPlayed(courseID: String, blockID: String, videoURL: String) {}
+    
+    public func videoSpeedChange(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        oldSpeed: Float,
+        newSpeed: Float,
+        currentTime: Double,
+        duration: Double
+    ) {}
+    
+    public func videoPaused(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        currentTime: Double,
+        duration: Double
+    ) {}
+    
+    public func videoCompleted(
+        courseID: String,
+        blockID: String,
+        videoURL: String,
+        currentTime: Double,
+        duration: Double
     ) {}
 }
 #endif

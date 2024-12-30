@@ -26,7 +26,7 @@ public class StartupViewModel: ObservableObject {
         self.config = config
     }
     
-    func logAnalytics(searchQuery: String?) {
+    func logAnalytics(searchQuery: String? = nil) {
         if let searchQuery {
             analytics.trackEvent(
                 .logistrationCoursesSearch,

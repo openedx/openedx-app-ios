@@ -407,6 +407,7 @@ public class DeepLinkManager {
                !parentID.isEmpty,
                let parentComment = try? await self.discussionInteractor.getResponse(responseID: parentID) {
                 router.showComment(
+                    courseID: courseDetails.courseID,
                     comment: comment,
                     parentComment: parentComment.post,
                     isBlackedOut: isBlackedOut
@@ -443,6 +444,7 @@ public class DeepLinkManager {
                !commentParentID.isEmpty,
                let parentComment = try? await self.discussionInteractor.getResponse(responseID: commentParentID) {
                 router.showComment(
+                    courseID: courseDetails.courseID,
                     comment: comment,
                     parentComment: parentComment.post,
                     isBlackedOut: isBlackedOut

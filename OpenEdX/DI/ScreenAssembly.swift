@@ -408,7 +408,9 @@ class ScreenAssembly: Assembly {
                         blockID,
                         courseID,
                         router.currentCourseTabSelection
-                    )!
+                    )!,
+                    appStorage: r.resolve(CoreStorage.self)!,
+                    analytics: r.resolve(CourseAnalytics.self)!
                 )
             }
         )
@@ -437,7 +439,9 @@ class ScreenAssembly: Assembly {
                     languages: languages,
                     playerStateSubject: playerStateSubject,
                     connectivity: r.resolve(ConnectivityProtocol.self)!,
-                    playerHolder: holder
+                    playerHolder: holder,
+                    appStorage: r.resolve(CoreStorage.self)!,
+                    analytics: r.resolve(CourseAnalytics.self)!
                 )
             }
         )
@@ -584,17 +588,20 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                postStateSubject: subject
+                postStateSubject: subject,
+                analytics: r.resolve(DiscussionAnalytics.self)!
             )
         }
         
-        container.register(ResponsesViewModel.self) { @MainActor r, subject in
+        container.register(ResponsesViewModel.self) { @MainActor r, subject, courseID in
             ResponsesViewModel(
+                courseID: courseID,
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                threadStateSubject: subject
+                threadStateSubject: subject,
+                analytics: r.resolve(DiscussionAnalytics.self)!
             )
         }
         
@@ -602,7 +609,9 @@ class ScreenAssembly: Assembly {
             CreateNewThreadViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(DiscussionAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
