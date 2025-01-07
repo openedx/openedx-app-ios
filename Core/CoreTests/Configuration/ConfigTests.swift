@@ -48,7 +48,7 @@ class ConfigTests: XCTestCase {
         ],
         "MICROSOFT": [
             "ENABLED": true,
-            "APP_ID": "appId"
+            "CLIENT_ID": "cliendID"
         ],
         "APPLE_SIGNIN": [
             "ENABLED": true
@@ -119,7 +119,7 @@ class ConfigTests: XCTestCase {
         let config = Config(properties: properties)
 
         XCTAssertTrue(config.microsoft.enabled)
-        XCTAssertEqual(config.microsoft.appID, "appId")
+        XCTAssertEqual(config.microsoft.clientID, "cliendID")
     }
 
     func testAppleConfigInitialization() {

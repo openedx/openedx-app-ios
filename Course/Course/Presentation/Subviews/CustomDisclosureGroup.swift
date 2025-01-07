@@ -131,23 +131,13 @@ struct CustomDisclosureGroup: View {
                                                                 alignment: .leading
                                                             )
                                                     }
-                                                    if let sequentialProgress = sequential.sequentialProgress,
-                                                       let assignmentType = sequentialProgress.assignmentType,
-                                                       let numPointsEarned = sequentialProgress.numPointsEarned,
-                                                       let numPointsPossible = sequentialProgress.numPointsPossible,
-                                                       let due = sequential.due {
-                                                        let daysRemaining = getAssignmentStatus(for: due)
-                                                        Text(
-                                                             """
-                                                             \(assignmentType) -
-                                                             \(daysRemaining) -
-                                                             \(numPointsEarned) /
-                                                             \(numPointsPossible)
-                                                             """
-                                                        )
-                                                        .font(Theme.Fonts.bodySmall)
-                                                        .multilineTextAlignment(.leading)
-                                                        .lineLimit(2)
+                                                    if let assignmentStatusText = assignmentStatusText(
+                                                        sequential: sequential
+                                                    ) {
+                                                        Text(assignmentStatusText)
+                                                            .font(Theme.Fonts.bodySmall)
+                                                            .multilineTextAlignment(.leading)
+                                                            .lineLimit(2)
                                                     }
                                                 }
                                                 .foregroundColor(Theme.Colors.textPrimary)
@@ -224,6 +214,21 @@ struct CustomDisclosureGroup: View {
             }
         }
         return false
+    }
+
+    private func assignmentStatusText(
+        sequential: CourseSequential
+    ) -> String? {
+        
+        guard let sequentialProgress = sequential.sequentialProgress,
+              let assignmentType = sequentialProgress.assignmentType,
+              let due = sequential.due else {
+            return nil
+        }
+        
+        let daysRemaining = getAssignmentStatus(for: due)
+        
+        return "\(assignmentType) - \(daysRemaining)"
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {

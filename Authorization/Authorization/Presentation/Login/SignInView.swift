@@ -73,6 +73,18 @@ public struct SignInView: View {
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("welcome_back_text")
+                                    if viewModel.socialAuthEnabled {
+                                        SocialAuthView(
+                                            viewModel: .init(
+                                                config: viewModel.config,
+                                                lastUsedOption: viewModel.storage.lastUsedSocialAuth
+                                            ) { result in
+                                                Task { await viewModel.login(with: result) }
+                                            }
+                                        )
+                                        .padding(.top, 22)
+                                        .padding(.bottom, 16)
+                                    }
                                     Text(AuthLocalization.SignIn.emailOrUsername)
                                         .font(Theme.Fonts.labelLarge)
                                         .foregroundColor(Theme.Colors.textPrimary)
@@ -231,15 +243,6 @@ public struct SignInView: View {
                                     }
                                 }
                             }
-                            if viewModel.socialAuthEnabled {
-                                SocialAuthView(
-                                    viewModel: .init(
-                                        config: viewModel.config
-                                    ) { result in
-                                        Task { await viewModel.login(with: result) }
-                                    }
-                                )
-                            }
                             agreements
                             Spacer()
                         }
@@ -329,6 +332,7 @@ struct SignInView_Previews: PreviewProvider {
             config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator(),
+            storage: CoreStorageMock(),
             sourceScreen: .default
         )
         
