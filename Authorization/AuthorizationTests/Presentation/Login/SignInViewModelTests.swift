@@ -120,7 +120,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.ssoLogin(title: "Riyadah")
         
         Verify(interactor, 1, .login(ssoToken: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
