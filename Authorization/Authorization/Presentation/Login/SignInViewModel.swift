@@ -133,7 +133,7 @@ public class SignInViewModel: ObservableObject {
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
             var postLoginData: PostLoginData?
-            if case .socailAuth(let socialMethod) = authMethod {
+            if case .socialAuth(let socialMethod) = authMethod {
                 postLoginData = PostLoginData(authMethod: socialMethod.rawValue, showSocialRegisterBanner: false)
             }
             router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, postLoginData: postLoginData)

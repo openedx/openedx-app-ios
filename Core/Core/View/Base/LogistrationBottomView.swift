@@ -28,15 +28,13 @@ public enum LogistrationAction: Sendable {
 }
 
 public struct PostLoginData: Sendable {
-    public var authMethod: String = ""
-    public var showSocialRegisterBanner: Bool = false
+    public let authMethod: String
+    public var showSocialRegisterBanner: Bool
     
-    public init(authMethod: String, showSocialRegisterBanner: Bool) {
+    public init(authMethod: String = "", showSocialRegisterBanner: Bool = false) {
         self.authMethod = authMethod
         self.showSocialRegisterBanner = showSocialRegisterBanner
     }
-    
-    public init() {}
 }
 
 public struct LogistrationBottomView: View {
