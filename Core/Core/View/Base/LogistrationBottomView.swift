@@ -27,6 +27,16 @@ public enum LogistrationAction: Sendable {
     case register
 }
 
+public struct PostLoginData: Sendable {
+    public let authMethod: String
+    public var showSocialRegisterBanner: Bool
+    
+    public init(authMethod: String = "", showSocialRegisterBanner: Bool = false) {
+        self.authMethod = authMethod
+        self.showSocialRegisterBanner = showSocialRegisterBanner
+    }
+}
+
 public struct LogistrationBottomView: View {
     private let action: (LogistrationAction) -> Void
     private let ssoEnabled: Bool

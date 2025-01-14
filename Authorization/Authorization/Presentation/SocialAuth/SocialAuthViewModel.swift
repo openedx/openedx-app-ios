@@ -35,13 +35,13 @@ enum SocialAuthDetails {
     var authMethod: AuthMethod {
         switch self {
         case .apple:
-            .socailAuth(.apple)
+            .socialAuth(.apple)
         case .facebook:
-            .socailAuth(.facebook)
+            .socialAuth(.facebook)
         case .google:
-            .socailAuth(.google)
+            .socialAuth(.google)
         case .microsoft:
-            .socailAuth(.microsoft)
+            .socialAuth(.microsoft)
         }
     }
 

@@ -42,7 +42,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "", password: "")
         
         Verify(interactor, 0, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidEmailAddressOrUsername)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -65,7 +65,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "")
         
         Verify(interactor, 0, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidPasswordLenght)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -93,7 +93,7 @@ final class SignInViewModelTests: XCTestCase {
         
         Verify(interactor, 1, .login(username: .any, password: .any))
         Verify(analytics, .userLogin(method: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
@@ -120,7 +120,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.ssoLogin(title: "Riyadah")
         
         Verify(interactor, 1, .login(ssoToken: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
@@ -152,7 +152,7 @@ final class SignInViewModelTests: XCTestCase {
 
         Verify(interactor, 1, .login(externalToken: .any, backend: .any))
         Verify(analytics, .userLogin(method: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
 
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
@@ -177,7 +177,7 @@ final class SignInViewModelTests: XCTestCase {
             .apple(.init(name: "name", email: "email", token: "239i2oi3jrf2jflkj23lf2f"))
         )
         let validationErrorMessage = AuthLocalization.Error.accountNotRegistered(
-            AuthMethod.socailAuth(.apple).analyticsValue,
+            AuthMethod.socialAuth(.apple).analyticsValue,
             viewModel.config.platformName
         )
         let validationError = CustomValidationError(statusCode: 400, data: ["error_description": validationErrorMessage])
@@ -188,7 +188,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(with: result)
 
         Verify(interactor, 1, .login(externalToken: .any, backend: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
 
         XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -218,7 +218,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -244,7 +244,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.invalidCredentials)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -270,7 +270,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -298,7 +298,7 @@ final class SignInViewModelTests: XCTestCase {
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         
         Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertEqual(viewModel.isShowProgress, false)

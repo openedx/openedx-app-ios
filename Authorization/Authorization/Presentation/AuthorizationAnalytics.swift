@@ -12,7 +12,7 @@ import OEXFoundation
 public enum AuthMethod: Equatable {
     case password
     case SSO
-    case socailAuth(SocialAuthMethod)
+    case socialAuth(SocialAuthMethod)
 
     public var analyticsValue: String {
         switch self {
@@ -20,7 +20,7 @@ public enum AuthMethod: Equatable {
             "password"
         case .SSO:
             "SSO"
-        case .socailAuth(let socialAuthMethod):
+        case .socialAuth(let socialAuthMethod):
             socialAuthMethod.rawValue
         }
     }

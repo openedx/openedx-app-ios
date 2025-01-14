@@ -57,7 +57,7 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: MainScreenView
-        container.register(MainScreenViewModel.self) { @MainActor r, sourceScreen in
+        container.register(MainScreenViewModel.self) { @MainActor r, sourceScreen, postLoginData in
             MainScreenViewModel(
                 analytics: r.resolve(MainScreenAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -67,7 +67,8 @@ class ScreenAssembly: Assembly {
                 courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
                 appStorage: r.resolve(AppStorage.self)!,
                 calendarManager: r.resolve(CalendarManagerProtocol.self)!,
-                sourceScreen: sourceScreen
+                sourceScreen: sourceScreen,
+                postLoginData: postLoginData
             )
         }
         // MARK: Startup screen

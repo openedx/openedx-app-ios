@@ -138,7 +138,7 @@ final class SignUpViewModelTests: XCTestCase {
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
         Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, false)
@@ -176,7 +176,7 @@ final class SignUpViewModelTests: XCTestCase {
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
         Verify(interactor, 0, .registerUser(fields: .any, isSocial: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, false)
@@ -206,7 +206,7 @@ final class SignUpViewModelTests: XCTestCase {
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
         Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, true)
@@ -236,7 +236,7 @@ final class SignUpViewModelTests: XCTestCase {
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
         Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, true)
@@ -268,7 +268,7 @@ final class SignUpViewModelTests: XCTestCase {
         
         Verify(interactor, 1, .validateRegistrationFields(fields: .any))
         Verify(interactor, 1, .registerUser(fields: .any, isSocial: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, authMethod: .any))
+        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
         
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(viewModel.showError, true)

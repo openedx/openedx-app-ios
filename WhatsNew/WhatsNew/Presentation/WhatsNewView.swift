@@ -112,7 +112,7 @@ public struct WhatsNewView: View {
                                     } else {
                                         router.showMainOrWhatsNewScreen(
                                             sourceScreen: viewModel.sourceScreen,
-                                            authMethod: nil
+                                            postLoginData: viewModel.postLoginData
                                         )
                                     }
                                     
@@ -154,7 +154,7 @@ public struct WhatsNewView: View {
                             action: {
                                 router.showMainOrWhatsNewScreen(
                                     sourceScreen: viewModel.sourceScreen,
-                                    authMethod: nil
+                                    postLoginData: viewModel.postLoginData
                                 )
                                 viewModel.logWhatsNewClose()
                             },
