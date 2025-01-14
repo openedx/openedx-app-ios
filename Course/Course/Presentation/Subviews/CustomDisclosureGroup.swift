@@ -12,14 +12,12 @@ import Theme
 struct CustomDisclosureGroup: View {
     @State private var expandedSections: [String: Bool] = [:]
     
-    private let isVideo: Bool
     private let proxy: GeometryProxy
     private let course: CourseStructure
     private let viewModel: CourseContainerViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    init(isVideo: Bool, course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
-        self.isVideo = isVideo
+    init(course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
         self.course = course
         self.proxy = proxy
         self.viewModel = viewModel
@@ -48,8 +46,8 @@ struct CustomDisclosureGroup: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .lineLimit(1)
                                 Spacer()
-                                if canDownloadAllSections(in: chapter, videoOnly: isVideo),
-                                   let state = downloadAllButtonState(for: chapter, videoOnly: isVideo) {
+                                if canDownloadAllSections(in: chapter),
+                                   let state = downloadAllButtonState(for: chapter) {
                                     Button(
                                         action: {
                                             downloadAllSubsections(in: chapter, state: state)
@@ -208,19 +206,10 @@ struct CustomDisclosureGroup: View {
         }
     }
     
-    private func canDownloadAllSections(in chapter: CourseChapter, videoOnly: Bool) -> Bool {
-        for sequential in chapter.childs {
-            if videoOnly {
-                let isDownloadable = sequential.childs.flatMap {
-                    $0.childs.filter { $0.type == .video }
-                }.contains(where: { $0.isDownloadable })
-                guard isDownloadable else { continue }
-            }
-            if sequentialDownloadState(sequential, videoOnly: videoOnly) != nil {
-                return true
-            }
+    private func canDownloadAllSections(in chapter: CourseChapter) -> Bool {
+        chapter.childs.contains { sequential in
+            sequentialDownloadState(sequential) != nil
         }
-        return false
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
@@ -231,8 +220,7 @@ struct CustomDisclosureGroup: View {
                 let blocks = await viewModel.collectBlocks(
                     chapter: chapter,
                     blockId: sequential.id,
-                    state: state,
-                    videoOnly: isVideo
+                    state: state
                 )
                 if !blocks.isEmpty {
                     allBlocks.append(contentsOf: blocks)
@@ -247,11 +235,11 @@ struct CustomDisclosureGroup: View {
         }
     }
     
-    private func downloadAllButtonState(for chapter: CourseChapter, videoOnly: Bool) -> DownloadViewState? {
-        if canDownloadAllSections(in: chapter, videoOnly: videoOnly) {
+    private func downloadAllButtonState(for chapter: CourseChapter) -> DownloadViewState? {
+        if canDownloadAllSections(in: chapter) {
             var downloads: [DownloadViewState] = []
             for sequential in chapter.childs {
-                if let state = sequentialDownloadState(sequential, videoOnly: videoOnly) {
+                if let state = sequentialDownloadState(sequential) {
                     downloads.append(state)
                 }
             }
@@ -266,34 +254,8 @@ struct CustomDisclosureGroup: View {
         return nil
     }
     
-    private func sequentialDownloadState(_ sequential: CourseSequential, videoOnly: Bool) -> DownloadViewState? {
-        let blocks: [CourseBlock]
-        if videoOnly {
-            blocks = sequential.childs.flatMap { $0.childs }.filter { $0.isDownloadable && $0.type == .video }
-        } else {
-            blocks = sequential.childs.flatMap { $0.childs }.filter { $0.isDownloadable }
-        }
-        guard !blocks.isEmpty else { return nil }
-        var blockStates: [DownloadViewState] = []
-        for block in blocks {
-            if let task = viewModel.courseDownloadTasks.first(where: { $0.blockId == block.id }) {
-                switch task.state {
-                case .waiting, .inProgress:
-                    blockStates.append(.downloading)
-                case .finished:
-                    blockStates.append(.finished)
-                }
-            } else {
-                blockStates.append(.available)
-            }
-        }
-        if blockStates.contains(.downloading) {
-            return .downloading
-        } else if blockStates.allSatisfy({ $0 == .finished }) {
-            return .finished
-        } else {
-            return .available
-        }
+    private func sequentialDownloadState(_ sequential: CourseSequential) -> DownloadViewState? {
+        return viewModel.sequentialsDownloadState[sequential.id]
     }
 }
 
@@ -448,7 +410,6 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
         return GeometryReader { proxy in
             ScrollView {
                 CustomDisclosureGroup(
-                    isVideo: false,
                     course: CourseStructure(
                         id: "Id",
                         graded: false,

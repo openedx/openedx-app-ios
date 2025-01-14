@@ -16,23 +16,18 @@ final class DownloadsViewModel: ObservableObject {
     // MARK: - Properties
 
     @Published private(set) var downloads: [DownloadDataTask] = []
-    private let courseId: String?
     
     let router: CourseRouter
 
-    private let manager: DownloadManagerProtocol
+    private let helper: CourseDownloadHelper
     private var cancellables = Set<AnyCancellable>()
 
     init(
         router: CourseRouter,
-        courseId: String? = nil,
-        downloads: [DownloadDataTask] = [],
-        manager: DownloadManagerProtocol
+        helper: CourseDownloadHelper
     ) {
         self.router = router
-        self.courseId = courseId
-        self.manager = manager
-        self.downloads = downloads
+        self.helper = helper
         Task {
             await configure()
         }
@@ -50,7 +45,7 @@ final class DownloadsViewModel: ObservableObject {
     @MainActor
     func cancelDownloading(task: DownloadDataTask) async {
         do {
-            try await manager.cancelDownloading(task: task)
+            try await helper.cancelDownloading(task: task)
             downloads.removeAll(where: { $0.id == task.id })
         } catch {
             debugLog(error)
@@ -62,30 +57,29 @@ final class DownloadsViewModel: ObservableObject {
         defer {
             filter()
         }
-        if !downloads.isEmpty {
-            return
-        }
-        if let courseId = courseId {
-            downloads = await manager.getDownloadTasksForCourse(courseId)
-            return
-        }
-        downloads = await manager.getDownloadTasks()
+
+        downloads = helper.value?.allDownloadTasks ?? []
 
     }
 
     private func observers() {
-        manager.eventPublisher()
-            .sink { [weak self] event in
-                guard let self else { return }
-                switch event {
-                case .progress(let progress, let downloadData):
-                    if let firstIndex = downloads.firstIndex(where: { $0.id == downloadData.id }) {
-                        self.downloads[firstIndex].progress = progress
-                    }
-                case .finished(let downloadData):
-                    downloads.removeAll(where: { $0.id == downloadData.id })
-                default:
-                    break
+        helper.publisher()
+            .sink {[weak self] value in
+                self?.downloads = value.allDownloadTasks
+            }
+            .store(in: &cancellables)
+        var startTime = Date()
+        var count: Int = 0
+        helper.progressPublisher()
+            .sink {[weak self] task in
+                count += 1
+                if Date().timeIntervalSince(startTime) >= 1 {
+                    print("count of progress block is = \(count)")
+                    startTime = Date()
+                    count = 0
+                }
+                if let firstIndex = self?.downloads.firstIndex(where: { $0.id == task.id }) {
+                    self?.downloads[firstIndex].progress = task.progress
                 }
             }
             .store(in: &cancellables)

@@ -118,7 +118,8 @@ public final class CorePersistence: CorePersistenceProtocol {
                 "progress": Double.zero,
                 "state": DownloadState.waiting.rawValue,
                 "type": block.offlineDownload != nil ? DownloadType.html.rawValue : DownloadType.video.rawValue,
-                "fileSize": fileSize ?? 0
+                "fileSize": fileSize ?? 0,
+                "actualSize": 0
             ]
             if let lastModified = block.offlineDownload?.lastModified {
                 dictionary["lastModified"] = lastModified
@@ -142,7 +143,8 @@ public final class CorePersistence: CorePersistenceProtocol {
                 "progress": task.progress,
                 "state": task.state,
                 "type": task.type,
-                "fileSize": task.fileSize
+                "fileSize": task.fileSize,
+                "actualSize": task.actualSize
             ]
         }
         insertDownloadData(objects: objects)
@@ -226,13 +228,10 @@ public final class CorePersistence: CorePersistenceProtocol {
         }
     }
 
-    public func updateDownloadState(
-        id: String,
-        state: DownloadState,
-        resumeData: Data?
-    ) {
-        let dataId = downloadDataId(from: id)
+    public func updateTask(task: DownloadDataTask) {
+        let dataId = downloadDataId(from: task.id)
         let userId = getUserId32()
+
         container.performBackgroundTask { context in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .id(dataId),
@@ -242,11 +241,18 @@ public final class CorePersistence: CorePersistenceProtocol {
                 return
             }
 
-            guard let task = data.first else { return }
+            guard let dataTask = data.first else { return }
 
-            task.state = state.rawValue
-            if state == .finished { task.progress = 1 }
-            task.resumeData = resumeData
+            dataTask.state = task.state.rawValue
+            dataTask.resumeData = task.resumeData
+            dataTask.url = task.url
+            dataTask.fileName = task.fileName
+            dataTask.progress = task.progress
+            dataTask.type = task.type.rawValue
+            dataTask.fileSize = Int32(task.fileSize)
+            dataTask.actualSize = Int32(task.actualSize)
+            
+            if task.state == .finished { dataTask.progress = 1 }
 
             do {
                 try context.save()
@@ -255,6 +261,36 @@ public final class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
+    
+//    public func updateDownloadState(
+//        id: String,
+//        state: DownloadState,
+//        resumeData: Data?
+//    ) {
+//        let dataId = downloadDataId(from: id)
+//        let userId = getUserId32()
+//        container.performBackgroundTask { context in
+//            guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
+//                predicate: .id(dataId),
+//                context: context,
+//                userId: userId
+//            ) else {
+//                return
+//            }
+//
+//            guard let task = data.first else { return }
+//
+//            task.state = state.rawValue
+//            if state == .finished { task.progress = 1 }
+//            task.resumeData = resumeData
+//
+//            do {
+//                try context.save()
+//            } catch {
+//                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
+//            }
+//        }
+//    }
 
     public func deleteDownloadDataTasks(ids: [String]) {
         container.performBackgroundTask { context in

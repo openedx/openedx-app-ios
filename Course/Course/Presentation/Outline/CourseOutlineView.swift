@@ -118,7 +118,6 @@ public struct CourseOutlineView: View {
                                         
                                         // MARK: - Sections
                                         CustomDisclosureGroup(
-                                            isVideo: isVideo,
                                             course: course,
                                             proxy: proxy,
                                             viewModel: viewModel
@@ -197,7 +196,7 @@ public struct CourseOutlineView: View {
                 .ignoresSafeArea()
         )
         .sheet(isPresented: $showingDownloads) {
-            DownloadsView(router: viewModel.router, manager: viewModel.manager)
+            DownloadsView(router: viewModel.router, courseHelper: viewModel.courseHelper)
         }
         .sheet(isPresented: $showingVideoDownloadQuality) {
             viewModel.storage.userSettings.map {

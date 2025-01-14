@@ -56,11 +56,6 @@ public protocol CourseRouter: BaseRouter {
         courseStructure: CourseStructure,
         blockLink: String
     )
-
-    func showDownloads(
-        downloads: [DownloadDataTask],
-        manager: DownloadManagerProtocol
-    )
     
     func showDatesAndCalendar()
     
@@ -119,11 +114,6 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         blockLink: String
     ) {}
 
-    public func showDownloads(
-        downloads: [Core.DownloadDataTask],
-        manager: Core.DownloadManagerProtocol
-    ) {}
-    
     public func showDatesAndCalendar() {}
     
     public func showGatedContentError(url: String) {}

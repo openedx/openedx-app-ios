@@ -47,20 +47,19 @@ public final class CourseVerticalViewModel: BaseCourseViewModel {
         self.verticals = chapters[chapterIndex].childs[sequentialIndex].childs
         super.init(manager: manager)
         
-        do {
-            try manager.publisher()
-                .sink(receiveValue: { [weak self] _ in
-                    guard let self else { return }
-                    Task {
-                        await self.setDownloadsStates()
-                    }
-                })
-                .store(in: &cancellables)
-            Task {
-                await setDownloadsStates()
+        manager.eventPublisher()
+            .sink{ [weak self] event in
+                guard let self else { return }
+                if case .progress = event {
+                    return
+                }
+                Task {
+                    await self.setDownloadsStates()
+                }
             }
-        } catch {
-            debugLog(error)
+            .store(in: &cancellables)
+        Task {
+            await setDownloadsStates()
         }
     }
     

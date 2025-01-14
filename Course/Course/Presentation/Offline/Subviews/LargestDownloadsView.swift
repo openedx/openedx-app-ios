@@ -80,11 +80,6 @@ public struct LargestDownloadsView: View {
                 self.isEditing = false
             }
         })
-        .onAppear {
-            Task {
-                await viewModel.fetchLargestDownloadBlocks()
-            }
-        }
     }
 }
 

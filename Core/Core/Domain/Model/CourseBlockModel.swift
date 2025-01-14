@@ -249,16 +249,13 @@ public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
     public let encodedVideo: CourseBlockEncodedVideo?
     public let multiDevice: Bool?
     public var offlineDownload: OfflineDownload?
-    public var actualFileSize: Int?
 
     public var isDownloadable: Bool {
         encodedVideo?.isDownloadable ?? false || offlineDownload?.isDownloadable ?? false
     }
     
     public var fileSize: Int? {
-        if let actualFileSize {
-            return actualFileSize
-        } else if let fileSize = encodedVideo?.desktopMP4?.fileSize {
+        if let fileSize = encodedVideo?.desktopMP4?.fileSize {
             return fileSize
         } else if let fileSize = encodedVideo?.fallback?.fileSize {
             return fileSize

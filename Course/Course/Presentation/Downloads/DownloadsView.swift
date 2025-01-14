@@ -23,17 +23,13 @@ public struct DownloadsView: View {
     public init(
         isSheet: Bool = true,
         router: CourseRouter,
-        courseId: String? = nil,
-        downloads: [DownloadDataTask] = [],
-        manager: DownloadManagerProtocol
+        courseHelper: CourseDownloadHelper
     ) {
         self.isSheet = isSheet
         self._viewModel = .init(
             wrappedValue: .init(
                 router: router,
-                courseId: courseId,
-                downloads: downloads,
-                manager: manager
+                helper: courseHelper
             )
         )
     }

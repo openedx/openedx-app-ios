@@ -115,7 +115,7 @@ class RouteController: UIViewController {
         else { return }
         
         Task {
-            downloadManager.removeAppSupportDirectoryUnusedContent()
+            await downloadManager.removeAppSupportDirectoryUnusedContent()
             upgradationValue.resetAppSupportDirectoryUserData = true
         }
     }

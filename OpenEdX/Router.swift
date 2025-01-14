@@ -572,20 +572,6 @@ public class Router: AuthorizationRouter,
         )
     }
 
-    public func showDownloads(
-        downloads: [DownloadDataTask],
-        manager: DownloadManagerProtocol
-    ) {
-        let downloadsView = DownloadsView(
-            isSheet: false,
-            router: Container.shared.resolve(CourseRouter.self)!,
-            downloads: downloads,
-            manager: manager
-        )
-        let controller = UIHostingController(rootView: downloadsView)
-        navigationController.pushViewController(controller, animated: true)
-    }
-
     public func replaceCourseUnit(
         courseName: String,
         blockId: String,
