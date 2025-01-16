@@ -26,7 +26,8 @@ class AnalyticsManager: AuthorizationAnalytics,
                         CourseAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
-                        WhatsNewAnalytics {
+                        WhatsNewAnalytics,
+                        @unchecked Sendable {
     
     private var services: [AnalyticsService]
     

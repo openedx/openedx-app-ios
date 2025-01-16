@@ -154,7 +154,7 @@ public enum AnalyticsEvent: String {
     case discussionFollowToggle = "Dicussion:Post Follow Toggle"
     case discussionLikeToggle = "Discussion:Like Toggle"
     case discussionReportToggle = "Discussion:Report Toggle"
-    case notificationSettingPermissionStatus = "Notification:Setting Permission Status"    
+    case notificationSettingPermissionStatus = "Notification:Setting Permission Status"
 }
 
 public enum EventBIValue: String {
