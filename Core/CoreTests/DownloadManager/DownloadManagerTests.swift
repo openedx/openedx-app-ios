@@ -49,7 +49,7 @@ final class DownloadManagerTests: XCTestCase {
         let blocks = [createMockCourseBlock()]
         
         // When
-        try downloadManager.addToDownloadQueue(blocks: blocks)
+        try await downloadManager.addToDownloadQueue(blocks: blocks)
         // Then
         Verify(persistence, 1, .addToDownloadQueue(blocks: .value(blocks), downloadQuality: .value(.auto)))
     }
@@ -73,7 +73,7 @@ final class DownloadManagerTests: XCTestCase {
         
         // When/Then
         do {
-            try downloadManager.addToDownloadQueue(blocks: blocks)
+            try await downloadManager.addToDownloadQueue(blocks: blocks)
             XCTFail("Should throw NoWiFiError")
         } catch is NoWiFiError {
             // Success
@@ -89,7 +89,7 @@ final class DownloadManagerTests: XCTestCase {
         // Given
         let mockTask = createMockDownloadTask()
         Given(persistence, .getDownloadDataTasks(willReturn: [mockTask]))
-        Given(persistence, .nextBlockForDownloading(willReturn: mockTask))
+//        Given(persistence, .nextBlockForDownloading(willReturn: mockTask))
         Given(connectivity, .isMobileData(getter: false))
         
         let downloadManager = DownloadManager(
@@ -100,9 +100,9 @@ final class DownloadManagerTests: XCTestCase {
         
         // When
         try await downloadManager.resumeDownloading()
-        
+        let currentDownloadTask: DownloadDataTask? = Mirror(reflecting: downloadManager).descendant("currentDownloadTask") as? DownloadDataTask
         // Then
-        XCTAssertEqual(downloadManager.currentDownloadTask?.id, mockTask.id)
+        XCTAssertEqual(currentDownloadTask?.id, mockTask.id)
     }
     
     // MARK: - Test Cancel Downloads
@@ -119,7 +119,7 @@ final class DownloadManagerTests: XCTestCase {
         )
         
         // When
-        try downloadManager.cancelDownloading(task: task)
+        try await downloadManager.cancelDownloading(task: task)
         
         // Then
         Verify(persistence, 1, .deleteDownloadDataTasks(ids: .value([task.id])))
@@ -200,7 +200,7 @@ final class DownloadManagerTests: XCTestCase {
     
     // MARK: - Test Video Size Calculation
     
-    func testIsLargeVideosSize_WhenOver1GB_ShouldReturnTrue() {
+    func testIsLargeVideosSize_WhenOver1GB_ShouldReturnTrue() async {
         // Given
         let blocks = [createMockCourseBlock(videoSize: 1_200_000_000)] // 1.2 GB
         Given(connectivity, .isMobileData(getter: false))
@@ -212,13 +212,13 @@ final class DownloadManagerTests: XCTestCase {
         )
         
         // When
-        let isLarge = downloadManager.isLargeVideosSize(blocks: blocks)
+        let isLarge = await downloadManager.isLargeVideosSize(blocks: blocks)
         
         // Then
         XCTAssertTrue(isLarge)
     }
     
-    func testIsLargeVideosSize_WhenUnder1GB_ShouldReturnFalse() {
+    func testIsLargeVideosSize_WhenUnder1GB_ShouldReturnFalse() async {
         // Given
         let blocks = [createMockCourseBlock(videoSize: 500_000_000)] // 500 MB
         Given(connectivity, .isMobileData(getter: false))
@@ -230,7 +230,7 @@ final class DownloadManagerTests: XCTestCase {
         )
         
         // When
-        let isLarge = downloadManager.isLargeVideosSize(blocks: blocks)
+        let isLarge = await downloadManager.isLargeVideosSize(blocks: blocks)
         
         // Then
         XCTAssertFalse(isLarge)
@@ -284,7 +284,8 @@ final class DownloadManagerTests: XCTestCase {
             state: state,
             type: .video,
             fileSize: 1000,
-            lastModified: "2024-01-01"
+            lastModified: "2024-01-01",
+            actualSize: 333
         )
     }
     
