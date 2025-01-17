@@ -176,6 +176,7 @@ public final class CourseDownloadHelper: @unchecked Sendable {
                                     totalFilesSize += sizeFor(block: block) ?? 0
                                 }
                             }
+                            guard !verticalsChilds.isEmpty else { continue }
                             if verticalsChilds.first(where: { $0 == .downloading }) != nil {
                                 downloadableVerticals.insert(.init(vertical: vertical, state: .downloading))
                             } else if verticalsChilds.allSatisfy({ $0 == .finished }) {
@@ -185,6 +186,7 @@ public final class CourseDownloadHelper: @unchecked Sendable {
                             }
                         }
                         
+                        guard !sequentialsChilds.isEmpty else { continue }
                         if sequentialsChilds.first(where: { $0 == .downloading }) != nil {
                             sequentialsStates[sequential.id] = .downloading
                         } else if sequentialsChilds.allSatisfy({ $0 == .finished }) {
