@@ -39,7 +39,8 @@ struct CustomDisclosureGroup: View {
                                     .rotationEffect(.degrees(expandedSections[chapter.id] ?? false ? -90 : 90))
                                     .foregroundColor(Theme.Colors.textPrimary)
                                 if chapter.childs.allSatisfy({ $0.completion == 1 }) {
-                                    CoreAssets.finishedSequence.swiftUIImage
+                                    CoreAssets.finishedSequence.swiftUIImage.renderingMode(.template)
+                                        .foregroundColor(Theme.Colors.success)
                                 }
                                 Text(chapter.displayName)
                                     .font(Theme.Fonts.titleMedium)
@@ -110,7 +111,9 @@ struct CustomDisclosureGroup: View {
                                                     HStack {
                                                         if sequential.completion == 1 {
                                                             CoreAssets.finishedSequence.swiftUIImage
+                                                                .renderingMode(.template)
                                                                 .resizable()
+                                                                .foregroundColor(Theme.Colors.success)
                                                                 .frame(width: 20, height: 20)
                                                         } else {
                                                             sequential.type.image
@@ -210,6 +213,21 @@ struct CustomDisclosureGroup: View {
         chapter.childs.contains { sequential in
             sequentialDownloadState(sequential) != nil
         }
+    }
+
+    private func assignmentStatusText(
+        sequential: CourseSequential
+    ) -> String? {
+        
+        guard let sequentialProgress = sequential.sequentialProgress,
+              let assignmentType = sequentialProgress.assignmentType,
+              let due = sequential.due else {
+            return nil
+        }
+        
+        let daysRemaining = getAssignmentStatus(for: due)
+        
+        return "\(assignmentType) - \(daysRemaining)"
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
@@ -418,7 +436,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         encodedVideo: "",
                         displayName: "Course",
                         childs: sampleCourseChapters,
-                        media: DataLayer.CourseMedia.init(image: DataLayer.Image(raw: "", small: "", large: "")),
+                        media: CourseMedia.init(image: CourseImage(raw: "", small: "", large: "")),
                         certificate: nil,
                         org: "org",
                         isSelfPaced: false,

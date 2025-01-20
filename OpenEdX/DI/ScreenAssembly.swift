@@ -18,7 +18,7 @@ import Course
 import Discussion
 @preconcurrency import Combine
 
-// swiftlint:disable function_body_length type_body_length
+// swiftlint:disable function_body_length closure_parameter_position
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
@@ -57,7 +57,7 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: MainScreenView
-        container.register(MainScreenViewModel.self) { @MainActor r, sourceScreen in
+        container.register(MainScreenViewModel.self) { @MainActor r, sourceScreen, postLoginData in
             MainScreenViewModel(
                 analytics: r.resolve(MainScreenAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -67,14 +67,16 @@ class ScreenAssembly: Assembly {
                 courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
                 appStorage: r.resolve(AppStorage.self)!,
                 calendarManager: r.resolve(CalendarManagerProtocol.self)!,
-                sourceScreen: sourceScreen
+                sourceScreen: sourceScreen,
+                postLoginData: postLoginData
             )
         }
         // MARK: Startup screen
         container.register(StartupViewModel.self) { @MainActor r in
             StartupViewModel(
                 router: r.resolve(AuthorizationRouter.self)!,
-                analytics: r.resolve(CoreAnalytics.self)!
+                analytics: r.resolve(CoreAnalytics.self)!,
+                config: r.resolve(ConfigProtocol.self)!
             )
         }
         
@@ -86,6 +88,7 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 sourceScreen: sourceScreen
             )
         }
@@ -106,6 +109,7 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 cssInjector: r.resolve(CSSInjector.self)!,
                 validator: r.resolve(Validator.self)!,
+                storage: r.resolve(CoreStorage.self)!,
                 sourceScreen: sourceScreen
             )
         }
@@ -290,7 +294,7 @@ class ScreenAssembly: Assembly {
             )
         }
         .inObjectScope(.weak)
-                
+        
         container.register(ManageAccountViewModel.self) { @MainActor r in
             ManageAccountViewModel(
                 router: r.resolve(ProfileRouter.self)!,
@@ -330,7 +334,7 @@ class ScreenAssembly: Assembly {
         // MARK: CourseScreensView
         container.register(
             CourseContainerViewModel.self
-        ) { @MainActor r, isActive, courseStart, courseEnd, enrollmentStart, enrollmentEnd, selection, lastVisitedBlockID in
+        ) { @MainActor r, isActive, courseStart, courseEnd, enrollStart, enrollEnd, selection, lastVisitedBlockID in
             CourseContainerViewModel(
                 interactor: r.resolve(CourseInteractorProtocol.self)!,
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
@@ -343,8 +347,8 @@ class ScreenAssembly: Assembly {
                 isActive: isActive,
                 courseStart: courseStart,
                 courseEnd: courseEnd,
-                enrollmentStart: enrollmentStart,
-                enrollmentEnd: enrollmentEnd,
+                enrollmentStart: enrollStart,
+                enrollmentEnd: enrollEnd,
                 lastVisitedBlockID: lastVisitedBlockID,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
                 selection: selection
@@ -394,22 +398,25 @@ class ScreenAssembly: Assembly {
         container.register(
             YouTubeVideoPlayerViewModel.self,
             mainActorFactory: { ( r, url: URL?, blockID: String, courseID: String, languages: [SubtitleUrl],
-                playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+                                  playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
             ) in
-            let router: Router = r.resolve(Router.self)!
-            return YouTubeVideoPlayerViewModel(
-                languages: languages,
-                playerStateSubject: playerStateSubject,
-                connectivity: r.resolve(ConnectivityProtocol.self)!,
-                playerHolder: r.resolve(
-                    YoutubePlayerViewControllerHolder.self,
-                    arguments: url,
-                    blockID,
-                    courseID,
-                    router.currentCourseTabSelection
-                )!
-            )
-        })
+                let router: Router = r.resolve(Router.self)!
+                return YouTubeVideoPlayerViewModel(
+                    languages: languages,
+                    playerStateSubject: playerStateSubject,
+                    connectivity: r.resolve(ConnectivityProtocol.self)!,
+                    playerHolder: r.resolve(
+                        YoutubePlayerViewControllerHolder.self,
+                        arguments: url,
+                        blockID,
+                        courseID,
+                        router.currentCourseTabSelection
+                    )!,
+                    appStorage: r.resolve(CoreStorage.self)!,
+                    analytics: r.resolve(CourseAnalytics.self)!
+                )
+            }
+        )
         
         container.register(
             EncodedVideoPlayerViewModel.self,
@@ -422,22 +429,25 @@ class ScreenAssembly: Assembly {
                     languages: [SubtitleUrl],
                     playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
                 ) in
-            let router: Router = r.resolve(Router.self)!
-
-            let holder = r.resolve(
-                PlayerViewControllerHolder.self,
-                arguments: url,
-                blockID,
-                courseID,
-                router.currentCourseTabSelection
-            )!
-            return EncodedVideoPlayerViewModel(
-                languages: languages,
-                playerStateSubject: playerStateSubject,
-                connectivity: r.resolve(ConnectivityProtocol.self)!,
-                playerHolder: holder
-            )
-        })
+                let router: Router = r.resolve(Router.self)!
+                
+                let holder = r.resolve(
+                    PlayerViewControllerHolder.self,
+                    arguments: url,
+                    blockID,
+                    courseID,
+                    router.currentCourseTabSelection
+                )!
+                return EncodedVideoPlayerViewModel(
+                    languages: languages,
+                    playerStateSubject: playerStateSubject,
+                    connectivity: r.resolve(ConnectivityProtocol.self)!,
+                    playerHolder: holder,
+                    appStorage: r.resolve(CoreStorage.self)!,
+                    analytics: r.resolve(CourseAnalytics.self)!
+                )
+            }
+        )
         
         container.register(PlayerDelegateProtocol.self) { r in
             PlayerDelegate(pipManager: r.resolve(PipManagerProtocol.self)!)
@@ -459,14 +469,14 @@ class ScreenAssembly: Assembly {
                 blockID: blockID,
                 courseID: courseID,
                 selectedCourseTab: selectedCourseTab,
-                videoResolution: .zero,
                 pipManager: r.resolve(PipManagerProtocol.self)!,
                 playerTracker: r.resolve(YoutubePlayerTracker.self, argument: url)!,
                 playerDelegate: nil,
-                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+                playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!,
+                appStorage: nil
             )
         }
-
+        
         container.register(
             PlayerViewControllerHolder.self,
             mainActorFactory: { (r, url: URL?, blockID: String, courseID: String, selectedCourseTab: Int) in
@@ -481,7 +491,6 @@ class ScreenAssembly: Assembly {
                 }
                 
                 let storage = r.resolve(CoreStorage.self)!
-                let quality = storage.userSettings?.streamingQuality ?? .auto
                 let tracker = r.resolve(PlayerTracker.self, argument: url)!
                 let delegate = r.resolve(PlayerDelegateProtocol.self)!
                 let holder = PlayerViewControllerHolder(
@@ -489,15 +498,16 @@ class ScreenAssembly: Assembly {
                     blockID: blockID,
                     courseID: courseID,
                     selectedCourseTab: selectedCourseTab,
-                    videoResolution: quality.resolution,
                     pipManager: pipManager,
                     playerTracker: tracker,
                     playerDelegate: delegate,
-                    playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!
+                    playerService: r.resolve(PlayerServiceProtocol.self, arguments: courseID, blockID)!,
+                    appStorage: storage
                 )
                 delegate.playerHolder = holder
                 return holder
-            })
+            }
+        )
         
         container.register(PlayerServiceProtocol.self) { @MainActor r, courseID, blockID in
             let interactor = r.resolve(CourseInteractorProtocol.self)!
@@ -581,17 +591,20 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                postStateSubject: subject
+                postStateSubject: subject,
+                analytics: r.resolve(DiscussionAnalytics.self)!
             )
         }
         
-        container.register(ResponsesViewModel.self) { @MainActor r, subject in
+        container.register(ResponsesViewModel.self) { @MainActor r, subject, courseID in
             ResponsesViewModel(
+                courseID: courseID,
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                threadStateSubject: subject
+                threadStateSubject: subject,
+                analytics: r.resolve(DiscussionAnalytics.self)!
             )
         }
         
@@ -599,7 +612,9 @@ class ScreenAssembly: Assembly {
             CreateNewThreadViewModel(
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(DiscussionAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
             )
         }
         
@@ -622,4 +637,4 @@ class ScreenAssembly: Assembly {
         }
     }
 }
-// swiftlint:enable function_body_length type_body_length
+// swiftlint:enable function_body_length closure_parameter_position

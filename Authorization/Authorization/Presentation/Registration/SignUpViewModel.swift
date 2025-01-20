@@ -57,6 +57,7 @@ public final class SignUpViewModel: ObservableObject {
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
     var authMethod: AuthMethod = .password
+    let storage: CoreStorage
 
     public init(
         interactor: AuthInteractorProtocol,
@@ -65,6 +66,7 @@ public final class SignUpViewModel: ObservableObject {
         config: ConfigProtocol,
         cssInjector: CSSInjector,
         validator: Validator,
+        storage: CoreStorage,
         sourceScreen: LogistrationSourceScreen
     ) {
         self.interactor = interactor
@@ -73,6 +75,7 @@ public final class SignUpViewModel: ObservableObject {
         self.config = config
         self.cssInjector = cssInjector
         self.validator = validator
+        self.storage = storage
         self.sourceScreen = sourceScreen
     }
 
@@ -137,7 +140,11 @@ public final class SignUpViewModel: ObservableObject {
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.registrationSuccess(method: authMetod.analyticsValue)
             isShowProgress = false
-            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            var postLoginData: PostLoginData?
+            if case .socialAuth(let socialMethod) = authMethod {
+                postLoginData = PostLoginData(authMethod: socialMethod.rawValue, showSocialRegisterBanner: false)
+            }
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, postLoginData: postLoginData)
             NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch let error {
             isShowProgress = false
@@ -194,7 +201,11 @@ public final class SignUpViewModel: ObservableObject {
             analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
             analytics.userLogin(method: authMethod)
             isShowProgress = false
-            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+            var postLoginData: PostLoginData?
+            if case .socialAuth(let socialMethod) = authMethod {
+                postLoginData = PostLoginData(authMethod: socialMethod.rawValue, showSocialRegisterBanner: true)
+            }
+            router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, postLoginData: postLoginData)
             NotificationCenter.default.post(name: .userAuthorized, object: nil)
         } catch {
             update(fullName: response.name, email: response.email)
@@ -206,7 +217,7 @@ public final class SignUpViewModel: ObservableObject {
             await registerUser(authMetod: authMethod)
         }
     }
-
+    
     private func update(fullName: String?, email: String?) {
         fields.first(where: { $0.field.type == .email })?.text = email ?? ""
         fields.first(where: { $0.field.name == "name" })?.text = fullName ?? ""

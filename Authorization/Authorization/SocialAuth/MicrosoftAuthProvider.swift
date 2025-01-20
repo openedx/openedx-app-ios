@@ -78,10 +78,11 @@ public final class MicrosoftAuthProvider {
     }
 
     private func createClientApplication() throws -> MSALPublicClientApplication {
-        guard let config = Container.shared.resolve(ConfigProtocol.self), let appID =  config.microsoft.appID else {
+        guard let config = Container.shared.resolve(ConfigProtocol.self),
+              let clientID =  config.microsoft.clientID else {
             throw SocialAuthError.error(text: "Configuration error")
         }
-        let configuration = MSALPublicClientApplicationConfig(clientId: appID)
+        let configuration = MSALPublicClientApplicationConfig(clientId: clientID)
 
         do {
             return try MSALPublicClientApplication(configuration: configuration)

@@ -294,6 +294,7 @@ public struct CourseContainerView: View {
             Task {
                 await viewModel.tryToRefreshCookies()
             }
+            viewModel.analytics.courseOutlineCourseTabClicked(courseId: courseID, courseName: title)
         }
     }
     

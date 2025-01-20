@@ -12,6 +12,7 @@
 "MAINSCREEN.PROGRAMS" = "Programs";
 "MAINSCREEN.PROFILE" = "Profile";
 "MAINSCREEN.LEARN" = "Learn";
+"MAINSCREEN.SOCIAL_REGISTER_BANNER" = "You already set up an %@ account with your %@ account. You have been logged in with that account.";
 
 "VIEW.SNACKBAR.TRY_AGAIN_BTN" = "Try Again";
 
@@ -60,12 +61,12 @@
 "DATE.DUE_IN" = "Due in ";
 "DATE.DUE_IN_DAYS" = "Due in %@ Days";
 
-"ALERT.ACCEPT" = "ACCEPT";
-"ALERT.CANCEL" = "CANCEL";
+"ALERT.ACCEPT" = "Accept";
+"ALERT.CANCEL" = "Cancel";
 "ALERT.LOGOUT" = "Log out";
 "ALERT.LEAVE" = "Leave";
 "ALERT.KEEP_EDITING" = "Keep editing";
-"ALERT.DELETE" = "DELETE";
+"ALERT.DELETE" = "Delete";
 "ALERT.ADD" = "Add";
 "ALERT.REMOVE" = "Remove";
 "ALERT.CALENDAR_SHIFT_PROMPT_REMOVE_COURSE_CALENDAR"="Remove course calendar";

@@ -91,9 +91,11 @@ class RouteController: UIViewController {
             let controller = UIHostingController(rootView: whatsNewView)
             navigation.viewControllers = [controller]
         } else {
+            let postLoginDataDefault: PostLoginData? = PostLoginData()
             let viewModel = Container.shared.resolve(
                 MainScreenViewModel.self,
-                argument: LogistrationSourceScreen.default
+                arguments: LogistrationSourceScreen.default,
+                postLoginDataDefault
             )!
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
             navigation.viewControllers = [controller]

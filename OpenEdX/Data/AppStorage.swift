@@ -170,15 +170,22 @@ public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, Cou
 
     public var userSettings: UserSettings? {
         get {
-            guard let userSettings = userDefaults.data(forKey: KEY_SETTINGS) else {
-                let defaultSettings = UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
+            if let userSettings = userDefaults.data(forKey: KEY_SETTINGS),
+                let settings = try? JSONDecoder().decode(UserSettings.self, from: userSettings) {
+                return settings
+            } else {
+                let defaultSettings = UserSettings(
+                    wifiOnly: true,
+                    streamingQuality: .auto,
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
+                )
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(defaultSettings) {
                     userDefaults.set(encoded, forKey: KEY_SETTINGS)
                 }
                 return defaultSettings
             }
-            return try? JSONDecoder().decode(UserSettings.self, from: userSettings)
         }
         set(newValue) {
             if let settings = newValue {
@@ -265,6 +272,19 @@ public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, Cou
                 userDefaults.set(newValue, forKey: KEY_LAST_CALENDAR_NAME)
             } else {
                 userDefaults.removeObject(forKey: KEY_LAST_CALENDAR_NAME)
+            }
+        }
+    }
+
+    public var lastUsedSocialAuth: String? {
+        get {
+            return userDefaults.string(forKey: KEY_LAST_USED_SOCIAL_AUTH)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_LAST_USED_SOCIAL_AUTH)
+            } else {
+                userDefaults.removeObject(forKey: KEY_LAST_USED_SOCIAL_AUTH)
             }
         }
     }
@@ -375,4 +395,5 @@ public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, Cou
     private let KEY_FIRST_CALENDAR_UPDATE = "firstCalendarUpdate"
     private let KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA = "resetAppSupportDirectoryUserData"
     private let KEY_USE_RELATIVE_DATES = "useRelativeDates"
+    private let KEY_LAST_USED_SOCIAL_AUTH = "lastUsedSocialAuth"
 }

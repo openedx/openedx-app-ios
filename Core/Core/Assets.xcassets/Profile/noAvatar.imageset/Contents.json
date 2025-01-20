@@ -1,17 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "Group 82 (1).svg",
-      "idiom" : "universal"
-    },
-    {
-      "appearances" : [
-        {
-          "appearance" : "luminosity",
-          "value" : "dark"
-        }
-      ],
-      "filename" : "Group 82-2.svg",
+      "filename" : "noavatar.svg",
       "idiom" : "universal"
     }
   ],

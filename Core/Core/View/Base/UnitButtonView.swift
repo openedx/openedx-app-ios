@@ -145,13 +145,16 @@ public struct UnitButtonView: View {
                     case .continueLesson, .nextSection:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.styledButtonText)
+                                .foregroundColor(
+                                    type == .continueLesson ? Theme.Colors.resumeButtonText :
+                                    Theme.Colors.styledButtonText
+                                )
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(
                                         type == .continueLesson
-                                        ? Theme.Colors.accentColor
+                                        ? Theme.Colors.resumeButtonText
                                         : Theme.Colors.styledButtonText
                                     )
                                 .rotationEffect(Angle.degrees(180))
@@ -184,7 +187,10 @@ public struct UnitButtonView: View {
                                 
                         case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
-                                .fill(bgColor ?? Theme.Colors.accentButtonColor)
+                                .fill(
+                                    type == .continueLesson ? Theme.Colors.resumeButtonBG :
+                                    bgColor ?? Theme.Colors.accentButtonColor
+                                )
                             
                                 .shadow(color: (type == .first
                                                 || type == .next

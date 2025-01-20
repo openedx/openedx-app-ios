@@ -100,6 +100,12 @@
 		BAC0E0DE2B32F0F3006B68A9 /* DownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC0E0DD2B32F0F3006B68A9 /* DownloadsViewModel.swift */; };
 		BAD9CA2D2B2736BB00DE790A /* LessonLineProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA2C2B2736BB00DE790A /* LessonLineProgressView.swift */; };
 		BAD9CA4A2B2C88E000DE790A /* CourseVideoDownloadBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */; };
+		CE6386642D07215E00C01D69 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386632D07215E00C01D69 /* Line.swift */; };
+		CE6386662D07217300C01D69 /* TimeLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386652D07217300C01D69 /* TimeLineView.swift */; };
+		CE6386682D07219B00C01D69 /* CourseDateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386672D07219B00C01D69 /* CourseDateListView.swift */; };
+		CE63866A2D0721B600C01D69 /* CompletedBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386692D0721B600C01D69 /* CompletedBlocks.swift */; };
+		CE63866C2D0721D600C01D69 /* BlockStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866B2D0721D600C01D69 /* BlockStatusView.swift */; };
+		CE63866E2D07220600C01D69 /* CourseDateStyleBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */; };
 		CE7CAF412CC1563500E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF402CC1563500E0AC9D /* OEXFoundation */; };
 		CEB1E2732CC14EC400921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2722CC14EC400921517 /* OEXFoundation */; };
 		CEBCA4342CC13CDE00076589 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA4332CC13CDE00076589 /* YouTubePlayerKit */; };
@@ -242,6 +248,12 @@
 		BAC0E0DD2B32F0F3006B68A9 /* DownloadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewModel.swift; sourceTree = "<group>"; };
 		BAD9CA2C2B2736BB00DE790A /* LessonLineProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonLineProgressView.swift; sourceTree = "<group>"; };
 		BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoDownloadBarView.swift; sourceTree = "<group>"; };
+		CE6386632D07215E00C01D69 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
+		CE6386652D07217300C01D69 /* TimeLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineView.swift; sourceTree = "<group>"; };
+		CE6386672D07219B00C01D69 /* CourseDateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateListView.swift; sourceTree = "<group>"; };
+		CE6386692D0721B600C01D69 /* CompletedBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedBlocks.swift; sourceTree = "<group>"; };
+		CE63866B2D0721D600C01D69 /* BlockStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStatusView.swift; sourceTree = "<group>"; };
+		CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateStyleBlock.swift; sourceTree = "<group>"; };
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
 		DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDatesView.swift; sourceTree = "<group>"; };
 		DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesViewModel.swift; sourceTree = "<group>"; };
@@ -656,6 +668,19 @@
 			path = Subviews;
 			sourceTree = "<group>";
 		};
+		CE6386622D07215100C01D69 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */,
+				CE63866B2D0721D600C01D69 /* BlockStatusView.swift */,
+				CE6386692D0721B600C01D69 /* CompletedBlocks.swift */,
+				CE6386672D07219B00C01D69 /* CourseDateListView.swift */,
+				CE6386632D07215E00C01D69 /* Line.swift */,
+				CE6386652D07217300C01D69 /* TimeLineView.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
 		D52670044E8768425E23C627 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -689,6 +714,7 @@
 		DB7D6EAA2ADFCAA00036BB13 /* Dates */ = {
 			isa = PBXGroup;
 			children = (
+				CE6386622D07215100C01D69 /* Elements */,
 				DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */,
 				97E7DF0E2B7C852A00A2A09B /* DatesStatusInfoView.swift */,
 				DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */,
@@ -758,7 +784,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1410;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					023812E3297AC8EA0087098F = {
 						CreatedOnToolsVersion = 14.1;
@@ -926,6 +952,7 @@
 				02FF6FA72C20BFF800E44DD8 /* OfflineView.swift in Sources */,
 				0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */,
 				068DDA602B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift in Sources */,
+				CE6386662D07217300C01D69 /* TimeLineView.swift in Sources */,
 				067B7B512BED339200D1768F /* PipManagerProtocol.swift in Sources */,
 				022C64E029ADEA9B000F532B /* Data_UpdatesResponse.swift in Sources */,
 				02D4FC2E2BBD7C9C00C47748 /* MessageSectionView.swift in Sources */,
@@ -934,6 +961,7 @@
 				02454CA22A26190A0043052A /* EncodedVideoView.swift in Sources */,
 				065275352BB1B39C0093BCCA /* PlayerViewControllerHolder.swift in Sources */,
 				068DDA612B1E198700FF8CCB /* CourseUnitDropDownCell.swift in Sources */,
+				CE6386682D07219B00C01D69 /* CourseDateListView.swift in Sources */,
 				BAC0E0DE2B32F0F3006B68A9 /* DownloadsViewModel.swift in Sources */,
 				02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */,
 				02280F60294B50030032823A /* CoursePersistenceProtocol.swift in Sources */,
@@ -955,6 +983,7 @@
 				073512E229C0E400005CFA41 /* BaseCourseViewModel.swift in Sources */,
 				0231124F28EDA811002588FB /* CourseUnitViewModel.swift in Sources */,
 				02F0144F28F46474002E513D /* CourseContainerView.swift in Sources */,
+				CE6386642D07215E00C01D69 /* Line.swift in Sources */,
 				02A8076829474831007F53AB /* CourseVerticalView.swift in Sources */,
 				97E7DF0F2B7C852A00A2A09B /* DatesStatusInfoView.swift in Sources */,
 				067B7B4F2BED339200D1768F /* PlayerDelegateProtocol.swift in Sources */,
@@ -971,6 +1000,8 @@
 				BAC0E0DB2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift in Sources */,
 				DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */,
 				067B7B522BED339200D1768F /* SubtitlesView.swift in Sources */,
+				CE63866E2D07220600C01D69 /* CourseDateStyleBlock.swift in Sources */,
+				CE63866C2D0721D600C01D69 /* BlockStatusView.swift in Sources */,
 				02868AE52C19FE0B0003E339 /* DownloadActionView.swift in Sources */,
 				07DE59862BECB868001CBFBC /* CourseAnalytics.swift in Sources */,
 				02BB20182BFCE7B200364948 /* CustomDisclosureGroup.swift in Sources */,
@@ -994,6 +1025,7 @@
 				02E3803E2BFF9F0A00815AFA /* CourseProgressView.swift in Sources */,
 				022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */,
 				02B6B3BE28E1D15C00232911 /* CourseEndpoint.swift in Sources */,
+				CE63866A2D0721B600C01D69 /* CompletedBlocks.swift in Sources */,
 				02F71B4C2C1B200900FF936A /* DeviceStorageFullAlertView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1036,6 +1068,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1057,6 +1090,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1078,6 +1112,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1099,6 +1134,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1120,6 +1156,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1141,6 +1178,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1283,6 +1321,7 @@
 			baseConfigurationReference = ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1290,6 +1329,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1300,6 +1341,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1318,6 +1360,7 @@
 			baseConfigurationReference = F4640D6B8065C404E0BC30D5 /* Pods-App-Course.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1325,6 +1368,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1335,6 +1380,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1416,6 +1462,7 @@
 			baseConfigurationReference = EDCFD7A1BFD2200B14F10F71 /* Pods-App-Course.debugdev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1423,6 +1470,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1433,6 +1482,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1515,6 +1565,7 @@
 			baseConfigurationReference = E954A304FDC0409BEC34C125 /* Pods-App-Course.debugprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1522,6 +1573,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1532,6 +1585,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1608,6 +1662,7 @@
 			baseConfigurationReference = 4D2F08669DD2579EAAE02E2F /* Pods-App-Course.releasedev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1615,6 +1670,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1625,6 +1682,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1700,6 +1758,7 @@
 			baseConfigurationReference = F496B47B12CFD866EA6845CC /* Pods-App-Course.releaseprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1707,6 +1766,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1717,6 +1778,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1798,6 +1860,7 @@
 			baseConfigurationReference = 3D506212980347A9D5A70E20 /* Pods-App-Course.debugstage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1805,6 +1868,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1815,6 +1880,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1834,6 +1900,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -1912,6 +1979,7 @@
 			baseConfigurationReference = A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1919,6 +1987,8 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1929,6 +1999,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1947,6 +2018,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
@@ -2018,7 +2090,7 @@
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.1;
+				version = 1.0.2;
 			};
 		};
 		CEBCA4322CC13CDE00076589 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */ = {

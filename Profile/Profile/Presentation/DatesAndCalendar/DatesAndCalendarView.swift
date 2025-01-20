@@ -185,9 +185,9 @@ struct DatesAndCalendarView_Previews: PreviewProvider {
         let vm = DatesAndCalendarViewModel(
             router: ProfileRouterMock(),
             interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
-            profileStorage: ProfileStorageMock(), 
+            profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
-            calendarManager: CalendarManagerMock(), 
+            calendarManager: CalendarManagerMock(),
             connectivity: Connectivity()
         )
         DatesAndCalendarView(viewModel: vm)

@@ -108,7 +108,7 @@
 		070019AC28F6FD0100D5FC78 /* CourseDetailBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019AB28F6FD0100D5FC78 /* CourseDetailBlock.swift */; };
 		070019AE28F701B200D5FC78 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070019AD28F701B200D5FC78 /* Certificate.swift */; };
 		071009C428D1C9D000344290 /* StyledButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C328D1C9D000344290 /* StyledButton.swift */; };
-		071009D028D1E3A600344290 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009CF28D1E3A600344290 /* Constants.swift */; };
+		071009D028D1E3A600344290 /* AuthConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009CF28D1E3A600344290 /* AuthConstants.swift */; };
 		0716946D296D996900E3DED6 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE0828D07831006D8A5D /* Core.framework */; platformFilter = ios; };
 		0727877028D23411002E9142 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0727876F28D23411002E9142 /* Config.swift */; };
 		0727877728D23847002E9142 /* DataLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0727877628D23847002E9142 /* DataLayer.swift */; };
@@ -156,6 +156,7 @@
 		CE57127C2CD109DB00D4AB17 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE57127B2CD109DB00D4AB17 /* OEXFoundation */; };
 		CE7CAF392CC1561E00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF382CC1561E00E0AC9D /* OEXFoundation */; };
 		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
+		CED42FFC2D099F0400C7AD89 /* DownloadManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
 		DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */; };
@@ -301,7 +302,7 @@
 		070019AB28F6FD0100D5FC78 /* CourseDetailBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDetailBlock.swift; sourceTree = "<group>"; };
 		070019AD28F701B200D5FC78 /* Certificate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Certificate.swift; sourceTree = "<group>"; };
 		071009C328D1C9D000344290 /* StyledButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StyledButton.swift; sourceTree = "<group>"; };
-		071009CF28D1E3A600344290 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		071009CF28D1E3A600344290 /* AuthConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthConstants.swift; sourceTree = "<group>"; };
 		07169469296D996900E3DED6 /* CoreTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0727876F28D23411002E9142 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		0727877628D23847002E9142 /* DataLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataLayer.swift; sourceTree = "<group>"; };
@@ -365,6 +366,7 @@
 		CE1D5B7C2CE65D360019CA34 /* Protected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protected.swift; sourceTree = "<group>"; };
 		CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerTests.swift; sourceTree = "<group>"; };
 		CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMock.generated.swift; sourceTree = "<group>"; };
+		CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerMock.swift; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
 		DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementConfig.swift; sourceTree = "<group>"; };
@@ -665,7 +667,7 @@
 				CE4AB5942CE2504500E27A00 /* System */,
 				0770DE5D28D0B209006D8A5D /* Localizable.strings */,
 				0770DE5128D0ADFF006D8A5D /* Assets.xcassets */,
-				071009CF28D1E3A600344290 /* Constants.swift */,
+				071009CF28D1E3A600344290 /* AuthConstants.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -677,6 +679,7 @@
 				0236961E28F9A2F600EEF206 /* AuthEndpoint.swift */,
 				029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */,
 				02A4833929B8A9AB00D33F33 /* DownloadManager.swift */,
+				CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */,
 				029A13272C246AE6005FB830 /* OfflineSyncManager.swift */,
 			);
 			path = Network;
@@ -935,8 +938,8 @@
 			buildConfigurationList = 0770DE0F28D07831006D8A5D /* Build configuration list for PBXNativeTarget "Core" */;
 			buildPhases = (
 				ED83AD5255805030E042D62A /* [CP] Check Pods Manifest.lock */,
-				0770DE5A28D0B1E5006D8A5D /* SwiftGen */,
 				0770DE0328D07831006D8A5D /* Headers */,
+				0770DE5A28D0B1E5006D8A5D /* SwiftGen */,
 				0770DE0428D07831006D8A5D /* Sources */,
 				0770DE0528D07831006D8A5D /* Frameworks */,
 				0770DE0628D07831006D8A5D /* Resources */,
@@ -963,7 +966,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1420;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					07169468296D996800E3DED6 = {
 						CreatedOnToolsVersion = 14.2;
@@ -1209,7 +1212,7 @@
 				02E224DB2BB76B3E00EF1ADB /* DynamicOffsetView.swift in Sources */,
 				0259104A29C4A5B6004B5A55 /* UserSettings.swift in Sources */,
 				021D925028DC89D100ACC565 /* UserProfile.swift in Sources */,
-				071009D028D1E3A600344290 /* Constants.swift in Sources */,
+				071009D028D1E3A600344290 /* AuthConstants.swift in Sources */,
 				0770DE1928D0847D006D8A5D /* BaseRouter.swift in Sources */,
 				02286D162C106393005EEC8D /* CourseDates.swift in Sources */,
 				0284DBFE28D48C5300830893 /* CourseItem.swift in Sources */,
@@ -1260,6 +1263,7 @@
 				A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */,
 				02280F5B294B4E6F0032823A /* Connectivity.swift in Sources */,
 				0254D1912BCD699F000CDE89 /* RefreshProgressView.swift in Sources */,
+				CED42FFC2D099F0400C7AD89 /* DownloadManagerMock.swift in Sources */,
 				02066B482906F73400F4307E /* PickerMenu.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1325,6 +1329,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1356,6 +1361,7 @@
 			baseConfigurationReference = 0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1363,6 +1369,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1373,6 +1380,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1447,6 +1455,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1472,6 +1481,7 @@
 			baseConfigurationReference = 0754BB7841E3C0F8D6464951 /* Pods-App-Core.releasestage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1479,6 +1489,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1489,6 +1500,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1696,6 +1708,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1727,6 +1740,7 @@
 			baseConfigurationReference = 9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1734,6 +1748,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1744,6 +1759,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1795,6 +1811,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1820,6 +1837,7 @@
 			baseConfigurationReference = 1A154A95AF4EE85A4A1C083B /* Pods-App-Core.releasedev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1827,6 +1845,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1837,6 +1856,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1887,6 +1907,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1918,6 +1939,7 @@
 			baseConfigurationReference = C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -1925,6 +1947,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -1935,6 +1958,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1986,6 +2010,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2011,6 +2036,7 @@
 			baseConfigurationReference = 3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -2018,6 +2044,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -2028,6 +2055,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -2078,6 +2106,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2142,6 +2171,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -2167,6 +2197,7 @@
 			baseConfigurationReference = 2B7E6FE7843FC4CF2BFA712D /* Pods-App-Core.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -2174,6 +2205,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -2184,6 +2216,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -2202,6 +2235,7 @@
 			baseConfigurationReference = 60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -2209,6 +2243,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -2219,6 +2254,7 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Core;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -2295,7 +2331,7 @@
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.1;
+				version = 1.0.2;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

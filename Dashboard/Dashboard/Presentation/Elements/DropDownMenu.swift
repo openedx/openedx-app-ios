@@ -26,6 +26,7 @@ enum MenuOption: String, CaseIterable {
 struct DropDownMenu: View {
     @Binding var selectedOption: MenuOption
     @State private var expanded: Bool = false
+    var analytics: DashboardAnalytics
     
     var body: some View {
         VStack(alignment: .leading, spacing: 2) {
@@ -53,6 +54,12 @@ struct DropDownMenu: View {
                             action: {
                                 selectedOption = option
                                 expanded = false
+                                switch selectedOption {
+                                case .courses:
+                                    analytics.mainCoursesClicked()
+                                case .programs:
+                                    analytics.mainProgramsClicked()
+                                }
                             }, label: {
                                 HStack {
                                     Text(option.text)

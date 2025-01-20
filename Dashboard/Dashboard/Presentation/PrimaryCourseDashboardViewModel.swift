@@ -29,7 +29,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     
     let connectivity: ConnectivityProtocol
     private let interactor: DashboardInteractorProtocol
-    private let analytics: DashboardAnalytics
+    let analytics: DashboardAnalytics
     let config: ConfigProtocol
     let storage: CoreStorage
     private var cancellables = Set<AnyCancellable>()
@@ -66,7 +66,9 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
         completionPublisher
             .sink { [weak self] _ in
                 guard let self = self else { return }
-                updateEnrollmentsIfNeeded()
+                DispatchQueue.main.async {
+                    self.updateEnrollmentsIfNeeded()
+                }
             }
             .store(in: &cancellables)
         

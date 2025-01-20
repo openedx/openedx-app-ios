@@ -224,6 +224,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
                 }
             }
             courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
+            await getDownloadingProgress()
             isShowProgress = false
             isShowRefresh = false
             
@@ -604,7 +605,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
         totalFileSize: Int,
         action: @escaping () -> Void = {}
     ) async {
-        router.presentView(
+        await router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .confirmDownload,
@@ -666,7 +667,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
         guard !sequentials.isEmpty else { return [] }
         
         let blocks = sequentials.flatMap { $0.childs.flatMap { $0.childs } }
-            .filter { $0.isDownloadable }
+            .filter { $0.isDownloadable && (!videoOnly || $0.type == .video) }
         
         if state == .available, await isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return []
@@ -1018,3 +1019,4 @@ struct VerticalsDownloadState: Hashable {
         vertical.childs.filter { $0.isDownloadable && $0.type == .video }
     }
 }
+//swiftlint:enable type_body_length file_length

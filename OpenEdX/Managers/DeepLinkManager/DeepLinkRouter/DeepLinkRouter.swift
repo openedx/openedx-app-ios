@@ -49,6 +49,7 @@ public protocol DeepLinkRouter: BaseRouter {
         isBlackedOut: Bool
     )
     func showComment(
+        courseID: String,
         comment: UserComment,
         parentComment: Post,
         isBlackedOut: Bool
@@ -118,10 +119,7 @@ extension Router: DeepLinkRouter {
                     lastVisitedBlockID: nil
                 )
             } else {
-                showCourseDetais(
-                    courseID: courseDetails.courseID,
-                    title: courseDetails.courseTitle
-                )
+                showCourseDetais(courseID: courseDetails.courseID, title: courseDetails.courseTitle)
             }
         }
 
@@ -155,7 +153,6 @@ extension Router: DeepLinkRouter {
             default:
                 break
             }
-
             completion()
         }
     }
@@ -239,11 +236,13 @@ extension Router: DeepLinkRouter {
     }
 
     public func showComment(
+        courseID: String,
         comment: UserComment,
         parentComment: Post,
         isBlackedOut: Bool
     ) {
         showComments(
+            courseID: courseID,
             commentID: comment.commentID,
             parentComment: parentComment,
             threadStateSubject: .init(.none),
@@ -374,6 +373,7 @@ public class DeepLinkRouterMock: BaseRouterMock, DeepLinkRouter {
         isBlackedOut: Bool
     ) {}
     public func showComment(
+        courseID: String,
         comment: UserComment,
         parentComment: Post,
         isBlackedOut: Bool

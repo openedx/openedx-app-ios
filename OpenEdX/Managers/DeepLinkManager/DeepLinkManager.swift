@@ -13,7 +13,7 @@ import Discussion
 import Course
 import Profile
 
-// swiftlint:disable function_body_length type_body_length
+// swiftlint:disable function_body_length
 //sourcery: AutoMockable
 @MainActor
 public protocol DeepLinkService {
@@ -407,6 +407,7 @@ public class DeepLinkManager {
                !parentID.isEmpty,
                let parentComment = try? await self.discussionInteractor.getResponse(responseID: parentID) {
                 router.showComment(
+                    courseID: courseDetails.courseID,
                     comment: comment,
                     parentComment: parentComment.post,
                     isBlackedOut: isBlackedOut
@@ -443,6 +444,7 @@ public class DeepLinkManager {
                !commentParentID.isEmpty,
                let parentComment = try? await self.discussionInteractor.getResponse(responseID: commentParentID) {
                 router.showComment(
+                    courseID: courseDetails.courseID,
                     comment: comment,
                     parentComment: parentComment.post,
                     isBlackedOut: isBlackedOut
@@ -490,4 +492,4 @@ extension DeepLinkError: LocalizedError {
         }
     }
 }
-// swiftlint:enable function_body_length type_body_length
+// swiftlint:enable function_body_length

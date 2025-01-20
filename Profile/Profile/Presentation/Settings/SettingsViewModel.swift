@@ -146,7 +146,6 @@ public final class SettingsViewModel: ObservableObject {
         UIApplication.shared.open(appStoreURL)
     }
     
-    @MainActor
     func logOut() async {
         try? await interactor.logOut()
         try? await downloadManager.cancelAllDownloading()

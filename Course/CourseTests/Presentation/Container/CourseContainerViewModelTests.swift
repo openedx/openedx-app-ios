@@ -100,9 +100,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: childs,
-            media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
-                                                                small: "",
-                                                                large: "")),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -170,9 +174,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
-                                                                small: "",
-                                                                large: "")),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -436,11 +444,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [chapter],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(
-                raw: "",
-                small: "",
-                large: ""
-            )),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -585,11 +595,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [chapter],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(
-                raw: "",
-                small: "",
-                large: ""
-            )),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -715,11 +727,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [chapter],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(
-                raw: "",
-                small: "",
-                large: ""
-            )),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -852,11 +866,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [chapter],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(
-                raw: "",
-                small: "",
-                large: ""
-            )),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -971,11 +987,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [chapter],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(
-                raw: "",
-                small: "",
-                large: ""
-            )),
+            media: CourseMedia(image: CourseImage(raw: "",
+                                                  small: "",
+                                                  large: "")),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -1106,11 +1120,9 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [chapter],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(
-                raw: "",
-                small: "",
-                large: ""
-            )),
+            media: CourseMedia(image: CourseImage(raw: "",
+                                                  small: "",
+                                                  large: "")),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -1264,11 +1276,13 @@ final class CourseContainerViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [chapter],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(
-                raw: "",
-                small: "",
-                large: ""
-            )),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,
@@ -1319,7 +1333,6 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.courseStructure = courseStructure
         viewModel.courseHelper.courseStructure = courseStructure
         await viewModel.courseHelper.refreshValue()
-        
         await Task.yield()
 
         XCTAssertEqual(viewModel.sequentialsDownloadState[sequential.id], .available)

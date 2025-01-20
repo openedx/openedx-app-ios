@@ -61,7 +61,6 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var secondaryButtonBGColor = ThemeAssets.secondaryButtonBGColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var success = ThemeAssets.success.swiftUIColor
-        nonisolated(unsafe) public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var textInputTextColor = ThemeAssets.textInputTextColor.swiftUIColor
@@ -76,6 +75,14 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var courseCardShadow = ThemeAssets.courseCardShadow.swiftUIColor
         nonisolated(unsafe) public private(set) static var shade = ThemeAssets.shade.swiftUIColor
         nonisolated(unsafe) public private(set) static var courseCardBackground = ThemeAssets.courseCardBackground.swiftUIColor
+        nonisolated(unsafe) public private(set) static var deleteAccountBG = ThemeAssets.deleteAccountBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardCautionBG = ThemeAssets.primaryCardCautionBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardUpgradeBG = ThemeAssets.primaryCardCourseUpgradeBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var primaryCardProgressBG = ThemeAssets.primaryCardProgressBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var courseProgressBG = ThemeAssets.courseProgressBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var resumeButtonBG = ThemeAssets.resumeButtonBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var resumeButtonText = ThemeAssets.resumeButtonText.swiftUIColor
+        nonisolated(unsafe) public private(set) static var socialAuthColor = ThemeAssets.socialAuthColor.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
@@ -116,7 +123,6 @@ public struct Theme: Sendable {
             secondaryButtonBorderColor: Color = ThemeAssets.secondaryButtonBorderColor.swiftUIColor,
             secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor,
             success: Color = ThemeAssets.success.swiftUIColor,
-            tabbarColor: Color = ThemeAssets.tabbarColor.swiftUIColor,
             primaryButtonTextColor: Color = ThemeAssets.primaryButtonTextColor.swiftUIColor,
             toggleSwitchColor: Color = ThemeAssets.toggleSwitchColor.swiftUIColor,
             textInputTextColor: Color = ThemeAssets.textInputTextColor.swiftUIColor,
@@ -162,7 +168,6 @@ public struct Theme: Sendable {
             self.secondaryButtonBorderColor = secondaryButtonBorderColor
             self.secondaryButtonTextColor = secondaryButtonTextColor
             self.success = success
-            self.tabbarColor = tabbarColor
             self.primaryButtonTextColor = primaryButtonTextColor
             self.toggleSwitchColor = toggleSwitchColor
             self.textInputTextColor = textInputTextColor
@@ -178,7 +183,11 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var textPrimary = ThemeAssets.textPrimary.color
         nonisolated(unsafe) public private(set) static var accentColor = ThemeAssets.accentColor.color
         nonisolated(unsafe) public private(set) static var accentXColor = ThemeAssets.accentXColor.color
-        nonisolated(unsafe) public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.color
+        nonisolated(unsafe) public private(set) static var navigationBarTintColor =
+        ThemeAssets.navigationBarTintColor.color
+        nonisolated(unsafe) public private(set) static var tabbarActiveColor = ThemeAssets.tabbarActiveColor.color
+        nonisolated(unsafe) public private(set) static var tabbarBGColor = ThemeAssets.tabbarBGColor.color
+        nonisolated(unsafe) public private(set) static var tabbarInactiveColor = ThemeAssets.tabbarInactiveColor.color
 
         public static func update(
             textPrimary: UIColor = ThemeAssets.textPrimary.color,
@@ -248,6 +257,7 @@ public struct Theme: Sendable {
     
     public struct Shapes: Sendable {
         nonisolated(unsafe) public static var isRoundedCorners: Bool = true
+        nonisolated(unsafe) public static var buttonCornersRadius: Double = 8.0
         public static let screenBackgroundRadius = 24.0
         public static let cardImageRadius = 10.0
         public static let textInputShape =  {
@@ -255,7 +265,7 @@ public struct Theme: Sendable {
             return RoundedRectangle(cornerRadius: radius)
         }()
         public static let buttonShape = {
-            let radius: CGFloat = isRoundedCorners ? 8 : 0
+            let radius: CGFloat = isRoundedCorners ? buttonCornersRadius : 0
             return RoundedCorners(tl: radius, tr: radius, bl: radius, br: radius)
         }()
         public static let unitButtonShape = RoundedCorners(tl: 21, tr: 21, bl: 21, br: 21)

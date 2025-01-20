@@ -55,11 +55,11 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
             )
             var correctedProgressJson = progressJson
             correctedProgressJson = correctedProgressJson.removingPercentEncoding ?? correctedProgressJson
-            _ = message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')") { _ ,_ in }
+            _ = message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')") { _, _ in }
         } else if let offlineProgress = await persistence.loadProgress(for: blockID) {
             var correctedProgressJson = offlineProgress.progressJson
             correctedProgressJson = correctedProgressJson.removingPercentEncoding ?? correctedProgressJson
-            _ = message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')") { _ ,_ in }
+            _ = message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')") { _, _ in }
         }
     }
     

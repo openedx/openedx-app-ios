@@ -135,13 +135,24 @@ struct CourseVideoDownloadBarView: View {
         Toggle("", isOn: .constant(viewModel.isOn))
             .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
             .padding(.trailing, 15)
-            .onTapGesture {
-                if !viewModel.isInternetAvaliable {
-                    onNotInternetAvaliable?()
-                    return
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 20, coordinateSpace: .local).onEnded { _ in
+                    toggleAction()
                 }
-                Task { await viewModel.onToggle()  }
-            }
+            )
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    toggleAction()
+                }
+            )
             .accessibilityIdentifier("download_toggle")
+    }
+
+    private func toggleAction() {
+        if !viewModel.isInternetAvaliable {
+            onNotInternetAvaliable?()
+            return
+        }
+        Task { await viewModel.onToggle()  }
     }
 }

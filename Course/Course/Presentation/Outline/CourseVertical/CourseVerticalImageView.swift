@@ -34,7 +34,7 @@ struct CourseVerticalImageView_Previews: PreviewProvider {
                 id: "1",
                 courseId: "123",
                 topicId: "1",
-                graded: false, 
+                graded: false,
                 due: Date(),
                 completion: 1,
                 type: .video,

@@ -161,7 +161,7 @@ public struct WebView: UIViewRepresentable {
             
             if url.absoluteString.starts(with: "file:///") {
                 if url.pathExtension == "pdf" {
-                    await parent.viewModel.openFile(url.absoluteString)
+                    parent.viewModel.openFile(url.absoluteString)
                     return .cancel
                 }
             }

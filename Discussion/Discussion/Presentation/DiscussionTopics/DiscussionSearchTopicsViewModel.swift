@@ -167,15 +167,15 @@ public final class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObje
                     thread.discussionPost(
                         useRelativeDates: storage.useRelativeDates,
                         action: { [weak self] in
-                guard let self else { return }
-                    self.router.showThread(
-                        thread: thread,
-                        postStateSubject: self.postStateSubject,
-                        isBlackedOut: false,
-                        animated: true
-                    )
-            })
-)
+                            guard let self else { return }
+                            self.router.showThread(
+                                thread: thread,
+                                postStateSubject: self.postStateSubject,
+                                isBlackedOut: false,
+                                animated: true
+                            )
+                        })
+                )
         }
         return result
     }

@@ -581,10 +581,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
-        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
-		perform?(`sourceScreen`)
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`))) as? (LogistrationSourceScreen, PostLoginData?) -> Void
+		perform?(`sourceScreen`, `postLoginData`)
     }
 
     open func showStartupScreen() {
@@ -660,7 +660,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>, Parameter<PostLoginData?>)
         case m_showStartupScreen
         case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
@@ -697,9 +697,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let lhsSourcescreen, let lhsPostlogindata), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let rhsSourcescreen, let rhsPostlogindata)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPostlogindata, rhs: rhsPostlogindata, with: matcher), lhsPostlogindata, rhsPostlogindata, "postLoginData"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
@@ -779,7 +780,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(p0, p1): return p0.intValue + p1.intValue
             case .m_showStartupScreen: return 0
             case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
@@ -800,7 +801,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData: return ".showMainOrWhatsNewScreen(sourceScreen:postLoginData:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
             case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
@@ -835,7 +836,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
@@ -868,8 +869,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>, perform: @escaping (LogistrationSourceScreen, PostLoginData?) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)
@@ -1847,7 +1848,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 }
 
 // MARK: - ConnectivityProtocol
-
+@MainActor
 open class ConnectivityProtocolMock: ConnectivityProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3070,6 +3071,12 @@ open class CoreStorageMock: CoreStorage, Mock {
 	}
 	private var __p_useRelativeDates: (Bool)?
 
+    public var lastUsedSocialAuth: String? {
+		get {	invocations.append(.p_lastUsedSocialAuth_get); return __p_lastUsedSocialAuth ?? optionalGivenGetterValue(.p_lastUsedSocialAuth_get, "CoreStorageMock - stub value for lastUsedSocialAuth was not defined") }
+		set {	invocations.append(.p_lastUsedSocialAuth_set(.value(newValue))); __p_lastUsedSocialAuth = newValue }
+	}
+	private var __p_lastUsedSocialAuth: (String)?
+
 
 
 
@@ -3107,6 +3114,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 		case p_resetAppSupportDirectoryUserData_set(Parameter<Bool?>)
         case p_useRelativeDates_get
 		case p_useRelativeDates_set(Parameter<Bool>)
+        case p_lastUsedSocialAuth_get
+		case p_lastUsedSocialAuth_set(Parameter<String?>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3135,6 +3144,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case (.p_resetAppSupportDirectoryUserData_set(let left),.p_resetAppSupportDirectoryUserData_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             case (.p_useRelativeDates_get,.p_useRelativeDates_get): return Matcher.ComparisonResult.match
 			case (.p_useRelativeDates_set(let left),.p_useRelativeDates_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_lastUsedSocialAuth_get,.p_lastUsedSocialAuth_get): return Matcher.ComparisonResult.match
+			case (.p_lastUsedSocialAuth_set(let left),.p_lastUsedSocialAuth_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             default: return .none
             }
         }
@@ -3166,6 +3177,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_resetAppSupportDirectoryUserData_set(let newValue): return newValue.intValue
             case .p_useRelativeDates_get: return 0
 			case .p_useRelativeDates_set(let newValue): return newValue.intValue
+            case .p_lastUsedSocialAuth_get: return 0
+			case .p_lastUsedSocialAuth_set(let newValue): return newValue.intValue
             }
         }
         func assertionName() -> String {
@@ -3195,6 +3208,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_resetAppSupportDirectoryUserData_set: return "[set] .resetAppSupportDirectoryUserData"
             case .p_useRelativeDates_get: return "[get] .useRelativeDates"
 			case .p_useRelativeDates_set: return "[set] .useRelativeDates"
+            case .p_lastUsedSocialAuth_get: return "[get] .lastUsedSocialAuth"
+			case .p_lastUsedSocialAuth_set: return "[set] .lastUsedSocialAuth"
             }
         }
     }
@@ -3243,6 +3258,9 @@ open class CoreStorageMock: CoreStorage, Mock {
         public static func useRelativeDates(getter defaultValue: Bool...) -> PropertyStub {
             return Given(method: .p_useRelativeDates_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
+        public static func lastUsedSocialAuth(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_lastUsedSocialAuth_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
 
     }
 
@@ -3274,6 +3292,8 @@ open class CoreStorageMock: CoreStorage, Mock {
 		public static func resetAppSupportDirectoryUserData(set newValue: Parameter<Bool?>) -> Verify { return Verify(method: .p_resetAppSupportDirectoryUserData_set(newValue)) }
         public static var useRelativeDates: Verify { return Verify(method: .p_useRelativeDates_get) }
 		public static func useRelativeDates(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_useRelativeDates_set(newValue)) }
+        public static var lastUsedSocialAuth: Verify { return Verify(method: .p_lastUsedSocialAuth_get) }
+		public static func lastUsedSocialAuth(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_lastUsedSocialAuth_set(newValue)) }
     }
 
     public struct Perform {
@@ -3420,11 +3440,53 @@ open class DiscussionAnalyticsMock: DiscussionAnalytics, Mock {
 		perform?(`courseId`, `courseName`, `topicId`, `topicName`)
     }
 
+    open func discussionCreateNewPost(courseID: String, topicID: String, postType: String, followPost: Bool, author: String) {
+        addInvocation(.m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(Parameter<String>.value(`courseID`), Parameter<String>.value(`topicID`), Parameter<String>.value(`postType`), Parameter<Bool>.value(`followPost`), Parameter<String>.value(`author`)))
+		let perform = methodPerformValue(.m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(Parameter<String>.value(`courseID`), Parameter<String>.value(`topicID`), Parameter<String>.value(`postType`), Parameter<Bool>.value(`followPost`), Parameter<String>.value(`author`))) as? (String, String, String, Bool, String) -> Void
+		perform?(`courseID`, `topicID`, `postType`, `followPost`, `author`)
+    }
+
+    open func discussionResponseAdded(courseID: String, threadID: String, responseID: String, author: String) {
+        addInvocation(.m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String>.value(`responseID`), Parameter<String>.value(`author`)))
+		let perform = methodPerformValue(.m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String>.value(`responseID`), Parameter<String>.value(`author`))) as? (String, String, String, String) -> Void
+		perform?(`courseID`, `threadID`, `responseID`, `author`)
+    }
+
+    open func discussionCommentAdded(courseID: String, threadID: String, responseID: String, commentID: String, author: String) {
+        addInvocation(.m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String>.value(`responseID`), Parameter<String>.value(`commentID`), Parameter<String>.value(`author`)))
+		let perform = methodPerformValue(.m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String>.value(`responseID`), Parameter<String>.value(`commentID`), Parameter<String>.value(`author`))) as? (String, String, String, String, String) -> Void
+		perform?(`courseID`, `threadID`, `responseID`, `commentID`, `author`)
+    }
+
+    open func discussionFollowToggle(courseID: String, threadID: String, author: String, follow: Bool) {
+        addInvocation(.m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String>.value(`author`), Parameter<Bool>.value(`follow`)))
+		let perform = methodPerformValue(.m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String>.value(`author`), Parameter<Bool>.value(`follow`))) as? (String, String, String, Bool) -> Void
+		perform?(`courseID`, `threadID`, `author`, `follow`)
+    }
+
+    open func discussionLikeToggle(courseID: String, threadID: String, responseID: String?, commentID: String?, author: String, discussionType: String, like: Bool) {
+        addInvocation(.m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String?>.value(`responseID`), Parameter<String?>.value(`commentID`), Parameter<String>.value(`author`), Parameter<String>.value(`discussionType`), Parameter<Bool>.value(`like`)))
+		let perform = methodPerformValue(.m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String?>.value(`responseID`), Parameter<String?>.value(`commentID`), Parameter<String>.value(`author`), Parameter<String>.value(`discussionType`), Parameter<Bool>.value(`like`))) as? (String, String, String?, String?, String, String, Bool) -> Void
+		perform?(`courseID`, `threadID`, `responseID`, `commentID`, `author`, `discussionType`, `like`)
+    }
+
+    open func discussionReportToggle(courseID: String, threadID: String, responseID: String?, commentID: String?, author: String, discussionType: String, report: Bool) {
+        addInvocation(.m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String?>.value(`responseID`), Parameter<String?>.value(`commentID`), Parameter<String>.value(`author`), Parameter<String>.value(`discussionType`), Parameter<Bool>.value(`report`)))
+		let perform = methodPerformValue(.m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(Parameter<String>.value(`courseID`), Parameter<String>.value(`threadID`), Parameter<String?>.value(`responseID`), Parameter<String?>.value(`commentID`), Parameter<String>.value(`author`), Parameter<String>.value(`discussionType`), Parameter<Bool>.value(`report`))) as? (String, String, String?, String?, String, String, Bool) -> Void
+		perform?(`courseID`, `threadID`, `responseID`, `commentID`, `author`, `discussionType`, `report`)
+    }
+
 
     fileprivate enum MethodType {
         case m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
+        case m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<Bool>, Parameter<String>)
+        case m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
+        case m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
+        case m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<Bool>)
+        case m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String?>, Parameter<String>, Parameter<String>, Parameter<Bool>)
+        case m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String?>, Parameter<String>, Parameter<String>, Parameter<Bool>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3447,6 +3509,62 @@ open class DiscussionAnalyticsMock: DiscussionAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTopicid, rhs: rhsTopicid, with: matcher), lhsTopicid, rhsTopicid, "topicId"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTopicname, rhs: rhsTopicname, with: matcher), lhsTopicname, rhsTopicname, "topicName"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(let lhsCourseid, let lhsTopicid, let lhsPosttype, let lhsFollowpost, let lhsAuthor), .m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(let rhsCourseid, let rhsTopicid, let rhsPosttype, let rhsFollowpost, let rhsAuthor)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTopicid, rhs: rhsTopicid, with: matcher), lhsTopicid, rhsTopicid, "topicID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPosttype, rhs: rhsPosttype, with: matcher), lhsPosttype, rhsPosttype, "postType"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFollowpost, rhs: rhsFollowpost, with: matcher), lhsFollowpost, rhsFollowpost, "followPost"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthor, rhs: rhsAuthor, with: matcher), lhsAuthor, rhsAuthor, "author"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(let lhsCourseid, let lhsThreadid, let lhsResponseid, let lhsAuthor), .m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(let rhsCourseid, let rhsThreadid, let rhsResponseid, let rhsAuthor)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadid, rhs: rhsThreadid, with: matcher), lhsThreadid, rhsThreadid, "threadID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResponseid, rhs: rhsResponseid, with: matcher), lhsResponseid, rhsResponseid, "responseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthor, rhs: rhsAuthor, with: matcher), lhsAuthor, rhsAuthor, "author"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(let lhsCourseid, let lhsThreadid, let lhsResponseid, let lhsCommentid, let lhsAuthor), .m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(let rhsCourseid, let rhsThreadid, let rhsResponseid, let rhsCommentid, let rhsAuthor)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadid, rhs: rhsThreadid, with: matcher), lhsThreadid, rhsThreadid, "threadID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResponseid, rhs: rhsResponseid, with: matcher), lhsResponseid, rhsResponseid, "responseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCommentid, rhs: rhsCommentid, with: matcher), lhsCommentid, rhsCommentid, "commentID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthor, rhs: rhsAuthor, with: matcher), lhsAuthor, rhsAuthor, "author"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(let lhsCourseid, let lhsThreadid, let lhsAuthor, let lhsFollow), .m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(let rhsCourseid, let rhsThreadid, let rhsAuthor, let rhsFollow)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadid, rhs: rhsThreadid, with: matcher), lhsThreadid, rhsThreadid, "threadID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthor, rhs: rhsAuthor, with: matcher), lhsAuthor, rhsAuthor, "author"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFollow, rhs: rhsFollow, with: matcher), lhsFollow, rhsFollow, "follow"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(let lhsCourseid, let lhsThreadid, let lhsResponseid, let lhsCommentid, let lhsAuthor, let lhsDiscussiontype, let lhsLike), .m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(let rhsCourseid, let rhsThreadid, let rhsResponseid, let rhsCommentid, let rhsAuthor, let rhsDiscussiontype, let rhsLike)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadid, rhs: rhsThreadid, with: matcher), lhsThreadid, rhsThreadid, "threadID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResponseid, rhs: rhsResponseid, with: matcher), lhsResponseid, rhsResponseid, "responseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCommentid, rhs: rhsCommentid, with: matcher), lhsCommentid, rhsCommentid, "commentID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthor, rhs: rhsAuthor, with: matcher), lhsAuthor, rhsAuthor, "author"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDiscussiontype, rhs: rhsDiscussiontype, with: matcher), lhsDiscussiontype, rhsDiscussiontype, "discussionType"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsLike, rhs: rhsLike, with: matcher), lhsLike, rhsLike, "like"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(let lhsCourseid, let lhsThreadid, let lhsResponseid, let lhsCommentid, let lhsAuthor, let lhsDiscussiontype, let lhsReport), .m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(let rhsCourseid, let rhsThreadid, let rhsResponseid, let rhsCommentid, let rhsAuthor, let rhsDiscussiontype, let rhsReport)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadid, rhs: rhsThreadid, with: matcher), lhsThreadid, rhsThreadid, "threadID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResponseid, rhs: rhsResponseid, with: matcher), lhsResponseid, rhsResponseid, "responseID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCommentid, rhs: rhsCommentid, with: matcher), lhsCommentid, rhsCommentid, "commentID"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAuthor, rhs: rhsAuthor, with: matcher), lhsAuthor, rhsAuthor, "author"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDiscussiontype, rhs: rhsDiscussiontype, with: matcher), lhsDiscussiontype, rhsDiscussiontype, "discussionType"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsReport, rhs: rhsReport, with: matcher), lhsReport, rhsReport, "report"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -3456,6 +3574,12 @@ open class DiscussionAnalyticsMock: DiscussionAnalytics, Mock {
             case let .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
+            case let .m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
+            case let .m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(p0, p1, p2, p3, p4, p5, p6): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue
+            case let .m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(p0, p1, p2, p3, p4, p5, p6): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue
             }
         }
         func assertionName() -> String {
@@ -3463,6 +3587,12 @@ open class DiscussionAnalyticsMock: DiscussionAnalytics, Mock {
             case .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName: return ".discussionAllPostsClicked(courseId:courseName:)"
             case .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName: return ".discussionFollowingClicked(courseId:courseName:)"
             case .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName: return ".discussionTopicClicked(courseId:courseName:topicId:topicName:)"
+            case .m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author: return ".discussionCreateNewPost(courseID:topicID:postType:followPost:author:)"
+            case .m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author: return ".discussionResponseAdded(courseID:threadID:responseID:author:)"
+            case .m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author: return ".discussionCommentAdded(courseID:threadID:responseID:commentID:author:)"
+            case .m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow: return ".discussionFollowToggle(courseID:threadID:author:follow:)"
+            case .m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like: return ".discussionLikeToggle(courseID:threadID:responseID:commentID:author:discussionType:like:)"
+            case .m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report: return ".discussionReportToggle(courseID:threadID:responseID:commentID:author:discussionType:report:)"
             }
         }
     }
@@ -3484,6 +3614,12 @@ open class DiscussionAnalyticsMock: DiscussionAnalytics, Mock {
         public static func discussionAllPostsClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_discussionAllPostsClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func discussionFollowingClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_discussionFollowingClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func discussionTopicClicked(courseId: Parameter<String>, courseName: Parameter<String>, topicId: Parameter<String>, topicName: Parameter<String>) -> Verify { return Verify(method: .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(`courseId`, `courseName`, `topicId`, `topicName`))}
+        public static func discussionCreateNewPost(courseID: Parameter<String>, topicID: Parameter<String>, postType: Parameter<String>, followPost: Parameter<Bool>, author: Parameter<String>) -> Verify { return Verify(method: .m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(`courseID`, `topicID`, `postType`, `followPost`, `author`))}
+        public static func discussionResponseAdded(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String>, author: Parameter<String>) -> Verify { return Verify(method: .m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(`courseID`, `threadID`, `responseID`, `author`))}
+        public static func discussionCommentAdded(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String>, commentID: Parameter<String>, author: Parameter<String>) -> Verify { return Verify(method: .m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(`courseID`, `threadID`, `responseID`, `commentID`, `author`))}
+        public static func discussionFollowToggle(courseID: Parameter<String>, threadID: Parameter<String>, author: Parameter<String>, follow: Parameter<Bool>) -> Verify { return Verify(method: .m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(`courseID`, `threadID`, `author`, `follow`))}
+        public static func discussionLikeToggle(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String?>, commentID: Parameter<String?>, author: Parameter<String>, discussionType: Parameter<String>, like: Parameter<Bool>) -> Verify { return Verify(method: .m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(`courseID`, `threadID`, `responseID`, `commentID`, `author`, `discussionType`, `like`))}
+        public static func discussionReportToggle(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String?>, commentID: Parameter<String?>, author: Parameter<String>, discussionType: Parameter<String>, report: Parameter<Bool>) -> Verify { return Verify(method: .m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(`courseID`, `threadID`, `responseID`, `commentID`, `author`, `discussionType`, `report`))}
     }
 
     public struct Perform {
@@ -3498,6 +3634,24 @@ open class DiscussionAnalyticsMock: DiscussionAnalytics, Mock {
         }
         public static func discussionTopicClicked(courseId: Parameter<String>, courseName: Parameter<String>, topicId: Parameter<String>, topicName: Parameter<String>, perform: @escaping (String, String, String, String) -> Void) -> Perform {
             return Perform(method: .m_discussionTopicClicked__courseId_courseIdcourseName_courseNametopicId_topicIdtopicName_topicName(`courseId`, `courseName`, `topicId`, `topicName`), performs: perform)
+        }
+        public static func discussionCreateNewPost(courseID: Parameter<String>, topicID: Parameter<String>, postType: Parameter<String>, followPost: Parameter<Bool>, author: Parameter<String>, perform: @escaping (String, String, String, Bool, String) -> Void) -> Perform {
+            return Perform(method: .m_discussionCreateNewPost__courseID_courseIDtopicID_topicIDpostType_postTypefollowPost_followPostauthor_author(`courseID`, `topicID`, `postType`, `followPost`, `author`), performs: perform)
+        }
+        public static func discussionResponseAdded(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String>, author: Parameter<String>, perform: @escaping (String, String, String, String) -> Void) -> Perform {
+            return Perform(method: .m_discussionResponseAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDauthor_author(`courseID`, `threadID`, `responseID`, `author`), performs: perform)
+        }
+        public static func discussionCommentAdded(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String>, commentID: Parameter<String>, author: Parameter<String>, perform: @escaping (String, String, String, String, String) -> Void) -> Perform {
+            return Perform(method: .m_discussionCommentAdded__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_author(`courseID`, `threadID`, `responseID`, `commentID`, `author`), performs: perform)
+        }
+        public static func discussionFollowToggle(courseID: Parameter<String>, threadID: Parameter<String>, author: Parameter<String>, follow: Parameter<Bool>, perform: @escaping (String, String, String, Bool) -> Void) -> Perform {
+            return Perform(method: .m_discussionFollowToggle__courseID_courseIDthreadID_threadIDauthor_authorfollow_follow(`courseID`, `threadID`, `author`, `follow`), performs: perform)
+        }
+        public static func discussionLikeToggle(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String?>, commentID: Parameter<String?>, author: Parameter<String>, discussionType: Parameter<String>, like: Parameter<Bool>, perform: @escaping (String, String, String?, String?, String, String, Bool) -> Void) -> Perform {
+            return Perform(method: .m_discussionLikeToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypelike_like(`courseID`, `threadID`, `responseID`, `commentID`, `author`, `discussionType`, `like`), performs: perform)
+        }
+        public static func discussionReportToggle(courseID: Parameter<String>, threadID: Parameter<String>, responseID: Parameter<String?>, commentID: Parameter<String?>, author: Parameter<String>, discussionType: Parameter<String>, report: Parameter<Bool>, perform: @escaping (String, String, String?, String?, String, String, Bool) -> Void) -> Perform {
+            return Perform(method: .m_discussionReportToggle__courseID_courseIDthreadID_threadIDresponseID_responseIDcommentID_commentIDauthor_authordiscussionType_discussionTypereport_report(`courseID`, `threadID`, `responseID`, `commentID`, `author`, `discussionType`, `report`), performs: perform)
         }
     }
 
@@ -4512,10 +4666,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 		perform?(`courseID`, `isBlackedOut`)
     }
 
-    open func showComments(commentID: String, parentComment: Post, threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>, isBlackedOut: Bool, animated: Bool) {
-        addInvocation(.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`), Parameter<Bool>.value(`isBlackedOut`), Parameter<Bool>.value(`animated`)))
-		let perform = methodPerformValue(.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`), Parameter<Bool>.value(`isBlackedOut`), Parameter<Bool>.value(`animated`))) as? (String, Post, CurrentValueSubject<ThreadPostState?, Never>, Bool, Bool) -> Void
-		perform?(`commentID`, `parentComment`, `threadStateSubject`, `isBlackedOut`, `animated`)
+    open func showComments(courseID: String, commentID: String, parentComment: Post, threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>, isBlackedOut: Bool, animated: Bool) {
+        addInvocation(.m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(Parameter<String>.value(`courseID`), Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`), Parameter<Bool>.value(`isBlackedOut`), Parameter<Bool>.value(`animated`)))
+		let perform = methodPerformValue(.m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(Parameter<String>.value(`courseID`), Parameter<String>.value(`commentID`), Parameter<Post>.value(`parentComment`), Parameter<CurrentValueSubject<ThreadPostState?, Never>>.value(`threadStateSubject`), Parameter<Bool>.value(`isBlackedOut`), Parameter<Bool>.value(`animated`))) as? (String, String, Post, CurrentValueSubject<ThreadPostState?, Never>, Bool, Bool) -> Void
+		perform?(`courseID`, `commentID`, `parentComment`, `threadStateSubject`, `isBlackedOut`, `animated`)
     }
 
     open func createNewThread(courseID: String, selectedTopic: String, onPostCreated: @escaping () -> Void) {
@@ -4554,10 +4708,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
-        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
-		perform?(`sourceScreen`)
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`))) as? (LogistrationSourceScreen, PostLoginData?) -> Void
+		perform?(`sourceScreen`, `postLoginData`)
     }
 
     open func showStartupScreen() {
@@ -4632,14 +4786,14 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         case m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeisBlackedOut_isBlackedOutanimated_animated(Parameter<String>, Parameter<Topics>, Parameter<String>, Parameter<ThreadType>, Parameter<Bool>, Parameter<Bool>)
         case m_showThread__thread_threadpostStateSubject_postStateSubjectisBlackedOut_isBlackedOutanimated_animated(Parameter<UserThread>, Parameter<CurrentValueSubject<PostState?, Never>>, Parameter<Bool>, Parameter<Bool>)
         case m_showDiscussionsSearch__courseID_courseIDisBlackedOut_isBlackedOut(Parameter<String>, Parameter<Bool>)
-        case m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(Parameter<String>, Parameter<Post>, Parameter<CurrentValueSubject<ThreadPostState?, Never>>, Parameter<Bool>, Parameter<Bool>)
+        case m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(Parameter<String>, Parameter<String>, Parameter<Post>, Parameter<CurrentValueSubject<ThreadPostState?, Never>>, Parameter<Bool>, Parameter<Bool>)
         case m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(Parameter<String>, Parameter<String>, Parameter<() -> Void>)
         case m_backToRoot__animated_animated(Parameter<Bool>)
         case m_back__animated_animated(Parameter<Bool>)
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>, Parameter<PostLoginData?>)
         case m_showStartupScreen
         case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
@@ -4683,8 +4837,9 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIsblackedout, rhs: rhsIsblackedout, with: matcher), lhsIsblackedout, rhsIsblackedout, "isBlackedOut"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(let lhsCommentid, let lhsParentcomment, let lhsThreadstatesubject, let lhsIsblackedout, let lhsAnimated), .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(let rhsCommentid, let rhsParentcomment, let rhsThreadstatesubject, let rhsIsblackedout, let rhsAnimated)):
+            case (.m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(let lhsCourseid, let lhsCommentid, let lhsParentcomment, let lhsThreadstatesubject, let lhsIsblackedout, let lhsAnimated), .m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(let rhsCourseid, let rhsCommentid, let rhsParentcomment, let rhsThreadstatesubject, let rhsIsblackedout, let rhsAnimated)):
 				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCommentid, rhs: rhsCommentid, with: matcher), lhsCommentid, rhsCommentid, "commentID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsParentcomment, rhs: rhsParentcomment, with: matcher), lhsParentcomment, rhsParentcomment, "parentComment"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsThreadstatesubject, rhs: rhsThreadstatesubject, with: matcher), lhsThreadstatesubject, rhsThreadstatesubject, "threadStateSubject"))
@@ -4721,9 +4876,10 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let lhsSourcescreen, let lhsPostlogindata), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let rhsSourcescreen, let rhsPostlogindata)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPostlogindata, rhs: rhsPostlogindata, with: matcher), lhsPostlogindata, rhsPostlogindata, "postLoginData"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
@@ -4802,14 +4958,14 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case let .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeisBlackedOut_isBlackedOutanimated_animated(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_showThread__thread_threadpostStateSubject_postStateSubjectisBlackedOut_isBlackedOutanimated_animated(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_showDiscussionsSearch__courseID_courseIDisBlackedOut_isBlackedOut(p0, p1): return p0.intValue + p1.intValue
-            case let .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
+            case let .m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
             case let .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_backToRoot__animated_animated(p0): return p0.intValue
             case let .m_back__animated_animated(p0): return p0.intValue
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(p0, p1): return p0.intValue + p1.intValue
             case .m_showStartupScreen: return 0
             case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
@@ -4829,14 +4985,14 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
             case .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeisBlackedOut_isBlackedOutanimated_animated: return ".showThreads(courseID:topics:title:type:isBlackedOut:animated:)"
             case .m_showThread__thread_threadpostStateSubject_postStateSubjectisBlackedOut_isBlackedOutanimated_animated: return ".showThread(thread:postStateSubject:isBlackedOut:animated:)"
             case .m_showDiscussionsSearch__courseID_courseIDisBlackedOut_isBlackedOut: return ".showDiscussionsSearch(courseID:isBlackedOut:)"
-            case .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated: return ".showComments(commentID:parentComment:threadStateSubject:isBlackedOut:animated:)"
+            case .m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated: return ".showComments(courseID:commentID:parentComment:threadStateSubject:isBlackedOut:animated:)"
             case .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated: return ".createNewThread(courseID:selectedTopic:onPostCreated:)"
             case .m_backToRoot__animated_animated: return ".backToRoot(animated:)"
             case .m_back__animated_animated: return ".back(animated:)"
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData: return ".showMainOrWhatsNewScreen(sourceScreen:postLoginData:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
             case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
@@ -4870,14 +5026,14 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func showThreads(courseID: Parameter<String>, topics: Parameter<Topics>, title: Parameter<String>, type: Parameter<ThreadType>, isBlackedOut: Parameter<Bool>, animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showThreads__courseID_courseIDtopics_topicstitle_titletype_typeisBlackedOut_isBlackedOutanimated_animated(`courseID`, `topics`, `title`, `type`, `isBlackedOut`, `animated`))}
         public static func showThread(thread: Parameter<UserThread>, postStateSubject: Parameter<CurrentValueSubject<PostState?, Never>>, isBlackedOut: Parameter<Bool>, animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showThread__thread_threadpostStateSubject_postStateSubjectisBlackedOut_isBlackedOutanimated_animated(`thread`, `postStateSubject`, `isBlackedOut`, `animated`))}
         public static func showDiscussionsSearch(courseID: Parameter<String>, isBlackedOut: Parameter<Bool>) -> Verify { return Verify(method: .m_showDiscussionsSearch__courseID_courseIDisBlackedOut_isBlackedOut(`courseID`, `isBlackedOut`))}
-        public static func showComments(commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>, isBlackedOut: Parameter<Bool>, animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(`commentID`, `parentComment`, `threadStateSubject`, `isBlackedOut`, `animated`))}
+        public static func showComments(courseID: Parameter<String>, commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>, isBlackedOut: Parameter<Bool>, animated: Parameter<Bool>) -> Verify { return Verify(method: .m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(`courseID`, `commentID`, `parentComment`, `threadStateSubject`, `isBlackedOut`, `animated`))}
         public static func createNewThread(courseID: Parameter<String>, selectedTopic: Parameter<String>, onPostCreated: Parameter<() -> Void>) -> Verify { return Verify(method: .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(`courseID`, `selectedTopic`, `onPostCreated`))}
         public static func backToRoot(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_backToRoot__animated_animated(`animated`))}
         public static func back(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_back__animated_animated(`animated`))}
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
@@ -4907,8 +5063,8 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func showDiscussionsSearch(courseID: Parameter<String>, isBlackedOut: Parameter<Bool>, perform: @escaping (String, Bool) -> Void) -> Perform {
             return Perform(method: .m_showDiscussionsSearch__courseID_courseIDisBlackedOut_isBlackedOut(`courseID`, `isBlackedOut`), performs: perform)
         }
-        public static func showComments(commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>, isBlackedOut: Parameter<Bool>, animated: Parameter<Bool>, perform: @escaping (String, Post, CurrentValueSubject<ThreadPostState?, Never>, Bool, Bool) -> Void) -> Perform {
-            return Perform(method: .m_showComments__commentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(`commentID`, `parentComment`, `threadStateSubject`, `isBlackedOut`, `animated`), performs: perform)
+        public static func showComments(courseID: Parameter<String>, commentID: Parameter<String>, parentComment: Parameter<Post>, threadStateSubject: Parameter<CurrentValueSubject<ThreadPostState?, Never>>, isBlackedOut: Parameter<Bool>, animated: Parameter<Bool>, perform: @escaping (String, String, Post, CurrentValueSubject<ThreadPostState?, Never>, Bool, Bool) -> Void) -> Perform {
+            return Perform(method: .m_showComments__courseID_courseIDcommentID_commentIDparentComment_parentCommentthreadStateSubject_threadStateSubjectisBlackedOut_isBlackedOutanimated_animated(`courseID`, `commentID`, `parentComment`, `threadStateSubject`, `isBlackedOut`, `animated`), performs: perform)
         }
         public static func createNewThread(courseID: Parameter<String>, selectedTopic: Parameter<String>, onPostCreated: Parameter<() -> Void>, perform: @escaping (String, String, @escaping () -> Void) -> Void) -> Perform {
             return Perform(method: .m_createNewThread__courseID_courseIDselectedTopic_selectedTopiconPostCreated_onPostCreated(`courseID`, `selectedTopic`, `onPostCreated`), performs: perform)
@@ -4928,8 +5084,8 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>, perform: @escaping (LogistrationSourceScreen, PostLoginData?) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)
@@ -5040,7 +5196,7 @@ open class DiscussionRouterMock: DiscussionRouter, Mock {
 }
 
 // MARK: - DownloadManagerProtocol
-
+@MainActor
 open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()

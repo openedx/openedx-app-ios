@@ -106,11 +106,13 @@ final class ResponsesViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
 
-        let viewModel = ResponsesViewModel(interactor: interactor,
+        let viewModel = ResponsesViewModel(courseID: "courseID",
+                                           interactor: interactor,
                                            router: router,
                                            config: config,
                                            storage: CoreStorageMock(),
-                                           threadStateSubject: .init(.postAdded(id: "1")))
+                                           threadStateSubject: .init(.postAdded(id: "1")),
+                                           analytics: DiscussionAnalyticsMock())
         
         Given(interactor, .getCommentResponses(commentID: .any, page: .any,
                                                willReturn: (userComments, Pagination(next: "",
@@ -134,11 +136,13 @@ final class ResponsesViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
 
-        let viewModel = ResponsesViewModel(interactor: interactor,
+        let viewModel = ResponsesViewModel(courseID: "courseID",
+                                           interactor: interactor,
                                            router: router,
                                            config: config,
                                            storage: CoreStorageMock(),
-                                           threadStateSubject: .init(.postAdded(id: "1")))
+                                           threadStateSubject: .init(.postAdded(id: "1")),
+                                           analytics: DiscussionAnalyticsMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -161,11 +165,13 @@ final class ResponsesViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
 
-        let viewModel = ResponsesViewModel(interactor: interactor,
+        let viewModel = ResponsesViewModel(courseID: "courseID",
+                                           interactor: interactor,
                                            router: router,
                                            config: config,
                                            storage: CoreStorageMock(),
-                                           threadStateSubject: .init(.postAdded(id: "1")))
+                                           threadStateSubject: .init(.postAdded(id: "1")),
+                                           analytics: DiscussionAnalyticsMock())
         
         Given(interactor, .getCommentResponses(commentID: .any, page: .any, willThrow: NSError()))
         
@@ -185,11 +191,13 @@ final class ResponsesViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let config = ConfigMock()
 
-        let viewModel = ResponsesViewModel(interactor: interactor,
+        let viewModel = ResponsesViewModel(courseID: "courseID",
+                                           interactor: interactor,
                                            router: router,
                                            config: config,
                                            storage: CoreStorageMock(),
-                                           threadStateSubject: .init(.postAdded(id: "1")))
+                                           threadStateSubject: .init(.postAdded(id: "1")),
+                                           analytics: DiscussionAnalyticsMock())
         
         Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willReturn: post))
         
@@ -207,11 +215,13 @@ final class ResponsesViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let config = ConfigMock()
 
-        let viewModel = ResponsesViewModel(interactor: interactor,
+        let viewModel = ResponsesViewModel(courseID: "courseID",
+                                           interactor: interactor,
                                            router: router,
                                            config: config,
                                            storage: CoreStorageMock(),
-                                           threadStateSubject: .init(.postAdded(id: "1")))
+                                           threadStateSubject: .init(.postAdded(id: "1")),
+                                           analytics: DiscussionAnalyticsMock())
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -231,11 +241,13 @@ final class ResponsesViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let config = ConfigMock()
 
-        let viewModel = ResponsesViewModel(interactor: interactor,
+        let viewModel = ResponsesViewModel(courseID: "courseID",
+                                           interactor: interactor,
                                            router: router,
                                            config: config,
                                            storage: CoreStorageMock(),
-                                           threadStateSubject: .init(.postAdded(id: "1")))
+                                           threadStateSubject: .init(.postAdded(id: "1")),
+                                           analytics: DiscussionAnalyticsMock())
         
         Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willThrow: NSError()))
 
@@ -253,11 +265,13 @@ final class ResponsesViewModelTests: XCTestCase {
         let router = DiscussionRouterMock()
         let config = ConfigMock()
 
-        let viewModel = ResponsesViewModel(interactor: interactor,
+        let viewModel = ResponsesViewModel(courseID: "courseID",
+                                           interactor: interactor,
                                            router: router,
                                            config: config,
                                            storage: CoreStorageMock(),
-                                           threadStateSubject: .init(.postAdded(id: "1")))
+                                           threadStateSubject: .init(.postAdded(id: "1")),
+                                           analytics: DiscussionAnalyticsMock())
         
         viewModel.totalPages = 2
         viewModel.comments = userComments

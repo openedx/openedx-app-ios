@@ -42,9 +42,13 @@ final class CourseDateViewModelTests: XCTestCase {
             displayName: "",
             topicID: nil,
             childs: [],
-            media: DataLayer.CourseMedia(image: DataLayer.Image(raw: "",
-                                                                small: "",
-                                                                large: "")),
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
             certificate: nil,
             org: "",
             isSelfPaced: true,

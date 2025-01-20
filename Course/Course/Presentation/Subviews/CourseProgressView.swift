@@ -21,7 +21,7 @@ public struct CourseProgressView: View {
             ZStack(alignment: .leading) {
                 GeometryReader { geometry in
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Theme.Colors.textSecondary.opacity(0.5))
+                        .fill(Theme.Colors.courseProgressBG)
                         .frame(width: geometry.size.width, height: 10)
                     
                     if let total = progress.totalAssignmentsCount,

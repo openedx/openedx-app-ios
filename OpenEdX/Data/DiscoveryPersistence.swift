@@ -17,7 +17,7 @@ public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     public init(container: NSPersistentContainer) {
         self.container = container
     }
-
+    
     public func loadDiscovery() async throws -> [CourseItem] {
         return try await container.performBackgroundTask { context in
             let result = try? context.fetch(CDDiscoveryCourse.fetchRequest())
@@ -71,8 +71,8 @@ public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     }
     
     public func loadCourseDetails(courseID: String) async throws -> CourseDetails {
-            let request = CDCourseDetails.fetchRequest()
-            request.predicate = NSPredicate(format: "courseID = %@", courseID)
+        let request = CDCourseDetails.fetchRequest()
+        request.predicate = NSPredicate(format: "courseID = %@", courseID)
         return try await container.performBackgroundTask { context in
             guard let courseDetails = try? context.fetch(request).first else { throw NoCachedDataError() }
             return CourseDetails(
@@ -95,7 +95,7 @@ public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     
     public func saveCourseDetails(course: CourseDetails) async {
         await container.performBackgroundTask { context in
-        let newCourseDetails = CDCourseDetails(context: context)
+            let newCourseDetails = CDCourseDetails(context: context)
             newCourseDetails.courseID = course.courseID
             newCourseDetails.org = course.org
             newCourseDetails.courseTitle = course.courseTitle

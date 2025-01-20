@@ -53,7 +53,8 @@ public struct ThreadView: View {
                                                         id: comments.threadID,
                                                         isThread: true,
                                                         voted: comments.voted,
-                                                        index: nil
+                                                        index: nil,
+                                                        courseID: thread.courseID
                                                     ) {
                                                         viewModel.sendPostLikedState()
                                                     }
@@ -65,7 +66,8 @@ public struct ThreadView: View {
                                                         id: comments.threadID,
                                                         isThread: true,
                                                         abuseFlagged: comments.abuseFlagged,
-                                                        index: nil
+                                                        index: nil,
+                                                        courseID: thread.courseID
                                                     ) {
                                                         viewModel.sendReportedState()
                                                     }
@@ -77,6 +79,12 @@ public struct ThreadView: View {
                                                         following: comments.followed,
                                                         threadID: comments.threadID
                                                     ) {
+                                                        viewModel.trackToggleFollowThread(
+                                                            courseID: thread.courseID,
+                                                            threadID: thread.id,
+                                                            author: thread.author,
+                                                            follow: viewModel.postComments?.followed ?? false
+                                                        )
                                                         viewModel.sendPostFollowedState()
                                                     }
                                                 }
@@ -108,7 +116,8 @@ public struct ThreadView: View {
                                                             id: comment.commentID,
                                                             isThread: false,
                                                             voted: comment.voted,
-                                                            index: index
+                                                            index: index,
+                                                            courseID: thread.courseID
                                                         )
                                                     }
                                                 },
@@ -118,12 +127,14 @@ public struct ThreadView: View {
                                                             id: comment.commentID,
                                                             isThread: false,
                                                             abuseFlagged: comment.abuseFlagged,
-                                                            index: index
+                                                            index: index,
+                                                            courseID: thread.courseID
                                                         )
                                                     }
                                                 },
                                                 onCommentsTap: {
                                                     viewModel.router.showComments(
+                                                        courseID: thread.courseID,
                                                         commentID: comment.commentID,
                                                         parentComment: comment,
                                                         threadStateSubject: viewModel.threadStateSubject,
@@ -168,6 +179,7 @@ public struct ThreadView: View {
                                         if let threadID = viewModel.postComments?.threadID {
                                             Task {
                                                 await viewModel.postComment(
+                                                    courseID: thread.courseID,
                                                     threadID: threadID,
                                                     rawBody: commentText,
                                                     parentID: viewModel.postComments?.parentID
@@ -293,7 +305,8 @@ struct CommentsView_Previews: PreviewProvider {
             router: DiscussionRouterMock(),
             config: ConfigMock(),
             storage: CoreStorageMock(),
-            postStateSubject: .init(nil)
+            postStateSubject: .init(nil),
+            analytics: DiscussionAnalyticsMock()
         )
         
         ThreadView(thread: userThread, viewModel: vm)

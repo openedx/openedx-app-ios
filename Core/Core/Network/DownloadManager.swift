@@ -220,7 +220,6 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     
     private var state: DownloadManagerState = .idle
     // MARK: - Init
-    
     public init(
         persistence: CorePersistenceProtocol,
         appStorage: CoreStorage,
@@ -229,11 +228,12 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         self.persistence = persistence
         self.appStorage = appStorage
         self.connectivity = connectivity
+        
         if let userId = appStorage.user?.id {
             persistence.set(userId: userId)
+            self.backgroundTask()
             Task {
-                await self.addObsevers()
-                await self.backgroundTask()
+                try? await resumeDownloading()
             }
         }
     }
@@ -262,7 +262,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         NotificationCenter.default.publisher(for: .tryDownloadAgain)
             .compactMap { $0.object as? [DownloadDataTask] }
             .sink { [weak self] downloads in
-                Task {[weak self] in
+                Task {
                     await self?.tryDownloadAgain(downloads: downloads)
                 }
             }
@@ -296,6 +296,10 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
 
     // MARK: - Publishers
     nonisolated
+    public func publisher() throws -> AnyPublisher<Int, Never> {
+       try persistence.publisher()
+    }
+
     public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
         currentDownloadEventPublisher
             .eraseToAnyPublisher()
@@ -501,6 +505,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
 
     // MARK: - Private Intents
 
+    @MainActor
     private func newDownload() async throws {
         print("current label = ", String(cString: __dispatch_queue_get_label(nil)))
         guard state != .paused else { return }
@@ -566,7 +571,6 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         
         currentDownloadTask = download
         currentDownloadTask?.state = .inProgress
-        
 
         let destination: DownloadRequest.Destination = { _, _ in
             let file = folderURL.appendingPathComponent(download.fileName)
@@ -616,6 +620,13 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
             } else if error.asAFError?.isExplicitlyCancelledError == false {
                 self.failedDownloads.append(download)
                 Task {
+                    await self.persistence.updateDownloadState(
+                        id: download.id,
+                        state: .finished,
+                        resumeData: nil
+                    )
+                    self.currentDownloadTask?.state = .finished
+                    self.currentDownloadEventPublisher.send(.finished(download))
                     try? await self.newDownload()
                 }
                 return

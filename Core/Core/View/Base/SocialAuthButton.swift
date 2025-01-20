@@ -15,25 +15,19 @@ public struct SocialAuthButton: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     private var image: Image
-    private var title: String
-    private var textColor: Color
-    private var backgroundColor: Color
-    private var cornerRadius: CGFloat
+    private var accessibilityLabel: String
+    private var accessibilityIdentifier: String
     private var action: () -> Void
 
     public init(
         image: Image,
-        title: String,
-        textColor: Color = .white,
-        backgroundColor: Color = .accentColor,
-        cornerRadius: CGFloat = 8,
+        accessibilityLabel: String,
+        accessibilityIdentifier: String,
         action: @escaping () -> Void
     ) {
         self.image = image
-        self.title = title
-        self.textColor = textColor
-        self.backgroundColor = backgroundColor
-        self.cornerRadius = cornerRadius
+        self.accessibilityLabel = accessibilityLabel
+        self.accessibilityIdentifier = accessibilityIdentifier
         self.action = action
     }
 
@@ -43,22 +37,25 @@ public struct SocialAuthButton: View {
         Button {
             action()
         } label: {
-            Label {
-                Text(title)
-                    .foregroundStyle(textColor)
-                    .padding(.leading, 10)
-                    .font(Theme.Fonts.bodyLarge)
-                Spacer()
-            } icon: {
-                image.padding(.leading, 10)
-            }
+            image
+                .padding()
         }
-        .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: 42)
-        .background(backgroundColor)
-        .clipShape(
+        .frame(maxWidth: 42, maxHeight: 42)
+        .overlay(
             Theme.Shapes.buttonShape
+                .stroke(style: .init(
+                    lineWidth: 1,
+                    lineCap: .round,
+                    lineJoin: .round,
+                    miterLimit: 1)
+                )
+                .foregroundColor(
+                    Theme.Colors.socialAuthColor
+                )
         )
-
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
+        .accessibilityIdentifier(accessibilityIdentifier)
     }
 }
 
@@ -67,8 +64,8 @@ struct LabelButton_Previews: PreviewProvider {
     static var previews: some View {
         SocialAuthButton(
             image: CoreAssets.iconApple.swiftUIImage,
-            title: "Apple",
-            backgroundColor: CoreAssets.appleButtonColor.swiftUIColor,
+            accessibilityLabel: "social auth button",
+            accessibilityIdentifier: "some_identifier",
             action: {  }
         )
     }

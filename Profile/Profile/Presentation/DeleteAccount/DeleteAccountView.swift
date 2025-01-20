@@ -27,12 +27,14 @@ public struct DeleteAccountView: View {
                     VStack {
                         Group {
                             ZStack {
-                                CoreAssets.bgDelete.swiftUIImage
-                                CoreAssets.deleteChar.swiftUIImage
-                                    .foregroundColor(Theme.Colors.accentXColor)
-                                    .offset(y: -31)
-                                CoreAssets.deleteEyes.swiftUIImage
-                                    .offset(x: -7, y: -27)
+                                Circle()
+                                    .foregroundColor(Theme.Colors.deleteAccountBG)
+                                    .frame(width: 104, height: 104)
+                                CoreAssets.deleteChar.swiftUIImage.renderingMode(.template)
+                                    .resizable()
+                                    .foregroundColor(Theme.Colors.white)
+                                    .frame(width: 60, height: 60)
+                                    .offset(y: -5)
                                     .accessibilityIdentifier("delete_account_image")
                             }.padding(.top, 50)
                             

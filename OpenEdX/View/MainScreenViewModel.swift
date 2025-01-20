@@ -12,6 +12,8 @@ import Profile
 import Course
 import Swinject
 import Combine
+import Authorization
+import UserNotifications
 
 public enum MainTab {
     case discovery
@@ -33,9 +35,11 @@ final class MainScreenViewModel: ObservableObject {
     private var appStorage: CoreStorage & ProfileStorage
     private let calendarManager: CalendarManagerProtocol
     private var cancellables = Set<AnyCancellable>()
+    private var postLoginData: PostLoginData?
     
     @Published var selection: MainTab = .dashboard
-    
+    @Published var showRegisterBanner: Bool = false
+
     init(analytics: MainScreenAnalytics,
          config: ConfigProtocol,
          router: BaseRouter,
@@ -44,7 +48,8 @@ final class MainScreenViewModel: ObservableObject {
          courseInteractor: CourseInteractorProtocol,
          appStorage: CoreStorage & ProfileStorage,
          calendarManager: CalendarManagerProtocol,
-         sourceScreen: LogistrationSourceScreen = .default
+         sourceScreen: LogistrationSourceScreen = .default,
+         postLoginData: PostLoginData? = nil
     ) {
         self.analytics = analytics
         self.config = config
@@ -55,6 +60,7 @@ final class MainScreenViewModel: ObservableObject {
         self.appStorage = appStorage
         self.calendarManager = calendarManager
         self.sourceScreen = sourceScreen
+        self.postLoginData = postLoginData
         
         NotificationCenter.default.publisher(for: .shiftCourseDates, object: nil)
             .sink { notification in
@@ -64,6 +70,21 @@ final class MainScreenViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        trackSettingPermissionStatus()
+    }
+    
+    private func trackSettingPermissionStatus() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { [weak self] (settings) in
+                if settings.authorizationStatus == .notDetermined {
+                    self?.analytics.notificationPermissionStatus(status: "not_determined")
+                } else if settings.authorizationStatus == .denied {
+                    self?.analytics.notificationPermissionStatus(status: "denied")
+                } else if settings.authorizationStatus == .authorized {
+                    self?.analytics.notificationPermissionStatus(status: "authorized")
+                }
+            })
+        }
     }
     
     public func select(tab: MainTab) {
@@ -73,12 +94,15 @@ final class MainScreenViewModel: ObservableObject {
     func trackMainDiscoveryTabClicked() {
         analytics.mainDiscoveryTabClicked()
     }
-    func trackMainDashboardTabClicked() {
-        analytics.mainDashboardTabClicked()
+    
+    func trackMainDashboardLearnTabClicked() {
+        analytics.mainLearnTabClicked()
     }
+    
     func trackMainProgramsTabClicked() {
         analytics.mainProgramsTabClicked()
     }
+    
     func trackMainProfileTabClicked() {
         analytics.mainProfileTabClicked()
     }
@@ -112,6 +136,26 @@ final class MainScreenViewModel: ObservableObject {
                 completion: {}
             )
         }
+    }
+
+    func trackMainDashboardMyCoursesClicked() {
+        analytics.mainCoursesClicked()
+    }
+
+    public func checkIfNeedToShowRegisterBanner() {
+        if postLoginData?.showSocialRegisterBanner == true && !registerBannerText.isEmpty {
+            showRegisterBanner = true
+        }
+    }
+    public func registerBannerWasShowed() {
+        postLoginData?.showSocialRegisterBanner = false
+        showRegisterBanner = false
+    }
+    public var registerBannerText: String {
+        guard let socialAuthMethodName = postLoginData?.authMethod,
+              !socialAuthMethodName.isEmpty
+        else { return "" }
+        return CoreLocalization.Mainscreen.socialRegisterBanner(config.platformName, socialAuthMethodName.capitalized)
     }
 
     @MainActor
@@ -152,7 +196,7 @@ extension MainScreenViewModel {
             }
             
             do {
-                var coursesForSync = try await profileInteractor.enrollmentsStatus().filter { $0.recentlyActive }
+                let coursesForSync = try await profileInteractor.enrollmentsStatus().filter { $0.recentlyActive }
                 
                 let selectedCourses = await calendarManager.filterCoursesBySelected(fetchedCourses: coursesForSync)
                 

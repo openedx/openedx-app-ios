@@ -72,6 +72,9 @@ assets:
                 current_path: '' # optional: path to color inside colors_path
                 light: '#FFFFFF'
                 dark: '#ED5C13'
+                alpha_light: '0.4' # optional: alpha value for light color, from 0.0 to 1.0. Can be a number, not a string
+                alpha_dark: '0.2' # optional: alpha value for dark color, from 0.0 to 1.0. Can be a number, not a string
+                alpha: '0.5' # optional: alpha value for both light and dark colors, from 0.0 to 1.0. Can be a number, not a string
         icon:
             AppIcon:
                 current_path: '' # optional: path to icon inside icon_path

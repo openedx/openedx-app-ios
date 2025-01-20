@@ -67,7 +67,7 @@ enum AuthEndpoint: EndPointType {
         switch self {
         case let .getAccessToken(username, password, clientId, tokenType):
             let params: [String: Encodable & Sendable] = [
-                "grant_type": Constants.GrantTypePassword,
+                "grant_type": AuthConstants.GrantTypePassword,
                 "client_id": clientId,
                 "username": username,
                 "password": password,

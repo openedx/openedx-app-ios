@@ -124,7 +124,9 @@ struct SubtittlesView_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 connectivity: Connectivity(),
-                playerHolder: PlayerViewControllerHolder.mock
+                playerHolder: PlayerViewControllerHolder.mock,
+                appStorage: CoreStorageMock(),
+                analytics: CourseAnalyticsMock()
             ), scrollTo: {_ in }
         )
     }

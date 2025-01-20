@@ -28,6 +28,7 @@ public struct EncodedVideoPlayer: View {
     @State private var isLoading: Bool = true
     @State private var isAnimating: Bool = false
     @State private var isOrientationChanged: Bool = false
+    @State private var subtitleText: String = ""
     
     @State var showAlert = false
     @State var alertMessage: String? {
@@ -54,7 +55,10 @@ public struct EncodedVideoPlayer: View {
                 VStack(spacing: 10) {
                     HStack {
                         VStack {
-                            PlayerViewController(playerController: viewModel.controller)
+                            PlayerViewController(
+                                playerController: viewModel.controller,
+                                subtitleText: $subtitleText
+                            )
                             .aspectRatio(16 / 9, contentMode: .fit)
                             .frame(minWidth: playerWidth(for: reader.size))
                             .cornerRadius(12)
@@ -115,6 +119,10 @@ public struct EncodedVideoPlayer: View {
             viewModel.controller.player?.allowsExternalPlayback = true
             viewModel.controller.setNeedsStatusBarAppearanceUpdate()
         }
+        .onReceive(viewModel.$currentTime) { currentTime in
+            let subtitle = viewModel.findSubtitle(at: Date(milliseconds: currentTime))
+            subtitleText = subtitle?.text ?? ""
+        }
     }
     
     private func playerWidth(for size: CGSize) -> CGFloat {
@@ -138,7 +146,9 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
                 connectivity: Connectivity(),
-                playerHolder: PlayerViewControllerHolder.mock
+                playerHolder: PlayerViewControllerHolder.mock,
+                appStorage: CoreStorageMock(),
+                analytics: CourseAnalyticsMock()
             ),
             isOnScreen: true
         )

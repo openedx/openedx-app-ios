@@ -48,7 +48,7 @@ public struct FlexibleKeyboardInputView: View {
                                     }
                                 )
                                 .onPreferenceChange(ViewSizePreferenceKey.self) { size in
-                                    DispatchQueue.main.async {
+                                    Task { @MainActor in
                                         commentSize = size.height
                                     }
                                 }

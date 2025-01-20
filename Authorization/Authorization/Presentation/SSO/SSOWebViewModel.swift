@@ -82,7 +82,7 @@ public class SSOWebViewModel: ObservableObject {
                     let user = try await interactor.login(ssoToken: "\(payload).\(signature)")
                     analytics.identify(id: "\(user.id)", username: user.username, email: user.email)
                     analytics.userLogin(method: .SSO)
-                    router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen)
+                    router.showMainOrWhatsNewScreen(sourceScreen: sourceScreen, postLoginData: nil)
                 } catch let error {
                     failure(error, authMethod: .SSO)
                 }

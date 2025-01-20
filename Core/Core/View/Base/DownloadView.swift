@@ -23,6 +23,7 @@ public struct DownloadAvailableView: View {
             CoreAssets.startDownloading.swiftUIImage.renderingMode(.template)
                 .resizable()
                 .scaledToFit()
+                .foregroundColor(Theme.Colors.textPrimary)
                 .frame(width: 24, height: 24)
         }
         .frame(width: 30, height: 30)

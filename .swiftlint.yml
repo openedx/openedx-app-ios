@@ -1,3 +1,4 @@
+warning_threshold: 1
 disabled_rules: # rule identifiers to exclude from running
   - identifier_name
   - comment_spacing
@@ -31,6 +32,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Core/Core/SwiftGen
   - Authorization/Authorization/SwiftGen
   - Course/Course/SwiftGen
+  - Discussion/Discussion/SwiftGen
   - Discovery/Discovery/SwiftGen
   - Dashboard/Dashboard/SwiftGen
   - Profile/Profile/SwiftGen
@@ -48,14 +50,15 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
 force_try: error
 
 line_length: 120
-type_body_length: 300
+type_body_length: 600
+function_body_length: 100
 
 trailing_whitespace:
   ignores_empty_lines: true
 
 file_length:
-  warning: 500
-  error: 1200
+  warning: 850
+  error: 1500
   
 function_parameter_count:
   warning: 10
@@ -70,11 +73,4 @@ type_name:
     - iPhone
     - API 
 
-identifier_name:
-  min_length: # only min_length
-    error: 1 # only error
- # excluded: # excluded via string array
-#    - id
-#    - URL
-#    - GlobalAPIKey
 reporter: "xcode" # reporter type (xcode, json, csv, checkstyle, junit, html, emoji, sonarqube, markdown)

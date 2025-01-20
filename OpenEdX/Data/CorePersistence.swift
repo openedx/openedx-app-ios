@@ -261,37 +261,6 @@ public final class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
-    
-//    public func updateDownloadState(
-//        id: String,
-//        state: DownloadState,
-//        resumeData: Data?
-//    ) {
-//        let dataId = downloadDataId(from: id)
-//        let userId = getUserId32()
-//        container.performBackgroundTask { context in
-//            guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
-//                predicate: .id(dataId),
-//                context: context,
-//                userId: userId
-//            ) else {
-//                return
-//            }
-//
-//            guard let task = data.first else { return }
-//
-//            task.state = state.rawValue
-//            if state == .finished { task.progress = 1 }
-//            task.resumeData = resumeData
-//
-//            do {
-//                try context.save()
-//            } catch {
-//                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
-//            }
-//        }
-//    }
-
     public func deleteDownloadDataTasks(ids: [String]) {
         container.performBackgroundTask { context in
             let request: NSFetchRequest<any NSFetchRequestResult> = CDDownloadData.fetchRequest()

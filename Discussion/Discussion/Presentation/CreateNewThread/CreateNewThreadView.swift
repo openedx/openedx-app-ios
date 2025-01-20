@@ -174,6 +174,12 @@ public struct CreateNewThreadView: View {
                                         Task {
                                             if await viewModel.createNewThread(newThread: newThread) {
                                                 onPostCreated()
+                                                viewModel.trackCreateNewThread(
+                                                    courseID: courseID,
+                                                    topicID: viewModel.selectedTopic,
+                                                    postType: postType.rawValue,
+                                                    followPost: followPost
+                                                )
                                             }
                                         }
                                     }
@@ -210,7 +216,10 @@ struct AddTopic_Previews: PreviewProvider {
         let vm = CreateNewThreadViewModel(
             interactor: DiscussionInteractor.mock,
             router: DiscussionRouterMock(),
-            config: ConfigMock())
+            config: ConfigMock(),
+            analytics: DiscussionAnalyticsMock(),
+            storage: CoreStorageMock()
+        )
         
         CreateNewThreadView(
             viewModel: vm,

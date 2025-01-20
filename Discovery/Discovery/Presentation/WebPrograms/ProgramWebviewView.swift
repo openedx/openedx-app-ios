@@ -56,7 +56,7 @@ public struct ProgramWebviewView: View {
                     WebView(
                         viewModel: .init(
                             url: URLString,
-                            baseURL: "", 
+                            baseURL: "",
                             openFile: {_ in},
                             injections: [.colorInversionCss]
                         ),
@@ -66,7 +66,7 @@ public struct ProgramWebviewView: View {
                                 force: true
                             )
                         },
-                        navigationDelegate: viewModel, 
+                        navigationDelegate: viewModel,
                         connectivity: viewModel.connectivity,
                         webViewType: viewType.rawValue
                     )
