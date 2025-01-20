@@ -59,7 +59,7 @@ extension CourseTab {
         }
     }
 }
-
+// swiftlint:disable type_body_length
 public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sendable {
     @Published public var selection: Int
     @Published var isShowProgress = true
@@ -224,7 +224,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
                 }
             }
             courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
-            await getDownloadingProgress()
             isShowProgress = false
             isShowRefresh = false
             
@@ -604,8 +603,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
         sequentials: [CourseSequential],
         totalFileSize: Int,
         action: @escaping () -> Void = {}
-    ) async {
-        await router.presentView(
+    ) {
+        router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .confirmDownload,
@@ -766,7 +765,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
                 }
             } else {
                 if totalFileSize > 100 * 1024 * 1024 {
-                    await presentConfirmDownloadAlert(
+                    presentConfirmDownloadAlert(
                         blocks: blocksToDownload,
                         sequentials: sequentialsToDownload,
                         totalFileSize: totalFileSize,

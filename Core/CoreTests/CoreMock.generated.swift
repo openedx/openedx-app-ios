@@ -1846,7 +1846,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 }
 
 // MARK: - ConnectivityProtocol
-@MainActor
+
 open class ConnectivityProtocolMock: ConnectivityProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3377,7 +3377,7 @@ open class CoreStorageMock: CoreStorage, Mock {
 }
 
 // MARK: - DownloadManagerProtocol
-@MainActor
+
 open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()

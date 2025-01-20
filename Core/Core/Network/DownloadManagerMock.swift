@@ -10,11 +10,19 @@ import Combine
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public class DownloadManagerMock: DownloadManagerProtocol {
-
+public final class DownloadManagerMock: DownloadManagerProtocol, @unchecked Sendable {
+    public func getCurrentDownloadTask() async -> DownloadDataTask? {
+        nil
+    }
+    
+    public func downloadTask(for blockId: String) async -> DownloadDataTask? {
+        nil
+    }
     public init() {}
 
-    public func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential] {[]}
+    public func delete(blocks: [CourseBlock], courseId: String) async {
+        
+    }
 
     public var currentDownloadTask: DownloadDataTask? {
         return nil
@@ -27,6 +35,7 @@ public class DownloadManagerMock: DownloadManagerProtocol {
     public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
         return Just(
             .canceled(
+                [
                 .init(
                     id: "",
                     blockId: "",
@@ -40,8 +49,10 @@ public class DownloadManagerMock: DownloadManagerProtocol {
                     state: .inProgress,
                     type: .video,
                     fileSize: 0,
-                    lastModified: ""
+                    lastModified: "",
+                    actualSize: 0
                 )
+                ]
             )
         ).eraseToAnyPublisher()
     }
@@ -70,9 +81,9 @@ public class DownloadManagerMock: DownloadManagerProtocol {
 
     public func deleteFile(blocks: [CourseBlock]) {}
 
-    public func deleteAllFiles() {}
-
-    public func fileUrl(for blockId: String) -> URL? {
+    public func deleteAll() {}
+                
+    public func fileUrl(for blockId: String) async -> URL? {
         return nil
     }
 

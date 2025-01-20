@@ -1848,7 +1848,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 }
 
 // MARK: - ConnectivityProtocol
-@MainActor
+
 open class ConnectivityProtocolMock: ConnectivityProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
@@ -3582,6 +3582,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         addInvocation(.m_bulkDeleteVideosSection__courseID_courseIDsectionId_sectionIdvideos_videos(Parameter<String>.value(`courseID`), Parameter<String>.value(`sectionId`), Parameter<Int>.value(`videos`)))
 		let perform = methodPerformValue(.m_bulkDeleteVideosSection__courseID_courseIDsectionId_sectionIdvideos_videos(Parameter<String>.value(`courseID`), Parameter<String>.value(`sectionId`), Parameter<Int>.value(`videos`))) as? (String, String, Int) -> Void
 		perform?(`courseID`, `sectionId`, `videos`)
+    }
 
     open func videoLoaded(courseID: String, blockID: String, videoURL: String) {
         addInvocation(.m_videoLoaded__courseID_courseIDblockID_blockIDvideoURL_videoURL(Parameter<String>.value(`courseID`), Parameter<String>.value(`blockID`), Parameter<String>.value(`videoURL`)))
@@ -3846,6 +3847,8 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSectionid, rhs: rhsSectionid, with: matcher), lhsSectionid, rhsSectionid, "sectionId"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsVideos, rhs: rhsVideos, with: matcher), lhsVideos, rhsVideos, "videos"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_videoLoaded__courseID_courseIDblockID_blockIDvideoURL_videoURL(let lhsCourseid, let lhsBlockid, let lhsVideourl), .m_videoLoaded__courseID_courseIDblockID_blockIDvideoURL_videoURL(let rhsCourseid, let rhsBlockid, let rhsVideourl)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
@@ -4098,6 +4101,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         }
         public static func bulkDeleteVideosSection(courseID: Parameter<String>, sectionId: Parameter<String>, videos: Parameter<Int>, perform: @escaping (String, String, Int) -> Void) -> Perform {
             return Perform(method: .m_bulkDeleteVideosSection__courseID_courseIDsectionId_sectionIdvideos_videos(`courseID`, `sectionId`, `videos`), performs: perform)
+        }
         public static func videoLoaded(courseID: Parameter<String>, blockID: Parameter<String>, videoURL: Parameter<String>, perform: @escaping (String, String, String) -> Void) -> Perform {
             return Perform(method: .m_videoLoaded__courseID_courseIDblockID_blockIDvideoURL_videoURL(`courseID`, `blockID`, `videoURL`), performs: perform)
         }
@@ -4823,7 +4827,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 }
 
 // MARK: - DownloadManagerProtocol
-@MainActor
+
 open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()

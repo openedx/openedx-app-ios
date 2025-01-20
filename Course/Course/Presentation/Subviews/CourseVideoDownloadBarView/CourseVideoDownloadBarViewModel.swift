@@ -171,7 +171,9 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         let availableCount = downloadableVerticals.filter { $0.state == .available }.count
         let finishedCount = downloadableVerticals.filter { $0.state == .finished }.count
         let downloadingCount = downloadableVerticals.filter { $0.state == .downloading }.count
-        self.downloadableVerticals = downloadableVerticals.filter { $0.downloadableBlocks.contains { $0.type == .video } }
+        self.downloadableVerticals = downloadableVerticals.filter {
+            $0.downloadableBlocks.contains { $0.type == .video }
+        }
         
         if downloadingCount == totalCount, totalCount > 0 {
             self.isOn = true

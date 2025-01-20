@@ -191,7 +191,7 @@ enum DownloadManagerState {
     case downloading
     case paused
 }
-
+// swiftlint:disable type_body_length file_length
 public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     // MARK: - Properties
 
@@ -220,6 +220,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     
     private var state: DownloadManagerState = .idle
     // MARK: - Init
+    
     public init(
         persistence: CorePersistenceProtocol,
         appStorage: CoreStorage,
@@ -228,12 +229,11 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         self.persistence = persistence
         self.appStorage = appStorage
         self.connectivity = connectivity
-        
         if let userId = appStorage.user?.id {
             persistence.set(userId: userId)
-            self.backgroundTask()
             Task {
-                try? await resumeDownloading()
+                await self.addObsevers()
+                await self.backgroundTask()
             }
         }
     }
@@ -262,7 +262,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         NotificationCenter.default.publisher(for: .tryDownloadAgain)
             .compactMap { $0.object as? [DownloadDataTask] }
             .sink { [weak self] downloads in
-                Task {
+                Task {[weak self] in
                     await self?.tryDownloadAgain(downloads: downloads)
                 }
             }
@@ -296,10 +296,6 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
 
     // MARK: - Publishers
     nonisolated
-    public func publisher() throws -> AnyPublisher<Int, Never> {
-       try persistence.publisher()
-    }
-
     public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
         currentDownloadEventPublisher
             .eraseToAnyPublisher()
@@ -505,7 +501,6 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
 
     // MARK: - Private Intents
 
-    @MainActor
     private func newDownload() async throws {
         print("current label = ", String(cString: __dispatch_queue_get_label(nil)))
         guard state != .paused else { return }
@@ -563,7 +558,6 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
             return
         }
 
-
         if let index = queue.firstIndex(where: {$0.id == download.id}) {
             queue[index].state = .inProgress
             persistence.updateTask(task: queue[index])
@@ -571,7 +565,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         
         currentDownloadTask = download
         currentDownloadTask?.state = .inProgress
-
+        
         let destination: DownloadRequest.Destination = { _, _ in
             let file = folderURL.appendingPathComponent(download.fileName)
             return (file, [.createIntermediateDirectories, .removePreviousFile])
@@ -620,13 +614,6 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
             } else if error.asAFError?.isExplicitlyCancelledError == false {
                 self.failedDownloads.append(download)
                 Task {
-                    await self.persistence.updateDownloadState(
-                        id: download.id,
-                        state: .finished,
-                        resumeData: nil
-                    )
-                    self.currentDownloadTask?.state = .finished
-                    self.currentDownloadEventPublisher.send(.finished(download))
                     try? await self.newDownload()
                 }
                 return
@@ -985,92 +972,4 @@ public final class BackgroundTaskProvider: @unchecked Sendable {
         }
     }
 }
-
-// Mark - For testing and SwiftUI preview
-// swiftlint:disable file_length
-#if DEBUG
-public final class DownloadManagerMock: DownloadManagerProtocol, @unchecked Sendable {
-    public func getCurrentDownloadTask() async -> DownloadDataTask? {
-        nil
-    }
-    
-    public func downloadTask(for blockId: String) async -> DownloadDataTask? {
-        nil
-    }
-    public init() {}
-
-    public func delete(blocks: [CourseBlock], courseId: String) async {
-        
-    }
-
-    public var currentDownloadTask: DownloadDataTask? {
-        return nil
-    }
-
-    public func publisher() -> AnyPublisher<Int, Never> {
-        return Just(1).eraseToAnyPublisher()
-    }
-
-    public func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
-        return Just(
-            .canceled(
-                [
-                .init(
-                    id: "",
-                    blockId: "",
-                    courseId: "",
-                    userId: 0,
-                    url: "",
-                    fileName: "",
-                    displayName: "",
-                    progress: 1,
-                    resumeData: nil,
-                    state: .inProgress,
-                    type: .video,
-                    fileSize: 0,
-                    lastModified: "",
-                    actualSize: 0
-                )
-                ]
-            )
-        ).eraseToAnyPublisher()
-    }
-
-    public func addToDownloadQueue(blocks: [CourseBlock]) {}
-
-    public func getDownloadTasks() -> [DownloadDataTask] {
-        []
-    }
-
-    public func getDownloadTasksForCourse(_ courseId: String) async -> [DownloadDataTask] {
-        await withCheckedContinuation { continuation in
-            continuation.resume(returning: [])
-        }
-    }
-
-    public func cancelDownloading(courseId: String, blocks: [CourseBlock]) async throws {}
-
-    public func cancelDownloading(task: DownloadDataTask) {}
-
-    public func cancelDownloading(courseId: String) async {}
-
-    public func cancelAllDownloading() async throws {}
-
-    public func resumeDownloading() {}
-
-    public func deleteFile(blocks: [CourseBlock]) {}
-
-    public func deleteAll() {}
-                
-    public func fileUrl(for blockId: String) async -> URL? {
-        return nil
-    }
-
-    public func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
-        false
-    }
-
-    public func removeAppSupportDirectoryUnusedContent() {}
-}
-#endif
-// swiftlint:enable file_length
+// swiftlint:enable type_body_length file_length

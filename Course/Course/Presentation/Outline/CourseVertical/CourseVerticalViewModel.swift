@@ -48,7 +48,7 @@ public final class CourseVerticalViewModel: BaseCourseViewModel {
         super.init(manager: manager)
         
         manager.eventPublisher()
-            .sink{ [weak self] event in
+            .sink {[weak self] event in
                 guard let self else { return }
                 if case .progress = event {
                     return
