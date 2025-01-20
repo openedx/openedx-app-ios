@@ -26,7 +26,8 @@ class AnalyticsManager: AuthorizationAnalytics,
                         CourseAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
-                        WhatsNewAnalytics {
+                        WhatsNewAnalytics,
+                        @unchecked Sendable {
     
     private var services: [AnalyticsService]
     
@@ -164,6 +165,16 @@ class AnalyticsManager: AuthorizationAnalytics,
     
     public func mainProgramsClicked() {
         trackScreenEvent(.mainDashboardProgramsClicked, biValue: .mainDashboardProgramsClicked)
+    }
+    
+    public func notificationPermissionStatus(status: String) {
+        trackEvent(
+            .notificationSettingPermissionStatus,
+            biValue: .notificationSettingPermissionStatus,
+            parameters: [
+                EventParamKey.status: status
+            ]
+        )
     }
     
     // MARK: Discovery

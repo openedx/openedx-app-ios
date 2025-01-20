@@ -13,6 +13,7 @@ import Course
 import Swinject
 import Combine
 import Authorization
+import UserNotifications
 
 public enum MainTab {
     case discovery
@@ -69,6 +70,21 @@ final class MainScreenViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
+        trackSettingPermissionStatus()
+    }
+    
+    private func trackSettingPermissionStatus() {
+        DispatchQueue.global(qos: .userInteractive).async {
+            UNUserNotificationCenter.current().getNotificationSettings(completionHandler: { [weak self] (settings) in
+                if settings.authorizationStatus == .notDetermined {
+                    self?.analytics.notificationPermissionStatus(status: "not_determined")
+                } else if settings.authorizationStatus == .denied {
+                    self?.analytics.notificationPermissionStatus(status: "denied")
+                } else if settings.authorizationStatus == .authorized {
+                    self?.analytics.notificationPermissionStatus(status: "authorized")
+                }
+            })
+        }
     }
     
     public func select(tab: MainTab) {
