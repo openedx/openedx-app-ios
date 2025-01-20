@@ -168,7 +168,7 @@ public protocol DownloadManagerProtocol: Sendable {
     func resumeDownloading() async throws
     func isLargeVideosSize(blocks: [CourseBlock]) async -> Bool
 
-    func removeAppSupportDirectoryUnusedContent() async
+    func removeAppSupportDirectoryUnusedContent()
     func delete(blocks: [CourseBlock], courseId: String) async
     func downloadTask(for blockId: String) async -> DownloadDataTask?
 }
@@ -243,7 +243,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     }
     
     private func addObsevers() async {
-        connectivity.internetReachableSubject
+        await connectivity.internetReachableSubject
             .sink {[weak self] state in
                 guard let self else { return }
                 Task {
@@ -330,7 +330,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     }
 
     public func addToDownloadQueue(blocks: [CourseBlock]) async throws {
-        if userCanDownload() {
+        if await userCanDownload() {
             let newTasks = blocks.compactMap {
                 DownloadDataTask(
                     block: $0,
@@ -355,7 +355,8 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     }
 
     public func resumeDownloading() async throws {
-        guard state != .downloading && connectivity.isInternetAvaliable else { return }
+        let isInternetAvaliable = await connectivity.isInternetAvaliable
+        guard state != .downloading && isInternetAvaliable else { return }
         state = .idle
         if queue.isEmpty {
             queue = await persistence.getDownloadDataTasks()
@@ -504,7 +505,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     private func newDownload() async throws {
         print("current label = ", String(cString: __dispatch_queue_get_label(nil)))
         guard state != .paused else { return }
-        guard userCanDownload() else {
+        guard await userCanDownload() else {
             throw NoWiFiError()
         }
 
@@ -524,7 +525,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
             print(">>> IS NIL")
             return
         }
-        if !connectivity.isInternetAvaliable {
+        if await !connectivity.isInternetAvaliable {
             failedDownloads.append(downloadTask)
             try cancelDownloading(task: downloadTask)
             return
@@ -536,9 +537,9 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         }
     }
 
-    private func userCanDownload() -> Bool {
+    private func userCanDownload() async -> Bool {
         if appStorage.userSettings?.wifiOnly ?? true {
-            if !connectivity.isMobileData {
+            if await !connectivity.isMobileData {
                 return true
             } else {
                 return false
@@ -834,10 +835,11 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         return uniqueDirectory
     }
 
-    public func removeAppSupportDirectoryUnusedContent() async {
+    nonisolated public func removeAppSupportDirectoryUnusedContent() {
         deleteMD5HashedFolders()
     }
 
+    nonisolated
     private func getApplicationSupportDirectory() -> URL? {
         let fileManager = FileManager.default
         do {
@@ -854,12 +856,14 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         }
     }
 
+    nonisolated
     func isMD5Hash(_ folderName: String) -> Bool {
         let md5Regex = "^[a-fA-F0-9]{32}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", md5Regex)
         return predicate.evaluate(with: folderName)
     }
 
+    nonisolated
     private func deleteMD5HashedFolders() {
         guard let appSupportDirectory = getApplicationSupportDirectory() else {
             return

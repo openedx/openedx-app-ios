@@ -10,7 +10,6 @@ import SwiftUI
 import Core
 import OEXFoundation
 import Combine
-// swiftlint:disable file_length
 
 public enum CourseTab: Int, CaseIterable, Identifiable, Sendable {
     public var id: Int {
@@ -59,8 +58,11 @@ extension CourseTab {
         }
     }
 }
-// swiftlint:disable type_body_length
-public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sendable {
+
+//swiftlint:disable type_body_length file_length
+@MainActor
+public final class CourseContainerViewModel: BaseCourseViewModel {
+    
     @Published public var selection: Int
     @Published var isShowProgress = true
     @Published var isShowRefresh = false
@@ -110,6 +112,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
     let analytics: CourseAnalytics
     let coreAnalytics: CoreAnalytics
     private(set) var storage: CourseStorage
+    
     private let cellularFileSizeLimit: Int = 100 * 1024 * 1024
     let courseHelper: CourseDownloadHelper
     
@@ -157,9 +160,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
     func updateCourseIfNeeded(courseID: String) async {
         if updateCourseProgress {
             await getCourseBlocks(courseID: courseID, withProgress: false)
-            await MainActor.run {
-                updateCourseProgress = false
-            }
+            updateCourseProgress = false
         }
     }
     
@@ -353,9 +354,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
             try await manager.addToDownloadQueue(blocks: blocks)
         } catch let error {
             if error is NoWiFiError {
-                await MainActor.run {
-                    errorMessage = CoreLocalization.Error.wifi
-                }
+                errorMessage = CoreLocalization.Error.wifi
             }
         }
     }
@@ -654,7 +653,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
             completion: {}
         )
     }
-
+    
     @MainActor
     func collectBlocks(
         chapter: CourseChapter,
@@ -693,7 +692,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
         
         return blocks
     }
-
+    
     @MainActor
     func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) async -> Bool {
         waitingDownloads = nil
@@ -839,7 +838,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
         return nil
     }
     
-    nonisolated
     private func isEnoughSpace(for fileSize: Int) -> Bool {
         if let freeSpace = getFreeDiskSpace() {
             return freeSpace > Int(Double(fileSize) * 1.2)
@@ -847,7 +845,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
         return false
     }
     
-    nonisolated
     private func getFreeDiskSpace() -> Int? {
         do {
             let attributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
@@ -950,7 +947,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
             largestDownloadBlocks = value.largestBlocks
         }
     }
-    
+
     private func addObservers() {
         courseHelper
             .publisher()
@@ -980,7 +977,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel, @unchecked Sen
             }
             .store(in: &cancellables)
     }
-
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }

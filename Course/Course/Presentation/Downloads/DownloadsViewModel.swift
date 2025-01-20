@@ -68,16 +68,8 @@ final class DownloadsViewModel: ObservableObject {
                 self?.downloads = value.allDownloadTasks
             }
             .store(in: &cancellables)
-        var startTime = Date()
-        var count: Int = 0
         helper.progressPublisher()
             .sink {[weak self] task in
-                count += 1
-                if Date().timeIntervalSince(startTime) >= 1 {
-                    print("count of progress block is = \(count)")
-                    startTime = Date()
-                    count = 0
-                }
                 if let firstIndex = self?.downloads.firstIndex(where: { $0.id == task.id }) {
                     self?.downloads[firstIndex].progress = task.progress
                 }

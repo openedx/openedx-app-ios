@@ -58,6 +58,7 @@ public struct SubtitlesView: View {
                     }
                 }
                 ZStack {
+                    
                     ScrollView {
                         if viewModel.subtitles.count > 0 {
                             LazyVStack(alignment: .leading, spacing: 0) {

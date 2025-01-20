@@ -75,6 +75,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
 
     // MARK: - Public Intents
+
     public func addToDownloadQueue(
         blocks: [CourseBlock],
         downloadQuality: DownloadQuality

@@ -15,13 +15,15 @@ public enum InternetState: Sendable {
 }
 
 //sourcery: AutoMockable
+@MainActor
 public protocol ConnectivityProtocol: Sendable {
     var isInternetAvaliable: Bool { get }
     var isMobileData: Bool { get }
     var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
 }
 
-public class Connectivity: ConnectivityProtocol, @unchecked Sendable {
+@MainActor
+public class Connectivity: ConnectivityProtocol {
     let networkManager = NetworkReachabilityManager()
     
     public var isInternetAvaliable: Bool {

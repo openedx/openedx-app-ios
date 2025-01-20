@@ -91,7 +91,7 @@ public final class PipManager: PipManagerProtocol {
         try await navigate(to: holder)
     }
     
-    @MainActor public func pauseCurrentPipVideo() {
+    public func pauseCurrentPipVideo() {
         guard let holder = controllerHolder else { return }
         holder.playerController?.pause()
     }
@@ -205,7 +205,6 @@ public final class PipManager: PipManagerProtocol {
         }
     }
 
-    @MainActor
     private var topCourseUnitController: UIHostingController<CourseUnitView>? {
         router.getNavigationController().visibleViewController as? UIHostingController<CourseUnitView>
     }
