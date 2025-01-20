@@ -13,6 +13,7 @@ struct CourseDownloadValue {
     static let empty = CourseDownloadValue(
         courseDownloadTasks: [],
         allDownloadTasks: [],
+        notFinishedTasks: [],
         downloadableVerticals: [],
         sequentialsStates: [:],
         totalFilesSize: 0,
@@ -23,6 +24,7 @@ struct CourseDownloadValue {
     var currentDownloadTask: DownloadDataTask?
     let courseDownloadTasks: [DownloadDataTask]
     let allDownloadTasks: [DownloadDataTask]
+    let notFinishedTasks: [DownloadDataTask]
     let downloadableVerticals: Set<VerticalsDownloadState>
     let sequentialsStates: [String: DownloadViewState]
     let totalFilesSize: Int
@@ -113,7 +115,7 @@ public final class CourseDownloadHelper: @unchecked Sendable {
         }
         return block.fileSize
     }
-    
+    // swiftlint:disable function_body_length
     private func enumerate(
         tasks: [DownloadDataTask],
         courseStructure: CourseStructure,
@@ -122,6 +124,8 @@ public final class CourseDownloadHelper: @unchecked Sendable {
         await withCheckedContinuation { continuation in
             queue.async {[weak self] in
                 guard let self else { return }
+                let notFinishedTasks: [DownloadDataTask] = tasks.filter { $0.state != .finished }
+                    .sorted(by: { $0.state.order < $1.state.order })
                 let courseDownloadTasks = tasks.filter { $0.courseId == courseStructure.id }
                 var downloadableVerticals: Set<VerticalsDownloadState> = []
                 var sequentialsStates: [String: DownloadViewState] = [:]
@@ -207,6 +211,7 @@ public final class CourseDownloadHelper: @unchecked Sendable {
                     currentDownloadTask: currentDownloadTask,
                     courseDownloadTasks: courseDownloadTasks,
                     allDownloadTasks: tasks,
+                    notFinishedTasks: notFinishedTasks,
                     downloadableVerticals: downloadableVerticals,
                     sequentialsStates: sequentialsStates,
                     totalFilesSize: totalFilesSize,
@@ -224,7 +229,8 @@ public final class CourseDownloadHelper: @unchecked Sendable {
             }
         }
     }
-
+    // swiftlint:enable function_body_length
+    
     private func isEnoughSpace(for fileSize: Int) -> Bool {
         if let freeSpace = getFreeDiskSpace() {
             return freeSpace > Int(Double(fileSize) * 1.2)

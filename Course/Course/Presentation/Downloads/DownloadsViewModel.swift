@@ -54,18 +54,14 @@ final class DownloadsViewModel: ObservableObject {
 
     @MainActor
     private func configure() async {
-        defer {
-            filter()
-        }
-
-        downloads = helper.value?.allDownloadTasks ?? []
+        downloads = helper.value?.notFinishedTasks ?? []
 
     }
 
     private func observers() {
         helper.publisher()
             .sink {[weak self] value in
-                self?.downloads = value.allDownloadTasks
+                self?.downloads = value.notFinishedTasks
             }
             .store(in: &cancellables)
         helper.progressPublisher()
@@ -75,11 +71,5 @@ final class DownloadsViewModel: ObservableObject {
                 }
             }
             .store(in: &cancellables)
-    }
-
-    private func filter() {
-        downloads = downloads
-            .filter { $0.state == .inProgress || $0.state == .waiting }
-            .sorted(by: { $0.state.order < $1.state.order })
     }
 }

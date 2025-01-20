@@ -503,7 +503,6 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     // MARK: - Private Intents
 
     private func newDownload() async throws {
-        print("current label = ", String(cString: __dispatch_queue_get_label(nil)))
         guard state != .paused else { return }
         guard await userCanDownload() else {
             throw NoWiFiError()

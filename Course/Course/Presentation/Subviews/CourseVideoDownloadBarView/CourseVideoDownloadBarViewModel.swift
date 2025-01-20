@@ -89,7 +89,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     func allActiveDownloads() -> [DownloadDataTask] {
-        courseViewModel.courseHelper.value?.allDownloadTasks ?? []
+        (courseViewModel.courseHelper.value?.allDownloadTasks ?? [])
             .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
