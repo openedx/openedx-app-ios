@@ -379,7 +379,7 @@ public struct CourseBlockEncodedVideo: Sendable {
     public func video(downloadQuality: DownloadQuality) -> CourseBlockVideo? {
         switch downloadQuality {
         case .auto:
-            [mobileLow, mobileHigh, desktopMP4, fallback, hls]
+            [hls, mobileLow, mobileHigh, desktopMP4, fallback]
                 .first(where: { $0?.isDownloadable == true })?
                 .flatMap { $0 }
         case .high:
@@ -400,7 +400,7 @@ public struct CourseBlockEncodedVideo: Sendable {
     public func video(streamingQuality: StreamingQuality) -> CourseBlockVideo? {
         switch streamingQuality {
         case .auto:
-            [mobileLow, mobileHigh, desktopMP4, fallback, hls, youtube]
+            [hls, mobileLow, mobileHigh, desktopMP4, fallback, youtube]
                 .compactMap { $0 }
                 .sorted(by: { ($0?.streamPriority ?? 0) < ($1?.streamPriority ?? 0) })
                 .first?
@@ -424,7 +424,7 @@ public struct CourseBlockEncodedVideo: Sendable {
     }
 }
 
-public enum CourseBlockVideoEncoding {
+public enum CourseBlockVideoEncoding: Sendable {
     case mobileLow, mobileHigh, desktopMP4, fallback, hls, youtube
 }
 
