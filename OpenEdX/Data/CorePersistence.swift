@@ -61,9 +61,11 @@ public final class CorePersistence: CorePersistenceProtocol {
     private nonisolated(unsafe) var userId: Int?
 
     private let container: NSPersistentContainer
+    private let context: NSManagedObjectContext
     
     public init(container: NSPersistentContainer) {
         self.container = container
+        self.context = container.newBackgroundContext()
     }
 
     public func set(userId: Int) {
@@ -154,7 +156,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     func insertDownloadData(objects: [[String: Any]]) {
         let batchInsertRequest = NSBatchInsertRequest(entityName: "CDDownloadData", objects: objects)
         batchInsertRequest.resultType = .objectIDs
-        container.performBackgroundTask { context in
+        context.perform { [context] in
             do {
                 let batchInsertResult = try context.execute(batchInsertRequest) as? NSBatchInsertResult
                 if let objectIDs = batchInsertResult?.result as? [NSManagedObjectID] {
@@ -168,10 +170,19 @@ public final class CorePersistence: CorePersistenceProtocol {
             }
         }
     }
+    
+    private func perform<T>(block: @escaping () -> T) async -> T {
+        await withCheckedContinuation { continuation in
+            context.perform {
+                let result = block()
+                continuation.resume(returning: result)
+            }
+        }
+    }
 
     public func getDownloadDataTasks() async -> [DownloadDataTask] {
         let userId = getUserId32() ?? 0
-        return await container.performBackgroundTask { context in
+        return await perform {[context] in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 context: context,
                 userId: userId
@@ -190,7 +201,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     ) async -> [DownloadDataTask] {
         let uID = userId
         let int32Id = getUserId32()
-        return await container.performBackgroundTask { context in
+        return await perform { [context] in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .courseId(courseId),
                 context: context,
@@ -214,7 +225,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     public func downloadDataTask(for blockId: String) async -> DownloadDataTask? {
         let dataId = downloadDataId(from: blockId)
         let userId = getUserId32()
-        return await container.performBackgroundTask { context in
+        return await perform { [context] in
             let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .id(dataId),
                 context: context,
@@ -233,7 +244,7 @@ public final class CorePersistence: CorePersistenceProtocol {
         let dataId = downloadDataId(from: task.id)
         let userId = getUserId32()
 
-        container.performBackgroundTask { context in
+        context.perform { [context] in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .id(dataId),
                 context: context,
@@ -263,7 +274,7 @@ public final class CorePersistence: CorePersistenceProtocol {
         }
     }
     public func deleteDownloadDataTasks(ids: [String]) {
-        container.performBackgroundTask { context in
+        context.perform { [context] in
             let request: NSFetchRequest<any NSFetchRequestResult> = CDDownloadData.fetchRequest()
             request.predicate = NSPredicate(format: "id IN %@", ids)
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: request)
@@ -286,7 +297,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func saveDownloadDataTask(_ task: DownloadDataTask) async {
-        await container.performBackgroundTask { context in
+        await perform { [context] in
             let newDownloadData = CDDownloadData(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             newDownloadData.id = task.id
@@ -335,7 +346,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     
     // MARK: - Offline Progress
     public func saveOfflineProgress(progress: OfflineProgress) async {
-        await container.performBackgroundTask { context in
+        await perform { [context] in
             let progressForSaving = CDOfflineProgress(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             progressForSaving.blockID = progress.blockID
@@ -350,7 +361,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func loadProgress(for blockID: String) async -> OfflineProgress? {
-        return await container.performBackgroundTask { context in
+        await perform { [context] in
             let request = CDOfflineProgress.fetchRequest()
             request.predicate = NSPredicate(format: "blockID = %@", blockID)
             guard let progress = try? context.fetch(request).first,
@@ -365,7 +376,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func loadAllOfflineProgress() async -> [OfflineProgress] {
-        return await container.performBackgroundTask { context in
+        await perform { [context] in
             let result = try? context.fetch(CDOfflineProgress.fetchRequest())
                 .map {
                     OfflineProgress(
@@ -380,7 +391,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func deleteProgress(for blockID: String) async {
-        return await container.performBackgroundTask { context in
+        await perform { [context] in
             let request = CDOfflineProgress.fetchRequest()
             request.predicate = NSPredicate(format: "blockID = %@", blockID)
             guard let progress = try? context.fetch(request).first else { return }
@@ -396,7 +407,7 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func deleteAllProgress() async {
-        return await container.performBackgroundTask { context in
+        await perform { [context] in
             let request = CDOfflineProgress.fetchRequest()
             guard let allProgress = try? context.fetch(request) else { return }
             
