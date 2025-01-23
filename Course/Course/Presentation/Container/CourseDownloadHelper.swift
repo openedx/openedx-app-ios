@@ -109,12 +109,29 @@ public final class CourseDownloadHelper: @unchecked Sendable {
         )
     }
     
-    private func sizeFor(block: CourseBlock) -> Int? {
+    func sizeFor(block: CourseBlock) -> Int? {
         if block.type == .video {
             return block.encodedVideo?.video(downloadQuality: videoQuality)?.fileSize
         }
         return block.fileSize
     }
+    
+    func sizeFor(blocks: [CourseBlock]) -> Int {
+        let filteredBlocks = blocks.filter { $0.isDownloadable }
+        let sizes = filteredBlocks.compactMap { sizeFor(block: $0) }
+        return sizes.reduce(0, +)
+    }
+    
+    func sizeFor(sequential: CourseSequential) -> Int {
+        let blocks = sequential.childs.flatMap({ $0.childs })
+        return sizeFor(blocks: blocks)
+    }
+    
+    func sizeFor(sequentials: [CourseSequential]) -> Int {
+        let sizes = sequentials.map { sizeFor(sequential: $0) }
+        return sizes.reduce(0, +)
+    }
+    
     // swiftlint:disable function_body_length
     private func enumerate(
         tasks: [DownloadDataTask],

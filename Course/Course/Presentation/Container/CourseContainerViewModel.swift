@@ -559,6 +559,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             view: DownloadActionView(
                 actionType: .confirmDownloadCellular,
                 sequentials: sequentials,
+                downloadedSize: courseHelper.sizeFor(sequentials: sequentials),
                 action: { [weak self] in
                     guard let self else { return }
                     if !self.isEnoughSpace(for: totalFileSize) {
@@ -608,6 +609,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             view: DownloadActionView(
                 actionType: .confirmDownload,
                 sequentials: sequentials,
+                downloadedSize: courseHelper.sizeFor(sequentials: sequentials),
                 action: { [weak self] in
                     guard let self else { return }
                     if !self.isEnoughSpace(for: totalFileSize) {
@@ -636,6 +638,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             view: DownloadActionView(
                 actionType: .remove,
                 sequentials: sequentials,
+                downloadedSize: courseHelper.sizeFor(sequentials: sequentials),
                 action: { [weak self] in
                     guard let self else { return }
                     if let courseID = self.courseStructure?.id {
@@ -878,6 +881,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             view: DownloadActionView(
                 actionType: .remove,
                 courseBlocks: [block],
+                downloadedSize: courseHelper.sizeFor(blocks: [block]),
                 action: { [weak self] in
                     guard let self else { return }
                     withAnimation(.linear(duration: 0.3)) {
