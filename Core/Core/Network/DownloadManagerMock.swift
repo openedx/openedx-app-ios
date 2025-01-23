@@ -20,9 +20,7 @@ public final class DownloadManagerMock: DownloadManagerProtocol, @unchecked Send
     }
     public init() {}
 
-    public func delete(blocks: [CourseBlock], courseId: String) async {
-        
-    }
+    public func delete(blocks: [CourseBlock], courseId: String) async {}
 
     public var currentDownloadTask: DownloadDataTask? {
         return nil
