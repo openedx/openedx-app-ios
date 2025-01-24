@@ -179,7 +179,6 @@ struct CourseVerticalView_Previews: PreviewProvider {
             chapters: chapters,
             chapterIndex: 0,
             sequentialIndex: 0,
-            manager: DownloadManagerMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             connectivity: Connectivity()

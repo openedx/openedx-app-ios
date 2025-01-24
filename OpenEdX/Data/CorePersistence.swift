@@ -261,8 +261,8 @@ public final class CorePersistence: CorePersistenceProtocol {
             dataTask.fileName = task.fileName
             dataTask.progress = task.progress
             dataTask.type = task.type.rawValue
-            dataTask.fileSize = Int32(task.fileSize)
-            dataTask.actualSize = Int32(task.actualSize)
+            dataTask.fileSize = Int64(task.fileSize)
+            dataTask.actualSize = Int64(task.actualSize)
             
             if task.state == .finished { dataTask.progress = 1 }
 
@@ -292,31 +292,6 @@ public final class CorePersistence: CorePersistenceProtocol {
                 debugLog("Tasks erased successfully")
             } catch {
                 debugLog("Error deleting tasks: \(error.localizedDescription)")
-            }
-        }
-    }
-    
-    public func saveDownloadDataTask(_ task: DownloadDataTask) async {
-        await perform { [context] in
-            let newDownloadData = CDDownloadData(context: context)
-            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            newDownloadData.id = task.id
-            newDownloadData.blockId = task.blockId
-            newDownloadData.userId = Int32(task.userId)
-            newDownloadData.courseId = task.courseId
-            newDownloadData.url = task.url
-            newDownloadData.progress = task.progress
-            newDownloadData.fileName = task.fileName
-            newDownloadData.displayName = task.displayName
-            newDownloadData.resumeData = task.resumeData
-            newDownloadData.state = task.state.rawValue
-            newDownloadData.type = task.type.rawValue
-            newDownloadData.fileSize = Int32(task.fileSize)
-
-            do {
-                try context.save()
-            } catch {
-                debugLog("⛔️⛔️⛔️⛔️⛔️", error)
             }
         }
     }

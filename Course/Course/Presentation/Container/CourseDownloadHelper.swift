@@ -43,7 +43,7 @@ public final class CourseDownloadHelper: @unchecked Sendable {
     var courseStructure: CourseStructure?
     var videoQuality: DownloadQuality = .auto
 
-    private let queue: DispatchQueue = .init(label: "testQueue")
+    private let queue: DispatchQueue = .init(label: "course.download.helper.queue")
     private let manager: DownloadManagerProtocol
     private var sourcePublisher: PassthroughSubject<CourseDownloadValue, Never> = .init()
     private var sourceProgressPublisher: PassthroughSubject<DownloadDataTask, Never> = .init()

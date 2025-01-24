@@ -360,7 +360,6 @@ class ScreenAssembly: Assembly {
                 chapters: chapters,
                 chapterIndex: chapterIndex,
                 sequentialIndex: sequentialIndex,
-                manager: r.resolve(DownloadManagerProtocol.self)!,
                 router: r.resolve(CourseRouter.self)!,
                 analytics: r.resolve(CourseAnalytics.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!
