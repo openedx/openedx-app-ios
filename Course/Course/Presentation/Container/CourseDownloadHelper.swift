@@ -9,8 +9,25 @@ import Combine
 import Core
 import Foundation
 
-struct CourseDownloadValue {
-    static let empty = CourseDownloadValue(
+//sourcery: AutoMockable
+public protocol CourseDownloadHelperProtocol: Sendable {
+    var value: CourseDownloadValue? { get }
+    var courseStructure: CourseStructure? { get set }
+    var videoQuality: DownloadQuality { get set }
+    
+    func publisher() -> AnyPublisher<CourseDownloadValue, Never>
+    func progressPublisher() -> AnyPublisher<DownloadDataTask, Never>
+    func refreshValue()
+    func refreshValue() async
+    func sizeFor(block: CourseBlock) -> Int?
+    func sizeFor(blocks: [CourseBlock]) -> Int
+    func sizeFor(sequential: CourseSequential) -> Int
+    func sizeFor(sequentials: [CourseSequential]) -> Int
+    func cancelDownloading(task: DownloadDataTask) async throws
+}
+
+public struct CourseDownloadValue: Sendable {
+    public static let empty = CourseDownloadValue(
         courseDownloadTasks: [],
         allDownloadTasks: [],
         notFinishedTasks: [],
@@ -21,15 +38,15 @@ struct CourseDownloadValue {
         largestBlocks: [],
         state: .start
     )
-    var currentDownloadTask: DownloadDataTask?
-    let courseDownloadTasks: [DownloadDataTask]
-    let allDownloadTasks: [DownloadDataTask]
-    let notFinishedTasks: [DownloadDataTask]
-    let downloadableVerticals: Set<VerticalsDownloadState>
-    let sequentialsStates: [String: DownloadViewState]
-    let totalFilesSize: Int
-    let downloadedFilesSize: Int
-    let largestBlocks: [CourseBlock]
+    public var currentDownloadTask: DownloadDataTask?
+    public let courseDownloadTasks: [DownloadDataTask]
+    public let allDownloadTasks: [DownloadDataTask]
+    public let notFinishedTasks: [DownloadDataTask]
+    public let downloadableVerticals: Set<VerticalsDownloadState>
+    public let sequentialsStates: [String: DownloadViewState]
+    public let totalFilesSize: Int
+    public let downloadedFilesSize: Int
+    public let largestBlocks: [CourseBlock]
     let state: OfflineView.DownloadAllState
     
     mutating func setCurrentDownloadTask(task: DownloadDataTask?) {
@@ -37,11 +54,11 @@ struct CourseDownloadValue {
     }
 }
 
-public final class CourseDownloadHelper: @unchecked Sendable {
+public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecked Sendable {
     
-    var value: CourseDownloadValue?
-    var courseStructure: CourseStructure?
-    var videoQuality: DownloadQuality = .auto
+    public var value: CourseDownloadValue?
+    public var courseStructure: CourseStructure?
+    public var videoQuality: DownloadQuality = .auto
 
     private let queue: DispatchQueue = .init(label: "course.download.helper.queue")
     private let manager: DownloadManagerProtocol
@@ -49,20 +66,16 @@ public final class CourseDownloadHelper: @unchecked Sendable {
     private var sourceProgressPublisher: PassthroughSubject<DownloadDataTask, Never> = .init()
     private var cancellables = Set<AnyCancellable>()
 
-    func publisher() -> AnyPublisher<CourseDownloadValue, Never> {
+    public func publisher() -> AnyPublisher<CourseDownloadValue, Never> {
         sourcePublisher.share().eraseToAnyPublisher()
     }
     
-    func progressPublisher() -> AnyPublisher<DownloadDataTask, Never> {
+    public func progressPublisher() -> AnyPublisher<DownloadDataTask, Never> {
         sourceProgressPublisher
             .throttle(for: .seconds(0.1), scheduler: queue, latest: true)
             .share()
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
-    }
-    
-    func stopAllDownloads() async throws {
-        try await manager.cancelAllDownloading()
     }
     
     public init (courseStructure: CourseStructure?, manager: DownloadManagerProtocol) {
@@ -89,17 +102,17 @@ public final class CourseDownloadHelper: @unchecked Sendable {
             .store(in: &cancellables)
     }
 
-    func refreshValue() {
+    public func refreshValue() {
         Task(priority: .background) {
             await refreshValue()
         }
     }
 
-    func cancelDownloading(task: DownloadDataTask) async throws {
+    public func cancelDownloading(task: DownloadDataTask) async throws {
         try await manager.cancelDownloading(task: task)
     }
 
-    func refreshValue() async {
+    public func refreshValue() async {
         guard let courseStructure else { return }
         let downloadTasks = await manager.getDownloadTasks()
         await enumerate(
@@ -109,25 +122,25 @@ public final class CourseDownloadHelper: @unchecked Sendable {
         )
     }
     
-    func sizeFor(block: CourseBlock) -> Int? {
+    public func sizeFor(block: CourseBlock) -> Int? {
         if block.type == .video {
             return block.encodedVideo?.video(downloadQuality: videoQuality)?.fileSize
         }
         return block.fileSize
     }
     
-    func sizeFor(blocks: [CourseBlock]) -> Int {
+    public func sizeFor(blocks: [CourseBlock]) -> Int {
         let filteredBlocks = blocks.filter { $0.isDownloadable }
         let sizes = filteredBlocks.compactMap { sizeFor(block: $0) }
         return sizes.reduce(0, +)
     }
     
-    func sizeFor(sequential: CourseSequential) -> Int {
+    public func sizeFor(sequential: CourseSequential) -> Int {
         let blocks = sequential.childs.flatMap({ $0.childs })
         return sizeFor(blocks: blocks)
     }
     
-    func sizeFor(sequentials: [CourseSequential]) -> Int {
+    public func sizeFor(sequentials: [CourseSequential]) -> Int {
         let sizes = sequentials.map { sizeFor(sequential: $0) }
         return sizes.reduce(0, +)
     }
@@ -263,19 +276,6 @@ public final class CourseDownloadHelper: @unchecked Sendable {
             }
         } catch {
             print("Error retrieving free disk space: \(error.localizedDescription)")
-        }
-        return nil
-    }
-
-    private func getUsedDiskSpace() -> Int? {
-        do {
-            let attributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            if let totalSpace = attributes[.systemSize] as? Int64,
-                let freeSpace = attributes[.systemFreeSize] as? Int64 {
-                return Int(totalSpace - freeSpace)
-            }
-        } catch {
-            print("Error retrieving used disk space: \(error.localizedDescription)")
         }
         return nil
     }

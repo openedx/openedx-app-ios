@@ -23,7 +23,7 @@ public struct DownloadsView: View {
     public init(
         isSheet: Bool = true,
         router: CourseRouter,
-        courseHelper: CourseDownloadHelper
+        courseHelper: CourseDownloadHelperProtocol
     ) {
         self.isSheet = isSheet
         self._viewModel = .init(

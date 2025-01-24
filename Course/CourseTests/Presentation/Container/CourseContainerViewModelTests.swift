@@ -7,7 +7,7 @@
 
 import SwiftyMocky
 import XCTest
-@testable import Core
+import Core
 @testable import Course
 import Alamofire
 import SwiftUI
@@ -15,6 +15,13 @@ import Combine
 
 @MainActor
 final class CourseContainerViewModelTests: XCTestCase {
+    var courseHelperMock: CourseDownloadHelperProtocolMock!
+    
+    override func setUpWithError() throws {
+        try super.setUpWithError()
+        courseHelperMock = CourseDownloadHelperProtocolMock()
+        Given(courseHelperMock, .publisher(willReturn: Just(.empty).eraseToAnyPublisher()))
+    }
     
     func testGetCourseBlocksSuccess() async throws {
         let interactor = CourseInteractorProtocolMock()
@@ -42,7 +49,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         
         let block = CourseBlock(
@@ -162,7 +170,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         
         let courseStructure = CourseStructure(
@@ -228,7 +237,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
@@ -272,7 +282,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -313,7 +324,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
@@ -354,7 +366,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         
         viewModel.trackSelectedTab(selection: .course, courseId: "1", courseName: "name")
@@ -497,7 +510,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         viewModel.courseStructure = courseStructure
         await viewModel.onDownloadViewTap(
@@ -629,7 +643,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         viewModel.courseStructure = courseStructure
 
@@ -745,6 +760,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         Given(connectivity, .isMobileData(getter: false))
 
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
+        Given(courseHelperMock, .sizeFor(sequentials: .any, willReturn: 1000))
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -761,7 +777,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
         )
         viewModel.courseStructure = courseStructure
 
@@ -885,6 +902,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasks(willReturn: []))
+        let courseHelper = CourseDownloadHelper(courseStructure: courseStructure, manager: downloadManager)
 
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
@@ -901,7 +919,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelper
         )
         viewModel.courseStructure = courseStructure
         viewModel.courseStructure = courseStructure
@@ -1019,7 +1038,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasks(willReturn: [downloadData]))
-
+        let courseHelper = CourseDownloadHelper(courseStructure: courseStructure, manager: downloadManager)
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
             authInteractor: authInteractor,
@@ -1035,7 +1054,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelper
         )
         viewModel.courseStructure = courseStructure
         viewModel.courseHelper.courseStructure = courseStructure
@@ -1152,7 +1172,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasks(willReturn: [downloadData]))
-
+        let courseHelper = CourseDownloadHelper(courseStructure: courseStructure, manager: downloadManager)
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
             authInteractor: authInteractor,
@@ -1168,7 +1188,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelper
         )
         viewModel.courseStructure = courseStructure
         viewModel.courseHelper.courseStructure = courseStructure
@@ -1312,7 +1333,7 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         Given(downloadManager, .eventPublisher(willReturn: Just(.added).eraseToAnyPublisher()))
         Given(downloadManager, .getDownloadTasks(willReturn: [downloadData]))
-
+        let courseHelper = CourseDownloadHelper(courseStructure: courseStructure, manager: downloadManager)
         let viewModel = CourseContainerViewModel(
             interactor: interactor,
             authInteractor: authInteractor,
@@ -1328,7 +1349,8 @@ final class CourseContainerViewModelTests: XCTestCase {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelper
         )
         viewModel.courseStructure = courseStructure
         viewModel.courseHelper.courseStructure = courseStructure

@@ -2535,12 +2535,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 		perform?(`task`)
     }
 
-    open func saveDownloadDataTask(_ task: DownloadDataTask) {
-        addInvocation(.m_saveDownloadDataTask__task(Parameter<DownloadDataTask>.value(`task`)))
-		let perform = methodPerformValue(.m_saveDownloadDataTask__task(Parameter<DownloadDataTask>.value(`task`))) as? (DownloadDataTask) -> Void
-		perform?(`task`)
-    }
-
     open func downloadDataTask(for blockId: String) -> DownloadDataTask? {
         addInvocation(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`)))
 		let perform = methodPerformValue(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
@@ -2601,7 +2595,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         case m_deleteAllProgress
         case m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>, Parameter<DownloadQuality>)
         case m_updateTask__task_task(Parameter<DownloadDataTask>)
-        case m_saveDownloadDataTask__task(Parameter<DownloadDataTask>)
         case m_downloadDataTask__for_blockId(Parameter<String>)
         case m_getDownloadDataTasks
         case m_getDownloadDataTasksForCourse__courseId(Parameter<String>)
@@ -2653,11 +2646,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "task"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_saveDownloadDataTask__task(let lhsTask), .m_saveDownloadDataTask__task(let rhsTask)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "_ task"))
-				return Matcher.ComparisonResult(results)
-
             case (.m_downloadDataTask__for_blockId(let lhsBlockid), .m_downloadDataTask__for_blockId(let rhsBlockid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
@@ -2691,7 +2679,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case .m_deleteAllProgress: return 0
             case let .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(p0, p1): return p0.intValue + p1.intValue
             case let .m_updateTask__task_task(p0): return p0.intValue
-            case let .m_saveDownloadDataTask__task(p0): return p0.intValue
             case let .m_downloadDataTask__for_blockId(p0): return p0.intValue
             case .m_getDownloadDataTasks: return 0
             case let .m_getDownloadDataTasksForCourse__courseId(p0): return p0.intValue
@@ -2711,7 +2698,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case .m_deleteAllProgress: return ".deleteAllProgress()"
             case .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality: return ".addToDownloadQueue(blocks:downloadQuality:)"
             case .m_updateTask__task_task: return ".updateTask(task:)"
-            case .m_saveDownloadDataTask__task: return ".saveDownloadDataTask(_:)"
             case .m_downloadDataTask__for_blockId: return ".downloadDataTask(for:)"
             case .m_getDownloadDataTasks: return ".getDownloadDataTasks()"
             case .m_getDownloadDataTasksForCourse__courseId: return ".getDownloadDataTasksForCourse(_:)"
@@ -2822,7 +2808,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         public static func deleteAllProgress() -> Verify { return Verify(method: .m_deleteAllProgress)}
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, downloadQuality: Parameter<DownloadQuality>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(`blocks`, `downloadQuality`))}
         public static func updateTask(task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_updateTask__task_task(`task`))}
-        public static func saveDownloadDataTask(_ task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_saveDownloadDataTask__task(`task`))}
         public static func downloadDataTask(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_downloadDataTask__for_blockId(`blockId`))}
         public static func getDownloadDataTasks() -> Verify { return Verify(method: .m_getDownloadDataTasks)}
         public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadDataTasksForCourse__courseId(`courseId`))}
@@ -2866,9 +2851,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         }
         public static func updateTask(task: Parameter<DownloadDataTask>, perform: @escaping (DownloadDataTask) -> Void) -> Perform {
             return Perform(method: .m_updateTask__task_task(`task`), performs: perform)
-        }
-        public static func saveDownloadDataTask(_ task: Parameter<DownloadDataTask>, perform: @escaping (DownloadDataTask) -> Void) -> Perform {
-            return Perform(method: .m_saveDownloadDataTask__task(`task`), performs: perform)
         }
         public static func downloadDataTask(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_downloadDataTask__for_blockId(`blockId`), performs: perform)

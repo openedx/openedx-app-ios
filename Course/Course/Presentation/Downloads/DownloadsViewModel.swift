@@ -19,12 +19,12 @@ final class DownloadsViewModel: ObservableObject {
     
     let router: CourseRouter
 
-    private let helper: CourseDownloadHelper
+    private let helper: CourseDownloadHelperProtocol
     private var cancellables = Set<AnyCancellable>()
 
     init(
         router: CourseRouter,
-        helper: CourseDownloadHelper
+        helper: CourseDownloadHelperProtocol
     ) {
         self.router = router
         self.helper = helper

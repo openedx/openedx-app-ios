@@ -351,10 +351,15 @@ class ScreenAssembly: Assembly {
                 enrollmentEnd: enrollEnd,
                 lastVisitedBlockID: lastVisitedBlockID,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
-                selection: selection
+                selection: selection,
+                courseHelper: r.resolve(CourseDownloadHelperProtocol.self)!
             )
         }
-        
+        container.register(
+            CourseDownloadHelperProtocol.self
+        ) { @MainActor r in
+            CourseDownloadHelper(courseStructure: nil, manager: r.resolve(DownloadManagerProtocol.self)!)
+        }
         container.register(CourseVerticalViewModel.self) { @MainActor r, chapters, chapterIndex, sequentialIndex in
             CourseVerticalViewModel(
                 chapters: chapters,

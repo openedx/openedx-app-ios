@@ -114,7 +114,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     private(set) var storage: CourseStorage
     
     private let cellularFileSizeLimit: Int = 100 * 1024 * 1024
-    let courseHelper: CourseDownloadHelper
+    var courseHelper: CourseDownloadHelperProtocol
     
     public init(
         interactor: CourseInteractorProtocol,
@@ -132,7 +132,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         enrollmentEnd: Date?,
         lastVisitedBlockID: String?,
         coreAnalytics: CoreAnalytics,
-        selection: CourseTab = CourseTab.course
+        selection: CourseTab = CourseTab.course,
+        courseHelper: CourseDownloadHelperProtocol
     ) {
         self.interactor = interactor
         self.authInteractor = authInteractor
@@ -151,7 +152,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         self.lastVisitedBlockID = lastVisitedBlockID
         self.coreAnalytics = coreAnalytics
         self.selection = selection.rawValue
-        self.courseHelper = CourseDownloadHelper(courseStructure: nil, manager: manager)
+        self.courseHelper = courseHelper
         self.courseHelper.videoQuality = storage.userSettings?.downloadQuality ?? .auto
         super.init(manager: manager)
         addObservers()
@@ -1011,11 +1012,11 @@ extension CourseContainerViewModel {
     }
 }
 
-struct VerticalsDownloadState: Hashable {
-    let vertical: CourseVertical
-    let state: DownloadViewState
+public struct VerticalsDownloadState: Hashable, Sendable {
+    public let vertical: CourseVertical
+    public let state: DownloadViewState
     
-    var downloadableBlocks: [CourseBlock] {
+    public  var downloadableBlocks: [CourseBlock] {
         vertical.childs.filter { $0.isDownloadable && $0.type == .video }
     }
 }
