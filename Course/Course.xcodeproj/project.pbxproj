@@ -67,6 +67,7 @@
 		060E8BCA2B5FD68C0080C952 /* UnitStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060E8BC92B5FD68C0080C952 /* UnitStack.swift */; };
 		0631FF982D2BE67F007CA011 /* CourseDownloadHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0631FF972D2BE674007CA011 /* CourseDownloadHelper.swift */; };
 		065275352BB1B39C0093BCCA /* PlayerViewControllerHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065275342BB1B39C0093BCCA /* PlayerViewControllerHolder.swift */; };
+		065D575D2D4442D700350351 /* CourseDownloadHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 065D575C2D4442D000350351 /* CourseDownloadHelperTests.swift */; };
 		067B7B4E2BED339200D1768F /* PlayerTrackerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067B7B472BED339200D1768F /* PlayerTrackerProtocol.swift */; };
 		067B7B4F2BED339200D1768F /* PlayerDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067B7B482BED339200D1768F /* PlayerDelegateProtocol.swift */; };
 		067B7B502BED339200D1768F /* PlayerControllerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 067B7B492BED339200D1768F /* PlayerControllerProtocol.swift */; };
@@ -201,6 +202,7 @@
 		060E8BC92B5FD68C0080C952 /* UnitStack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnitStack.swift; sourceTree = "<group>"; };
 		0631FF972D2BE674007CA011 /* CourseDownloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDownloadHelper.swift; sourceTree = "<group>"; };
 		065275342BB1B39C0093BCCA /* PlayerViewControllerHolder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewControllerHolder.swift; sourceTree = "<group>"; };
+		065D575C2D4442D000350351 /* CourseDownloadHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDownloadHelperTests.swift; sourceTree = "<group>"; };
 		067B7B472BED339200D1768F /* PlayerTrackerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerTrackerProtocol.swift; sourceTree = "<group>"; };
 		067B7B482BED339200D1768F /* PlayerDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerDelegateProtocol.swift; sourceTree = "<group>"; };
 		067B7B492BED339200D1768F /* PlayerControllerProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerControllerProtocol.swift; sourceTree = "<group>"; };
@@ -573,6 +575,7 @@
 		0766DFD5299ADA4700EBEF6A /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				065D575C2D4442D000350351 /* CourseDownloadHelperTests.swift */,
 				02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */,
 				022EA8CA297AD63B0014A8F7 /* CourseContainerViewModelTests.swift */,
 			);
@@ -927,6 +930,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0295B1D9297E6DF8003B0C65 /* CourseUnitViewModelTests.swift in Sources */,
+				065D575D2D4442D700350351 /* CourseDownloadHelperTests.swift in Sources */,
 				02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */,
 				023812F3297AC9ED0087098F /* CourseMock.generated.swift in Sources */,
 				DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */,
