@@ -206,7 +206,7 @@ final class CourseDownloadHelperTests: XCTestCase {
         downloadPublisher.send(.finished(task)) //7
         downloadPublisher.send(.deletedFile([task.blockId])) //8
         downloadPublisher.send(.clearedAll) //9
-        
+        downloadPublisher.send(.progress(task)) //Helper shouldn't send event for that
         // then
         await Task.yield()
         await fulfillment(of: expectations, timeout: 1)
