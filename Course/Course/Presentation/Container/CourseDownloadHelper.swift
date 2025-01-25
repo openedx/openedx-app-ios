@@ -26,7 +26,7 @@ public protocol CourseDownloadHelperProtocol: Sendable {
     func cancelDownloading(task: DownloadDataTask) async throws
 }
 
-public struct CourseDownloadValue: Sendable {
+public struct CourseDownloadValue: Sendable, Equatable {
     public static let empty = CourseDownloadValue(
         courseDownloadTasks: [],
         allDownloadTasks: [],

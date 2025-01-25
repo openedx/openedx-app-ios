@@ -20,6 +20,7 @@ final class CourseDownloadHelperTests: XCTestCase {
     var block: CourseBlock!
     var sequential: CourseSequential!
     var task: DownloadDataTask!
+    var value: CourseDownloadValue!
     
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -101,7 +102,18 @@ final class CourseDownloadHelperTests: XCTestCase {
             courseProgress: nil
         )
         task = DownloadDataTask(block: block, userId: 0, downloadQuality: .auto)
-
+        value = .init(
+            currentDownloadTask: task,
+            courseDownloadTasks: [task],
+            allDownloadTasks: [task],
+            notFinishedTasks: [task],
+            downloadableVerticals: [.init(vertical: vertical, state: .downloading)],
+            sequentialsStates: [sequential.id: .downloading],
+            totalFilesSize: block.fileSize!,
+            downloadedFilesSize: 0,
+            largestBlocks: [],
+            state: .cancel
+        )
         Given(downloadManagerMock, .getDownloadTasks(willReturn: [task!]))
         Given(downloadManagerMock, .getCurrentDownloadTask(willReturn: task))
         Given(downloadManagerMock, .eventPublisher(willReturn: downloadPublisher.eraseToAnyPublisher()))
@@ -126,7 +138,7 @@ final class CourseDownloadHelperTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
         Verify(downloadManagerMock, .once, .getDownloadTasks())
         Verify(downloadManagerMock, .once, .getCurrentDownloadTask())
-        XCTAssert(valueReceived != nil)
+        XCTAssertEqual(valueReceived, value)
     }
     
     func testPublisher_whenAsyncRefresh_ShouldSendValue() async {
@@ -148,55 +160,115 @@ final class CourseDownloadHelperTests: XCTestCase {
         await fulfillment(of: [expectation], timeout: 1)
         Verify(downloadManagerMock, .once, .getDownloadTasks())
         Verify(downloadManagerMock, .once, .getCurrentDownloadTask())
-        XCTAssert(valueReceived != nil)
+        XCTAssertEqual(valueReceived, value)
     }
     
-    func testPublisher_whenReceivedEvent_ShouldSendValue() async {
+    func testPublisher_whenReceivedNotProgressEvent_ShouldSendValue() async {
         // given
         var valueReceived: CourseDownloadValue?
-        let expectation = expectation(description: "wait for publisher")
+        var receivedCount = 0
+        let addedExpectation = expectation(description: "wait for added event")
+        let startedExpectation = expectation(description: "wait for started event")
+        let pausedExpectation = expectation(description: "wait for paused event")
+        let canceledExpectation = expectation(description: "wait for canceled event")
+        let courseCanceledExpectation = expectation(description: "wait for courseCanceled event")
+        let allCanceledExpectation = expectation(description: "wait for allCanceled event")
+        let finishedExpectation = expectation(description: "wait for finished event")
+        let deletedFileExpectation = expectation(description: "wait for deletedFile event")
+        let clearedAllExpectation = expectation(description: "wait for clearedAll event")
+        
+        var expectations: [XCTestExpectation] = [
+            addedExpectation,
+            startedExpectation,
+            pausedExpectation,
+            canceledExpectation,
+            courseCanceledExpectation,
+            allCanceledExpectation,
+            finishedExpectation,
+            deletedFileExpectation,
+            clearedAllExpectation
+        ]
+        
         helper.publisher()
             .sink { value in
+                expectations[receivedCount].fulfill()
+                receivedCount += 1
                 valueReceived = value
-                expectation.fulfill()
             }
             .store(in: &cancellables)
         // when
-        downloadPublisher.send(.added)
+        downloadPublisher.send(.added) //1
+        downloadPublisher.send(.started(task)) //2
+        downloadPublisher.send(.paused([task])) //3
+        downloadPublisher.send(.canceled([task])) //4
+        downloadPublisher.send(.courseCanceled(task.courseId)) //5
+        downloadPublisher.send(.allCanceled) //6
+        downloadPublisher.send(.finished(task)) //7
+        downloadPublisher.send(.deletedFile([task.blockId])) //8
+        downloadPublisher.send(.clearedAll) //9
+        
+        // then
+        await Task.yield()
+        await fulfillment(of: expectations, timeout: 1)
+        Verify(downloadManagerMock, 9, .getDownloadTasks())
+        Verify(downloadManagerMock, 9, .getCurrentDownloadTask())
+        XCTAssertEqual(receivedCount, 9)
+        XCTAssertEqual(valueReceived, value)
+    }
+    
+    func testEventPublisher_whenReceivedProgressEvent_ShouldSendEvent() async {
+        // given
+        var valueReceived: DownloadDataTask?
+        task.progress = 0.5
+        let expectation = expectation(description: "wait for progress event")
+        var countOfEvents: Int = 0
+        helper.progressPublisher()
+            .sink { value in
+                expectation.fulfill()
+                countOfEvents += 1
+                valueReceived = value
+            }
+            .store(in: &cancellables)
+        helper.value = value
+        // when
+        downloadPublisher.send(.progress(task))
         // then
         await Task.yield()
         await fulfillment(of: [expectation], timeout: 1)
-        Verify(downloadManagerMock, .once, .getDownloadTasks())
-        Verify(downloadManagerMock, .once, .getCurrentDownloadTask())
-        XCTAssert(valueReceived != nil)
+        value.currentDownloadTask = task
+        XCTAssertEqual(helper.value, value)
+        XCTAssertEqual(valueReceived, task)
+        XCTAssertEqual(countOfEvents, 1)
+        Verify(downloadManagerMock, .never, .getDownloadTasks())
+        Verify(downloadManagerMock, .never, .getCurrentDownloadTask())
     }
     
     func testSizeForBlock_whenCalled_ShouldReturnSize() {
         // when
         let size = helper.sizeFor(block: block)
         // then
-        XCTAssert(size == block.fileSize)
+        XCTAssertEqual(size, block.fileSize)
     }
     
     func testSizeForBlocks_whenCalled_ShouldReturnSize() {
         // when
         let size = helper.sizeFor(blocks: [block])
         // then
-        XCTAssert(size == block.fileSize)
+        XCTAssertEqual(size, block.fileSize)
     }
     
     func testSizeForSequential_whenCalled_ShouldReturnSize() {
         // when
         let size = helper.sizeFor(sequential: sequential)
         // then
-        XCTAssert(size == sequential.totalSize)
+        XCTAssertEqual(size, sequential.totalSize)
     }
     
     func testSizeForSequentials_whenCalled_ShouldReturnSize() {
         // when
         let size = helper.sizeFor(sequentials: [sequential])
         // then
-        XCTAssert(size == sequential.totalSize)
+        XCTAssertEqual(size, sequential.totalSize)
     }
     
     func testCancelDownloading_whenCalled_ShouldCallManagerMethod() async throws {
