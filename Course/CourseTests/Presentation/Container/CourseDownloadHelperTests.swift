@@ -156,7 +156,6 @@ final class CourseDownloadHelperTests: XCTestCase {
         await helper.refreshValue()
         
         // then
-        await Task.yield()
         await fulfillment(of: [expectation], timeout: 1)
         Verify(downloadManagerMock, .once, .getDownloadTasks())
         Verify(downloadManagerMock, .once, .getCurrentDownloadTask())
@@ -177,7 +176,7 @@ final class CourseDownloadHelperTests: XCTestCase {
         let deletedFileExpectation = expectation(description: "wait for deletedFile event")
         let clearedAllExpectation = expectation(description: "wait for clearedAll event")
         
-        var expectations: [XCTestExpectation] = [
+        let expectations: [XCTestExpectation] = [
             addedExpectation,
             startedExpectation,
             pausedExpectation,
@@ -208,7 +207,6 @@ final class CourseDownloadHelperTests: XCTestCase {
         downloadPublisher.send(.clearedAll) //9
         downloadPublisher.send(.progress(task)) //Helper shouldn't send event for that
         // then
-        await Task.yield()
         await fulfillment(of: expectations, timeout: 1)
         Verify(downloadManagerMock, 9, .getDownloadTasks())
         Verify(downloadManagerMock, 9, .getCurrentDownloadTask())
@@ -233,7 +231,6 @@ final class CourseDownloadHelperTests: XCTestCase {
         // when
         downloadPublisher.send(.progress(task))
         // then
-        await Task.yield()
         await fulfillment(of: [expectation], timeout: 1)
         value.currentDownloadTask = task
         XCTAssertEqual(helper.value, value)
