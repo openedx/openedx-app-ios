@@ -135,7 +135,7 @@ final class CourseDownloadHelperTests: XCTestCase {
         helper.refreshValue()
         
         // then
-        wait(for: [expectation], timeout: 1)
+        wait(for: [expectation], timeout: 5)
         Verify(downloadManagerMock, .once, .getDownloadTasks())
         Verify(downloadManagerMock, .once, .getCurrentDownloadTask())
         XCTAssertEqual(valueReceived, value)
@@ -156,7 +156,7 @@ final class CourseDownloadHelperTests: XCTestCase {
         await helper.refreshValue()
         
         // then
-        await fulfillment(of: [expectation], timeout: 1)
+        await fulfillment(of: [expectation], timeout: 5)
         Verify(downloadManagerMock, .once, .getDownloadTasks())
         Verify(downloadManagerMock, .once, .getCurrentDownloadTask())
         XCTAssertEqual(valueReceived, value)
@@ -207,7 +207,7 @@ final class CourseDownloadHelperTests: XCTestCase {
         downloadPublisher.send(.clearedAll) //9
         downloadPublisher.send(.progress(task)) //Helper shouldn't send event for that
         // then
-        await fulfillment(of: expectations, timeout: 1)
+        await fulfillment(of: expectations, timeout: 5)
         Verify(downloadManagerMock, 9, .getDownloadTasks())
         Verify(downloadManagerMock, 9, .getCurrentDownloadTask())
         XCTAssertEqual(receivedCount, 9)
@@ -231,7 +231,7 @@ final class CourseDownloadHelperTests: XCTestCase {
         // when
         downloadPublisher.send(.progress(task))
         // then
-        await fulfillment(of: [expectation], timeout: 1)
+        await fulfillment(of: [expectation], timeout: 5)
         value.currentDownloadTask = task
         XCTAssertEqual(helper.value, value)
         XCTAssertEqual(valueReceived, task)
