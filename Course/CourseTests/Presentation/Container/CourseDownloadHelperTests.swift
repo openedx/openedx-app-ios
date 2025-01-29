@@ -24,7 +24,6 @@ final class CourseDownloadHelperTests: XCTestCase {
     
     override func setUpWithError() throws {
         try super.setUpWithError()
-        cancellables.removeAll()
         downloadManagerMock = DownloadManagerProtocolMock()
         block = CourseBlock(
             blockId: "",
@@ -118,6 +117,12 @@ final class CourseDownloadHelperTests: XCTestCase {
         Given(downloadManagerMock, .getCurrentDownloadTask(willReturn: task))
         Given(downloadManagerMock, .eventPublisher(willReturn: downloadPublisher.eraseToAnyPublisher()))
         helper = CourseDownloadHelper(courseStructure: courseStructure, manager: downloadManagerMock)
+    }
+    
+    override func tearDownWithError() throws {
+        try super.tearDownWithError()
+        cancellables.removeAll()
+        cancellables = []
     }
     
     func testPublisher_whenRefresh_ShouldSendValue() {
