@@ -736,6 +736,22 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.bulkDownloadVideosSubsection, parameters: parameters)
     }
     
+    public func bulkDownloadVideosSection(
+        courseID: String,
+        sectionID: String,
+        videos: Int
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.courseSection: sectionID,
+            EventParamKey.noOfVideos: videos,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.bulkDownloadVideosSection.rawValue
+        ]
+        
+        logEvent(.bulkDownloadVideosSection, parameters: parameters)
+    }
+    
     public func bulkDeleteVideosSubsection(
         courseID: String,
         subSectionID: String,
@@ -751,7 +767,21 @@ class AnalyticsManager: AuthorizationAnalytics,
         
         logEvent(.bulkDeleteVideosSubsection, parameters: parameters)
     }
-    
+    public func bulkDeleteVideosSection(
+        courseID: String,
+        sectionId: String,
+        videos: Int
+    ) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseID,
+            EventParamKey.courseSection: sectionId,
+            EventParamKey.noOfVideos: videos,
+            EventParamKey.category: EventCategory.video,
+            EventParamKey.name: EventBIValue.bulkDeleteVideosSection.rawValue
+        ]
+        
+        logEvent(.bulkDeleteVideosSection, parameters: parameters)
+    }
     public func videoLoaded(courseID: String, blockID: String, videoURL: String) {
         let parameters: [String: Any] = [
             EventParamKey.courseID: courseID,

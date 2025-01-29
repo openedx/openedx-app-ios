@@ -121,6 +121,17 @@ public protocol CourseAnalytics {
         videos: Int
     )
     
+    func bulkDownloadVideosSection(
+        courseID: String,
+        sectionID: String,
+        videos: Int
+    )
+    
+    func bulkDeleteVideosSection(
+        courseID: String,
+        sectionId: String,
+        videos: Int)
+    
     func videoLoaded(courseID: String, blockID: String, videoURL: String)
     
     func videoPlayed(courseID: String, blockID: String, videoURL: String)
@@ -229,6 +240,17 @@ class CourseAnalyticsMock: CourseAnalytics {
         subSectionID: String,
         videos: Int
     ) {}
+    
+    public func bulkDownloadVideosSection(
+        courseID: String,
+        sectionID: String,
+        videos: Int
+    ) {}
+    
+    public func bulkDeleteVideosSection(
+        courseID: String,
+        sectionId: String,
+        videos: Int) {}
     
     public func videoLoaded(courseID: String, blockID: String, videoURL: String) {}
     

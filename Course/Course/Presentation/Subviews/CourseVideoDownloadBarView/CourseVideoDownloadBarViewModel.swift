@@ -40,70 +40,34 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         }
     }
 
-    var progress: Double {
-        guard let currentDownloadTask = currentDownloadTask else {
-            return 0.0
+    /// total progress of downloading video files
+    var progress: Double = 0
+
+    var downloadableVerticals: Set<VerticalsDownloadState> = [] {
+        didSet {
+            let downloading = downloadableVerticals.filter { $0.state == .downloading }
+            downloadingVideos = downloading.flatMap { $0.downloadableBlocks }.count
+
+            let finished = downloadableVerticals.filter { $0.state == .finished }
+            totalFinishedVideos = finished.flatMap { $0.downloadableBlocks }.count
+            
+            let inProgress = downloadableVerticals.filter { $0.state != .finished }
+            remainingVideos = inProgress.flatMap { $0.downloadableBlocks }.count
+            
+            let totalFinishedCount = finished.count
+            isAllVideosDownloaded = totalFinishedCount == downloadableVerticals.count
         }
-        guard let index = courseViewModel.courseDownloadTasks.firstIndex(
-            where: { $0.id == currentDownloadTask.id && $0.type == .video }
-        ) else {
-            return 0.0
-        }
-        courseViewModel.courseDownloadTasks[index].progress = currentDownloadTask.progress
-        let videoTasks = courseViewModel.courseDownloadTasks.filter { $0.type == .video }
-        return videoTasks.reduce(0) { $0 + $1.progress } / Double(videoTasks.count)
     }
 
-    var downloadableVerticals: Set<VerticalsDownloadState> {
-        courseViewModel.downloadableVerticals.filter { $0.downloadableBlocks.contains { $0.type == .video } }
-    }
+    var isAllVideosDownloaded: Bool = false
 
-    var allVideosDownloaded: Bool {
-        let totalFinishedCount = downloadableVerticals.filter { $0.state == .finished }.count
-        return totalFinishedCount == downloadableVerticals.count
-    }
+    var remainingVideos: Int = 0
 
-    var remainingVideos: Int {
-        let inProgress = downloadableVerticals.filter { $0.state != .finished }
-        return inProgress.flatMap { $0.downloadableBlocks }.count
-    }
+    var downloadingVideos: Int = 0
 
-    var downloadingVideos: Int {
-        let downloading = downloadableVerticals.filter { $0.state == .downloading }
-        return downloading.flatMap { $0.downloadableBlocks }.count
-    }
+    var totalFinishedVideos: Int = 0
 
-    var totalFinishedVideos: Int {
-        let finished = downloadableVerticals.filter { $0.state == .finished }
-        return finished.flatMap { $0.downloadableBlocks }.count
-    }
-
-    var totalSize: String? {
-        let downloadQuality = courseViewModel.userSettings?.downloadQuality ?? .auto
-        let mb = courseStructure.totalVideosSizeInMb(
-            downloadQuality: downloadQuality
-        )
-
-        if mb == 0 { return nil }
-
-        if isOn {
-            let size =  mb - calculateSize(value: mb, percentage: progress * 100)
-            if size == 0 {
-                return sizeInMbOrGb(size: mb)
-            }
-            return sizeInMbOrGb(size: size)
-        }
-
-        let size = blockToMB(
-            data: Set(downloadableVerticals
-                .filter { $0.state != .finished }
-                .flatMap { $0.downloadableBlocks }
-            ),
-            downloadQuality: downloadQuality
-        )
-
-        return sizeInMbOrGb(size: size)
-    }
+    var totalSize: String?
 
     private func sizeInMbOrGb(size: Double) -> String {
         if size >= 1024.0 {
@@ -124,14 +88,14 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         observers()
     }
 
-    func allActiveDownloads() async -> [DownloadDataTask] {
-        await courseViewModel.manager.getDownloadTasks()
+    func allActiveDownloads() -> [DownloadDataTask] {
+        (courseViewModel.courseHelper.value?.allDownloadTasks ?? [])
             .filter { $0.state == .inProgress || $0.state == .waiting }
     }
 
     @MainActor
     func onToggle() async {
-        if allVideosDownloaded {
+        if isAllVideosDownloaded {
             courseViewModel.router.presentAlert(
                 alertTitle: CourseLocalization.Alert.warning,
                 alertMessage: "\(CourseLocalization.Alert.deleteAllVideos) \"\(courseStructure.displayName)\"?",
@@ -181,7 +145,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private func downloadAll(isOn: Bool) async {
         let blocks = downloadableVerticals.flatMap { $0.vertical.childs }
 
-        if isOn, courseViewModel.isShowedAllowLargeDownloadAlert(blocks: blocks) {
+        if isOn, await courseViewModel.isShowedAllowLargeDownloadAlert(blocks: blocks) {
             return
         }
 
@@ -207,7 +171,10 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
         let availableCount = downloadableVerticals.filter { $0.state == .available }.count
         let finishedCount = downloadableVerticals.filter { $0.state == .finished }.count
         let downloadingCount = downloadableVerticals.filter { $0.state == .downloading }.count
-
+        self.downloadableVerticals = downloadableVerticals.filter {
+            $0.downloadableBlocks.contains { $0.type == .video }
+        }
+        
         if downloadingCount == totalCount, totalCount > 0 {
             self.isOn = true
             return
@@ -230,24 +197,76 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     }
 
     private func observers() {
-        currentDownloadTask = courseViewModel.manager.currentDownloadTask
-        toggleStateIsOn(downloadableVerticals: courseViewModel.downloadableVerticals)
-        courseViewModel.$downloadableVerticals
-            .sink { [weak self] value in
-                guard let self else { return }
-                self.currentDownloadTask = self.courseViewModel.manager.currentDownloadTask
-                self.toggleStateIsOn(downloadableVerticals: value)
-        }
-        .store(in: &cancellables)
-        courseViewModel.manager.eventPublisher()
-            .sink { [weak self] state in
-                guard let self else { return }
-                if case .progress = state {
-                    self.currentDownloadTask = self.courseViewModel.manager.currentDownloadTask
-                }
-                self.toggleStateIsOn(downloadableVerticals: self.courseViewModel.downloadableVerticals)
+        currentDownloadTask = courseViewModel.courseHelper.value?.currentDownloadTask
+        toggleStateIsOn(downloadableVerticals: courseViewModel.courseHelper.value?.downloadableVerticals ?? [])
+        calculateProgress()
+        calculateTotalSize()
+        courseViewModel.courseHelper.progressPublisher()
+            .sink {[weak self] task in
+                self?.currentDownloadTask = task
+                self?.calculateProgress()
+                self?.calculateTotalSize()
             }
             .store(in: &cancellables)
+        
+        courseViewModel.courseHelper.publisher()
+            .sink {[weak self] value in
+                self?.currentDownloadTask = value.currentDownloadTask
+                self?.calculateProgress()
+                self?.toggleStateIsOn(downloadableVerticals: value.downloadableVerticals)
+                self?.calculateTotalSize()
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func calculateTotalSize() {
+        let downloadQuality = courseViewModel.userSettings?.downloadQuality ?? .auto
+        let mb = courseStructure.totalVideosSizeInMb(
+            downloadQuality: downloadQuality
+        )
+
+        if mb == 0 {
+            totalSize = nil
+            return
+        }
+
+        if isOn {
+            let size =  mb - calculateSize(value: mb, percentage: progress * 100)
+            if size == 0 {
+                totalSize = sizeInMbOrGb(size: mb)
+                return
+            }
+            totalSize = sizeInMbOrGb(size: size)
+            return
+        }
+
+        let size = blockToMB(
+            data: Set(downloadableVerticals
+                .filter { $0.state != .finished }
+                .flatMap { $0.downloadableBlocks }
+            ),
+            downloadQuality: downloadQuality
+        )
+
+        totalSize = sizeInMbOrGb(size: size)
+    }
+
+    private func calculateProgress() {
+        guard let currentDownloadTask = currentDownloadTask else {
+            progress = 0.0
+            return
+        }
+        guard let index = courseViewModel.courseDownloadTasks.firstIndex(
+            where: { $0.id == currentDownloadTask.id && $0.type == .video }
+        ) else {
+            progress = 0.0
+            return
+        }
+        courseViewModel.courseDownloadTasks[index].progress = currentDownloadTask.progress
+        let videoTasks = courseViewModel.courseDownloadTasks.filter { $0.type == .video }
+        progress = videoTasks.reduce(0) {
+            $0 + ($1.state == .finished ? 1 : $1.progress)
+        } / Double(videoTasks.count)
     }
 
     private func calculateSize(value: Double, percentage: Double) -> Double {

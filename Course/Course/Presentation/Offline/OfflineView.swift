@@ -258,10 +258,11 @@ struct OfflineView: View {
         enrollmentStart: nil,
         enrollmentEnd: nil,
         lastVisitedBlockID: nil,
-        coreAnalytics: CoreAnalyticsMock()
+        coreAnalytics: CoreAnalyticsMock(),
+        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
     )
     
-   return OfflineView(
+    OfflineView(
         courseID: "123",
         coordinate: .constant(0),
         collapsed: .constant(false),

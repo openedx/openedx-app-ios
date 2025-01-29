@@ -19,16 +19,19 @@ final class DownloadManagerTests: XCTestCase {
     override func setUp() {
         super.setUp()
         persistence = CorePersistenceProtocolMock()
+        let mockTask = createMockDownloadTask()
         storage = CoreStorageMock()
         connectivity = ConnectivityProtocolMock()
+        Given(persistence, .getDownloadDataTasks(willReturn: [mockTask]))
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
+        Given(storage, .user(getter: .init(id: 19, username: "username", email: "email", name: "name")))
     }
     
     // MARK: - Test Add to Queue
     
     func testAddToDownloadQueue_WhenWiFiOnlyAndOnWiFi_ShouldAddToQueue() async throws {
         // Given
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
         Given(connectivity, .isMobileData(getter: false))
         
         let downloadManager = DownloadManager(
@@ -48,7 +51,6 @@ final class DownloadManagerTests: XCTestCase {
         
         // When
         try await downloadManager.addToDownloadQueue(blocks: blocks)
-        
         // Then
         Verify(persistence, 1, .addToDownloadQueue(blocks: .value(blocks), downloadQuality: .value(.auto)))
     }
@@ -61,7 +63,6 @@ final class DownloadManagerTests: XCTestCase {
             downloadQuality: .auto,
             playbackSpeed: 1.0
         )))
-        Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: true))
         
         let downloadManager = DownloadManager(
@@ -90,8 +91,7 @@ final class DownloadManagerTests: XCTestCase {
         // Given
         let mockTask = createMockDownloadTask()
         Given(persistence, .getDownloadDataTasks(willReturn: [mockTask]))
-        Given(persistence, .nextBlockForDownloading(willReturn: mockTask))
-        Given(connectivity, .isInternetAvaliable(getter: true))
+//        Given(persistence, .nextBlockForDownloading(willReturn: mockTask))
         Given(connectivity, .isMobileData(getter: false))
         
         let downloadManager = DownloadManager(
@@ -102,13 +102,9 @@ final class DownloadManagerTests: XCTestCase {
         
         // When
         try await downloadManager.resumeDownloading()
-        
-        // Wait a bit for async operations to complete
-        await Task.yield()
-        
+        let currentDownloadTask: DownloadDataTask? = Mirror(reflecting: downloadManager).descendant("currentDownloadTask") as? DownloadDataTask
         // Then
-        Verify(persistence, 1, .nextBlockForDownloading())
-        XCTAssertEqual(downloadManager.currentDownloadTask?.id, mockTask.id)
+        XCTAssertEqual(currentDownloadTask?.id, mockTask.id)
     }
     
     // MARK: - Test Cancel Downloads
@@ -116,9 +112,7 @@ final class DownloadManagerTests: XCTestCase {
     func testCancelDownloading_ForSpecificTask_ShouldRemoveFileAndTask() async throws {
         // Given
         let task = createMockDownloadTask()
-        Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: false))
-        Given(persistence, .deleteDownloadDataTask(id: .value(task.id), willProduce: { _ in }))
         
         let downloadManager = DownloadManager(
             persistence: persistence,
@@ -130,7 +124,7 @@ final class DownloadManagerTests: XCTestCase {
         try await downloadManager.cancelDownloading(task: task)
         
         // Then
-        Verify(persistence, 1, .deleteDownloadDataTask(id: .value(task.id)))
+        Verify(persistence, 1, .deleteDownloadDataTasks(ids: .value([task.id])))
     }
     
     func testCancelDownloading_ForCourse_ShouldCancelAllTasksForCourse() async throws {
@@ -138,11 +132,8 @@ final class DownloadManagerTests: XCTestCase {
         let courseId = "course123"
         let task = createMockDownloadTask(courseId: courseId)
         let tasks = [task]
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: false))
         Given(persistence, .getDownloadDataTasksForCourse(.value(courseId), willReturn: tasks))
-        Given(persistence, .deleteDownloadDataTask(id: .value(task.id), willProduce: { _ in }))
         
         let downloadManager = DownloadManager(
             persistence: persistence,
@@ -155,7 +146,7 @@ final class DownloadManagerTests: XCTestCase {
         
         // Then
         Verify(persistence, 1, .getDownloadDataTasksForCourse(.value(courseId)))
-        Verify(persistence, 1, .deleteDownloadDataTask(id: .value(task.id)))
+        Verify(persistence, 1, .deleteDownloadDataTasks(ids: .value([task.id])))
     }
     
     // MARK: - Test File Management
@@ -163,9 +154,9 @@ final class DownloadManagerTests: XCTestCase {
     func testDeleteFile_ShouldRemoveFileAndTask() async {
         // Given
         let block = createMockCourseBlock()
-        Given(connectivity, .isInternetAvaliable(getter: true))
+        let task = createMockDownloadTask()
         Given(connectivity, .isMobileData(getter: false))
-        Given(persistence, .deleteDownloadDataTask(id: .value(block.id), willProduce: { _ in }))
+        Given(persistence, .getDownloadDataTasksForCourse(.value(block.courseId), willReturn: [task]))
         
         let downloadManager = DownloadManager(
             persistence: persistence,
@@ -174,10 +165,10 @@ final class DownloadManagerTests: XCTestCase {
         )
         
         // When
-        await downloadManager.deleteFile(blocks: [block])
+        await downloadManager.delete(blocks: [block], courseId: block.courseId)
         
         // Then
-        Verify(persistence, 1, .deleteDownloadDataTask(id: .value(block.id)))
+        Verify(persistence, 1, .deleteDownloadDataTasks(ids: .value([task.id])))
     }
     
     func testFileUrl_ForFinishedTask_ShouldReturnCorrectUrl() async {
@@ -191,7 +182,6 @@ final class DownloadManagerTests: XCTestCase {
         )
         
         Given(storage, .user(getter: mockUser))
-        Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: false))
         Given(persistence, .downloadDataTask(for: .value(task.id), willReturn: task))
         
@@ -212,10 +202,9 @@ final class DownloadManagerTests: XCTestCase {
     
     // MARK: - Test Video Size Calculation
     
-    func testIsLargeVideosSize_WhenOver1GB_ShouldReturnTrue() {
+    func testIsLargeVideosSize_WhenOver1GB_ShouldReturnTrue() async {
         // Given
         let blocks = [createMockCourseBlock(videoSize: 1_200_000_000)] // 1.2 GB
-        Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: false))
         
         let downloadManager = DownloadManager(
@@ -225,16 +214,15 @@ final class DownloadManagerTests: XCTestCase {
         )
         
         // When
-        let isLarge = downloadManager.isLargeVideosSize(blocks: blocks)
+        let isLarge = await downloadManager.isLargeVideosSize(blocks: blocks)
         
         // Then
         XCTAssertTrue(isLarge)
     }
     
-    func testIsLargeVideosSize_WhenUnder1GB_ShouldReturnFalse() {
+    func testIsLargeVideosSize_WhenUnder1GB_ShouldReturnFalse() async {
         // Given
         let blocks = [createMockCourseBlock(videoSize: 500_000_000)] // 500 MB
-        Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: false))
         
         let downloadManager = DownloadManager(
@@ -244,7 +232,7 @@ final class DownloadManagerTests: XCTestCase {
         )
         
         // When
-        let isLarge = downloadManager.isLargeVideosSize(blocks: blocks)
+        let isLarge = await downloadManager.isLargeVideosSize(blocks: blocks)
         
         // Then
         XCTAssertFalse(isLarge)
@@ -259,7 +247,6 @@ final class DownloadManagerTests: XCTestCase {
             createMockDownloadTask(id: "2")
         ]
         
-        Given(connectivity, .isInternetAvaliable(getter: true))
         Given(connectivity, .isMobileData(getter: false))
         Given(persistence, .getDownloadDataTasks(willReturn: expectedTasks))
         
@@ -288,7 +275,7 @@ final class DownloadManagerTests: XCTestCase {
     ) -> DownloadDataTask {
         DownloadDataTask(
             id: id,
-            blockId: "block123",
+            blockId: "test123",
             courseId: courseId,
             userId: 1,
             url: "https://test.com/video.mp4",
@@ -299,7 +286,8 @@ final class DownloadManagerTests: XCTestCase {
             state: state,
             type: .video,
             fileSize: 1000,
-            lastModified: "2024-01-01"
+            lastModified: "2024-01-01",
+            actualSize: 333
         )
     }
     

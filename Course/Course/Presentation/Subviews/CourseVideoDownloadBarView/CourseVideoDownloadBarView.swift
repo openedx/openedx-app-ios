@@ -47,7 +47,7 @@ struct CourseVideoDownloadBarView: View {
                 toggle
             }
             .padding(.vertical, 10)
-            if viewModel.isOn, !viewModel.allVideosDownloaded {
+            if viewModel.isOn, !viewModel.isAllVideosDownloaded {
                 ProgressView(value: viewModel.progress, total: 1)
                     .tint(Theme.Colors.accentColor)
                     .accessibilityIdentifier("progress_line_view")
@@ -57,7 +57,7 @@ struct CourseVideoDownloadBarView: View {
         .contentShape(Rectangle())
         .onTapGesture {
             Task {
-                let downloads = await viewModel.allActiveDownloads()
+                let downloads = viewModel.allActiveDownloads()
                 if !downloads.isEmpty {
                     onTap?()
                 }
@@ -70,7 +70,7 @@ struct CourseVideoDownloadBarView: View {
 
     private var image: some View {
         VStack {
-            if viewModel.isOn, !viewModel.allVideosDownloaded {
+            if viewModel.isOn, !viewModel.isAllVideosDownloaded {
                 ProgressView()
                     .accessibilityIdentifier("progress_view")
             } else {
