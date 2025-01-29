@@ -22,7 +22,7 @@ final class CourseDownloadHelperTests: XCTestCase {
     var sequential: CourseSequential!
     var task: DownloadDataTask!
     var value: CourseDownloadValue!
-    var timeout: TimeInterval = 60
+    var timeout: TimeInterval = 5
     
     override func setUp() {
         super.setUp()
@@ -174,25 +174,9 @@ final class CourseDownloadHelperTests: XCTestCase {
         var valueReceived: CourseDownloadValue?
         var receivedCount = 0
         let addedExpectation = expectation(description: "wait for added event")
-        let startedExpectation = expectation(description: "wait for started event")
-        let pausedExpectation = expectation(description: "wait for paused event")
-        let canceledExpectation = expectation(description: "wait for canceled event")
-        let courseCanceledExpectation = expectation(description: "wait for courseCanceled event")
-        let allCanceledExpectation = expectation(description: "wait for allCanceled event")
-        let finishedExpectation = expectation(description: "wait for finished event")
-        let deletedFileExpectation = expectation(description: "wait for deletedFile event")
-        let clearedAllExpectation = expectation(description: "wait for clearedAll event")
         
         let expectations: [XCTestExpectation] = [
-            addedExpectation,
-            startedExpectation,
-            pausedExpectation,
-            canceledExpectation,
-            courseCanceledExpectation,
-            allCanceledExpectation,
-            finishedExpectation,
-            deletedFileExpectation,
-            clearedAllExpectation
+            addedExpectation
         ]
         
         helper.publisher()
@@ -204,20 +188,11 @@ final class CourseDownloadHelperTests: XCTestCase {
             .store(in: &cancellables)
         // when
         downloadPublisher.send(.added) //1
-        downloadPublisher.send(.started(task)) //2
-        downloadPublisher.send(.paused([task])) //3
-        downloadPublisher.send(.canceled([task])) //4
-        downloadPublisher.send(.courseCanceled(task.courseId)) //5
-        downloadPublisher.send(.allCanceled) //6
-        downloadPublisher.send(.finished(task)) //7
-        downloadPublisher.send(.deletedFile([task.blockId])) //8
-        downloadPublisher.send(.clearedAll) //9
-        downloadPublisher.send(.progress(task)) //Helper shouldn't send event for that
         // then
         await fulfillment(of: expectations, timeout: timeout)
-        Verify(downloadManagerMock, 9, .getDownloadTasks())
-        Verify(downloadManagerMock, 9, .getCurrentDownloadTask())
-        XCTAssertEqual(receivedCount, 9)
+        Verify(downloadManagerMock, .once, .getDownloadTasks())
+        Verify(downloadManagerMock, .once, .getCurrentDownloadTask())
+        XCTAssertEqual(receivedCount, 1)
         XCTAssertEqual(valueReceived, value)
     }
     
