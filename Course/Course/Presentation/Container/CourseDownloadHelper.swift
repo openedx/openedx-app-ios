@@ -54,6 +54,7 @@ public struct CourseDownloadValue: Sendable, Equatable {
     }
 }
 
+/// Helper to obtain download info for course
 public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecked Sendable {
     
     public var value: CourseDownloadValue?
