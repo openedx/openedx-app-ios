@@ -10,11 +10,10 @@ import Core
 import Theme
 
 struct SocialAuthView: View {
-
+    
     // MARK: - Properties
     @StateObject var viewModel: SocialAuthViewModel
-    let iPadButtonWidth: CGFloat = 260
-
+    
     init(
         authType: SocialAuthType = .signIn,
         viewModel: SocialAuthViewModel
@@ -22,109 +21,133 @@ struct SocialAuthView: View {
         self._viewModel = .init(wrappedValue: viewModel)
         self.authType = authType
     }
-
+    
     enum SocialAuthType {
         case signIn
         case register
     }
     var authType: SocialAuthType = .signIn
-
+    
     private var title: String {
+        AuthLocalization.continueWith
+    }
+    
+    private var bottomViewText: String {
         switch authType {
         case .signIn:
-            AuthLocalization.signInWith
+            AuthLocalization.orSignInWith
         case .register:
-            AuthLocalization.registerWith
+            AuthLocalization.orRegisterWith
         }
     }
     
-    private var columns: [GridItem] {
-        if isPad {
-            return [GridItem(.fixed(iPadButtonWidth)), GridItem(.fixed(iPadButtonWidth))]
-        }
-        return [GridItem(.flexible())]
-    }
-
-    private var isPad: Bool {
-        UIDevice.current.userInterfaceIdiom == .pad
-    }
     // MARK: - Views
-
+    
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 16) {
             headerView
             buttonsView
+            bottomView
         }
-        .padding(.bottom, 20)
         .frame(maxWidth: .infinity)
     }
-
+    
     private var headerView: some View {
         HStack {
-            Text("\(AuthLocalization.or) \(title.lowercased()):")
-                .padding(.vertical, 20)
+            Text(title)
                 .font(Theme.Fonts.bodyMedium)
                 .accessibilityIdentifier("social_auth_title_text")
             Spacer()
         }
-        .frame(maxWidth: .infinity, minHeight: 42)
     }
-
+    
     private var buttonsView: some View {
-        LazyVGrid(columns: columns) {
-            if viewModel.googleEnabled {
-                SocialAuthButton(
-                    image: CoreAssets.iconGoogleWhite.swiftUIImage,
-                    title: "\(title) \(AuthLocalization.google)",
-                    textColor: .black,
-                    backgroundColor: CoreAssets.googleButtonColor.swiftUIColor,
-                    action: { Task { await viewModel.signInWithGoogle() } }
-                )
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(title) \(AuthLocalization.google)")
-                .accessibilityIdentifier("social_auth_google_button")
+        HStack {
+            if let lastOption = viewModel.lastUsedOption,
+               authType == .signIn {
+                Text(AuthLocalization.lastSignIn)
+                    .font(Theme.Fonts.bodySmall)
+                    .foregroundStyle(Theme.Colors.textPrimary)
+                
+                socialAuthButton(lastOption)
+                    .padding(.leading, 10)
+                
+                Divider()
+                    .frame(width: 1)
+                    .overlay(Theme.Colors.socialAuthColor)
+                    .padding(.horizontal, 16)
+                    .opacity(viewModel.enabledOptions.count == 1 ? 0 : 1)
+                
+                Spacer()
             }
-            if viewModel.faceboolEnabled {
-                SocialAuthButton(
-                    image: CoreAssets.iconFacebookWhite.swiftUIImage,
-                    title: "\(title) \(AuthLocalization.facebook)",
-                    backgroundColor: CoreAssets.facebookButtonColor.swiftUIColor,
-                    action: { Task { await viewModel.signInWithFacebook() } }
-                )
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(title) \(AuthLocalization.facebook)")
-                .accessibilityIdentifier("social_auth_facebook_button")
-            }
-            if viewModel.microsoftEnabled {
-                SocialAuthButton(
-                    image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
-                    title: "\(title) \(AuthLocalization.microsoft)",
-                    backgroundColor: CoreAssets.microsoftButtonColor.swiftUIColor,
-                    action: { Task { await viewModel.signInWithMicrosoft() } }
-                )
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(title) \(AuthLocalization.microsoft)")
-                .accessibilityIdentifier("social_auth_microsoft_button")
-            }
-            if viewModel.appleSignInEnabled {
-                SocialAuthButton(
-                    image: CoreAssets.iconApple.swiftUIImage,
-                    title: "\(title) \(AuthLocalization.apple)",
-                    backgroundColor: CoreAssets.appleButtonColor.swiftUIColor,
-                    action: viewModel.signInWithApple
-                )
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel("\(title) \(AuthLocalization.apple)")
-                .accessibilityIdentifier("social_auth_apple_button")
+            
+            HStack {
+                ForEach(viewModel.enabledOptions, id: \.self) { option in
+                    if option != viewModel.lastUsedOption || authType != .signIn {
+                        socialAuthButton(option)
+                            .padding(.trailing, option == viewModel.enabledOptions.last ? 0 : 12)
+                    }
+                }
+                Spacer()
             }
         }
+        .frame(height: 42)
+    }
+    
+    private func socialAuthButton(
+        _ option: SocialAuthMethod
+    ) -> SocialAuthButton {
+        switch option {
+        case .google:
+            return SocialAuthButton(
+                image: CoreAssets.iconGoogleWhite.swiftUIImage,
+                accessibilityLabel: "\(title) \(AuthLocalization.google)",
+                accessibilityIdentifier: "social_auth_google_button",
+                action: { Task { await viewModel.signInWithGoogle() }}
+            )
+        case .apple:
+            return SocialAuthButton(
+                image: CoreAssets.iconApple.swiftUIImage,
+                accessibilityLabel: "\(title) \(AuthLocalization.apple)",
+                accessibilityIdentifier: "social_auth_apple_button",
+                action: { Task { viewModel.signInWithApple() }}
+            )
+        case .facebook:
+            return SocialAuthButton(
+                image: CoreAssets.iconFacebook.swiftUIImage,
+                accessibilityLabel: "\(title) \(AuthLocalization.facebook)",
+                accessibilityIdentifier: "social_auth_facebook_button",
+                action: { Task { await viewModel.signInWithFacebook() }}
+            )
+        case .microsoft:
+            return SocialAuthButton(
+                image: CoreAssets.iconMicrosoftWhite.swiftUIImage,
+                accessibilityLabel: "\(title) \(AuthLocalization.microsoft)",
+                accessibilityIdentifier: "social_auth_microsoft_button",
+                action: { Task { await viewModel.signInWithMicrosoft() }}
+            )
+        }
+    }
+    
+    private var bottomView: some View {
+        HStack {
+            Text(bottomViewText)
+                .font(Theme.Fonts.bodyMedium)
+                .accessibilityIdentifier("social_auth_or_signin_with_text")
+            Spacer()
+        }
+        .padding(.top, 16)
     }
 }
 
 #if DEBUG
 struct SocialSignView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = SocialAuthViewModel(config: ConfigMock(), completion: { _ in })
+        let vm = SocialAuthViewModel(
+            config: ConfigMock(),
+            lastUsedOption: nil,
+            completion: { _ in }
+        )
         SocialAuthView(viewModel: vm).padding()
     }
 }

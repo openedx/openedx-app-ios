@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Certificate: Codable, Hashable {
+public struct Certificate: Codable, Hashable, Sendable {
     public let url: String?
     
     public init(url: String?) {

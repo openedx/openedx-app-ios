@@ -169,7 +169,7 @@ struct OfflineView: View {
             && ((viewModel.totalFilesSize - viewModel.downloadedFilesSize != 0)
             || (viewModel.totalFilesSize == 0 && viewModel.downloadedFilesSize == 0)) {
             Button(action: {
-                Task(priority: .low) {
+                Task {
                     switch viewModel.downloadAllButtonState {
                     case .start:
                         await viewModel.downloadAll()
@@ -258,10 +258,11 @@ struct OfflineView: View {
         enrollmentStart: nil,
         enrollmentEnd: nil,
         lastVisitedBlockID: nil,
-        coreAnalytics: CoreAnalyticsMock()
+        coreAnalytics: CoreAnalyticsMock(),
+        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
     )
     
-   return OfflineView(
+    OfflineView(
         courseID: "123",
         coordinate: .constant(0),
         collapsed: .constant(false),

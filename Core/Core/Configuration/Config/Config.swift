@@ -8,7 +8,7 @@
 import Foundation
 
 //sourcery: AutoMockable
-public protocol ConfigProtocol {
+public protocol ConfigProtocol: Sendable {
     var baseURL: URL { get }
     var baseSSOURL: URL { get }
     var ssoFinishedURL: URL { get }
@@ -36,12 +36,12 @@ public protocol ConfigProtocol {
     var URIScheme: String { get }
 }
 
-public enum TokenType: String {
+public enum TokenType: String, Sendable {
     case jwt = "JWT"
     case bearer = "BEARER"
 }
 
-private enum ConfigKeys: String {
+private enum ConfigKeys: String, Sendable {
     case baseURL = "API_HOST_URL"
     case ssoBaseURL = "SSO_URL"
     case ssoFinishedURL = "SSO_FINISHED_URL"
@@ -57,7 +57,7 @@ private enum ConfigKeys: String {
     case URIScheme = "URI_SCHEME"
 }
 
-public class Config {
+public class Config: @unchecked Sendable {
     let configFileName = "config"
     
     internal var properties: [String: Any] = [:]
@@ -193,10 +193,10 @@ extension Config: ConfigProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public class ConfigMock: Config {
+public class ConfigMock: Config, @unchecked Sendable {
     private let config: [String: Any] = [
         "API_HOST_URL": "https://www.example.com",
-        "SSO_URL" : "https://www.example.com",
+        "SSO_URL": "https://www.example.com",
         "OAUTH_CLIENT_ID": "oauth_client_id",
         "FEEDBACK_EMAIL_ADDRESS": "example@mail.com",
         "PLATFORM_NAME": "OpenEdx",

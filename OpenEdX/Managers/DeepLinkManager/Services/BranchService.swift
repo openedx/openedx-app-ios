@@ -10,7 +10,7 @@ import UIKit
 import Core
 import BranchSDK
 
-class BranchService: DeepLinkService {
+@preconcurrency final class BranchService: DeepLinkService {
     // configure service
     func configureWith(
         manager: DeepLinkManager,

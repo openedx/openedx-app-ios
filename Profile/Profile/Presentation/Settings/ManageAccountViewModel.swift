@@ -9,7 +9,8 @@ import Foundation
 import Core
 import SwiftUI
 
-public class ManageAccountViewModel: ObservableObject {
+@MainActor
+public final class ManageAccountViewModel: ObservableObject {
     
     @Published public var userModel: UserProfile?
     @Published public var updatedAvatar: UIImage?
@@ -46,7 +47,7 @@ public class ManageAccountViewModel: ObservableObject {
     @MainActor
     public func getMyProfile(withProgress: Bool = true) async {
         do {
-            let userModel = interactor.getMyProfileOffline()
+            let userModel = await interactor.getMyProfileOffline()
             if userModel == nil && connectivity.isInternetAvaliable {
                 isShowProgress = withProgress
             } else {

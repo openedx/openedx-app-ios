@@ -9,7 +9,7 @@ import Foundation
 import Core
 import OEXFoundation
 
-public protocol DashboardRepositoryProtocol {
+public protocol DashboardRepositoryProtocol: Sendable {
     func getEnrollments(page: Int) async throws -> [CourseItem]
     func getEnrollmentsOffline() async throws -> [CourseItem]
     func getPrimaryEnrollment(pageSize: Int) async throws -> PrimaryEnrollment
@@ -17,7 +17,7 @@ public protocol DashboardRepositoryProtocol {
     func getAllCourses(filteredBy: String, page: Int) async throws -> PrimaryEnrollment
 }
 
-public class DashboardRepository: DashboardRepositoryProtocol {
+public actor DashboardRepository: DashboardRepositoryProtocol {
     
     private let api: API
     private let storage: CoreStorage
@@ -37,7 +37,7 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         )
             .mapResponse(DataLayer.CourseEnrollments.self)
             .domain(baseURL: config.baseURL.absoluteString)
-        persistence.saveEnrollments(items: result)
+        await persistence.saveEnrollments(items: result)
         return result
         
     }
@@ -55,7 +55,7 @@ public class DashboardRepository: DashboardRepositoryProtocol {
         )
             .mapResponse(DataLayer.PrimaryEnrollment.self)
             .domain(baseURL: config.baseURL.absoluteString)
-        persistence.savePrimaryEnrollment(enrollments: result)
+        await persistence.savePrimaryEnrollment(enrollments: result)
         return result
     }
     
@@ -80,7 +80,7 @@ public class DashboardRepository: DashboardRepositoryProtocol {
 // swiftlint:disable all
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-class DashboardRepositoryMock: DashboardRepositoryProtocol {
+final class DashboardRepositoryMock: DashboardRepositoryProtocol {
     
     func getEnrollments(page: Int) async throws -> [CourseItem] {
         var models: [CourseItem] = []

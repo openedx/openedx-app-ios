@@ -58,7 +58,7 @@ struct CourseUnitDropDownList_Previews: PreviewProvider {
                 studentUrl: "",
                 webUrl: "",
                 encodedVideo: nil,
-                multiDevice: true, 
+                multiDevice: true,
                 offlineDownload: nil
             ),
             CourseBlock(

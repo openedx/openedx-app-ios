@@ -13,7 +13,7 @@ public extension DataLayer {
     
     typealias Blocks = [String: CourseBlock]
     
-    struct CourseStructure: Decodable {
+    struct CourseStructure: Decodable, Sendable {
         public let rootItem: String
         public var dict: Blocks
         public let id: String
@@ -69,7 +69,7 @@ public extension DataLayer {
     }
 }
 public extension DataLayer {
-    struct CourseBlock: Decodable {
+    struct CourseBlock: Decodable, Sendable {
         public let blockId: String
         public let id: String
         public let graded: Bool
@@ -134,7 +134,7 @@ public extension DataLayer {
         }
     }
     
-    struct AssignmentProgress: Codable {
+    struct AssignmentProgress: Codable, Sendable {
         public let assignmentType: String?
         public let numPointsEarned: Double?
         public let numPointsPossible: Double?
@@ -152,7 +152,7 @@ public extension DataLayer {
         }
     }
     
-    struct OfflineDownload: Codable {
+    struct OfflineDownload: Codable, Sendable {
         public let fileUrl: String?
         public let lastModified: String?
         public let fileSize: Int?
@@ -170,7 +170,7 @@ public extension DataLayer {
         }
     }
 
-    struct Transcripts: Codable {
+    struct Transcripts: Codable, Sendable {
         public let en: String?
 
         enum CodingKeys: String, CodingKey {
@@ -182,7 +182,7 @@ public extension DataLayer {
         }
     }
     
-    struct CourseDetailUserViewData: Decodable {
+    struct CourseDetailUserViewData: Decodable, Sendable {
         public let transcripts: [String: String]?
         public let encodedVideo: CourseDetailEncodedVideoData?
         public let topicID: String?
@@ -204,7 +204,7 @@ public extension DataLayer {
         }
     }
     
-    struct CourseDetailEncodedVideoData: Decodable {
+    struct CourseDetailEncodedVideoData: Decodable, Sendable {
         public let youTube: EncodedVideoData?
         public let fallback: EncodedVideoData?
         public let desktopMP4: EncodedVideoData?
@@ -238,7 +238,7 @@ public extension DataLayer {
         }
     }
     
-    struct EncodedVideoData: Decodable {
+    struct EncodedVideoData: Decodable, Sendable {
         public let url: String?
         public let fileSize: Int?
         public let streamPriority: Int?

@@ -57,6 +57,10 @@ public struct CommentCell: View {
                     .resizable()
                     .frame(width: 32, height: 32)
                     .cornerRadius(16)
+                    .overlay {
+                        Circle()
+                            .stroke(Theme.Colors.avatarStroke, lineWidth: 1)
+                    }
                 })
                 
                 VStack(alignment: .leading) {
@@ -70,16 +74,18 @@ public struct CommentCell: View {
                 Button(action: {
                     onReportTap()
                 }, label: {
-                    comment.abuseFlagged
+                    let icon = comment.abuseFlagged
                     ? CoreAssets.reported.swiftUIImage
                     : CoreAssets.report.swiftUIImage
+                    icon.renderingMode(.template)
+                        
                     Text(comment.abuseFlagged
                          ? DiscussionLocalization.Comment.unreport
                          : DiscussionLocalization.Comment.report)
                     .font(Theme.Fonts.labelMedium)
                 }).foregroundColor(comment.abuseFlagged
-                                   ? Theme.Colors.alert
-                                      : Theme.Colors.textSecondary)
+                                   ? Theme.Colors.irreversibleAlert
+                                      : Theme.Colors.textSecondaryLight)
             }
             Text(comment.postBodyHtml.hideHtmlTagsAndUrls())
                 .font(Theme.Fonts.bodyMedium)
@@ -125,15 +131,16 @@ public struct CommentCell: View {
                     : CoreAssets.vote.swiftUIImage.renderingMode(.template)
                     Text("\(comment.votesCount)")
                     Text(DiscussionLocalization.votesCount(comment.votesCount))
-                        .font(Theme.Fonts.labelLarge)
                 }).foregroundColor(comment.voted
-                                   ? Theme.Colors.accentXColor
-                                   : Theme.Colors.textSecondary)
+                                   ? Theme.Colors.accentColor
+                                   : Theme.Colors.textSecondaryLight)
+                .font(Theme.Fonts.labelLarge)
 
                 Spacer()
                 if addCommentAvailable {
                         HStack {
                             Image(systemName: "message.fill")
+                                .renderingMode(.template)
                             Text("\(comment.responsesCount)")
                             Text(DiscussionLocalization.commentsCount(comment.responsesCount))
                         }
@@ -184,16 +191,14 @@ struct CommentView_Previews: PreviewProvider {
                 addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
-                onAvatarTap: {
-                    _ in
-                },
+                onAvatarTap: { _ in },
                 onLikeTap: {},
                 onReportTap: {},
                 onCommentsTap: {},
                 onFetchMore: {})
             CommentCell(
                 comment: comment,
-                addCommentAvailable: true, 
+                addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
                 onAvatarTap: {_ in},
@@ -209,7 +214,7 @@ struct CommentView_Previews: PreviewProvider {
         VStack(spacing: 0) {
             CommentCell(
                 comment: comment,
-                addCommentAvailable: true, 
+                addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
                 onAvatarTap: {_ in},
@@ -219,7 +224,7 @@ struct CommentView_Previews: PreviewProvider {
                 onFetchMore: {})
             CommentCell(
                 comment: comment,
-                addCommentAvailable: true, 
+                addCommentAvailable: true,
                 useRelativeDates: true,
                 leftLineEnabled: false,
                 onAvatarTap: {_ in},

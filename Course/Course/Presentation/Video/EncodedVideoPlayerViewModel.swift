@@ -10,7 +10,7 @@ import Core
 import Combine
 
 public class EncodedVideoPlayerViewModel: VideoPlayerViewModel {
-    var controller: AVPlayerViewController {
-        (playerHolder.playerController as? AVPlayerViewController) ?? AVPlayerViewController()
+    var controller: CustomAVPlayerViewController {
+        (playerHolder.playerController as? CustomAVPlayerViewController) ?? CustomAVPlayerViewController()
     }
 }

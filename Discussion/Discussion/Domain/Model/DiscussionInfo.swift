@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct DiscussionInfo {
+public struct DiscussionInfo: Sendable {
     public var discussionID: String?
     public var blackouts: [DiscussionBlackout]?
 

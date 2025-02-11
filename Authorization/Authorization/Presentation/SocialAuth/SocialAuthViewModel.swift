@@ -35,13 +35,13 @@ enum SocialAuthDetails {
     var authMethod: AuthMethod {
         switch self {
         case .apple:
-            .socailAuth(.apple)
+            .socialAuth(.apple)
         case .facebook:
-            .socailAuth(.facebook)
+            .socialAuth(.facebook)
         case .google:
-            .socailAuth(.google)
+            .socialAuth(.google)
         case .microsoft:
-            .socailAuth(.microsoft)
+            .socialAuth(.microsoft)
         }
     }
 
@@ -56,6 +56,7 @@ enum SocialAuthDetails {
     }
 }
 
+@MainActor
 final public class SocialAuthViewModel: ObservableObject {
 
     // MARK: - Properties
@@ -63,12 +64,21 @@ final public class SocialAuthViewModel: ObservableObject {
     private var completion: ((Result<SocialAuthDetails, Error>) -> Void)
     private let config: ConfigProtocol
 
+    @Published var lastUsedOption: SocialAuthMethod?
+    var enabledOptions: [SocialAuthMethod] = []
+    
     init(
         config: ConfigProtocol,
+        lastUsedOption: String?,
         completion: @escaping (Result<SocialAuthDetails, Error>) -> Void
     ) {
         self.config = config
         self.completion = completion
+        if let lastUsedOption {
+            self.lastUsedOption = SocialAuthMethod(rawValue: lastUsedOption)
+        }
+        
+        configureEnabledOptions()
     }
 
     private lazy var appleAuthProvider: AppleAuthProvider  = .init(config: config)
@@ -104,6 +114,24 @@ final public class SocialAuthViewModel: ObservableObject {
             return true
         }
         return config.appleSignIn.enabled
+    }
+    
+    func configureEnabledOptions() {
+        if googleEnabled {
+            enabledOptions.append(.google)
+        }
+        
+        if microsoftEnabled {
+            enabledOptions.append(.microsoft)
+        }
+        
+        if faceboolEnabled {
+            enabledOptions.append(.facebook)
+        }
+        
+        if appleSignInEnabled {
+            enabledOptions.append(.apple)
+        }
     }
 
     // MARK: - Public Intens

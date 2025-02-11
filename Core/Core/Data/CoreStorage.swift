@@ -8,7 +8,7 @@
 import Foundation
 
 //sourcery: AutoMockable
-public protocol CoreStorage {
+public protocol CoreStorage: Sendable {
     var accessToken: String? {get set}
     var refreshToken: String? {get set}
     var pushToken: String? {get set}
@@ -21,11 +21,12 @@ public protocol CoreStorage {
     var userSettings: UserSettings? {get set}
     var resetAppSupportDirectoryUserData: Bool? {get set}
     var useRelativeDates: Bool {get set}
+    var lastUsedSocialAuth: String? {get set}
     func clear()
 }
 
 #if DEBUG
-public class CoreStorageMock: CoreStorage {
+public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
     public var accessToken: String?
     public var refreshToken: String?
     public var pushToken: String?
@@ -38,6 +39,7 @@ public class CoreStorageMock: CoreStorage {
     public var userSettings: UserSettings?
     public var resetAppSupportDirectoryUserData: Bool?
     public var useRelativeDates: Bool = true
+    public var lastUsedSocialAuth: String?
     public func clear() {}
     
     public init() {}

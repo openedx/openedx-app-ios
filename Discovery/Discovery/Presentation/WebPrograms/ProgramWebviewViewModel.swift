@@ -10,7 +10,7 @@ import Core
 import SwiftUI
 import WebKit
 
-public class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
+public final class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false

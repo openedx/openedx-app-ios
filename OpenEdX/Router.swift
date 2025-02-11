@@ -19,7 +19,7 @@ import Profile
 import WhatsNew
 import Combine
 
-// swiftlint:disable file_length type_body_length
+// swiftlint:disable type_body_length file_length
 public class Router: AuthorizationRouter,
                      WhatsNewRouter,
                      DiscoveryRouter,
@@ -64,19 +64,28 @@ public class Router: AuthorizationRouter,
         navigationController.setViewControllers(viewControllers, animated: true)
     }
     
-    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
+    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {
         showToolBar()
         var whatsNewStorage = Container.shared.resolve(WhatsNewStorage.self)!
         let config = Container.shared.resolve(ConfigProtocol.self)!
         let persistence = Container.shared.resolve(CorePersistenceProtocol.self)!
-        let coreStorage = Container.shared.resolve(CoreStorage.self)!
+        var coreStorage = Container.shared.resolve(CoreStorage.self)!
         let analytics = Container.shared.resolve(WhatsNewAnalytics.self)!
 
         if let userId = coreStorage.user?.id {
             persistence.set(userId: userId)
         }
+        
+        if let authMethod = postLoginData?.authMethod {
+            coreStorage.lastUsedSocialAuth = authMethod
+        }
 
-        let viewModel = WhatsNewViewModel(storage: whatsNewStorage, sourceScreen: sourceScreen, analytics: analytics)
+        let viewModel = WhatsNewViewModel(
+            storage: whatsNewStorage,
+            sourceScreen: sourceScreen,
+            analytics: analytics,
+            postLoginData: postLoginData
+        )
         let whatsNew = WhatsNewView(router: Container.shared.resolve(WhatsNewRouter.self)!, viewModel: viewModel)
         let shouldShowWhatsNew = viewModel.shouldShowWhatsNew()
                
@@ -90,7 +99,8 @@ public class Router: AuthorizationRouter,
         } else {
             let viewModel = Container.shared.resolve(
                 MainScreenViewModel.self,
-                argument: sourceScreen
+                arguments: sourceScreen,
+                postLoginData
             )!
             
             let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
@@ -383,8 +393,13 @@ public class Router: AuthorizationRouter,
         )
         navigationController.pushViewController(controller, animated: true)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            Container.shared.resolve(PushNotificationsManager.self)?.performRegistration()
+        Task {
+            try? await Task.sleep(for: .seconds(1))
+            await Container.shared.resolve(PushNotificationsManager.self)?.performRegistration()
+        }
+        
+        if let analytics = Container.shared.resolve(DashboardAnalytics.self) {
+            analytics.dashboardCourseClicked(courseID: courseID, courseName: title)
         }
     }
     
@@ -506,7 +521,6 @@ public class Router: AuthorizationRouter,
         courseStructure: CourseStructure,
         blockLink: String) {
             var courseBlock: CourseBlock?
-            var courseName: String?
             var chapterPosition: Int?
             var sequentialPosition: Int?
             var verticalPosition: Int?
@@ -517,7 +531,6 @@ public class Router: AuthorizationRouter,
                         vertical.childs.forEach { block in
                             if block.id == componentID {
                                 courseBlock = block
-                                courseName = sequential.displayName
                                 chapterPosition = chapterIndex
                                 sequentialPosition = sequentialIndex
                                 verticalPosition = verticalIndex
@@ -538,7 +551,8 @@ public class Router: AuthorizationRouter,
                         verticalIndex: verticalPosition ?? 0,
                         chapters: courseStructure.childs,
                         chapterIndex: chapterPosition ?? 0,
-                        sequentialIndex: sequentialPosition ?? 0)
+                        sequentialIndex: sequentialPosition ?? 0
+                    )
                 }
             } else if !blockLink.isEmpty, let blockURL = URL(string: blockLink) {
                 DispatchQueue.main.async { [weak self] in
@@ -571,20 +585,6 @@ public class Router: AuthorizationRouter,
             },
             type: .default(positiveAction: CoreLocalization.openInBrowser, image: nil)
         )
-    }
-
-    public func showDownloads(
-        downloads: [DownloadDataTask],
-        manager: DownloadManagerProtocol
-    ) {
-        let downloadsView = DownloadsView(
-            isSheet: false,
-            router: Container.shared.resolve(CourseRouter.self)!,
-            downloads: downloads,
-            manager: manager
-        )
-        let controller = UIHostingController(rootView: downloadsView)
-        navigationController.pushViewController(controller, animated: true)
     }
 
     public func replaceCourseUnit(
@@ -670,6 +670,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func showComments(
+        courseID: String,
         commentID: String,
         parentComment: Post,
         threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
@@ -677,7 +678,7 @@ public class Router: AuthorizationRouter,
         animated: Bool
     ) {
         let router = Container.shared.resolve(DiscussionRouter.self)!
-        let viewModel = Container.shared.resolve(ResponsesViewModel.self, argument: threadStateSubject)!
+        let viewModel = Container.shared.resolve(ResponsesViewModel.self, arguments: threadStateSubject, courseID)!
         viewModel.isBlackedOut = isBlackedOut
         let view = ResponsesView(
             commentID: commentID,
@@ -890,4 +891,4 @@ extension Router {
         navigationController.setViewControllers(viewControllers, animated: true)
     }
 }
-// swiftlint:enable file_length type_body_length
+// swiftlint:enable type_body_length file_length

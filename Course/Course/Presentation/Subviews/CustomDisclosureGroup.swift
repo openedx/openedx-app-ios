@@ -12,14 +12,12 @@ import Theme
 struct CustomDisclosureGroup: View {
     @State private var expandedSections: [String: Bool] = [:]
     
-    private let isVideo: Bool
     private let proxy: GeometryProxy
     private let course: CourseStructure
     private let viewModel: CourseContainerViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    init(isVideo: Bool, course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
-        self.isVideo = isVideo
+    init(course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
         self.course = course
         self.proxy = proxy
         self.viewModel = viewModel
@@ -41,18 +39,19 @@ struct CustomDisclosureGroup: View {
                                     .rotationEffect(.degrees(expandedSections[chapter.id] ?? false ? -90 : 90))
                                     .foregroundColor(Theme.Colors.textPrimary)
                                 if chapter.childs.allSatisfy({ $0.completion == 1 }) {
-                                    CoreAssets.finishedSequence.swiftUIImage
+                                    CoreAssets.finishedSequence.swiftUIImage.renderingMode(.template)
+                                        .foregroundColor(Theme.Colors.success)
                                 }
                                 Text(chapter.displayName)
                                     .font(Theme.Fonts.titleMedium)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .lineLimit(1)
                                 Spacer()
-                                if canDownloadAllSections(in: chapter, videoOnly: isVideo),
-                                   let state = downloadAllButtonState(for: chapter, videoOnly: isVideo) {
+                                if canDownloadAllSections(in: chapter),
+                                   let state = downloadAllButtonState(for: chapter) {
                                     Button(
                                         action: {
-                                                downloadAllSubsections(in: chapter, state: state)
+                                            downloadAllSubsections(in: chapter, state: state)
                                         }, label: {
                                             switch state {
                                             case .available:
@@ -84,7 +83,7 @@ struct CustomDisclosureGroup: View {
                                                     viewModel.router.showGatedContentError(url: courseVertical.webUrl)
                                                     return
                                                 }
-
+                                                
                                                 viewModel.trackSequentialClicked(sequential)
                                                 if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
                                                     viewModel.router.showCourseUnit(
@@ -112,7 +111,9 @@ struct CustomDisclosureGroup: View {
                                                     HStack {
                                                         if sequential.completion == 1 {
                                                             CoreAssets.finishedSequence.swiftUIImage
+                                                                .renderingMode(.template)
                                                                 .resizable()
+                                                                .foregroundColor(Theme.Colors.success)
                                                                 .frame(width: 20, height: 20)
                                                         } else {
                                                             sequential.type.image
@@ -128,20 +129,10 @@ struct CustomDisclosureGroup: View {
                                                                 alignment: .leading
                                                             )
                                                     }
-                                                    if let sequentialProgress = sequential.sequentialProgress,
-                                                       let assignmentType = sequentialProgress.assignmentType,
-                                                       let numPointsEarned = sequentialProgress.numPointsEarned,
-                                                       let numPointsPossible = sequentialProgress.numPointsPossible,
-                                                       let due = sequential.due {
-                                                        let daysRemaining = getAssignmentStatus(for: due)
-                                                        Text(
-                                                             """
-                                                             \(assignmentType) -
-                                                             \(daysRemaining) -
-                                                             \(numPointsEarned) /
-                                                             \(numPointsPossible)
-                                                             """
-                                                        )
+                                                    if let assignmentStatusText = assignmentStatusText(
+                                                        sequential: sequential
+                                                    ) {
+                                                        Text(assignmentStatusText)
                                                             .font(Theme.Fonts.bodySmall)
                                                             .multilineTextAlignment(.leading)
                                                             .lineLimit(2)
@@ -162,7 +153,7 @@ struct CustomDisclosureGroup: View {
                                 }
                             }
                         }
-
+                        
                     }
                 }
                 .padding(.horizontal, 16)
@@ -208,43 +199,61 @@ struct CustomDisclosureGroup: View {
         }
     }
     
-    private func canDownloadAllSections(in chapter: CourseChapter, videoOnly: Bool) -> Bool {
-        for sequential in chapter.childs {
-            if videoOnly {
-                let isDownloadable = sequential.childs.flatMap {
-                    $0.childs.filter({ $0.type == .video })
-                }.contains(where: { $0.isDownloadable })
-                guard isDownloadable else { return false }
-            }
-            if viewModel.sequentialsDownloadState[sequential.id] != nil {
-                return true
-            }
+    private func canDownloadAllSections(in chapter: CourseChapter) -> Bool {
+        chapter.childs.contains { sequential in
+            sequentialDownloadState(sequential) != nil
         }
-        return false
+    }
+
+    private func assignmentStatusText(
+        sequential: CourseSequential
+    ) -> String? {
+        
+        guard let sequentialProgress = sequential.sequentialProgress,
+              let assignmentType = sequentialProgress.assignmentType,
+              let due = sequential.due else {
+            return nil
+        }
+        
+        let daysRemaining = getAssignmentStatus(for: due)
+        
+        return "\(assignmentType) - \(daysRemaining)"
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
         Task {
             var allBlocks: [CourseBlock] = []
+            var sequentialsToDownload: [CourseSequential] = []
             for sequential in chapter.childs {
-                let blocks = await viewModel.collectBlocks(chapter: chapter, blockId: sequential.id, state: state)
-                allBlocks.append(contentsOf: blocks)
+                let blocks = await viewModel.collectBlocks(
+                    chapter: chapter,
+                    blockId: sequential.id,
+                    state: state
+                )
+                if !blocks.isEmpty {
+                    allBlocks.append(contentsOf: blocks)
+                    sequentialsToDownload.append(sequential)
+                }
             }
             await viewModel.download(
                 state: state,
                 blocks: allBlocks,
-                sequentials: chapter.childs.filter({ $0.isDownloadable })
+                sequentials: sequentialsToDownload
             )
         }
     }
     
-    private func downloadAllButtonState(for chapter: CourseChapter, videoOnly: Bool) -> DownloadViewState? {
-        if canDownloadAllSections(in: chapter, videoOnly: videoOnly) {
-            let downloads = chapter.childs.filter({ viewModel.sequentialsDownloadState[$0.id] != nil })
-            
-            if downloads.contains(where: { viewModel.sequentialsDownloadState[$0.id] == .downloading }) {
+    private func downloadAllButtonState(for chapter: CourseChapter) -> DownloadViewState? {
+        if canDownloadAllSections(in: chapter) {
+            var downloads: [DownloadViewState] = []
+            for sequential in chapter.childs {
+                if let state = sequentialDownloadState(sequential) {
+                    downloads.append(state)
+                }
+            }
+            if downloads.contains(.downloading) {
                 return .downloading
-            } else if downloads.allSatisfy({ viewModel.sequentialsDownloadState[$0.id] == .finished }) {
+            } else if downloads.allSatisfy({ $0 == .finished }) {
                 return .finished
             } else {
                 return .available
@@ -253,6 +262,9 @@ struct CustomDisclosureGroup: View {
         return nil
     }
     
+    private func sequentialDownloadState(_ sequential: CourseSequential) -> DownloadViewState? {
+        return viewModel.sequentialsDownloadState[sequential.id]
+    }
 }
 
 #if DEBUG
@@ -390,7 +402,8 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
             enrollmentStart: Date(),
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
         )
         Task {
             await withTaskGroup(of: Void.self) { group in
@@ -406,7 +419,6 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
         return GeometryReader { proxy in
             ScrollView {
                 CustomDisclosureGroup(
-                    isVideo: false,
                     course: CourseStructure(
                         id: "Id",
                         graded: false,
@@ -415,7 +427,7 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         encodedVideo: "",
                         displayName: "Course",
                         childs: sampleCourseChapters,
-                        media: DataLayer.CourseMedia.init(image: DataLayer.Image(raw: "", small: "", large: "")),
+                        media: CourseMedia.init(image: CourseImage(raw: "", small: "", large: "")),
                         certificate: nil,
                         org: "org",
                         isSelfPaced: false,

@@ -927,10 +927,10 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
-        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
-		perform?(`sourceScreen`)
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`))) as? (LogistrationSourceScreen, PostLoginData?) -> Void
+		perform?(`sourceScreen`, `postLoginData`)
     }
 
     open func showStartupScreen() {
@@ -1007,7 +1007,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>, Parameter<PostLoginData?>)
         case m_showStartupScreen
         case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
@@ -1049,9 +1049,10 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let lhsSourcescreen, let lhsPostlogindata), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let rhsSourcescreen, let rhsPostlogindata)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPostlogindata, rhs: rhsPostlogindata, with: matcher), lhsPostlogindata, rhsPostlogindata, "postLoginData"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
@@ -1132,7 +1133,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(p0, p1): return p0.intValue + p1.intValue
             case .m_showStartupScreen: return 0
             case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
@@ -1154,7 +1155,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData: return ".showMainOrWhatsNewScreen(sourceScreen:postLoginData:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
             case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
@@ -1190,7 +1191,7 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
@@ -1226,8 +1227,8 @@ open class AuthorizationRouterMock: AuthorizationRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>, perform: @escaping (LogistrationSourceScreen, PostLoginData?) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)
@@ -1411,10 +1412,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`controllers`)
     }
 
-    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {
-        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`)))
-		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>.value(`sourceScreen`))) as? (LogistrationSourceScreen) -> Void
-		perform?(`sourceScreen`)
+    open func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {
+        addInvocation(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`)))
+		let perform = methodPerformValue(.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>.value(`sourceScreen`), Parameter<PostLoginData?>.value(`postLoginData`))) as? (LogistrationSourceScreen, PostLoginData?) -> Void
+		perform?(`sourceScreen`, `postLoginData`)
     }
 
     open func showStartupScreen() {
@@ -1490,7 +1491,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_backWithFade
         case m_dismiss__animated_animated(Parameter<Bool>)
         case m_removeLastView__controllers_controllers(Parameter<Int>)
-        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
+        case m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(Parameter<LogistrationSourceScreen>, Parameter<PostLoginData?>)
         case m_showStartupScreen
         case m_showLoginScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
         case m_showRegisterScreen__sourceScreen_sourceScreen(Parameter<LogistrationSourceScreen>)
@@ -1527,9 +1528,10 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsControllers, rhs: rhsControllers, with: matcher), lhsControllers, rhsControllers, "controllers"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let lhsSourcescreen), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(let rhsSourcescreen)):
+            case (.m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let lhsSourcescreen, let lhsPostlogindata), .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(let rhsSourcescreen, let rhsPostlogindata)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSourcescreen, rhs: rhsSourcescreen, with: matcher), lhsSourcescreen, rhsSourcescreen, "sourceScreen"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPostlogindata, rhs: rhsPostlogindata, with: matcher), lhsPostlogindata, rhsPostlogindata, "postLoginData"))
 				return Matcher.ComparisonResult(results)
 
             case (.m_showStartupScreen, .m_showStartupScreen): return .match
@@ -1609,7 +1611,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return 0
             case let .m_dismiss__animated_animated(p0): return p0.intValue
             case let .m_removeLastView__controllers_controllers(p0): return p0.intValue
-            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(p0): return p0.intValue
+            case let .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(p0, p1): return p0.intValue + p1.intValue
             case .m_showStartupScreen: return 0
             case let .m_showLoginScreen__sourceScreen_sourceScreen(p0): return p0.intValue
             case let .m_showRegisterScreen__sourceScreen_sourceScreen(p0): return p0.intValue
@@ -1630,7 +1632,7 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_backWithFade: return ".backWithFade()"
             case .m_dismiss__animated_animated: return ".dismiss(animated:)"
             case .m_removeLastView__controllers_controllers: return ".removeLastView(controllers:)"
-            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen: return ".showMainOrWhatsNewScreen(sourceScreen:)"
+            case .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData: return ".showMainOrWhatsNewScreen(sourceScreen:postLoginData:)"
             case .m_showStartupScreen: return ".showStartupScreen()"
             case .m_showLoginScreen__sourceScreen_sourceScreen: return ".showLoginScreen(sourceScreen:)"
             case .m_showRegisterScreen__sourceScreen_sourceScreen: return ".showRegisterScreen(sourceScreen:)"
@@ -1665,7 +1667,7 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func backWithFade() -> Verify { return Verify(method: .m_backWithFade)}
         public static func dismiss(animated: Parameter<Bool>) -> Verify { return Verify(method: .m_dismiss__animated_animated(`animated`))}
         public static func removeLastView(controllers: Parameter<Int>) -> Verify { return Verify(method: .m_removeLastView__controllers_controllers(`controllers`))}
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`))}
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>) -> Verify { return Verify(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`))}
         public static func showStartupScreen() -> Verify { return Verify(method: .m_showStartupScreen)}
         public static func showLoginScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showLoginScreen__sourceScreen_sourceScreen(`sourceScreen`))}
         public static func showRegisterScreen(sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showRegisterScreen__sourceScreen_sourceScreen(`sourceScreen`))}
@@ -1698,8 +1700,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func removeLastView(controllers: Parameter<Int>, perform: @escaping (Int) -> Void) -> Perform {
             return Perform(method: .m_removeLastView__controllers_controllers(`controllers`), performs: perform)
         }
-        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, perform: @escaping (LogistrationSourceScreen) -> Void) -> Perform {
-            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreen(`sourceScreen`), performs: perform)
+        public static func showMainOrWhatsNewScreen(sourceScreen: Parameter<LogistrationSourceScreen>, postLoginData: Parameter<PostLoginData?>, perform: @escaping (LogistrationSourceScreen, PostLoginData?) -> Void) -> Perform {
+            return Perform(method: .m_showMainOrWhatsNewScreen__sourceScreen_sourceScreenpostLoginData_postLoginData(`sourceScreen`, `postLoginData`), performs: perform)
         }
         public static func showStartupScreen(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_showStartupScreen, performs: perform)
@@ -2787,171 +2789,154 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 
     open func set(userId: Int) {
         addInvocation(.m_set__userId_userId(Parameter<Int>.value(`userId`)))
-		let perform = methodPerformValue(.m_set__userId_userId(Parameter<Int>.value(`userId`))) as? (Int) -> Void
-		perform?(`userId`)
+        let perform = methodPerformValue(.m_set__userId_userId(Parameter<Int>.value(`userId`))) as? (Int) -> Void
+        perform?(`userId`)
     }
 
     open func getUserID() -> Int? {
         addInvocation(.m_getUserID)
-		let perform = methodPerformValue(.m_getUserID) as? () -> Void
-		perform?()
-		var __value: Int? = nil
-		do {
-		    __value = try methodReturnValue(.m_getUserID).casted()
-		} catch {
-			// do nothing
-		}
-		return __value
+        let perform = methodPerformValue(.m_getUserID) as? () -> Void
+        perform?()
+        var __value: Int? = nil
+        do {
+            __value = try methodReturnValue(.m_getUserID).casted()
+        } catch {
+            // do nothing
+        }
+        return __value
     }
 
-    open func publisher() -> AnyPublisher<Int, Never> {
+    @MainActor
+    open func publisher() throws -> AnyPublisher<Int, Never> {
         addInvocation(.m_publisher)
-		let perform = methodPerformValue(.m_publisher) as? () -> Void
-		perform?()
-		var __value: AnyPublisher<Int, Never>
-		do {
-		    __value = try methodReturnValue(.m_publisher).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for publisher(). Use given")
-			Failure("Stub return value not specified for publisher(). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_publisher) as? () -> Void
+        perform?()
+        var __value: AnyPublisher<Int, Never>
+        do {
+            __value = try methodReturnValue(.m_publisher).casted()
+        } catch MockError.notStubed {
+            onFatalFailure("Stub return value not specified for publisher(). Use given")
+            Failure("Stub return value not specified for publisher(). Use given")
+        } catch {
+            throw error
+        }
+        return __value
     }
 
     open func addToDownloadQueue(tasks: [DownloadDataTask]) {
         addInvocation(.m_addToDownloadQueue__tasks_tasks(Parameter<[DownloadDataTask]>.value(`tasks`)))
-		let perform = methodPerformValue(.m_addToDownloadQueue__tasks_tasks(Parameter<[DownloadDataTask]>.value(`tasks`))) as? ([DownloadDataTask]) -> Void
-		perform?(`tasks`)
+        let perform = methodPerformValue(.m_addToDownloadQueue__tasks_tasks(Parameter<[DownloadDataTask]>.value(`tasks`))) as? ([DownloadDataTask]) -> Void
+        perform?(`tasks`)
     }
 
     open func saveOfflineProgress(progress: OfflineProgress) {
         addInvocation(.m_saveOfflineProgress__progress_progress(Parameter<OfflineProgress>.value(`progress`)))
-		let perform = methodPerformValue(.m_saveOfflineProgress__progress_progress(Parameter<OfflineProgress>.value(`progress`))) as? (OfflineProgress) -> Void
-		perform?(`progress`)
+        let perform = methodPerformValue(.m_saveOfflineProgress__progress_progress(Parameter<OfflineProgress>.value(`progress`))) as? (OfflineProgress) -> Void
+        perform?(`progress`)
     }
 
     open func loadProgress(for blockID: String) -> OfflineProgress? {
         addInvocation(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`)))
-		let perform = methodPerformValue(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`))) as? (String) -> Void
-		perform?(`blockID`)
-		var __value: OfflineProgress? = nil
-		do {
-		    __value = try methodReturnValue(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`))).casted()
-		} catch {
-			// do nothing
-		}
-		return __value
+        let perform = methodPerformValue(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`))) as? (String) -> Void
+        perform?(`blockID`)
+        var __value: OfflineProgress? = nil
+        do {
+            __value = try methodReturnValue(.m_loadProgress__for_blockID(Parameter<String>.value(`blockID`))).casted()
+        } catch {
+            // do nothing
+        }
+        return __value
     }
 
     open func loadAllOfflineProgress() -> [OfflineProgress] {
         addInvocation(.m_loadAllOfflineProgress)
-		let perform = methodPerformValue(.m_loadAllOfflineProgress) as? () -> Void
-		perform?()
-		var __value: [OfflineProgress]
-		do {
-		    __value = try methodReturnValue(.m_loadAllOfflineProgress).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for loadAllOfflineProgress(). Use given")
-			Failure("Stub return value not specified for loadAllOfflineProgress(). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_loadAllOfflineProgress) as? () -> Void
+        perform?()
+        var __value: [OfflineProgress]
+        do {
+            __value = try methodReturnValue(.m_loadAllOfflineProgress).casted()
+        } catch {
+            onFatalFailure("Stub return value not specified for loadAllOfflineProgress(). Use given")
+            Failure("Stub return value not specified for loadAllOfflineProgress(). Use given")
+        }
+        return __value
     }
 
     open func deleteProgress(for blockID: String) {
         addInvocation(.m_deleteProgress__for_blockID(Parameter<String>.value(`blockID`)))
-		let perform = methodPerformValue(.m_deleteProgress__for_blockID(Parameter<String>.value(`blockID`))) as? (String) -> Void
-		perform?(`blockID`)
+        let perform = methodPerformValue(.m_deleteProgress__for_blockID(Parameter<String>.value(`blockID`))) as? (String) -> Void
+        perform?(`blockID`)
     }
 
     open func deleteAllProgress() {
         addInvocation(.m_deleteAllProgress)
-		let perform = methodPerformValue(.m_deleteAllProgress) as? () -> Void
-		perform?()
+        let perform = methodPerformValue(.m_deleteAllProgress) as? () -> Void
+        perform?()
     }
 
     open func addToDownloadQueue(blocks: [CourseBlock], downloadQuality: DownloadQuality) {
         addInvocation(.m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>.value(`blocks`), Parameter<DownloadQuality>.value(`downloadQuality`)))
-		let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>.value(`blocks`), Parameter<DownloadQuality>.value(`downloadQuality`))) as? ([CourseBlock], DownloadQuality) -> Void
-		perform?(`blocks`, `downloadQuality`)
+        let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>.value(`blocks`), Parameter<DownloadQuality>.value(`downloadQuality`))) as? ([CourseBlock], DownloadQuality) -> Void
+        perform?(`blocks`, `downloadQuality`)
     }
 
-    open func nextBlockForDownloading() -> DownloadDataTask? {
-        addInvocation(.m_nextBlockForDownloading)
-		let perform = methodPerformValue(.m_nextBlockForDownloading) as? () -> Void
-		perform?()
-		var __value: DownloadDataTask? = nil
-		do {
-		    __value = try methodReturnValue(.m_nextBlockForDownloading).casted()
-		} catch {
-			// do nothing
-		}
-		return __value
-    }
-
-    open func updateDownloadState(id: String, state: DownloadState, resumeData: Data?) {
-        addInvocation(.m_updateDownloadState__id_idstate_stateresumeData_resumeData(Parameter<String>.value(`id`), Parameter<DownloadState>.value(`state`), Parameter<Data?>.value(`resumeData`)))
-		let perform = methodPerformValue(.m_updateDownloadState__id_idstate_stateresumeData_resumeData(Parameter<String>.value(`id`), Parameter<DownloadState>.value(`state`), Parameter<Data?>.value(`resumeData`))) as? (String, DownloadState, Data?) -> Void
-		perform?(`id`, `state`, `resumeData`)
-    }
-
-    open func deleteDownloadDataTask(id: String) throws {
-        addInvocation(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`)))
-		let perform = methodPerformValue(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`))) as? (String) -> Void
-		perform?(`id`)
-		do {
-		    _ = try methodReturnValue(.m_deleteDownloadDataTask__id_id(Parameter<String>.value(`id`))).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
+    open func updateTask(task: DownloadDataTask) {
+        addInvocation(.m_updateTask__task_task(Parameter<DownloadDataTask>.value(`task`)))
+        let perform = methodPerformValue(.m_updateTask__task_task(Parameter<DownloadDataTask>.value(`task`))) as? (DownloadDataTask) -> Void
+        perform?(`task`)
     }
 
     open func saveDownloadDataTask(_ task: DownloadDataTask) {
         addInvocation(.m_saveDownloadDataTask__task(Parameter<DownloadDataTask>.value(`task`)))
-		let perform = methodPerformValue(.m_saveDownloadDataTask__task(Parameter<DownloadDataTask>.value(`task`))) as? (DownloadDataTask) -> Void
-		perform?(`task`)
+        let perform = methodPerformValue(.m_saveDownloadDataTask__task(Parameter<DownloadDataTask>.value(`task`))) as? (DownloadDataTask) -> Void
+        perform?(`task`)
     }
 
     open func downloadDataTask(for blockId: String) -> DownloadDataTask? {
         addInvocation(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`)))
-		let perform = methodPerformValue(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
-		perform?(`blockId`)
-		var __value: DownloadDataTask? = nil
-		do {
-		    __value = try methodReturnValue(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`))).casted()
-		} catch {
-			// do nothing
-		}
-		return __value
+        let perform = methodPerformValue(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
+        perform?(`blockId`)
+        var __value: DownloadDataTask? = nil
+        do {
+            __value = try methodReturnValue(.m_downloadDataTask__for_blockId(Parameter<String>.value(`blockId`))).casted()
+        } catch {
+            // do nothing
+        }
+        return __value
     }
 
     open func getDownloadDataTasks() -> [DownloadDataTask] {
         addInvocation(.m_getDownloadDataTasks)
-		let perform = methodPerformValue(.m_getDownloadDataTasks) as? () -> Void
-		perform?()
-		var __value: [DownloadDataTask]
-		do {
-		    __value = try methodReturnValue(.m_getDownloadDataTasks).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for getDownloadDataTasks(). Use given")
-			Failure("Stub return value not specified for getDownloadDataTasks(). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_getDownloadDataTasks) as? () -> Void
+        perform?()
+        var __value: [DownloadDataTask]
+        do {
+            __value = try methodReturnValue(.m_getDownloadDataTasks).casted()
+        } catch {
+            onFatalFailure("Stub return value not specified for getDownloadDataTasks(). Use given")
+            Failure("Stub return value not specified for getDownloadDataTasks(). Use given")
+        }
+        return __value
     }
 
     open func getDownloadDataTasksForCourse(_ courseId: String) -> [DownloadDataTask] {
         addInvocation(.m_getDownloadDataTasksForCourse__courseId(Parameter<String>.value(`courseId`)))
-		let perform = methodPerformValue(.m_getDownloadDataTasksForCourse__courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
-		perform?(`courseId`)
-		var __value: [DownloadDataTask]
-		do {
-		    __value = try methodReturnValue(.m_getDownloadDataTasksForCourse__courseId(Parameter<String>.value(`courseId`))).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for getDownloadDataTasksForCourse(_ courseId: String). Use given")
-			Failure("Stub return value not specified for getDownloadDataTasksForCourse(_ courseId: String). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_getDownloadDataTasksForCourse__courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
+        perform?(`courseId`)
+        var __value: [DownloadDataTask]
+        do {
+            __value = try methodReturnValue(.m_getDownloadDataTasksForCourse__courseId(Parameter<String>.value(`courseId`))).casted()
+        } catch {
+            onFatalFailure("Stub return value not specified for getDownloadDataTasksForCourse(_ courseId: String). Use given")
+            Failure("Stub return value not specified for getDownloadDataTasksForCourse(_ courseId: String). Use given")
+        }
+        return __value
+    }
+
+    open func deleteDownloadDataTasks(ids: [String]) {
+        addInvocation(.m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>.value(`ids`)))
+        let perform = methodPerformValue(.m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>.value(`ids`))) as? ([String]) -> Void
+        perform?(`ids`)
     }
 
 
@@ -2966,85 +2951,80 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         case m_deleteProgress__for_blockID(Parameter<String>)
         case m_deleteAllProgress
         case m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(Parameter<[CourseBlock]>, Parameter<DownloadQuality>)
-        case m_nextBlockForDownloading
-        case m_updateDownloadState__id_idstate_stateresumeData_resumeData(Parameter<String>, Parameter<DownloadState>, Parameter<Data?>)
-        case m_deleteDownloadDataTask__id_id(Parameter<String>)
+        case m_updateTask__task_task(Parameter<DownloadDataTask>)
         case m_saveDownloadDataTask__task(Parameter<DownloadDataTask>)
         case m_downloadDataTask__for_blockId(Parameter<String>)
         case m_getDownloadDataTasks
         case m_getDownloadDataTasksForCourse__courseId(Parameter<String>)
+        case m_deleteDownloadDataTasks__ids_ids(Parameter<[String]>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
             case (.m_set__userId_userId(let lhsUserid), .m_set__userId_userId(let rhsUserid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUserid, rhs: rhsUserid, with: matcher), lhsUserid, rhsUserid, "userId"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsUserid, rhs: rhsUserid, with: matcher), lhsUserid, rhsUserid, "userId"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_getUserID, .m_getUserID): return .match
 
             case (.m_publisher, .m_publisher): return .match
 
             case (.m_addToDownloadQueue__tasks_tasks(let lhsTasks), .m_addToDownloadQueue__tasks_tasks(let rhsTasks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTasks, rhs: rhsTasks, with: matcher), lhsTasks, rhsTasks, "tasks"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTasks, rhs: rhsTasks, with: matcher), lhsTasks, rhsTasks, "tasks"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_saveOfflineProgress__progress_progress(let lhsProgress), .m_saveOfflineProgress__progress_progress(let rhsProgress)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsProgress, rhs: rhsProgress, with: matcher), lhsProgress, rhsProgress, "progress"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsProgress, rhs: rhsProgress, with: matcher), lhsProgress, rhsProgress, "progress"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_loadProgress__for_blockID(let lhsBlockid), .m_loadProgress__for_blockID(let rhsBlockid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockID"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockID"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_loadAllOfflineProgress, .m_loadAllOfflineProgress): return .match
 
             case (.m_deleteProgress__for_blockID(let lhsBlockid), .m_deleteProgress__for_blockID(let rhsBlockid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockID"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockID"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_deleteAllProgress, .m_deleteAllProgress): return .match
 
             case (.m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(let lhsBlocks, let lhsDownloadquality), .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(let rhsBlocks, let rhsDownloadquality)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDownloadquality, rhs: rhsDownloadquality, with: matcher), lhsDownloadquality, rhsDownloadquality, "downloadQuality"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsDownloadquality, rhs: rhsDownloadquality, with: matcher), lhsDownloadquality, rhsDownloadquality, "downloadQuality"))
+                return Matcher.ComparisonResult(results)
 
-            case (.m_nextBlockForDownloading, .m_nextBlockForDownloading): return .match
-
-            case (.m_updateDownloadState__id_idstate_stateresumeData_resumeData(let lhsId, let lhsState, let lhsResumedata), .m_updateDownloadState__id_idstate_stateresumeData_resumeData(let rhsId, let rhsState, let rhsResumedata)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher), lhsId, rhsId, "id"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsState, rhs: rhsState, with: matcher), lhsState, rhsState, "state"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsResumedata, rhs: rhsResumedata, with: matcher), lhsResumedata, rhsResumedata, "resumeData"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_deleteDownloadDataTask__id_id(let lhsId), .m_deleteDownloadDataTask__id_id(let rhsId)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsId, rhs: rhsId, with: matcher), lhsId, rhsId, "id"))
-				return Matcher.ComparisonResult(results)
+            case (.m_updateTask__task_task(let lhsTask), .m_updateTask__task_task(let rhsTask)):
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "task"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_saveDownloadDataTask__task(let lhsTask), .m_saveDownloadDataTask__task(let rhsTask)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "_ task"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "_ task"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_downloadDataTask__for_blockId(let lhsBlockid), .m_downloadDataTask__for_blockId(let rhsBlockid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_getDownloadDataTasks, .m_getDownloadDataTasks): return .match
 
             case (.m_getDownloadDataTasksForCourse__courseId(let lhsCourseid), .m_getDownloadDataTasksForCourse__courseId(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
+                return Matcher.ComparisonResult(results)
+
+            case (.m_deleteDownloadDataTasks__ids_ids(let lhsIds), .m_deleteDownloadDataTasks__ids_ids(let rhsIds)):
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsIds, rhs: rhsIds, with: matcher), lhsIds, rhsIds, "ids"))
+                return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -3061,13 +3041,12 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case let .m_deleteProgress__for_blockID(p0): return p0.intValue
             case .m_deleteAllProgress: return 0
             case let .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(p0, p1): return p0.intValue + p1.intValue
-            case .m_nextBlockForDownloading: return 0
-            case let .m_updateDownloadState__id_idstate_stateresumeData_resumeData(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
-            case let .m_deleteDownloadDataTask__id_id(p0): return p0.intValue
+            case let .m_updateTask__task_task(p0): return p0.intValue
             case let .m_saveDownloadDataTask__task(p0): return p0.intValue
             case let .m_downloadDataTask__for_blockId(p0): return p0.intValue
             case .m_getDownloadDataTasks: return 0
             case let .m_getDownloadDataTasksForCourse__courseId(p0): return p0.intValue
+            case let .m_deleteDownloadDataTasks__ids_ids(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -3082,13 +3061,12 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
             case .m_deleteProgress__for_blockID: return ".deleteProgress(for:)"
             case .m_deleteAllProgress: return ".deleteAllProgress()"
             case .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality: return ".addToDownloadQueue(blocks:downloadQuality:)"
-            case .m_nextBlockForDownloading: return ".nextBlockForDownloading()"
-            case .m_updateDownloadState__id_idstate_stateresumeData_resumeData: return ".updateDownloadState(id:state:resumeData:)"
-            case .m_deleteDownloadDataTask__id_id: return ".deleteDownloadDataTask(id:)"
+            case .m_updateTask__task_task: return ".updateTask(task:)"
             case .m_saveDownloadDataTask__task: return ".saveDownloadDataTask(_:)"
             case .m_downloadDataTask__for_blockId: return ".downloadDataTask(for:)"
             case .m_getDownloadDataTasks: return ".getDownloadDataTasks()"
             case .m_getDownloadDataTasksForCourse__courseId: return ".getDownloadDataTasksForCourse(_:)"
+            case .m_deleteDownloadDataTasks__ids_ids: return ".deleteDownloadDataTasks(ids:)"
             }
         }
     }
@@ -3105,6 +3083,7 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         public static func getUserID(willReturn: Int?...) -> MethodStub {
             return Given(method: .m_getUserID, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
+        @MainActor
         public static func publisher(willReturn: AnyPublisher<Int, Never>...) -> MethodStub {
             return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
@@ -3113,9 +3092,6 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         }
         public static func loadAllOfflineProgress(willReturn: [OfflineProgress]...) -> MethodStub {
             return Given(method: .m_loadAllOfflineProgress, products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
-        public static func nextBlockForDownloading(willReturn: DownloadDataTask?...) -> MethodStub {
-            return Given(method: .m_nextBlockForDownloading, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func downloadDataTask(for blockId: Parameter<String>, willReturn: DownloadDataTask?...) -> MethodStub {
             return Given(method: .m_downloadDataTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -3128,69 +3104,57 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         }
         public static func getUserID(willProduce: (Stubber<Int?>) -> Void) -> MethodStub {
             let willReturn: [Int?] = []
-			let given: Given = { return Given(method: .m_getUserID, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (Int?).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func publisher(willProduce: (Stubber<AnyPublisher<Int, Never>>) -> Void) -> MethodStub {
-            let willReturn: [AnyPublisher<Int, Never>] = []
-			let given: Given = { return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (AnyPublisher<Int, Never>).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_getUserID, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (Int?).self)
+            willProduce(stubber)
+            return given
         }
         public static func loadProgress(for blockID: Parameter<String>, willProduce: (Stubber<OfflineProgress?>) -> Void) -> MethodStub {
             let willReturn: [OfflineProgress?] = []
-			let given: Given = { return Given(method: .m_loadProgress__for_blockID(`blockID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (OfflineProgress?).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_loadProgress__for_blockID(`blockID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (OfflineProgress?).self)
+            willProduce(stubber)
+            return given
         }
         public static func loadAllOfflineProgress(willProduce: (Stubber<[OfflineProgress]>) -> Void) -> MethodStub {
             let willReturn: [[OfflineProgress]] = []
-			let given: Given = { return Given(method: .m_loadAllOfflineProgress, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: ([OfflineProgress]).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func nextBlockForDownloading(willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
-            let willReturn: [DownloadDataTask?] = []
-			let given: Given = { return Given(method: .m_nextBlockForDownloading, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (DownloadDataTask?).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_loadAllOfflineProgress, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: ([OfflineProgress]).self)
+            willProduce(stubber)
+            return given
         }
         public static func downloadDataTask(for blockId: Parameter<String>, willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
             let willReturn: [DownloadDataTask?] = []
-			let given: Given = { return Given(method: .m_downloadDataTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (DownloadDataTask?).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_downloadDataTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (DownloadDataTask?).self)
+            willProduce(stubber)
+            return given
         }
         public static func getDownloadDataTasks(willProduce: (Stubber<[DownloadDataTask]>) -> Void) -> MethodStub {
             let willReturn: [[DownloadDataTask]] = []
-			let given: Given = { return Given(method: .m_getDownloadDataTasks, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: ([DownloadDataTask]).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_getDownloadDataTasks, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: ([DownloadDataTask]).self)
+            willProduce(stubber)
+            return given
         }
         public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>, willProduce: (Stubber<[DownloadDataTask]>) -> Void) -> MethodStub {
             let willReturn: [[DownloadDataTask]] = []
-			let given: Given = { return Given(method: .m_getDownloadDataTasksForCourse__courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: ([DownloadDataTask]).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_getDownloadDataTasksForCourse__courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: ([DownloadDataTask]).self)
+            willProduce(stubber)
+            return given
         }
-        public static func deleteDownloadDataTask(id: Parameter<String>, willThrow: Error...) -> MethodStub {
-            return Given(method: .m_deleteDownloadDataTask__id_id(`id`), products: willThrow.map({ StubProduct.throw($0) }))
+        @MainActor
+        public static func publisher(willThrow: Error...) -> MethodStub {
+            return Given(method: .m_publisher, products: willThrow.map({ StubProduct.throw($0) }))
         }
-        public static func deleteDownloadDataTask(id: Parameter<String>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+        @MainActor
+        public static func publisher(willProduce: (StubberThrows<AnyPublisher<Int, Never>>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_deleteDownloadDataTask__id_id(`id`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_publisher, products: willThrow.map({ StubProduct.throw($0) })) }()
+            let stubber = given.stubThrows(for: (AnyPublisher<Int, Never>).self)
+            willProduce(stubber)
+            return given
         }
     }
 
@@ -3199,6 +3163,7 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
 
         public static func set(userId: Parameter<Int>) -> Verify { return Verify(method: .m_set__userId_userId(`userId`))}
         public static func getUserID() -> Verify { return Verify(method: .m_getUserID)}
+        @MainActor
         public static func publisher() -> Verify { return Verify(method: .m_publisher)}
         public static func addToDownloadQueue(tasks: Parameter<[DownloadDataTask]>) -> Verify { return Verify(method: .m_addToDownloadQueue__tasks_tasks(`tasks`))}
         public static func saveOfflineProgress(progress: Parameter<OfflineProgress>) -> Verify { return Verify(method: .m_saveOfflineProgress__progress_progress(`progress`))}
@@ -3207,13 +3172,12 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         public static func deleteProgress(for blockID: Parameter<String>) -> Verify { return Verify(method: .m_deleteProgress__for_blockID(`blockID`))}
         public static func deleteAllProgress() -> Verify { return Verify(method: .m_deleteAllProgress)}
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, downloadQuality: Parameter<DownloadQuality>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(`blocks`, `downloadQuality`))}
-        public static func nextBlockForDownloading() -> Verify { return Verify(method: .m_nextBlockForDownloading)}
-        public static func updateDownloadState(id: Parameter<String>, state: Parameter<DownloadState>, resumeData: Parameter<Data?>) -> Verify { return Verify(method: .m_updateDownloadState__id_idstate_stateresumeData_resumeData(`id`, `state`, `resumeData`))}
-        public static func deleteDownloadDataTask(id: Parameter<String>) -> Verify { return Verify(method: .m_deleteDownloadDataTask__id_id(`id`))}
+        public static func updateTask(task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_updateTask__task_task(`task`))}
         public static func saveDownloadDataTask(_ task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_saveDownloadDataTask__task(`task`))}
         public static func downloadDataTask(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_downloadDataTask__for_blockId(`blockId`))}
         public static func getDownloadDataTasks() -> Verify { return Verify(method: .m_getDownloadDataTasks)}
         public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadDataTasksForCourse__courseId(`courseId`))}
+        public static func deleteDownloadDataTasks(ids: Parameter<[String]>) -> Verify { return Verify(method: .m_deleteDownloadDataTasks__ids_ids(`ids`))}
     }
 
     public struct Perform {
@@ -3226,6 +3190,7 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         public static func getUserID(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_getUserID, performs: perform)
         }
+        @MainActor
         public static func publisher(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_publisher, performs: perform)
         }
@@ -3250,14 +3215,8 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, downloadQuality: Parameter<DownloadQuality>, perform: @escaping ([CourseBlock], DownloadQuality) -> Void) -> Perform {
             return Perform(method: .m_addToDownloadQueue__blocks_blocksdownloadQuality_downloadQuality(`blocks`, `downloadQuality`), performs: perform)
         }
-        public static func nextBlockForDownloading(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_nextBlockForDownloading, performs: perform)
-        }
-        public static func updateDownloadState(id: Parameter<String>, state: Parameter<DownloadState>, resumeData: Parameter<Data?>, perform: @escaping (String, DownloadState, Data?) -> Void) -> Perform {
-            return Perform(method: .m_updateDownloadState__id_idstate_stateresumeData_resumeData(`id`, `state`, `resumeData`), performs: perform)
-        }
-        public static func deleteDownloadDataTask(id: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_deleteDownloadDataTask__id_id(`id`), performs: perform)
+        public static func updateTask(task: Parameter<DownloadDataTask>, perform: @escaping (DownloadDataTask) -> Void) -> Perform {
+            return Perform(method: .m_updateTask__task_task(`task`), performs: perform)
         }
         public static func saveDownloadDataTask(_ task: Parameter<DownloadDataTask>, perform: @escaping (DownloadDataTask) -> Void) -> Perform {
             return Perform(method: .m_saveDownloadDataTask__task(`task`), performs: perform)
@@ -3270,6 +3229,9 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
         }
         public static func getDownloadDataTasksForCourse(_ courseId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getDownloadDataTasksForCourse__courseId(`courseId`), performs: perform)
+        }
+        public static func deleteDownloadDataTasks(ids: Parameter<[String]>, perform: @escaping ([String]) -> Void) -> Perform {
+            return Perform(method: .m_deleteDownloadDataTasks__ids_ids(`ids`), performs: perform)
         }
     }
 
@@ -3346,6 +3308,7 @@ open class CorePersistenceProtocolMock: CorePersistenceProtocol, Mock {
     }
 }
 
+
 // MARK: - DownloadManagerProtocol
 
 open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
@@ -3386,211 +3349,204 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         if scopes.contains(.perform) { methodPerformValues = [] }
     }
 
-    public var currentDownloadTask: DownloadDataTask? {
-		get {	invocations.append(.p_currentDownloadTask_get); return __p_currentDownloadTask ?? optionalGivenGetterValue(.p_currentDownloadTask_get, "DownloadManagerProtocolMock - stub value for currentDownloadTask was not defined") }
-	}
-	private var __p_currentDownloadTask: (DownloadDataTask)?
 
 
 
 
-
-    open func publisher() -> AnyPublisher<Int, Never> {
-        addInvocation(.m_publisher)
-		let perform = methodPerformValue(.m_publisher) as? () -> Void
-		perform?()
-		var __value: AnyPublisher<Int, Never>
-		do {
-		    __value = try methodReturnValue(.m_publisher).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for publisher(). Use given")
-			Failure("Stub return value not specified for publisher(). Use given")
-		}
-		return __value
+    open func getCurrentDownloadTask() -> DownloadDataTask? {
+        addInvocation(.m_getCurrentDownloadTask)
+        let perform = methodPerformValue(.m_getCurrentDownloadTask) as? () -> Void
+        perform?()
+        var __value: DownloadDataTask? = nil
+        do {
+            __value = try methodReturnValue(.m_getCurrentDownloadTask).casted()
+        } catch {
+            // do nothing
+        }
+        return __value
     }
 
     open func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never> {
         addInvocation(.m_eventPublisher)
-		let perform = methodPerformValue(.m_eventPublisher) as? () -> Void
-		perform?()
-		var __value: AnyPublisher<DownloadManagerEvent, Never>
-		do {
-		    __value = try methodReturnValue(.m_eventPublisher).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for eventPublisher(). Use given")
-			Failure("Stub return value not specified for eventPublisher(). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_eventPublisher) as? () -> Void
+        perform?()
+        var __value: AnyPublisher<DownloadManagerEvent, Never>
+        do {
+            __value = try methodReturnValue(.m_eventPublisher).casted()
+        } catch {
+            onFatalFailure("Stub return value not specified for eventPublisher(). Use given")
+            Failure("Stub return value not specified for eventPublisher(). Use given")
+        }
+        return __value
     }
 
     open func addToDownloadQueue(blocks: [CourseBlock]) throws {
         addInvocation(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
-		perform?(`blocks`)
-		do {
-		    _ = try methodReturnValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
+        let perform = methodPerformValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
+        perform?(`blocks`)
+        do {
+            _ = try methodReturnValue(.m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
+        } catch MockError.notStubed {
+            // do nothing
+        } catch {
+            throw error
+        }
     }
 
     open func getDownloadTasks() -> [DownloadDataTask] {
         addInvocation(.m_getDownloadTasks)
-		let perform = methodPerformValue(.m_getDownloadTasks) as? () -> Void
-		perform?()
-		var __value: [DownloadDataTask]
-		do {
-		    __value = try methodReturnValue(.m_getDownloadTasks).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for getDownloadTasks(). Use given")
-			Failure("Stub return value not specified for getDownloadTasks(). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_getDownloadTasks) as? () -> Void
+        perform?()
+        var __value: [DownloadDataTask]
+        do {
+            __value = try methodReturnValue(.m_getDownloadTasks).casted()
+        } catch {
+            onFatalFailure("Stub return value not specified for getDownloadTasks(). Use given")
+            Failure("Stub return value not specified for getDownloadTasks(). Use given")
+        }
+        return __value
     }
 
     open func getDownloadTasksForCourse(_ courseId: String) -> [DownloadDataTask] {
         addInvocation(.m_getDownloadTasksForCourse__courseId(Parameter<String>.value(`courseId`)))
-		let perform = methodPerformValue(.m_getDownloadTasksForCourse__courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
-		perform?(`courseId`)
-		var __value: [DownloadDataTask]
-		do {
-		    __value = try methodReturnValue(.m_getDownloadTasksForCourse__courseId(Parameter<String>.value(`courseId`))).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for getDownloadTasksForCourse(_ courseId: String). Use given")
-			Failure("Stub return value not specified for getDownloadTasksForCourse(_ courseId: String). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_getDownloadTasksForCourse__courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
+        perform?(`courseId`)
+        var __value: [DownloadDataTask]
+        do {
+            __value = try methodReturnValue(.m_getDownloadTasksForCourse__courseId(Parameter<String>.value(`courseId`))).casted()
+        } catch {
+            onFatalFailure("Stub return value not specified for getDownloadTasksForCourse(_ courseId: String). Use given")
+            Failure("Stub return value not specified for getDownloadTasksForCourse(_ courseId: String). Use given")
+        }
+        return __value
     }
 
     open func cancelDownloading(courseId: String, blocks: [CourseBlock]) throws {
         addInvocation(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`))) as? (String, [CourseBlock]) -> Void
-		perform?(`courseId`, `blocks`)
-		do {
-		    _ = try methodReturnValue(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
+        let perform = methodPerformValue(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`))) as? (String, [CourseBlock]) -> Void
+        perform?(`courseId`, `blocks`)
+        do {
+            _ = try methodReturnValue(.m_cancelDownloading__courseId_courseIdblocks_blocks(Parameter<String>.value(`courseId`), Parameter<[CourseBlock]>.value(`blocks`))).casted() as Void
+        } catch MockError.notStubed {
+            // do nothing
+        } catch {
+            throw error
+        }
     }
 
     open func cancelDownloading(task: DownloadDataTask) throws {
         addInvocation(.m_cancelDownloading__task_task(Parameter<DownloadDataTask>.value(`task`)))
-		let perform = methodPerformValue(.m_cancelDownloading__task_task(Parameter<DownloadDataTask>.value(`task`))) as? (DownloadDataTask) -> Void
-		perform?(`task`)
-		do {
-		    _ = try methodReturnValue(.m_cancelDownloading__task_task(Parameter<DownloadDataTask>.value(`task`))).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
+        let perform = methodPerformValue(.m_cancelDownloading__task_task(Parameter<DownloadDataTask>.value(`task`))) as? (DownloadDataTask) -> Void
+        perform?(`task`)
+        do {
+            _ = try methodReturnValue(.m_cancelDownloading__task_task(Parameter<DownloadDataTask>.value(`task`))).casted() as Void
+        } catch MockError.notStubed {
+            // do nothing
+        } catch {
+            throw error
+        }
     }
 
     open func cancelDownloading(courseId: String) throws {
         addInvocation(.m_cancelDownloading__courseId_courseId(Parameter<String>.value(`courseId`)))
-		let perform = methodPerformValue(.m_cancelDownloading__courseId_courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
-		perform?(`courseId`)
-		do {
-		    _ = try methodReturnValue(.m_cancelDownloading__courseId_courseId(Parameter<String>.value(`courseId`))).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
+        let perform = methodPerformValue(.m_cancelDownloading__courseId_courseId(Parameter<String>.value(`courseId`))) as? (String) -> Void
+        perform?(`courseId`)
+        do {
+            _ = try methodReturnValue(.m_cancelDownloading__courseId_courseId(Parameter<String>.value(`courseId`))).casted() as Void
+        } catch MockError.notStubed {
+            // do nothing
+        } catch {
+            throw error
+        }
     }
 
     open func cancelAllDownloading() throws {
         addInvocation(.m_cancelAllDownloading)
-		let perform = methodPerformValue(.m_cancelAllDownloading) as? () -> Void
-		perform?()
-		do {
-		    _ = try methodReturnValue(.m_cancelAllDownloading).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
+        let perform = methodPerformValue(.m_cancelAllDownloading) as? () -> Void
+        perform?()
+        do {
+            _ = try methodReturnValue(.m_cancelAllDownloading).casted() as Void
+        } catch MockError.notStubed {
+            // do nothing
+        } catch {
+            throw error
+        }
     }
 
-    open func deleteFile(blocks: [CourseBlock]) {
-        addInvocation(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
-		perform?(`blocks`)
-    }
-
-    open func deleteAllFiles() {
-        addInvocation(.m_deleteAllFiles)
-		let perform = methodPerformValue(.m_deleteAllFiles) as? () -> Void
-		perform?()
+    open func deleteAll() {
+        addInvocation(.m_deleteAll)
+        let perform = methodPerformValue(.m_deleteAll) as? () -> Void
+        perform?()
     }
 
     open func fileUrl(for blockId: String) -> URL? {
         addInvocation(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`)))
-		let perform = methodPerformValue(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
-		perform?(`blockId`)
-		var __value: URL? = nil
-		do {
-		    __value = try methodReturnValue(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`))).casted()
-		} catch {
-			// do nothing
-		}
-		return __value
-    }
-
-    open func updateUnzippedFileSize(for sequentials: [CourseSequential]) -> [CourseSequential] {
-        addInvocation(.m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>.value(`sequentials`)))
-		let perform = methodPerformValue(.m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>.value(`sequentials`))) as? ([CourseSequential]) -> Void
-		perform?(`sequentials`)
-		var __value: [CourseSequential]
-		do {
-		    __value = try methodReturnValue(.m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>.value(`sequentials`))).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for updateUnzippedFileSize(for sequentials: [CourseSequential]). Use given")
-			Failure("Stub return value not specified for updateUnzippedFileSize(for sequentials: [CourseSequential]). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
+        perform?(`blockId`)
+        var __value: URL? = nil
+        do {
+            __value = try methodReturnValue(.m_fileUrl__for_blockId(Parameter<String>.value(`blockId`))).casted()
+        } catch {
+            // do nothing
+        }
+        return __value
     }
 
     open func resumeDownloading() throws {
         addInvocation(.m_resumeDownloading)
-		let perform = methodPerformValue(.m_resumeDownloading) as? () -> Void
-		perform?()
-		do {
-		    _ = try methodReturnValue(.m_resumeDownloading).casted() as Void
-		} catch MockError.notStubed {
-			// do nothing
-		} catch {
-		    throw error
-		}
+        let perform = methodPerformValue(.m_resumeDownloading) as? () -> Void
+        perform?()
+        do {
+            _ = try methodReturnValue(.m_resumeDownloading).casted() as Void
+        } catch MockError.notStubed {
+            // do nothing
+        } catch {
+            throw error
+        }
     }
 
     open func isLargeVideosSize(blocks: [CourseBlock]) -> Bool {
         addInvocation(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`)))
-		let perform = methodPerformValue(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
-		perform?(`blocks`)
-		var __value: Bool
-		do {
-		    __value = try methodReturnValue(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for isLargeVideosSize(blocks: [CourseBlock]). Use given")
-			Failure("Stub return value not specified for isLargeVideosSize(blocks: [CourseBlock]). Use given")
-		}
-		return __value
+        let perform = methodPerformValue(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))) as? ([CourseBlock]) -> Void
+        perform?(`blocks`)
+        var __value: Bool
+        do {
+            __value = try methodReturnValue(.m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>.value(`blocks`))).casted()
+        } catch {
+            onFatalFailure("Stub return value not specified for isLargeVideosSize(blocks: [CourseBlock]). Use given")
+            Failure("Stub return value not specified for isLargeVideosSize(blocks: [CourseBlock]). Use given")
+        }
+        return __value
     }
 
     open func removeAppSupportDirectoryUnusedContent() {
         addInvocation(.m_removeAppSupportDirectoryUnusedContent)
-		let perform = methodPerformValue(.m_removeAppSupportDirectoryUnusedContent) as? () -> Void
-		perform?()
+        let perform = methodPerformValue(.m_removeAppSupportDirectoryUnusedContent) as? () -> Void
+        perform?()
+    }
+
+    open func delete(blocks: [CourseBlock], courseId: String) {
+        addInvocation(.m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>.value(`blocks`), Parameter<String>.value(`courseId`)))
+        let perform = methodPerformValue(.m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>.value(`blocks`), Parameter<String>.value(`courseId`))) as? ([CourseBlock], String) -> Void
+        perform?(`blocks`, `courseId`)
+    }
+
+    open func downloadTask(for blockId: String) -> DownloadDataTask? {
+        addInvocation(.m_downloadTask__for_blockId(Parameter<String>.value(`blockId`)))
+        let perform = methodPerformValue(.m_downloadTask__for_blockId(Parameter<String>.value(`blockId`))) as? (String) -> Void
+        perform?(`blockId`)
+        var __value: DownloadDataTask? = nil
+        do {
+            __value = try methodReturnValue(.m_downloadTask__for_blockId(Parameter<String>.value(`blockId`))).casted()
+        } catch {
+            // do nothing
+        }
+        return __value
     }
 
 
     fileprivate enum MethodType {
-        case m_publisher
+        case m_getCurrentDownloadTask
         case m_eventPublisher
         case m_addToDownloadQueue__blocks_blocks(Parameter<[CourseBlock]>)
         case m_getDownloadTasks
@@ -3599,84 +3555,83 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_cancelDownloading__task_task(Parameter<DownloadDataTask>)
         case m_cancelDownloading__courseId_courseId(Parameter<String>)
         case m_cancelAllDownloading
-        case m_deleteFile__blocks_blocks(Parameter<[CourseBlock]>)
-        case m_deleteAllFiles
+        case m_deleteAll
         case m_fileUrl__for_blockId(Parameter<String>)
-        case m_updateUnzippedFileSize__for_sequentials(Parameter<[CourseSequential]>)
         case m_resumeDownloading
         case m_isLargeVideosSize__blocks_blocks(Parameter<[CourseBlock]>)
         case m_removeAppSupportDirectoryUnusedContent
-        case p_currentDownloadTask_get
+        case m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>, Parameter<String>)
+        case m_downloadTask__for_blockId(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
-            case (.m_publisher, .m_publisher): return .match
+            case (.m_getCurrentDownloadTask, .m_getCurrentDownloadTask): return .match
 
             case (.m_eventPublisher, .m_eventPublisher): return .match
 
             case (.m_addToDownloadQueue__blocks_blocks(let lhsBlocks), .m_addToDownloadQueue__blocks_blocks(let rhsBlocks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_getDownloadTasks, .m_getDownloadTasks): return .match
 
             case (.m_getDownloadTasksForCourse__courseId(let lhsCourseid), .m_getDownloadTasksForCourse__courseId(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "_ courseId"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_cancelDownloading__courseId_courseIdblocks_blocks(let lhsCourseid, let lhsBlocks), .m_cancelDownloading__courseId_courseIdblocks_blocks(let rhsCourseid, let rhsBlocks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_cancelDownloading__task_task(let lhsTask), .m_cancelDownloading__task_task(let rhsTask)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "task"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTask, rhs: rhsTask, with: matcher), lhsTask, rhsTask, "task"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_cancelDownloading__courseId_courseId(let lhsCourseid), .m_cancelDownloading__courseId_courseId(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_cancelAllDownloading, .m_cancelAllDownloading): return .match
 
-            case (.m_deleteFile__blocks_blocks(let lhsBlocks), .m_deleteFile__blocks_blocks(let rhsBlocks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_deleteAllFiles, .m_deleteAllFiles): return .match
+            case (.m_deleteAll, .m_deleteAll): return .match
 
             case (.m_fileUrl__for_blockId(let lhsBlockid), .m_fileUrl__for_blockId(let rhsBlockid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_updateUnzippedFileSize__for_sequentials(let lhsSequentials), .m_updateUnzippedFileSize__for_sequentials(let rhsSequentials)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsSequentials, rhs: rhsSequentials, with: matcher), lhsSequentials, rhsSequentials, "for sequentials"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_resumeDownloading, .m_resumeDownloading): return .match
 
             case (.m_isLargeVideosSize__blocks_blocks(let lhsBlocks), .m_isLargeVideosSize__blocks_blocks(let rhsBlocks)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
-				return Matcher.ComparisonResult(results)
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+                return Matcher.ComparisonResult(results)
 
             case (.m_removeAppSupportDirectoryUnusedContent, .m_removeAppSupportDirectoryUnusedContent): return .match
-            case (.p_currentDownloadTask_get,.p_currentDownloadTask_get): return Matcher.ComparisonResult.match
+
+            case (.m_delete__blocks_blockscourseId_courseId(let lhsBlocks, let lhsCourseid), .m_delete__blocks_blockscourseId_courseId(let rhsBlocks, let rhsCourseid)):
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlocks, rhs: rhsBlocks, with: matcher), lhsBlocks, rhsBlocks, "blocks"))
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+                return Matcher.ComparisonResult(results)
+
+            case (.m_downloadTask__for_blockId(let lhsBlockid), .m_downloadTask__for_blockId(let rhsBlockid)):
+                var results: [Matcher.ParameterComparisonResult] = []
+                results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
+                return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
 
         func intValue() -> Int {
             switch self {
-            case .m_publisher: return 0
+            case .m_getCurrentDownloadTask: return 0
             case .m_eventPublisher: return 0
             case let .m_addToDownloadQueue__blocks_blocks(p0): return p0.intValue
             case .m_getDownloadTasks: return 0
@@ -3685,19 +3640,18 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case let .m_cancelDownloading__task_task(p0): return p0.intValue
             case let .m_cancelDownloading__courseId_courseId(p0): return p0.intValue
             case .m_cancelAllDownloading: return 0
-            case let .m_deleteFile__blocks_blocks(p0): return p0.intValue
-            case .m_deleteAllFiles: return 0
+            case .m_deleteAll: return 0
             case let .m_fileUrl__for_blockId(p0): return p0.intValue
-            case let .m_updateUnzippedFileSize__for_sequentials(p0): return p0.intValue
             case .m_resumeDownloading: return 0
             case let .m_isLargeVideosSize__blocks_blocks(p0): return p0.intValue
             case .m_removeAppSupportDirectoryUnusedContent: return 0
-            case .p_currentDownloadTask_get: return 0
+            case let .m_delete__blocks_blockscourseId_courseId(p0, p1): return p0.intValue + p1.intValue
+            case let .m_downloadTask__for_blockId(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
             switch self {
-            case .m_publisher: return ".publisher()"
+            case .m_getCurrentDownloadTask: return ".getCurrentDownloadTask()"
             case .m_eventPublisher: return ".eventPublisher()"
             case .m_addToDownloadQueue__blocks_blocks: return ".addToDownloadQueue(blocks:)"
             case .m_getDownloadTasks: return ".getDownloadTasks()"
@@ -3706,14 +3660,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_cancelDownloading__task_task: return ".cancelDownloading(task:)"
             case .m_cancelDownloading__courseId_courseId: return ".cancelDownloading(courseId:)"
             case .m_cancelAllDownloading: return ".cancelAllDownloading()"
-            case .m_deleteFile__blocks_blocks: return ".deleteFile(blocks:)"
-            case .m_deleteAllFiles: return ".deleteAllFiles()"
+            case .m_deleteAll: return ".deleteAll()"
             case .m_fileUrl__for_blockId: return ".fileUrl(for:)"
-            case .m_updateUnzippedFileSize__for_sequentials: return ".updateUnzippedFileSize(for:)"
             case .m_resumeDownloading: return ".resumeDownloading()"
             case .m_isLargeVideosSize__blocks_blocks: return ".isLargeVideosSize(blocks:)"
             case .m_removeAppSupportDirectoryUnusedContent: return ".removeAppSupportDirectoryUnusedContent()"
-            case .p_currentDownloadTask_get: return "[get] .currentDownloadTask"
+            case .m_delete__blocks_blockscourseId_courseId: return ".delete(blocks:courseId:)"
+            case .m_downloadTask__for_blockId: return ".downloadTask(for:)"
             }
         }
     }
@@ -3726,12 +3679,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             super.init(products)
         }
 
-        public static func currentDownloadTask(getter defaultValue: DownloadDataTask?...) -> PropertyStub {
-            return Given(method: .p_currentDownloadTask_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
-        }
 
-        public static func publisher(willReturn: AnyPublisher<Int, Never>...) -> MethodStub {
-            return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) }))
+        public static func getCurrentDownloadTask(willReturn: DownloadDataTask?...) -> MethodStub {
+            return Given(method: .m_getCurrentDownloadTask, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func eventPublisher(willReturn: AnyPublisher<DownloadManagerEvent, Never>...) -> MethodStub {
             return Given(method: .m_eventPublisher, products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -3745,127 +3695,127 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func fileUrl(for blockId: Parameter<String>, willReturn: URL?...) -> MethodStub {
             return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>, willReturn: [CourseSequential]...) -> MethodStub {
-            return Given(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`), products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func publisher(willProduce: (Stubber<AnyPublisher<Int, Never>>) -> Void) -> MethodStub {
-            let willReturn: [AnyPublisher<Int, Never>] = []
-			let given: Given = { return Given(method: .m_publisher, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (AnyPublisher<Int, Never>).self)
-			willProduce(stubber)
-			return given
+        public static func downloadTask(for blockId: Parameter<String>, willReturn: DownloadDataTask?...) -> MethodStub {
+            return Given(method: .m_downloadTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCurrentDownloadTask(willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
+            let willReturn: [DownloadDataTask?] = []
+            let given: Given = { return Given(method: .m_getCurrentDownloadTask, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (DownloadDataTask?).self)
+            willProduce(stubber)
+            return given
         }
         public static func eventPublisher(willProduce: (Stubber<AnyPublisher<DownloadManagerEvent, Never>>) -> Void) -> MethodStub {
             let willReturn: [AnyPublisher<DownloadManagerEvent, Never>] = []
-			let given: Given = { return Given(method: .m_eventPublisher, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (AnyPublisher<DownloadManagerEvent, Never>).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_eventPublisher, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (AnyPublisher<DownloadManagerEvent, Never>).self)
+            willProduce(stubber)
+            return given
         }
         public static func getDownloadTasks(willProduce: (Stubber<[DownloadDataTask]>) -> Void) -> MethodStub {
             let willReturn: [[DownloadDataTask]] = []
-			let given: Given = { return Given(method: .m_getDownloadTasks, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: ([DownloadDataTask]).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_getDownloadTasks, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: ([DownloadDataTask]).self)
+            willProduce(stubber)
+            return given
         }
         public static func getDownloadTasksForCourse(_ courseId: Parameter<String>, willProduce: (Stubber<[DownloadDataTask]>) -> Void) -> MethodStub {
             let willReturn: [[DownloadDataTask]] = []
-			let given: Given = { return Given(method: .m_getDownloadTasksForCourse__courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: ([DownloadDataTask]).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_getDownloadTasksForCourse__courseId(`courseId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: ([DownloadDataTask]).self)
+            willProduce(stubber)
+            return given
         }
         public static func fileUrl(for blockId: Parameter<String>, willProduce: (Stubber<URL?>) -> Void) -> MethodStub {
             let willReturn: [URL?] = []
-			let given: Given = { return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (URL?).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>, willProduce: (Stubber<[CourseSequential]>) -> Void) -> MethodStub {
-            let willReturn: [[CourseSequential]] = []
-			let given: Given = { return Given(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: ([CourseSequential]).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_fileUrl__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (URL?).self)
+            willProduce(stubber)
+            return given
         }
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
-			let given: Given = { return Given(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (Bool).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_isLargeVideosSize__blocks_blocks(`blocks`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (Bool).self)
+            willProduce(stubber)
+            return given
+        }
+        public static func downloadTask(for blockId: Parameter<String>, willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
+            let willReturn: [DownloadDataTask?] = []
+            let given: Given = { return Given(method: .m_downloadTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+            let stubber = given.stub(for: (DownloadDataTask?).self)
+            willProduce(stubber)
+            return given
         }
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) }))
         }
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_addToDownloadQueue__blocks_blocks(`blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
+            let stubber = given.stubThrows(for: (Void).self)
+            willProduce(stubber)
+            return given
         }
         public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`), products: willThrow.map({ StubProduct.throw($0) }))
         }
         public static func cancelDownloading(courseId: Parameter<String>, blocks: Parameter<[CourseBlock]>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_cancelDownloading__courseId_courseIdblocks_blocks(`courseId`, `blocks`), products: willThrow.map({ StubProduct.throw($0) })) }()
+            let stubber = given.stubThrows(for: (Void).self)
+            willProduce(stubber)
+            return given
         }
         public static func cancelDownloading(task: Parameter<DownloadDataTask>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_cancelDownloading__task_task(`task`), products: willThrow.map({ StubProduct.throw($0) }))
         }
         public static func cancelDownloading(task: Parameter<DownloadDataTask>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_cancelDownloading__task_task(`task`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_cancelDownloading__task_task(`task`), products: willThrow.map({ StubProduct.throw($0) })) }()
+            let stubber = given.stubThrows(for: (Void).self)
+            willProduce(stubber)
+            return given
         }
         public static func cancelDownloading(courseId: Parameter<String>, willThrow: Error...) -> MethodStub {
             return Given(method: .m_cancelDownloading__courseId_courseId(`courseId`), products: willThrow.map({ StubProduct.throw($0) }))
         }
         public static func cancelDownloading(courseId: Parameter<String>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_cancelDownloading__courseId_courseId(`courseId`), products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_cancelDownloading__courseId_courseId(`courseId`), products: willThrow.map({ StubProduct.throw($0) })) }()
+            let stubber = given.stubThrows(for: (Void).self)
+            willProduce(stubber)
+            return given
         }
         public static func cancelAllDownloading(willThrow: Error...) -> MethodStub {
             return Given(method: .m_cancelAllDownloading, products: willThrow.map({ StubProduct.throw($0) }))
         }
         public static func cancelAllDownloading(willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_cancelAllDownloading, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_cancelAllDownloading, products: willThrow.map({ StubProduct.throw($0) })) }()
+            let stubber = given.stubThrows(for: (Void).self)
+            willProduce(stubber)
+            return given
         }
         public static func resumeDownloading(willThrow: Error...) -> MethodStub {
             return Given(method: .m_resumeDownloading, products: willThrow.map({ StubProduct.throw($0) }))
         }
         public static func resumeDownloading(willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
             let willThrow: [Error] = []
-			let given: Given = { return Given(method: .m_resumeDownloading, products: willThrow.map({ StubProduct.throw($0) })) }()
-			let stubber = given.stubThrows(for: (Void).self)
-			willProduce(stubber)
-			return given
+            let given: Given = { return Given(method: .m_resumeDownloading, products: willThrow.map({ StubProduct.throw($0) })) }()
+            let stubber = given.stubThrows(for: (Void).self)
+            willProduce(stubber)
+            return given
         }
     }
 
     public struct Verify {
         fileprivate var method: MethodType
 
-        public static func publisher() -> Verify { return Verify(method: .m_publisher)}
+        public static func getCurrentDownloadTask() -> Verify { return Verify(method: .m_getCurrentDownloadTask)}
         public static func eventPublisher() -> Verify { return Verify(method: .m_eventPublisher)}
         public static func addToDownloadQueue(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_addToDownloadQueue__blocks_blocks(`blocks`))}
         public static func getDownloadTasks() -> Verify { return Verify(method: .m_getDownloadTasks)}
@@ -3874,22 +3824,21 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelDownloading(task: Parameter<DownloadDataTask>) -> Verify { return Verify(method: .m_cancelDownloading__task_task(`task`))}
         public static func cancelDownloading(courseId: Parameter<String>) -> Verify { return Verify(method: .m_cancelDownloading__courseId_courseId(`courseId`))}
         public static func cancelAllDownloading() -> Verify { return Verify(method: .m_cancelAllDownloading)}
-        public static func deleteFile(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_deleteFile__blocks_blocks(`blocks`))}
-        public static func deleteAllFiles() -> Verify { return Verify(method: .m_deleteAllFiles)}
+        public static func deleteAll() -> Verify { return Verify(method: .m_deleteAll)}
         public static func fileUrl(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_fileUrl__for_blockId(`blockId`))}
-        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>) -> Verify { return Verify(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`))}
         public static func resumeDownloading() -> Verify { return Verify(method: .m_resumeDownloading)}
         public static func isLargeVideosSize(blocks: Parameter<[CourseBlock]>) -> Verify { return Verify(method: .m_isLargeVideosSize__blocks_blocks(`blocks`))}
         public static func removeAppSupportDirectoryUnusedContent() -> Verify { return Verify(method: .m_removeAppSupportDirectoryUnusedContent)}
-        public static var currentDownloadTask: Verify { return Verify(method: .p_currentDownloadTask_get) }
+        public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>) -> Verify { return Verify(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`))}
+        public static func downloadTask(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_downloadTask__for_blockId(`blockId`))}
     }
 
     public struct Perform {
         fileprivate var method: MethodType
         var performs: Any
 
-        public static func publisher(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_publisher, performs: perform)
+        public static func getCurrentDownloadTask(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_getCurrentDownloadTask, performs: perform)
         }
         public static func eventPublisher(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_eventPublisher, performs: perform)
@@ -3915,17 +3864,11 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func cancelAllDownloading(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_cancelAllDownloading, performs: perform)
         }
-        public static func deleteFile(blocks: Parameter<[CourseBlock]>, perform: @escaping ([CourseBlock]) -> Void) -> Perform {
-            return Perform(method: .m_deleteFile__blocks_blocks(`blocks`), performs: perform)
-        }
-        public static func deleteAllFiles(perform: @escaping () -> Void) -> Perform {
-            return Perform(method: .m_deleteAllFiles, performs: perform)
+        public static func deleteAll(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_deleteAll, performs: perform)
         }
         public static func fileUrl(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_fileUrl__for_blockId(`blockId`), performs: perform)
-        }
-        public static func updateUnzippedFileSize(for sequentials: Parameter<[CourseSequential]>, perform: @escaping ([CourseSequential]) -> Void) -> Perform {
-            return Perform(method: .m_updateUnzippedFileSize__for_sequentials(`sequentials`), performs: perform)
         }
         public static func resumeDownloading(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_resumeDownloading, performs: perform)
@@ -3935,6 +3878,12 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func removeAppSupportDirectoryUnusedContent(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_removeAppSupportDirectoryUnusedContent, performs: perform)
+        }
+        public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>, perform: @escaping ([CourseBlock], String) -> Void) -> Perform {
+            return Perform(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`), performs: perform)
+        }
+        public static func downloadTask(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_downloadTask__for_blockId(`blockId`), performs: perform)
         }
     }
 

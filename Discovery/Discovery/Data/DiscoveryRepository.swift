@@ -11,7 +11,7 @@ import OEXFoundation
 import CoreData
 import Alamofire
 
-public protocol DiscoveryRepositoryProtocol {
+public protocol DiscoveryRepositoryProtocol: Sendable {
     func getDiscovery(page: Int) async throws -> [CourseItem]
     func searchCourses(page: Int, searchTerm: String) async throws -> [CourseItem]
     func getDiscoveryOffline() async throws -> [CourseItem]
@@ -20,17 +20,19 @@ public protocol DiscoveryRepositoryProtocol {
     func enrollToCourse(courseID: String) async throws -> Bool
 }
 
-public class DiscoveryRepository: DiscoveryRepositoryProtocol {
+public actor DiscoveryRepository: DiscoveryRepositoryProtocol {
     
     private let api: API
     private let coreStorage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: DiscoveryPersistenceProtocol
     
-    public init(api: API,
-                appStorage: CoreStorage,
-                config: ConfigProtocol,
-                persistence: DiscoveryPersistenceProtocol) {
+    public init(
+        api: API,
+        appStorage: CoreStorage,
+        config: ConfigProtocol,
+        persistence: DiscoveryPersistenceProtocol
+    ) {
         self.api = api
         self.coreStorage = appStorage
         self.config = config
@@ -41,7 +43,7 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
         let discoveryResponse = try await api.requestData(DiscoveryEndpoint.getDiscovery(
             username: coreStorage.user?.username ?? "", page: page)
         ).mapResponse(DataLayer.DiscoveryResponce.self).domain
-        persistence.saveDiscovery(items: discoveryResponse)
+        await persistence.saveDiscovery(items: discoveryResponse)
         return discoveryResponse
     }
     
@@ -63,7 +65,7 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
         ).mapResponse(DataLayer.CourseDetailsResponse.self)
             .domain(baseURL: config.baseURL.absoluteString)
         
-        persistence.saveCourseDetails(course: response)
+        await persistence.saveCourseDetails(course: response)
         
         return response
     }
@@ -80,7 +82,7 @@ public class DiscoveryRepository: DiscoveryRepositoryProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
+final class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
     
     public  func getCourseDetails(courseID: String) async throws -> CourseDetails {
         return CourseDetails(

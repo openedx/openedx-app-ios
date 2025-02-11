@@ -80,11 +80,6 @@ public struct LargestDownloadsView: View {
                 self.isEditing = false
             }
         })
-        .onAppear {
-            Task {
-                await viewModel.fetchLargestDownloadBlocks()
-            }
-        }
     }
 }
 
@@ -107,7 +102,8 @@ struct LargestDownloadsView_Previews: PreviewProvider {
             enrollmentStart: nil,
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock()
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
         )
         
         LargestDownloadsView(viewModel: vm)

@@ -30,13 +30,13 @@ public struct CourseUnitView: View {
     @Environment(\.isHorizontal) private var isHorizontal
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
     
-    //Dropdown parameters
+    // Dropdown parameters
     @State var showDropdown: Bool = false
     private let portraitTopSpacing: CGFloat = 60
     private let landscapeTopSpacing: CGFloat = 75
     
-    @State private var videoURL: URL?
-    @State private var webURL: URL?
+    @State private var videoURLs: [String: URL?] = [:]
+    @State private var webURLs: [String: URL?] = [:]
     
     let isDropdownActive: Bool
     
@@ -70,7 +70,7 @@ public struct CourseUnitView: View {
         viewModel.loadIndex()
         viewModel.nextTitles()
     }
-            
+                
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - Page Body
@@ -122,9 +122,9 @@ public struct CourseUnitView: View {
                     currentIndex: viewModel.verticalIndex,
                     offsetY: isHorizontal ? landscapeTopSpacing : portraitTopSpacing,
                     showDropdown: $showDropdown
-                ) { [weak viewModel] vertical in
-                    let data = VerticalData.dataFor(blockId: vertical.childs.first?.id, in: viewModel?.chapters ?? [])
-                    viewModel?.route(to: data)
+                ) { vertical in
+                    let data = VerticalData.dataFor(blockId: vertical.childs.first?.id, in: viewModel.chapters)
+                    viewModel.route(to: data)
                     playerStateSubject.send(VideoPlayerState.kill)
                 }
             }
@@ -161,7 +161,6 @@ public struct CourseUnitView: View {
             )
     }
 
-    // swiftlint:disable function_body_length
     @ViewBuilder
     private func content(reader: GeometryProxy) -> some View {
         let alignment = UnitAlignment(horizontalAlignment: .top, verticalAlignment: .leading)
@@ -173,130 +172,7 @@ public struct CourseUnitView: View {
                     if isDropdownActive {
                         videoTitle(block: block, width: reader.size.width)
                     }
-                    switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
-                        // MARK: YouTube
-                    case let .youtube(url, blockID):
-                        if index == viewModel.index {
-                            if viewModel.connectivity.isInternetAvaliable {
-                                YouTubeView(
-                                    name: block.displayName,
-                                    url: url,
-                                    courseID: viewModel.courseID,
-                                    blockID: blockID,
-                                    playerStateSubject: playerStateSubject,
-                                    languages: block.subtitles ?? [],
-                                    isOnScreen: index == viewModel.index
-                                )
-                                .frameLimit(width: reader.size.width)
-                                
-                                if !isHorizontal {
-                                    Spacer(minLength: 150)
-                                }
-                            } else {
-                                OfflineContentView(
-                                    isDownloadable: false
-                                )
-                            }
-                            
-                        } else {
-                            EmptyView()
-                        }
-                        // MARK: Encoded Video
-                    case let .video(encodedUrl, blockID):
-                        if index == viewModel.index {
-                            let url = viewModel.urlForVideoFileOrFallback(
-                                blockId: blockID,
-                                url: encodedUrl
-                            )
-                            if viewModel.connectivity.isInternetAvaliable || url?.isFileURL == true {
-                                EncodedVideoView(
-                                    name: block.displayName,
-                                    url: url,
-                                    courseID: viewModel.courseID,
-                                    blockID: blockID,
-                                    playerStateSubject: playerStateSubject,
-                                    languages: block.subtitles ?? [],
-                                    isOnScreen: index == viewModel.index
-                                )
-                                .padding(.top, 5)
-                                .frameLimit(width: reader.size.width)
-                                
-                                if !isHorizontal {
-                                    Spacer(minLength: 150)
-                                }
-                            } else {
-                                OfflineContentView(
-                                    isDownloadable: true
-                                )
-                            }
-                        }
-                        
-                        // MARK: Web
-                    case let .web(url, injections, blockId, isDownloadable):
-                        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            let localUrl = viewModel.urlForOfflineContent(blockId: blockId)?.absoluteString
-                            if viewModel.connectivity.isInternetAvaliable || localUrl != nil {
-                                // not need to add frame limit there because we did that with injection
-                                WebView(
-                                    url: url,
-                                    localUrl: viewModel.connectivity.isInternetAvaliable ? nil : localUrl,
-                                    injections: injections,
-                                    blockID: block.id,
-                                    roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
-                                )
-                            } else {
-                                OfflineContentView(
-                                    isDownloadable: isDownloadable
-                                )
-                            }
-                        } else {
-                            EmptyView()
-                        }
-
-                        // MARK: Unknown
-                    case .unknown(let url):
-                        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            if viewModel.connectivity.isInternetAvaliable {
-                                NotAvailableOnMobileView(url: url)
-                                    .frameLimit(width: reader.size.width)
-                            } else {
-                                OfflineContentView(
-                                    isDownloadable: false
-                                )
-                            }
-                        } else {
-                            EmptyView()
-                        }
-                        // MARK: Discussion
-                    case let .discussion(blockID, blockKey, title):
-                        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
-                            if viewModel.connectivity.isInternetAvaliable {
-                                VStack {
-                                    if showDiscussion {
-                                        DiscussionView(
-                                            id: viewModel.courseID,
-                                            blockID: blockID,
-                                            blockKey: blockKey,
-                                            title: title,
-                                            viewModel: viewModel
-                                        )
-                                        Spacer(minLength: 100)
-                                    } else {
-                                        VStack {
-                                            Color.clear
-                                        }
-                                    }
-                                }
-                                //No need iPad paddings there bacause they were added
-                                //to PostsView that placed inside DiscussionView
-                            } else {
-                                FullScreenErrorView(type: .noInternet)
-                            }
-                        } else {
-                            EmptyView()
-                        }
-                    }
-
+                    contentView(for: block, index: index, reader: reader)
                 }
                 .frame(
                     width: isHorizontal ? reader.size.width - (isHorizontalNavigation ? 0 : 16) : reader.size.width,
@@ -317,7 +193,6 @@ public struct CourseUnitView: View {
                 }
             }
         )
-
         .onReceive(
             NotificationCenter.default.publisher(
                 for: NSNotification.blockCompletion
@@ -329,7 +204,260 @@ public struct CourseUnitView: View {
             }
         }
     }
-    // swiftlint:enable function_body_length
+
+    @ViewBuilder
+    private func contentView(for block: CourseBlock, index: Int, reader: GeometryProxy) -> some View {
+        switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
+        // MARK: YouTube
+        case let .youtube(url, blockID):
+            youtubeView(
+                block: block,
+                url: url,
+                blockID: blockID,
+                index: index,
+                reader: reader
+            )
+        // MARK: Encoded Video
+        case let .video(encodedUrl, blockID):
+            videoView(
+                block: block,
+                encodedUrl: encodedUrl,
+                blockID: blockID,
+                index: index,
+                reader: reader
+            )
+        // MARK: Web
+        case let .web(url, injections, blockId, isDownloadable):
+            webView(
+                block: block,
+                url: url,
+                injections: injections,
+                blockId: blockId,
+                isDownloadable: isDownloadable,
+                index: index,
+                reader: reader
+            )
+        // MARK: Unknown
+        case .unknown(let url):
+            unknownView(
+                block: block,
+                url: url,
+                index: index,
+                reader: reader
+            )
+        // MARK: Discussion
+        case let .discussion(blockID, blockKey, title):
+            discussionView(
+                block: block,
+                blockID: blockID,
+                blockKey: blockKey,
+                title: title,
+                index: index,
+                reader: reader
+            )
+        }
+    }
+
+    @ViewBuilder
+    private func youtubeView(
+        block: CourseBlock,
+        url: String,
+        blockID: String,
+        index: Int,
+        reader: GeometryProxy
+    ) -> some View {
+        if index == viewModel.index {
+            if viewModel.connectivity.isInternetAvaliable {
+                YouTubeView(
+                    name: block.displayName,
+                    url: url,
+                    courseID: viewModel.courseID,
+                    blockID: blockID,
+                    playerStateSubject: playerStateSubject,
+                    languages: block.subtitles ?? [],
+                    isOnScreen: index == viewModel.index
+                )
+                .frameLimit(width: reader.size.width)
+                
+                if !isHorizontal {
+                    Spacer(minLength: 150)
+                }
+            } else {
+                OfflineContentView(
+                    isDownloadable: false
+                )
+            }
+        } else {
+            EmptyView()
+        }
+    }
+
+    @ViewBuilder
+    private func videoView(
+        block: CourseBlock,
+        encodedUrl: String,
+        blockID: String,
+        index: Int,
+        reader: GeometryProxy
+    ) -> some View {
+        Group {
+            if index == viewModel.index {
+                if viewModel.connectivity.isInternetAvaliable {
+                    EncodedVideoView(
+                        name: block.displayName,
+                        url: URL(string: encodedUrl),
+                        courseID: viewModel.courseID,
+                        blockID: blockID,
+                        playerStateSubject: playerStateSubject,
+                        languages: block.subtitles ?? [],
+                        isOnScreen: index == viewModel.index
+                    )
+                    .padding(.top, 5)
+                    .frameLimit(width: reader.size.width)
+                    
+                    if !isHorizontal {
+                        Spacer(minLength: 150)
+                    }
+                } else if let offlineURL = videoURLs[blockID] {
+                    EncodedVideoView(
+                        name: block.displayName,
+                        url: offlineURL,
+                        courseID: viewModel.courseID,
+                        blockID: blockID,
+                        playerStateSubject: playerStateSubject,
+                        languages: block.subtitles ?? [],
+                        isOnScreen: index == viewModel.index
+                    )
+                    .padding(.top, 5)
+                    .frameLimit(width: reader.size.width)
+                    
+                    if !isHorizontal {
+                        Spacer(minLength: 150)
+                    }
+                } else {
+                    OfflineContentView(
+                        isDownloadable: true
+                    )
+                }
+            } else {
+                EmptyView()
+            }
+        }
+        .onAppear {
+            Task {
+                if let url = await viewModel.urlForVideoFileOrFallback(
+                    blockId: blockID,
+                    url: encodedUrl
+                ) {
+                    videoURLs[blockID] = url
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func webView(
+        block: CourseBlock,
+        url: String,
+        injections: [WebviewInjection],
+        blockId: String,
+        isDownloadable: Bool,
+        index: Int,
+        reader: GeometryProxy
+    ) -> some View {
+        Group {
+            if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+                if viewModel.connectivity.isInternetAvaliable {
+                    WebView(
+                        url: url,
+                        localUrl: nil,
+                        injections: injections,
+                        blockID: block.id,
+                        roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
+                    )
+                } else if let offlineURL = webURLs[blockId] {
+                    WebView(
+                        url: url,
+                        localUrl: offlineURL?.absoluteString,
+                        injections: injections,
+                        blockID: block.id,
+                        roundedBackgroundEnabled: !viewModel.courseUnitProgressEnabled
+                    )
+                } else {
+                    OfflineContentView(
+                        isDownloadable: isDownloadable
+                    )
+                }
+            } else {
+                EmptyView()
+            }
+        }
+        .onAppear {
+            Task {
+                if let offlineURL = await viewModel.urlForOfflineContent(blockId: blockId) {
+                    webURLs[blockId] = offlineURL
+                }
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func unknownView(
+        block: CourseBlock,
+        url: String,
+        index: Int,
+        reader: GeometryProxy
+    ) -> some View {
+        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+            if viewModel.connectivity.isInternetAvaliable {
+                NotAvailableOnMobileView(url: url)
+                    .frameLimit(width: reader.size.width)
+            } else {
+                OfflineContentView(
+                    isDownloadable: false
+                )
+            }
+        } else {
+            EmptyView()
+        }
+    }
+
+    @ViewBuilder
+    private func discussionView(
+        block: CourseBlock,
+        blockID: String,
+        blockKey: String,
+        title: String,
+        index: Int,
+        reader: GeometryProxy
+    ) -> some View {
+        if index >= viewModel.index - 1 && index <= viewModel.index + 1 {
+            if viewModel.connectivity.isInternetAvaliable {
+                VStack {
+                    if showDiscussion {
+                        DiscussionView(
+                            id: viewModel.courseID,
+                            blockID: blockID,
+                            blockKey: blockKey,
+                            title: title,
+                            viewModel: viewModel
+                        )
+                        Spacer(minLength: 100)
+                    } else {
+                        VStack {
+                            Color.clear
+                        }
+                    }
+                }
+                // No need for iPad paddings here because they were added
+                // to PostsView that is placed inside DiscussionView
+            } else {
+                FullScreenErrorView(type: .noInternet)
+            }
+        } else {
+            EmptyView()
+        }
+    }
 
     private func viewOffset(for index: Int, with size: CGSize, insets: EdgeInsets) -> CGPoint {
         let rightInset = (isHorizontal ? insets.trailing * CGFloat(index) : 0)
@@ -438,8 +566,7 @@ public struct CourseUnitView: View {
                 if isHorizontal {
                     Spacer()
                 }
-            }//.frame(height: isHorizontal ? nil : 44)
-
+            }
             .padding(.bottom, isHorizontal ? 0 : 50)
             .padding(.top, isHorizontal ? 12 : 0)
         }
@@ -447,7 +574,6 @@ public struct CourseUnitView: View {
 }
 
 #if DEBUG
-//swiftlint:disable all
 struct CourseUnitView_Previews: PreviewProvider {
     static var previews: some View {
         let blocks = [
@@ -514,7 +640,7 @@ struct CourseUnitView_Previews: PreviewProvider {
                 encodedVideo: nil,
                 multiDevice: false,
                 offlineDownload: nil
-            ),
+            )
         ]
         
         let chapters = [
@@ -549,7 +675,6 @@ struct CourseUnitView_Previews: PreviewProvider {
                         ),
                         due: Date()
                     )
-                    
                 ]
             ),
             CourseChapter(
@@ -583,7 +708,6 @@ struct CourseUnitView_Previews: PreviewProvider {
                         ),
                         due: Date()
                     )
-                    
                 ])
         ]
         
@@ -605,5 +729,4 @@ struct CourseUnitView_Previews: PreviewProvider {
         ))
     }
 }
-//swiftlint:enable all
 #endif

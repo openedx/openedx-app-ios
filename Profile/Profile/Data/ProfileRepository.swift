@@ -10,27 +10,27 @@ import Core
 import OEXFoundation
 import Alamofire
 
-public protocol ProfileRepositoryProtocol {
+public protocol ProfileRepositoryProtocol: Sendable {
     func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
-    func getMyProfileOffline() -> UserProfile?
+    func getMyProfileOffline() async -> UserProfile?
     func logOut() async throws
     func uploadProfilePicture(pictureData: Data) async throws
     func deleteProfilePicture() async throws -> Bool
-    func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile
+    func updateUserProfile(parameters: [String: any Any & Sendable]) async throws -> UserProfile
     func getSpokenLanguages() -> [PickerFields.Option]
     func getCountries() -> [PickerFields.Option]
     func deleteAccount(password: String) async throws -> Bool
     func getSettings() -> UserSettings
-    func saveSettings(_ settings: UserSettings)
+    func saveSettings(_ settings: UserSettings) async
     func enrollmentsStatus() async throws -> [CourseForSync]
     func getCourseDates(courseID: String) async throws -> CourseDates
 }
 
-public class ProfileRepository: ProfileRepositoryProtocol {
+public actor ProfileRepository: ProfileRepositoryProtocol {
     
     private let api: API
-    private var storage: CoreStorage & ProfileStorage
+    private let storage: CoreStorage & ProfileStorage
     private let downloadManager: DownloadManagerProtocol
     private let coreDataHandler: CoreDataHandlerProtocol
     private let config: ConfigProtocol
@@ -60,11 +60,12 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         let user = try await api.requestData(
             ProfileEndpoint.getUserProfile(username: storage.user?.username ?? "")
         ).mapResponse(DataLayer.UserProfile.self)
-        storage.userProfile = user
+        var localStorage = storage
+        localStorage.userProfile = user
         return user.domain
     }
     
-    public func getMyProfileOffline() -> UserProfile? {
+    public func getMyProfileOffline() async -> UserProfile? {
         return storage.userProfile?.domain
     }
     
@@ -76,7 +77,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         storage.clear()
     }
     
-    public func getSpokenLanguages() -> [PickerFields.Option] {
+    public nonisolated func getSpokenLanguages() -> [PickerFields.Option] {
         guard let url = Bundle.main.url(forResource: "languages", withExtension: "json")
         else {
             print("Json file not found")
@@ -96,7 +97,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         return elements
     }
     
-    public func getCountries() -> [PickerFields.Option] {
+    public nonisolated func getCountries() -> [PickerFields.Option] {
         guard let url = Bundle.main.url(forResource: "сountries", withExtension: "json")
         else {
             print("Json file not found")
@@ -128,7 +129,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         return response.statusCode == 204
     }
     
-    public func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile {
+    public func updateUserProfile(parameters: [String: any Any & Sendable]) async throws -> UserProfile {
         let response = try await api.requestData(
             ProfileEndpoint.updateUserProfile(username: storage.user?.username ?? "",
                                               parameters: parameters))
@@ -141,16 +142,17 @@ public class ProfileRepository: ProfileRepositoryProtocol {
         return response.statusCode == 204
     }
     
-    public func getSettings() -> UserSettings {
+    nonisolated public func getSettings() -> UserSettings {
         if let userSettings = storage.userSettings {
             return userSettings
         } else {
-            return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
+            return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto, playbackSpeed: 1.0)
         }
     }
     
-    public func saveSettings(_ settings: UserSettings) {
-        storage.userSettings = settings
+    public func saveSettings(_ settings: UserSettings) async {
+        var localStorage = storage
+        localStorage.userSettings = settings
     }
     
     public func enrollmentsStatus() async throws -> [CourseForSync] {
@@ -171,7 +173,7 @@ public class ProfileRepository: ProfileRepositoryProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 // swiftlint:disable all
-class ProfileRepositoryMock: ProfileRepositoryProtocol {
+actor ProfileRepositoryMock: ProfileRepositoryProtocol {
     
     public func getUserProfile(username: String) async throws -> Core.UserProfile {
         return Core.UserProfile(avatarUrl: "",
@@ -185,7 +187,7 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
                                 email: "")
     }
     
-    func getMyProfileOffline() -> Core.UserProfile? {
+    func getMyProfileOffline() async -> Core.UserProfile? {
         return UserProfile(
             avatarUrl: "",
             name: "John Lennon",
@@ -227,15 +229,15 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
     
     func logOut() async throws {}
     
-    func getSpokenLanguages() -> [PickerFields.Option] { return [] }
+    nonisolated func getSpokenLanguages() -> [PickerFields.Option] { return [] }
     
-    func getCountries() -> [PickerFields.Option] { return [] }
+    nonisolated func getCountries() -> [PickerFields.Option] { return [] }
     
     func uploadProfilePicture(pictureData: Data) async throws {}
     
     public func deleteProfilePicture() async throws -> Bool { return true }
     
-    func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile {
+    func updateUserProfile(parameters: [String: any Any & Sendable]) async throws -> UserProfile {
         return UserProfile(
             avatarUrl: "",
             name: "John Smith",
@@ -251,10 +253,10 @@ class ProfileRepositoryMock: ProfileRepositoryProtocol {
     
     public func deleteAccount(password: String) async throws -> Bool { return false }
     
-    public func getSettings() -> UserSettings {
-        return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto)
+    nonisolated public func getSettings() -> UserSettings {
+        return UserSettings(wifiOnly: true, streamingQuality: .auto, downloadQuality: .auto, playbackSpeed: 1.0)
     }
-    public func saveSettings(_ settings: UserSettings) {}
+    public func saveSettings(_ settings: UserSettings) async {}
     
     public func enrollmentsStatus() async throws -> [CourseForSync] {
         let result = [

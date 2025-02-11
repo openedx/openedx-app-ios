@@ -6,8 +6,8 @@
 //
 
 import SwiftUI
-import Combine
-import EventKit
+@preconcurrency import Combine
+@preconcurrency import EventKit
 import Theme
 import BranchSDK
 import CryptoKit
@@ -15,12 +15,13 @@ import Core
 import OEXFoundation
 
 // MARK: - CalendarManager
-public class CalendarManager: CalendarManagerProtocol {
+public final class CalendarManager: CalendarManagerProtocol {
+
     let eventStore = EKEventStore()
     private let alertOffset = -1
-    private var persistence: ProfilePersistenceProtocol
-    private var interactor: ProfileInteractorProtocol
-    private var profileStorage: ProfileStorage
+    private let persistence: ProfilePersistenceProtocol
+    private let interactor: ProfileInteractorProtocol
+    private nonisolated(unsafe) var profileStorage: ProfileStorage
     
     public init(
         persistence: ProfilePersistenceProtocol,
@@ -73,8 +74,8 @@ public class CalendarManager: CalendarManagerProtocol {
         eventStore.calendars(for: .event).first(where: { $0.title == calendarName })
     }
     
-    public func courseStatus(courseID: String) -> SyncStatus {
-        let states = persistence.getAllCourseStates()
+    public func courseStatus(courseID: String) async -> SyncStatus {
+        let states = await persistence.getAllCourseStates()
         if states.contains(where: { $0.courseID == courseID }) {
             return .synced
         } else {
@@ -103,8 +104,8 @@ public class CalendarManager: CalendarManagerProtocol {
         }
     }
     
-    public func isDatesChanged(courseID: String, checksum: String) -> Bool {
-        guard let oldState = persistence.getCourseState(courseID: courseID) else { return false }
+    public func isDatesChanged(courseID: String, checksum: String) async -> Bool {
+        guard let oldState = await persistence.getCourseState(courseID: courseID) else { return false }
         return checksum != oldState.checksum
     }
     
@@ -112,21 +113,21 @@ public class CalendarManager: CalendarManagerProtocol {
         createCalendarIfNeeded()
         guard let calendar else { return }
         if saveEvents(for: dates.dateBlocks, courseID: courseID, courseName: courseName, calendar: calendar) {
-            saveCourseDatesChecksum(courseID: courseID, checksum: dates.checksum)
+            await saveCourseDatesChecksum(courseID: courseID, checksum: dates.checksum)
         } else {
             debugLog("Failed to sync calendar for courseID: \(courseID)")
         }
     }
     
     public func removeOutdatedEvents(courseID: String) async {
-        let events = persistence.getCourseCalendarEvents(for: courseID)
+        let events = await persistence.getCourseCalendarEvents(for: courseID)
         for event in events {
             deleteEventFromCalendar(eventIdentifier: event.eventIdentifier)
         }
-        if var state = persistence.getCourseState(courseID: courseID) {
-            persistence.saveCourseState(state: CourseCalendarState(courseID: state.courseID, checksum: ""))
+        if let state = await persistence.getCourseState(courseID: courseID) {
+           await persistence.saveCourseState(state: CourseCalendarState(courseID: state.courseID, checksum: ""))
         }
-        persistence.removeCourseCalendarEvents(for: courseID)
+        await persistence.removeCourseCalendarEvents(for: courseID)
     }
     
     func deleteEventFromCalendar(eventIdentifier: String) {
@@ -139,21 +140,29 @@ public class CalendarManager: CalendarManagerProtocol {
         }
     }
     
-    @MainActor
     public func requestAccess() async -> Bool {
-        await withCheckedContinuation { continuation in
-            eventStore.requestAccess(to: .event) { granted, _ in
-                if granted {
-                    continuation.resume(returning: true)
-                } else {
-                    continuation.resume(returning: false)
+        if #available(iOS 17.0, *) {
+            do {
+                return try await eventStore.requestFullAccessToEvents()
+            } catch {
+                debugLog(error)
+                return false
+            }
+        } else {
+            return await withCheckedContinuation { continuation in
+                eventStore.requestAccess(to: .event) { granted, _ in
+                    if granted {
+                        continuation.resume(returning: true)
+                    } else {
+                        continuation.resume(returning: false)
+                    }
                 }
             }
         }
     }
     
-    public func clearAllData(removeCalendar: Bool) {
-        persistence.deleteAllCourseStatesAndEvents()
+    public func clearAllData(removeCalendar: Bool) async {
+        await persistence.deleteAllCourseStatesAndEvents()
         if removeCalendar {
             removeOldCalendar()
         }
@@ -164,11 +173,11 @@ public class CalendarManager: CalendarManagerProtocol {
         profileStorage.lastCalendarUpdateDate = nil
     }
     
-    private func saveCourseDatesChecksum(courseID: String, checksum: String) {
-        var states = persistence.getAllCourseStates()
+    private func saveCourseDatesChecksum(courseID: String, checksum: String) async {
+        var states = await persistence.getAllCourseStates()
         states.append(CourseCalendarState(courseID: courseID, checksum: checksum))
         for state in states {
-            persistence.saveCourseState(state: state)
+            await persistence.saveCourseState(state: state)
         }
     }
     
@@ -184,9 +193,11 @@ public class CalendarManager: CalendarManagerProtocol {
             if !eventExists(event, in: calendar) {
                 do {
                     try eventStore.save(event, span: .thisEvent)
-                    persistence.saveCourseCalendarEvent(
-                        CourseCalendarEvent(courseID: courseID, eventIdentifier: event.eventIdentifier)
-                    )
+                    Task {
+                        await persistence.saveCourseCalendarEvent(
+                            CourseCalendarEvent(courseID: courseID, eventIdentifier: event.eventIdentifier)
+                        )
+                    }
                 } catch {
                     saveSuccessful = false
                 }
@@ -212,7 +223,7 @@ public class CalendarManager: CalendarManagerProtocol {
     }
     
     public func filterCoursesBySelected(fetchedCourses: [CourseForSync]) async -> [CourseForSync] {
-        let courseCalendarStates = persistence.getAllCourseStates()
+        let courseCalendarStates = await persistence.getAllCourseStates()
         if !courseCalendarStates.isEmpty {
             let coursesToDelete = courseCalendarStates.filter { course in
                 !fetchedCourses.contains { $0.courseID == course.courseID }
@@ -227,10 +238,6 @@ public class CalendarManager: CalendarManagerProtocol {
             
             for course in inactiveCourses {
                 await removeOutdatedEvents(courseID: course.courseID)
-            }
-            
-            let newlyActiveCourses = fetchedCourses.filter { fetchedCourse in
-                courseCalendarStates.contains { $0.courseID == fetchedCourse.courseID } && fetchedCourse.recentlyActive
             }
             
             return fetchedCourses.filter { course in
@@ -308,7 +315,7 @@ public class CalendarManager: CalendarManagerProtocol {
             startDate: startDate,
             endDate: endDate,
             secondAlert: secondAlert,
-            notes: notes, 
+            notes: notes,
             location: courseName,
             calendar: calendar
         )
@@ -318,7 +325,9 @@ public class CalendarManager: CalendarManagerProtocol {
         guard let calendar = localCalendar(for: courseID, calendarName: calendarName) else { completion?(true); return }
         do {
             try eventStore.removeCalendar(calendar, commit: true)
-            persistence.removeCourseCalendarEvents(for: courseID)
+            Task {
+                await persistence.removeCourseCalendarEvents(for: courseID)
+            }
             completion?(true)
         } catch {
             completion?(false)

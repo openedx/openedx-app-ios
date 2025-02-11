@@ -95,7 +95,9 @@ public struct WebUnitView: View {
                                 },
                                 connectivity: connectivity,
                                 message: { message in
-                                    viewModel.syncManager.handleMessage(message: message, blockID: blockID)
+                                    Task {
+                                        await viewModel.syncManager.handleMessage(message: message, blockID: blockID)
+                                    }
                                 }
                             )
                             .frame(

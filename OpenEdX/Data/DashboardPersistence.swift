@@ -8,18 +8,18 @@
 import Dashboard
 import Core
 import Foundation
-import CoreData
+@preconcurrency import CoreData
 
-public class DashboardPersistence: DashboardPersistenceProtocol {
+public final class DashboardPersistence: DashboardPersistenceProtocol {
     
-    private var context: NSManagedObjectContext
+    private let container: NSPersistentContainer
     
-    public init(context: NSManagedObjectContext) {
-        self.context = context
+    public init(container: NSPersistentContainer) {
+        self.container = container
     }
     
     public func loadEnrollments() async throws -> [CourseItem] {
-        try await context.perform {[context] in
+        return try await container.performBackgroundTask { context in
             let result = try? context.fetch(CDDashboardCourse.fetchRequest())
                 .map { CourseItem(name: $0.name ?? "",
                                   org: $0.org ?? "",
@@ -44,10 +44,10 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
     
-    public func saveEnrollments(items: [CourseItem]) {
-        for item in items {
-            context.perform {[context] in
-                let newItem = CDDashboardCourse(context: self.context)
+    public func saveEnrollments(items: [CourseItem]) async {
+        await container.performBackgroundTask { context in
+            for item in items {
+                let newItem = CDDashboardCourse(context: context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.name = item.name
                 newItem.org = item.org
@@ -61,22 +61,21 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
                 newItem.courseRawImage = item.courseRawImage
-                
-                do {
-                    try context.save()
-                } catch {
-                    print("⛔️⛔️⛔️⛔️⛔️", error)
-                }
+            }
+            do {
+                try context.save()
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
             }
         }
     }
 
     public func loadPrimaryEnrollment() async throws -> PrimaryEnrollment {
-        try await context.perform {[context] in
-            let request = CDMyEnrollments.fetchRequest()
+        let request = CDMyEnrollments.fetchRequest()
+        return try await container.performBackgroundTask { context in
             if let result = try context.fetch(request).first {
                 let primaryCourse = result.primaryCourse.flatMap { cdPrimaryCourse -> PrimaryCourse? in
-
+                    
                     let futureAssignments = (cdPrimaryCourse.futureAssignments as? Set<CDAssignment> ?? [])
                         .map { future in
                             return Assignment(
@@ -100,7 +99,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                                 firstComponentBlockId: past.firstComponentBlockId
                             )
                         }
-
+                    
                     return PrimaryCourse(
                         name: cdPrimaryCourse.name ?? "",
                         org: cdPrimaryCourse.org ?? "",
@@ -117,7 +116,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                         resumeTitle: cdPrimaryCourse.resumeTitle
                     )
                 }
-
+                
                 let courses = (result.courses as? Set<CDDashboardCourse> ?? [])
                     .map { cdCourse in
                         return CourseItem(
@@ -138,7 +137,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                             progressPossible: Int(cdCourse.progressPossible)
                         )
                     }
-
+                
                 return PrimaryEnrollment(
                     primaryCourse: primaryCourse,
                     courses: courses,
@@ -151,17 +150,16 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
         }
     }
     
-    // swiftlint:disable function_body_length
-    public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) {
+    public func savePrimaryEnrollment(enrollments: PrimaryEnrollment) async {
         // Deleting all old data before saving new ones
-        clearOldEnrollmentsData()
-        context.perform {[context] in
+        await clearOldEnrollmentsData()
+        await container.performBackgroundTask { context in
             let newEnrollment = CDMyEnrollments(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-
+            
             // Saving new courses
             newEnrollment.courses = NSSet(array: enrollments.courses.map { course in
-                let cdCourse = CDDashboardCourse(context: self.context)
+                let cdCourse = CDDashboardCourse(context: context)
                 cdCourse.name = course.name
                 cdCourse.org = course.org
                 cdCourse.desc = course.shortDescription
@@ -177,13 +175,13 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 cdCourse.progressPossible = Int32(course.progressPossible)
                 return cdCourse
             })
-
+            
             // Saving PrimaryCourse
             if let primaryCourse = enrollments.primaryCourse {
                 let cdPrimaryCourse = CDPrimaryCourse(context: context)
                 
                 let futureAssignments = primaryCourse.futureAssignments.map { assignment in
-                    let cdAssignment = CDAssignment(context: self.context)
+                    let cdAssignment = CDAssignment(context: context)
                     cdAssignment.type = assignment.type
                     cdAssignment.title = assignment.title
                     cdAssignment.descript = assignment.description
@@ -195,7 +193,7 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 cdPrimaryCourse.futureAssignments = NSSet(array: futureAssignments)
                 
                 let pastAssignments = primaryCourse.pastAssignments.map { assignment in
-                    let cdAssignment = CDAssignment(context: self.context)
+                    let cdAssignment = CDAssignment(context: context)
                     cdAssignment.type = assignment.type
                     cdAssignment.title = assignment.title
                     cdAssignment.descript = assignment.description
@@ -217,13 +215,13 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
                 cdPrimaryCourse.progressPossible = Int32(primaryCourse.progressPossible)
                 cdPrimaryCourse.lastVisitedBlockID = primaryCourse.lastVisitedBlockID
                 cdPrimaryCourse.resumeTitle = primaryCourse.resumeTitle
-
+                
                 newEnrollment.primaryCourse = cdPrimaryCourse
             }
-
+            
             newEnrollment.totalPages = Int32(enrollments.totalPages)
             newEnrollment.count = Int32(enrollments.count)
-
+            
             do {
                 try context.save()
             } catch {
@@ -231,10 +229,9 @@ public class DashboardPersistence: DashboardPersistenceProtocol {
             }
         }
     }
-    // swiftlint:enable function_body_length
     
-    func clearOldEnrollmentsData() {
-        context.performAndWait {[context] in
+    func clearOldEnrollmentsData() async {
+        await container.performBackgroundTask { context in
             let fetchRequest1: NSFetchRequest<NSFetchRequestResult> = CDDashboardCourse.fetchRequest()
             let batchDeleteRequest1 = NSBatchDeleteRequest(fetchRequest: fetchRequest1)
             

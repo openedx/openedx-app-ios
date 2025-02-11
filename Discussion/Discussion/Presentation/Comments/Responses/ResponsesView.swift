@@ -63,7 +63,8 @@ public struct ResponsesView: View {
                                                         id: parentComment.commentID,
                                                         isThread: false,
                                                         voted: comments.voted,
-                                                        index: nil
+                                                        index: nil,
+                                                        courseID: viewModel.courseID
                                                     ) {
                                                         viewModel.sendThreadLikeState()
                                                     }
@@ -75,7 +76,8 @@ public struct ResponsesView: View {
                                                         id: parentComment.commentID,
                                                         isThread: false,
                                                         abuseFlagged: comments.abuseFlagged,
-                                                        index: nil
+                                                        index: nil,
+                                                        courseID: viewModel.courseID
                                                     ) {
                                                         viewModel.sendThreadReportState()
                                                     }
@@ -112,7 +114,10 @@ public struct ResponsesView: View {
                                                             id: comment.commentID,
                                                             isThread: false,
                                                             voted: comment.voted,
-                                                            index: index
+                                                            index: index,
+                                                            courseID: viewModel.courseID,
+                                                            responseID: parentComment.commentID,
+                                                            isComment: true
                                                         )
                                                     }
                                                 },
@@ -122,7 +127,10 @@ public struct ResponsesView: View {
                                                             id: comment.commentID,
                                                             isThread: false,
                                                             abuseFlagged: comment.abuseFlagged,
-                                                            index: index
+                                                            index: index,
+                                                            courseID: viewModel.courseID,
+                                                            responseID: parentComment.commentID,
+                                                            isComment: true
                                                         )
                                                     }
                                                 },
@@ -244,11 +252,13 @@ public struct ResponsesView: View {
 struct ResponsesView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = ResponsesViewModel(
+            courseID: "",
             interactor: DiscussionInteractor(repository: DiscussionRepositoryMock()),
             router: DiscussionRouterMock(),
             config: ConfigMock(),
             storage: CoreStorageMock(),
-            threadStateSubject: .init(nil)
+            threadStateSubject: .init(nil),
+            analytics: DiscussionAnalyticsMock()
         )
         let post = Post(
             authorName: "Kirill",

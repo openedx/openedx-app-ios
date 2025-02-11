@@ -47,7 +47,7 @@ struct CourseVideoDownloadBarView: View {
                 toggle
             }
             .padding(.vertical, 10)
-            if viewModel.isOn, !viewModel.allVideosDownloaded {
+            if viewModel.isOn, !viewModel.isAllVideosDownloaded {
                 ProgressView(value: viewModel.progress, total: 1)
                     .tint(Theme.Colors.accentColor)
                     .accessibilityIdentifier("progress_line_view")
@@ -57,7 +57,7 @@ struct CourseVideoDownloadBarView: View {
         .contentShape(Rectangle())
         .onTapGesture {
             Task {
-                let downloads = await viewModel.allActiveDownloads()
+                let downloads = viewModel.allActiveDownloads()
                 if !downloads.isEmpty {
                     onTap?()
                 }
@@ -70,7 +70,7 @@ struct CourseVideoDownloadBarView: View {
 
     private var image: some View {
         VStack {
-            if viewModel.isOn, !viewModel.allVideosDownloaded {
+            if viewModel.isOn, !viewModel.isAllVideosDownloaded {
                 ProgressView()
                     .accessibilityIdentifier("progress_view")
             } else {
@@ -114,7 +114,7 @@ struct CourseVideoDownloadBarView: View {
                                 .accessibilityIdentifier("remaining_videos_text")
                         }
                         if let totalSize = viewModel.totalSize {
-                            let text = ", \(totalSize)MB \(CourseLocalization.Download.total)"
+                            let text = ", \(totalSize) \(CourseLocalization.Download.total)"
                             Text(text)
                                 .accessibilityElement(children: .ignore)
                                 .accessibilityLabel(text)
@@ -135,13 +135,24 @@ struct CourseVideoDownloadBarView: View {
         Toggle("", isOn: .constant(viewModel.isOn))
             .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
             .padding(.trailing, 15)
-            .onTapGesture {
-                if !viewModel.isInternetAvaliable {
-                    onNotInternetAvaliable?()
-                    return
+            .simultaneousGesture(
+                DragGesture(minimumDistance: 20, coordinateSpace: .local).onEnded { _ in
+                    toggleAction()
                 }
-                Task { await viewModel.onToggle()  }
-            }
+            )
+            .simultaneousGesture(
+                TapGesture().onEnded {
+                    toggleAction()
+                }
+            )
             .accessibilityIdentifier("download_toggle")
+    }
+
+    private func toggleAction() {
+        if !viewModel.isInternetAvaliable {
+            onNotInternetAvaliable?()
+            return
+        }
+        Task { await viewModel.onToggle()  }
     }
 }

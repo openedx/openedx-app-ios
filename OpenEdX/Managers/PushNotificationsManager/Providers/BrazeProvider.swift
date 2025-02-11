@@ -9,7 +9,7 @@ import Foundation
 import Swinject
 import OEXFoundation
 
-class BrazeProvider: PushNotificationsProvider {
+final class BrazeProvider: PushNotificationsProvider {
     
     func didRegisterWithDeviceToken(deviceToken: Data) {
         // Removed as part of the move to a plugin architecture, this code should be called from the plugin.

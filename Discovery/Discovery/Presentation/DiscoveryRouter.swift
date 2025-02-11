@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+@MainActor
 public protocol DiscoveryRouter: BaseRouter {
     func showCourseDetais(courseID: String, title: String)
     func showWebDiscoveryDetails(

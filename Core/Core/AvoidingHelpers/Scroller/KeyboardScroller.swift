@@ -3,6 +3,7 @@
 import UIKit
 import OEXFoundation
 
+@MainActor
 final class KeyboardScroller {
     static func scroll(
         keyboardState: KeyboardState,

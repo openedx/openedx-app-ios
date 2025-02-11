@@ -10,21 +10,27 @@ import SwiftUI
 import Core
 import Combine
 
-public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
+public final class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
     
     @Published var scrollTrigger: Bool = false
     private let threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
     public var isBlackedOut: Bool = false
+    private let analytics: DiscussionAnalytics?
+    let courseID: String
 
     public init(
+        courseID: String,
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
         config: ConfigProtocol,
         storage: CoreStorage,
-        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
+        threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>,
+        analytics: DiscussionAnalytics?
     ) {
+        self.courseID = courseID
         self.threadStateSubject = threadStateSubject
-        super.init(interactor: interactor, router: router, config: config, storage: storage)
+        self.analytics = analytics
+        super.init(interactor: interactor, router: router, config: config, storage: storage, analytics: analytics)
     }
 
     func generateCommentsResponses(comments: [UserComment], parentComment: Post) -> Post? {
@@ -61,6 +67,13 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
                                                                parentID: parentID)
             isShowProgress = false
             addPostSubject.send(newComment)
+            trackCommentAdded(
+                courseID: courseID,
+                threadID: threadID,
+                responseID: parentID ?? "",
+                commentID: newComment.commentID,
+                author: newComment.authorName
+            )
         } catch let error {
             isShowProgress = false
             if error.isInternetError {
@@ -154,5 +167,21 @@ public class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
         if let postComments {
             threadStateSubject.send(.postAdded(id: postComments.commentID))
         }
+    }
+    
+    private func trackCommentAdded(
+        courseID: String,
+        threadID: String,
+        responseID: String,
+        commentID: String,
+        author: String
+    ) {
+        analytics?.discussionCommentAdded(
+            courseID: courseID,
+            threadID: threadID,
+            responseID: responseID,
+            commentID: commentID,
+            author: author
+        )
     }
 }

@@ -6,16 +6,17 @@
 //
 
 import Foundation
-import WebKit
-import Combine
+@preconcurrency import WebKit
+@preconcurrency import Combine
 import Swinject
 import OEXFoundation
 
-public protocol OfflineSyncManagerProtocol {
-    func handleMessage(message: WKScriptMessage, blockID: String)
+public protocol OfflineSyncManagerProtocol: Sendable {
+    func handleMessage(message: WKScriptMessage, blockID: String) async
     func syncOfflineProgress() async
 }
 
+@MainActor
 public class OfflineSyncManager: OfflineSyncManagerProtocol {
     
     let persistence: CorePersistenceProtocol
@@ -44,26 +45,26 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
         }).store(in: &cancellables)
     }
     
-    public func handleMessage(message: WKScriptMessage, blockID: String) {
+    public func handleMessage(message: WKScriptMessage, blockID: String) async {
         if message.name == "IOSBridge",
            let progressJson = message.body as? String {
-            persistence.saveOfflineProgress(
+            await persistence.saveOfflineProgress(
                 progress: OfflineProgress(
                     progressJson: progressJson
                 )
             )
             var correctedProgressJson = progressJson
             correctedProgressJson = correctedProgressJson.removingPercentEncoding ?? correctedProgressJson
-            message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')")
-        } else if let offlineProgress = persistence.loadProgress(for: blockID) {
+            _ = message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')") { _, _ in }
+        } else if let offlineProgress = await persistence.loadProgress(for: blockID) {
             var correctedProgressJson = offlineProgress.progressJson
             correctedProgressJson = correctedProgressJson.removingPercentEncoding ?? correctedProgressJson
-            message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')")
+            _ = message.webView?.evaluateJavaScript("markProblemCompleted('\(correctedProgressJson)')") { _, _ in }
         }
     }
     
     public func syncOfflineProgress() async {
-        let offlineProgress = persistence.loadAllOfflineProgress()
+        let offlineProgress = await persistence.loadAllOfflineProgress()
         let cookies = HTTPCookieStorage.shared.cookies
         HTTPCookieStorage.shared.cookies?.forEach { HTTPCookieStorage.shared.deleteCookie($0) }
         for progress in offlineProgress {
@@ -73,7 +74,7 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
                     blockID: progress.blockID,
                     data: progress.data
                 ) {
-                    persistence.deleteProgress(for: progress.blockID)
+                   await persistence.deleteProgress(for: progress.blockID)
                 }
                 if let config = Container.shared.resolve(ConfigProtocol.self), let cookies {
                     HTTPCookieStorage.shared.setCookies(cookies, for: config.baseURL, mainDocumentURL: nil)

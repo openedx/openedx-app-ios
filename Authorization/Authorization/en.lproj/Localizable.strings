@@ -40,8 +40,10 @@ accordance with the [Privacy Policy.](%@)";
 "FORGOT.CHECK_TITLE" = "Check your email";
 "FORGOT.CHECK_Description" = "We have sent a password recover instructions to your email ";
 
-"SIGN_IN_WITH" = "Sign in with";
-"REGISTER_WITH" = "Register with";
+"CONTINUE_WITH" = "Continue with:";
+"LAST_SIGN_IN" = "Last sign in";
+"OR_SIGN_IN_WITH" = "Or sign in with email:";
+"OR_REGISTER_WITH" = "Or register below:";
 "APPLE" = "Apple";
 "GOOGLE" = "Google";
 "FACEBOOK" = "Facebook";

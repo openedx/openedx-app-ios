@@ -5,6 +5,8 @@ import UIKit
 /**
  Applies keyboard dismissal tap to the whole view
  */
+
+@MainActor
 final class DismissKeyboardTapHandler: NSObject {
     var isEnabled: Bool {
         didSet {
@@ -14,13 +16,19 @@ final class DismissKeyboardTapHandler: NSObject {
 
             if isEnabled {
                 let recognizer = makeTapGestureRecognizer()
-                UIApplication.shared.keyWindow?.addGestureRecognizer(recognizer)
+                UIApplication
+                    .shared
+                    .oexKeyWindow?
+                    .addGestureRecognizer(recognizer)
                 tapRecognizer = recognizer
                 return
             }
 
             if let recognizer = tapRecognizer {
-                UIApplication.shared.keyWindow?.removeGestureRecognizer(recognizer)
+                UIApplication
+                    .shared
+                    .oexKeyWindow?
+                    .removeGestureRecognizer(recognizer)
                 tapRecognizer = nil
             }
         }

@@ -132,7 +132,6 @@ public struct CourseContainerView: View {
                 }
             }
         }
-        
         switch courseDatesViewModel.eventState {
         case .removedCalendar:
             showDatesSuccessView(
@@ -152,7 +151,7 @@ public struct CourseContainerView: View {
     private func showDatesSuccessView(title: String, message: String) -> some View {
         return DatesSuccessView(
             title: title,
-            message: message, 
+            message: message,
             selectedTab: .dates
         ) {
             courseDatesViewModel.resetEventState()
@@ -295,6 +294,7 @@ public struct CourseContainerView: View {
             Task {
                 await viewModel.tryToRefreshCookies()
             }
+            viewModel.analytics.courseOutlineCourseTabClicked(courseId: courseID, courseName: title)
         }
     }
     
@@ -375,7 +375,8 @@ struct CourseScreensView_Previews: PreviewProvider {
                 enrollmentStart: nil,
                 enrollmentEnd: nil,
                 lastVisitedBlockID: nil,
-                coreAnalytics: CoreAnalyticsMock()
+                coreAnalytics: CoreAnalyticsMock(),
+                courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
             ),
             courseDatesViewModel: CourseDatesViewModel(
                 interactor: CourseInteractor.mock,

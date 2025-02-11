@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-public struct DiscussionBlackout {
+public struct DiscussionBlackout: Sendable {
     var start: String
     var end: String
 }
@@ -19,7 +19,7 @@ public extension DataLayer {
         var blackouts: [DiscussionBlackout]?
     }
 
-    struct DiscussionBlackout: Codable {
+    struct DiscussionBlackout: Codable, Sendable {
         var start: String
         var end: String
     }

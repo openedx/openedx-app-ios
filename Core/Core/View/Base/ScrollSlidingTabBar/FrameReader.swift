@@ -32,7 +32,7 @@ extension View {
 }
 
 private struct FramePreferenceKey: PreferenceKey {
-    static var defaultValue: [PreferenceValueKey: CGRect] = [:]
+    nonisolated(unsafe) static var defaultValue: [PreferenceValueKey: CGRect] = [:]
     
     static func reduce(value: inout [PreferenceValueKey: CGRect], nextValue: () -> [PreferenceValueKey: CGRect]) {
         value.merge(nextValue()) { $1 }

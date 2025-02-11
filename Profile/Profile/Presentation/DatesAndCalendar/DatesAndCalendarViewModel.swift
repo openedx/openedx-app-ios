@@ -16,7 +16,8 @@ import OEXFoundation
 
 // MARK: - DatesAndCalendarViewModel
 
-public class DatesAndCalendarViewModel: ObservableObject {
+@MainActor
+public final class DatesAndCalendarViewModel: ObservableObject {
     @Published var showCalendaAccessDenied: Bool = false
     @Published var showDisableCalendarSync: Bool = false
     @Published var showError: Bool = false
@@ -98,7 +99,6 @@ public class DatesAndCalendarViewModel: ObservableObject {
         self.calendarNameHint = ProfileLocalization.Calendar.courseDates((Bundle.main.applicationName ?? ""))
     }
     
-    @MainActor
     var isInternetAvaliable: Bool {
         let avaliable = connectivity.isInternetAvaliable
         if !avaliable {
@@ -124,10 +124,10 @@ public class DatesAndCalendarViewModel: ObservableObject {
         $hideInactiveCourses
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] hide in
-            guard let self = self else { return }
-            self.profileStorage.hideInactiveCourses = hide
-        })
-        .store(in: &cancellables)
+                guard let self = self else { return }
+                self.profileStorage.hideInactiveCourses = hide
+            })
+            .store(in: &cancellables)
         
         $courseCalendarSync
             .receive(on: DispatchQueue.main)
@@ -144,8 +144,8 @@ public class DatesAndCalendarViewModel: ObservableObject {
         updateCoursesCount()
     }
     
-    func clearAllData() {
-        calendarManager.clearAllData(removeCalendar: true)
+    func clearAllData() async {
+        await calendarManager.clearAllData(removeCalendar: true)
         router.back(animated: false)
         courseCalendarSync = true
         showDisableCalendarSync = false
@@ -193,9 +193,8 @@ public class DatesAndCalendarViewModel: ObservableObject {
             }
         }
     }
-
+    
     // MARK: - Fetch Courses and Sync
-    @MainActor
     func fetchCourses() async {
         guard connectivity.isInternetAvaliable else { return }
         assignmentStatus = .loading
@@ -207,7 +206,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         do {
             let fetchedCourses = try await interactor.enrollmentsStatus()
             self.coursesForSync = fetchedCourses
-            let courseCalendarStates = persistence.getAllCourseStates()
+            let courseCalendarStates = await persistence.getAllCourseStates()
             if profileStorage.firstCalendarUpdate == false && courseCalendarStates.isEmpty {
                 await syncAllActiveCourses()
             } else {
@@ -218,9 +217,9 @@ public class DatesAndCalendarViewModel: ObservableObject {
                     } && course.recentlyActive
                     return updatedCourse
                 }
-               
+                
                 let addingIDs = Set(coursesForAdding.map { $0.courseID })
-
+                
                 coursesForSync = coursesForSync.map { course in
                     var updatedCourse = course
                     if addingIDs.contains(course.courseID) {
@@ -229,7 +228,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
                     return updatedCourse
                 }
                 
-                for course in coursesForSync.filter { $0.synced } {
+                for course in coursesForSync.filter({ $0.synced }) {
                     do {
                         let courseDates = try await interactor.getCourseDates(courseID: course.courseID)
                         await syncSelectedCourse(
@@ -257,7 +256,6 @@ public class DatesAndCalendarViewModel: ObservableObject {
         syncingCoursesCount = coursesForSync.filter { $0.recentlyActive && $0.synced }.count
     }
     
-    @MainActor
     private func syncAllActiveCourses() async {
         guard profileStorage.firstCalendarUpdate == false else {
             coursesForAdding = []
@@ -296,7 +294,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
     
     func deleteOldCalendarIfNeeded() async {
         guard let calSettings = profileStorage.calendarSettings else { return }
-        let courseCalendarStates = persistence.getAllCourseStates()
+        let courseCalendarStates = await persistence.getAllCourseStates()
         let courseCountChanges = courseCalendarStates.count != coursesForSync.count
         let nameChanged = oldCalendarName != calendarName
         let colorChanged = colorSelection != colors.first(where: { $0.colorString == calSettings.colorSelection })
@@ -306,7 +304,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         
         calendarManager.removeOldCalendar()
         saveCalendarOptions()
-        persistence.removeAllCourseCalendarEvents()
+        await persistence.removeAllCourseCalendarEvents()
         await fetchCourses()
     }
     
@@ -316,9 +314,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
         courseDates: CourseDates,
         active: Bool
     ) async {
-        await MainActor.run {
-            self.assignmentStatus = .loading
-        }
+        assignmentStatus = .loading
         
         await calendarManager.removeOutdatedEvents(courseID: courseID)
         guard active else {
@@ -327,24 +323,21 @@ public class DatesAndCalendarViewModel: ObservableObject {
             }
             return
         }
-
+        
         await calendarManager.syncCourse(courseID: courseID, courseName: courseName, dates: courseDates)
-        if let index = self.coursesForSync.firstIndex(where: { $0.courseID == courseID && $0.recentlyActive }) {
-            await MainActor.run {
+        Task {
+            if let index = self.coursesForSync.firstIndex(where: { $0.courseID == courseID && $0.recentlyActive }) {
                 self.coursesForSync[index].synced = true
             }
-        }
-        await MainActor.run {
             self.assignmentStatus = .synced
         }
     }
-
-    @MainActor
+    
     func removeDeselectedCoursesFromCalendar() async {
         for course in coursesForDeleting {
             await calendarManager.removeOutdatedEvents(courseID: course.courseID)
-            persistence.removeCourseState(courseID: course.courseID)
-            persistence.removeCourseCalendarEvents(for: course.courseID)
+            await persistence.removeCourseState(courseID: course.courseID)
+            await persistence.removeCourseCalendarEvents(for: course.courseID)
             if let index = self.coursesForSync.firstIndex(where: { $0.courseID == course.courseID }) {
                 self.coursesForSync[index].synced = false
             }
@@ -364,7 +357,7 @@ public class DatesAndCalendarViewModel: ObservableObject {
             updateCoursesForSyncAndDeletion(course: coursesForSync[index])
         }
     }
-
+    
     private func updateCoursesForSyncAndDeletion(course: CourseForSync) {
         guard let initialCourse = coursesForSyncBeforeChanges.first(where: {
             $0.courseID == course.courseID
@@ -397,7 +390,6 @@ public class DatesAndCalendarViewModel: ObservableObject {
     }
     
     // MARK: - Request Calendar Permission
-    @MainActor
     func requestCalendarPermission() async {
         if await calendarManager.requestAccess() {
             await showNewCalendarSetup()
@@ -406,25 +398,22 @@ public class DatesAndCalendarViewModel: ObservableObject {
         }
     }
     
-    @MainActor
     private func showCalendarAccessDenied() async {
-            withAnimation(.bouncy(duration: 0.3)) {
-                self.showCalendaAccessDenied = true
-            }
+        withAnimation(.bouncy(duration: 0.3)) {
+            self.showCalendaAccessDenied = true
+        }
     }
     
-    @MainActor
     private func showDisableCalendarSync() async {
         withAnimation(.bouncy(duration: 0.3)) {
             self.showDisableCalendarSync = true
         }
     }
     
-    @MainActor
     private func showNewCalendarSetup() async {
-            withAnimation(.bouncy(duration: 0.3)) {
-                self.openNewCalendarView = true
-            }
+        withAnimation(.bouncy(duration: 0.3)) {
+            self.openNewCalendarView = true
+        }
     }
     
     func openAppSettings() {

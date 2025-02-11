@@ -9,7 +9,7 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
-public protocol DiscussionInteractorProtocol {
+public protocol DiscussionInteractorProtocol: Sendable {
     func getCourseDiscussionInfo(courseID: String) async throws -> DiscussionInfo
     func getThreadsList(courseID: String,
                         type: ThreadType,
@@ -34,7 +34,7 @@ public protocol DiscussionInteractorProtocol {
     func readBody(threadID: String) async throws
 }
 
-public class DiscussionInteractor: DiscussionInteractorProtocol {
+public actor DiscussionInteractor: DiscussionInteractorProtocol {
     
     private let repository: DiscussionRepositoryProtocol
     
@@ -82,10 +82,12 @@ public class DiscussionInteractor: DiscussionInteractorProtocol {
         return try await repository.getCommentResponses(commentID: commentID, page: page)
     }
 
+    //swiftlint:disable todo
     // TODO: This Api should be updated with type GET, currently we are using this for deep linking on comment screen.
     public func getResponse(responseID: String) async throws -> UserComment {
         return try await repository.getResponse(responseID: responseID)
     }
+    //swiftlint:enable todo
 
     public func addCommentTo(threadID: String, rawBody: String, parentID: String? = nil) async throws -> Post {
         return try await repository.addCommentTo(threadID: threadID,

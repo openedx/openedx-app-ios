@@ -9,6 +9,7 @@ import XCTest
 import Core
 @testable import WhatsNew
 
+@MainActor
 final class WhatsNewTests: XCTestCase {
 
     func testGetVersion() throws {

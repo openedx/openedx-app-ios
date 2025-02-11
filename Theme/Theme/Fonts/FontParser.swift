@@ -7,18 +7,18 @@
 
 import Foundation
 
-public enum FontIdentifier: String {
+public enum FontIdentifier: String, Sendable {
     case light, regular, medium, semiBold, bold
 }
 
-public class FontParser {
+public struct FontParser: Sendable {
     private var fonts: [String: String] = [:]
     
     public init() {
-        fonts = loadANdParseFonts()
+        fonts = loadAndParseFonts()
     }
     
-    private func loadANdParseFonts() -> [String: String] {
+    private func loadAndParseFonts() -> [String: String] {
         if let path = Bundle(for: ThemeBundle.self).path(forResource: "fonts", ofType: "json") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)

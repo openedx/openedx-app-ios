@@ -27,6 +27,7 @@ public struct DownloadActionView: View {
     private let sequentials: [CourseSequential]
     private let courseBlocks: [CourseBlock]
     private let courseName: String?
+    private let downloadedSize: Int?
     private let action: () -> Void
     private let cancel: () -> Void
     @State private var fadeEffect: Bool = false
@@ -36,6 +37,7 @@ public struct DownloadActionView: View {
     init(
         actionType: ContentActionType,
         sequentials: [CourseSequential],
+        downloadedSize: Int? = nil,
         action: @escaping () -> Void,
         cancel: @escaping () -> Void
     ) {
@@ -45,12 +47,14 @@ public struct DownloadActionView: View {
         self.courseBlocks = []
         self.action = action
         self.cancel = cancel
+        self.downloadedSize = downloadedSize
     }
     
     init(
         actionType: ContentActionType,
         courseBlocks: [CourseBlock],
         courseName: String? = nil,
+        downloadedSize: Int? = nil,
         action: @escaping () -> Void,
         cancel: @escaping () -> Void
     ) {
@@ -60,6 +64,7 @@ public struct DownloadActionView: View {
         self.courseName = courseName
         self.action = action
         self.cancel = cancel
+        self.downloadedSize = downloadedSize
     }
     
     public var body: some View {
@@ -269,7 +274,9 @@ public struct DownloadActionView: View {
     }
     
     private var totalSize: String {
-        if sequentials.isEmpty {
+        if let downloadedSize {
+            downloadedSize.formattedFileSize()
+        } else if sequentials.isEmpty {
             courseBlocks.reduce(0) { $0 + ($1.fileSize ?? 0) }.formattedFileSize()
         } else {
             sequentials.reduce(0) { $0 + $1.totalSize }.formattedFileSize()

@@ -9,7 +9,7 @@ import Foundation
 import Core
 import OEXFoundation
 
-public protocol CourseRepositoryProtocol {
+public protocol CourseRepositoryProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func blockCompletionRequest(courseID: String, blockID: String) async throws
@@ -23,7 +23,7 @@ public protocol CourseRepositoryProtocol {
     func shiftDueDates(courseID: String) async throws
 }
 
-public class CourseRepository: CourseRepositoryProtocol {
+public actor CourseRepository: CourseRepositoryProtocol {
     
     private let api: API
     private let coreStorage: CoreStorage
@@ -41,12 +41,12 @@ public class CourseRepository: CourseRepositoryProtocol {
         self.config = config
         self.persistence = persistence
     }
-        
+    
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         let course = try await api.requestData(
             CourseEndpoint.getCourseBlocks(courseID: courseID, userName: coreStorage.user?.username ?? "")
         ).mapResponse(DataLayer.CourseStructure.self)
-        persistence.saveCourseStructure(structure: course)
+        await persistence.saveCourseStructure(structure: course)
         let parsedStructure = parseCourseStructure(course: course)
         return parsedStructure
     }
@@ -94,7 +94,7 @@ public class CourseRepository: CourseRepositoryProtocol {
                 selectedLanguage: selectedLanguage
             ))
             let subtitles = String(data: result, encoding: .utf8) ?? ""
-            persistence.saveSubtitles(url: url + selectedLanguage, subtitlesString: subtitles)
+            await persistence.saveSubtitles(url: url + selectedLanguage, subtitlesString: subtitles)
             return subtitles
         }
     }
@@ -103,7 +103,7 @@ public class CourseRepository: CourseRepositoryProtocol {
         let courseDates = try await api.requestData(
             CourseEndpoint.getCourseDates(courseID: courseID)
         ).mapResponse(DataLayer.CourseDates.self).domain(useRelativeDates: coreStorage.useRelativeDates)
-        persistence.saveCourseDates(courseID: courseID, courseDates: courseDates)
+        await persistence.saveCourseDates(courseID: courseID, courseDates: courseDates)
         return courseDates
     }
     
@@ -115,7 +115,7 @@ public class CourseRepository: CourseRepositoryProtocol {
     }
     
     public func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
-        return try persistence.loadCourseDates(courseID: courseID)
+        return try await persistence.loadCourseDates(courseID: courseID)
     }
     
     private func parseCourseStructure(course: DataLayer.CourseStructure) -> CourseStructure {
@@ -137,7 +137,7 @@ public class CourseRepository: CourseRepositoryProtocol {
             displayName: courseBlock.displayName,
             topicID: courseBlock.userViewData?.topicID,
             childs: childs,
-            media: course.media,
+            media: course.media.domain,
             certificate: course.certificate?.domain,
             org: course.org ?? "",
             isSelfPaced: course.isSelfPaced,
@@ -245,26 +245,48 @@ public class CourseRepository: CourseRepositoryProtocol {
             webUrl: block.webUrl,
             subtitles: subtitles,
             encodedVideo: .init(
-                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
-                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
-                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
-                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
-                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
-                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+                fallback: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.fallback,
+                    type: .fallback
+                ),
+                youtube: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.youTube,
+                    type: .youtube
+                ),
+                desktopMP4: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.desktopMP4,
+                    type: .desktopMP4
+                ),
+                mobileHigh: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.mobileHigh,
+                    type: .mobileHigh
+                ),
+                mobileLow: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.mobileLow,
+                    type: .mobileLow
+                ),
+                hls: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.hls,
+                    type: .hls
+                )
             ),
             multiDevice: block.multiDevice,
             offlineDownload: offlineDownload
         )
     }
     
-    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+    private func parseVideo(
+        encodedVideo: DataLayer.EncodedVideoData?,
+        type: CourseBlockVideoEncoding
+    ) -> CourseBlockVideo? {
         guard let encodedVideo, encodedVideo.url?.isEmpty == false else {
             return nil
         }
         return .init(
             url: encodedVideo.url,
             fileSize: encodedVideo.fileSize,
-            streamPriority: encodedVideo.streamPriority
+            streamPriority: encodedVideo.streamPriority,
+            type: type
         )
     }
 }
@@ -272,6 +294,7 @@ public class CourseRepository: CourseRepositoryProtocol {
 // Mark - For testing and SwiftUI preview
 // swiftlint:disable all
 #if DEBUG
+@MainActor
 class CourseRepositoryMock: CourseRepositoryProtocol {
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
         throw NoCachedDataError()
@@ -375,7 +398,7 @@ And there are various ways of describing it-- call it oral poetry or
             displayName: courseBlock.displayName,
             topicID: courseBlock.userViewData?.topicID,
             childs: childs,
-            media: course.media,
+            media: course.media.domain,
             certificate: course.certificate?.domain,
             org: course.org ?? "",
             isSelfPaced: course.isSelfPaced, 
@@ -481,26 +504,46 @@ And there are various ways of describing it-- call it oral poetry or
             webUrl: block.webUrl,
             subtitles: subtitles,
             encodedVideo: .init(
-                fallback: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.fallback),
-                youtube: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.youTube),
-                desktopMP4: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.desktopMP4),
-                mobileHigh: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileHigh),
-                mobileLow: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.mobileLow),
-                hls: parseVideo(encodedVideo: block.userViewData?.encodedVideo?.hls)
+                fallback: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.fallback,
+                    type: .fallback
+                ),
+                youtube: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.youTube,
+                    type: .youtube
+                ),
+                desktopMP4: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.desktopMP4,
+                    type: .desktopMP4
+                ),
+                mobileHigh: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.mobileHigh,
+                    type: .mobileHigh
+                ),
+                mobileLow: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.mobileLow, type: .mobileLow),
+                hls: parseVideo(
+                    encodedVideo: block.userViewData?.encodedVideo?.hls,
+                    type: .hls
+                )
             ),
             multiDevice: block.multiDevice, 
             offlineDownload: offlineDownload
         )
     }
 
-    private func parseVideo(encodedVideo: DataLayer.EncodedVideoData?) -> CourseBlockVideo? {
+    private func parseVideo(
+        encodedVideo: DataLayer.EncodedVideoData?,
+        type: CourseBlockVideoEncoding
+    ) -> CourseBlockVideo? {
         guard let encodedVideo else {
             return nil
         }
         return .init(
             url: encodedVideo.url,
             fileSize: encodedVideo.fileSize,
-            streamPriority: encodedVideo.streamPriority
+            streamPriority: encodedVideo.streamPriority,
+            type: type
         )
     }
 }

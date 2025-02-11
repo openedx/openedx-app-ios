@@ -90,7 +90,11 @@ public struct VideoSettingsView: View {
                                 Button {
                                     viewModel.router.showVideoDownloadQualityView(
                                         downloadQuality: viewModel.userSettings.downloadQuality,
-                                        didSelect: viewModel.update(downloadQuality:),
+                                        didSelect: { quality in
+                                            Task {
+                                                await viewModel.update(downloadQuality: quality)
+                                            }
+                                        },
                                         analytics: viewModel.coreAnalytics
                                     )
                                 } label: {
@@ -127,8 +131,7 @@ public struct VideoSettingsView: View {
 }
 
 #if DEBUG
-struct VideoSettingsView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
         let router = ProfileRouterMock()
         let vm = SettingsViewModel(
             interactor: ProfileInteractor.mock,
@@ -136,15 +139,12 @@ struct VideoSettingsView_Previews: PreviewProvider {
             router: router,
             analytics: ProfileAnalyticsMock(),
             coreAnalytics: CoreAnalyticsMock(),
-            config: ConfigMock(), 
-            corePersistence: CorePersistenceMock(), 
+            config: ConfigMock(),
+            corePersistence: CorePersistenceMock(),
             connectivity: Connectivity()
         )
         
         VideoSettingsView(viewModel: vm)
-            .preferredColorScheme(.light)
-            .previewDisplayName("SettingsView Light")
             .loadFonts()
     }
-}
 #endif

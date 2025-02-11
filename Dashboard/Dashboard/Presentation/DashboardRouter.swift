@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+@MainActor
 public protocol DashboardRouter: BaseRouter {
     
     func showCourseScreens(courseID: String,

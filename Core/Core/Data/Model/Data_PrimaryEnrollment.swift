@@ -164,7 +164,7 @@ public extension DataLayer {
     }
     
     // MARK: - CourseProgress
-    struct CourseProgress: Codable {
+    struct CourseProgress: Codable, Sendable {
         public let assignmentsCompleted: Int?
         public let totalAssignmentsCount: Int?
         

@@ -134,7 +134,9 @@ public struct DiscoveryWebview: View {
                     }
 
                     if !viewModel.userloggedIn, !isLoading {
-                        LogistrationBottomView { buttonAction in
+                        LogistrationBottomView(
+                            ssoEnabled: viewModel.config.uiComponents.samlSSOLoginEnabled
+                        ) { buttonAction in
                             switch buttonAction {
                             case .signIn:
                                 viewModel.router.showLoginScreen(sourceScreen: sourceScreen)

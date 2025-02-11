@@ -10,24 +10,24 @@ import Core
 import UIKit
 
 //sourcery: AutoMockable
-public protocol ProfileInteractorProtocol {
+public protocol ProfileInteractorProtocol: Sendable {
     func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile
-    func getMyProfileOffline() -> UserProfile?
+    func getMyProfileOffline() async -> UserProfile?
     func logOut() async throws
     func getSpokenLanguages() -> [PickerFields.Option]
     func getCountries() -> [PickerFields.Option]
     func uploadProfilePicture(pictureData: Data) async throws
     func deleteProfilePicture() async throws -> Bool
-    func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile
+    func updateUserProfile(parameters: [String: any Any & Sendable]) async throws -> UserProfile
     func deleteAccount(password: String) async throws -> Bool
     func getSettings() -> UserSettings
-    func saveSettings(_ settings: UserSettings)
+    func saveSettings(_ settings: UserSettings) async
     func enrollmentsStatus() async throws -> [CourseForSync]
     func getCourseDates(courseID: String) async throws -> CourseDates
 }
 
-public class ProfileInteractor: ProfileInteractorProtocol {
+public actor ProfileInteractor: ProfileInteractorProtocol {
     
     private let repository: ProfileRepositoryProtocol
     
@@ -43,19 +43,19 @@ public class ProfileInteractor: ProfileInteractorProtocol {
         return try await repository.getMyProfile()
     }
     
-    public func getMyProfileOffline() -> UserProfile? {
-        return repository.getMyProfileOffline()
+    public func getMyProfileOffline() async -> UserProfile? {
+        return await repository.getMyProfileOffline()
     }
     
     public func logOut() async throws {
         try await repository.logOut()
     }
     
-    public func getSpokenLanguages() -> [PickerFields.Option] {
+    public nonisolated func getSpokenLanguages() -> [PickerFields.Option] {
        return repository.getSpokenLanguages()
     }
     
-    public func getCountries() -> [PickerFields.Option] {
+    public nonisolated func getCountries() -> [PickerFields.Option] {
         return repository.getCountries()
     }
     
@@ -67,7 +67,7 @@ public class ProfileInteractor: ProfileInteractorProtocol {
         try await repository.deleteProfilePicture()
     }
     
-    public func updateUserProfile(parameters: [String: Any]) async throws -> UserProfile {
+    public func updateUserProfile(parameters: [String: any Any & Sendable]) async throws -> UserProfile {
        return try await repository.updateUserProfile(parameters: parameters)
     }
     
@@ -75,12 +75,12 @@ public class ProfileInteractor: ProfileInteractorProtocol {
         return try await repository.deleteAccount(password: password)
     }
     
-    public func getSettings() -> UserSettings {
+    nonisolated public func getSettings() -> UserSettings {
        return repository.getSettings()
     }
     
-    public func saveSettings(_ settings: UserSettings) {
-        return repository.saveSettings(settings)
+    public func saveSettings(_ settings: UserSettings) async {
+        return await repository.saveSettings(settings)
     }
     
     public func enrollmentsStatus() async throws -> [CourseForSync] {
@@ -95,6 +95,6 @@ public class ProfileInteractor: ProfileInteractorProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public extension ProfileInteractor {
-    static let mock = ProfileInteractor(repository: ProfileRepositoryMock())
+    @MainActor static let mock = ProfileInteractor(repository: ProfileRepositoryMock())
 }
 #endif

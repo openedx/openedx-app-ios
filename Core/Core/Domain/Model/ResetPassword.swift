@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ResetPassword {
+public struct ResetPassword: Sendable {
     public let success: Bool
     public let responseText: String
     

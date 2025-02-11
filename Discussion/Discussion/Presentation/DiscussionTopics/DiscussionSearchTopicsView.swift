@@ -196,7 +196,7 @@ struct DiscussionSearchTopicsView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DiscussionSearchTopicsViewModel(
             courseID: "123",
-            interactor: DiscussionInteractor.mock, 
+            interactor: DiscussionInteractor.mock,
             storage: CoreStorageMock(),
             router: DiscussionRouterMock(),
             debounce: .searchDebounce

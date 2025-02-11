@@ -176,7 +176,9 @@ public struct SyncCalendarOptionsView: View {
                         calendarCircleColor: viewModel.colorSelection?.color,
                         calendarName: viewModel.calendarName,
                         action: {
-                            viewModel.clearAllData()
+                            Task {
+                               await viewModel.clearAllData()
+                            }
                         },
                         onCloseTapped: {
                             viewModel.showDisableCalendarSync = false
@@ -268,7 +270,7 @@ struct SyncCalendarOptionsView_Previews: PreviewProvider {
             interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
             profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
-            calendarManager: CalendarManagerMock(), 
+            calendarManager: CalendarManagerMock(),
             connectivity: Connectivity()
         )
         SyncCalendarOptionsView(viewModel: vm)

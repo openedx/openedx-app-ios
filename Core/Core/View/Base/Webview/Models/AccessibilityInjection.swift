@@ -10,7 +10,7 @@ import Foundation
 import Combine
 import WebKit
 
-public struct AccessibilityInjection: WebViewScriptInjectionProtocol, CSSInjectionProtocol {
+public struct AccessibilityInjection: @preconcurrency WebViewScriptInjectionProtocol, CSSInjectionProtocol {
     public var id: String = "AccessibilityInjection"
     public var script: String {
         return """
@@ -22,7 +22,7 @@ public struct AccessibilityInjection: WebViewScriptInjectionProtocol, CSSInjecti
             });
         """
     }
-    public var messages: [WebviewMessage]? {
+    @MainActor public var messages: [WebviewMessage]? {
         let message = WebviewMessage(name: "accessibility") { _, webview in
             guard let webview = webview else { return }
             webview.evaluateJavaScript(getScript())

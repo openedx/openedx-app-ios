@@ -3,7 +3,7 @@
 import SwiftUI
 import UIKit
 
-public struct KeyboardState {
+public struct KeyboardState: Sendable {
     public let animationDuration: TimeInterval
 
     /// Keyboard notification return a private curve value - 7.
@@ -25,6 +25,7 @@ public struct KeyboardState {
 
 // MARK: - Static
 
+@MainActor
 extension KeyboardState {
     static let `default` = KeyboardState(
         animationDuration: 0,

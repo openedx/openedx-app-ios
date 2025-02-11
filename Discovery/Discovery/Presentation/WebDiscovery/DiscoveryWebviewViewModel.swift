@@ -10,7 +10,8 @@ import Core
 import SwiftUI
 import WebKit
 
-public class DiscoveryWebviewViewModel: ObservableObject {
+@MainActor
+public final class DiscoveryWebviewViewModel: ObservableObject {
     @Published var courseDetails: CourseDetails?
     @Published private(set) var showProgress = false
     @Published var showError: Bool = false
@@ -75,7 +76,7 @@ public class DiscoveryWebviewViewModel: ObservableObject {
             
             if courseDetails?.isEnrolled ?? false || courseState == .alreadyEnrolled {
                 showProgress = false
-                showCourseDetails()
+                await showCourseDetails()
                 return
             }
             
@@ -85,7 +86,7 @@ public class DiscoveryWebviewViewModel: ObservableObject {
             courseDetails?.isEnrolled = true
             showProgress = false
             NotificationCenter.default.post(name: .onCourseEnrolled, object: courseID)
-            showCourseDetails()
+            await showCourseDetails()
         } catch let error {
             showProgress = false
             if error.isInternetError || error is NoCachedDataError {
@@ -137,14 +138,25 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         }
         
         if let url = request.url, outsideLink || capturedLink || externalLink, UIApplication.shared.canOpenURL(url) {
+            analytics.externalLinkOpen(url: url.absoluteString, screen: sourceScreen.value ?? "")
             router.presentAlert(
                 alertTitle: DiscoveryLocalization.Alert.leavingAppTitle,
                 alertMessage: DiscoveryLocalization.Alert.leavingAppMessage,
                 positiveAction: CoreLocalization.Webview.Alert.continue,
                 onCloseTapped: { [weak self] in
                     self?.router.dismiss(animated: true)
-                }, okTapped: {
+                    self?.analytics.externalLinkOpenAction(
+                        url: url.absoluteString,
+                        screen: self?.sourceScreen.value ?? "",
+                        action: "cancel"
+                    )
+                }, okTapped: { [weak self] in
                     UIApplication.shared.open(url, options: [:])
+                    self?.analytics.externalLinkOpenAction(
+                        url: url.absoluteString,
+                        screen: self?.sourceScreen.value ?? "",
+                        action: "continue"
+                    )
                 }, type: .default(positiveAction: CoreLocalization.Webview.Alert.continue, image: nil)
             )
             return true
@@ -168,13 +180,14 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
             }
         case .courseDetail:
             guard let pathID = detailPathID(from: url) else { return false }
+            analytics.discoveryScreenEvent(event: .viewCourseClicked, biValue: .viewCourseClicked)
             router.showWebDiscoveryDetails(
                 pathID: pathID,
                 discoveryType: .courseDetail(pathID),
                 sourceScreen: sourceScreen
             )
         case .enrolledCourseDetail:
-            return showCourseDetails()
+            return await showCourseDetails()
             
         case .programDetail:
             guard let pathID = programDetailPathId(from: url) else { return false }
@@ -217,7 +230,7 @@ extension DiscoveryWebviewViewModel: WebViewNavigationDelegate {
         return path
     }
     
-    @discardableResult private func showCourseDetails() -> Bool {
+    @discardableResult private func showCourseDetails() async -> Bool {
         guard let courseDetails = courseDetails else { return false }
         
         router.showCourseScreens(

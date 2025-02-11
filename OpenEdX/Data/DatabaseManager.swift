@@ -6,14 +6,14 @@
 //
 
 import Foundation
-import CoreData
+@preconcurrency import CoreData
 import Core
 import Discovery
 import Dashboard
 import Course
 import Profile
 
-class DatabaseManager: CoreDataHandlerProtocol {
+final class DatabaseManager: CoreDataHandlerProtocol {
     
     private let databaseName: String
         
@@ -24,14 +24,15 @@ class DatabaseManager: CoreDataHandlerProtocol {
         Bundle(for: CourseBundle.self),
         Bundle(for: ProfileBundle.self)
     ]
-            
-    private lazy var persistentContainer: NSPersistentContainer = {
-      return createContainer()
-    }()
+        
+    private nonisolated(unsafe) var persistentContainer: NSPersistentContainer?
     
-    public lazy var context: NSManagedObjectContext = {
-        return createContext()
-    }()
+    public func getPersistentContainer() -> NSPersistentContainer {
+        if persistentContainer == nil {
+           persistentContainer = createContainer()
+        }
+        return persistentContainer!
+    }
     
     init(databaseName: String) {
         self.databaseName = databaseName
@@ -56,13 +57,13 @@ class DatabaseManager: CoreDataHandlerProtocol {
     }
     
     private func createContext() -> NSManagedObjectContext {
-        let context = persistentContainer.newBackgroundContext()
+        let context = getPersistentContainer().newBackgroundContext()
         context.automaticallyMergesChangesFromParent = true
         return context
     }
     
     public func clear() {
-        let storeContainer = persistentContainer.persistentStoreCoordinator
+        let storeContainer = getPersistentContainer().persistentStoreCoordinator
         for store in storeContainer.persistentStores {
             do {
                 try storeContainer.destroyPersistentStore(
@@ -76,7 +77,7 @@ class DatabaseManager: CoreDataHandlerProtocol {
         }
 
         // Re-create the persistent container
-        persistentContainer.loadPersistentStores { _, error in
+        getPersistentContainer().loadPersistentStores { _, error in
             if let error = error {
                 print("Unresolved error \(error)")
                 fatalError()

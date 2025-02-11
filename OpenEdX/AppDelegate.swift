@@ -20,7 +20,7 @@ import FirebaseMessaging
 import Theme
 import BackgroundTasks
 
-@UIApplicationMain
+@main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     static let bgAppTaskId = "openEdx.offlineProgressSync"
@@ -45,6 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
+            Theme.Shapes.buttonCornersRadius = config.theme.buttonCornersRadius
             
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
@@ -171,13 +172,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             analyticsManager?.userLogout(force: true)
             
             lastForceLogoutTime = Date().timeIntervalSince1970
-            
             Container.shared.resolve(CoreStorage.self)?.clear()
-            Container.shared.resolve(CorePersistenceProtocol.self)?.deleteAllProgress()
+            
             Task {
-                await Container.shared.resolve(DownloadManagerProtocol.self)?.deleteAllFiles()
+                await Container.shared.resolve(CorePersistenceProtocol.self)?.deleteAllProgress()
+                await Container.shared.resolve(DownloadManagerProtocol.self)?.deleteAll()
+                await Container.shared.resolve(CoreDataHandlerProtocol.self)?.clear()
             }
-            Container.shared.resolve(CoreDataHandlerProtocol.self)?.clear()
             window?.rootViewController = RouteController()
         }
         

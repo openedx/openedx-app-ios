@@ -10,9 +10,10 @@ import Core
 import SwiftUI
 import OEXFoundation
 
+@MainActor
 public class CourseDatesViewModel: ObservableObject {
     
-    enum EventState {
+    enum EventState: Sendable {
         case addedCalendar
         case removedCalendar
         case updatedCalendar
@@ -124,8 +125,8 @@ public class CourseDatesViewModel: ObservableObject {
         }
     }
     
-    func syncStatus() -> SyncStatus {
-       return calendarManager.courseStatus(courseID: courseID)
+    func syncStatus() async -> SyncStatus {
+       return await calendarManager.courseStatus(courseID: courseID)
     }
     
     @MainActor

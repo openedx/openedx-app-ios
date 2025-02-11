@@ -7,11 +7,12 @@
 
 import Course
 import Core
-import Combine
+@preconcurrency import Combine
 import Discovery
 import SwiftUI
 
-public class PipManager: PipManagerProtocol {
+@MainActor
+public final class PipManager: PipManagerProtocol {
     var controllerHolder: PlayerViewControllerHolderProtocol?
     let discoveryInteractor: DiscoveryInteractorProtocol
     let courseInteractor: CourseInteractorProtocol
@@ -20,6 +21,7 @@ public class PipManager: PipManagerProtocol {
     public var isPipActive: Bool {
         controllerHolder != nil
     }
+    
     public var isPipPlaying: Bool {
         controllerHolder?.isPlaying ?? false
     }
@@ -72,7 +74,6 @@ public class PipManager: PipManagerProtocol {
         controllerHolder?.getRatePublisher()
     }
     
-    @MainActor
     public func restore(holder: PlayerViewControllerHolderProtocol) async throws {
         let courseID = holder.courseID
         
@@ -95,7 +96,6 @@ public class PipManager: PipManagerProtocol {
         holder.playerController?.pause()
     }
     
-    @MainActor
     private func navigate(to holder: PlayerViewControllerHolderProtocol) async throws {
         let currentControllers = router.getNavigationController().viewControllers
         guard let mainController = currentControllers.first as? UIHostingController<MainScreenView> else {
@@ -123,13 +123,12 @@ public class PipManager: PipManagerProtocol {
         router.getNavigationController().setViewControllers(viewControllers, animated: true)
     }
 
-    @MainActor
     private func courseVerticalController(
         for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseVerticalView> {
         var courseStructure = try await courseInteractor.getLoadedCourseBlocks(courseID: holder.courseID)
         if holder.selectedCourseTab == CourseTab.videos.rawValue {
-            courseStructure = courseInteractor.getCourseVideoBlocks(fullStructure: courseStructure)
+            courseStructure = await courseInteractor.getCourseVideoBlocks(fullStructure: courseStructure)
         }
         
         if let data = VerticalData.dataFor(blockId: holder.blockID, in: courseStructure.childs) {
@@ -146,14 +145,13 @@ public class PipManager: PipManagerProtocol {
         throw PipManagerError.cantCreateCourseVerticalView
     }
     
-    @MainActor
     private func courseUnitController(
         for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseUnitView> {
 
         var courseStructure = try await courseInteractor.getLoadedCourseBlocks(courseID: holder.courseID)
         if holder.selectedCourseTab == CourseTab.videos.rawValue {
-            courseStructure = courseInteractor.getCourseVideoBlocks(fullStructure: courseStructure)
+            courseStructure = await courseInteractor.getCourseVideoBlocks(fullStructure: courseStructure)
         }
         if let data = VerticalData.dataFor(blockId: holder.blockID, in: courseStructure.childs) {
             let chapter = courseStructure.childs[data.chapterIndex]
@@ -174,7 +172,6 @@ public class PipManager: PipManagerProtocol {
         throw PipManagerError.cantCreateCourseUnitView
     }
     
-    @MainActor
     private func containerController(
         for holder: PlayerViewControllerHolderProtocol
     ) async throws -> UIHostingController<CourseContainerView> {

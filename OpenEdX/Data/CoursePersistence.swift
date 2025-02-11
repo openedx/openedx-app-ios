@@ -6,20 +6,21 @@
 //
 
 import Foundation
-import CoreData
+import OEXFoundation
+@preconcurrency import CoreData
 import Course
 import Core
 
-public class CoursePersistence: CoursePersistenceProtocol {
+public final class CoursePersistence: CoursePersistenceProtocol {
     
-    private var context: NSManagedObjectContext
+    private let container: NSPersistentContainer
     
-    public init(context: NSManagedObjectContext) {
-        self.context = context
+    public init(container: NSPersistentContainer) {
+        self.container = container
     }
     
     public func loadEnrollments() async throws -> [CourseItem] {
-        try await context.perform { [context] in
+        return try await container.performBackgroundTask { context in
             let result = try? context.fetch(CDCourseItem.fetchRequest())
                 .map {
                     CourseItem(name: $0.name ?? "",
@@ -46,8 +47,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func saveEnrollments(items: [CourseItem]) {
-        context.perform {[context] in
+    public func saveEnrollments(items: [CourseItem]) async {
+        await container.performBackgroundTask { context in
             for item in items {
                 let newItem = CDCourseItem(context: context)
                 newItem.name = item.name
@@ -62,20 +63,19 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
                 newItem.courseCount = Int32(item.coursesCount)
-                
-                do {
-                    try context.save()
-                } catch {
-                    print("⛔️⛔️⛔️⛔️⛔️", error)
-                }
+            }
+            do {
+                try context.save()
+            } catch {
+                debugLog(error)
             }
         }
     }
     
     public func loadCourseStructure(courseID: String) async throws -> DataLayer.CourseStructure {
-        try await context.perform {[context] in
-            let request = CDCourseStructure.fetchRequest()
-            request.predicate = NSPredicate(format: "id = %@", courseID)
+        let request = CDCourseStructure.fetchRequest()
+        request.predicate = NSPredicate(format: "id = %@", courseID)
+        return try await container.performBackgroundTask { context in
             guard let structure = try? context.fetch(request).first else { throw NoCachedDataError() }
             
             let requestBlocks = CDCourseBlock.fetchRequest()
@@ -163,13 +163,12 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 )
             )
         }
-        
     }
-    
-    public func saveCourseStructure(structure: DataLayer.CourseStructure) {
-        context.perform {[context] in
+        
+    public func saveCourseStructure(structure: DataLayer.CourseStructure) async {
+        await container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-            let newStructure = CDCourseStructure(context: self.context)
+            let newStructure = CDCourseStructure(context: context)
             newStructure.certificate = structure.certificate?.url
             newStructure.mediaSmall = structure.media.image.small
             newStructure.mediaLarge = structure.media.image.large
@@ -179,9 +178,8 @@ public class CoursePersistence: CoursePersistenceProtocol {
             newStructure.isSelfPaced = structure.isSelfPaced
             newStructure.totalAssignmentsCount = Int32(structure.courseProgress?.totalAssignmentsCount ?? 0)
             newStructure.assignmentsCompleted = Int32(structure.courseProgress?.assignmentsCompleted ?? 0)
-            
             for block in Array(structure.dict.values) {
-                let courseDetail = CDCourseBlock(context: self.context)
+                let courseDetail = CDCourseBlock(context: context)
                 courseDetail.allSources = block.allSources
                 courseDetail.descendants = block.descendants
                 courseDetail.graded = block.graded
@@ -205,79 +203,70 @@ public class CoursePersistence: CoursePersistenceProtocol {
                 if let due = block.due {
                     courseDetail.due = due
                 }
-                
                 if let offlineDownload = block.offlineDownload,
-                    let fileSize = offlineDownload.fileSize,
-                    let fileUrl = offlineDownload.fileUrl,
-                    let lastModified = offlineDownload.lastModified {
+                   let fileSize = offlineDownload.fileSize,
+                   let fileUrl = offlineDownload.fileUrl,
+                   let lastModified = offlineDownload.lastModified {
                     courseDetail.fileSize = Int64(fileSize)
                     courseDetail.fileUrl = fileUrl
                     courseDetail.lastModified = lastModified
                 }
-
                 if block.userViewData?.encodedVideo?.youTube != nil {
-                    let youTube = CDCourseBlockVideo(context: self.context)
+                    let youTube = CDCourseBlockVideo(context: context)
                     youTube.url = block.userViewData?.encodedVideo?.youTube?.url
                     youTube.fileSize = Int32(block.userViewData?.encodedVideo?.youTube?.fileSize ?? 0)
                     youTube.streamPriority = Int32(block.userViewData?.encodedVideo?.youTube?.streamPriority ?? 0)
                     courseDetail.youTube = youTube
                 }
-
                 if block.userViewData?.encodedVideo?.fallback != nil {
-                    let fallback = CDCourseBlockVideo(context: self.context)
+                    let fallback = CDCourseBlockVideo(context: context)
                     fallback.url = block.userViewData?.encodedVideo?.fallback?.url
                     fallback.fileSize = Int32(block.userViewData?.encodedVideo?.fallback?.fileSize ?? 0)
                     fallback.streamPriority = Int32(block.userViewData?.encodedVideo?.fallback?.streamPriority ?? 0)
                     courseDetail.fallback = fallback
                 }
-
                 if block.userViewData?.encodedVideo?.desktopMP4 != nil {
-                    let desktopMP4 = CDCourseBlockVideo(context: self.context)
+                    let desktopMP4 = CDCourseBlockVideo(context: context)
                     desktopMP4.url = block.userViewData?.encodedVideo?.desktopMP4?.url
                     desktopMP4.fileSize = Int32(block.userViewData?.encodedVideo?.desktopMP4?.fileSize ?? 0)
                     desktopMP4.streamPriority = Int32(block.userViewData?.encodedVideo?.desktopMP4?.streamPriority ?? 0)
                     courseDetail.desktopMP4 = desktopMP4
                 }
-
                 if block.userViewData?.encodedVideo?.mobileHigh != nil {
-                    let mobileHigh = CDCourseBlockVideo(context: self.context)
+                    let mobileHigh = CDCourseBlockVideo(context: context)
                     mobileHigh.url = block.userViewData?.encodedVideo?.mobileHigh?.url
                     mobileHigh.fileSize = Int32(block.userViewData?.encodedVideo?.mobileHigh?.fileSize ?? 0)
                     mobileHigh.streamPriority = Int32(block.userViewData?.encodedVideo?.mobileHigh?.streamPriority ?? 0)
                     courseDetail.mobileHigh = mobileHigh
                 }
-
                 if block.userViewData?.encodedVideo?.mobileLow != nil {
-                    let mobileLow = CDCourseBlockVideo(context: self.context)
+                    let mobileLow = CDCourseBlockVideo(context: context)
                     mobileLow.url = block.userViewData?.encodedVideo?.mobileLow?.url
                     mobileLow.fileSize = Int32(block.userViewData?.encodedVideo?.mobileLow?.fileSize ?? 0)
                     mobileLow.streamPriority = Int32(block.userViewData?.encodedVideo?.mobileLow?.streamPriority ?? 0)
                     courseDetail.mobileLow = mobileLow
                 }
-
                 if block.userViewData?.encodedVideo?.hls != nil {
-                    let hls = CDCourseBlockVideo(context: self.context)
+                    let hls = CDCourseBlockVideo(context: context)
                     hls.url = block.userViewData?.encodedVideo?.hls?.url
                     hls.fileSize = Int32(block.userViewData?.encodedVideo?.hls?.fileSize ?? 0)
                     hls.streamPriority = Int32(block.userViewData?.encodedVideo?.hls?.streamPriority ?? 0)
                     courseDetail.hls = hls
                 }
-
                 if let transcripts = block.userViewData?.transcripts {
                     courseDetail.transcripts = transcripts.toJson()
                 }
-                
-                do {
-                    try context.save()
-                } catch {
-                    print("⛔️⛔️⛔️⛔️⛔️", error)
-                }
+            }
+            do {
+                try context.save()
+            } catch {
+                debugLog(error)
             }
         }
     }
     
-    public func saveSubtitles(url: String, subtitlesString: String) {
-        context.perform {[context] in
+    public func saveSubtitles(url: String, subtitlesString: String) async {
+        await container.performBackgroundTask { context in
             let newSubtitle = CDSubtitle(context: context)
             newSubtitle.url = url
             newSubtitle.subtitle = subtitlesString
@@ -286,16 +275,15 @@ public class CoursePersistence: CoursePersistenceProtocol {
             do {
                 try context.save()
             } catch {
-                print("⛔️⛔️⛔️⛔️⛔️", error)
+                debugLog(error)
             }
         }
     }
     
     public func loadSubtitles(url: String) async -> String? {
-        await context.perform {[context] in
-            let request = CDSubtitle.fetchRequest()
-            request.predicate = NSPredicate(format: "url = %@", url)
-            
+        let request = CDSubtitle.fetchRequest()
+        request.predicate = NSPredicate(format: "url = %@", url)
+        return await container.performBackgroundTask { context in
             guard let subtitle = try? context.fetch(request).first,
                   let loaded = subtitle.uploadedAt else { return nil }
             if Date().timeIntervalSince1970 - loaded.timeIntervalSince1970 < 5 * 3600 {
@@ -305,11 +293,11 @@ public class CoursePersistence: CoursePersistenceProtocol {
         }
     }
     
-    public func saveCourseDates(courseID: String, courseDates: CourseDates) {
+    public func saveCourseDates(courseID: String, courseDates: CourseDates) async {
         
     }
     
-    public func loadCourseDates(courseID: String) throws -> CourseDates {
+    public func loadCourseDates(courseID: String) async throws -> CourseDates {
         throw NoCachedDataError()
     }
 }

@@ -110,7 +110,10 @@ public struct WhatsNewView: View {
                                             index += 1
                                         }
                                     } else {
-                                        router.showMainOrWhatsNewScreen(sourceScreen: viewModel.sourceScreen)
+                                        router.showMainOrWhatsNewScreen(
+                                            sourceScreen: viewModel.sourceScreen,
+                                            postLoginData: viewModel.postLoginData
+                                        )
                                     }
                                     
                                     if viewModel.index == viewModel.newItems.count - 1 {
@@ -144,11 +147,18 @@ public struct WhatsNewView: View {
             }
             .navigationTitle(WhatsNewLocalization.title)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing, content: {
-                    Button(action: {
-                        router.showMainOrWhatsNewScreen(sourceScreen: viewModel.sourceScreen)
-                            viewModel.logWhatsNewClose()
-                    }, label: {
+                ToolbarItem(
+                    placement: .navigationBarTrailing,
+                    content: {
+                        Button(
+                            action: {
+                                router.showMainOrWhatsNewScreen(
+                                    sourceScreen: viewModel.sourceScreen,
+                                    postLoginData: viewModel.postLoginData
+                                )
+                                viewModel.logWhatsNewClose()
+                            },
+                            label: {
                         Image(systemName: "xmark")
                             .foregroundColor(Theme.Colors.accentXColor)
                     })

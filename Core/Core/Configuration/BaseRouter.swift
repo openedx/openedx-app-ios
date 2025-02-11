@@ -9,7 +9,8 @@ import Foundation
 import SwiftUI
 
 //sourcery: AutoMockable
-public protocol BaseRouter {
+@MainActor
+public protocol BaseRouter: Sendable {
     
     func backToRoot(animated: Bool)
     
@@ -21,7 +22,7 @@ public protocol BaseRouter {
     
     func removeLastView(controllers: Int)
 
-    func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen)
+    func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?)
     
     func showStartupScreen()
     
@@ -81,7 +82,7 @@ open class BaseRouterMock: BaseRouter {
 
     public func dismiss(animated: Bool) {}
 
-    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen) {}
+    public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {}
     
     public func showStartupScreen() {}
 

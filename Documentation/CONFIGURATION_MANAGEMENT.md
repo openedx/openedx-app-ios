@@ -87,7 +87,7 @@ FIREBASE:
 
 MICROSOFT:
   ENABLED: true
-  APP_ID: "microsoftAppID"
+  CLIENT_ID: "microsoftAppID"
 ```
 
 `shared.yaml`:

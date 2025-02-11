@@ -9,6 +9,7 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
+@MainActor
 public protocol AuthorizationRouter: BaseRouter {
     func showUpdateRequiredView(showAccountLink: Bool)
 }

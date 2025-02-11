@@ -10,7 +10,7 @@ import Foundation
 // MARK: "/api/mobile/v0.5/my_user_info"
 
 public extension DataLayer {
-    struct User: Codable {
+    struct User: Codable, Sendable {
         public let id: Int
         public let username: String?
         public let email: String?

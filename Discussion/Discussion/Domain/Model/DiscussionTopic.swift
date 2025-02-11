@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum DiscussionTopicStyle {
+public enum DiscussionTopicStyle: Sendable {
     case title
     case basic
     case followed
@@ -26,7 +26,7 @@ public struct DiscussionTopic {
     }
 }
 
-public struct Topics {
+public struct Topics: Sendable {
     public let coursewareTopics: [CoursewareTopics]
     public let nonCoursewareTopics: [CoursewareTopics]
     
@@ -36,7 +36,7 @@ public struct Topics {
     }
 }
 
-public struct CoursewareTopics: Hashable, Identifiable {
+public struct CoursewareTopics: Hashable, Identifiable, Sendable {
     public let id: String
     public let name: String
     public let threadListURL: String

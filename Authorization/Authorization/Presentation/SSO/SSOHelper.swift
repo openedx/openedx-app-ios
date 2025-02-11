@@ -14,7 +14,7 @@ import KeychainSwift
     A Helper for some of the SSO preferences.
     Keeps data under the UserDefaults.
  */
-public class SSOHelper: NSObject {
+public final class SSOHelper: NSObject {
 
     private let keychain: KeychainSwift
     public enum SSOHelperKeys: String, CaseIterable {
@@ -77,4 +77,3 @@ public class SSOHelper: NSObject {
         cookieSignature = nil
     }
 }
-

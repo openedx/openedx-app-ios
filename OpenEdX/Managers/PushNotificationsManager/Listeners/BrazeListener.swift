@@ -32,8 +32,6 @@ class BrazeListener: PushNotificationsListener {
 //            segmentService.analytics?.receivedRemoteNotification(userInfo: userInfo)
 //        }
         
-        
-        
         let link = PushLink(dictionary: dictionary)
         deepLinkManager.processLinkFromNotification(link)
     }

@@ -8,6 +8,7 @@
 import SwiftUI
 import StoreKit
 
+@MainActor
 public class AppReviewViewModel: ObservableObject {
     
     enum ReviewState {

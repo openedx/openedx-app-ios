@@ -49,9 +49,13 @@ public struct ParentCommentView: View {
                 KFImage(URL(string: comments.authorAvatar))
                     .onFailureImage(KFCrossPlatformImage(systemName: "person"))
                     .resizable()
-                    .background(Color.gray)
                     .frame(width: 48, height: 48)
-                    .cornerRadius(isThread ? 8 : 24)
+                    .cornerRadius(24)
+                    .overlay {
+                        Circle()
+                            .stroke(Theme.Colors.avatarStroke, lineWidth: 1)
+                    }
+                    
                 })
                 VStack(alignment: .leading) {
                     Text(comments.authorName)
@@ -68,6 +72,7 @@ public struct ParentCommentView: View {
                         onFollowTap()
                     }, label: {
                         Image(systemName: comments.followed ? "star.fill" : "star")
+                            .renderingMode(.template)
                         Text(comments.followed
                              ? DiscussionLocalization.Comment.unfollow
                              : DiscussionLocalization.Comment.follow)
@@ -111,29 +116,31 @@ public struct ParentCommentView: View {
                 }, label: {
                     comments.voted
                     ? (CoreAssets.voted.swiftUIImage.renderingMode(.template))
-                    : (CoreAssets.vote.swiftUIImage.renderingMode(.template))
+                    : CoreAssets.vote.swiftUIImage.renderingMode(.template)
+                    
                     Text("\(comments.votesCount)")
-                        .foregroundColor(Theme.Colors.textPrimary)
                     Text(DiscussionLocalization.votesCount(comments.votesCount))
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                    
                 }).foregroundColor(comments.voted
-                                   ? Theme.Colors.accentXColor
+                                   ? Theme.Colors.accentColor
                                    : Theme.Colors.textSecondaryLight)
                 Spacer()
                 Button(action: {
                     onReportTap()
                 }, label: {
-                    comments.abuseFlagged
+                    let icon = comments.abuseFlagged
                     ? CoreAssets.reported.swiftUIImage
                     : CoreAssets.report.swiftUIImage
+                    icon.renderingMode(.template)
+                    
                     Text(comments.abuseFlagged
                          ? DiscussionLocalization.Comment.unreport
                          : DiscussionLocalization.Comment.report)
                 })
             }
             .accentColor(comments.abuseFlagged
-                ? Theme.Colors.alert
+                         ? Theme.Colors.irreversibleAlert
                          : Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelLarge)
         }
@@ -172,7 +179,7 @@ struct ParentCommentView_Previews: PreviewProvider {
         return VStack {
             ParentCommentView(
                 comments: comment,
-                isThread: true, 
+                isThread: true,
                 useRelativeDates: true,
                 onAvatarTap: {_ in},
                 onLikeTap: {},

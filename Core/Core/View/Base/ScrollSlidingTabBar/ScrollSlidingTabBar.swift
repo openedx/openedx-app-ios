@@ -161,8 +161,9 @@ extension ScrollSlidingTabBar {
     }
 }
 
+@MainActor
 extension ScrollSlidingTabBar {
-    public struct Style {
+    public struct Style: Sendable {
         public let font: Font
         public let selectedFont: Font
         

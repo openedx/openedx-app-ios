@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct CourseItem: Hashable {
+public struct CourseItem: Hashable, Sendable {
     public let name: String
     public let org: String
     public let shortDescription: String

@@ -48,7 +48,9 @@ public struct FlexibleKeyboardInputView: View {
                                     }
                                 )
                                 .onPreferenceChange(ViewSizePreferenceKey.self) { size in
-                                    commentSize = size.height
+                                    Task { @MainActor in
+                                        commentSize = size.height
+                                    }
                                 }
                                 .overlay(
                                     TextEditor(text: $commentText)
@@ -118,7 +120,7 @@ struct FlexibleKeyboardInputView_Previews: PreviewProvider {
 }
 
 private struct ViewSizePreferenceKey: PreferenceKey {
-    public static var defaultValue: CGSize = .zero
+    public static let defaultValue: CGSize = .zero
     public static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
         value = value.width + value.height > nextValue().width + nextValue().height ? value : nextValue()
     }

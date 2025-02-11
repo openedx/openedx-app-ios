@@ -11,6 +11,7 @@ import SwiftUI
 import Theme
 import WebKit
 
+@MainActor
 public protocol WebViewNavigationDelegate: AnyObject {
     func webView(
         _ webView: WKWebView,
@@ -160,7 +161,7 @@ public struct WebView: UIViewRepresentable {
             
             if url.absoluteString.starts(with: "file:///") {
                 if url.pathExtension == "pdf" {
-                    await parent.viewModel.openFile(url.absoluteString)
+                    parent.viewModel.openFile(url.absoluteString)
                     return .cancel
                 }
             }
@@ -176,7 +177,7 @@ public struct WebView: UIViewRepresentable {
                 return .cancel
             }
             
-            let baseURL = await parent.viewModel.baseURL
+            let baseURL = parent.viewModel.baseURL
             switch navigationAction.navigationType {
             case .other, .formSubmitted, .formResubmitted:
                 return .allow
@@ -205,7 +206,7 @@ public struct WebView: UIViewRepresentable {
                       let url = response.url else {
                     return .cancel
                 }
-                let baseURL = await parent.viewModel.baseURL
+                let baseURL = parent.viewModel.baseURL
                 
                 if (401...404).contains(response.statusCode) || url.absoluteString.hasPrefix(baseURL + "/login") {
                     await parent.refreshCookies()
@@ -364,6 +365,8 @@ extension WKWebView {
 }
 
 extension Array where Element == WebviewInjection {
+    
+    @MainActor
     func handle(message: WKScriptMessage) {
         let messages = compactMap { $0.messages }
             .flatMap { $0 }

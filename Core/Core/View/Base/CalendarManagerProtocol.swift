@@ -8,16 +8,17 @@
 import Foundation
 
 //sourcery: AutoMockable
-public protocol CalendarManagerProtocol {
+@MainActor
+public protocol CalendarManagerProtocol: Sendable {
     func createCalendarIfNeeded()
     func filterCoursesBySelected(fetchedCourses: [CourseForSync]) async -> [CourseForSync]
     func removeOldCalendar()
     func removeOutdatedEvents(courseID: String) async
     func syncCourse(courseID: String, courseName: String, dates: CourseDates) async
     func requestAccess() async -> Bool
-    func courseStatus(courseID: String) -> SyncStatus
-    func clearAllData(removeCalendar: Bool)
-    func isDatesChanged(courseID: String, checksum: String) -> Bool
+    func courseStatus(courseID: String) async -> SyncStatus
+    func clearAllData(removeCalendar: Bool) async
+    func isDatesChanged(courseID: String, checksum: String) async -> Bool
 }
 
 #if DEBUG
@@ -30,7 +31,7 @@ public struct CalendarManagerMock: CalendarManagerProtocol {
     public func requestAccess() async -> Bool { true }
     public func courseStatus(courseID: String) -> SyncStatus { .synced }
     public func clearAllData(removeCalendar: Bool) {}
-    public func isDatesChanged(courseID: String, checksum: String) -> Bool {false}
+    public func isDatesChanged(courseID: String, checksum: String) async -> Bool {false}
     
     public init() {}
 }

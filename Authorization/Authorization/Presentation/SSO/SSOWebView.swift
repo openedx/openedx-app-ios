@@ -61,7 +61,10 @@ public struct SSOWebView: UIViewRepresentable {
         }
         
         // WKScriptMessageHandler
-        public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        public func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive message: WKScriptMessage
+        ) {
         }
             
         // WKNavigationDelegate
@@ -71,7 +74,11 @@ public struct SSOWebView: UIViewRepresentable {
             }
         }
 
-        public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        public func webView(
+            _ webView: WKWebView,
+            decidePolicyFor navigationAction: WKNavigationAction,
+            decisionHandler: @escaping (WKNavigationActionPolicy) -> Void
+        ) {
             guard let url = webView.url?.absoluteString else {
                 decisionHandler(.allow)
                 return

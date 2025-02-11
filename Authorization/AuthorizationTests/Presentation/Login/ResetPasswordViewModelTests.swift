@@ -13,6 +13,7 @@ import OEXFoundation
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class ResetPasswordViewModelTests: XCTestCase {
 
     func testResetPasswordValidationEmailError() async throws {

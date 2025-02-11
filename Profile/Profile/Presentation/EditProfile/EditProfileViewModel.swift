@@ -9,8 +9,7 @@ import Foundation
 import Core
 import SwiftUI
 
-// swiftlint:disable type_body_length
-public struct Changes: Equatable {
+public struct Changes: Equatable, Sendable {
     public var shortBiography: String
     public var profileType: ProfileType
     public var isAvatarChanged: Bool
@@ -18,6 +17,7 @@ public struct Changes: Equatable {
     public var isAvatarSaved: Bool
 }
 
+@MainActor
 public class EditProfileViewModel: ObservableObject {
     
     @Published private(set) var userModel: UserProfile
@@ -201,7 +201,7 @@ public class EditProfileViewModel: ObservableObject {
     
     @MainActor
     func saveProfileUpdates() async {
-        var parameters: [String: Any] = [:]
+        var parameters: [String: any Any & Sendable] = [:]
         
         if userModel.isFullProfile != profileChanges.profileType.boolValue {
             parameters["account_privacy"] = profileChanges.profileType.param
@@ -232,7 +232,7 @@ public class EditProfileViewModel: ObservableObject {
     }
     
     @MainActor
-    func uploadData(parameters: [String: Any]) async {
+    func uploadData(parameters: [String: any Any & Sendable]) async {
         do {
             if profileChanges.isAvatarDeleted {
                 try await deleteAvatar()
@@ -372,4 +372,3 @@ public class EditProfileViewModel: ObservableObject {
         analytics.profileScreenEvent(.profileEdit, biValue: .profileEdit)
     }
 }
-// swiftlint:enable type_body_length

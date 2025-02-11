@@ -33,6 +33,9 @@ class WhitelabelApp:
             current_path: '' # optional: path to color inside colors_path
             light: '#FFFFFF'
             dark: '#ED5C13'
+            alpha_light: '0.4' # optional: alpha value for light color, from 0.0 to 1.0. Can be a number, not a string
+            alpha_dark: '0.2' # optional: alpha value for dark color, from 0.0 to 1.0. Can be a number, not a string
+            alpha: '0.5' # optional: alpha value for both light and dark colors, from 0.0 to 1.0. Can be a number, not a string
         icon:
           AppIcon:
             current_path: ''  # optional: path to icon inside icon_path
@@ -187,6 +190,9 @@ class WhitelabelApp:
                 path_to_colorset = os.path.join(colors_path, current_path, name+'.colorset')
                 light_color = color["light"]
                 dark_color = color["dark"]
+                alpha = str(color["alpha"]) if "alpha" in color else None
+                alpha_light = str(color["alpha_light"]) if "alpha_light" in color else alpha
+                alpha_dark = str(color["alpha_dark"]) if "alpha_dark" in color else alpha
                 # Change Contents.json
                 content_json_path = os.path.join(path_to_colorset, 'Contents.json')
                 if os.path.exists(content_json_path):
@@ -195,11 +201,11 @@ class WhitelabelApp:
                         for key in range(len(json_object["colors"])):
                             if "appearances" in json_object["colors"][key]:
                                 # dark
-                                changed_components = self.change_color_components(json_object["colors"][key]["color"]["components"], dark_color, name)
+                                changed_components = self.change_color_components(json_object["colors"][key]["color"]["components"], dark_color, name, alpha_dark)
                                 json_object["colors"][key]["color"]["components"] = changed_components
                             else:
                                 # light
-                                changed_components = self.change_color_components(json_object["colors"][key]["color"]["components"], light_color, name)
+                                changed_components = self.change_color_components(json_object["colors"][key]["color"]["components"], light_color, name, alpha_light)
                                 json_object["colors"][key]["color"]["components"] = changed_components
                         new_json = json.dumps(json_object) 
                     with open(content_json_path, 'w') as openfile:
@@ -208,7 +214,7 @@ class WhitelabelApp:
                 else:
                     logging.error(asset_name+"->colors->"+name+": " + content_json_path + " doesn't exist")
 
-    def change_color_components(self, components, color, name):
+    def change_color_components(self, components, color, name, alpha):
         color = color.replace("#", "")
         if len(color) != 6: 
             print('Config for color "'+name+'" is incorrect')
@@ -216,6 +222,8 @@ class WhitelabelApp:
             components["red"] = "0x"+color[0]+color[1]
             components["green"] = "0x"+color[2]+color[3]
             components["blue"] = "0x"+color[4]+color[5]
+            if alpha is not None:
+                components["alpha"] = alpha
         return components
     
     def replace_app_icon(self, asset_data):
@@ -364,7 +372,7 @@ class WhitelabelApp:
                 # define regex rule and replacement string for every possible parameter
                 if parameter == "dev_team":
                     parameter_string = 'DEVELOPMENT_TEAM = '+parameter_value+';'
-                    parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+                    parameter_regex = 'DEVELOPMENT_TEAM = (.{10}|\"\");'
                 elif parameter == "marketing_version":
                     parameter_string = 'MARKETING_VERSION = '+parameter_value+';'
                     parameter_regex = 'MARKETING_VERSION = .*;'
@@ -419,7 +427,7 @@ class WhitelabelApp:
         config_file_string_out = config_file_string
         # string and regex for dev team
         parameter_string = 'DEVELOPMENT_TEAM = '+dev_team+';'
-        parameter_regex = 'DEVELOPMENT_TEAM = .{10};'
+        parameter_regex = 'DEVELOPMENT_TEAM = (.{10}|\"\");'
         # replace all regex findings with new parameters string
         config_file_string_out = re.sub(parameter_regex, parameter_string, config_file_string)
         # if something was changed
@@ -430,7 +438,7 @@ class WhitelabelApp:
             logging.debug("DEVELOPMENT_TEAM for '"+target+"' target was set successfuly")
         # if nothing was found
         elif re.search(parameter_regex, config_file_string) is None:
-                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+" target project file")
+                logging.error("Check regex please. Nothing was found for 'DEVELOPMENT_TEAM' in '"+target+"' target project file")
         else:
             logging.debug("Looks like DEVELOPMENT_TEAM for '"+target+"' target is set already")
     
@@ -569,6 +577,7 @@ class WhitelabelApp:
                         if config_folder:
                             # example of usage
                             # project_file_string = self.replace_fullstory_flag(project_file_string, config_directory, name, config_folder, errors_texts)
+                            pass
                         else:
                             logging.error("Config folder for '"+config['env_config']+"' is not defined in config_settings.yaml->config_mapping")
                     else:

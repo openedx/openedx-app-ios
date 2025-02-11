@@ -11,6 +11,7 @@ import OEXFoundation
 import _AVKit_SwiftUI
 import Combine
 
+@MainActor
 public class VideoPlayerViewModel: ObservableObject {
     @Published var pause: Bool = false
     @Published var currentTime: Double = 0
@@ -39,17 +40,23 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     public let playerHolder: PlayerViewControllerHolderProtocol
     internal var subscription = Set<AnyCancellable>()
+    private var appStorage: CoreStorage?
+    private var analytics: CourseAnalytics?
 
     public init(
         languages: [SubtitleUrl],
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>? = nil,
         connectivity: ConnectivityProtocol,
-        playerHolder: PlayerViewControllerHolderProtocol
+        playerHolder: PlayerViewControllerHolderProtocol,
+        appStorage: CoreStorage?,
+        analytics: CourseAnalytics?
     ) {
         self.languages = languages
         self.connectivity = connectivity
         self.playerHolder = playerHolder
         self.prepareLanguages()
+        self.appStorage = appStorage
+        self.analytics = analytics
         
         observePlayer(with: playerStateSubject)
     }
@@ -89,6 +96,20 @@ public class VideoPlayerViewModel: ObservableObject {
             .sink {[weak self] isReady in
                 guard isReady else { return }
                 self?.isLoading = false
+                self?.trackVideoLoaded()
+            }
+            .store(in: &subscription)
+        
+        playerHolder.getRatePublisher()
+            .sink {[weak self] rate in
+                guard self?.isLoading == false else { return }
+                self?.trackVideoSpeedChange(rate: rate)
+            }
+            .store(in: &subscription)
+        
+        playerHolder.getFinishPublisher()
+            .sink { [weak self] in
+                self?.trackVideoCompleted()
             }
             .store(in: &subscription)
 
@@ -137,7 +158,7 @@ public class VideoPlayerViewModel: ObservableObject {
     
     private func generateSelectedLanguage() {
         if let selectedLanguage = languages.first(where: {
-            $0.language == Locale.current.languageCode
+            $0.language == Locale.current.language.languageCode?.identifier
         })?.language {
             self.selectedLanguage = selectedLanguage
         } else {
@@ -184,5 +205,71 @@ public class VideoPlayerViewModel: ObservableObject {
                 }
             })
         }
+    }
+    
+    private func trackVideoLoaded() {
+        analytics?.videoLoaded(
+            courseID: playerHolder.courseID,
+            blockID: playerHolder.blockID,
+            videoURL: playerHolder.url?.absoluteString ?? ""
+        )
+    }
+    
+    private func trackVideoPlayed() {
+        analytics?.videoPlayed(
+            courseID: playerHolder.courseID,
+            blockID: playerHolder.blockID,
+            videoURL: playerHolder.url?.absoluteString ?? ""
+        )
+    }
+    
+    private func trackVideoSpeedChange(rate: Float) {
+        if rate == 0 {
+            analytics?.videoPaused(
+                courseID: playerHolder.courseID,
+                blockID: playerHolder.blockID,
+                videoURL: playerHolder.url?.absoluteString ?? "",
+                currentTime: currentTime,
+                duration: playerHolder.duration
+            )
+        } else {
+            guard let storage = appStorage,
+                  let userSettings = storage.userSettings
+            else {
+                return
+            }
+            
+            if userSettings.videoPlaybackSpeed == rate {
+                analytics?.videoPlayed(
+                    courseID: playerHolder.courseID,
+                    blockID: playerHolder.blockID,
+                    videoURL: playerHolder.url?.absoluteString ?? ""
+                )
+            } else {
+                analytics?.videoSpeedChange(
+                    courseID: playerHolder.courseID,
+                    blockID: playerHolder.blockID,
+                    videoURL: playerHolder.url?.absoluteString ?? "",
+                    oldSpeed: userSettings.videoPlaybackSpeed,
+                    newSpeed: rate,
+                    currentTime: currentTime,
+                    duration: playerHolder.duration
+                )
+            }
+        }
+    }
+    
+    private func trackVideoCompleted() {
+        analytics?.videoCompleted(
+            courseID: playerHolder.courseID,
+            blockID: playerHolder.blockID,
+            videoURL: playerHolder.url?.absoluteString ?? "",
+            currentTime: currentTime,
+            duration: playerHolder.duration
+        )
+    }
+    
+    func findSubtitle(at currentTime: Date) -> Subtitle? {
+        return subtitles.first { $0.fromTo.contains(currentTime) }
     }
 }

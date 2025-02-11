@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum SyncStatus {
+public enum SyncStatus: Sendable {
     case synced
     case failed
     case offline

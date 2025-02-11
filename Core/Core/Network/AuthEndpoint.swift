@@ -66,8 +66,8 @@ enum AuthEndpoint: EndPointType {
     var task: HTTPTask {
         switch self {
         case let .getAccessToken(username, password, clientId, tokenType):
-            let params: [String: Encodable] = [
-                "grant_type": Constants.GrantTypePassword,
+            let params: [String: Encodable & Sendable] = [
+                "grant_type": AuthConstants.GrantTypePassword,
                 "client_id": clientId,
                 "username": username,
                 "password": password,
@@ -76,7 +76,7 @@ enum AuthEndpoint: EndPointType {
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
         case let .exchangeAccessToken(externalToken, _, clientId, tokenType):
-            let params: [String: Encodable] = [
+            let params: [String: Encodable & Sendable] = [
                 "client_id": clientId,
                 "token_type": tokenType,
                 "access_token": externalToken,

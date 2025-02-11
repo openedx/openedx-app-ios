@@ -97,7 +97,8 @@ public extension View {
     
     /**
      Avoid keyboard with scrollable content
-     - parameter scrollerOptions: Specify scroller parameters such as distance between responder's bottom and keyboard top.
+     - parameter scrollerOptions: Specify scroller parameters such as distance
+     between responder's bottom and keyboard top.
      Create manually if you want to track scroll events
      - parameter partialAvoidingPadding: Height of content below avoiding area for partial keyboard avoiding
      - parameter dismissKeyboardByTap: Apply dismissal tap to the whole window

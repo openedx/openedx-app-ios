@@ -9,7 +9,8 @@ import Foundation
 import Core
 import SwiftUI
 
-public class DeleteAccountViewModel: ObservableObject {
+@MainActor
+public final class DeleteAccountViewModel: ObservableObject {
     
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false

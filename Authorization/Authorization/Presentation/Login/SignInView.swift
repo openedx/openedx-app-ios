@@ -73,6 +73,18 @@ public struct SignInView: View {
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("welcome_back_text")
+                                    if viewModel.socialAuthEnabled {
+                                        SocialAuthView(
+                                            viewModel: .init(
+                                                config: viewModel.config,
+                                                lastUsedOption: viewModel.storage.lastUsedSocialAuth
+                                            ) { result in
+                                                Task { await viewModel.login(with: result) }
+                                            }
+                                        )
+                                        .padding(.top, 22)
+                                        .padding(.bottom, 16)
+                                    }
                                     Text(AuthLocalization.SignIn.emailOrUsername)
                                         .font(Theme.Fonts.labelLarge)
                                         .foregroundColor(Theme.Colors.textPrimary)
@@ -104,9 +116,8 @@ public struct SignInView: View {
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.top, 18)
                                         .accessibilityIdentifier("password_text")
-                                    SecureField("", text: $password)
+                                    SecureInputView($password)
                                         .font(Theme.Fonts.bodyLarge)
-                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .padding(.all, 14)
                                         .background(
                                             Theme.InputFieldBackground(
@@ -124,7 +135,9 @@ public struct SignInView: View {
                                     HStack {
                                         if !viewModel.config.features.startupScreenEnabled {
                                             Button(CoreLocalization.SignIn.registerBtn) {
-                                                viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
+                                                viewModel.router.showRegisterScreen(
+                                                    sourceScreen: viewModel.sourceScreen
+                                                )
                                             }
                                             .foregroundColor(Theme.Colors.accentColor)
                                             .accessibilityIdentifier("register_button")
@@ -160,7 +173,7 @@ public struct SignInView: View {
                                     }
                                 }
                                 if viewModel.config.uiComponents.samlSSOLoginEnabled {
-                                    if !viewModel.config.uiComponents.loginRegistrationEnabled{
+                                    if !viewModel.config.uiComponents.loginRegistrationEnabled {
                                         VStack(alignment: .center) {
                                             Text(AuthLocalization.SignIn.ssoHeading)
                                                 .font(Theme.Fonts.headlineSmall)
@@ -170,7 +183,7 @@ public struct SignInView: View {
                                                 .padding(.horizontal, 20)
                                                 .accessibilityIdentifier("signin_sso_heading")
                                         }
-
+                                        
                                         Divider()
                                         
                                         VStack(alignment: .center) {
@@ -191,9 +204,8 @@ public struct SignInView: View {
                                                 .accessibilityIdentifier("signin_sso_login_subtitle")
                                         }
                                     }
-                                   
+                                    
                                     VStack(alignment: .center) {
-                                       
                                         if viewModel.isShowProgress {
                                             HStack(alignment: .center) {
                                                 ProgressBar(size: 40, lineWidth: 8)
@@ -203,36 +215,33 @@ public struct SignInView: View {
                                         } else {
                                             let languageCode = Locale.current.language.languageCode?.identifier ?? "en"
                                             if viewModel.config.uiComponents.samlSSODefaultLoginButton {
-                                                StyledButton(viewModel.config.ssoButtonTitle[languageCode] as! String, action: {
-                                                    viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
-                                                })
+                                                StyledButton(
+                                                    viewModel.config.ssoButtonTitle[languageCode] as! String,
+                                                    action: {
+                                                        viewModel.router
+                                                            .showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
+                                                    }
+                                                )
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.top, 20)
                                                 .accessibilityIdentifier("signin_SSO_button")
                                             } else {
-                                                StyledButton(viewModel.config.ssoButtonTitle[languageCode] as! String, action: {
-                                                    viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
-                                                },
-                                                             color: .white,
-                                                             textColor: Theme.Colors.accentColor,
-                                                             borderColor: Theme.Colors.accentColor)
+                                                StyledButton(
+                                                    viewModel.config.ssoButtonTitle[languageCode] as! String,
+                                                    action: {
+                                                        viewModel.router
+                                                            .showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
+                                                    },
+                                                    color: .white,
+                                                    textColor: Theme.Colors.accentColor,
+                                                    borderColor: Theme.Colors.accentColor)
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.top, 20)
                                                 .accessibilityIdentifier("signin_SSO_button")
                                             }
-                                            
                                         }
                                     }
                                 }
-                            }
-                            if viewModel.socialAuthEnabled {
-                                SocialAuthView(
-                                    viewModel: .init(
-                                        config: viewModel.config
-                                    ) { result in
-                                        Task { await viewModel.login(with: result) }
-                                    }
-                                )
                             }
                             agreements
                             Spacer()
@@ -280,16 +289,16 @@ public struct SignInView: View {
         .navigationBarHidden(true)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
-        .onFirstAppear{
+        .onFirstAppear {
             viewModel.trackScreenEvent()
         }
     }
-
+    
     @ViewBuilder
     private var agreements: some View {
         if let eulaURL = viewModel.config.agreement.eulaURL,
-            let tosURL =  viewModel.config.agreement.tosURL,
-            let policy = viewModel.config.agreement.privacyPolicyURL {
+           let tosURL =  viewModel.config.agreement.tosURL,
+           let policy = viewModel.config.agreement.privacyPolicyURL {
             let text = AuthLocalization.SignIn.agreement(
                 "\(viewModel.config.platformName)",
                 eulaURL,
@@ -307,9 +316,9 @@ public struct SignInView: View {
                 .environment(\.openURL, OpenURLAction(handler: handleURL))
         }
     }
-
+    
     private func handleURL(_ url: URL) -> OpenURLAction.Result {
-        viewModel.router.showWebBrowser(title: url.host ?? "", url: url)
+        viewModel.router.showWebBrowser(title: "", url: url)
         return .handled
     }
 }
@@ -323,6 +332,7 @@ struct SignInView_Previews: PreviewProvider {
             config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator(),
+            storage: CoreStorageMock(),
             sourceScreen: .default
         )
         

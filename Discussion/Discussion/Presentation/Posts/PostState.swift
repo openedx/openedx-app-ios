@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum PostState {
+public enum PostState: Sendable {
     case followed(id: String, Bool)
     case liked(id: String, Bool, Int)
     case reported(id: String, Bool)

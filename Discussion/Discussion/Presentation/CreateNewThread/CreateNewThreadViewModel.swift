@@ -8,6 +8,7 @@
 import Core
 import SwiftUI
 
+@MainActor
 public class CreateNewThreadViewModel: ObservableObject {
     
     @Published private(set) var isShowProgress = false
@@ -27,15 +28,21 @@ public class CreateNewThreadViewModel: ObservableObject {
     public let interactor: DiscussionInteractorProtocol
     public let router: DiscussionRouter
     public let config: ConfigProtocol
+    private let analytics: DiscussionAnalytics?
+    private let storage: CoreStorage?
     
     public init(
         interactor: DiscussionInteractorProtocol,
         router: DiscussionRouter,
-        config: ConfigProtocol
+        config: ConfigProtocol,
+        analytics: DiscussionAnalytics,
+        storage: CoreStorage?
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
+        self.analytics = analytics
+        self.storage = storage
     }
     
     @MainActor
@@ -80,5 +87,20 @@ public class CreateNewThreadViewModel: ObservableObject {
             }
             return false
         }
+    }
+    
+    func trackCreateNewThread(
+        courseID: String,
+        topicID: String,
+        postType: String,
+        followPost: Bool
+    ) {
+        analytics?.discussionCreateNewPost(
+            courseID: courseID,
+            topicID: topicID,
+            postType: postType,
+            followPost: followPost,
+            author: storage?.user?.username ?? ""
+        )
     }
 }

@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class CreateNewThreadViewModelTests: XCTestCase {
     
     let newThread = DiscussionNewThread(
@@ -29,7 +30,13 @@ final class CreateNewThreadViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
         
-        let viewModel = CreateNewThreadViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = CreateNewThreadViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            analytics: DiscussionAnalyticsMock(),
+            storage: CoreStorageMock()
+        )
         
         Given(interactor, .createNewThread(newThread: .any, willProduce: {_ in}))
         
@@ -50,7 +57,13 @@ final class CreateNewThreadViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
         
-        let viewModel = CreateNewThreadViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = CreateNewThreadViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            analytics: DiscussionAnalyticsMock(),
+            storage: CoreStorageMock()
+        )
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
@@ -73,7 +86,13 @@ final class CreateNewThreadViewModelTests: XCTestCase {
         let config = ConfigMock()
         var result = false
         
-        let viewModel = CreateNewThreadViewModel(interactor: interactor, router: router, config: config)
+        let viewModel = CreateNewThreadViewModel(
+            interactor: interactor,
+            router: router,
+            config: config,
+            analytics: DiscussionAnalyticsMock(),
+            storage: CoreStorageMock()
+        )
         
         Given(interactor, .createNewThread(newThread: .any, willThrow: NSError()))
         

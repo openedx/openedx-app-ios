@@ -30,7 +30,7 @@ public struct StudentViewData {
     }
 }
 
-public enum BlockType: String {
+public enum BlockType: String, Sendable {
     case course
     case sequential
     case vertical

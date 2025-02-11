@@ -10,6 +10,7 @@ import Core
 import UIKit
 
 //sourcery: AutoMockable
+@MainActor
 public protocol ProfileRouter: BaseRouter {
     
     func showEditProfile(

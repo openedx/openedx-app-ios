@@ -5,11 +5,13 @@
 //  Created by Vadim Kuznetsov on 22.04.24.
 //
 
-import Combine
+@preconcurrency import Combine
 import Foundation
-import YouTubePlayerKit
+@preconcurrency import YouTubePlayerKit
+import Core
 
-public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
+@MainActor
+public final class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtocol {
     public let url: URL?
     public let blockID: String
     public let courseID: String
@@ -33,7 +35,6 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
     }
     private let playerTracker: any PlayerTrackerProtocol
     private let playerService: PlayerServiceProtocol
-    private let videoResolution: CGSize
     private let errorPublisher = PassthroughSubject<Error, Never>()
     private var isViewedOnce: Bool = false
     private var cancellations: [AnyCancellable] = []
@@ -49,56 +50,68 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
         blockID: String,
         courseID: String,
         selectedCourseTab: Int,
-        videoResolution: CGSize,
         pipManager: PipManagerProtocol,
         playerTracker: any PlayerTrackerProtocol,
         playerDelegate: PlayerDelegateProtocol?,
-        playerService: PlayerServiceProtocol
+        playerService: PlayerServiceProtocol,
+        appStorage: CoreStorage?
     ) {
         self.url = url
         self.blockID = blockID
         self.courseID = courseID
         self.selectedCourseTab = selectedCourseTab
-        self.videoResolution = videoResolution
         self.pipManager = pipManager
         self.playerTracker = playerTracker
         self.playerService = playerService
         let youtubePlayer = playerTracker.player as? YouTubePlayer
         var configuration = youtubePlayer?.configuration
         configuration?.autoPlay = !pipManager.isPipActive
+        configuration?.fullscreenMode = .web
         if let configuration = configuration {
             youtubePlayer?.update(configuration: configuration)
         }
         addObservers()
     }
     
+    @MainActor
     private func addObservers() {
         timePublisher
             .sink {[weak self] _ in
-                guard let strongSelf = self else { return }
-                if strongSelf.playerTracker.progress > 0.8 && !strongSelf.isViewedOnce {
-                    strongSelf.isViewedOnce = true
+                guard let self else { return }
+                if self.playerTracker.progress != .infinity
+                    && self.playerTracker.progress > 0.8
+                    && !self.isViewedOnce {
+                    self.isViewedOnce = true
                     Task {
-                        await strongSelf.sendCompletion()
+                        await self.sendCompletion()
                     }
                 }
             }
             .store(in: &cancellations)
         playerTracker.getFinishPublisher()
             .sink { [weak self] in
-                self?.playerService.presentAppReview()
+                guard let self else { return }
+                MainActor.assumeIsolated {
+                   self.playerService.presentAppReview()
+                }
             }
             .store(in: &cancellations)
         playerTracker.getRatePublisher()
             .sink {[weak self] rate in
                 guard rate > 0 else { return }
-                self?.pausePipIfNeed()
+                guard let self else { return }
+                MainActor.assumeIsolated {
+                    self.pausePipIfNeed()
+                }
             }
             .store(in: &cancellations)
         pipManager.pipRatePublisher()?
             .sink {[weak self] rate in
-                guard rate > 0, self?.isPlayingInPip == false else { return }
-                self?.playerController?.pause()
+                guard let self else { return }
+                MainActor.assumeIsolated {
+                    guard rate > 0, self.isPlayingInPip == false else { return }
+                    self.playerController?.pause()
+                }
             }
             .store(in: &cancellations)
     }
@@ -126,11 +139,16 @@ public class YoutubePlayerViewControllerHolder: PlayerViewControllerHolderProtoc
     public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
         playerTracker.getReadyPublisher()
     }
+    
+    public func getFinishPublisher() -> AnyPublisher<Void, Never> {
+        playerTracker.getFinishPublisher()
+    }
 
     public func getService() -> PlayerServiceProtocol {
         playerService
     }
     
+    @MainActor
     public func sendCompletion() async {
         do {
             try await playerService.blockCompletionRequest()
@@ -162,6 +180,7 @@ extension YouTubePlayer: PlayerControllerProtocol {
 }
 
 #if DEBUG
+@MainActor
 extension YoutubePlayerViewControllerHolder {
     static var mock: YoutubePlayerViewControllerHolder {
         YoutubePlayerViewControllerHolder(
@@ -169,7 +188,6 @@ extension YoutubePlayerViewControllerHolder {
             blockID: "",
             courseID: "",
             selectedCourseTab: 0,
-            videoResolution: .zero,
             pipManager: PipManagerProtocolMock(),
             playerTracker: PlayerTrackerProtocolMock(url: URL(string: "")),
             playerDelegate: nil,
@@ -178,7 +196,8 @@ extension YoutubePlayerViewControllerHolder {
                 blockID: "",
                 interactor: CourseInteractor.mock,
                 router: CourseRouterMock()
-            )
+            ),
+            appStorage: nil
         )
     }
 }

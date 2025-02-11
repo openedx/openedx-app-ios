@@ -46,15 +46,22 @@ public enum ThemeAssets {
   public static let pastDueTimelineColor = ColorAsset(name: "pastDueTimelineColor")
   public static let primaryHeaderColor = ColorAsset(name: "primaryHeaderColor")
   public static let secondaryHeaderColor = ColorAsset(name: "secondaryHeaderColor")
+  public static let courseProgressBG = ColorAsset(name: "CourseProgressBG")
+  public static let deleteAccountBG = ColorAsset(name: "DeleteAccountBG")
   public static let infoColor = ColorAsset(name: "InfoColor")
   public static let irreversibleAlert = ColorAsset(name: "IrreversibleAlert")
   public static let loginBackground = ColorAsset(name: "LoginBackground")
   public static let loginNavigationText = ColorAsset(name: "LoginNavigationText")
   public static let primaryButtonTextColor = ColorAsset(name: "PrimaryButtonTextColor")
+  public static let primaryCardCautionBG = ColorAsset(name: "PrimaryCardCautionBG")
+  public static let primaryCardCourseUpgradeBG = ColorAsset(name: "PrimaryCardCourseUpgradeBG")
+  public static let primaryCardProgressBG = ColorAsset(name: "PrimaryCardProgressBG")
   public static let onProgress = ColorAsset(name: "OnProgress")
   public static let progressDone = ColorAsset(name: "ProgressDone")
   public static let progressSkip = ColorAsset(name: "ProgressSkip")
   public static let selectedAndDone = ColorAsset(name: "SelectedAndDone")
+  public static let resumeButtonBG = ColorAsset(name: "ResumeButtonBG")
+  public static let resumeButtonText = ColorAsset(name: "ResumeButtonText")
   public static let secondaryButtonBGColor = ColorAsset(name: "SecondaryButtonBGColor")
   public static let secondaryButtonBorderColor = ColorAsset(name: "SecondaryButtonBorderColor")
   public static let secondaryButtonTextColor = ColorAsset(name: "SecondaryButtonTextColor")
@@ -66,11 +73,14 @@ public enum ThemeAssets {
   public static let snackbarInfoColor = ColorAsset(name: "SnackbarInfoColor")
   public static let snackbarTextColor = ColorAsset(name: "SnackbarTextColor")
   public static let snackbarWarningColor = ColorAsset(name: "SnackbarWarningColor")
+  public static let socialAuthColor = ColorAsset(name: "SocialAuthColor")
   public static let styledButtonText = ColorAsset(name: "StyledButtonText")
   public static let disabledButton = ColorAsset(name: "disabledButton")
   public static let disabledButtonText = ColorAsset(name: "disabledButtonText")
   public static let success = ColorAsset(name: "Success")
-  public static let tabbarColor = ColorAsset(name: "TabbarColor")
+  public static let tabbarActiveColor = ColorAsset(name: "TabbarActiveColor")
+  public static let tabbarBGColor = ColorAsset(name: "TabbarBGColor")
+  public static let tabbarInactiveColor = ColorAsset(name: "TabbarInactiveColor")
   public static let textPrimary = ColorAsset(name: "TextPrimary")
   public static let textSecondary = ColorAsset(name: "TextSecondary")
   public static let textSecondaryLight = ColorAsset(name: "TextSecondaryLight")
@@ -93,8 +103,8 @@ public enum ThemeAssets {
 
 // MARK: - Implementation Details
 
-public final class ColorAsset {
-  public fileprivate(set) var name: String
+public final class ColorAsset: Sendable {
+  public let name: String
 
   #if os(macOS)
   public typealias Color = NSColor
@@ -103,12 +113,7 @@ public final class ColorAsset {
   #endif
 
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  public private(set) lazy var color: Color = {
-    guard let color = Color(asset: self) else {
-      fatalError("Unable to load color asset named \(name).")
-    }
-    return color
-  }()
+  public let color: Color
 
   #if os(iOS) || os(tvOS)
   @available(iOS 11.0, tvOS 11.0, *)
@@ -123,26 +128,30 @@ public final class ColorAsset {
 
   #if canImport(SwiftUI)
   @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-  public private(set) lazy var swiftUIColor: SwiftUI.Color = {
-    SwiftUI.Color(asset: self)
-  }()
+  public var swiftUIColor: SwiftUI.Color {
+    SwiftUI.Color(uiColor: color)
+  }
   #endif
 
   fileprivate init(name: String) {
     self.name = name
+    guard let color = Color(assetName: name) else {
+      fatalError("Unable to load color asset named \(name).")
+    }
+    self.color = color
   }
 }
 
 public extension ColorAsset.Color {
   @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  convenience init?(asset: ColorAsset) {
+  convenience init?(assetName: String) {
     let bundle = BundleToken.bundle
     #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    self.init(named: assetName, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
-    self.init(named: NSColor.Name(asset.name), bundle: bundle)
+    self.init(named: NSColor.Name(assetName), bundle: bundle)
     #elseif os(watchOS)
-    self.init(named: asset.name)
+    self.init(named: assetName)
     #endif
   }
 }
@@ -150,15 +159,15 @@ public extension ColorAsset.Color {
 #if canImport(SwiftUI)
 @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
 public extension SwiftUI.Color {
-  init(asset: ColorAsset) {
+  init(assetName: String) {
     let bundle = BundleToken.bundle
-    self.init(asset.name, bundle: bundle)
+    self.init(assetName, bundle: bundle)
   }
 }
 #endif
 
-public struct ImageAsset {
-  public fileprivate(set) var name: String
+public struct ImageAsset: Sendable {
+  public let name: String
 
   #if os(macOS)
   public typealias Image = NSImage

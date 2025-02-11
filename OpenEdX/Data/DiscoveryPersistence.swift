@@ -7,19 +7,19 @@
 
 import Foundation
 import Discovery
-import CoreData
+@preconcurrency import CoreData
 import Core
 
-public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
+public final class DiscoveryPersistence: DiscoveryPersistenceProtocol {
     
-    private var context: NSManagedObjectContext
+    private let container: NSPersistentContainer
     
-    public init(context: NSManagedObjectContext) {
-        self.context = context
+    public init(container: NSPersistentContainer) {
+        self.container = container
     }
     
     public func loadDiscovery() async throws -> [CourseItem] {
-        try await context.perform {[context] in
+        return try await container.performBackgroundTask { context in
             let result = try? context.fetch(CDDiscoveryCourse.fetchRequest())
                 .map { CourseItem(name: $0.name ?? "",
                                   org: $0.org ?? "",
@@ -44,9 +44,9 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
         }
     }
     
-    public func saveDiscovery(items: [CourseItem]) {
-        for item in items {
-            context.perform {[context] in
+    public func saveDiscovery(items: [CourseItem]) async {
+        await container.performBackgroundTask { context in
+            for item in items {
                 let newItem = CDDiscoveryCourse(context: context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.name = item.name
@@ -61,20 +61,19 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
                 newItem.courseRawImage = item.courseRawImage
-                
-                do {
-                    try context.save()
-                } catch {
-                    print("⛔️⛔️⛔️⛔️⛔️", error)
-                }
+            }
+            do {
+                try context.save()
+            } catch {
+                print("⛔️⛔️⛔️⛔️⛔️", error)
             }
         }
     }
     
     public func loadCourseDetails(courseID: String) async throws -> CourseDetails {
-        try await context.perform {[context] in
-            let request = CDCourseDetails.fetchRequest()
-            request.predicate = NSPredicate(format: "courseID = %@", courseID)
+        let request = CDCourseDetails.fetchRequest()
+        request.predicate = NSPredicate(format: "courseID = %@", courseID)
+        return try await container.performBackgroundTask { context in
             guard let courseDetails = try? context.fetch(request).first else { throw NoCachedDataError() }
             return CourseDetails(
                 courseID: courseDetails.courseID ?? "",
@@ -94,9 +93,9 @@ public class DiscoveryPersistence: DiscoveryPersistenceProtocol {
         }
     }
     
-    public func saveCourseDetails(course: CourseDetails) {
-        context.perform {[context] in
-            let newCourseDetails = CDCourseDetails(context: self.context)
+    public func saveCourseDetails(course: CourseDetails) async {
+        await container.performBackgroundTask { context in
+            let newCourseDetails = CDCourseDetails(context: context)
             newCourseDetails.courseID = course.courseID
             newCourseDetails.org = course.org
             newCourseDetails.courseTitle = course.courseTitle

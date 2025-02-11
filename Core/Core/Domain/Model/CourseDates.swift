@@ -8,7 +8,7 @@
 import Foundation
 import CryptoKit
 
-public struct CourseDates {
+public struct CourseDates: Sendable {
     public let datesBannerInfo: DatesBannerInfo
     public let courseDateBlocks: [CourseDateBlock]
     public let hasEnded, learnerIsFullAccess: Bool
@@ -143,7 +143,7 @@ public extension Date {
     }
 }
 
-public struct CourseDateBlock: Identifiable {
+public struct CourseDateBlock: Identifiable, Sendable {
     public let id: UUID = UUID()
     
     public let assignmentType: String?
@@ -266,7 +266,7 @@ public struct CourseDateBlock: Identifiable {
     }
 }
 
-public struct DatesBannerInfo {
+public struct DatesBannerInfo: Sendable {
     public let missedDeadlines, contentTypeGatingEnabled, missedGatedContent: Bool
     public let verifiedUpgradeLink: String?
     public let status: DataLayer.BannerInfoStatus?
@@ -286,7 +286,7 @@ public struct DatesBannerInfo {
     }
 }
 
-public struct CourseDateBanner {
+public struct CourseDateBanner: Sendable {
     public let datesBannerInfo: DatesBannerInfo
     public let hasEnded: Bool
     
@@ -296,7 +296,7 @@ public struct CourseDateBanner {
     }
 }
 
-public enum BlockStatus {
+public enum BlockStatus: Sendable {
     case completed
     case pastDue
     case dueNext
@@ -325,7 +325,7 @@ public enum BlockStatus {
     }
 }
 
-public enum CompletionStatus: String {
+public enum CompletionStatus: String, Sendable {
     case completed = "Completed"
     case pastDue = "Past Due"
     case today = "Today"

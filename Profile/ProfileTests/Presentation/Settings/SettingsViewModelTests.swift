@@ -12,6 +12,7 @@ import XCTest
 import Alamofire
 import SwiftUI
 
+@MainActor
 final class SettingsViewModelTests: XCTestCase {
 
     func testLogOutSuccess() async throws {
@@ -26,7 +27,8 @@ final class SettingsViewModelTests: XCTestCase {
                 willReturn: UserSettings(
                     wifiOnly: true,
                     streamingQuality: .auto,
-                    downloadQuality: .auto
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
                 )
             )
         )
@@ -60,7 +62,8 @@ final class SettingsViewModelTests: XCTestCase {
                 willReturn: UserSettings(
                     wifiOnly: true,
                     streamingQuality: .auto,
-                    downloadQuality: .auto
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
                 )
             )
         )
@@ -93,7 +96,8 @@ final class SettingsViewModelTests: XCTestCase {
                 willReturn: UserSettings(
                     wifiOnly: true,
                     streamingQuality: .auto,
-                    downloadQuality: .auto
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
                 )
             )
         )
@@ -126,7 +130,8 @@ final class SettingsViewModelTests: XCTestCase {
                 willReturn: UserSettings(
                     wifiOnly: true,
                     streamingQuality: .auto,
-                    downloadQuality: .auto
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
                 )
             )
         )
@@ -159,7 +164,8 @@ final class SettingsViewModelTests: XCTestCase {
                 willReturn: UserSettings(
                     wifiOnly: true,
                     streamingQuality: .auto,
-                    downloadQuality: .auto
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
                 )
             )
         )
@@ -192,7 +198,8 @@ final class SettingsViewModelTests: XCTestCase {
                 willReturn: UserSettings(
                     wifiOnly: true,
                     streamingQuality: .auto,
-                    downloadQuality: .auto
+                    downloadQuality: .auto,
+                    playbackSpeed: 1.0
                 )
             )
         )

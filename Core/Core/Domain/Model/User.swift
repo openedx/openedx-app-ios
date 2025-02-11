@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct User {
+public struct User: Sendable {
     public let id: Int
     public let username: String
     public let email: String
