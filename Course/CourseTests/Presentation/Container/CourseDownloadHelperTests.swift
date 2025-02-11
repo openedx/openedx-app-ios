@@ -42,7 +42,7 @@ final class CourseDownloadHelperTests: XCTestCase {
             encodedVideo: .init(
                 fallback: nil,
                 youtube: nil,
-                desktopMP4: .init(url: "http://test/test.mp4", fileSize: 1000, streamPriority: 1),
+                desktopMP4: .init(url: "http://test/test.mp4", fileSize: 1000, streamPriority: 1, type: .desktopMP4),
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
