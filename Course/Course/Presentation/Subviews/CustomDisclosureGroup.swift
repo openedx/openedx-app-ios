@@ -208,7 +208,6 @@ struct CustomDisclosureGroup: View {
     private func assignmentStatusText(
         sequential: CourseSequential
     ) -> String? {
-        
         guard let sequentialProgress = sequential.sequentialProgress,
               let assignmentType = sequentialProgress.assignmentType,
               let due = sequential.due else {
@@ -217,7 +216,14 @@ struct CustomDisclosureGroup: View {
         
         let daysRemaining = getAssignmentStatus(for: due)
         
-        return "\(assignmentType) - \(daysRemaining)"
+        let progress: String = {
+            guard let numPointsEarned = sequentialProgress.numPointsEarned,
+                  let numPointsPossible = sequentialProgress.numPointsPossible else {
+                return ""
+            }
+            return " - \(numPointsEarned) / \(numPointsPossible)"
+        }()
+        return "\(assignmentType) - \(daysRemaining)\(progress)"
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
