@@ -373,11 +373,11 @@ final class EditProfileViewModelTests: XCTestCase {
             name: "Test",
             username: "Name",
             dateJoined: Date(),
-            yearOfBirth: 1986,
+            yearOfBirth: 0,
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true,
+            isFullProfile: false,
             email: ""
         )
         
@@ -413,7 +413,7 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true,
+            isFullProfile: false,
             email: ""
         )
         
