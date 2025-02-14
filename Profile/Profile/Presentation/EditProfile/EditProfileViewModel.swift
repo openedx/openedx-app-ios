@@ -79,6 +79,16 @@ public class EditProfileViewModel: ObservableObject {
         }
     }
     
+    public var canEditAvatar: Bool {
+        guard let year = yearsConfiguration.text != "" ? Int(yearsConfiguration.text) : userModel.yearOfBirth else {
+            return false
+        }
+        if currentYear - year < 13 {
+            return false
+        }
+        return profileChanges.profileType == .full
+    }
+    
     let router: ProfileRouter
     
     private let interactor: ProfileInteractorProtocol
@@ -97,6 +107,7 @@ public class EditProfileViewModel: ObservableObject {
         self.spokenLanguages = interactor.getSpokenLanguages()
         self.countries = interactor.getCountries()
         generateYears()
+        profileChanges.profileType = userModel.isFullProfile ? .full : .limited
     }
     
     func resizeImage(image: UIImage, longSideSize: Double) {
