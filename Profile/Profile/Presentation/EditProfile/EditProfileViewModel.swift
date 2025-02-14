@@ -28,6 +28,7 @@ public class EditProfileViewModel: ObservableObject {
     var profileDidEdit: (((UserProfile?, UIImage?)) -> Void)?
     var oldAvatar: UIImage?
 
+    private let minimumFullAccountAge = 13
     private let currentYear = Calendar.current.component(.year, from: Date())
     public let profileTypes: [ProfileType] = [.full, .limited]
     private var years: [PickerFields.Option] = []
@@ -83,7 +84,7 @@ public class EditProfileViewModel: ObservableObject {
         guard let year = yearsConfiguration.text != "" ? Int(yearsConfiguration.text) : userModel.yearOfBirth else {
             return false
         }
-        if currentYear - year < 13 {
+        if currentYear - year < minimumFullAccountAge {
             return false
         }
         return profileChanges.profileType == .full
@@ -173,7 +174,7 @@ public class EditProfileViewModel: ObservableObject {
         } else {
             yearOfBirth = userModel.yearOfBirth
         }
-        if yearOfBirth == 0 || currentYear - yearOfBirth < 13 {
+        if yearOfBirth == 0 || currentYear - yearOfBirth < minimumFullAccountAge {
             alertMessage = ProfileLocalization.Edit.tooYongUser
         } else {
             profileChanges.profileType.toggle()
@@ -185,7 +186,7 @@ public class EditProfileViewModel: ObservableObject {
     func checkProfileType() {
         if yearsConfiguration.text != "" {
             let yearOfBirth = yearsConfiguration.text
-            if currentYear - (Int(yearOfBirth) ?? 0) < 13 {
+            if currentYear - (Int(yearOfBirth) ?? 0) < minimumFullAccountAge {
                 profileChanges.profileType = .limited
                 isYongUser = true
             } else {
@@ -194,7 +195,7 @@ public class EditProfileViewModel: ObservableObject {
                 }
             }
         } else {
-            if (currentYear - userModel.yearOfBirth) < 13 {
+            if (currentYear - userModel.yearOfBirth) < minimumFullAccountAge {
                 profileChanges.profileType = .limited
                 isYongUser = true
             } else {

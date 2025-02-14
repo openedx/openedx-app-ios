@@ -213,9 +213,12 @@ struct ProfileView_Previews: PreviewProvider {
 struct UserAvatar: View {
     private var url: URL?
     private var borderColor: Color
+    
+    private let defaultAvatarKeyword = "default"
+    
     @Binding private var image: UIImage?
     init(url: String, image: Binding<UIImage?>, borderColor: Color = Theme.Colors.avatarStroke) {
-        if url.contains("default") {
+        if url.contains(defaultAvatarKeyword) {
             self.url = nil
         } else if let rightUrl = URL(string: url) {
             self.url = rightUrl
