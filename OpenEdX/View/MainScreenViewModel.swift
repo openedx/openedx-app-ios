@@ -19,6 +19,7 @@ public enum MainTab {
     case discovery
     case dashboard
     case programs
+    case dates
     case profile
 }
 

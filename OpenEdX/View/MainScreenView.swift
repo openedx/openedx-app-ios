@@ -10,6 +10,7 @@ import Discovery
 import Core
 import Swinject
 import Dashboard
+import AppDates
 import Profile
 import WhatsNew
 import SwiftUIIntrospect
@@ -136,6 +137,15 @@ struct MainScreenView: View {
                 .tag(MainTab.discovery)
                 .accessibilityIdentifier("discovery_tabitem")
             }
+            VStack {
+                DatesView(viewModel: DatesViewModel())
+            }
+            .tabItem {
+                CoreAssets.dates.swiftUIImage
+                Text(AppDatesLocalization.Dates.title)
+            }
+            .tag(MainTab.dates)
+            .accessibilityIdentifier("dates_tabitem")
             
             VStack {
                 ProfileView(
@@ -195,6 +205,8 @@ struct MainScreenView: View {
                 viewModel.trackMainDashboardLearnTabClicked()
             case .programs:
                 viewModel.trackMainProgramsTabClicked()
+            case .dates:
+                viewModel.trackMainProfileTabClicked()
             case .profile:
                 viewModel.trackMainProfileTabClicked()
             }
@@ -238,6 +250,8 @@ struct MainScreenView: View {
             : DashboardLocalization.Learn.title
         case .programs:
             return CoreLocalization.Mainscreen.programs
+        case .dates:
+            return AppDatesLocalization.Dates.title
         case .profile:
             return ProfileLocalization.title
         }

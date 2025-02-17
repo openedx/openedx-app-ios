@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  AppDates
+
+  Created by Ivan Stepanok on 15.02.2025.
+  
+*/
+
+"DATES.TITLE" = "Dates";
+"DATES.PAST_DUE" = "Past Due";
+"DATES.TODAY" = "Today";
+"DATES.THIS_WEEK" = "This Week";
+"DATES.NEXT_WEEK" = "Next Week";
+"DATES.UPCOMING" = "Upcoming";
+
+"EMPTY.TITLE" = "No Dates";
+"EMPTY.SUBTITLE" = "You currently have no active courses with scheduled events. Enroll in a course to view important dates and deadlines.";
