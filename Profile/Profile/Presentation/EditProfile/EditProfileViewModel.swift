@@ -138,7 +138,7 @@ public class EditProfileViewModel: ObservableObject {
         isShowProgress = true
         do {
             if try await interactor.deleteProfilePicture() {
-                inputImage = CoreAssets.noAvatar.image
+//                inputImage = CoreAssets.noAvatar.image
                 isShowProgress = false
             }
         } catch {
@@ -246,24 +246,14 @@ public class EditProfileViewModel: ObservableObject {
     @MainActor
     func uploadData(parameters: [String: any Any & Sendable]) async {
         do {
-            if profileChanges.isAvatarDeleted {
+            if profileChanges.isAvatarDeleted || profileChanges.profileType == .limited {
                 try await deleteAvatar()
                 profileChanges.isAvatarChanged = false
                 profileChanges.isAvatarDeleted = false
                 profileChanges.isAvatarSaved = true
-                checkChanges()
             }
-            if profileChanges.isAvatarChanged {
-                if let newImage = inputImage?.jpegData(compressionQuality: 80) {
-                    isShowProgress = true
-                    try await interactor.uploadProfilePicture(pictureData: newImage)
-                    isShowProgress = false
-                    profileChanges.isAvatarChanged = false
-                    profileChanges.isAvatarSaved = true
-                    checkChanges()
-                }
-            }
-            
+            checkChanges()
+
             if isChanged {
                 if !parameters.isEmpty {
                     isShowProgress = true
@@ -276,6 +266,18 @@ public class EditProfileViewModel: ObservableObject {
                 }
                 isChanged = false
             }
+            
+            if profileChanges.profileType == .full {
+                if let newImage = inputImage?.jpegData(compressionQuality: 80) {
+                    isShowProgress = true
+                    try await interactor.uploadProfilePicture(pictureData: newImage)
+                    isShowProgress = false
+                    profileChanges.isAvatarChanged = false
+                    profileChanges.isAvatarSaved = true
+                    checkChanges()
+                }
+            }
+            
         } catch {
             isShowProgress = false
             if error.isInternetError {
