@@ -16,7 +16,7 @@ public extension DataLayer {
         public let end: String?
         public let enrollmentStart: String?
         public let enrollmentEnd: String?
-        public let isEnrolled: Bool
+        public let isEnrolled: Bool?
         public let id: String
         public let media: Media
         public let name: String
@@ -72,7 +72,7 @@ public extension DataLayer.CourseDetailsResponse {
             courseEnd: end != nil ? Date(iso8601: end!) : nil,
             enrollmentStart: enrollmentStart != nil ? Date(iso8601: enrollmentStart!) : nil,
             enrollmentEnd: enrollmentEnd != nil ? Date(iso8601: enrollmentEnd!) : nil,
-            isEnrolled: isEnrolled,
+            isEnrolled: isEnrolled ?? false,
             overviewHTML: overview,
             courseBannerURL: imageURL,
             courseVideoURL: media.courseVideo?.url,

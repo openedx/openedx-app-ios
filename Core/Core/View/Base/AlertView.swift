@@ -13,6 +13,7 @@ public enum AlertViewType: Equatable {
     case action(String, SwiftUI.Image)
     case logOut
     case leaveProfile
+    case authorization
     case deleteVideo
     case deepLink
     case addCalendar
@@ -24,7 +25,15 @@ public enum AlertViewType: Equatable {
         switch self {
         case .`default`, .calendarAdded:
             return 16
-        case .action, .logOut, .leaveProfile, .deleteVideo, .deepLink, .addCalendar, .removeCalendar, .updateCalendar:
+        case .action,
+                .logOut,
+                .leaveProfile,
+                .authorization,
+                .deleteVideo,
+                .deepLink,
+                .addCalendar,
+                .removeCalendar,
+                .updateCalendar:
             return 36
         }
     }
@@ -38,6 +47,7 @@ public struct AlertView: View {
     private var positiveAction: String
     private var onCloseTapped: (() -> Void) = {}
     private var okTapped: (() -> Void) = {}
+    private var secondButtonTapped: (() -> Void) = {}
     private var nextSectionTapped: (() -> Void) = {}
     private let type: AlertViewType
     
@@ -49,6 +59,7 @@ public struct AlertView: View {
         positiveAction: String,
         onCloseTapped: @escaping () -> Void,
         okTapped: @escaping () -> Void,
+        secondButtonTapped: @escaping (() -> Void) = {},
         type: AlertViewType
     ) {
         self.alertTitle = alertTitle
@@ -56,6 +67,7 @@ public struct AlertView: View {
         self.positiveAction = positiveAction
         self.onCloseTapped = onCloseTapped
         self.okTapped = okTapped
+        self.secondButtonTapped = secondButtonTapped
         self.type = type
     }
     
@@ -94,7 +106,7 @@ public struct AlertView: View {
         ZStack(alignment: .topTrailing) {
             adaptiveStack(
                 spacing: isHorizontal ? 10 : 20,
-                isHorizontal: (type == .leaveProfile && isHorizontal)
+                isHorizontal: ((type == .leaveProfile || type == .authorization) && isHorizontal)
             ) {
                 titles
                 buttons
@@ -145,6 +157,27 @@ public struct AlertView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
                 .padding(.vertical, isHorizontal ? 6 : 40)
                 .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+                .frame(maxWidth: 250)
+        case .authorization:
+            VStack(spacing: 8) {
+            HStack {
+                Spacer(minLength: 100)
+                CoreAssets.authorization.swiftUIImage.renderingMode(.template)
+                    .padding(.top, 54)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                Spacer(minLength: 100)
+            }
+                Text(alertTitle)
+                    .font(Theme.Fonts.titleLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(alertMessage)
+                    .font(Theme.Fonts.bodyMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 36)
+            }
                 .padding(.horizontal, 40)
                 .frame(maxWidth: 250)
         case .leaveProfile, .deleteVideo, .deepLink, .addCalendar, .removeCalendar, .updateCalendar:
@@ -359,6 +392,68 @@ public struct AlertView: View {
                     .frame(maxWidth: 215)
                 }
                 .padding(.trailing, isHorizontal ? 20 : 0)
+            case .authorization:
+                adaptiveStack(
+                    spacing: isHorizontal ? 10 : 20,
+                    isHorizontal: !isHorizontal
+                ) {
+                    Button(action: {
+                        okTapped()
+                    }, label: {
+                        ZStack {
+                            Text(CoreLocalization.Alert.signIn)
+                                .foregroundColor(Theme.Colors.accentColor)
+                                .font(Theme.Fonts.labelLarge)
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal, 16)
+                        }
+                        .frame(maxWidth: 215, minHeight: 48)
+                    })
+                    .background(
+                        Theme.Shapes.buttonShape
+                            .fill(.clear)
+                    )
+                    .overlay(
+                        Theme.Shapes.buttonShape
+                            .stroke(style: .init(
+                                lineWidth: 1,
+                                lineCap: .round,
+                                lineJoin: .round,
+                                miterLimit: 1
+                            ))
+                            .foregroundColor(Theme.Colors.accentColor)
+                    )
+                    .frame(maxWidth: 215)
+                    .padding(.bottom, isHorizontal ? 16 : 0)
+                    Button(action: {
+                        secondButtonTapped()
+                    }, label: {
+                        ZStack {
+                            Text(CoreLocalization.Alert.register)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .font(Theme.Fonts.labelLarge)
+                                .frame(maxWidth: .infinity)
+                                .padding(.horizontal, 16)
+                        }
+                        .frame(maxWidth: 215, minHeight: 48)
+                    })
+                    .background(
+                        Theme.Shapes.buttonShape
+                            .fill(Theme.Colors.accentColor)
+                    )
+                    .overlay(
+                        Theme.Shapes.buttonShape
+                            .stroke(style: .init(
+                                lineWidth: 1,
+                                lineCap: .round,
+                                lineJoin: .round,
+                                miterLimit: 1
+                            ))
+                            .foregroundColor(.clear)
+                    )
+                    .frame(maxWidth: 215)
+                }
+                .padding(.horizontal, 40)
             case .deleteVideo:
                 configure(
                     primaryButtonTitle: CoreLocalization.Alert.delete,

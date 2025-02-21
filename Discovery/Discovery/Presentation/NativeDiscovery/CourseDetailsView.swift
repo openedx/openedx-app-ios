@@ -241,11 +241,38 @@ private struct CourseStateView: View {
             if viewModel.connectivity.isInternetAvaliable {
                     StyledButton(DiscoveryLocalization.Details.enrollNow, action: {
                         if !viewModel.userloggedIn {
-                            viewModel.router.showRegisterScreen(
-                                sourceScreen: .courseDetail(
-                                    courseDetails.courseID,
-                                    courseDetails.courseTitle)
-                            )
+                            viewModel.router.presentView(
+                                transitionStyle: .crossDissolve,
+                                animated: true
+                            ) {
+                                AlertView(
+                                    alertTitle: DiscoveryLocalization.Alert.authorization,
+                                    alertMessage: DiscoveryLocalization.Alert.pleaseEnterTheSystem,
+                                    positiveAction: CoreLocalization.Alert.signIn,
+                                    onCloseTapped: {
+                                        self.viewModel.router.dismiss(animated: true)
+                                    },
+                                    okTapped: {
+                                        self.viewModel.router.dismiss(animated: false)
+                                        viewModel.router.showLoginScreen(
+                                            sourceScreen: .courseDetail(
+                                                courseDetails.courseID,
+                                                viewModel.courseDetails?.courseTitle ?? ""
+                                            )
+                                        )
+                                    },
+                                    secondButtonTapped: {
+                                        self.viewModel.router.dismiss(animated: false)
+                                        viewModel.router.showRegisterScreen(
+                                            sourceScreen: .courseDetail(
+                                                courseDetails.courseID,
+                                                courseDetails.courseTitle)
+                                        )
+
+                                    },
+                                    type: .authorization
+                                )
+                            }
                         } else {
                             Task {
                                 await viewModel.enrollToCourse(id: courseDetails.courseID)

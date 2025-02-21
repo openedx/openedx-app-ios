@@ -45,8 +45,12 @@ public enum CoreLocalization {
     public static let leave = CoreLocalization.tr("Localizable", "ALERT.LEAVE", fallback: "Leave")
     /// Log out
     public static let logout = CoreLocalization.tr("Localizable", "ALERT.LOGOUT", fallback: "Log out")
+    /// Register
+    public static let register = CoreLocalization.tr("Localizable", "ALERT.REGISTER", fallback: "Register")
     /// Remove
     public static let remove = CoreLocalization.tr("Localizable", "ALERT.REMOVE", fallback: "Remove")
+    /// Sign in
+    public static let signIn = CoreLocalization.tr("Localizable", "ALERT.SIGN_IN", fallback: "Sign in")
   }
   public enum Courseware {
     /// Back to outline
