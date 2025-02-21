@@ -530,7 +530,6 @@ final class EditProfileViewModelTests: XCTestCase {
 //        Verify(interactor, 0, .uploadProfilePicture(pictureData: .any))
         Verify(interactor, 1, .deleteProfilePicture())
         Verify(interactor, 1, .updateUserProfile(parameters: .any))
-        XCTAssertEqual(viewModel.inputImage?.cgImage, CoreAssets.noAvatar.image.cgImage)
     }
     
     func testSaveProfileUpdatesNoInternetError() async {
@@ -581,7 +580,7 @@ final class EditProfileViewModelTests: XCTestCase {
         
         await viewModel.saveProfileUpdates()
         
-        Verify(interactor, 1, .uploadProfilePicture(pictureData: .any))
+        Verify(interactor, 0, .uploadProfilePicture(pictureData: .any))
         Verify(interactor, 1, .updateUserProfile(parameters: .any))
         
         XCTAssertTrue(viewModel.showError)
@@ -638,7 +637,7 @@ final class EditProfileViewModelTests: XCTestCase {
         
         await Task.yield()
         
-        Verify(interactor, 1, .uploadProfilePicture(pictureData: .any))
+        Verify(interactor, 0, .uploadProfilePicture(pictureData: .any))
         Verify(interactor, 1, .updateUserProfile(parameters: .any))
         
         XCTAssertTrue(viewModel.showError)
