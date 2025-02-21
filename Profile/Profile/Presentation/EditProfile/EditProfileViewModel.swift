@@ -138,7 +138,6 @@ public class EditProfileViewModel: ObservableObject {
         isShowProgress = true
         do {
             if try await interactor.deleteProfilePicture() {
-//                inputImage = CoreAssets.noAvatar.image
                 isShowProgress = false
             }
         } catch {
