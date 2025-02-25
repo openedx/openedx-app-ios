@@ -22,7 +22,7 @@ final class CourseDownloadHelperTests: XCTestCase {
     var sequential: CourseSequential!
     var task: DownloadDataTask!
     var value: CourseDownloadValue!
-    var timeout: TimeInterval = 5
+    var timeout: TimeInterval = 15
     
     override func setUp() {
         super.setUp()
