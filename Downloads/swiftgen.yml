@@ -1,0 +1,18 @@
+strings:
+  inputs:
+    - Downloads/en.lproj
+  outputs:
+    - templateName: structured-swift5
+      params:
+        publicAccess: true
+        enumName: DownloadsLocalization
+      output: Downloads/SwiftGen/Strings.swift
+#xcassets:
+#  inputs:
+#    - Downloads/Assets.xcassets
+#  outputs:
+#    templateName: swift5
+#    params:
+#        publicAccess: true
+#        enumName: AuthAssets
+#    output: Downloads/SwiftGen/Assets.swift

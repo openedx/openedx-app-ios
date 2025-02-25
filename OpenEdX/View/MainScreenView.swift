@@ -10,6 +10,7 @@ import Discovery
 import Core
 import Swinject
 import Dashboard
+import Downloads
 import Profile
 import WhatsNew
 import SwiftUIIntrospect
@@ -137,6 +138,14 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
+            AppDownloadsView()
+            .tabItem {
+                CoreAssets.downloadsMenu.swiftUIImage.renderingMode(.template)
+                Text("Downloads")
+            }
+            .tag(MainTab.downloads)
+            .accessibilityIdentifier("downloads_tabitem")
+            
             VStack {
                 ProfileView(
                     viewModel: Container.shared.resolve(ProfileViewModel.self)!
@@ -197,6 +206,8 @@ struct MainScreenView: View {
                 viewModel.trackMainProgramsTabClicked()
             case .profile:
                 viewModel.trackMainProfileTabClicked()
+            case .downloads:
+                viewModel.trackMainProfileTabClicked()
             }
         })
         .onFirstAppear {
@@ -238,6 +249,8 @@ struct MainScreenView: View {
             : DashboardLocalization.Learn.title
         case .programs:
             return CoreLocalization.Mainscreen.programs
+        case .downloads:
+            return "Downloads"
         case .profile:
             return ProfileLocalization.title
         }

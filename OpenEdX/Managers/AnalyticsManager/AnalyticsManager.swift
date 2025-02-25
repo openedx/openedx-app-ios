@@ -155,6 +155,10 @@ class AnalyticsManager: AuthorizationAnalytics,
         trackScreenEvent(.mainProgramsTabClicked, biValue: .mainProgramsTabClicked)
     }
     
+    public func mainDownloadsTabClicked() {
+        trackScreenEvent(.mainDownloadsTabClicked, biValue: .mainDownloadsTabClicked)
+    }
+    
     public func mainProfileTabClicked() {
         trackScreenEvent(.mainProfileTabClicked, biValue: .mainProfileTabClicked)
     }
@@ -958,7 +962,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         author: String,
         follow: Bool
     ) {
-        var parameters: [String: Any] = [
+        let parameters: [String: Any] = [
             EventParamKey.courseID: courseID,
             EventParamKey.threadID: threadID,
             EventParamKey.author: author,

@@ -77,6 +77,7 @@ public enum CoreAssets {
   public static let noHandouts = ImageAsset(name: "noHandouts")
   public static let dashboard = ImageAsset(name: "dashboard")
   public static let discover = ImageAsset(name: "discover")
+  public static let downloadsMenu = ImageAsset(name: "downloadsMenu")
   public static let learnActive = ImageAsset(name: "learn_active")
   public static let learnInactive = ImageAsset(name: "learn_inactive")
   public static let profileActive = ImageAsset(name: "profile_active")

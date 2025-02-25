@@ -35,6 +35,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Discussion/Discussion/SwiftGen
   - Discovery/Discovery/SwiftGen
   - Dashboard/Dashboard/SwiftGen
+  - Downloads/Downloads/SwiftGen
   - Profile/Profile/SwiftGen
   - WhatsNew/WhatsNew/SwiftGen
   - Theme/Theme/SwiftGen
