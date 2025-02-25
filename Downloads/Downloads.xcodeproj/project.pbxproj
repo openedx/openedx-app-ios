@@ -10,17 +10,10 @@
 		1CB2F17F0A984BD27F49F2E9 /* Pods_App_Downloads_DownloadsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3FC4AE0884E758D75EDD5E4 /* Pods_App_Downloads_DownloadsTests.framework */; };
 		CEB36E122D6A0D0B00907A89 /* Downloads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB36E092D6A0D0B00907A89 /* Downloads.framework */; };
 		CEB36E282D6A0D6C00907A89 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB36E272D6A0D6C00907A89 /* OEXFoundation */; };
-		CEB36E3D2D6A0DE400907A89 /* Downloads.h in Headers */ = {isa = PBXBuildFile; fileRef = CEB36E3B2D6A0DE400907A89 /* Downloads.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CEB36E402D6A0DE800907A89 /* DownloadsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */; };
 		CEB36E422D6A0E2C00907A89 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = CEB36E412D6A0E2C00907A89 /* swiftgen.yml */; };
-		CEB36E452D6A0EF900907A89 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CEB36E432D6A0EF900907A89 /* Localizable.strings */; };
-		CEB36E482D6A117700907A89 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB36E472D6A117700907A89 /* Strings.swift */; };
-		CEB36E4D2D6A11ED00907A89 /* AppDownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB36E4C2D6A11ED00907A89 /* AppDownloadsView.swift */; };
-		CEB36E502D6A297F00907A89 /* DownloadCourseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB36E4F2D6A297F00907A89 /* DownloadCourseCell.swift */; };
 		CEB36E562D6A2A0400907A89 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB36E552D6A2A0400907A89 /* Core.framework */; };
 		CEB36E5A2D6A2B9900907A89 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB36E592D6A2B9900907A89 /* OEXFoundation */; };
-		CEB36E5E2D6A382B00907A89 /* CourseDemoModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB36E5D2D6A382B00907A89 /* CourseDemoModel.swift */; };
-		CEB36E602D6A44E000907A89 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB36E5F2D6A44E000907A89 /* MenuOption.swift */; };
 		EDE11E2D4D726D34775CF243 /* Pods_App_Downloads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4EC0036E64DA88BB2D053F /* Pods_App_Downloads.framework */; };
 /* End PBXBuildFile section */
 
@@ -66,19 +59,41 @@
 		CE4EC0036E64DA88BB2D053F /* Pods_App_Downloads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Downloads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB36E092D6A0D0B00907A89 /* Downloads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Downloads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB36E112D6A0D0B00907A89 /* DownloadsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DownloadsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		CEB36E3B2D6A0DE400907A89 /* Downloads.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Downloads.h; sourceTree = "<group>"; };
 		CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsTests.swift; sourceTree = "<group>"; };
 		CEB36E412D6A0E2C00907A89 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
-		CEB36E442D6A0EF900907A89 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		CEB36E472D6A117700907A89 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
-		CEB36E4C2D6A11ED00907A89 /* AppDownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDownloadsView.swift; sourceTree = "<group>"; };
-		CEB36E4F2D6A297F00907A89 /* DownloadCourseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadCourseCell.swift; sourceTree = "<group>"; };
 		CEB36E552D6A2A0400907A89 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CEB36E5D2D6A382B00907A89 /* CourseDemoModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDemoModel.swift; sourceTree = "<group>"; };
-		CEB36E5F2D6A44E000907A89 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
 		F88F26577D0F66933184E825 /* Pods-App-Downloads.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugprod.xcconfig"; sourceTree = "<group>"; };
 		FA71B94B494DEAD479651F27 /* Pods-App-Downloads.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.releasestage.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CE0E04FA2D6DFFA800B8CF04 /* Exceptions for "Downloads" folder in "Downloads" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				Downloads.h,
+			);
+			target = CEB36E082D6A0D0B00907A89 /* Downloads */;
+		};
+		CE0E05022D6E00F100B8CF04 /* Exceptions for "Downloads" folder in "DownloadsTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Data/Model/DownloadCoursePreviewResponse.swift,
+			);
+			target = CEB36E102D6A0D0B00907A89 /* DownloadsTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CE0E04F22D6DFFA800B8CF04 /* Downloads */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				CE0E04FA2D6DFFA800B8CF04 /* Exceptions for "Downloads" folder in "Downloads" target */,
+				CE0E05022D6E00F100B8CF04 /* Exceptions for "Downloads" folder in "DownloadsTests" target */,
+			);
+			path = Downloads;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		CEB36E062D6A0D0B00907A89 /* Frameworks */ = {
@@ -132,7 +147,7 @@
 			isa = PBXGroup;
 			children = (
 				CEB36E412D6A0E2C00907A89 /* swiftgen.yml */,
-				CEB36E3C2D6A0DE400907A89 /* Downloads */,
+				CE0E04F22D6DFFA800B8CF04 /* Downloads */,
 				CEB36E3F2D6A0DE800907A89 /* DownloadsTests */,
 				CEB36E0A2D6A0D0B00907A89 /* Products */,
 				B020C5F22CBC6B88CC8A70EB /* Pods */,
@@ -149,66 +164,12 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CEB36E3C2D6A0DE400907A89 /* Downloads */ = {
-			isa = PBXGroup;
-			children = (
-				CEB36E4B2D6A118800907A89 /* Presentation */,
-				CEB36E4A2D6A118200907A89 /* Domain */,
-				CEB36E492D6A117D00907A89 /* Data */,
-				CEB36E462D6A116400907A89 /* SwiftGen */,
-				CEB36E3B2D6A0DE400907A89 /* Downloads.h */,
-				CEB36E432D6A0EF900907A89 /* Localizable.strings */,
-			);
-			path = Downloads;
-			sourceTree = "<group>";
-		};
 		CEB36E3F2D6A0DE800907A89 /* DownloadsTests */ = {
 			isa = PBXGroup;
 			children = (
 				CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */,
 			);
 			path = DownloadsTests;
-			sourceTree = "<group>";
-		};
-		CEB36E462D6A116400907A89 /* SwiftGen */ = {
-			isa = PBXGroup;
-			children = (
-				CEB36E472D6A117700907A89 /* Strings.swift */,
-			);
-			path = SwiftGen;
-			sourceTree = "<group>";
-		};
-		CEB36E492D6A117D00907A89 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		CEB36E4A2D6A118200907A89 /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				CEB36E5D2D6A382B00907A89 /* CourseDemoModel.swift */,
-			);
-			path = Domain;
-			sourceTree = "<group>";
-		};
-		CEB36E4B2D6A118800907A89 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				CEB36E4E2D6A296B00907A89 /* Elements */,
-				CEB36E4C2D6A11ED00907A89 /* AppDownloadsView.swift */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		CEB36E4E2D6A296B00907A89 /* Elements */ = {
-			isa = PBXGroup;
-			children = (
-				CEB36E5F2D6A44E000907A89 /* MenuOption.swift */,
-				CEB36E4F2D6A297F00907A89 /* DownloadCourseCell.swift */,
-			);
-			path = Elements;
 			sourceTree = "<group>";
 		};
 		FA6696D1625DF71CF1ED8DD8 /* Frameworks */ = {
@@ -228,7 +189,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEB36E3D2D6A0DE400907A89 /* Downloads.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -249,6 +209,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CE0E04F22D6DFFA800B8CF04 /* Downloads */,
 			);
 			name = Downloads;
 			packageProductDependencies = (
@@ -327,7 +290,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEB36E422D6A0E2C00907A89 /* swiftgen.yml in Resources */,
-				CEB36E452D6A0EF900907A89 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,11 +389,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEB36E5E2D6A382B00907A89 /* CourseDemoModel.swift in Sources */,
-				CEB36E4D2D6A11ED00907A89 /* AppDownloadsView.swift in Sources */,
-				CEB36E502D6A297F00907A89 /* DownloadCourseCell.swift in Sources */,
-				CEB36E602D6A44E000907A89 /* MenuOption.swift in Sources */,
-				CEB36E482D6A117700907A89 /* Strings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,17 +409,6 @@
 			targetProxy = CEB36E132D6A0D0B00907A89 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		CEB36E432D6A0EF900907A89 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CEB36E442D6A0EF900907A89 /* en */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CEB36E1B2D6A0D0B00907A89 /* Debug */ = {

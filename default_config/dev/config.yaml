@@ -9,8 +9,7 @@ SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
 
-
-
+    
 UI_COMPONENTS:
     COURSE_UNIT_PROGRESS_ENABLED: false
     COURSE_NESTED_LIST_ENABLED: false

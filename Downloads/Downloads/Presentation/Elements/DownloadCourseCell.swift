@@ -11,22 +11,18 @@ import Theme
 import Kingfisher
 
 struct DownloadCourseCell: View {
-    let course: CourseDemoModel
-    @Binding var downloadedSize: Int
+    let course: DownloadCoursePreview
+    @Binding var downloadedSize: Int64
     let onDownloadTap: () -> Void
     let onRemoveTap: () -> Void
     let onCancelTap: () -> Void
-
-    private func bytesToMBString(_ bytes: Int) -> String {
-        let mb = Double(bytes) / 1024.0 / 1024.0
-        return String(format: "%.0fMB", mb)
-    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack(alignment: .top, spacing: 12) {
                 ZStack {
-                    KFImage(URL(string: course.course_banner))
+                    KFImage(URL(string: course.image ?? ""))
+                        .onFailureImage(CoreAssets.noCourseImage.image)
                         .resizable()
                         .scaledToFill()
                 }
@@ -35,16 +31,15 @@ struct DownloadCourseCell: View {
                 .clipped()
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(course.course_name)
+                Text(course.name)
                     .font(Theme.Fonts.titleLarge)
                     .foregroundColor(.primary)
                     .padding(.horizontal, 12)
             }
-//            Spacer()
 
-            let downloadedMB = bytesToMBString(downloadedSize)
-            let availableBytes = max(course.total_size - downloadedSize, 0)
-            let availableMB = bytesToMBString(availableBytes)
+            let downloadedFormatted = ByteCountFormatter().string(fromByteCount: downloadedSize)
+            let availableBytes = max(course.totalSize - downloadedSize, 0)
+            let availableFormatted = ByteCountFormatter().string(fromByteCount: availableBytes)
             
             ZStack(alignment: .leading) {
                 GeometryReader { geometry in
@@ -54,15 +49,15 @@ struct DownloadCourseCell: View {
                     
                     RoundedCorners(
                         tl: 4,
-                        tr: course.total_size == downloadedSize ? 4 : 0,
+                        tr: course.totalSize == downloadedSize ? 4 : 0,
                         bl: 4,
-                        br: course.total_size == downloadedSize ? 4 : 0
+                        br: course.totalSize == downloadedSize ? 4 : 0
                     )
                         .fill(Theme.Colors.success)
                         .frame(
                             width: geometry.size.width * CGFloat(
                                 downloadedSize
-                            ) / CGFloat(course.total_size),
+                            ) / CGFloat(course.totalSize),
                             height: 8
                         )
                 }
@@ -75,22 +70,22 @@ struct DownloadCourseCell: View {
                 if downloadedSize != 0 {
                     HStack {
                         CoreAssets.deleteDownloading.swiftUIImage
-                        if course.total_size == downloadedSize {
-                            Text("All \(downloadedMB) downloaded")
+                        if course.totalSize == downloadedSize {
+                            Text("All \(downloadedFormatted) downloaded")
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundStyle(Theme.Colors.success)
                         } else {
-                            Text("\(downloadedMB) downloaded")
+                            Text("\(downloadedFormatted) downloaded")
                                 .font(Theme.Fonts.labelLarge)
                                 .foregroundStyle(Theme.Colors.success)
                         }
                     }
                 }
-                if course.total_size != downloadedSize {
+                if course.totalSize != downloadedSize {
                     HStack {
                         CoreAssets.startDownloading.swiftUIImage
                             .foregroundStyle(Theme.Colors.textSecondary)
-                        Text("\(availableMB) available")
+                        Text("\(availableFormatted) available")
                             .font(Theme.Fonts.labelLarge)
                             .foregroundStyle(Theme.Colors.textSecondary)
                     }
@@ -118,7 +113,7 @@ struct DownloadCourseCell: View {
         }
         .overlay {
             DropDownMenu(
-                isDownloading: downloadedSize > 0 && downloadedSize < course.total_size,
+                isDownloading: downloadedSize > 0 && downloadedSize < course.totalSize,
                 onRemoveTap: onRemoveTap,
                 onCancelTap: onCancelTap
             )
@@ -132,11 +127,11 @@ struct DownloadCourseCell: View {
 #if DEBUG
 #Preview {
     DownloadCourseCell(
-        course: CourseDemoModel(
-            course_id: "123",
-            course_name: "Demo Course",
-            course_banner: "https://axim-mobile.raccoongang.net/asset-v1:OpenedX+DemoX+DemoCourse+type@asset+block@thumbnail_demox.jpeg",
-            total_size: 31213
+        course: DownloadCoursePreview(
+            id: "123",
+            name: "Demo Course",
+            image: "https://axim-mobile.raccoongang.net/asset-v1:OpenedX+DemoX+DemoCourse+type@asset+block@thumbnail_demox.jpeg",
+            totalSize: 31213
         ),
         downloadedSize: .constant(21423),
         onDownloadTap: {},

@@ -13,6 +13,7 @@ import OEXFoundation
 import Authorization
 import Discovery
 import Dashboard
+import Downloads
 import Profile
 import Course
 import Discussion
@@ -639,6 +640,35 @@ class ScreenAssembly: Assembly {
         container.register(BackNavigationProtocol.self) { r in
             r.resolve(Router.self)!
         }
+        
+        // MARK: Downloads
+        
+        container.register(DownloadsPersistenceProtocol.self) { r in
+            DownloadsPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+        }
+        
+        container.register(DownloadsRepositoryProtocol.self) { r in
+            DownloadsRepository(
+                api: r.resolve(API.self)!,
+                coreStorage: r.resolve(CoreStorage.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                persistence: r.resolve(DownloadsPersistenceProtocol.self)!
+            )
+        }
+        
+        container.register(DownloadsInteractorProtocol.self) { r in
+            DownloadsInteractor(
+                repository: r.resolve(DownloadsRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(AppDownloadsViewModel.self) { @MainActor r in
+            AppDownloadsViewModel(
+                interactor: r.resolve(DownloadsInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }
+        
     }
 }
 // swiftlint:enable function_body_length closure_parameter_position

@@ -138,10 +138,10 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
-            AppDownloadsView()
+            AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
             .tabItem {
                 CoreAssets.downloadsMenu.swiftUIImage.renderingMode(.template)
-                Text("Downloads")
+                Text(DownloadsLocalization.Downloads.title)
             }
             .tag(MainTab.downloads)
             .accessibilityIdentifier("downloads_tabitem")
@@ -207,7 +207,7 @@ struct MainScreenView: View {
             case .profile:
                 viewModel.trackMainProfileTabClicked()
             case .downloads:
-                viewModel.trackMainProfileTabClicked()
+                viewModel.trackMainDownloadsTabClicked()
             }
         })
         .onFirstAppear {
@@ -250,7 +250,7 @@ struct MainScreenView: View {
         case .programs:
             return CoreLocalization.Mainscreen.programs
         case .downloads:
-            return "Downloads"
+            return DownloadsLocalization.Downloads.title
         case .profile:
             return ProfileLocalization.title
         }

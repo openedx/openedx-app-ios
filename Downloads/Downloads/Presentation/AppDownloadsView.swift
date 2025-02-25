@@ -10,28 +10,12 @@ import Theme
 import OEXFoundation
 import Core
 
-// swiftlint:disable line_length
 public struct AppDownloadsView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    @State private var courses: [CourseDemoModel] = [
-        CourseDemoModel(
-            course_id: "my_course_id_2024",
-               course_name: "My Course 2024",
-               course_banner: "https://axim-mobile.raccoongang.net/asset-v1:OpenedX+DemoX+DemoCourse+type@asset+block@thumbnail_demox.jpeg",
-               total_size: 20_531_502
-        ),
-        CourseDemoModel(
-            course_id: "another_course_2025",
-               course_name: "Another Course 2025",
-               course_banner: "https://axim-mobile.raccoongang.net/asset-v1:OpenedX+DemoX+DemoCourse+type@asset+block@thumbnail_demox.jpeg",
-               total_size: 15_000_000
-        )
-    ]
-
-    @State private var downloadedSizes: [String: Int] = [:]
+    @StateObject private var viewModel: AppDownloadsViewModel
     
     private func columns() -> [GridItem] {
         isHorizontal || idiom == .pad
@@ -44,7 +28,9 @@ public struct AppDownloadsView: View {
         ]
     }
     
-    public init() {}
+    public init(viewModel: AppDownloadsViewModel) {
+        self._viewModel = StateObject(wrappedValue: { viewModel }())
+    }
 
     public var body: some View {
         GeometryReader { proxy in
@@ -53,7 +39,7 @@ public struct AppDownloadsView: View {
                     .ignoresSafeArea()
                 ScrollView {
                     StyledButton(
-                        "Manage Download Settings",
+                        DownloadsLocalization.Downloads.manageDownloadSettings,
                         action: {},
                         color: .clear,
                         textColor: Theme.Colors.accentColor,
@@ -63,23 +49,27 @@ public struct AppDownloadsView: View {
                     .padding(.top, 1)
                     .padding(.bottom, 16)
                     
+                    if viewModel.courses.isEmpty {
+                        noCoursesToDownload
+                            .padding(.top, 100)
+                    }
+                    
                     LazyVGrid(columns: columns(), spacing: 16) {
-                        ForEach(courses) { course in
+                        ForEach(viewModel.courses) { course in
                             DownloadCourseCell(
                                 course: course,
                                 downloadedSize: Binding(
-                                    get: { downloadedSizes[course.course_id] ?? 0 },
-                                    set: { downloadedSizes[course.course_id] = $0 }
+                                    get: { viewModel.downloadedSizes[course.id] ?? 0 },
+                                    set: { viewModel.downloadedSizes[course.id] = $0 }
                                 ),
                                 onDownloadTap: {
-                                    let current = downloadedSizes[course.course_id] ?? 0
-                                    let newValue = min(current + 2_000_000, course.total_size)
-                                    downloadedSizes[course.course_id] = newValue
+                                    viewModel.downloadCourse(courseID: course.id)
                                 },
                                 onRemoveTap: {
-                                    downloadedSizes[course.course_id] = 0
-                                }, onCancelTap: {
-                                    downloadedSizes[course.course_id] = 0
+                                    viewModel.removeDownload(courseID: course.id)
+                                },
+                                onCancelTap: {
+                                    viewModel.cancelDownload(courseID: course.id)
                                 }
                             )
                         }
@@ -91,13 +81,60 @@ public struct AppDownloadsView: View {
                 .padding(.top, 8)
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(false)
-                .navigationTitle("Downloads")
+                .navigationTitle(DownloadsLocalization.Downloads.title)
             }
+            
+            // MARK: - Offline mode SnackBar
+            OfflineSnackBarView(
+                connectivity: viewModel.connectivity,
+                reloadAction: {
+                    await viewModel.getDownloadCourses()
+                })
+            
+            // MARK: - Error Alert
+            if viewModel.showError {
+                VStack {
+                    Spacer()
+                    SnackBarView(message: viewModel.errorMessage)
+                }
+                .padding(.bottom, viewModel.connectivity.isInternetAvaliable
+                         ? 0 : OfflineSnackBarView.height)
+                .transition(.move(edge: .bottom))
+                .onAppear {
+                    doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                        viewModel.errorMessage = nil
+                    }
+                }
+            }
+        }
+        .onFirstAppear {
+            Task {
+                await viewModel.getDownloadCourses()
+            }
+        }
+    }
+    
+    private var noCoursesToDownload: some View {
+        VStack(spacing: 8) {
+            Spacer()
+            CoreAssets.learnEmpty.swiftUIImage
+                .resizable()
+                .frame(width: 96, height: 96)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
+            Text(DownloadsLocalization.Downloads.NoCoursesToDownload.title)
+                .foregroundStyle(Theme.Colors.textPrimary)
+                .font(Theme.Fonts.titleMedium)
+            Text(DownloadsLocalization.Downloads.NoCoursesToDownload.description)
+                .multilineTextAlignment(.center)
+                .foregroundStyle(Theme.Colors.textPrimary)
+                .font(Theme.Fonts.labelMedium)
+                .frame(width: 245)
         }
     }
 }
 
+#if DEBUG
 #Preview {
-    AppDownloadsView()
+    AppDownloadsView(viewModel: AppDownloadsViewModel.mock)
 }
-// swiftlint:enable line_length
+#endif

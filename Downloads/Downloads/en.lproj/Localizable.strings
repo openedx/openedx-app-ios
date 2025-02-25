@@ -6,4 +6,7 @@
   
 */
 
-"DOWNLOADS.TEST" = "Test";
+"DOWNLOADS.TITLE" = "Downloads";
+"DOWNLOADS.MANAGE_DOWNLOAD_SETTINGS" = "Manage Download Settings";
+"DOWNLOADS.NO_COURSES_TO_DOWNLOAD.TITLE" = "No Courses with Downloadable Content";
+"DOWNLOADS.NO_COURSES_TO_DOWNLOAD.DESCRIPTION" = "You currently have no courses with downloadable content.";

@@ -105,7 +105,7 @@ final class MainScreenViewModel: ObservableObject {
     }
     
     func trackMainDownloadsTabClicked() {
-        analytics.mainProfileTabClicked()
+        analytics.mainDownloadsTabClicked()
     }
     
     func trackMainProfileTabClicked() {
