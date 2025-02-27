@@ -7,12 +7,13 @@
 
 import Foundation
 import FirebaseMessaging
+import OEXFoundation
 
 class FCMListener: PushNotificationsListener {
     
-    private let deepLinkManager: DeepLinkManager
+    private let deepLinkManager: DeepLinkManagerProtocol
     
-    init(deepLinkManager: DeepLinkManager) {
+    init(deepLinkManager: DeepLinkManagerProtocol) {
         self.deepLinkManager = deepLinkManager
     }
     
@@ -23,12 +24,10 @@ class FCMListener: PushNotificationsListener {
     }
     
     func didReceiveRemoteNotification(userInfo: [AnyHashable: Any]) {
-        guard let dictionary = userInfo as? [String: AnyHashable],
-              shouldListenNotification(userinfo: userInfo) else { return }
+        guard shouldListenNotification(userinfo: userInfo) else { return }
         // With swizzling disabled you must let Messaging know about the message, for Analytics
         Messaging.messaging().appDidReceiveMessage(userInfo)
         
-        let link = PushLink(dictionary: dictionary)
-        deepLinkManager.processLinkFromNotification(link)
+        deepLinkManager.processLinkFrom(userInfo: userInfo)
     }
 }
