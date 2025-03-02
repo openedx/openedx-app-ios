@@ -12,7 +12,6 @@ import Core
 public protocol DownloadsPersistenceProtocol: Sendable {
     func loadDownloadCourses() async throws -> [DownloadCoursePreview]
     func saveDownloadCourses(courses: [DownloadCoursePreview]) async
-    func getDownloadCourse(courseID: String) async throws -> DownloadCoursePreview?
 }
 
 public final class DownloadsBundle {

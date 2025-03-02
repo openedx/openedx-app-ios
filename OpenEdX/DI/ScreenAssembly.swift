@@ -665,7 +665,10 @@ class ScreenAssembly: Assembly {
         container.register(AppDownloadsViewModel.self) { @MainActor r in
             AppDownloadsViewModel(
                 interactor: r.resolve(DownloadsInteractorProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                router: r.resolve(DownloadsRouter.self)!
             )
         }
         

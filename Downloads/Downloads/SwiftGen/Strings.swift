@@ -18,6 +18,24 @@ public enum DownloadsLocalization {
     /// 
     ///   Created by Ivan Stepanok on 22.02.2025.
     public static let title = DownloadsLocalization.tr("Localizable", "DOWNLOADS.TITLE", fallback: "Downloads")
+    public enum Cell {
+      /// All %@ downloaded
+      public static func allDownloaded(_ p1: Any) -> String {
+        return DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.ALL_DOWNLOADED", String(describing: p1), fallback: "All %@ downloaded")
+      }
+      /// %@ available
+      public static func available(_ p1: Any) -> String {
+        return DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.AVAILABLE", String(describing: p1), fallback: "%@ available")
+      }
+      /// Download course
+      public static let downloadCourse = DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.DOWNLOAD_COURSE", fallback: "Download course")
+      /// %@ of %@
+      public static func downloadedOfTotal(_ p1: Any, _ p2: Any) -> String {
+        return DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.DOWNLOADED_OF_TOTAL", String(describing: p1), String(describing: p2), fallback: "%@ of %@")
+      }
+      /// Downloading
+      public static let downloading = DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.DOWNLOADING", fallback: "Downloading")
+    }
     public enum NoCoursesToDownload {
       /// You currently have no courses with downloadable content.
       public static let description = DownloadsLocalization.tr("Localizable", "DOWNLOADS.NO_COURSES_TO_DOWNLOAD.DESCRIPTION", fallback: "You currently have no courses with downloadable content.")

@@ -15,6 +15,7 @@ import Dashboard
 import Course
 import Discussion
 import Authorization
+import Downloads
 import Profile
 import WhatsNew
 
@@ -131,6 +132,10 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(WhatsNewRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
+        container.register(DownloadsRouter.self) { r in
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
