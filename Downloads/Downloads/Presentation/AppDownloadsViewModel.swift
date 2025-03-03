@@ -8,7 +8,6 @@
 import Foundation
 import Combine
 import Core
-import Course
 import SwiftUI
 
 @MainActor
@@ -38,21 +37,24 @@ public final class AppDownloadsViewModel: ObservableObject {
     
     let connectivity: ConnectivityProtocol
     private let downloadsInteractor: DownloadsInteractorProtocol
-    private let courseInteractor: CourseInteractorProtocol
+    private let courseManager: CourseStructureProtocol
     private let downloadManager: DownloadManagerProtocol
+    private let downloadsHelper: DownloadsHelperProtocol
     let router: DownloadsRouter
     
     public init(
         interactor: DownloadsInteractorProtocol,
-        courseInteractor: CourseInteractorProtocol,
+        courseManager: CourseStructureProtocol,
         downloadManager: DownloadManagerProtocol,
         connectivity: ConnectivityProtocol,
+        downloadsHelper: DownloadsHelperProtocol,
         router: DownloadsRouter
     ) {
         self.downloadsInteractor = interactor
-        self.courseInteractor = courseInteractor
+        self.courseManager = courseManager
         self.downloadManager = downloadManager
         self.connectivity = connectivity
+        self.downloadsHelper = downloadsHelper
         self.router = router
         self.observeDownloadEvents()
     }
@@ -62,112 +64,61 @@ public final class AppDownloadsViewModel: ObservableObject {
             .receive(on: RunLoop.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
-                switch event {
-                    
-                case .progress(let task):
-                    guard !task.courseId.isEmpty else { return }
-                    self.updateTask(task)
-                    self.recalculateProgress(for: task.courseId)
-                    
-                case .finished(let task):
-                    guard !task.courseId.isEmpty else { return }
-                    self.finishedTaskIds.insert(task.id)
-                    self.updateTask(task)
-                    self.recalculateProgress(for: task.courseId)
-                    
-                case .added:
-                    Task {
+                Task {
+                    switch event {
+                    case .progress(let task):
+                        await self.updateDownloadProgress(for: task)
+                    case .finished(let task):
+                        await self.updateDownloadProgress(for: task)
+                    case .started(let task):
+                        await self.updateDownloadProgress(for: task)
+                    case .canceled, .courseCanceled, .allCanceled:
                         await self.refreshDownloadStates()
+                    default:
+                        break
                     }
-                    
-                case .started(let task):
-                    guard !task.courseId.isEmpty else { return }
-                    self.updateTask(task)
-                    if self.downloadStates[task.courseId] == nil {
-                        self.downloadStates[task.courseId] = .inProgress
-                    }
-                    self.recalculateProgress(for: task.courseId)
-                    
-                case .canceled, .courseCanceled, .allCanceled, .clearedAll, .deletedFile:
-                    Task {
-                        await self.refreshDownloadStates()
-                    }
-                    
-                default:
-                    break
                 }
             }
             .store(in: &cancellables)
     }
     
-    private func updateTask(_ task: DownloadDataTask) {
-        let courseId = task.courseId
+    private func updateDownloadProgress(for task: DownloadDataTask) async {
+        let courseID = task.courseId
+        let (downloaded, total) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
         
-        if courseTasks[courseId] == nil {
-            courseTasks[courseId] = []
-        }
-        
-        if let index = courseTasks[courseId]?.firstIndex(where: { $0.id == task.id }) {
-            courseTasks[courseId]?[index] = task
-        } else {
-            courseTasks[courseId]?.append(task)
+        await MainActor.run {
+            downloadedSizes[courseID] = Int64(downloaded)
+            courseSizes[courseID] = Int64(total)
+            
+            if task.state == .finished {
+                downloadStates[courseID] = .finished
+            } else if task.state == .inProgress {
+                downloadStates[courseID] = .inProgress
+            }
         }
     }
     
-    private func recalculateProgress(for courseId: String) {
-        guard let tasks = courseTasks[courseId], !tasks.isEmpty else { return }
-        
-        var totalSize: Int64 = 0
-        if let index = courses.firstIndex(where: { $0.id == courseId }) {
-            totalSize = courses[index].totalSize
-            courseSizes[courseId] = totalSize
-        } else if let cachedSize = courseSizes[courseId], cachedSize > 0 {
-            totalSize = cachedSize
-        } else {
-            totalSize = Int64(tasks.reduce(0) { $0 + $1.fileSize })
-            courseSizes[courseId] = totalSize
-        }
-        
-        // Guard against zero total size
-        if totalSize <= 0 {
-            totalSize = 1 // Prevent division by zero
-        }
-        
-        var downloadedSize: Int64 = 0
-        var isDownloading = false
-        var finishedTasks = 0
+    private func refreshDownloadStates() async {
+        for course in courses {
+            let (downloaded, total) = await downloadsHelper.calculateDownloadProgress(courseID: course.id)
+            let isDownloading = await downloadsHelper.isDownloading(courseID: course.id)
+            let isPartiallyDownloaded = await downloadsHelper.isPartiallyDownloaded(courseID: course.id)
+            
+            await MainActor.run {
+                downloadedSizes[course.id] = Int64(downloaded)
+                courseSizes[course.id] = Int64(total)
                 
-        for task in tasks {
-            if task.state == .finished || finishedTaskIds.contains(task.id) {
-                // Count the full size for finished tasks
-                downloadedSize += Int64(task.fileSize)
-                finishedTasks += 1
-            } else if task.state == .inProgress {
-                let partialSize = Int64(Double(task.fileSize) * task.progress)
-                downloadedSize += partialSize
-                isDownloading = true
-            } else if task.state == .waiting {
-                isDownloading = true
+                if isDownloading {
+                    downloadStates[course.id] = .inProgress
+                } else if downloaded > 0 && (downloaded >= total * 95 / 100) {
+                    // If at least 95% is downloaded, consider it finished
+                    downloadStates[course.id] = .finished
+                } else if isPartiallyDownloaded {
+                    downloadStates[course.id] = .finished
+                } else {
+                    downloadStates[course.id] = nil
+                }
             }
-        }
-        let oldState = downloadStates[courseId]
-        downloadedSizes[courseId] = downloadedSize
-                        
-        var newState: DownloadState?
-        if finishedTasks == tasks.count {
-            // All tasks finished
-            newState = .finished
-            downloadedSizes[courseId] = totalSize
-        } else if isDownloading {
-            newState = .inProgress
-        } else {
-            newState = .waiting
-        }
-        
-        let stateChanged = oldState != newState
-        
-        if stateChanged {
-            downloadStates[courseId] = newState
         }
     }
     
@@ -178,19 +129,12 @@ public final class AppDownloadsViewModel: ObservableObject {
             if connectivity.isInternetAvaliable {
                 courses = try await downloadsInteractor.getDownloadCourses()
                 fetchInProgress = false
-                
-                for course in courses {
-                    courseSizes[course.id] = course.totalSize
-                }
+                await refreshDownloadStates()
             } else {
                 courses = try await downloadsInteractor.getDownloadCoursesOffline()
                 fetchInProgress = false
-                
-                for course in courses {
-                    courseSizes[course.id] = course.totalSize
-                }
+                await refreshDownloadStates()
             }
-            await refreshDownloadStates()
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
@@ -200,73 +144,29 @@ public final class AppDownloadsViewModel: ObservableObject {
         }
     }
     
-    private func refreshDownloadStates() async {
-        finishedTaskIds.removeAll()
-        
-        var allCourseIds = Set(courses.map { $0.id })
-        for (courseId, _) in courseTasks {
-            allCourseIds.insert(courseId)
-        }
-        
-        for courseId in allCourseIds {
-            let tasks = await downloadManager.getDownloadTasksForCourse(courseId)
-            courseTasks[courseId] = tasks
-            
-            for task in tasks where task.state == .finished {
-                    finishedTaskIds.insert(task.id)
-            }
-            
-            if tasks.isEmpty {
-                if !downloadQueue.contains(courseId) {
-                    downloadStates[courseId] = nil
-                    downloadedSizes[courseId] = 0
-                }
-            } else {
-                self.recalculateProgress(for: courseId)
-            }
-        }
-    }
-    
     func downloadCourse(courseID: String) {
-        downloadQueue.append(courseID)
-        downloadStates[courseID] = .waiting
-        downloadedSizes[courseID] = 0
-        
-        if courseTasks[courseID] == nil {
-            courseTasks[courseID] = []
-        }
-        
-        if !isProcessingQueue {
-            Task {
-                await processDownloadQueue()
-            }
-        }
-    }
-    
-    private func processDownloadQueue() async {
-        if isProcessingQueue {
-            return
-        }
-        
-        isProcessingQueue = true
-        
-        while !downloadQueue.isEmpty {
-            let courseID = downloadQueue.first!
-            
+        Task {
             do {
-                downloadStates[courseID] = .waiting
-                let courseStructure = try await courseInteractor.getCourseBlocks(courseID: courseID)
-                let downloadableBlocks = extractDownloadableBlocks(from: courseStructure)
-                                
-                if !downloadableBlocks.isEmpty {
-                    if courseTasks[courseID] == nil {
-                        courseTasks[courseID] = []
-                    }
-                    downloadStates[courseID] = .waiting
-                    try await downloadManager.addToDownloadQueue(blocks: downloadableBlocks)
+                let courseStructure: CourseStructure
+                do {
+                    // First try to get course structure from cached data
+                    courseStructure = try await courseManager.getLoadedCourseBlocks(courseID: courseID)
+                } catch let error as NoCachedDataError {
+                    // If no cached data, fetch from network
+                    downloadStates[courseID] = .inProgress
+                    courseStructure = try await courseManager.getCourseBlocks(courseID: courseID)
                 }
-                downloadQueue.removeFirst()
                 
+                let downloadableBlocks = courseStructure.childs.flatMap { chapter in
+                    chapter.childs.flatMap { sequential in
+                        sequential.childs.flatMap { vertical in
+                            vertical.childs.filter { $0.isDownloadable }
+                        }
+                    }
+                }
+                
+                try await downloadManager.addToDownloadQueue(blocks: downloadableBlocks)
+                await refreshDownloadStates()
             } catch {
                 if error is NoWiFiError {
                     errorMessage = CoreLocalization.Error.wifi
@@ -275,54 +175,40 @@ public final class AppDownloadsViewModel: ObservableObject {
                 } else {
                     errorMessage = CoreLocalization.Error.unknownError
                 }
-                downloadStates[courseID] = nil
-                downloadedSizes[courseID] = 0
-                downloadQueue.removeFirst()
             }
         }
-        
-        isProcessingQueue = false
-    }
-    
-    private func extractDownloadableBlocks(from courseStructure: CourseStructure) -> [CourseBlock] {
-        var blocks: [CourseBlock] = []
-        
-        for chapter in courseStructure.childs {
-            for sequential in chapter.childs {
-                for vertical in sequential.childs {
-                    for block in vertical.childs where block.isDownloadable {
-                        blocks.append(block)
-                    }
-                }
-            }
-        }
-        
-        return blocks
     }
     
     func cancelDownload(courseID: String) {
-        downloadQueue.removeAll(where: { $0 == courseID })
         Task {
-            try? await downloadManager.cancelDownloading(courseId: courseID)
-            await MainActor.run {
-                downloadStates[courseID] = nil
-                downloadedSizes[courseID] = 0
-                courseTasks[courseID] = []
+            if let currentTask = await downloadManager.getCurrentDownloadTask(),
+               currentTask.courseId == courseID {
+                try? await downloadManager.cancelDownloading(task: currentTask)
             }
+            
+            let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
+            let inProgressTasks = tasks.filter { $0.state == .inProgress || $0.state == .waiting }
+            
+            for task in inProgressTasks {
+                try? await downloadManager.cancelDownloading(task: task)
+            }
+            
+            await refreshDownloadStates()
         }
     }
     
     func removeDownload(courseID: String) {
         Task {
-            if let courseStructure = try? await courseInteractor.getLoadedCourseBlocks(courseID: courseID) {
-                let blocks = extractDownloadableBlocks(from: courseStructure)
-                await downloadManager.delete(blocks: blocks, courseId: courseID)
-                
-                await MainActor.run {
-                    downloadStates[courseID] = nil
-                    downloadedSizes[courseID] = 0
-                    courseTasks[courseID] = []
+            if let courseStructure = try? await courseManager.getLoadedCourseBlocks(courseID: courseID) {
+                let blocks = courseStructure.childs.flatMap { chapter in
+                    chapter.childs.flatMap { sequential in
+                        sequential.childs.flatMap { vertical in
+                            vertical.childs.filter { $0.isDownloadable }
+                        }
+                    }
                 }
+                await downloadManager.delete(blocks: blocks, courseId: courseID)
+                await refreshDownloadStates()
             }
         }
     }
@@ -333,9 +219,10 @@ public final class AppDownloadsViewModel: ObservableObject {
 public extension AppDownloadsViewModel {
     static let mock = AppDownloadsViewModel(
         interactor: DownloadsInteractor.mock,
-        courseInteractor: CourseInteractor.mock,
+        courseManager: CourseStructureMock(),
         downloadManager: DownloadManagerMock(),
         connectivity: Connectivity(),
+        downloadsHelper: DownloadsHelperMock(),
         router: DownloadsRouterMock()
     )
 }

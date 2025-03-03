@@ -662,12 +662,25 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(
+            DownloadsHelperProtocol.self
+        ) { @MainActor r in
+            DownloadsHelper(downloadManager: r.resolve(DownloadManagerProtocol.self)!)
+        }
+        
+        container.register(CourseStructureProtocol.self) { r in
+            CourseInteractor(
+                repository: r.resolve(CourseRepositoryProtocol.self)!
+            )
+        }
+        
         container.register(AppDownloadsViewModel.self) { @MainActor r in
             AppDownloadsViewModel(
                 interactor: r.resolve(DownloadsInteractorProtocol.self)!,
-                courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
+                courseManager: r.resolve(CourseStructureProtocol.self)!,
                 downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
+                downloadsHelper: r.resolve(DownloadsHelperProtocol.self)!,
                 router: r.resolve(DownloadsRouter.self)!
             )
         }

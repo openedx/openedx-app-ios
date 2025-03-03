@@ -47,14 +47,16 @@ struct DropDownMenu: View {
             
             if expanded {
                 VStack(alignment: .leading, spacing: 0) {
-                    if !isDownloading {
-                        menuButton(title: MenuOption.remove.text) {
-                            expanded = false
-                            onRemoveTap()
-                        }
+                    menuButton(title: MenuOption.remove.text) {
+                        expanded = false
+                        onRemoveTap()
                     }
                     
                     if isDownloading {
+                        Rectangle()
+                            .frame(width: 240, height: 1)
+                            .foregroundStyle(Theme.Colors.cardViewStroke)
+                            .padding(.horizontal, 16)
                         menuButton(title: MenuOption.cancel.text) {
                             expanded = false
                             onCancelTap()
