@@ -668,7 +668,7 @@ class ScreenAssembly: Assembly {
             DownloadsHelper(downloadManager: r.resolve(DownloadManagerProtocol.self)!)
         }
         
-        container.register(CourseStructureProtocol.self) { r in
+        container.register(CourseStructureManagerProtocol.self) { r in
             CourseInteractor(
                 repository: r.resolve(CourseRepositoryProtocol.self)!
             )
@@ -677,7 +677,7 @@ class ScreenAssembly: Assembly {
         container.register(AppDownloadsViewModel.self) { @MainActor r in
             AppDownloadsViewModel(
                 interactor: r.resolve(DownloadsInteractorProtocol.self)!,
-                courseManager: r.resolve(CourseStructureProtocol.self)!,
+                courseManager: r.resolve(CourseStructureManagerProtocol.self)!,
                 downloadManager: r.resolve(DownloadManagerProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 downloadsHelper: r.resolve(DownloadsHelperProtocol.self)!,

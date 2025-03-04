@@ -37,14 +37,14 @@ public final class AppDownloadsViewModel: ObservableObject {
     
     let connectivity: ConnectivityProtocol
     private let downloadsInteractor: DownloadsInteractorProtocol
-    private let courseManager: CourseStructureProtocol
+    private let courseManager: CourseStructureManagerProtocol
     private let downloadManager: DownloadManagerProtocol
     private let downloadsHelper: DownloadsHelperProtocol
     let router: DownloadsRouter
     
     public init(
         interactor: DownloadsInteractorProtocol,
-        courseManager: CourseStructureProtocol,
+        courseManager: CourseStructureManagerProtocol,
         downloadManager: DownloadManagerProtocol,
         connectivity: ConnectivityProtocol,
         downloadsHelper: DownloadsHelperProtocol,
@@ -219,7 +219,7 @@ public final class AppDownloadsViewModel: ObservableObject {
 public extension AppDownloadsViewModel {
     static let mock = AppDownloadsViewModel(
         interactor: DownloadsInteractor.mock,
-        courseManager: CourseStructureMock(),
+        courseManager: CourseStructureManagerMock(),
         downloadManager: DownloadManagerMock(),
         connectivity: Connectivity(),
         downloadsHelper: DownloadsHelperMock(),

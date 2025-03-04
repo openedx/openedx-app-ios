@@ -61,7 +61,7 @@ final class DownloadsRepositoryMock: DownloadsRepositoryProtocol {
         for i in 0...5 {
             models.append(
                 DownloadCoursePreview(
-                    id: "course_id_\(i)",
+                    id: "course\(i)",
                     name: "Course name \(i)",
                     image: "https://example.com/image\(i).jpg",
                     totalSize: Int64(1024 * 1024 * (i + 1))
@@ -76,7 +76,7 @@ final class DownloadsRepositoryMock: DownloadsRepositoryProtocol {
         for i in 0...3 {
             models.append(
                 DownloadCoursePreview(
-                    id: "offline_course_id_\(i)",
+                    id: "course\(i)",
                     name: "Offline Course \(i)",
                     image: "https://example.com/offline_image\(i).jpg",
                     totalSize: Int64(1024 * 1024 * (i + 1))

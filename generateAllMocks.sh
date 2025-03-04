@@ -13,6 +13,8 @@ cd ../Discovery
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
 cd ../Discussion
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
+cd ../Downloads
+./../Pods/SwiftyMocky/bin/swiftymocky generate
 cd ../Profile
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
 cd ../WhatsNew

@@ -8,13 +8,13 @@
 import Foundation
 
 //sourcery: AutoMockable
-public protocol CourseStructureProtocol: Sendable {
+public protocol CourseStructureManagerProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
 }
 
 #if DEBUG
-public actor CourseStructureMock: CourseStructureProtocol {
+public actor CourseStructureManagerMock: CourseStructureManagerProtocol {
     public init() {}
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
         CourseStructure(

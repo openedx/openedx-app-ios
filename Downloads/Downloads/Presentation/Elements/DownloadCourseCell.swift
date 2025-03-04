@@ -63,7 +63,12 @@ struct DownloadCourseCell: View {
                             .onFailureImage(CoreAssets.noCourseImage.image)
                             .resizable()
                             .scaledToFill()
+                            .allowsHitTesting(false)
                             .clipped()
+                        // Clickable area
+                        Rectangle()
+                            .foregroundStyle(Color.white.opacity(0.01))
+                            .frame(height: 120)
                     }
                     
                 }.frame(height: 120)
