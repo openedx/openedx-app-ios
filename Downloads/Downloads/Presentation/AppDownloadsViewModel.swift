@@ -102,8 +102,8 @@ public final class AppDownloadsViewModel: ObservableObject {
                 let previousState = downloadStates[courseID]
                 downloadStates[courseID] = .finished
                 
-                // If the state changed from in progress to finished, track download completion
-                if previousState == .inProgress {
+                // Track download completion when a task is finished
+                if previousState == .inProgress || task.state == .finished {
                     let course = courses.first(where: { $0.id == courseID })
                     let courseName = course?.name ?? ""
                     analytics.downloadCompleted(courseId: courseID, courseName: courseName, downloadSize: Int64(total))
@@ -277,13 +277,20 @@ public final class AppDownloadsViewModel: ObservableObject {
                 }
             }
             
+            // Keep track of the current task ID to avoid canceling it twice
+            var currentTaskId: String?
+            
             if let currentTask = await downloadManager.getCurrentDownloadTask(),
                currentTask.courseId == courseID {
                 try? await downloadManager.cancelDownloading(task: currentTask)
+                currentTaskId = currentTask.id
             }
             
             let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
-            let inProgressTasks = tasks.filter { $0.state == .inProgress || $0.state == .waiting }
+            let inProgressTasks = tasks.filter {
+                ($0.state == .inProgress || $0.state == .waiting) &&
+                $0.id != currentTaskId // Skip the current task if we already canceled it
+            }
             
             for task in inProgressTasks {
                 try? await downloadManager.cancelDownloading(task: task)
@@ -294,7 +301,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         }
     }
     
-    func removeDownload(courseID: String) {
+    func removeDownload(courseID: String, skipConfirmation: Bool = false) {
         Task {
             let course = courses.first(where: { $0.id == courseID })
             let courseName = course?.name ?? ""
@@ -310,11 +317,29 @@ public final class AppDownloadsViewModel: ObservableObject {
                     }
                 }
                 
-                await presentRemoveDownloadAlert(
-                    blocks: blocks,
-                    sequentials: courseStructure.childs.flatMap { $0.childs },
-                    courseID: courseID
-                )
+                if skipConfirmation {
+                    // Directly delete files without showing alert (for testing)
+                    await downloadManager.delete(blocks: blocks, courseId: courseID)
+                    await MainActor.run {
+                        downloadStates[courseID] = nil
+                        downloadedSizes[courseID] = 0
+                    }
+                    
+                    analytics.downloadRemoved(
+                        courseId: courseID,
+                        courseName: courseName,
+                        downloadSize: downloadedSizes[courseID] ?? 0
+                    )
+                    
+                    await refreshDownloadStates()
+                    await getDownloadCourses(isRefresh: true)
+                } else {
+                    await presentRemoveDownloadAlert(
+                        blocks: blocks,
+                        sequentials: courseStructure.childs.flatMap { $0.childs },
+                        courseID: courseID
+                    )
+                }
             }
         }
     }

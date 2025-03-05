@@ -34,15 +34,15 @@ final class DownloadsTests: XCTestCase {
         router = DownloadsRouterMock()
         cancellables = Set<AnyCancellable>()
         
-        // Set up default responses
         Given(connectivity, .isInternetAvaliable(getter: true))
+        Given(connectivity, .isMobileData(getter: false))
         Given(connectivity, .internetReachableSubject(getter: .init(.reachable)))
         Given(downloadManager, .eventPublisher(willReturn: PassthroughSubject<DownloadManagerEvent, Never>().eraseToAnyPublisher()))
         
-        // Add default stub for calculateDownloadProgress to avoid errors
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .any, willReturn: (0, 0)))
         Given(downloadsHelper, .isDownloading(courseID: .any, willReturn: false))
         Given(downloadsHelper, .isPartiallyDownloaded(courseID: .any, willReturn: false))
+        Given(downloadsHelper, .isFullyDownloaded(courseID: .any, willReturn: false))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -76,16 +76,29 @@ final class DownloadsTests: XCTestCase {
             createMockDownloadCoursePreview(id: "course1")
         ]
         
+        let analytics = DownloadsAnalyticsMock()
+        
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(downloadsInteractor, .getDownloadCourses(willReturn: expectedCourses))
+        
+        viewModel = AppDownloadsViewModel(
+            interactor: downloadsInteractor,
+            courseManager: courseManager,
+            downloadManager: downloadManager,
+            connectivity: connectivity,
+            downloadsHelper: downloadsHelper,
+            router: router,
+            storage: DownloadsStorageMock(),
+            analytics: analytics
+        )
         
         // When
         await viewModel.getDownloadCourses()
         
         // Then
-        Verify(downloadsInteractor, 0, .getDownloadCourses())
-        Verify(downloadsInteractor, 0, .getDownloadCoursesOffline())
-        XCTAssertEqual(viewModel.courses.count, 6)
+        Verify(downloadsInteractor, 1, .getDownloadCourses())
+        Verify(analytics, 1, .downloadsScreenViewed())
+        XCTAssertEqual(viewModel.courses.count, 2)
         XCTAssertEqual(viewModel.courses[0].id, "course0")
         XCTAssertEqual(viewModel.courses[1].id, "course1")
     }
@@ -106,10 +119,12 @@ final class DownloadsTests: XCTestCase {
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value("course1"), willReturn: (100, 100)))
         Given(downloadsHelper, .isDownloading(courseID: .value("course1"), willReturn: false))
         Given(downloadsHelper, .isPartiallyDownloaded(courseID: .value("course1"), willReturn: false))
+        Given(downloadsHelper, .isFullyDownloaded(courseID: .value("course1"), willReturn: true))
         
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value("course2"), willReturn: (50, 100)))
         Given(downloadsHelper, .isDownloading(courseID: .value("course2"), willReturn: true))
         Given(downloadsHelper, .isPartiallyDownloaded(courseID: .value("course2"), willReturn: false))
+        Given(downloadsHelper, .isFullyDownloaded(courseID: .value("course2"), willReturn: false))
         
         // When
         // This is private but we can test it through the public API
@@ -118,6 +133,8 @@ final class DownloadsTests: XCTestCase {
         // Then
         Verify(downloadsHelper, 1, .calculateDownloadProgress(courseID: .value("course1")))
         Verify(downloadsHelper, 1, .calculateDownloadProgress(courseID: .value("course2")))
+        Verify(downloadsHelper, 1, .isFullyDownloaded(courseID: .value("course1")))
+        Verify(downloadsHelper, 1, .isFullyDownloaded(courseID: .value("course2")))
         
         XCTAssertEqual(viewModel.downloadedSizes["course1"], 100)
         XCTAssertEqual(viewModel.downloadedSizes["course2"], 50)
@@ -131,8 +148,20 @@ final class DownloadsTests: XCTestCase {
         // Given
         let courseID = "course1"
         let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
+        let analytics = DownloadsAnalyticsMock()
         
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
+        
+        viewModel = AppDownloadsViewModel(
+            interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
+            courseManager: courseManager,
+            downloadManager: downloadManager,
+            connectivity: connectivity,
+            downloadsHelper: downloadsHelper,
+            router: router,
+            storage: DownloadsStorageMock(),
+            analytics: analytics
+        )
         
         // When
         viewModel.downloadCourse(courseID: courseID)
@@ -143,15 +172,29 @@ final class DownloadsTests: XCTestCase {
         // Then
         Verify(courseManager, 1, .getLoadedCourseBlocks(courseID: .value(courseID)))
         Verify(downloadManager, 1, .addToDownloadQueue(blocks: .any))
+        Verify(analytics, 1, .downloadCourseClicked(courseId: .value(courseID), courseName: .any))
+        Verify(analytics, 1, .downloadStarted(courseId: .value(courseID), courseName: .any, downloadSize: .any))
     }
     
     func testDownloadCourse_WhenNoCachedData_ShouldFetchFromNetwork() async throws {
         // Given
         let courseID = "course1"
         let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
+        let analytics = DownloadsAnalyticsMock()
         
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willThrow: NoCachedDataError()))
         Given(courseManager, .getCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
+        
+        viewModel = AppDownloadsViewModel(
+            interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
+            courseManager: courseManager,
+            downloadManager: downloadManager,
+            connectivity: connectivity,
+            downloadsHelper: downloadsHelper,
+            router: router,
+            storage: DownloadsStorageMock(),
+            analytics: analytics
+        )
         
         // When
         viewModel.downloadCourse(courseID: courseID)
@@ -163,6 +206,8 @@ final class DownloadsTests: XCTestCase {
         Verify(courseManager, 1, .getLoadedCourseBlocks(courseID: .value(courseID)))
         Verify(courseManager, 1, .getCourseBlocks(courseID: .value(courseID)))
         Verify(downloadManager, 1, .addToDownloadQueue(blocks: .any))
+        Verify(analytics, 1, .downloadCourseClicked(courseId: .value(courseID), courseName: .any))
+        Verify(analytics, 1, .downloadStarted(courseId: .value(courseID), courseName: .any, downloadSize: .any))
         XCTAssertEqual(viewModel.downloadStates[courseID], .inProgress)
     }
     
@@ -170,9 +215,21 @@ final class DownloadsTests: XCTestCase {
         // Given
         let courseID = "course1"
         let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
+        let analytics = DownloadsAnalyticsMock()
         
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
         Given(downloadManager, .addToDownloadQueue(blocks: .any, willThrow: NoWiFiError()))
+        
+        viewModel = AppDownloadsViewModel(
+            interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
+            courseManager: courseManager,
+            downloadManager: downloadManager,
+            connectivity: connectivity,
+            downloadsHelper: downloadsHelper,
+            router: router,
+            storage: DownloadsStorageMock(),
+            analytics: analytics
+        )
         
         // When
         viewModel.downloadCourse(courseID: courseID)
@@ -184,6 +241,8 @@ final class DownloadsTests: XCTestCase {
         XCTAssertNotNil(viewModel.errorMessage)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.wifi)
+        Verify(analytics, 1, .downloadCourseClicked(courseId: .value(courseID), courseName: .any))
+        Verify(analytics, 1, .downloadError(courseId: .value(courseID), courseName: .any, errorType: .value("wifi_required")))
     }
     
     // MARK: - Test Cancel Download
@@ -192,13 +251,23 @@ final class DownloadsTests: XCTestCase {
         // Given
         let courseID = "course1"
         let currentTask = createMockDownloadTask(courseId: courseID)
-        let tasks = [
-            currentTask,
-            createMockDownloadTask(id: "task2", courseId: courseID, state: .waiting)
-        ]
+        let secondTask = createMockDownloadTask(id: "task2", courseId: courseID, state: .waiting)
+        let tasks = [secondTask] // Only include the second task, not the current task
+        let analytics = DownloadsAnalyticsMock()
         
         Given(downloadManager, .getCurrentDownloadTask(willReturn: currentTask))
         Given(downloadManager, .getDownloadTasksForCourse(.value(courseID), willReturn: tasks))
+        
+        viewModel = AppDownloadsViewModel(
+            interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
+            courseManager: courseManager,
+            downloadManager: downloadManager,
+            connectivity: connectivity,
+            downloadsHelper: downloadsHelper,
+            router: router,
+            storage: DownloadsStorageMock(),
+            analytics: analytics
+        )
         
         // When
         viewModel.cancelDownload(courseID: courseID)
@@ -209,8 +278,10 @@ final class DownloadsTests: XCTestCase {
         // Then
         Verify(downloadManager, 1, .getCurrentDownloadTask())
         Verify(downloadManager, 1, .getDownloadTasksForCourse(.value(courseID)))
-        Verify(downloadManager, 2, .cancelDownloading(task: .value(currentTask)))
-        Verify(downloadManager, 1, .cancelDownloading(task: .value(tasks[1])))
+        Verify(downloadManager, 1, .cancelDownloading(task: .value(currentTask)))
+        Verify(downloadManager, 1, .cancelDownloading(task: .value(secondTask)))
+        Verify(analytics, 1, .cancelDownloadClicked(courseId: .value(courseID), courseName: .any))
+        Verify(analytics, 1, .downloadCancelled(courseId: .value(courseID), courseName: .any))
     }
     
     // MARK: - Test Remove Download
@@ -223,7 +294,7 @@ final class DownloadsTests: XCTestCase {
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
         
         // When
-        viewModel.removeDownload(courseID: courseID)
+        viewModel.removeDownload(courseID: courseID, skipConfirmation: true)
         
         // Need a small delay to allow the task to execute
         try await Task.sleep(for: .milliseconds(100))
@@ -240,9 +311,11 @@ final class DownloadsTests: XCTestCase {
         let courseID = "course1"
         let task = createMockDownloadTask(courseId: courseID)
         let subject = PassthroughSubject<DownloadManagerEvent, Never>()
+        let analytics = DownloadsAnalyticsMock()
         
         Given(downloadManager, .eventPublisher(willReturn: subject.eraseToAnyPublisher()))
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value(courseID), willReturn: (50, 100)))
+        Given(downloadsHelper, .isFullyDownloaded(courseID: .value(courseID), willReturn: false))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -252,7 +325,7 @@ final class DownloadsTests: XCTestCase {
             downloadsHelper: downloadsHelper,
             router: router,
             storage: DownloadsStorageMock(),
-            analytics: DownloadsAnalyticsMock()
+            analytics: analytics
         )
         
         // When
@@ -263,6 +336,7 @@ final class DownloadsTests: XCTestCase {
         
         // Then
         Verify(downloadsHelper, 1, .calculateDownloadProgress(courseID: .value(courseID)))
+        Verify(downloadsHelper, 1, .isFullyDownloaded(courseID: .value(courseID)))
         XCTAssertEqual(viewModel.downloadedSizes[courseID], 50)
         XCTAssertEqual(viewModel.downloadStates[courseID], .inProgress)
     }
@@ -272,9 +346,11 @@ final class DownloadsTests: XCTestCase {
         let courseID = "course1"
         let task = createMockDownloadTask(courseId: courseID, state: .finished)
         let subject = PassthroughSubject<DownloadManagerEvent, Never>()
+        let analytics = DownloadsAnalyticsMock()
         
         Given(downloadManager, .eventPublisher(willReturn: subject.eraseToAnyPublisher()))
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value(courseID), willReturn: (100, 100)))
+        Given(downloadsHelper, .isFullyDownloaded(courseID: .value(courseID), willReturn: true))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -284,8 +360,11 @@ final class DownloadsTests: XCTestCase {
             downloadsHelper: downloadsHelper,
             router: router,
             storage: DownloadsStorageMock(),
-            analytics: DownloadsAnalyticsMock()
+            analytics: analytics
         )
+        
+        // Set the previous state to .inProgress
+        viewModel.downloadStates[courseID] = .inProgress
         
         // When
         subject.send(.finished(task))
@@ -295,6 +374,8 @@ final class DownloadsTests: XCTestCase {
         
         // Then
         Verify(downloadsHelper, 1, .calculateDownloadProgress(courseID: .value(courseID)))
+        Verify(downloadsHelper, 1, .isFullyDownloaded(courseID: .value(courseID)))
+        Verify(analytics, 1, .downloadCompleted(courseId: .value(courseID), courseName: .any, downloadSize: .value(100)))
         XCTAssertEqual(viewModel.downloadedSizes[courseID], 100)
         XCTAssertEqual(viewModel.downloadStates[courseID], .finished)
     }
