@@ -682,7 +682,8 @@ class ScreenAssembly: Assembly {
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 downloadsHelper: r.resolve(DownloadsHelperProtocol.self)!,
                 router: r.resolve(DownloadsRouter.self)!,
-                storage: r.resolve(DownloadsStorage.self)!
+                storage: r.resolve(DownloadsStorage.self)!,
+                analytics: r.resolve(DownloadsAnalytics.self)!
             )
         }
         

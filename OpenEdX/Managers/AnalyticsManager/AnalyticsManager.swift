@@ -14,6 +14,7 @@ import Profile
 import Course
 import Discussion
 import WhatsNew
+import Downloads
 import Swinject
 import OEXFoundation
 
@@ -27,6 +28,7 @@ class AnalyticsManager: AuthorizationAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
                         WhatsNewAnalytics,
+                        DownloadsAnalytics,
                         @unchecked Sendable {
     
     private var services: [AnalyticsService]
@@ -1074,6 +1076,91 @@ class AnalyticsManager: AuthorizationAnalytics,
         ]
         
         logEvent(.whatnewClose, parameters: parameters)
+    }
+    
+    // MARK: - DownloadsAnalytics
+    public func downloadCourseClicked(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName
+        ]
+        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+    }
+    
+    public func cancelDownloadClicked(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.action: "cancel"
+        ]
+        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+    }
+    
+    public func removeDownloadClicked(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.action: "remove"
+        ]
+        trackEvent(.bulkDeleteVideosSection, biValue: .bulkDeleteVideosSection, parameters: parameters)
+    }
+    
+    public func downloadConfirmed(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.bulkDownloadVideosSection, biValue: .bulkDownloadVideosSection, parameters: parameters)
+    }
+    
+    public func downloadCancelled(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.action: "cancelled"
+        ]
+        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+    }
+    
+    public func downloadRemoved(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.bulkDeleteVideosSection, biValue: .bulkDeleteVideosSection, parameters: parameters)
+    }
+    
+    public func downloadError(courseId: String, courseName: String, errorType: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.error: errorType
+        ]
+        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+    }
+    
+    public func downloadCompleted(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.bulkDownloadVideosSection, biValue: .bulkDownloadVideosSection, parameters: parameters)
+    }
+    
+    public func downloadStarted(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.bulkDownloadVideosSection, biValue: .bulkDownloadVideosSection, parameters: parameters)
+    }
+    
+    public func downloadsScreenViewed() {
+        trackScreenEvent(.mainDownloadsTabClicked, biValue: .mainDownloadsTabClicked)
     }
 }
 // swiftlint:enable type_body_length file_length

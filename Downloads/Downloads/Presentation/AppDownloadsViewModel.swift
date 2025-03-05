@@ -43,6 +43,7 @@ public final class AppDownloadsViewModel: ObservableObject {
     private let downloadsHelper: DownloadsHelperProtocol
     let router: DownloadsRouter
     private let storage: DownloadsStorage
+    private let analytics: DownloadsAnalytics
     
     public init(
         interactor: DownloadsInteractorProtocol,
@@ -51,7 +52,8 @@ public final class AppDownloadsViewModel: ObservableObject {
         connectivity: ConnectivityProtocol,
         downloadsHelper: DownloadsHelperProtocol,
         router: DownloadsRouter,
-        storage: DownloadsStorage
+        storage: DownloadsStorage,
+        analytics: DownloadsAnalytics
     ) {
         self.downloadsInteractor = interactor
         self.courseManager = courseManager
@@ -60,6 +62,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         self.downloadsHelper = downloadsHelper
         self.router = router
         self.storage = storage
+        self.analytics = analytics
         self.observeDownloadEvents()
     }
     
@@ -96,7 +99,15 @@ public final class AppDownloadsViewModel: ObservableObject {
             courseSizes[courseID] = Int64(total)
             
             if isFullyDownloaded {
+                let previousState = downloadStates[courseID]
                 downloadStates[courseID] = .finished
+                
+                // If the state changed from in progress to finished, track download completion
+                if previousState == .inProgress {
+                    let course = courses.first(where: { $0.id == courseID })
+                    let courseName = course?.name ?? ""
+                    analytics.downloadCompleted(courseId: courseID, courseName: courseName, downloadSize: Int64(total))
+                }
             } else if task.state == .inProgress {
                 downloadStates[courseID] = .inProgress
             }
@@ -135,10 +146,12 @@ public final class AppDownloadsViewModel: ObservableObject {
                 courses = try await downloadsInteractor.getDownloadCourses()
                 fetchInProgress = false
                 await refreshDownloadStates()
+                analytics.downloadsScreenViewed()
             } else {
                 courses = try await downloadsInteractor.getDownloadCoursesOffline()
                 fetchInProgress = false
                 await refreshDownloadStates()
+                analytics.downloadsScreenViewed()
             }
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
@@ -152,6 +165,11 @@ public final class AppDownloadsViewModel: ObservableObject {
     func downloadCourse(courseID: String) {
         Task {
             do {
+                let course = courses.first(where: { $0.id == courseID })
+                let courseName = course?.name ?? ""
+                
+                analytics.downloadCourseClicked(courseId: courseID, courseName: courseName)
+                
                 let courseStructure: CourseStructure
                 do {
                     // First try to get course structure from cached data
@@ -184,6 +202,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                 
                 if !connectivity.isInternetAvaliable {
                     presentNoInternetAlert(sequentials: courseStructure.childs.flatMap { $0.childs })
+                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "no_internet")
                     return
                 }
                 
@@ -193,6 +212,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                     // Check if wifi only setting is enabled
                     if storage.userSettings?.wifiOnly == true {
                         presentWifiRequiredAlert(sequentials: courseStructure.childs.flatMap { $0.childs })
+                        analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "wifi_required")
                         return
                     } else {
                         await presentConfirmDownloadCellularAlert(
@@ -218,14 +238,25 @@ public final class AppDownloadsViewModel: ObservableObject {
                 }
                 
                 try await downloadManager.addToDownloadQueue(blocks: downloadableBlocks)
+                analytics.downloadStarted(
+                    courseId: courseID,
+                    courseName: courseName,
+                    downloadSize: Int64(totalFileSize)
+                )
                 await refreshDownloadStates()
             } catch {
+                let course = courses.first(where: { $0.id == courseID })
+                let courseName = course?.name ?? ""
+                
                 if error is NoWiFiError {
                     errorMessage = CoreLocalization.Error.wifi
+                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "wifi_required")
                 } else if error.isInternetError {
                     errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "no_internet")
                 } else {
                     errorMessage = CoreLocalization.Error.unknownError
+                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "unknown")
                 }
             }
         }
@@ -233,6 +264,11 @@ public final class AppDownloadsViewModel: ObservableObject {
     
     func cancelDownload(courseID: String) {
         Task {
+            let course = courses.first(where: { $0.id == courseID })
+            let courseName = course?.name ?? ""
+            
+            analytics.cancelDownloadClicked(courseId: courseID, courseName: courseName)
+            
             // Check if we're loading the course structure
             await MainActor.run {
                 if downloadStates[courseID] == .loadingStructure {
@@ -253,12 +289,18 @@ public final class AppDownloadsViewModel: ObservableObject {
                 try? await downloadManager.cancelDownloading(task: task)
             }
             
+            analytics.downloadCancelled(courseId: courseID, courseName: courseName)
             await refreshDownloadStates()
         }
     }
     
     func removeDownload(courseID: String) {
         Task {
+            let course = courses.first(where: { $0.id == courseID })
+            let courseName = course?.name ?? ""
+            
+            analytics.removeDownloadClicked(courseId: courseID, courseName: courseName)
+            
             if let courseStructure = try? await courseManager.getLoadedCourseBlocks(courseID: courseID) {
                 let blocks = courseStructure.childs.flatMap { chapter in
                     chapter.childs.flatMap { sequential in
@@ -320,6 +362,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         let courseID = blocks.first?.courseId ?? ""
         // Find the course in the courses array
         let course = courses.first(where: { $0.id == courseID })
+        let courseName = course?.name ?? ""
         
         // Use the course's totalSize property directly
         let sizeToDisplay = course?.totalSize ?? Int64(totalFileSize)
@@ -334,12 +377,22 @@ public final class AppDownloadsViewModel: ObservableObject {
                     guard let self else { return }
                     if !self.isEnoughSpace(for: totalFileSize) {
                         self.presentStorageFullAlert(sequentials: sequentials)
+                        self.analytics.downloadError(
+                            courseId: courseID,
+                            courseName: courseName,
+                            errorType: "storage_full"
+                        )
                     } else {
                         Task {
                             await MainActor.run {
                                 self.downloadStates[courseID] = .inProgress
                             }
                             try? await self.downloadManager.addToDownloadQueue(blocks: blocks)
+                            self.analytics.downloadConfirmed(
+                                courseId: courseID,
+                                courseName: courseName,
+                                downloadSize: sizeToDisplay
+                            )
                         }
                         action()
                     }
@@ -347,10 +400,12 @@ public final class AppDownloadsViewModel: ObservableObject {
                 },
                 cancel: { [weak self] in
                     guard let self else { return }
+                    self.analytics.downloadCancelled(courseId: courseID, courseName: courseName)
                     self.router.dismiss(animated: true)
                 }
             ),
-            completion: {}
+            completion: {
+            }
         )
     }
     
@@ -379,6 +434,7 @@ public final class AppDownloadsViewModel: ObservableObject {
     ) async {
         let courseID = blocks.first?.courseId ?? ""
         let course = courses.first(where: { $0.id == courseID })
+        let courseName = course?.name ?? ""
         let sizeToDisplay = course?.totalSize ?? Int64(totalFileSize)
         
         router.presentView(
@@ -392,12 +448,23 @@ public final class AppDownloadsViewModel: ObservableObject {
                     if !self.isEnoughSpace(for: totalFileSize) {
                         self.router.dismiss(animated: true)
                         self.presentStorageFullAlert(sequentials: sequentials)
+                        self.analytics
+                            .downloadError(
+                                courseId: courseID,
+                                courseName: courseName,
+                                errorType: "storage_full"
+                            )
                     } else {
                         Task {
                             await MainActor.run {
                                 self.downloadStates[courseID] = .inProgress
                             }
                             try? await self.downloadManager.addToDownloadQueue(blocks: blocks)
+                            self.analytics.downloadConfirmed(
+                                courseId: courseID,
+                                courseName: courseName,
+                                downloadSize: sizeToDisplay
+                            )
                         }
                         action()
                     }
@@ -405,10 +472,12 @@ public final class AppDownloadsViewModel: ObservableObject {
                 },
                 cancel: { [weak self] in
                     guard let self else { return }
+                    self.analytics.downloadCancelled(courseId: courseID, courseName: courseName)
                     self.router.dismiss(animated: true)
                 }
             ),
-            completion: {}
+            completion: {
+            }
         )
     }
     
@@ -418,6 +487,8 @@ public final class AppDownloadsViewModel: ObservableObject {
         courseID: String
     ) async {
         let downloadedSize = downloadedSizes[courseID] ?? 0
+        let course = courses.first(where: { $0.id == courseID })
+        let courseName = course?.name ?? ""
         
         router.presentView(
             transitionStyle: .coverVertical,
@@ -429,11 +500,16 @@ public final class AppDownloadsViewModel: ObservableObject {
                     guard let self else { return }
                     Task {
                         await self.downloadManager.delete(blocks: blocks, courseId: courseID)
-                        
                         await MainActor.run {
                             self.downloadStates[courseID] = nil
                             self.downloadedSizes[courseID] = 0
                         }
+                        
+                        self.analytics.downloadRemoved(
+                            courseId: courseID,
+                            courseName: courseName,
+                            downloadSize: downloadedSize
+                        )
                         
                         await self.refreshDownloadStates()
                         await self.getDownloadCourses(isRefresh: true)
@@ -446,7 +522,8 @@ public final class AppDownloadsViewModel: ObservableObject {
                     self.router.dismiss(animated: true)
                 }
             ),
-            completion: {}
+            completion: {
+            }
         )
     }
     
@@ -553,7 +630,8 @@ public extension AppDownloadsViewModel {
         connectivity: Connectivity(),
         downloadsHelper: DownloadsHelperMock(),
         router: DownloadsRouterMock(),
-        storage: DownloadsStorageMock()
+        storage: DownloadsStorageMock(),
+        analytics: DownloadsAnalyticsMock()
     )
 }
 #endif

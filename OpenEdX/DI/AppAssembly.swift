@@ -83,6 +83,10 @@ class AppAssembly: Assembly {
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
+        container.register(DownloadsAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConnectivityProtocol.self) { @MainActor _ in
             Connectivity()
         }

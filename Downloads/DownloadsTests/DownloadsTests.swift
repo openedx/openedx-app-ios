@@ -2,7 +2,7 @@
 //  DownloadsTests.swift
 //  DownloadsTests
 //
-//  Created by Ivan Stepanok on 22.02.2025.
+//  Created by Ivan Stepanok on 4.02.2025.
 //
 
 import XCTest
@@ -51,7 +51,8 @@ final class DownloadsTests: XCTestCase {
             connectivity: connectivity,
             downloadsHelper: downloadsHelper,
             router: router,
-            storage: CourseStorageMock()
+            storage: DownloadsStorageMock(),
+            analytics: DownloadsAnalyticsMock()
         )
     }
     
@@ -250,7 +251,8 @@ final class DownloadsTests: XCTestCase {
             connectivity: connectivity,
             downloadsHelper: downloadsHelper,
             router: router,
-            storage: CourseStorageMock()
+            storage: DownloadsStorageMock(),
+            analytics: DownloadsAnalyticsMock()
         )
         
         // When
@@ -281,7 +283,8 @@ final class DownloadsTests: XCTestCase {
             connectivity: connectivity,
             downloadsHelper: downloadsHelper,
             router: router,
-            storage: CourseStorageMock()
+            storage: DownloadsStorageMock(),
+            analytics: DownloadsAnalyticsMock()
         )
         
         // When
