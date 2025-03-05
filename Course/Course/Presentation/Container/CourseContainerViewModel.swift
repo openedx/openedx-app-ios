@@ -703,9 +703,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         if storage.allowedDownloadLargeFile == false, await manager.isLargeVideosSize(blocks: blocks) {
             waitingDownloads = blocks
             router.presentAlert(
-                alertTitle: CourseLocalization.Download.download,
-                alertMessage: CourseLocalization.Download.downloadLargeFileMessage,
-                positiveAction: CourseLocalization.Alert.accept,
+                alertTitle: CoreLocalization.Download.download,
+                alertMessage: CoreLocalization.Download.downloadLargeFileMessage,
+                positiveAction: CoreLocalization.Alert.accept,
                 onCloseTapped: {
                     self.router.dismiss(animated: true)
                 },
@@ -715,7 +715,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                     }
                     self.router.dismiss(animated: true)
                 },
-                type: .default(positiveAction: CourseLocalization.Alert.accept, image: nil)
+                type: .default(positiveAction: CoreLocalization.Alert.accept, image: nil)
             )
             return true
         }

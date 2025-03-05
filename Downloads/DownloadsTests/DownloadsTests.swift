@@ -11,6 +11,7 @@ import SwiftyMocky
 import OEXFoundation
 @testable import Downloads
 @testable import Core
+@testable import Course
 
 @MainActor
 final class DownloadsTests: XCTestCase {
@@ -49,7 +50,8 @@ final class DownloadsTests: XCTestCase {
             downloadManager: downloadManager,
             connectivity: connectivity,
             downloadsHelper: downloadsHelper,
-            router: router
+            router: router,
+            storage: CourseStorageMock()
         )
     }
     
@@ -247,7 +249,8 @@ final class DownloadsTests: XCTestCase {
             downloadManager: downloadManager,
             connectivity: connectivity,
             downloadsHelper: downloadsHelper,
-            router: router
+            router: router,
+            storage: CourseStorageMock()
         )
         
         // When
@@ -277,7 +280,8 @@ final class DownloadsTests: XCTestCase {
             downloadManager: downloadManager,
             connectivity: connectivity,
             downloadsHelper: downloadsHelper,
-            router: router
+            router: router,
+            storage: CourseStorageMock()
         )
         
         // When

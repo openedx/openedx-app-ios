@@ -232,6 +232,12 @@ public enum CoreLocalization {
     /// MMMM dd, yyyy
     public static let mmmmDdYyyy = CoreLocalization.tr("Localizable", "DATE_FORMAT.MMMM_DD_YYYY", fallback: "MMMM dd, yyyy")
   }
+  public enum Download {
+    /// Download
+    public static let download = CoreLocalization.tr("Localizable", "DOWNLOAD.DOWNLOAD", fallback: "Download")
+    /// The videos you've selected are larger than 1 GB. Do you want to download these videos?
+    public static let downloadLargeFileMessage = CoreLocalization.tr("Localizable", "DOWNLOAD.DOWNLOAD_LARGE_FILE_MESSAGE", fallback: "The videos you've selected are larger than 1 GB. Do you want to download these videos?")
+  }
   public enum DownloadManager {
     /// Completed
     public static let completed = CoreLocalization.tr("Localizable", "DOWNLOAD_MANAGER.COMPLETED", fallback: "Completed")
