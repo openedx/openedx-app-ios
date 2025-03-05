@@ -15,6 +15,7 @@ public enum DownloadState: String, Sendable {
     case waiting
     case inProgress
     case finished
+    case loadingStructure
 
     public var order: Int {
         switch self {
@@ -24,6 +25,8 @@ public enum DownloadState: String, Sendable {
             return 2
         case .finished:
             return 3
+        case .loadingStructure:
+            return 4
         }
     }
 }

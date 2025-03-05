@@ -41,7 +41,9 @@ struct DownloadCourseCell: View {
     }
     
     private var downloadButtonState: DownloadButtonState {
-        if downloadState == .inProgress || downloadState == .waiting {
+        if downloadState == .loadingStructure {
+            return .loadingStructure
+        } else if downloadState == .inProgress || downloadState == .waiting {
             return .downloading
         } else if downloadState == .finished && validDownloadedSize >= course.totalSize * 95 / 100 {
             return .downloaded
@@ -173,7 +175,7 @@ struct DownloadCourseCell: View {
                                 .foregroundStyle(Theme.Colors.textSecondary)
                         }
                     }
-                case .notDownloaded:
+                case .notDownloaded, .loadingStructure:
                     HStack {
                         CoreAssets.startDownloading.swiftUIImage
                             .foregroundStyle(Theme.Colors.textSecondary)
@@ -212,6 +214,17 @@ struct DownloadCourseCell: View {
                 .padding(.bottom, 12)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                 .padding(.horizontal, 16)
+            case .loadingStructure:
+                HStack {
+                    DownloadProgressView()
+                        .padding(.trailing, 4)
+                    Text(DownloadsLocalization.Downloads.Cell.loadingCourseStructure)
+                        .font(Theme.Fonts.bodyMedium)
+                        .foregroundStyle(Theme.Colors.textPrimary)
+                }
+                .padding(.bottom, 12)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .padding(.horizontal, 16)
             case .downloaded:
                 EmptyView()
             }
@@ -227,7 +240,7 @@ struct DownloadCourseCell: View {
         .overlay {
             if downloadButtonState != .notDownloaded {
                 DropDownMenu(
-                    isDownloading: downloadButtonState == .downloading,
+                    isDownloading: downloadButtonState == .downloading || downloadButtonState == .loadingStructure,
                     onRemoveTap: onRemoveTap,
                     onCancelTap: onCancelTap
                 )
@@ -243,6 +256,7 @@ private enum DownloadButtonState {
     case downloading
     case downloaded
     case partiallyDownloaded
+    case loadingStructure
 }
 
 //swiftlint:disable all

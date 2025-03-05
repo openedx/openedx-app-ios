@@ -39,6 +39,8 @@ public enum DownloadsLocalization {
       }
       /// Downloading
       public static let downloading = DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.DOWNLOADING", fallback: "Downloading")
+      /// Loading course structure...
+      public static let loadingCourseStructure = DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.LOADING_COURSE_STRUCTURE", fallback: "Loading course structure...")
     }
     public enum NoCoursesToDownload {
       /// You currently have no courses with downloadable content.

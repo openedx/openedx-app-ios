@@ -157,8 +157,17 @@ public final class AppDownloadsViewModel: ObservableObject {
                     // First try to get course structure from cached data
                     courseStructure = try await courseManager.getLoadedCourseBlocks(courseID: courseID)
                 } catch let error as NoCachedDataError {
+                    // Set loading state before fetching course structure
+                    await MainActor.run {
+                        downloadStates[courseID] = .loadingStructure
+                    }
                     // If no cached data, fetch from network
                     courseStructure = try await courseManager.getCourseBlocks(courseID: courseID)
+                }
+                
+                // Reset state if we're not proceeding with download
+                await MainActor.run {
+                    downloadStates[courseID] = nil
                 }
                 
                 let downloadableBlocks = courseStructure.childs.flatMap { chapter in
@@ -224,6 +233,14 @@ public final class AppDownloadsViewModel: ObservableObject {
     
     func cancelDownload(courseID: String) {
         Task {
+            // Check if we're loading the course structure
+            await MainActor.run {
+                if downloadStates[courseID] == .loadingStructure {
+                    downloadStates[courseID] = nil
+                    return
+                }
+            }
+            
             if let currentTask = await downloadManager.getCurrentDownloadTask(),
                currentTask.courseId == courseID {
                 try? await downloadManager.cancelDownloading(task: currentTask)

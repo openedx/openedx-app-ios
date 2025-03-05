@@ -204,6 +204,8 @@ public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecke
                                     case .finished:
                                         sequentialsChilds.append(.finished)
                                         verticalsChilds.append(.finished)
+                                    case .loadingStructure:
+                                        break
                                     }
                                 } else {
                                     sequentialsChilds.append(.available)

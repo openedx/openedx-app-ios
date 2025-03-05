@@ -17,3 +17,4 @@
 "DOWNLOADS.CELL.AVAILABLE" = "%@ available";
 "DOWNLOADS.CELL.DOWNLOAD_COURSE" = "Download course";
 "DOWNLOADS.CELL.DOWNLOADING" = "Downloading";
+"DOWNLOADS.CELL.LOADING_COURSE_STRUCTURE" = "Loading course structure...";
