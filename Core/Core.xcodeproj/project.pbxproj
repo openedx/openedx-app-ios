@@ -160,6 +160,7 @@
 		CEC875392D7845DB00A2626C /* DeviceStorageFullAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875372D7845DB00A2626C /* DeviceStorageFullAlertView.swift */; };
 		CEC8753A2D7845DB00A2626C /* DownloadActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875352D7845DB00A2626C /* DownloadActionView.swift */; };
 		CEC8753B2D7845DB00A2626C /* DownloadErrorAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875362D7845DB00A2626C /* DownloadErrorAlertView.swift */; };
+		CEC8753F2D786F7B00A2626C /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC8753E2D786F7B00A2626C /* ArrayExtension.swift */; };
 		CED42FFC2D099F0400C7AD89 /* DownloadManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
@@ -374,6 +375,7 @@
 		CEC875352D7845DB00A2626C /* DownloadActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadActionView.swift; sourceTree = "<group>"; };
 		CEC875362D7845DB00A2626C /* DownloadErrorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadErrorAlertView.swift; sourceTree = "<group>"; };
 		CEC875372D7845DB00A2626C /* DeviceStorageFullAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStorageFullAlertView.swift; sourceTree = "<group>"; };
+		CEC8753E2D786F7B00A2626C /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerMock.swift; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
@@ -488,6 +490,7 @@
 		0283347E28D4DCC100C828FC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CEC8753E2D786F7B00A2626C /* ArrayExtension.swift */,
 				0283347F28D4DCD200C828FC /* ViewExtension.swift */,
 				02F6EF4928D9F0A700835477 /* DateExtension.swift */,
 				07460FE2294B72D700F70538 /* Notification.swift */,
@@ -1227,6 +1230,7 @@
 				064987932B4D69FF0071642A /* DragAndDropCssInjection.swift in Sources */,
 				027BD3B42909475900392132 /* KeyboardState.swift in Sources */,
 				027BD3922907D88F00392132 /* Data_RegistrationFields.swift in Sources */,
+				CEC8753F2D786F7B00A2626C /* ArrayExtension.swift in Sources */,
 				07460FE3294B72D700F70538 /* Notification.swift in Sources */,
 				02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */,
 				064987952B4D69FF0071642A /* SurveyCssInjection.swift in Sources */,

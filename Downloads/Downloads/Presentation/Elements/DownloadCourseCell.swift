@@ -95,10 +95,10 @@ struct DownloadCourseCell: View {
                     )
             }
 
-            let downloadedFormatted = ByteCountFormatter().string(fromByteCount: validDownloadedSize)
-            let totalSizeFormatted = ByteCountFormatter().string(fromByteCount: course.totalSize)
+            let downloadedFormatted = Int(validDownloadedSize).formattedFileSize()
+            let totalSizeFormatted = Int(course.totalSize).formattedFileSize()
             let availableBytes = max(course.totalSize - validDownloadedSize, 0)
-            let availableFormatted = ByteCountFormatter().string(fromByteCount: availableBytes)
+            let availableFormatted = Int(availableBytes).formattedFileSize()
             
             // Progress bar
             if downloadButtonState != .notDownloaded {

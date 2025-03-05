@@ -9,11 +9,16 @@ import Foundation
 import KeychainSwift
 import Core
 import Profile
+import Downloads
 import WhatsNew
 import Course
 import Theme
 
-public final class AppStorage: CoreStorage, ProfileStorage, WhatsNewStorage, CourseStorage {
+public final class AppStorage: CoreStorage,
+                                ProfileStorage,
+                                WhatsNewStorage,
+                                CourseStorage,
+                                DownloadsStorage {
 
     private nonisolated(unsafe) let keychain: KeychainSwift
     private nonisolated(unsafe) let userDefaults: UserDefaults

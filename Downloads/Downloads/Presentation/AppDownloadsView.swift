@@ -69,7 +69,7 @@ public struct AppDownloadsView: View {
                                     onCancelTap: {
                                         viewModel.cancelDownload(courseID: course.id)
                                     }
-                                )
+                                ).id(course.id)
                             }
                         }
                         Spacer(minLength: 100)
@@ -81,7 +81,9 @@ public struct AppDownloadsView: View {
                     .navigationBarBackButtonHidden(false)
                     .navigationTitle(DownloadsLocalization.Downloads.title)
                     .refreshable {
+                        Task {
                             await viewModel.getDownloadCourses(isRefresh: true)
+                        }
                     }
                 }
             }

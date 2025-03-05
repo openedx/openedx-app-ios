@@ -9,7 +9,6 @@ import Foundation
 import Combine
 import Core
 import SwiftUI
-import Course
 
 @MainActor
 public final class AppDownloadsViewModel: ObservableObject {
@@ -43,7 +42,7 @@ public final class AppDownloadsViewModel: ObservableObject {
     private let downloadManager: DownloadManagerProtocol
     private let downloadsHelper: DownloadsHelperProtocol
     let router: DownloadsRouter
-    private let storage: CourseStorage
+    private let storage: DownloadsStorage
     
     public init(
         interactor: DownloadsInteractorProtocol,
@@ -52,7 +51,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         connectivity: ConnectivityProtocol,
         downloadsHelper: DownloadsHelperProtocol,
         router: DownloadsRouter,
-        storage: CourseStorage
+        storage: DownloadsStorage
     ) {
         self.downloadsInteractor = interactor
         self.courseManager = courseManager
@@ -153,10 +152,6 @@ public final class AppDownloadsViewModel: ObservableObject {
     func downloadCourse(courseID: String) {
         Task {
             do {
-                await MainActor.run {
-                    downloadStates[courseID] = .inProgress
-                }
-                
                 let courseStructure: CourseStructure
                 do {
                     // First try to get course structure from cached data
@@ -206,6 +201,11 @@ public final class AppDownloadsViewModel: ObservableObject {
                         totalFileSize: totalFileSize
                     )
                     return
+                }
+                
+                // For direct download (no confirmation needed), set the state before starting
+                await MainActor.run {
+                    downloadStates[courseID] = .inProgress
                 }
                 
                 try await downloadManager.addToDownloadQueue(blocks: downloadableBlocks)
@@ -299,18 +299,29 @@ public final class AppDownloadsViewModel: ObservableObject {
         totalFileSize: Int,
         action: @escaping () -> Void = {}
     ) async {
+        // Get the course ID from the blocks
+        let courseID = blocks.first?.courseId ?? ""
+        // Find the course in the courses array
+        let course = courses.first(where: { $0.id == courseID })
+        
+        // Use the course's totalSize property directly
+        let sizeToDisplay = course?.totalSize ?? Int64(totalFileSize)
+        
         router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .confirmDownloadCellular,
                 sequentials: sequentials,
-                downloadedSize: await calculateDownloadSize(sequentials: sequentials),
+                downloadedSize: Int(sizeToDisplay),
                 action: { [weak self] in
                     guard let self else { return }
                     if !self.isEnoughSpace(for: totalFileSize) {
                         self.presentStorageFullAlert(sequentials: sequentials)
                     } else {
                         Task {
+                            await MainActor.run {
+                                self.downloadStates[courseID] = .inProgress
+                            }
                             try? await self.downloadManager.addToDownloadQueue(blocks: blocks)
                         }
                         action()
@@ -349,12 +360,16 @@ public final class AppDownloadsViewModel: ObservableObject {
         totalFileSize: Int,
         action: @escaping () -> Void = {}
     ) async {
+        let courseID = blocks.first?.courseId ?? ""
+        let course = courses.first(where: { $0.id == courseID })
+        let sizeToDisplay = course?.totalSize ?? Int64(totalFileSize)
+        
         router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .confirmDownload,
                 sequentials: sequentials,
-                downloadedSize: await calculateDownloadSize(sequentials: sequentials),
+                downloadedSize: Int(sizeToDisplay),
                 action: { [weak self] in
                     guard let self else { return }
                     if !self.isEnoughSpace(for: totalFileSize) {
@@ -362,6 +377,9 @@ public final class AppDownloadsViewModel: ObservableObject {
                         self.presentStorageFullAlert(sequentials: sequentials)
                     } else {
                         Task {
+                            await MainActor.run {
+                                self.downloadStates[courseID] = .inProgress
+                            }
                             try? await self.downloadManager.addToDownloadQueue(blocks: blocks)
                         }
                         action()
@@ -382,16 +400,27 @@ public final class AppDownloadsViewModel: ObservableObject {
         sequentials: [CourseSequential],
         courseID: String
     ) async {
+        let downloadedSize = downloadedSizes[courseID] ?? 0
+        
         router.presentView(
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .remove,
                 sequentials: sequentials,
-                downloadedSize: await calculateDownloadSize(sequentials: sequentials),
+                downloadedSize: Int(downloadedSize),
                 action: { [weak self] in
                     guard let self else { return }
                     Task {
                         await self.downloadManager.delete(blocks: blocks, courseId: courseID)
+                        
+                        await MainActor.run {
+                            self.downloadStates[courseID] = nil
+                            self.downloadedSizes[courseID] = 0
+                        }
+                        
+                        await self.refreshDownloadStates()
+                        await self.getDownloadCourses(isRefresh: true)
+                        
                         self.router.dismiss(animated: true)
                     }
                 },
@@ -434,6 +463,12 @@ public final class AppDownloadsViewModel: ObservableObject {
             return
         }
         do {
+            let courseID = blocks.first?.courseId ?? ""
+            
+            await MainActor.run {
+                downloadStates[courseID] = .inProgress
+            }
+            
             try await downloadManager.addToDownloadQueue(blocks: blocks)
         } catch let error {
             if error is NoWiFiError {
@@ -476,17 +511,18 @@ public final class AppDownloadsViewModel: ObservableObject {
         return nil
     }
     
-    private func calculateDownloadSize(sequentials: [CourseSequential]) async -> Int {
-        // Calculate the total downloaded size for the given sequentials
+    private func calculateDownloadSize(sequentials: [CourseSequential]) async -> (downloaded: Int, total: Int) {
         let courseIDs = sequentials.compactMap { $0.id }.unique()
+        var downloadedSize = 0
         var totalSize = 0
         
         for courseID in courseIDs {
-            let (downloaded, _) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
-            totalSize += downloaded
+            let (downloaded, total) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
+            downloadedSize += downloaded
+            totalSize += total
         }
         
-        return totalSize
+        return (downloadedSize, totalSize)
     }
 }
 
@@ -500,14 +536,7 @@ public extension AppDownloadsViewModel {
         connectivity: Connectivity(),
         downloadsHelper: DownloadsHelperMock(),
         router: DownloadsRouterMock(),
-        storage: CourseStorageMock()
+        storage: DownloadsStorageMock()
     )
 }
 #endif
-
-// Extension to get unique elements from an array
-extension Array where Element: Hashable {
-    func unique() -> [Element] {
-        return Array(Set(self))
-    }
-}
