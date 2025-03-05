@@ -85,12 +85,13 @@ public final class AppDownloadsViewModel: ObservableObject {
     private func updateDownloadProgress(for task: DownloadDataTask) async {
         let courseID = task.courseId
         let (downloaded, total) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
+        let isFullyDownloaded = await downloadsHelper.isFullyDownloaded(courseID: courseID)
         
         await MainActor.run {
             downloadedSizes[courseID] = Int64(downloaded)
             courseSizes[courseID] = Int64(total)
             
-            if task.state == .finished {
+            if isFullyDownloaded {
                 downloadStates[courseID] = .finished
             } else if task.state == .inProgress {
                 downloadStates[courseID] = .inProgress
@@ -103,6 +104,7 @@ public final class AppDownloadsViewModel: ObservableObject {
             let (downloaded, total) = await downloadsHelper.calculateDownloadProgress(courseID: course.id)
             let isDownloading = await downloadsHelper.isDownloading(courseID: course.id)
             let isPartiallyDownloaded = await downloadsHelper.isPartiallyDownloaded(courseID: course.id)
+            let isFullyDownloaded = await downloadsHelper.isFullyDownloaded(courseID: course.id)
             
             await MainActor.run {
                 downloadedSizes[course.id] = Int64(downloaded)
@@ -110,8 +112,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                 
                 if isDownloading {
                     downloadStates[course.id] = .inProgress
-                } else if downloaded > 0 && (downloaded >= total * 95 / 100) {
-                    // If at least 95% is downloaded, consider it finished
+                } else if isFullyDownloaded {
                     downloadStates[course.id] = .finished
                 } else if isPartiallyDownloaded {
                     downloadStates[course.id] = .finished
@@ -147,13 +148,16 @@ public final class AppDownloadsViewModel: ObservableObject {
     func downloadCourse(courseID: String) {
         Task {
             do {
+                await MainActor.run {
+                    downloadStates[courseID] = .inProgress
+                }
+                
                 let courseStructure: CourseStructure
                 do {
                     // First try to get course structure from cached data
                     courseStructure = try await courseManager.getLoadedCourseBlocks(courseID: courseID)
                 } catch let error as NoCachedDataError {
                     // If no cached data, fetch from network
-                    downloadStates[courseID] = .inProgress
                     courseStructure = try await courseManager.getCourseBlocks(courseID: courseID)
                 }
                 

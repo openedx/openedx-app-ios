@@ -44,10 +44,8 @@ struct DownloadCourseCell: View {
         if downloadState == .inProgress || downloadState == .waiting {
             return .downloading
         } else if downloadState == .finished && validDownloadedSize >= course.totalSize * 95 / 100 {
-            // Consider it fully downloaded if at least 95% is downloaded
             return .downloaded
-        } else if validDownloadedSize > 0 {
-            // Partially downloaded
+        } else if downloadState == .finished || validDownloadedSize > 0 {
             return .partiallyDownloaded
         } else {
             return .notDownloaded
@@ -120,7 +118,12 @@ struct DownloadCourseCell: View {
                                 br: progressPercentage >= 1.0 ? 4 : 0
                             )
                             .fill(Theme.Colors.success)
-                            .frame(width: width, height: 8)
+                            .frame(
+                                width: downloadButtonState == .downloaded
+                                ? geometry.size.width
+                                : width,
+                                height: 8
+                            )
                         }
                     }
                     .frame(height: 8)

@@ -44,4 +44,9 @@ public actor DownloadsHelper: DownloadsHelperProtocol {
         let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
         return tasks.contains(where: { $0.state == .finished })
     }
+    
+    public func isFullyDownloaded(courseID: String) async -> Bool {
+        let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
+        return !tasks.isEmpty && tasks.allSatisfy { $0.state == .finished }
+    }
 }
