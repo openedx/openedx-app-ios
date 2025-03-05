@@ -6,20 +6,19 @@
 //
 
 import SwiftUI
-import Core
 import Theme
 
-enum ContentActionType {
+public enum ContentActionType {
     case remove
     case confirmDownload
     case confirmDownloadCellular
 }
 
-struct Lesson: Identifiable {
-    let id = UUID()
-    let name: String
-    let size: Int
-    let image: Image
+public struct Lesson: Identifiable {
+    public let id = UUID()
+    public let name: String
+    public let size: Int
+    public let image: Image
 }
 
 public struct DownloadActionView: View {
@@ -34,7 +33,7 @@ public struct DownloadActionView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     
-    init(
+    public init(
         actionType: ContentActionType,
         sequentials: [CourseSequential],
         downloadedSize: Int? = nil,
@@ -50,7 +49,7 @@ public struct DownloadActionView: View {
         self.downloadedSize = downloadedSize
     }
     
-    init(
+    public init(
         actionType: ContentActionType,
         courseBlocks: [CourseBlock],
         courseName: String? = nil,
@@ -152,7 +151,7 @@ public struct DownloadActionView: View {
                     fadeEffect = false
                     cancel()
                 }) {
-                    Text(CourseLocalization.Course.Alert.cancel)
+                    Text(CoreLocalization.Course.Alert.cancel)
                         .font(Theme.Fonts.bodyMedium)
                         .foregroundStyle(Theme.Colors.accentColor)
                         .frame(maxWidth: .infinity)
@@ -226,31 +225,31 @@ public struct DownloadActionView: View {
     private var headerTitle: String {
         switch actionType {
         case .remove:
-            return CourseLocalization.Course.Alert.removeTitle
+            return CoreLocalization.Course.Alert.removeTitle
         case .confirmDownload:
-            return CourseLocalization.Course.Alert.confirmDownloadTitle
+            return CoreLocalization.Course.Alert.confirmDownloadTitle
         case .confirmDownloadCellular:
-            return CourseLocalization.Course.Alert.confirmDownloadCellularTitle
+            return CoreLocalization.Course.Alert.confirmDownloadCellularTitle
         }
     }
     
     private var descriptionText: String {
         switch actionType {
         case .remove:
-            return CourseLocalization.Course.Alert.removeDescription(totalSize)
+            return CoreLocalization.Course.Alert.removeDescription(totalSize)
         case .confirmDownload:
-            return CourseLocalization.Course.Alert.confirmDownloadDescription(totalSize)
+            return CoreLocalization.Course.Alert.confirmDownloadDescription(totalSize)
         case .confirmDownloadCellular:
-            return CourseLocalization.Course.Alert.confirmDownloadCellularDescription(totalSize)
+            return CoreLocalization.Course.Alert.confirmDownloadCellularDescription(totalSize)
         }
     }
     
     private var actionButtonText: String {
         switch actionType {
         case .remove:
-            return CourseLocalization.Course.Alert.remove
+            return CoreLocalization.Course.Alert.remove
         case .confirmDownload, .confirmDownloadCellular:
-            return CourseLocalization.Course.Alert.download
+            return CoreLocalization.Course.Alert.download
         }
     }
     

@@ -17,3 +17,35 @@
 "DOWNLOADS.CELL.AVAILABLE" = "%@ available";
 "DOWNLOADS.CELL.DOWNLOAD_COURSE" = "Download course";
 "DOWNLOADS.CELL.DOWNLOADING" = "Downloading";
+
+// Download Alerts
+"DOWNLOADS.ALERT.REMOVE_TITLE" = "Remove Offline Content?";
+"DOWNLOADS.ALERT.REMOVE_DESCRIPTION" = "Removing this content will free up %@.";
+"DOWNLOADS.ALERT.REMOVE" = "Remove";
+
+"DOWNLOADS.ALERT.CONFIRM_DOWNLOAD_TITLE" = "Download Content?";
+"DOWNLOADS.ALERT.CONFIRM_DOWNLOAD_DESCRIPTION" = "This content requires %@ of storage space. Do you want to download it?";
+"DOWNLOADS.ALERT.CONFIRM_DOWNLOAD_CELLULAR_TITLE" = "Download Using Cellular Data?";
+"DOWNLOADS.ALERT.CONFIRM_DOWNLOAD_CELLULAR_DESCRIPTION" = "This content requires %@ of storage space and you're using cellular data. Additional charges may apply.";
+"DOWNLOADS.ALERT.DOWNLOAD" = "Download";
+
+"DOWNLOADS.ALERT.STORAGE_ALERT_TITLE" = "Device Storage Full";
+"DOWNLOADS.ALERT.STORAGE_ALERT_DESCRIPTION" = "Your device does not have enough free space to download this content. Please free up some space and try again.";
+"DOWNLOADS.ALERT.STORAGE_ALERT_USED_AND_FREE" = "%@ used, %@ free";
+
+"DOWNLOADS.ERROR.DOWNLOAD_FAILED_TITLE" = "Download Failed";
+"DOWNLOADS.ERROR.DOWNLOAD_FAILED_DESCRIPTION" = "Unfortunately, this content failed to download. Please try again later or report this issue.";
+"DOWNLOADS.ERROR.NO_INTERNET_CONNECTION_TITLE" = "No Internet Connection";
+"DOWNLOADS.ERROR.NO_INTERNET_CONNECTION_DESCRIPTION" = "Downloading this content requires an active internet connection. Please connect to the internet and try again.";
+"DOWNLOADS.ERROR.WIFI_REQUIRED_TITLE" = "Wi-Fi Required";
+"DOWNLOADS.ERROR.WIFI_REQUIRED_DESCRIPTION" = "Downloading this content requires an active WiFi connection. Please connect to a WiFi network and try again.";
+"DOWNLOADS.ERROR.SLOW_OR_NO_INTERNET_CONNECTION" = "You appear to have a slow or no internet connection. Please check your connection and try again.";
+"DOWNLOADS.ERROR.UNKNOWN_ERROR" = "An unknown error occurred. Please try again later.";
+"DOWNLOADS.ERROR.WIFI" = "WiFi connection is required to download this content.";
+
+"DOWNLOADS.ALERT.DOWNLOAD" = "Download";
+"DOWNLOADS.ALERT.DOWNLOAD_LARGE_FILE_MESSAGE" = "This download contains large video files. Are you sure you want to download them?";
+"DOWNLOADS.ALERT.ACCEPT" = "Accept";
+"DOWNLOADS.ALERT.OK" = "OK";
+"DOWNLOADS.ALERT.CANCEL" = "Cancel";
+"DOWNLOADS.ALERT.WARNING" = "Warning";

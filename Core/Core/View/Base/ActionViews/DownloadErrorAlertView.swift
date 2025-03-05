@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Core
 import Theme
 
 public enum ContentErrorType {
@@ -90,7 +89,7 @@ public struct DownloadErrorAlertView: View {
                         fadeEffect = false
                         tryAgain()
                     }) {
-                        Text(CourseLocalization.Course.Alert.tryAgain)
+                        Text(CoreLocalization.Course.Alert.tryAgain)
                             .font(Theme.Fonts.bodyMedium)
                             .foregroundStyle(Theme.Colors.white)
                             .frame(maxWidth: .infinity)
@@ -105,7 +104,7 @@ public struct DownloadErrorAlertView: View {
                     fadeEffect = false
                     close()
                 }) {
-                    Text(CourseLocalization.Course.Alert.close)
+                    Text(CoreLocalization.Course.Alert.close)
                         .font(Theme.Fonts.bodyMedium)
                         .foregroundStyle(Theme.Colors.accentColor)
                         .frame(maxWidth: .infinity)
@@ -158,22 +157,22 @@ public struct DownloadErrorAlertView: View {
     private var headerTitle: String {
         switch errorType {
         case .downloadFailed:
-            return CourseLocalization.Course.Error.downloadFailedTitle
+            return CoreLocalization.Course.Error.downloadFailedTitle
         case .noInternetConnection:
-            return CourseLocalization.Course.Error.noInternetConnectionTitle
+            return CoreLocalization.Course.Error.noInternetConnectionTitle
         case .wifiRequired:
-            return CourseLocalization.Course.Error.wifiRequiredTitle
+            return CoreLocalization.Course.Error.wifiRequiredTitle
         }
     }
     
     private var descriptionText: String {
         switch errorType {
         case .downloadFailed:
-            return CourseLocalization.Course.Error.downloadFailedDescription
+            return CoreLocalization.Course.Error.downloadFailedDescription
         case .noInternetConnection:
-            return CourseLocalization.Course.Error.noInternetConnectionDescription
+            return CoreLocalization.Course.Error.noInternetConnectionDescription
         case .wifiRequired:
-            return CourseLocalization.Course.Error.wifiRequiredDescription
+            return CoreLocalization.Course.Error.wifiRequiredDescription
         }
     }
 }

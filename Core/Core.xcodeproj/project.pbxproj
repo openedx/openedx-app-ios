@@ -157,6 +157,9 @@
 		CE7CAF392CC1561E00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF382CC1561E00E0AC9D /* OEXFoundation */; };
 		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
 		CEC873BE2D75D55600A2626C /* CourseStructureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BD2D75D55600A2626C /* CourseStructureProtocol.swift */; };
+		CEC875392D7845DB00A2626C /* DeviceStorageFullAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875372D7845DB00A2626C /* DeviceStorageFullAlertView.swift */; };
+		CEC8753A2D7845DB00A2626C /* DownloadActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875352D7845DB00A2626C /* DownloadActionView.swift */; };
+		CEC8753B2D7845DB00A2626C /* DownloadErrorAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875362D7845DB00A2626C /* DownloadErrorAlertView.swift */; };
 		CED42FFC2D099F0400C7AD89 /* DownloadManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
@@ -368,6 +371,9 @@
 		CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerTests.swift; sourceTree = "<group>"; };
 		CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMock.generated.swift; sourceTree = "<group>"; };
 		CEC873BD2D75D55600A2626C /* CourseStructureProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureProtocol.swift; sourceTree = "<group>"; };
+		CEC875352D7845DB00A2626C /* DownloadActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadActionView.swift; sourceTree = "<group>"; };
+		CEC875362D7845DB00A2626C /* DownloadErrorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadErrorAlertView.swift; sourceTree = "<group>"; };
+		CEC875372D7845DB00A2626C /* DeviceStorageFullAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStorageFullAlertView.swift; sourceTree = "<group>"; };
 		CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerMock.swift; sourceTree = "<group>"; };
 		CFC84951299F8B890055E497 /* Debounce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Debounce.swift; sourceTree = "<group>"; };
 		DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseConfig.swift; sourceTree = "<group>"; };
@@ -750,6 +756,7 @@
 				06DEA4A42BBD66D700110D20 /* BackNavigationButtonViewModel.swift */,
 				0267F8502C3C256F0089D810 /* FileWebView.swift */,
 				A5D4B3DD2CDD0A9700688951 /* SecureInputView.swift */,
+				CEC875382D7845DB00A2626C /* ActionViews */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -842,6 +849,16 @@
 				CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */,
 			);
 			path = DownloadManager;
+			sourceTree = "<group>";
+		};
+		CEC875382D7845DB00A2626C /* ActionViews */ = {
+			isa = PBXGroup;
+			children = (
+				CEC875352D7845DB00A2626C /* DownloadActionView.swift */,
+				CEC875362D7845DB00A2626C /* DownloadErrorAlertView.swift */,
+				CEC875372D7845DB00A2626C /* DeviceStorageFullAlertView.swift */,
+			);
+			path = ActionViews;
 			sourceTree = "<group>";
 		};
 		CFC84955299FAC4D0055E497 /* Combine */ = {
@@ -1253,6 +1270,9 @@
 				029A132A2C2471DF005FB830 /* OfflineSyncRepository.swift in Sources */,
 				0236961928F9A26900EEF206 /* AuthRepository.swift in Sources */,
 				023A1136291432B200D0D354 /* RegistrationTextField.swift in Sources */,
+				CEC875392D7845DB00A2626C /* DeviceStorageFullAlertView.swift in Sources */,
+				CEC8753A2D7845DB00A2626C /* DownloadActionView.swift in Sources */,
+				CEC8753B2D7845DB00A2626C /* DownloadErrorAlertView.swift in Sources */,
 				02A463112AEA966C00331037 /* AppReviewView.swift in Sources */,
 				025B36752A13B7D5001A640E /* UnitButtonView.swift in Sources */,
 				028F9F39293A452B00DE65D0 /* ResetPassword.swift in Sources */,
