@@ -1084,7 +1084,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseID: courseId,
             EventParamKey.courseName: courseName
         ]
-        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+        trackEvent(.downloadCourseClicked, biValue: .downloadCourseClicked, parameters: parameters)
     }
     
     public func cancelDownloadClicked(courseId: String, courseName: String) {
@@ -1093,7 +1093,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.action: "cancel"
         ]
-        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+        trackEvent(.cancelDownloadClicked, biValue: .cancelDownloadClicked, parameters: parameters)
     }
     
     public func removeDownloadClicked(courseId: String, courseName: String) {
@@ -1102,7 +1102,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.action: "remove"
         ]
-        trackEvent(.bulkDeleteVideosSection, biValue: .bulkDeleteVideosSection, parameters: parameters)
+        trackEvent(.removeDownloadClicked, biValue: .removeDownloadClicked, parameters: parameters)
     }
     
     public func downloadConfirmed(courseId: String, courseName: String, downloadSize: Int64) {
@@ -1111,7 +1111,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.noOfVideos: downloadSize
         ]
-        trackEvent(.bulkDownloadVideosSection, biValue: .bulkDownloadVideosSection, parameters: parameters)
+        trackEvent(.downloadConfirmed, biValue: .downloadConfirmed, parameters: parameters)
     }
     
     public func downloadCancelled(courseId: String, courseName: String) {
@@ -1120,7 +1120,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.action: "cancelled"
         ]
-        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+        trackEvent(.downloadCancelled, biValue: .downloadCancelled, parameters: parameters)
     }
     
     public func downloadRemoved(courseId: String, courseName: String, downloadSize: Int64) {
@@ -1129,7 +1129,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.noOfVideos: downloadSize
         ]
-        trackEvent(.bulkDeleteVideosSection, biValue: .bulkDeleteVideosSection, parameters: parameters)
+        trackEvent(.downloadRemoved, biValue: .downloadRemoved, parameters: parameters)
     }
     
     public func downloadError(courseId: String, courseName: String, errorType: String) {
@@ -1138,7 +1138,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.error: errorType
         ]
-        trackEvent(.bulkDownloadVideosToggle, biValue: .bulkDownloadVideosToggle, parameters: parameters)
+        trackEvent(.downloadError, biValue: .downloadError, parameters: parameters)
     }
     
     public func downloadCompleted(courseId: String, courseName: String, downloadSize: Int64) {
@@ -1147,7 +1147,7 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.noOfVideos: downloadSize
         ]
-        trackEvent(.bulkDownloadVideosSection, biValue: .bulkDownloadVideosSection, parameters: parameters)
+        trackEvent(.downloadCompleted, biValue: .downloadCompleted, parameters: parameters)
     }
     
     public func downloadStarted(courseId: String, courseName: String, downloadSize: Int64) {
@@ -1156,11 +1156,11 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.courseName: courseName,
             EventParamKey.noOfVideos: downloadSize
         ]
-        trackEvent(.bulkDownloadVideosSection, biValue: .bulkDownloadVideosSection, parameters: parameters)
+        trackEvent(.downloadStarted, biValue: .downloadStarted, parameters: parameters)
     }
     
     public func downloadsScreenViewed() {
-        trackScreenEvent(.mainDownloadsTabClicked, biValue: .mainDownloadsTabClicked)
+        trackScreenEvent(.downloadsScreenViewed, biValue: .downloadsScreenViewed)
     }
 }
 // swiftlint:enable type_body_length file_length

@@ -158,6 +158,16 @@ public enum AnalyticsEvent: String {
     case discussionLikeToggle = "Discussion:Like Toggle"
     case discussionReportToggle = "Discussion:Report Toggle"
     case notificationSettingPermissionStatus = "Notification:Setting Permission Status"
+    case downloadsScreenViewed = "Downloads:Screen Viewed"
+    case downloadCourseClicked = "Downloads:Download Course Clicked"
+    case cancelDownloadClicked = "Downloads:Cancel Download Clicked"
+    case removeDownloadClicked = "Downloads:Remove Download Clicked"
+    case downloadConfirmed = "Downloads:Download Confirmed"
+    case downloadCancelled = "Downloads:Download Cancelled"
+    case downloadRemoved = "Downloads:Download Removed"
+    case downloadError = "Downloads:Download Error"
+    case downloadCompleted = "Downloads:Download Completed"
+    case downloadStarted = "Downloads:Download Started"
 }
 
 public enum EventBIValue: String {
@@ -261,6 +271,16 @@ public enum EventBIValue: String {
     case discussionLikeToggle = "edx.bi.app.discussion.like_toggle"
     case discussionReportToggle = "edx.bi.app.discussion.report_toggle"
     case notificationSettingPermissionStatus = "edx.bi.app.notification.setting_permission.status"
+    case downloadsScreenViewed = "edx.bi.app.downloads.screen_viewed"
+    case downloadCourseClicked = "edx.bi.app.downloads.download_course.clicked"
+    case cancelDownloadClicked = "edx.bi.app.downloads.cancel_download.clicked"
+    case removeDownloadClicked = "edx.bi.app.downloads.remove_download.clicked"
+    case downloadConfirmed = "edx.bi.app.downloads.download_confirmed"
+    case downloadCancelled = "edx.bi.app.downloads.download_cancelled"
+    case downloadRemoved = "edx.bi.app.downloads.download_removed"
+    case downloadError = "edx.bi.app.downloads.download_error"
+    case downloadCompleted = "edx.bi.app.downloads.download_completed"
+    case downloadStarted = "edx.bi.app.downloads.download_started"
 }
 
 public struct EventParamKey {
