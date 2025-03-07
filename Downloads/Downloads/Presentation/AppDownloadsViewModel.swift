@@ -64,6 +64,17 @@ public final class AppDownloadsViewModel: ObservableObject {
         self.storage = storage
         self.analytics = analytics
         self.observeDownloadEvents()
+        
+        let enrollmentPublisher = NotificationCenter.default.publisher(for: .onCourseEnrolled)
+        
+        enrollmentPublisher
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                Task {
+                    await self.getDownloadCourses(isRefresh: true)
+                }
+            }
+            .store(in: &cancellables)
     }
     
     private func observeDownloadEvents() {
