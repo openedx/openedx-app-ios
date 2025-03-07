@@ -46,7 +46,7 @@ public struct AlertView: View {
     private var nextSectionName: String?
     private var positiveAction: String
     private var onCloseTapped: (() -> Void) = {}
-    private var okTapped: (() -> Void) = {}
+    private var firstButtonTapped: (() -> Void) = {}
     private var secondButtonTapped: (() -> Void) = {}
     private var nextSectionTapped: (() -> Void) = {}
     private let type: AlertViewType
@@ -58,7 +58,7 @@ public struct AlertView: View {
         alertMessage: String,
         positiveAction: String,
         onCloseTapped: @escaping () -> Void,
-        okTapped: @escaping () -> Void,
+        firstButtonTapped: @escaping () -> Void,
         secondButtonTapped: @escaping (() -> Void) = {},
         type: AlertViewType
     ) {
@@ -66,7 +66,7 @@ public struct AlertView: View {
         self.alertMessage = alertMessage
         self.positiveAction = positiveAction
         self.onCloseTapped = onCloseTapped
-        self.okTapped = okTapped
+        self.firstButtonTapped = firstButtonTapped
         self.secondButtonTapped = secondButtonTapped
         self.type = type
     }
@@ -78,14 +78,14 @@ public struct AlertView: View {
         mainAction: String,
         image: SwiftUI.Image,
         onCloseTapped: @escaping () -> Void,
-        okTapped: @escaping () -> Void,
+        firstButtonTapped: @escaping () -> Void,
         nextSectionTapped: @escaping () -> Void
     ) {
         self.alertTitle = alertTitle
         self.alertMessage = alertMessage
         self.onCloseTapped = onCloseTapped
         self.nextSectionName = nextSectionName
-        self.okTapped = okTapped
+        self.firstButtonTapped = firstButtonTapped
         self.nextSectionTapped = nextSectionTapped
         self.positiveAction = ""
         type = .action(mainAction, image)
@@ -239,7 +239,7 @@ public struct AlertView: View {
                             }
                             UnitButtonView(type: .custom(action),
                                            bgColor: .clear,
-                                           action: { okTapped() })
+                                           action: { firstButtonTapped() })
                             .frame(maxWidth: 215)
 
                             if let nextSectionName {
@@ -266,7 +266,7 @@ public struct AlertView: View {
             switch type {
             case let .`default`(positiveAction, _):
                 HStack {
-                    StyledButton(positiveAction, action: { okTapped() })
+                    StyledButton(positiveAction, action: { firstButtonTapped() })
                         .frame(maxWidth: 135)
                     StyledButton(CoreLocalization.Alert.cancel, action: { onCloseTapped() })
                         .frame(maxWidth: 135)
@@ -284,7 +284,7 @@ public struct AlertView: View {
                         }
                         UnitButtonView(type: .custom(action),
                                        bgColor: Theme.Colors.secondaryButtonBGColor,
-                                       action: { okTapped() })
+                                       action: { firstButtonTapped() })
                         .frame(maxWidth: 215)
 
                         if let nextSectionName {
@@ -304,7 +304,7 @@ public struct AlertView: View {
                 }
             case .logOut:
                 Button(action: {
-                    okTapped()
+                    firstButtonTapped()
                 }, label: {
                     ZStack {
                         Text(CoreLocalization.Alert.logout)
@@ -336,7 +336,7 @@ public struct AlertView: View {
             case .leaveProfile:
                 VStack(spacing: 0) {
                     Button(action: {
-                        okTapped()
+                        firstButtonTapped()
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.leave)
@@ -398,7 +398,7 @@ public struct AlertView: View {
                     isHorizontal: !isHorizontal
                 ) {
                     Button(action: {
-                        okTapped()
+                        firstButtonTapped()
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.signIn)
@@ -481,7 +481,7 @@ public struct AlertView: View {
                 )
             case .calendarAdded:
                 HStack {
-                    StyledButton(positiveAction, action: { okTapped() })
+                    StyledButton(positiveAction, action: { firstButtonTapped() })
                         .frame(maxWidth: 135)
                     StyledButton(CoreLocalization.done, action: { onCloseTapped() })
                         .frame(maxWidth: 135)
@@ -502,7 +502,7 @@ public struct AlertView: View {
     ) -> some View {
         VStack(spacing: 0) {
             Button {
-                okTapped()
+                firstButtonTapped()
             } label: {
                 ZStack {
                     Text(primaryButtonTitle)
@@ -571,7 +571,7 @@ struct AlertView_Previews: PreviewProvider {
             mainAction: "Back to outline",
             image: CoreAssets.goodWork.swiftUIImage,
             onCloseTapped: {},
-            okTapped: {},
+            firstButtonTapped: {},
             nextSectionTapped: {}
         )
         .previewLayout(.sizeThatFits)
@@ -581,14 +581,14 @@ struct AlertView_Previews: PreviewProvider {
                   alertMessage: "Are you sure you want to log out?",
                   positiveAction: "Yes",
                   onCloseTapped: {},
-                  okTapped: {},
+                  firstButtonTapped: {},
                   type: .logOut)
         
         AlertView(alertTitle: "Leave profile?",
                   alertMessage: "Changes you have made not be saved.",
                   positiveAction: "Yes",
                   onCloseTapped: {},
-                  okTapped: {},
+                  firstButtonTapped: {},
                   type: .leaveProfile)
         
         .previewLayout(.sizeThatFits)

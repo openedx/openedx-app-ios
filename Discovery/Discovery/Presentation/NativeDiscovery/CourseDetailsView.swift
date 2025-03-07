@@ -252,7 +252,7 @@ private struct CourseStateView: View {
                                     onCloseTapped: {
                                         self.viewModel.router.dismiss(animated: true)
                                     },
-                                    okTapped: {
+                                    firstButtonTapped: {
                                         self.viewModel.router.dismiss(animated: false)
                                         viewModel.router.showLoginScreen(
                                             sourceScreen: .courseDetail(
