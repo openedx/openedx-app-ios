@@ -138,13 +138,15 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
-            AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
-            .tabItem {
-                CoreAssets.downloadsMenu.swiftUIImage.renderingMode(.template)
-                Text(DownloadsLocalization.Downloads.title)
+            if viewModel.config.downloads.enabled {
+                AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
+                .tabItem {
+                    CoreAssets.downloadsMenu.swiftUIImage.renderingMode(.template)
+                    Text(DownloadsLocalization.Downloads.title)
+                }
+                .tag(MainTab.downloads)
+                .accessibilityIdentifier("downloads_tabitem")
             }
-            .tag(MainTab.downloads)
-            .accessibilityIdentifier("downloads_tabitem")
             
             VStack {
                 ProfileView(

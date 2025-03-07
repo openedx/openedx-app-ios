@@ -33,6 +33,7 @@ public protocol ConfigProtocol: Sendable {
     var braze: BrazeConfig { get }
     var branch: BranchConfig { get }
     var program: DiscoveryConfig { get }
+    var downloads: DownloadsConfig { get }
     var URIScheme: String { get }
 }
 
@@ -223,6 +224,9 @@ public class ConfigMock: Config, @unchecked Sendable {
             "APP_ID": "appId"
         ],
         "APPLE_SIGNIN": [
+            "ENABLED": true
+        ],
+        "DOWNLOADS": [
             "ENABLED": true
         ]
     ]
