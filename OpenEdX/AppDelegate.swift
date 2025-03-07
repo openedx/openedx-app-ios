@@ -141,6 +141,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             pluginManager.addPlugin(analyticsService: FirebaseAnalyticsService())
         }
         
+        // - FCM
+        if config.firebase.cloudMessagingEnabled,
+            let storage = Container.shared.resolve(CoreStorage.self),
+            let api = Container.shared.resolve(API.self),
+            let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) {
+            pluginManager.addPlugin(
+                pushNotificationsProvider: FCMProvider(storage: storage, api: api),
+                pushNotificationsListener: FCMListener(deepLinkManager: deepLinkManager)
+            )
+        }
         // Initialize your plugins here
     }
 
