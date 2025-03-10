@@ -296,7 +296,7 @@ public class EditProfileViewModel: ObservableObject {
                 onCloseTapped: {
                     self.router.dismiss(animated: true)
                 },
-                okTapped: {
+                firstButtonTapped: {
                     self.router.dismiss(animated: false)
                     self.router.back()
                 },

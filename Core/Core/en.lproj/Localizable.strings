@@ -65,6 +65,8 @@
 "ALERT.CANCEL" = "Cancel";
 "ALERT.LOGOUT" = "Log out";
 "ALERT.LEAVE" = "Leave";
+"ALERT.SIGN_IN" = "Sign in";
+"ALERT.REGISTER" = "Register";
 "ALERT.KEEP_EDITING" = "Keep editing";
 "ALERT.DELETE" = "Delete";
 "ALERT.ADD" = "Add";

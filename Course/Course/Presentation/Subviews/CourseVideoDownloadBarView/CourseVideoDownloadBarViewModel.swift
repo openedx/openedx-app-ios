@@ -103,7 +103,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 onCloseTapped: { [weak self] in
                     self?.courseViewModel.router.dismiss(animated: true)
                 },
-                okTapped: { [weak self] in
+                firstButtonTapped: { [weak self] in
                     guard let self else { return }
                     Task {
                         await self.downloadAll(isOn: false)
@@ -124,7 +124,7 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
                 onCloseTapped: { [weak self] in
                     self?.courseViewModel.router.dismiss(animated: true)
                 },
-                okTapped: { [weak self] in
+                firstButtonTapped: { [weak self] in
                     guard let self else { return }
                     Task {
                         await self.downloadAll(isOn: false)

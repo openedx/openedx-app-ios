@@ -681,7 +681,7 @@ final class EditProfileViewModelTests: XCTestCase {
                                         alertMessage: .any,
                                         positiveAction: .any,
                                         onCloseTapped: .any,
-                                        okTapped: .any,
+                                        firstButtonTapped: .any,
                                         type: .any))
     }
     

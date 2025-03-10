@@ -42,10 +42,14 @@ public enum DiscoveryLocalization {
   /// Why do I need to update?
   public static let updateWhyNeed = DiscoveryLocalization.tr("Localizable", "UPDATE_WHY_NEED", fallback: "Why do I need to update?")
   public enum Alert {
+    /// Authorization
+    public static let authorization = DiscoveryLocalization.tr("Localizable", "ALERT.AUTHORIZATION", fallback: "Authorization")
     /// You are now leaving the app and opening a browser
     public static let leavingAppMessage = DiscoveryLocalization.tr("Localizable", "ALERT.LEAVING_APP_MESSAGE", fallback: "You are now leaving the app and opening a browser")
     /// Leaving the app
     public static let leavingAppTitle = DiscoveryLocalization.tr("Localizable", "ALERT.LEAVING_APP_TITLE", fallback: "Leaving the app")
+    /// Please enter the system to continue with course enrollment.
+    public static let pleaseEnterTheSystem = DiscoveryLocalization.tr("Localizable", "ALERT.PLEASE_ENTER_THE_SYSTEM", fallback: "Please enter the system to continue with course enrollment.")
   }
   public enum Details {
     /// Enroll now

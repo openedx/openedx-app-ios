@@ -216,7 +216,7 @@ public struct SettingsView: View {
                         onCloseTapped: {
                             viewModel.router.dismiss(animated: true)
                         },
-                        okTapped: {
+                        firstButtonTapped: {
                             viewModel.router.dismiss(animated: true)
                             Task {
                                 await viewModel.logOut()
