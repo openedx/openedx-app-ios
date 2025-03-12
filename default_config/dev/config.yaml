@@ -8,7 +8,6 @@ OAUTH_CLIENT_ID: ''
 SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
-
     
 UI_COMPONENTS:
     COURSE_UNIT_PROGRESS_ENABLED: false

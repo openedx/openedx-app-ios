@@ -22,6 +22,10 @@ public protocol DownloadsAnalytics {
     func downloadsScreenViewed()
 }
 
+public enum AnalyticsError: String {
+    case storageFull = "storage_full"
+}
+
 #if DEBUG
 public class DownloadsAnalyticsMock: DownloadsAnalytics {
     public init() {}

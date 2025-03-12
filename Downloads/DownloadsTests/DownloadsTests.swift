@@ -164,7 +164,7 @@ final class DownloadsTests: XCTestCase {
         )
         
         // When
-        viewModel.downloadCourse(courseID: courseID)
+        await viewModel.downloadCourse(courseID: courseID)
         
         // Need a small delay to allow the task to execute
         try await Task.sleep(for: .milliseconds(100))
@@ -197,7 +197,7 @@ final class DownloadsTests: XCTestCase {
         )
         
         // When
-        viewModel.downloadCourse(courseID: courseID)
+        await viewModel.downloadCourse(courseID: courseID)
         
         // Need a small delay to allow the task to execute
         try await Task.sleep(for: .milliseconds(100))
@@ -232,7 +232,7 @@ final class DownloadsTests: XCTestCase {
         )
         
         // When
-        viewModel.downloadCourse(courseID: courseID)
+        await viewModel.downloadCourse(courseID: courseID)
         
         // Need a small delay to allow the task to execute
         try await Task.sleep(for: .milliseconds(100))
@@ -270,7 +270,7 @@ final class DownloadsTests: XCTestCase {
         )
         
         // When
-        viewModel.cancelDownload(courseID: courseID)
+        await viewModel.cancelDownload(courseID: courseID)
         
         // Need a small delay to allow the task to execute
         try await Task.sleep(for: .milliseconds(100))
@@ -294,7 +294,7 @@ final class DownloadsTests: XCTestCase {
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
         
         // When
-        viewModel.removeDownload(courseID: courseID, skipConfirmation: true)
+        await viewModel.removeDownload(courseID: courseID, skipConfirmation: true)
         
         // Need a small delay to allow the task to execute
         try await Task.sleep(for: .milliseconds(100))

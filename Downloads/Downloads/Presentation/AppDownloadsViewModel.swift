@@ -28,6 +28,8 @@ public final class AppDownloadsViewModel: ObservableObject {
     private var finishedTaskIds: Set<String> = []
     private var waitingDownloads: [CourseBlock]?
     
+    private let requiredFreeSpaceMultiplier: Double = 1.2
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -105,23 +107,21 @@ public final class AppDownloadsViewModel: ObservableObject {
         let (downloaded, total) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
         let isFullyDownloaded = await downloadsHelper.isFullyDownloaded(courseID: courseID)
         
-        await MainActor.run {
-            downloadedSizes[courseID] = Int64(downloaded)
-            courseSizes[courseID] = Int64(total)
+        downloadedSizes[courseID] = Int64(downloaded)
+        courseSizes[courseID] = Int64(total)
+        
+        if isFullyDownloaded {
+            let previousState = downloadStates[courseID]
+            downloadStates[courseID] = .finished
             
-            if isFullyDownloaded {
-                let previousState = downloadStates[courseID]
-                downloadStates[courseID] = .finished
-                
-                // Track download completion when a task is finished
-                if previousState == .inProgress || task.state == .finished {
-                    let course = courses.first(where: { $0.id == courseID })
-                    let courseName = course?.name ?? ""
-                    analytics.downloadCompleted(courseId: courseID, courseName: courseName, downloadSize: Int64(total))
-                }
-            } else if task.state == .inProgress {
-                downloadStates[courseID] = .inProgress
+            // Track download completion when a task is finished
+            if previousState == .inProgress || task.state == .finished {
+                let course = courses.first(where: { $0.id == courseID })
+                let courseName = course?.name ?? ""
+                analytics.downloadCompleted(courseId: courseID, courseName: courseName, downloadSize: Int64(total))
             }
+        } else if task.state == .inProgress {
+            downloadStates[courseID] = .inProgress
         }
     }
     
@@ -132,19 +132,17 @@ public final class AppDownloadsViewModel: ObservableObject {
             let isPartiallyDownloaded = await downloadsHelper.isPartiallyDownloaded(courseID: course.id)
             let isFullyDownloaded = await downloadsHelper.isFullyDownloaded(courseID: course.id)
             
-            await MainActor.run {
-                downloadedSizes[course.id] = Int64(downloaded)
-                courseSizes[course.id] = Int64(total)
-                
-                if isDownloading {
-                    downloadStates[course.id] = .inProgress
-                } else if isFullyDownloaded {
-                    downloadStates[course.id] = .finished
-                } else if isPartiallyDownloaded {
-                    downloadStates[course.id] = .finished
-                } else {
-                    downloadStates[course.id] = nil
-                }
+            downloadedSizes[course.id] = Int64(downloaded)
+            courseSizes[course.id] = Int64(total)
+            
+            if isDownloading {
+                downloadStates[course.id] = .inProgress
+            } else if isFullyDownloaded {
+                downloadStates[course.id] = .finished
+            } else if isPartiallyDownloaded {
+                downloadStates[course.id] = .finished
+            } else {
+                downloadStates[course.id] = nil
             }
         }
     }
@@ -173,184 +171,178 @@ public final class AppDownloadsViewModel: ObservableObject {
         }
     }
     
-    func downloadCourse(courseID: String) {
-        Task {
+    func downloadCourse(courseID: String) async {
+        do {
+            let course = courses.first(where: { $0.id == courseID })
+            let courseName = course?.name ?? ""
+            
+            analytics.downloadCourseClicked(courseId: courseID, courseName: courseName)
+            
+            let courseStructure: CourseStructure
             do {
-                let course = courses.first(where: { $0.id == courseID })
-                let courseName = course?.name ?? ""
-                
-                analytics.downloadCourseClicked(courseId: courseID, courseName: courseName)
-                
-                let courseStructure: CourseStructure
-                do {
-                    // First try to get course structure from cached data
-                    courseStructure = try await courseManager.getLoadedCourseBlocks(courseID: courseID)
-                } catch let error as NoCachedDataError {
-                    // Set loading state before fetching course structure
-                    await MainActor.run {
-                        downloadStates[courseID] = .loadingStructure
-                    }
-                    // If no cached data, fetch from network
-                    courseStructure = try await courseManager.getCourseBlocks(courseID: courseID)
-                }
-                
-                // Reset state if we're not proceeding with download
+                // First try to get course structure from cached data
+                courseStructure = try await courseManager.getLoadedCourseBlocks(courseID: courseID)
+            } catch let error as NoCachedDataError {
+                // Set loading state before fetching course structure
                 await MainActor.run {
-                    downloadStates[courseID] = nil
+                    downloadStates[courseID] = .loadingStructure
                 }
-                
-                let downloadableBlocks = courseStructure.childs.flatMap { chapter in
-                    chapter.childs.flatMap { sequential in
-                        sequential.childs.flatMap { vertical in
-                            vertical.childs.filter { $0.isDownloadable }
-                        }
+                // If no cached data, fetch from network
+                courseStructure = try await courseManager.getCourseBlocks(courseID: courseID)
+            }
+            
+            // Reset state if we're not proceeding with download
+            await MainActor.run {
+                downloadStates[courseID] = nil
+            }
+            
+            let downloadableBlocks = courseStructure.childs.flatMap { chapter in
+                chapter.childs.flatMap { sequential in
+                    sequential.childs.flatMap { vertical in
+                        vertical.childs.filter { $0.isDownloadable }
                     }
                 }
-                
-                if await isShowedAllowLargeDownloadAlert(blocks: downloadableBlocks) {
+            }
+            
+            if await isShowedAllowLargeDownloadAlert(blocks: downloadableBlocks) {
+                return
+            }
+            
+            if !connectivity.isInternetAvaliable {
+                presentNoInternetAlert(sequentials: courseStructure.childs.flatMap { $0.childs })
+                analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "no_internet")
+                return
+            }
+            
+            let totalFileSize = downloadableBlocks.reduce(0) { $0 + ($1.fileSize ?? 0) }
+            
+            if connectivity.isMobileData {
+                // Check if wifi only setting is enabled
+                if storage.userSettings?.wifiOnly == true {
+                    presentWifiRequiredAlert(sequentials: courseStructure.childs.flatMap { $0.childs })
+                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "wifi_required")
                     return
-                }
-                
-                if !connectivity.isInternetAvaliable {
-                    presentNoInternetAlert(sequentials: courseStructure.childs.flatMap { $0.childs })
-                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "no_internet")
-                    return
-                }
-                
-                let totalFileSize = downloadableBlocks.reduce(0) { $0 + ($1.fileSize ?? 0) }
-                
-                if connectivity.isMobileData {
-                    // Check if wifi only setting is enabled
-                    if storage.userSettings?.wifiOnly == true {
-                        presentWifiRequiredAlert(sequentials: courseStructure.childs.flatMap { $0.childs })
-                        analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "wifi_required")
-                        return
-                    } else {
-                        await presentConfirmDownloadCellularAlert(
-                            blocks: downloadableBlocks,
-                            sequentials: courseStructure.childs.flatMap { $0.childs },
-                            totalFileSize: totalFileSize
-                        )
-                        return
-                    }
-                } else if totalFileSize > 100 * 1024 * 1024 {
-                    // For large downloads over WiFi, show confirmation
-                    await presentConfirmDownloadAlert(
+                } else {
+                    await presentConfirmDownloadCellularAlert(
                         blocks: downloadableBlocks,
                         sequentials: courseStructure.childs.flatMap { $0.childs },
                         totalFileSize: totalFileSize
                     )
                     return
                 }
-                
-                // For direct download (no confirmation needed), set the state before starting
+            } else if totalFileSize > 100 * 1024 * 1024 {
+                // For large downloads over WiFi, show confirmation
+                await presentConfirmDownloadAlert(
+                    blocks: downloadableBlocks,
+                    sequentials: courseStructure.childs.flatMap { $0.childs },
+                    totalFileSize: totalFileSize
+                )
+                return
+            }
+            
+            // For direct download (no confirmation needed), set the state before starting
+            await MainActor.run {
+                downloadStates[courseID] = .inProgress
+            }
+            
+            try await downloadManager.addToDownloadQueue(blocks: downloadableBlocks)
+            analytics.downloadStarted(
+                courseId: courseID,
+                courseName: courseName,
+                downloadSize: Int64(totalFileSize)
+            )
+            await refreshDownloadStates()
+        } catch {
+            let course = courses.first(where: { $0.id == courseID })
+            let courseName = course?.name ?? ""
+            
+            if error is NoWiFiError {
+                errorMessage = CoreLocalization.Error.wifi
+                analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "wifi_required")
+            } else if error.isInternetError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+                analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "no_internet")
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+                analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "unknown")
+            }
+        }
+    }
+    
+    func cancelDownload(courseID: String) async {
+        let course = courses.first(where: { $0.id == courseID })
+        let courseName = course?.name ?? ""
+        
+        analytics.cancelDownloadClicked(courseId: courseID, courseName: courseName)
+        
+        // Check if we're loading the course structure
+        await MainActor.run {
+            if downloadStates[courseID] == .loadingStructure {
+                downloadStates[courseID] = nil
+                return
+            }
+        }
+        
+        // Keep track of the current task ID to avoid canceling it twice
+        var currentTaskId: String?
+        
+        if let currentTask = await downloadManager.getCurrentDownloadTask(),
+           currentTask.courseId == courseID {
+            try? await downloadManager.cancelDownloading(task: currentTask)
+            currentTaskId = currentTask.id
+        }
+        
+        let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
+        let inProgressTasks = tasks.filter {
+            ($0.state == .inProgress || $0.state == .waiting) &&
+            $0.id != currentTaskId // Skip the current task if we already canceled it
+        }
+        
+        for task in inProgressTasks {
+            try? await downloadManager.cancelDownloading(task: task)
+        }
+        
+        analytics.downloadCancelled(courseId: courseID, courseName: courseName)
+        await refreshDownloadStates()
+    }
+    
+    func removeDownload(courseID: String, skipConfirmation: Bool = false) async {
+        let course = courses.first(where: { $0.id == courseID })
+        let courseName = course?.name ?? ""
+        
+        analytics.removeDownloadClicked(courseId: courseID, courseName: courseName)
+        
+        if let courseStructure = try? await courseManager.getLoadedCourseBlocks(courseID: courseID) {
+            let blocks = courseStructure.childs.flatMap { chapter in
+                chapter.childs.flatMap { sequential in
+                    sequential.childs.flatMap { vertical in
+                        vertical.childs.filter { $0.isDownloadable }
+                    }
+                }
+            }
+            
+            if skipConfirmation {
+                // Directly delete files without showing alert (for testing)
+                await downloadManager.delete(blocks: blocks, courseId: courseID)
                 await MainActor.run {
-                    downloadStates[courseID] = .inProgress
+                    downloadStates[courseID] = nil
+                    downloadedSizes[courseID] = 0
                 }
                 
-                try await downloadManager.addToDownloadQueue(blocks: downloadableBlocks)
-                analytics.downloadStarted(
+                analytics.downloadRemoved(
                     courseId: courseID,
                     courseName: courseName,
-                    downloadSize: Int64(totalFileSize)
+                    downloadSize: downloadedSizes[courseID] ?? 0
                 )
+                
                 await refreshDownloadStates()
-            } catch {
-                let course = courses.first(where: { $0.id == courseID })
-                let courseName = course?.name ?? ""
-                
-                if error is NoWiFiError {
-                    errorMessage = CoreLocalization.Error.wifi
-                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "wifi_required")
-                } else if error.isInternetError {
-                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "no_internet")
-                } else {
-                    errorMessage = CoreLocalization.Error.unknownError
-                    analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "unknown")
-                }
-            }
-        }
-    }
-    
-    func cancelDownload(courseID: String) {
-        Task {
-            let course = courses.first(where: { $0.id == courseID })
-            let courseName = course?.name ?? ""
-            
-            analytics.cancelDownloadClicked(courseId: courseID, courseName: courseName)
-            
-            // Check if we're loading the course structure
-            await MainActor.run {
-                if downloadStates[courseID] == .loadingStructure {
-                    downloadStates[courseID] = nil
-                    return
-                }
-            }
-            
-            // Keep track of the current task ID to avoid canceling it twice
-            var currentTaskId: String?
-            
-            if let currentTask = await downloadManager.getCurrentDownloadTask(),
-               currentTask.courseId == courseID {
-                try? await downloadManager.cancelDownloading(task: currentTask)
-                currentTaskId = currentTask.id
-            }
-            
-            let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
-            let inProgressTasks = tasks.filter {
-                ($0.state == .inProgress || $0.state == .waiting) &&
-                $0.id != currentTaskId // Skip the current task if we already canceled it
-            }
-            
-            for task in inProgressTasks {
-                try? await downloadManager.cancelDownloading(task: task)
-            }
-            
-            analytics.downloadCancelled(courseId: courseID, courseName: courseName)
-            await refreshDownloadStates()
-        }
-    }
-    
-    func removeDownload(courseID: String, skipConfirmation: Bool = false) {
-        Task {
-            let course = courses.first(where: { $0.id == courseID })
-            let courseName = course?.name ?? ""
-            
-            analytics.removeDownloadClicked(courseId: courseID, courseName: courseName)
-            
-            if let courseStructure = try? await courseManager.getLoadedCourseBlocks(courseID: courseID) {
-                let blocks = courseStructure.childs.flatMap { chapter in
-                    chapter.childs.flatMap { sequential in
-                        sequential.childs.flatMap { vertical in
-                            vertical.childs.filter { $0.isDownloadable }
-                        }
-                    }
-                }
-                
-                if skipConfirmation {
-                    // Directly delete files without showing alert (for testing)
-                    await downloadManager.delete(blocks: blocks, courseId: courseID)
-                    await MainActor.run {
-                        downloadStates[courseID] = nil
-                        downloadedSizes[courseID] = 0
-                    }
-                    
-                    analytics.downloadRemoved(
-                        courseId: courseID,
-                        courseName: courseName,
-                        downloadSize: downloadedSizes[courseID] ?? 0
-                    )
-                    
-                    await refreshDownloadStates()
-                    await getDownloadCourses(isRefresh: true)
-                } else {
-                    await presentRemoveDownloadAlert(
-                        blocks: blocks,
-                        sequentials: courseStructure.childs.flatMap { $0.childs },
-                        courseID: courseID
-                    )
-                }
+                await getDownloadCourses(isRefresh: true)
+            } else {
+                await presentRemoveDownloadAlert(
+                    blocks: blocks,
+                    sequentials: courseStructure.childs.flatMap { $0.childs },
+                    courseID: courseID
+                )
             }
         }
     }
@@ -393,7 +385,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         sequentials: [CourseSequential],
         totalFileSize: Int,
         action: @escaping () -> Void = {}
-    ) async {
+    ) {
         // Get the course ID from the blocks
         let courseID = blocks.first?.courseId ?? ""
         // Find the course in the courses array
@@ -416,7 +408,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                         self.analytics.downloadError(
                             courseId: courseID,
                             courseName: courseName,
-                            errorType: "storage_full"
+                            errorType: AnalyticsError.storageFull.rawValue
                         )
                     } else {
                         Task {
@@ -451,7 +443,7 @@ public final class AppDownloadsViewModel: ObservableObject {
             view: DeviceStorageFullAlertView(
                 sequentials: sequentials,
                 usedSpace: getUsedDiskSpace() ?? 0,
-                freeSpace: getFreeDiskSpace() ?? 0,
+                freeSpace: downloadManager.getFreeDiskSpace() ?? 0,
                 close: { [weak self] in
                     guard let self else { return }
                     self.router.dismiss(animated: true)
@@ -467,7 +459,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         sequentials: [CourseSequential],
         totalFileSize: Int,
         action: @escaping () -> Void = {}
-    ) async {
+    ) {
         let courseID = blocks.first?.courseId ?? ""
         let course = courses.first(where: { $0.id == courseID })
         let courseName = course?.name ?? ""
@@ -488,7 +480,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                             .downloadError(
                                 courseId: courseID,
                                 courseName: courseName,
-                                errorType: "storage_full"
+                                errorType: AnalyticsError.storageFull.rawValue
                             )
                     } else {
                         Task {
@@ -521,7 +513,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         blocks: [CourseBlock],
         sequentials: [CourseSequential],
         courseID: String
-    ) async {
+    ) {
         let downloadedSize = downloadedSizes[courseID] ?? 0
         let course = courses.first(where: { $0.id == courseID })
         let courseName = course?.name ?? ""
@@ -534,6 +526,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                 downloadedSize: Int(downloadedSize),
                 action: { [weak self] in
                     guard let self else { return }
+                    self.router.dismiss(animated: true)
                     Task {
                         await self.downloadManager.delete(blocks: blocks, courseId: courseID)
                         await MainActor.run {
@@ -550,7 +543,6 @@ public final class AppDownloadsViewModel: ObservableObject {
                         await self.refreshDownloadStates()
                         await self.getDownloadCourses(isRefresh: true)
                         
-                        self.router.dismiss(animated: true)
                     }
                 },
                 cancel: { [weak self] in
@@ -588,16 +580,14 @@ public final class AppDownloadsViewModel: ObservableObject {
         return false
     }
     
+    @MainActor
     func continueDownload() async {
         guard let blocks = waitingDownloads else {
             return
         }
         do {
             let courseID = blocks.first?.courseId ?? ""
-            
-            await MainActor.run {
-                downloadStates[courseID] = .inProgress
-            }
+            downloadStates[courseID] = .inProgress
             
             try await downloadManager.addToDownloadQueue(blocks: blocks)
         } catch let error {
@@ -610,22 +600,10 @@ public final class AppDownloadsViewModel: ObservableObject {
     // MARK: - Helper Methods
     
     private func isEnoughSpace(for fileSize: Int) -> Bool {
-        if let freeSpace = getFreeDiskSpace() {
-            return freeSpace > Int(Double(fileSize) * 1.2)
+        if let freeSpace = downloadManager.getFreeDiskSpace() {
+            return freeSpace > Int(Double(fileSize) * requiredFreeSpaceMultiplier)
         }
         return false
-    }
-    
-    private func getFreeDiskSpace() -> Int? {
-        do {
-            let attributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            if let freeSpace = attributes[.systemFreeSize] as? Int64 {
-                return Int(freeSpace)
-            }
-        } catch {
-            print("Error retrieving free disk space: \(error.localizedDescription)")
-        }
-        return nil
     }
     
     private func getUsedDiskSpace() -> Int? {

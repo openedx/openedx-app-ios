@@ -174,6 +174,7 @@ public protocol DownloadManagerProtocol: Sendable {
     func removeAppSupportDirectoryUnusedContent()
     func delete(blocks: [CourseBlock], courseId: String) async
     func downloadTask(for blockId: String) async -> DownloadDataTask?
+    func getFreeDiskSpace() -> Int?
 }
 
 public enum DownloadManagerEvent: Sendable {
@@ -892,6 +893,19 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         } catch {
             debugPrint("Error reading contents of Application Support directory: \(error)")
         }
+    }
+    
+    nonisolated
+    public func getFreeDiskSpace() -> Int? {
+        do {
+            let attributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
+            if let freeSpace = attributes[.systemFreeSize] as? Int64 {
+                return Int(freeSpace)
+            }
+        } catch {
+            print("Error retrieving free disk space: \(error.localizedDescription)")
+        }
+        return nil
     }
 }
 

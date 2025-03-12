@@ -49,6 +49,12 @@ public enum DownloadsLocalization {
       public static let title = DownloadsLocalization.tr("Localizable", "DOWNLOADS.NO_COURSES_TO_DOWNLOAD.TITLE", fallback: "No Courses with Downloadable Content")
     }
   }
+  public enum MenuOption {
+    /// Cancel download
+    public static let cancel = DownloadsLocalization.tr("Localizable", "MENU_OPTION.CANCEL", fallback: "Cancel download")
+    /// Remove course downloads
+    public static let remove = DownloadsLocalization.tr("Localizable", "MENU_OPTION.REMOVE", fallback: "Remove course downloads")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

@@ -588,7 +588,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             view: DeviceStorageFullAlertView(
                 sequentials: sequentials,
                 usedSpace: getUsedDiskSpace() ?? 0,
-                freeSpace: getFreeDiskSpace() ?? 0,
+                freeSpace: manager.getFreeDiskSpace() ?? 0,
                 close: { [weak self] in
                     guard let self else { return }
                     self.router.dismiss(animated: true)
@@ -843,22 +843,10 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     private func isEnoughSpace(for fileSize: Int) -> Bool {
-        if let freeSpace = getFreeDiskSpace() {
+        if let freeSpace = manager.getFreeDiskSpace() {
             return freeSpace > Int(Double(fileSize) * 1.2)
         }
         return false
-    }
-    
-    private func getFreeDiskSpace() -> Int? {
-        do {
-            let attributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            if let freeSpace = attributes[.systemFreeSize] as? Int64 {
-                return Int(freeSpace)
-            }
-        } catch {
-            print("Error retrieving free disk space: \(error.localizedDescription)")
-        }
-        return nil
     }
     
     private func getUsedDiskSpace() -> Int? {

@@ -16,9 +16,9 @@ enum MenuOption: String, CaseIterable {
     var text: String {
         switch self {
         case .remove:
-            "Remove course downloads"
+            DownloadsLocalization.MenuOption.remove
         case .cancel:
-            "Cancel download"
+            DownloadsLocalization.MenuOption.cancel
         }
     }
 }

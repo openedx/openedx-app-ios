@@ -1,5 +1,5 @@
 //
-//  CourseStructureProtocol.swift
+//  CourseStructureManagerProtocol.swift
 //  Downloads
 //
 //  Created by Ivan Stepanok on 03.03.2025.

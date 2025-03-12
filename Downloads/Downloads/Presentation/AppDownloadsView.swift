@@ -61,13 +61,19 @@ public struct AppDownloadsView: View {
                                     ),
                                     downloadState: viewModel.downloadStates[course.id],
                                     onDownloadTap: {
-                                        viewModel.downloadCourse(courseID: course.id)
+                                        Task {
+                                           await viewModel.downloadCourse(courseID: course.id)
+                                        }
                                     },
                                     onRemoveTap: {
-                                        viewModel.removeDownload(courseID: course.id)
+                                        Task {
+                                            await viewModel.removeDownload(courseID: course.id)
+                                        }
                                     },
                                     onCancelTap: {
-                                        viewModel.cancelDownload(courseID: course.id)
+                                        Task {
+                                            await viewModel.cancelDownload(courseID: course.id)
+                                        }
                                     }
                                 ).id(course.id)
                             }
@@ -101,8 +107,12 @@ public struct AppDownloadsView: View {
                     Spacer()
                     SnackBarView(message: viewModel.errorMessage)
                 }
-                .padding(.bottom, viewModel.connectivity.isInternetAvaliable
-                         ? 0 : OfflineSnackBarView.height)
+                .padding(
+                    .bottom,
+                    viewModel.connectivity.isInternetAvaliable
+                    ? 0
+                    : OfflineSnackBarView.height
+                )
                 .transition(.move(edge: .bottom))
                 .onAppear {
                     doAfter(Theme.Timeout.snackbarMessageLongTimeout) {

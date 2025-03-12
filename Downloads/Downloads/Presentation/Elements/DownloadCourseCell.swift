@@ -75,10 +75,15 @@ struct DownloadCourseCell: View {
                     .clipped()
                 
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(course.name)
-                        .font(Theme.Fonts.titleLarge)
-                        .foregroundColor(.primary)
-                        .padding(.horizontal, 12)
+                    ZStack(alignment: .leading) {
+                        Text(course.name)
+                            .font(Theme.Fonts.titleLarge)
+                            .foregroundColor(.primary)
+                            .padding(.horizontal, 12)
+                        // Clickable area
+                        Rectangle()
+                            .foregroundStyle(Color.white.opacity(0.01))
+                    }
                 }
             }
             .onTapGesture {

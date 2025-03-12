@@ -4410,6 +4410,19 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		return __value
     }
 
+    open func getFreeDiskSpace() -> Int? {
+        addInvocation(.m_getFreeDiskSpace)
+		let perform = methodPerformValue(.m_getFreeDiskSpace) as? () -> Void
+		perform?()
+		var __value: Int? = nil
+		do {
+		    __value = try methodReturnValue(.m_getFreeDiskSpace).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_getCurrentDownloadTask
@@ -4428,6 +4441,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_removeAppSupportDirectoryUnusedContent
         case m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>, Parameter<String>)
         case m_downloadTask__for_blockId(Parameter<String>)
+        case m_getFreeDiskSpace
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -4491,6 +4505,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_getFreeDiskSpace, .m_getFreeDiskSpace): return .match
             default: return .none
             }
         }
@@ -4513,6 +4529,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_removeAppSupportDirectoryUnusedContent: return 0
             case let .m_delete__blocks_blockscourseId_courseId(p0, p1): return p0.intValue + p1.intValue
             case let .m_downloadTask__for_blockId(p0): return p0.intValue
+            case .m_getFreeDiskSpace: return 0
             }
         }
         func assertionName() -> String {
@@ -4533,6 +4550,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_removeAppSupportDirectoryUnusedContent: return ".removeAppSupportDirectoryUnusedContent()"
             case .m_delete__blocks_blockscourseId_courseId: return ".delete(blocks:courseId:)"
             case .m_downloadTask__for_blockId: return ".downloadTask(for:)"
+            case .m_getFreeDiskSpace: return ".getFreeDiskSpace()"
             }
         }
     }
@@ -4566,6 +4584,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func downloadTask(for blockId: Parameter<String>, willReturn: DownloadDataTask?...) -> MethodStub {
             return Given(method: .m_downloadTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getFreeDiskSpace(willReturn: Int?...) -> MethodStub {
+            return Given(method: .m_getFreeDiskSpace, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCurrentDownloadTask(willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
             let willReturn: [DownloadDataTask?] = []
@@ -4613,6 +4634,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             let willReturn: [DownloadDataTask?] = []
 			let given: Given = { return Given(method: .m_downloadTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (DownloadDataTask?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getFreeDiskSpace(willProduce: (Stubber<Int?>) -> Void) -> MethodStub {
+            let willReturn: [Int?] = []
+			let given: Given = { return Given(method: .m_getFreeDiskSpace, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int?).self)
 			willProduce(stubber)
 			return given
         }
@@ -4697,6 +4725,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func removeAppSupportDirectoryUnusedContent() -> Verify { return Verify(method: .m_removeAppSupportDirectoryUnusedContent)}
         public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>) -> Verify { return Verify(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`))}
         public static func downloadTask(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_downloadTask__for_blockId(`blockId`))}
+        public static func getFreeDiskSpace() -> Verify { return Verify(method: .m_getFreeDiskSpace)}
     }
 
     public struct Perform {
@@ -4750,6 +4779,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func downloadTask(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_downloadTask__for_blockId(`blockId`), performs: perform)
+        }
+        public static func getFreeDiskSpace(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_getFreeDiskSpace, performs: perform)
         }
     }
 

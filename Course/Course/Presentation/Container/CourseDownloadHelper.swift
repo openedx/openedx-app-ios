@@ -265,21 +265,9 @@ public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecke
     // swiftlint:enable function_body_length
     
     private func isEnoughSpace(for fileSize: Int) -> Bool {
-        if let freeSpace = getFreeDiskSpace() {
+        if let freeSpace = manager.getFreeDiskSpace() {
             return freeSpace > Int(Double(fileSize) * 1.2)
         }
         return false
-    }
-
-    private func getFreeDiskSpace() -> Int? {
-        do {
-            let attributes = try FileManager.default.attributesOfFileSystem(forPath: NSHomeDirectory() as String)
-            if let freeSpace = attributes[.systemFreeSize] as? Int64 {
-                return Int(freeSpace)
-            }
-        } catch {
-            print("Error retrieving free disk space: \(error.localizedDescription)")
-        }
-        return nil
     }
 }

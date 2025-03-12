@@ -18,3 +18,6 @@
 "DOWNLOADS.CELL.DOWNLOAD_COURSE" = "Download course";
 "DOWNLOADS.CELL.DOWNLOADING" = "Downloading";
 "DOWNLOADS.CELL.LOADING_COURSE_STRUCTURE" = "Loading course structure...";
+
+"MENU_OPTION.REMOVE" = "Remove course downloads";
+"MENU_OPTION.CANCEL" = "Cancel download";
