@@ -223,7 +223,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                     analytics.downloadError(courseId: courseID, courseName: courseName, errorType: "wifi_required")
                     return
                 } else {
-                    await presentConfirmDownloadCellularAlert(
+                    presentConfirmDownloadCellularAlert(
                         blocks: downloadableBlocks,
                         sequentials: courseStructure.childs.flatMap { $0.childs },
                         totalFileSize: totalFileSize
@@ -232,7 +232,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                 }
             } else if totalFileSize > 100 * 1024 * 1024 {
                 // For large downloads over WiFi, show confirmation
-                await presentConfirmDownloadAlert(
+                presentConfirmDownloadAlert(
                     blocks: downloadableBlocks,
                     sequentials: courseStructure.childs.flatMap { $0.childs },
                     totalFileSize: totalFileSize
@@ -338,7 +338,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                 await refreshDownloadStates()
                 await getDownloadCourses(isRefresh: true)
             } else {
-                await presentRemoveDownloadAlert(
+                presentRemoveDownloadAlert(
                     blocks: blocks,
                     sequentials: courseStructure.childs.flatMap { $0.childs },
                     courseID: courseID
@@ -392,8 +392,13 @@ public final class AppDownloadsViewModel: ObservableObject {
         let course = courses.first(where: { $0.id == courseID })
         let courseName = course?.name ?? ""
         
-        // Use the course's totalSize property directly
-        let sizeToDisplay = course?.totalSize ?? Int64(totalFileSize)
+        // Calculate the remaining size to download
+        let downloadedSize = downloadedSizes[courseID] ?? 0
+        let totalSize = course?.totalSize ?? Int64(totalFileSize)
+        let remainingSize = max(0, totalSize - downloadedSize)
+        
+        // Use the remaining size instead of the total size
+        let sizeToDisplay = remainingSize
         
         router.presentView(
             transitionStyle: .coverVertical,
@@ -463,7 +468,14 @@ public final class AppDownloadsViewModel: ObservableObject {
         let courseID = blocks.first?.courseId ?? ""
         let course = courses.first(where: { $0.id == courseID })
         let courseName = course?.name ?? ""
-        let sizeToDisplay = course?.totalSize ?? Int64(totalFileSize)
+        
+        // Calculate the remaining size to download
+        let downloadedSize = downloadedSizes[courseID] ?? 0
+        let totalSize = course?.totalSize ?? Int64(totalFileSize)
+        let remainingSize = max(0, totalSize - downloadedSize)
+        
+        // Use the remaining size instead of the total size
+        let sizeToDisplay = remainingSize
         
         router.presentView(
             transitionStyle: .coverVertical,
