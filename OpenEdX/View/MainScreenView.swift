@@ -138,7 +138,7 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             VStack {
-                DatesView(viewModel: DatesViewModel())
+                DatesView(viewModel: Container.shared.resolve(DatesViewModel.self)!)
             }
             .tabItem {
                 CoreAssets.dates.swiftUIImage

@@ -23,24 +23,95 @@ public final class DatesViewModel: ObservableObject {
         }
     }
     
-    //    let router: DatesViewRouter
-    let connectivity: ConnectivityProtocol = Connectivity()
-    
-    //    private let interactor: DatesViewInteractorProtocol
-    //    private let analytics: DatesViewAnalytics
+    let connectivity: ConnectivityProtocol
+    private let interactor: DatesViewInteractorProtocol
     
     public init(
-        //        interactor: DatesViewInteractorProtocol,
-        //        router: DatesViewRouter,
-        //        analytics: ProfileAnalytics,
-//        connectivity: ConnectivityProtocol
+        interactor: DatesViewInteractorProtocol,
+        connectivity: ConnectivityProtocol
     ) {
-        //        self.interactor = interactor
-        //        self.router = router
-        //        self.analytics = analytics
-//        self.connectivity = connectivity
+        self.interactor = interactor
+        self.connectivity = connectivity
     }
     
+    public func loadDates(isRefresh: Bool = false) async {
+        isShowProgress = !isRefresh
+        
+        do {
+            let dates: [CourseDate]
+            
+            if connectivity.isInternetAvaliable {
+                dates = try await interactor.getCourseDates(page: 1)
+            } else {
+                dates = try await interactor.getCourseDatesOffline()
+            }
+            
+            self.isShowProgress = false
+            self.processDates(dates)
+        } catch {
+            self.isShowProgress = false
+            self.errorMessage = error.localizedDescription
+        }
+    }
+    
+    private func processDates(_ dates: [CourseDate]) {
+        let now = Date()
+        let calendar = Calendar.current
+        
+        // Group dates by type
+        var pastDue: [CourseDate] = []
+        var today: [CourseDate] = []
+        var thisWeek: [CourseDate] = []
+        var nextWeek: [CourseDate] = []
+        var upcoming: [CourseDate] = []
+        
+        for date in dates {
+            if date.date < now {
+                pastDue.append(date)
+            } else if calendar.isDateInToday(date.date) {
+                today.append(date)
+            } else if calendar.isDate(date.date, equalTo: now, toGranularity: .weekOfYear) {
+                thisWeek.append(date)
+            } else if calendar.isDate(
+                date.date,
+                equalTo: now.addingTimeInterval(
+                    7*24*60*60
+                ),
+                toGranularity: .weekOfYear
+            ) {
+                nextWeek.append(date)
+            } else {
+                upcoming.append(date)
+            }
+        }
+        
+        // Create date groups
+        var groups: [DateGroup] = []
+        
+        if !pastDue.isEmpty {
+            groups.append(DateGroup(type: .pastDue, dates: pastDue))
+        }
+        
+        if !today.isEmpty {
+            groups.append(DateGroup(type: .today, dates: today))
+        }
+        
+        if !thisWeek.isEmpty {
+            groups.append(DateGroup(type: .thisWeek, dates: thisWeek))
+        }
+        
+        if !nextWeek.isEmpty {
+            groups.append(DateGroup(type: .nextWeek, dates: nextWeek))
+        }
+        
+        if !upcoming.isEmpty {
+            groups.append(DateGroup(type: .upcoming, dates: upcoming))
+        }
+        
+        self.coursesDates = groups
+    }
+    
+    // For testing and preview
     public func loadMockDates(isRefresh: Bool = false) async {
         isShowProgress = !isRefresh
         

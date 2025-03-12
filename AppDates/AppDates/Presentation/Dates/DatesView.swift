@@ -61,7 +61,7 @@ public struct DatesView: View {
                     .frameLimit(width: proxy.size.width)
                     .refreshable {
                         Task {
-                           await viewModel.loadMockDates(isRefresh: true)
+                           await viewModel.loadDates(isRefresh: true)
                         }
                     }
                 }
@@ -94,7 +94,7 @@ public struct DatesView: View {
             }
             .onAppear {
                 Task {
-                    await viewModel.loadMockDates()
+                    await viewModel.loadDates()
                 }
             }
         }
@@ -133,6 +133,13 @@ struct DatesEmptyStateView: View {
     }
 }
 
+#if DEBUG
 #Preview {
-    DatesView(viewModel: DatesViewModel())
+    DatesView(
+        viewModel: DatesViewModel(
+            interactor: DatesViewInteractor.mock,
+            connectivity: Connectivity()
+        )
+    )
 }
+#endif

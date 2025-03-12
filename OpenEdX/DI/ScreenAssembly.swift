@@ -16,6 +16,7 @@ import Dashboard
 import Profile
 import Course
 import Discussion
+import AppDates
 @preconcurrency import Combine
 
 // swiftlint:disable function_body_length closure_parameter_position
@@ -311,6 +312,28 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(ProfileRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!
+            )
+        }
+        
+        // MARK: AppDates
+        container.register(DatesViewRepositoryProtocol.self) { r in
+            DatesViewRepository(
+                api: r.resolve(API.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                config: r.resolve(ConfigProtocol.self)!
+            )
+        }
+        
+        container.register(DatesViewInteractorProtocol.self) { r in
+            DatesViewInteractor(
+                repository: r.resolve(DatesViewRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(DatesViewModel.self) { @MainActor r in
+            DatesViewModel(
+                interactor: r.resolve(DatesViewInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
         

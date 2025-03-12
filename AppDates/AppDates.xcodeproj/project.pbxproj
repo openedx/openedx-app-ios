@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 63;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,15 +15,6 @@
 		CE815A9C2D60DB8A00CB9114 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE815A9B2D60DB8A00CB9114 /* OEXFoundation */; };
 		CE815AA02D60DCCB00CB9114 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = CE815A9F2D60DCCB00CB9114 /* swiftgen.yml */; };
 		CE815AA32D60DD6B00CB9114 /* AppDatesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815AA12D60DD6B00CB9114 /* AppDatesTests.swift */; };
-		CE815AA62D60DD6F00CB9114 /* AppDates.h in Headers */ = {isa = PBXBuildFile; fileRef = CE815AA42D60DD6F00CB9114 /* AppDates.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		CE815AAE2D60DDB800CB9114 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE815AAC2D60DDB800CB9114 /* Localizable.strings */; };
-		CE815AB12D60DFF100CB9114 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815AB02D60DFF100CB9114 /* Strings.swift */; };
-		CE815AB42D60E0B400CB9114 /* DatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815AB32D60E0B400CB9114 /* DatesView.swift */; };
-		CE815AB62D60E0E800CB9114 /* DateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815AB52D60E0E800CB9114 /* DateCell.swift */; };
-		CE815ABA2D60EC4B00CB9114 /* CourseDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815AB92D60EC4500CB9114 /* CourseDate.swift */; };
-		CE815ABD2D60EEB600CB9114 /* DateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815ABB2D60EEB600CB9114 /* DateGroup.swift */; };
-		CE815ABE2D60EEB600CB9114 /* DateGroupType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815ABC2D60EEB600CB9114 /* DateGroupType.swift */; };
-		CE815AC02D60FD0700CB9114 /* DatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE815ABF2D60FD0700CB9114 /* DatesViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,17 +63,22 @@
 		CE815A782D60D78B00CB9114 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE815A9F2D60DCCB00CB9114 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		CE815AA12D60DD6B00CB9114 /* AppDatesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDatesTests.swift; sourceTree = "<group>"; };
-		CE815AA42D60DD6F00CB9114 /* AppDates.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDates.h; sourceTree = "<group>"; };
-		CE815AAD2D60DDB800CB9114 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		CE815AB02D60DFF100CB9114 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
-		CE815AB32D60E0B400CB9114 /* DatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesView.swift; sourceTree = "<group>"; };
-		CE815AB52D60E0E800CB9114 /* DateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateCell.swift; sourceTree = "<group>"; };
-		CE815AB92D60EC4500CB9114 /* CourseDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDate.swift; sourceTree = "<group>"; };
-		CE815ABB2D60EEB600CB9114 /* DateGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGroup.swift; sourceTree = "<group>"; };
-		CE815ABC2D60EEB600CB9114 /* DateGroupType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateGroupType.swift; sourceTree = "<group>"; };
-		CE815ABF2D60FD0700CB9114 /* DatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesViewModel.swift; sourceTree = "<group>"; };
 		ED203AA9F3F382E5A5779E5F /* Pods-App-AppDates.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-AppDates.release.xcconfig"; path = "Target Support Files/Pods-App-AppDates/Pods-App-AppDates.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		CE3687D32D817AE90008AC99 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			publicHeaders = (
+				AppDates.h,
+			);
+			target = CE815A5D2D60D75200CB9114 /* AppDates */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		CE3687C92D817AE90008AC99 /* AppDates */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (CE3687D32D817AE90008AC99 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = AppDates; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		CE815A5B2D60D75200CB9114 /* Frameworks */ = {
@@ -136,7 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				CE815A9F2D60DCCB00CB9114 /* swiftgen.yml */,
-				CE815AA52D60DD6F00CB9114 /* AppDates */,
+				CE3687C92D817AE90008AC99 /* AppDates */,
 				CE815AA22D60DD6B00CB9114 /* AppDatesTests */,
 				CE815A772D60D78B00CB9114 /* Frameworks */,
 				CE815A5F2D60D75200CB9114 /* Products */,
@@ -171,62 +167,6 @@
 			path = AppDatesTests;
 			sourceTree = "<group>";
 		};
-		CE815AA52D60DD6F00CB9114 /* AppDates */ = {
-			isa = PBXGroup;
-			children = (
-				CE815AAA2D60DD9800CB9114 /* Presentation */,
-				CE815AA92D60DD9200CB9114 /* Domain */,
-				CE815AA82D60DD8D00CB9114 /* Data */,
-				CE815AA72D60DD8400CB9114 /* SwiftGen */,
-				CE815AA42D60DD6F00CB9114 /* AppDates.h */,
-				CE815AAC2D60DDB800CB9114 /* Localizable.strings */,
-			);
-			path = AppDates;
-			sourceTree = "<group>";
-		};
-		CE815AA72D60DD8400CB9114 /* SwiftGen */ = {
-			isa = PBXGroup;
-			children = (
-				CE815AB02D60DFF100CB9114 /* Strings.swift */,
-			);
-			path = SwiftGen;
-			sourceTree = "<group>";
-		};
-		CE815AA82D60DD8D00CB9114 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
-		CE815AA92D60DD9200CB9114 /* Domain */ = {
-			isa = PBXGroup;
-			children = (
-				CE815ABB2D60EEB600CB9114 /* DateGroup.swift */,
-				CE815ABC2D60EEB600CB9114 /* DateGroupType.swift */,
-				CE815AB92D60EC4500CB9114 /* CourseDate.swift */,
-			);
-			path = Domain;
-			sourceTree = "<group>";
-		};
-		CE815AAA2D60DD9800CB9114 /* Presentation */ = {
-			isa = PBXGroup;
-			children = (
-				CE815AB22D60E0A300CB9114 /* Dates */,
-			);
-			path = Presentation;
-			sourceTree = "<group>";
-		};
-		CE815AB22D60E0A300CB9114 /* Dates */ = {
-			isa = PBXGroup;
-			children = (
-				CE815AB32D60E0B400CB9114 /* DatesView.swift */,
-				CE815ABF2D60FD0700CB9114 /* DatesViewModel.swift */,
-				CE815AB52D60E0E800CB9114 /* DateCell.swift */,
-			);
-			path = Dates;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -234,7 +174,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE815AA62D60DD6F00CB9114 /* AppDates.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +194,9 @@
 			buildRules = (
 			);
 			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				CE3687C92D817AE90008AC99 /* AppDates */,
 			);
 			name = AppDates;
 			packageProductDependencies = (
@@ -333,7 +275,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE815AA02D60DCCB00CB9114 /* swiftgen.yml in Resources */,
-				CE815AAE2D60DDB800CB9114 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,13 +374,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE815AC02D60FD0700CB9114 /* DatesViewModel.swift in Sources */,
-				CE815AB42D60E0B400CB9114 /* DatesView.swift in Sources */,
-				CE815AB62D60E0E800CB9114 /* DateCell.swift in Sources */,
-				CE815ABA2D60EC4B00CB9114 /* CourseDate.swift in Sources */,
-				CE815ABD2D60EEB600CB9114 /* DateGroup.swift in Sources */,
-				CE815ABE2D60EEB600CB9114 /* DateGroupType.swift in Sources */,
-				CE815AB12D60DFF100CB9114 /* Strings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -460,17 +394,6 @@
 			targetProxy = CE815A682D60D75200CB9114 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		CE815AAC2D60DDB800CB9114 /* Localizable.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				CE815AAD2D60DDB800CB9114 /* en */,
-			);
-			name = Localizable.strings;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CE815A702D60D75200CB9114 /* Debug */ = {
