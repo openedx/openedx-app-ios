@@ -1,5 +1,5 @@
 {
-  "originHash" : "7091edbbbbea71591e476364909f2e5f04e1211b9c58ac97e2712e9546afdd90",
+  "originHash" : "679c9881c55ee7e1f6d683f7cf7aae4fd8777f05e38f2cce8c6d21aa216ec03b",
   "pins" : [
     {
       "identity" : "abseil-cpp-binary",
@@ -11,21 +11,12 @@
       }
     },
     {
-      "identity" : "analytics-swift",
+      "identity" : "alamofire",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/segmentio/analytics-swift.git",
+      "location" : "https://github.com/Alamofire/Alamofire.git",
       "state" : {
-        "revision" : "825bac9da99ca02bacf85bdf95f707d8e9f786d1",
-        "version" : "1.6.2"
-      }
-    },
-    {
-      "identity" : "analytics-swift-firebase",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/segment-integrations/analytics-swift-firebase",
-      "state" : {
-        "revision" : "8d955ec9554869e9f1eaf2c265d439d12947f8b3",
-        "version" : "1.4.0"
+        "revision" : "e16d3481f5ed35f0472cb93350085853d754913f",
+        "version" : "5.10.1"
       }
     },
     {
@@ -38,39 +29,12 @@
       }
     },
     {
-      "identity" : "braze-segment-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/braze-inc/braze-segment-swift",
-      "state" : {
-        "revision" : "0f1fb36c89bf4f057e89c93ec0f1a159f33d8fd5",
-        "version" : "4.0.0"
-      }
-    },
-    {
-      "identity" : "braze-swift-sdk",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/braze-inc/braze-swift-sdk",
-      "state" : {
-        "revision" : "f6b0226e04d19bb79f7fa57cf9f1aa56abe465ff",
-        "version" : "10.3.1"
-      }
-    },
-    {
       "identity" : "firebase-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/firebase/firebase-ios-sdk",
       "state" : {
         "revision" : "f909f901bfba9e27e4e9da83242a4915d6dd64bb",
         "version" : "11.3.0"
-      }
-    },
-    {
-      "identity" : "fullstory-swift-package-ios",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/fullstorydev/fullstory-swift-package-ios",
-      "state" : {
-        "revision" : "5ba8ef3c359f676f4a5e56c7bf8d68fa998a6362",
-        "version" : "1.53.0"
       }
     },
     {
@@ -128,12 +92,21 @@
       }
     },
     {
-      "identity" : "jsonsafeencoding-swift",
+      "identity" : "keychain-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/segmentio/jsonsafeencoding-swift.git",
+      "location" : "https://github.com/evgenyneu/keychain-swift.git",
       "state" : {
-        "revision" : "af6a8b360984085e36c6341b21ecb35c12f47ebd",
-        "version" : "2.0.0"
+        "revision" : "5e1b02b6a9dac2a759a1d5dbc175c86bd192a608",
+        "version" : "24.0.0"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "c0940e241945e6378c01fbd45fd3815579d47ef5",
+        "version" : "8.1.0"
       }
     },
     {
@@ -150,8 +123,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/AzureAD/microsoft-authentication-library-for-objc",
       "state" : {
-        "revision" : "a20fd4c4587405da35723940d6ac0ee06a7b2b17",
-        "version" : "1.6.0"
+        "revision" : "8f966b3c88bf0c4b32cd1ab706d7d674b6fdf528",
+        "version" : "1.7.0"
       }
     },
     {
@@ -164,6 +137,24 @@
       }
     },
     {
+      "identity" : "openedx-app-firebase-analytics-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openedx/openedx-app-firebase-analytics-ios",
+      "state" : {
+        "revision" : "5b1cb15bbf8d17b5f9692849e86257baef836370",
+        "version" : "1.0.2"
+      }
+    },
+    {
+      "identity" : "openedx-app-foundation-ios",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/openedx/openedx-app-foundation-ios/",
+      "state" : {
+        "revision" : "d02b7b1226753950afa9bd0c5c6f810f7d386f8e",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "promises",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/google/promises.git",
@@ -173,30 +164,39 @@
       }
     },
     {
-      "identity" : "sdwebimage",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SDWebImage/SDWebImage.git",
-      "state" : {
-        "revision" : "8a1be70a625683bc04d6903e2935bf23f3c6d609",
-        "version" : "5.19.7"
-      }
-    },
-    {
-      "identity" : "sovran-swift",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/segmentio/sovran-swift.git",
-      "state" : {
-        "revision" : "24867f3e4ac62027db9827112135e6531b6f4051",
-        "version" : "1.1.2"
-      }
-    },
-    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
       "state" : {
         "revision" : "ebc7251dd5b37f627c93698e4374084d98409633",
         "version" : "1.28.2"
+      }
+    },
+    {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "7c80ce6f142164b0201871e580b021d1b2c69804",
+        "version" : "0.57.0"
+      }
+    },
+    {
+      "identity" : "swiftui-introspect",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/siteline/swiftui-introspect",
+      "state" : {
+        "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
+        "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "swinject",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Swinject/Swinject.git",
+      "state" : {
+        "revision" : "be9dbcc7b86811bc131539a20c6f9c2d3e56919f",
+        "version" : "2.9.1"
       }
     }
   ],

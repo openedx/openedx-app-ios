@@ -21,14 +21,14 @@ struct DownloadCourseCell: View {
     
     // Ensure the download size is valid
     private var validDownloadedSize: Int64 {
-        // Always return a value between 0 and course.totalSize to avoid overflow
-        return max(0, min(downloadedSize, course.totalSize))
+        // Always ensure downloaded size is non-negative
+        return max(0, downloadedSize)
     }
 
     // Calculate progress percentage safely
     private var progressPercentage: CGFloat {
         guard course.totalSize > 0 else { return 0 }
-        // Always calculate as a percentage of the total course size
+        // Calculate as a percentage of the total course size, but cap at 100%
         let percentage = CGFloat(validDownloadedSize) / CGFloat(course.totalSize)
         // Clamp to valid range
         return max(0, min(1, percentage))
@@ -37,7 +37,7 @@ struct DownloadCourseCell: View {
     // Format progress as percentage
     private var progressText: String {
         let percent = Int(progressPercentage * 100)
-        return "\(percent)%"
+        return "\(min(percent, 100))%"
     }
     
     private var downloadButtonState: DownloadButtonState {
@@ -46,8 +46,10 @@ struct DownloadCourseCell: View {
         } else if downloadState == .inProgress || downloadState == .waiting {
             return .downloading
         } else if downloadState == .finished && validDownloadedSize >= course.totalSize * 95 / 100 {
+            // Only consider it fully downloaded if it's at least 95% complete
             return .downloaded
-        } else if downloadState == .finished || validDownloadedSize > 0 {
+        } else if validDownloadedSize > 0 {
+            // If there's any downloaded content but not fully downloaded, consider it partially downloaded
             return .partiallyDownloaded
         } else {
             return .notDownloaded

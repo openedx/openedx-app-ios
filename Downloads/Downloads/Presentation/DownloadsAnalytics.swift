@@ -24,6 +24,9 @@ public protocol DownloadsAnalytics {
 
 public enum AnalyticsError: String {
     case storageFull = "storage_full"
+    case noInternet = "no_internet"
+    case wifiRequired = "wifi_required"
+    case unknown = "unknown"
 }
 
 #if DEBUG
