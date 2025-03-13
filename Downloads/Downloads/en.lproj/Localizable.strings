@@ -12,7 +12,6 @@
 "DOWNLOADS.NO_COURSES_TO_DOWNLOAD.DESCRIPTION" = "You currently have no courses with downloadable content.";
 
 "DOWNLOADS.CELL.DOWNLOADED" = "%@ downloaded";
-"DOWNLOADS.CELL.DOWNLOAD_SIZE" = "Download %@";
 "DOWNLOADS.CELL.ALL_DOWNLOADED" = "All %@ downloaded";
 "DOWNLOADS.CELL.AVAILABLE" = "%@ available";
 "DOWNLOADS.CELL.DOWNLOAD_COURSE" = "Download course";

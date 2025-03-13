@@ -29,10 +29,6 @@ public enum DownloadsLocalization {
       }
       /// Download course
       public static let downloadCourse = DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.DOWNLOAD_COURSE", fallback: "Download course")
-      /// Download %@
-      public static func downloadSize(_ p1: Any) -> String {
-        return DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.DOWNLOAD_SIZE", String(describing: p1), fallback: "Download %@")
-      }
       /// %@ downloaded
       public static func downloaded(_ p1: Any) -> String {
         return DownloadsLocalization.tr("Localizable", "DOWNLOADS.CELL.DOWNLOADED", String(describing: p1), fallback: "%@ downloaded")

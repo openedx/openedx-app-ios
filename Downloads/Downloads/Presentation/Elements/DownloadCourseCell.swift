@@ -201,9 +201,7 @@ struct DownloadCourseCell: View {
             switch downloadButtonState {
             case .notDownloaded, .partiallyDownloaded:
                 StyledButton(
-                    downloadButtonState == .notDownloaded
-                    ? DownloadsLocalization.Downloads.Cell.downloadSize(totalSizeFormatted)
-                    : DownloadsLocalization.Downloads.Cell.downloadCourse,
+                    DownloadsLocalization.Downloads.Cell.downloadCourse,
                     action: onDownloadTap,
                     iconImage: CoreAssets.downloads.swiftUIImage,
                     iconPosition: .left
