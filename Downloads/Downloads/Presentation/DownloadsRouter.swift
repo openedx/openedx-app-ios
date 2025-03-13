@@ -22,6 +22,7 @@ public protocol DownloadsRouter: BaseRouter {
         showDates: Bool,
         lastVisitedBlockID: String?
     )
+    func showSettings()
 }
 
 // Mark - For testing and SwiftUI preview
@@ -39,5 +40,6 @@ public class DownloadsRouterMock: BaseRouterMock, DownloadsRouter {
         showDates: Bool,
         lastVisitedBlockID: String?
     ) {}
+    public func showSettings() {}
 }
 #endif

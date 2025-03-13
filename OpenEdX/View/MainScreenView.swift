@@ -164,19 +164,21 @@ struct MainScreenView: View {
             .tag(MainTab.profile)
             .accessibilityIdentifier("profile_tabitem")
         }
-        .navigationBarHidden(viewModel.selection == .dashboard)
-        .navigationBarBackButtonHidden(viewModel.selection == .dashboard)
+        .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
+        .navigationBarBackButtonHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
-                Button(action: {
-                    let router = Container.shared.resolve(ProfileRouter.self)!
-                    router.showSettings()
-                }, label: {
-                    CoreAssets.settings.swiftUIImage.renderingMode(.template)
-                        .foregroundColor(Theme.Colors.accentColor)
-                })
-                .accessibilityIdentifier("edit_profile_button")
+                if viewModel.selection != .downloads {
+                    Button(action: {
+                        let router = Container.shared.resolve(ProfileRouter.self)!
+                        router.showSettings()
+                    }, label: {
+                        CoreAssets.settings.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
+                    })
+                    .accessibilityIdentifier("edit_profile_button")
+                }
             })
         }
         .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
