@@ -102,12 +102,17 @@ public struct DownloadActionView: View {
             
             if let courseName {
                 HStack {
-                    Image(systemName: "doc.text")
+                    CoreAssets.chapter.swiftUIImage
                         .renderingMode(.template)
                         .foregroundStyle(Theme.Colors.textPrimary)
                     Text(courseName)
                         .font(Theme.Fonts.bodyMedium)
                         .lineLimit(1)
+                    if let fileSize = downloadedSize, fileSize != 0 {
+                        Text(fileSize.formattedFileSize())
+                            .foregroundColor(Theme.Colors.textSecondaryLight)
+                            .font(Theme.Fonts.bodySmall)
+                    }
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 8)

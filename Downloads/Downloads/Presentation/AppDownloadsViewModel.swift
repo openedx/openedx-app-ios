@@ -245,7 +245,7 @@ public final class AppDownloadsViewModel: ObservableObject {
             let downloadableBlocks = courseStructure.childs.flatMap { chapter in
                 chapter.childs.flatMap { sequential in
                     sequential.childs.flatMap { vertical in
-                        vertical.childs.filter { $0.isDownloadable }
+                        vertical.childs.filter { $0.fileSize != nil }
                     }
                 }
             }
@@ -485,7 +485,8 @@ public final class AppDownloadsViewModel: ObservableObject {
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .confirmDownloadCellular,
-                sequentials: sequentials,
+                courseBlocks: [],
+                courseName: courseName,
                 downloadedSize: Int(sizeToDisplay),
                 action: { [weak self] in
                     guard let self else { return }
@@ -563,7 +564,8 @@ public final class AppDownloadsViewModel: ObservableObject {
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .confirmDownload,
-                sequentials: sequentials,
+                courseBlocks: [],
+                courseName: courseName,
                 downloadedSize: Int(sizeToDisplay),
                 action: { [weak self] in
                     guard let self else { return }
@@ -622,7 +624,8 @@ public final class AppDownloadsViewModel: ObservableObject {
             transitionStyle: .coverVertical,
             view: DownloadActionView(
                 actionType: .remove,
-                sequentials: sequentials,
+                courseBlocks: [],
+                courseName: courseName,
                 downloadedSize: Int(downloadedSize),
                 action: { [weak self] in
                     guard let self else { return }
