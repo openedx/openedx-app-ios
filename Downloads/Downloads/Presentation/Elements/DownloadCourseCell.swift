@@ -24,7 +24,7 @@ struct DownloadCourseCell: View {
         // Always ensure downloaded size is non-negative
         return max(0, downloadedSize)
     }
-
+    
     // Calculate progress percentage safely
     private var progressPercentage: CGFloat {
         guard course.totalSize > 0 else { return 0 }
@@ -61,30 +61,32 @@ struct DownloadCourseCell: View {
             VStack(alignment: .leading) {
                 HStack(alignment: .top, spacing: 12) {
                     ZStack {
-                        KFImage(URL(string: course.image ?? ""))
-                            .onFailureImage(CoreAssets.noCourseImage.image)
-                            .resizable()
-                            .scaledToFill()
-                            .allowsHitTesting(false)
-                            .clipped()
                         // Clickable area
                         Rectangle()
-                            .foregroundStyle(Color.white.opacity(0.01))
-                            .frame(height: 120)
+                            .foregroundStyle(Color.white.opacity(0.001))
+                            .background {
+                                KFImage(URL(string: course.image ?? ""))
+                                    .onFailureImage(CoreAssets.noCourseImage.image)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .allowsHitTesting(false)
+                                    .clipped()
+                            }
                     }
-                    
-                }.frame(height: 120)
-                    .clipped()
+                }
+                .clipped()
                 
                 VStack(alignment: .leading, spacing: 4) {
                     ZStack(alignment: .leading) {
                         Text(course.name)
                             .font(Theme.Fonts.titleLarge)
+                            .lineLimit(2)
                             .foregroundColor(.primary)
                             .padding(.horizontal, 12)
-                        // Clickable area
-                        Rectangle()
-                            .foregroundStyle(Color.white.opacity(0.01))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .background {
+                                Theme.Colors.background
+                            }
                     }
                 }
             }
@@ -103,9 +105,8 @@ struct DownloadCourseCell: View {
                         lastVisitedBlockID: nil
                     )
             }
-
+            
             let downloadedFormatted = Int(validDownloadedSize).formattedFileSize()
-            let totalSizeFormatted = Int(course.totalSize).formattedFileSize()
             let availableBytes = max(course.totalSize - validDownloadedSize, 0)
             let availableFormatted = Int(availableBytes).formattedFileSize()
             
@@ -119,7 +120,7 @@ struct DownloadCourseCell: View {
                         
                         if progressPercentage > 0 {
                             let width = max(0, min(geometry.size.width * progressPercentage, geometry.size.width))
-                                                    
+                            
                             RoundedCorners(
                                 tl: 4,
                                 tr: progressPercentage >= 1.0 ? 4 : 0,
@@ -153,7 +154,7 @@ struct DownloadCourseCell: View {
                 .cornerRadius(4)
                 .padding(.horizontal, 12)
             }
-
+            
             VStack(alignment: .leading, spacing: 4) {
                 switch downloadButtonState {
                 case .downloaded:
@@ -197,14 +198,15 @@ struct DownloadCourseCell: View {
                 .bottom,
                 (downloadButtonState == .notDownloaded || downloadButtonState == .partiallyDownloaded) ? 0 : 12
             )
-
+            
             switch downloadButtonState {
             case .notDownloaded, .partiallyDownloaded:
                 StyledButton(
                     DownloadsLocalization.Downloads.Cell.downloadCourse,
                     action: onDownloadTap,
                     iconImage: CoreAssets.downloads.swiftUIImage,
-                    iconPosition: .left
+                    iconPosition: .left,
+                    maxWidthIpad: .infinity
                 )
                 .padding(.horizontal, 12)
                 .padding(.bottom, 12)
@@ -217,7 +219,7 @@ struct DownloadCourseCell: View {
                         .foregroundStyle(Theme.Colors.textPrimary)
                 }
                 .padding(.bottom, 12)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity, maxHeight: 42, alignment: .center)
                 .padding(.horizontal, 16)
             case .loadingStructure:
                 HStack {
@@ -228,7 +230,7 @@ struct DownloadCourseCell: View {
                         .foregroundStyle(Theme.Colors.textPrimary)
                 }
                 .padding(.bottom, 12)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .frame(maxWidth: .infinity, maxHeight: 42, alignment: .center)
                 .padding(.horizontal, 16)
             case .downloaded:
                 EmptyView()
@@ -243,9 +245,9 @@ struct DownloadCourseCell: View {
                 .shadow(radius: 4, y: 3)
         }
         .overlay {
-            if downloadButtonState != .notDownloaded {
+            if downloadButtonState != .notDownloaded && downloadButtonState != .loadingStructure {
                 DropDownMenu(
-                    isDownloading: downloadButtonState == .downloading || downloadButtonState == .loadingStructure,
+                    isDownloading: downloadButtonState == .downloading,
                     onRemoveTap: onRemoveTap,
                     onCancelTap: onCancelTap
                 )

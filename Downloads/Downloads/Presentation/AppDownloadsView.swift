@@ -31,7 +31,7 @@ public struct AppDownloadsView: View {
     public init(viewModel: AppDownloadsViewModel) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
     }
-
+    
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
@@ -70,7 +70,7 @@ public struct AppDownloadsView: View {
                                         downloadState: viewModel.downloadStates[course.id],
                                         onDownloadTap: {
                                             Task {
-                                               await viewModel.downloadCourse(courseID: course.id)
+                                                await viewModel.downloadCourse(courseID: course.id)
                                             }
                                         },
                                         onRemoveTap: {
@@ -84,6 +84,7 @@ public struct AppDownloadsView: View {
                                             }
                                         }
                                     ).id(course.id)
+                                        .frame(height: 330)
                                 }
                             }
                             Spacer(minLength: 100)
