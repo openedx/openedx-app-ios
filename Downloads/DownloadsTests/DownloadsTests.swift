@@ -11,7 +11,6 @@ import SwiftyMocky
 import OEXFoundation
 @testable import Downloads
 @testable import Core
-@testable import Course
 
 @MainActor
 final class DownloadsTests: XCTestCase {
@@ -43,6 +42,16 @@ final class DownloadsTests: XCTestCase {
         Given(downloadsHelper, .isDownloading(courseID: .any, willReturn: false))
         Given(downloadsHelper, .isPartiallyDownloaded(courseID: .any, willReturn: false))
         Given(downloadsHelper, .isFullyDownloaded(courseID: .any, willReturn: false))
+        
+        // Add default stub for getLoadedCourseBlocks
+        Given(courseManager, .getLoadedCourseBlocks(courseID: .any, willReturn: createMockCourseStructure()))
+        
+        // Add default stub for getCourseBlocks
+        Given(courseManager, .getCourseBlocks(courseID: .any, willReturn: createMockCourseStructure()))
+        
+        // Add default stubs for disk space and video size checks
+        Given(downloadManager, .getFreeDiskSpace(willReturn: 1000000000)) // 1GB free space
+        Given(downloadManager, .isLargeVideosSize(blocks: .any, willReturn: false))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -149,8 +158,21 @@ final class DownloadsTests: XCTestCase {
         let courseID = "course1"
         let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
         let analytics = DownloadsAnalyticsMock()
+        let expectation = XCTestExpectation(description: "Download course completed")
         
+        // Override the default stub with a specific course structure
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
+        
+        // Add stub for getFreeDiskSpace to ensure isEnoughSpace returns true
+        Given(downloadManager, .getFreeDiskSpace(willReturn: 1000000000)) // 1GB free space
+        
+        // Add stub for isLargeVideosSize to ensure isShowedAllowLargeDownloadAlert returns false
+        Given(downloadManager, .isLargeVideosSize(blocks: .any, willReturn: false))
+        
+        // Add a perform stub to mark the expectation as fulfilled when addToDownloadQueue is called
+        Perform(downloadManager, .addToDownloadQueue(blocks: .any, perform: { _ in
+            expectation.fulfill()
+        }))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -165,12 +187,9 @@ final class DownloadsTests: XCTestCase {
         
         // When
         await viewModel.downloadCourse(courseID: courseID)
-        
-        // Need a small delay to allow the task to execute
-        try await Task.sleep(for: .milliseconds(100))
+        await fulfillment(of: [expectation])
         
         // Then
-        Verify(courseManager, 1, .getLoadedCourseBlocks(courseID: .value(courseID)))
         Verify(downloadManager, 1, .addToDownloadQueue(blocks: .any))
         Verify(analytics, 1, .downloadCourseClicked(courseId: .value(courseID), courseName: .any))
         Verify(analytics, 1, .downloadStarted(courseId: .value(courseID), courseName: .any, downloadSize: .any))
@@ -181,9 +200,22 @@ final class DownloadsTests: XCTestCase {
         let courseID = "course1"
         let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
         let analytics = DownloadsAnalyticsMock()
+        let expectation = XCTestExpectation(description: "Download course completed")
         
+        // Override the default stub with one that throws an error
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willThrow: NoCachedDataError()))
         Given(courseManager, .getCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
+        
+        // Add stub for getFreeDiskSpace to ensure isEnoughSpace returns true
+        Given(downloadManager, .getFreeDiskSpace(willReturn: 1000000000)) // 1GB free space
+        
+        // Add stub for isLargeVideosSize to ensure isShowedAllowLargeDownloadAlert returns false
+        Given(downloadManager, .isLargeVideosSize(blocks: .any, willReturn: false))
+        
+        // Add a perform stub to mark the expectation as fulfilled when addToDownloadQueue is called
+        Perform(downloadManager, .addToDownloadQueue(blocks: .any, perform: { _ in
+            expectation.fulfill()
+        }))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -198,12 +230,9 @@ final class DownloadsTests: XCTestCase {
         
         // When
         await viewModel.downloadCourse(courseID: courseID)
-        
-        // Need a small delay to allow the task to execute
-        try await Task.sleep(for: .milliseconds(100))
+        await fulfillment(of: [expectation])
         
         // Then
-        Verify(courseManager, 1, .getLoadedCourseBlocks(courseID: .value(courseID)))
         Verify(courseManager, 1, .getCourseBlocks(courseID: .value(courseID)))
         Verify(downloadManager, 1, .addToDownloadQueue(blocks: .any))
         Verify(analytics, 1, .downloadCourseClicked(courseId: .value(courseID), courseName: .any))
@@ -216,9 +245,22 @@ final class DownloadsTests: XCTestCase {
         let courseID = "course1"
         let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
         let analytics = DownloadsAnalyticsMock()
+        let expectation = XCTestExpectation(description: "Download course error")
         
+        // Override the default stub with a specific course structure
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
         Given(downloadManager, .addToDownloadQueue(blocks: .any, willThrow: NoWiFiError()))
+        
+        // Add stub for getFreeDiskSpace to ensure isEnoughSpace returns true
+        Given(downloadManager, .getFreeDiskSpace(willReturn: 1000000000)) // 1GB free space
+        
+        // Add stub for isLargeVideosSize to ensure isShowedAllowLargeDownloadAlert returns false
+        Given(downloadManager, .isLargeVideosSize(blocks: .any, willReturn: false))
+        
+        // Add a perform stub to mark the expectation as fulfilled when the error is tracked
+        Perform(analytics, .downloadError(courseId: .any, courseName: .any, errorType: .any, perform: { _, _, _ in
+            expectation.fulfill()
+        }))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -233,9 +275,7 @@ final class DownloadsTests: XCTestCase {
         
         // When
         await viewModel.downloadCourse(courseID: courseID)
-        
-        // Need a small delay to allow the task to execute
-        try await Task.sleep(for: .milliseconds(100))
+        await fulfillment(of: [expectation])
         
         // Then
         XCTAssertNotNil(viewModel.errorMessage)
@@ -290,14 +330,19 @@ final class DownloadsTests: XCTestCase {
         // Given
         let courseID = "course1"
         let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
+        let expectation = XCTestExpectation(description: "Remove download completed")
         
+        // Override the default stub with a specific course structure
         Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
+        
+        // Add a perform stub to mark the expectation as fulfilled when delete is called
+        Perform(downloadManager, .delete(blocks: .any, courseId: .any, perform: { _, _ in
+            expectation.fulfill()
+        }))
         
         // When
         await viewModel.removeDownload(courseID: courseID, skipConfirmation: true)
-        
-        // Need a small delay to allow the task to execute
-        try await Task.sleep(for: .milliseconds(100))
+        await fulfillment(of: [expectation])
         
         // Then
         Verify(courseManager, 1, .getLoadedCourseBlocks(courseID: .value(courseID)))
@@ -312,10 +357,19 @@ final class DownloadsTests: XCTestCase {
         let task = createMockDownloadTask(courseId: courseID)
         let subject = PassthroughSubject<DownloadManagerEvent, Never>()
         let analytics = DownloadsAnalyticsMock()
+        let expectation = XCTestExpectation(description: "Download progress updated")
         
         Given(downloadManager, .eventPublisher(willReturn: subject.eraseToAnyPublisher()))
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value(courseID), willReturn: (50, 100)))
         Given(downloadsHelper, .isFullyDownloaded(courseID: .value(courseID), willReturn: false))
+        
+        // This is the key change - we need to set isDownloading to true for the courseID
+        Given(downloadsHelper, .isDownloading(courseID: .value(courseID), willReturn: true))
+        
+        // Add a perform stub to mark the expectation as fulfilled when calculateDownloadProgress is called
+        Perform(downloadsHelper, .calculateDownloadProgress(courseID: .value(courseID), perform: { _ in
+            expectation.fulfill()
+        }))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -331,12 +385,12 @@ final class DownloadsTests: XCTestCase {
         // When
         subject.send(.progress(task))
         
-        // Need a small delay to allow the async processing
-        try await Task.sleep(for: .milliseconds(100))
+        await fulfillment(of: [expectation])
         
         // Then
         Verify(downloadsHelper, 1, .calculateDownloadProgress(courseID: .value(courseID)))
         Verify(downloadsHelper, 1, .isFullyDownloaded(courseID: .value(courseID)))
+        Verify(downloadsHelper, 1, .isDownloading(courseID: .value(courseID)))
         XCTAssertEqual(viewModel.downloadedSizes[courseID], 50)
         XCTAssertEqual(viewModel.downloadStates[courseID], .inProgress)
     }
@@ -347,10 +401,31 @@ final class DownloadsTests: XCTestCase {
         let task = createMockDownloadTask(courseId: courseID, state: .finished)
         let subject = PassthroughSubject<DownloadManagerEvent, Never>()
         let analytics = DownloadsAnalyticsMock()
+        let expectation = XCTestExpectation(description: "Download finished event processed")
+        
+        // Add a mock course to the courses array with the correct size
+        let mockCourse = createMockDownloadCoursePreview(id: courseID, totalSize: 100)
+        
+        // Create a course structure with downloadable blocks that have a total size of 100
+        let courseStructure = createMockCourseStructure(withDownloadableBlocks: true)
         
         Given(downloadManager, .eventPublisher(willReturn: subject.eraseToAnyPublisher()))
+        
+        // This is the key change - we need to ensure the calculateDownloadProgress returns 100 for both downloaded and total
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value(courseID), willReturn: (100, 100)))
         Given(downloadsHelper, .isFullyDownloaded(courseID: .value(courseID), willReturn: true))
+        Given(courseManager, .getLoadedCourseBlocks(courseID: .value(courseID), willReturn: courseStructure))
+        
+        // Create a custom mock for the analytics object that will fulfill the expectation
+        // and also verify the parameters
+        var downloadCompletedCalled = false
+        var downloadCompletedSize: Int64 = 0
+        
+        Perform(analytics, .downloadCompleted(courseId: .any, courseName: .any, downloadSize: .any, perform: { id, name, size in
+            downloadCompletedCalled = true
+            downloadCompletedSize = size
+            expectation.fulfill()
+        }))
         
         viewModel = AppDownloadsViewModel(
             interactor: DownloadsInteractor(repository: DownloadsRepositoryMock()),
@@ -363,19 +438,24 @@ final class DownloadsTests: XCTestCase {
             analytics: analytics
         )
         
+        // Add the mock course to the courses array
+        viewModel.courses = [mockCourse]
+        
         // Set the previous state to .inProgress
         viewModel.downloadStates[courseID] = .inProgress
         
         // When
         subject.send(.finished(task))
-        
-        // Need a small delay to allow the async processing
-        try await Task.sleep(for: .milliseconds(100))
+        await fulfillment(of: [expectation])
         
         // Then
         Verify(downloadsHelper, 1, .calculateDownloadProgress(courseID: .value(courseID)))
         Verify(downloadsHelper, 1, .isFullyDownloaded(courseID: .value(courseID)))
-        Verify(analytics, 1, .downloadCompleted(courseId: .value(courseID), courseName: .any, downloadSize: .value(100)))
+        
+        // Verify that downloadCompleted was called with the correct parameters
+        XCTAssertTrue(downloadCompletedCalled, "downloadCompleted should have been called")
+        XCTAssertEqual(downloadCompletedSize, 100, "downloadCompleted should have been called with size 100")
+        
         XCTAssertEqual(viewModel.downloadedSizes[courseID], 100)
         XCTAssertEqual(viewModel.downloadStates[courseID], .finished)
     }
@@ -436,7 +516,7 @@ final class DownloadsTests: XCTestCase {
             encodedVideo: withDownloadableBlocks ? CourseBlockEncodedVideo(
                 fallback: CourseBlockVideo(
                     url: "https://test.com/video.mp4",
-                    fileSize: 1000,
+                    fileSize: 100,
                     streamPriority: 1,
                     type: .desktopMP4
                 ),

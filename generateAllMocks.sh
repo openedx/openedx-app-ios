@@ -3,7 +3,7 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd "${DIR}"
 cd ./Core
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
-cd ./Authorization
+cd ../Authorization
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
 cd ../Course
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
