@@ -214,6 +214,7 @@ struct DownloadCourseCell: View {
                 HStack {
                     DownloadProgressView()
                         .padding(.trailing, 4)
+                        .onTapGesture { onCancelTap() }
                     Text(DownloadsLocalization.Downloads.Cell.downloading)
                         .font(Theme.Fonts.bodyMedium)
                         .foregroundStyle(Theme.Colors.textPrimary)
@@ -225,6 +226,7 @@ struct DownloadCourseCell: View {
                 HStack {
                     DownloadProgressView()
                         .padding(.trailing, 4)
+                        .onTapGesture { onCancelTap() }
                     Text(DownloadsLocalization.Downloads.Cell.loadingCourseStructure)
                         .font(Theme.Fonts.bodyMedium)
                         .foregroundStyle(Theme.Colors.textPrimary)
@@ -245,9 +247,9 @@ struct DownloadCourseCell: View {
                 .shadow(radius: 4, y: 3)
         }
         .overlay {
-            if downloadButtonState != .notDownloaded && downloadButtonState != .loadingStructure {
+            if downloadButtonState != .notDownloaded {
                 DropDownMenu(
-                    isDownloading: downloadButtonState == .downloading,
+                    isDownloading: downloadButtonState == .downloading || downloadButtonState == .loadingStructure,
                     onRemoveTap: onRemoveTap,
                     onCancelTap: onCancelTap
                 )
