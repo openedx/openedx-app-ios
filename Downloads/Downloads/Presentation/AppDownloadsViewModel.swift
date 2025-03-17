@@ -566,7 +566,8 @@ public final class AppDownloadsViewModel: ObservableObject {
         presentAlertView(
             view: DownloadActionView(
                 actionType: type,
-                sequentials: sequentials,
+                courseBlocks: [],
+                courseName: courseName,
                 downloadedSize: Int(remainingSize),
                 action: { [weak self] in
                     guard let self else { return }
@@ -624,7 +625,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         presentAlertView(
             view: DownloadActionView(
                 actionType: .remove,
-                courseBlocks: blocks,
+                courseBlocks: [],
                 courseName: courseName,
                 downloadedSize: Int(downloadedSize),
                 action: { [weak self] in

@@ -26,52 +26,60 @@ enum MenuOption: String, CaseIterable {
 struct DropDownMenu: View {
     @State private var expanded: Bool = false
     let isDownloading: Bool
+    let showRemoveOption: Bool
     let onRemoveTap: () -> Void
     let onCancelTap: () -> Void
     
     var body: some View {
         VStack(alignment: .trailing) {
-            Button(action: {
-                withAnimation(.snappy(duration: 0.2)) {
-                    expanded.toggle()
-                }
-            }) {
-                Image(systemName: "ellipsis")
-                    .font(.system(size: 24))
-                    .foregroundStyle(Theme.Colors.textPrimary)
-                    .frame(width: 30, height: 30)
-                    .background(Circle().fill(.ultraThinMaterial))
-            }
-            .padding(8)
-            .padding(.bottom, -8)
-            
-            if expanded {
-                VStack(alignment: .leading, spacing: 0) {
-                    menuButton(title: MenuOption.remove.text) {
-                        expanded = false
-                        onRemoveTap()
+            if showRemoveOption || isDownloading {
+                Button(action: {
+                    withAnimation(.snappy(duration: 0.2)) {
+                        expanded.toggle()
                     }
-                    
-                    if isDownloading {
-                        Rectangle()
-                            .frame(width: 240, height: 1)
-                            .foregroundStyle(Theme.Colors.cardViewStroke)
-                            .padding(.horizontal, 16)
-                        menuButton(title: MenuOption.cancel.text) {
-                            expanded = false
-                            onCancelTap()
+                }) {
+                    Image(systemName: "ellipsis")
+                        .font(.system(size: 24))
+                        .foregroundStyle(Theme.Colors.textPrimary)
+                        .frame(width: 30, height: 30)
+                        .background(Circle().fill(.ultraThinMaterial))
+                }
+                .padding(8)
+                .padding(.bottom, -8)
+                
+                if expanded {
+                    VStack(alignment: .leading, spacing: 0) {
+                        if showRemoveOption {
+                            menuButton(title: MenuOption.remove.text) {
+                                expanded = false
+                                onRemoveTap()
+                            }
+                            
+                            if isDownloading {
+                                Rectangle()
+                                    .frame(width: 240, height: 1)
+                                    .foregroundStyle(Theme.Colors.cardViewStroke)
+                                    .padding(.horizontal, 16)
+                            }
+                        }
+                        
+                        if isDownloading {
+                            menuButton(title: MenuOption.cancel.text) {
+                                expanded = false
+                                onCancelTap()
+                            }
                         }
                     }
+                    .background {
+                        RoundedRectangle(cornerRadius: 8)
+                            .foregroundStyle(Theme.Colors.background)
+                            .shadow(radius: 24)
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(style: StrokeStyle(lineWidth: 1))
+                            .foregroundStyle(Theme.Colors.cardViewStroke)
+                    }
+                    .padding(.trailing, 8)
                 }
-                .background {
-                    RoundedRectangle(cornerRadius: 8)
-                        .foregroundStyle(Theme.Colors.background)
-                        .shadow(radius: 24)
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(style: StrokeStyle(lineWidth: 1))
-                        .foregroundStyle(Theme.Colors.cardViewStroke)
-                }
-                .padding(.trailing, 8)
             }
         }
         .onTapBackground(enabled: expanded, { expanded = false })

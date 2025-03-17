@@ -250,6 +250,7 @@ struct DownloadCourseCell: View {
             if downloadButtonState != .notDownloaded {
                 DropDownMenu(
                     isDownloading: downloadButtonState == .downloading || downloadButtonState == .loadingStructure,
+                    showRemoveOption: validDownloadedSize > 0,
                     onRemoveTap: onRemoveTap,
                     onCancelTap: onCancelTap
                 )
@@ -271,20 +272,72 @@ private enum DownloadButtonState {
 //swiftlint:disable all
 #if DEBUG
 #Preview {
-    DownloadCourseCell(
-        course: DownloadCoursePreview(
-            id: "123",
-            name: "Demo Course",
-            image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
-            totalSize: 31213
-        ),
-        router: DownloadsRouterMock(),
-        downloadedSize: .constant(21423),
-        downloadState: .inProgress,
-        onDownloadTap: {},
-        onRemoveTap: {},
-        onCancelTap: {}
-    )
+    VStack(spacing: 20) {
+        // Not downloaded
+        DownloadCourseCell(
+            course: DownloadCoursePreview(
+                id: "123",
+                name: "Not Downloaded Course",
+                image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
+                totalSize: 31213
+            ),
+            router: DownloadsRouterMock(),
+            downloadedSize: .constant(0),
+            downloadState: nil,
+            onDownloadTap: {},
+            onRemoveTap: {},
+            onCancelTap: {}
+        )
+        
+        // Downloading
+        DownloadCourseCell(
+            course: DownloadCoursePreview(
+                id: "124",
+                name: "Downloading Course",
+                image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
+                totalSize: 31213
+            ),
+            router: DownloadsRouterMock(),
+            downloadedSize: .constant(0),
+            downloadState: .inProgress,
+            onDownloadTap: {},
+            onRemoveTap: {},
+            onCancelTap: {}
+        )
+        
+        // Partially downloaded
+        DownloadCourseCell(
+            course: DownloadCoursePreview(
+                id: "125",
+                name: "Partially Downloaded Course",
+                image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
+                totalSize: 31213
+            ),
+            router: DownloadsRouterMock(),
+            downloadedSize: .constant(15000),
+            downloadState: nil,
+            onDownloadTap: {},
+            onRemoveTap: {},
+            onCancelTap: {}
+        )
+        
+        // Fully downloaded
+        DownloadCourseCell(
+            course: DownloadCoursePreview(
+                id: "126",
+                name: "Fully Downloaded Course",
+                image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
+                totalSize: 31213
+            ),
+            router: DownloadsRouterMock(),
+            downloadedSize: .constant(31213),
+            downloadState: .finished,
+            onDownloadTap: {},
+            onRemoveTap: {},
+            onCancelTap: {}
+        )
+    }
+    .padding()
 }
 #endif
 // swiftlint:enable all
