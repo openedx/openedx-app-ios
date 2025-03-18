@@ -42,7 +42,9 @@ public struct DatesView: View {
                                     
                                     ForEach(Array(group.dates.enumerated()), id: \.element.id) { index, date in
                                         Button(action: {
-                                            viewModel.coursesDates = []
+                                            Task {
+                                               await viewModel.openVertical(date: date)
+                                            }
                                         }, label: {
                                             DateCell(
                                                 courseDate: date,
@@ -138,7 +140,9 @@ struct DatesEmptyStateView: View {
     DatesView(
         viewModel: DatesViewModel(
             interactor: DatesViewInteractor.mock,
-            connectivity: Connectivity()
+            connectivity: Connectivity(),
+            courseManager: CourseStructureManagerMock(),
+            router: AppDatesRouterMock()
         )
     )
 }

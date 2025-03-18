@@ -17,6 +17,7 @@ import Discussion
 import Authorization
 import Profile
 import WhatsNew
+import AppDates
 
 // swiftlint:disable function_body_length
 class AppAssembly: Assembly {
@@ -107,6 +108,10 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(AuthorizationRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
+        container.register(AppDatesRouter.self) { r in
             r.resolve(Router.self)!
         }.inObjectScope(.container)
                 

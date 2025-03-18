@@ -18,6 +18,7 @@ import Dashboard
 import Profile
 import WhatsNew
 import Combine
+import AppDates
 
 // swiftlint:disable type_body_length file_length
 public class Router: AuthorizationRouter,
@@ -27,7 +28,8 @@ public class Router: AuthorizationRouter,
                      DashboardRouter,
                      CourseRouter,
                      DiscussionRouter,
-                     BackNavigationProtocol {
+                     BackNavigationProtocol,
+                     AppDatesRouter {
 
     public var container: Container
 

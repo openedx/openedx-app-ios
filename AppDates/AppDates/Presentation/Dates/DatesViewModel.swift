@@ -25,13 +25,19 @@ public final class DatesViewModel: ObservableObject {
     
     let connectivity: ConnectivityProtocol
     private let interactor: DatesViewInteractorProtocol
+    private let courseManager: CourseStructureManagerProtocol
+    private let router: AppDatesRouter
     
     public init(
         interactor: DatesViewInteractorProtocol,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        courseManager: CourseStructureManagerProtocol,
+        router: AppDatesRouter
     ) {
         self.interactor = interactor
         self.connectivity = connectivity
+        self.courseManager = courseManager
+        self.router = router
     }
     
     public func loadDates(isRefresh: Bool = false) async {
@@ -52,6 +58,43 @@ public final class DatesViewModel: ObservableObject {
             self.isShowProgress = false
             self.errorMessage = error.localizedDescription
         }
+    }
+    
+    func openVertical(date: CourseDate) async {
+        guard let courseId = date.courseId else { return }
+
+        router
+            .showCourseScreens(
+                courseID: courseId,
+                hasAccess: true,
+                courseStart: Date(),
+                courseEnd: Date(),
+                enrollmentStart: nil,
+                enrollmentEnd: nil,
+                title: date.courseName,
+                courseRawImage: nil,
+                showDates: false,
+                lastVisitedBlockID: date.blockId
+            )
+        
+        var courseStructure: CourseStructure?
+        if let offlineCourseStructure = try? await courseManager.getLoadedCourseBlocks(courseID: courseId) {
+            courseStructure = offlineCourseStructure
+        } else {
+            courseStructure = try? await courseManager.getCourseBlocks(courseID: courseId)
+        }
+        
+        guard let courseStructure else { return }
+        
+        router.showCourseVerticalView(
+            courseID: courseId,
+            courseName: courseStructure.displayName,
+            title: date.title,
+            chapters: courseStructure.childs,
+            chapterIndex: 0,
+            sequentialIndex: 0
+        )
+        
     }
     
     private func processDates(_ dates: [CourseDate]) {

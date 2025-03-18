@@ -323,6 +323,12 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!
             )
         }
+                
+        container.register(CourseStructureManagerProtocol.self) { r in
+            CourseInteractor(
+                repository: r.resolve(CourseRepositoryProtocol.self)!
+            )
+        }
         
         container.register(DatesViewInteractorProtocol.self) { r in
             DatesViewInteractor(
@@ -333,7 +339,8 @@ class ScreenAssembly: Assembly {
         container.register(DatesViewModel.self) { @MainActor r in
             DatesViewModel(
                 interactor: r.resolve(DatesViewInteractorProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                courseManager: r.resolve(CourseStructureManagerProtocol.self)!, router: r.resolve(AppDatesRouter.self)!
             )
         }
         
