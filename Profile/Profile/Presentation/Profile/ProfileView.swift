@@ -123,8 +123,18 @@ public struct ProfileView: View {
                     .accessibilityIdentifier("progress_bar")
             } else {
                 HStack(alignment: .center, spacing: 12) {
-                    UserAvatar(url: viewModel.userModel?.avatarUrl ?? "", image: $viewModel.updatedAvatar)
+                    if let userModel = viewModel.userModel {
+                        UserAvatar(
+                            url: userModel.isFullProfile
+                            ? userModel.avatarUrl
+                            : "",
+                            image: userModel.isFullProfile
+                            ? $viewModel.updatedAvatar
+                            : .constant(nil)
+                        )
                         .accessibilityIdentifier("user_avatar_image")
+                    }
+                   
                     VStack(alignment: .leading, spacing: 4) {
                         Text(viewModel.userModel?.name ?? "")
                             .font(Theme.Fonts.headlineSmall)
@@ -203,9 +213,14 @@ struct ProfileView_Previews: PreviewProvider {
 struct UserAvatar: View {
     private var url: URL?
     private var borderColor: Color
+    
+    private let defaultAvatarKeyword = "default"
+    
     @Binding private var image: UIImage?
     init(url: String, image: Binding<UIImage?>, borderColor: Color = Theme.Colors.avatarStroke) {
-        if let rightUrl = URL(string: url) {
+        if url.contains(defaultAvatarKeyword) {
+            self.url = nil
+        } else if let rightUrl = URL(string: url) {
             self.url = rightUrl
         } else {
             self.url = nil
@@ -227,7 +242,7 @@ struct UserAvatar: View {
                     }
             } else {
                 KFImage(url)
-                    .onFailureImage(CoreAssets.noCourseImage.image)
+                    .onFailureImage(CoreAssets.noAvatar.image)
                     .resizable()
                     .scaledToFill()
                     .frame(width: 80, height: 80)

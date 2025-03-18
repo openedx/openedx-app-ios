@@ -99,7 +99,7 @@ struct CourseNavigationView: View {
                     action: CourseLocalization.Courseware.backToOutline,
                     image: CoreAssets.goodWork.swiftUIImage,
                     onCloseTapped: { viewModel.router.dismiss(animated: false) },
-                    okTapped: {
+                    firstButtonTapped: {
                         playerStateSubject.send(VideoPlayerState.pause)
                         playerStateSubject.send(VideoPlayerState.kill)
                         

@@ -200,10 +200,8 @@ class AppAssembly: Assembly {
         
         container.register(PushNotificationsManager.self) { @MainActor r in
             PushNotificationsManager(
-                deepLinkManager: r.resolve(DeepLinkManager.self)!,
-                storage: r.resolve(CoreStorage.self)!,
-                api: r.resolve(API.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                providers: r.resolve(PluginManager.self)!.pushNotificationsProviders,
+                listeners: r.resolve(PluginManager.self)!.pushNotificationsListeners
             )
         }.inObjectScope(.container)
         
