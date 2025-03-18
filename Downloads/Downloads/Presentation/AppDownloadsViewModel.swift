@@ -655,7 +655,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                 onCloseTapped: {
                     self.router.dismiss(animated: true)
                 },
-                okTapped: {
+                firstButtonTapped: {
                     Task {
                         await self.continueDownload()
                     }
