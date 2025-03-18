@@ -135,7 +135,15 @@ public struct CommentCell: View {
                         HStack {
                             Image(systemName: "message.fill")
                             Text("\(comment.responsesCount)")
-                            Text(DiscussionLocalization.commentsCount(comment.responsesCount))
+                            switch comment.responsesCount{
+                            case 0:
+                                Text(DiscussionLocalization.CommentCount.zeroComment)
+                            case 1:
+                                Text(DiscussionLocalization.CommentCount.oneComment)
+                            default:
+                                Text(DiscussionLocalization.CommentCount.otherComment)
+                            }
+//                            Text(DiscussionLocalization.commentsCount(comment.responsesCount))
                         }
                         .foregroundColor(Theme.Colors.textSecondary)
                         .font(Theme.Fonts.labelLarge)
