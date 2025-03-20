@@ -386,9 +386,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         }
 
         delete(tasks: [task])
-        Task {
-            try await newDownload()
-        }
+        currentDownloadEventPublisher.send(.canceled([task]))
     }
 
     public func cancelDownloading(courseId: String) async throws {

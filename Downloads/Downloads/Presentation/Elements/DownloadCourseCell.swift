@@ -111,7 +111,7 @@ struct DownloadCourseCell: View {
             let availableFormatted = Int(availableBytes).formattedFileSize()
             
             // Progress bar
-            if downloadButtonState != .notDownloaded {
+            if downloadButtonState == .partiallyDownloaded || downloadButtonState == .downloading {
                 ZStack(alignment: .leading) {
                     GeometryReader { geometry in
                         RoundedRectangle(cornerRadius: 4)
