@@ -432,7 +432,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         
         if let currentTask = await downloadManager.getCurrentDownloadTask(),
            currentTask.courseId == courseID {
-            try? await downloadManager.cancelDownloading(task: currentTask)
+            try? await downloadManager.cancelDownloading(courseId: courseID)
             currentTaskId = currentTask.id
         }
         
@@ -440,10 +440,6 @@ public final class AppDownloadsViewModel: ObservableObject {
         let inProgressTasks = tasks.filter {
             ($0.state == .inProgress || $0.state == .waiting) &&
             $0.id != currentTaskId // Skip the current task if we already canceled it
-        }
-        
-        for task in inProgressTasks {
-            try? await downloadManager.cancelDownloading(task: task)
         }
         
         trackDownloadCancelled(courseID: id, courseName: courseName)
