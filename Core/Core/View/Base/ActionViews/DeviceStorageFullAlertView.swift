@@ -30,8 +30,8 @@ public struct DeviceStorageFullAlertView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            Color.black.opacity(fadeEffect ? 0.15 : 0)
+        ZStack(alignment: .center) {
+            Color.black.opacity(fadeEffect ? 0.4 : 0)
                 .onTapGesture {
                     close()
                     fadeEffect = false

@@ -67,7 +67,7 @@ public struct DownloadActionView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .center) {
             Color.black.opacity(fadeEffect ? 0.15 : 0)
                 .onTapGesture {
                     cancel()
@@ -102,8 +102,7 @@ public struct DownloadActionView: View {
             
             if let courseName {
                 HStack {
-                    CoreAssets.chapter.swiftUIImage
-                        .renderingMode(.template)
+                    CoreAssets.schoolCapIcon.swiftUIImage
                         .foregroundStyle(Theme.Colors.textPrimary)
                     Text(courseName)
                         .font(Theme.Fonts.bodyMedium)

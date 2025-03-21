@@ -18,6 +18,7 @@ struct DownloadCourseCell: View {
     let onDownloadTap: () -> Void
     let onRemoveTap: () -> Void
     let onCancelTap: () -> Void
+    @State private var isCancelling: Bool = false
     
     // Ensure the download size is valid
     private var validDownloadedSize: Int64 {
@@ -41,7 +42,9 @@ struct DownloadCourseCell: View {
     }
     
     private var downloadButtonState: DownloadButtonState {
-        if downloadState == .loadingStructure {
+        if isCancelling {
+            return .notDownloaded
+        } else if downloadState == .loadingStructure {
             return .loadingStructure
         } else if downloadState == .inProgress || downloadState == .waiting {
             return .downloading
@@ -203,7 +206,10 @@ struct DownloadCourseCell: View {
             case .notDownloaded, .partiallyDownloaded:
                 StyledButton(
                     DownloadsLocalization.Downloads.Cell.downloadCourse,
-                    action: onDownloadTap,
+                    action: {
+                        isCancelling = false
+                        onDownloadTap()
+                    },
                     iconImage: CoreAssets.downloads.swiftUIImage,
                     iconPosition: .left,
                     maxWidthIpad: .infinity
@@ -214,7 +220,10 @@ struct DownloadCourseCell: View {
                 HStack {
                     DownloadProgressView()
                         .padding(.trailing, 4)
-                        .onTapGesture { onCancelTap() }
+                        .onTapGesture {
+                            isCancelling = true
+                            onCancelTap()
+                        }
                     Text(DownloadsLocalization.Downloads.Cell.downloading)
                         .font(Theme.Fonts.bodyMedium)
                         .foregroundStyle(Theme.Colors.textPrimary)
@@ -226,7 +235,10 @@ struct DownloadCourseCell: View {
                 HStack {
                     DownloadProgressView()
                         .padding(.trailing, 4)
-                        .onTapGesture { onCancelTap() }
+                        .onTapGesture {
+                            isCancelling = true
+                            onCancelTap()
+                        }
                     Text(DownloadsLocalization.Downloads.Cell.loadingCourseStructure)
                         .font(Theme.Fonts.bodyMedium)
                         .foregroundStyle(Theme.Colors.textPrimary)
@@ -256,6 +268,11 @@ struct DownloadCourseCell: View {
                 )
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topTrailing)
                 .padding(.horizontal, 16)
+            }
+        }
+        .onChange(of: downloadState) { newState in
+            if newState == .inProgress || newState == .loadingStructure {
+                isCancelling = false
             }
         }
     }
