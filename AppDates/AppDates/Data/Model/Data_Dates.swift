@@ -65,7 +65,7 @@ public extension DataLayer.CourseDatesResponse {
     func domain() -> [CourseDate] {
         return results.map { result in
             CourseDate(
-                date: Date(iso8601: result.dueDate) ?? Date(),
+                date: Date(iso8601: result.dueDate),
                 title: result.assignmentTitle,
                 courseName: result.courseName,
                 courseId: result.courseId,

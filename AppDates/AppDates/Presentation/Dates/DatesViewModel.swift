@@ -66,7 +66,7 @@ public final class DatesViewModel: ObservableObject {
         router
             .showCourseScreens(
                 courseID: courseId,
-                hasAccess: true,
+                hasAccess: date.hasAccess,
                 courseStart: Date(),
                 courseEnd: Date(),
                 enrollmentStart: nil,
@@ -76,25 +76,6 @@ public final class DatesViewModel: ObservableObject {
                 showDates: false,
                 lastVisitedBlockID: date.blockId
             )
-        
-        var courseStructure: CourseStructure?
-        if let offlineCourseStructure = try? await courseManager.getLoadedCourseBlocks(courseID: courseId) {
-            courseStructure = offlineCourseStructure
-        } else {
-            courseStructure = try? await courseManager.getCourseBlocks(courseID: courseId)
-        }
-        
-        guard let courseStructure else { return }
-        
-        router.showCourseVerticalView(
-            courseID: courseId,
-            courseName: courseStructure.displayName,
-            title: date.title,
-            chapters: courseStructure.childs,
-            chapterIndex: 0,
-            sequentialIndex: 0
-        )
-        
     }
     
     private func processDates(_ dates: [CourseDate]) {
