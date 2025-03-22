@@ -43,7 +43,7 @@ struct DownloadCourseCell: View {
     
     private var downloadButtonState: DownloadButtonState {
         if isCancelling {
-            return .notDownloaded
+            return validDownloadedSize > 0 ? .partiallyDownloaded : .notDownloaded
         } else if downloadState == .loadingStructure {
             return .loadingStructure
         } else if downloadState == .inProgress || downloadState == .waiting {
