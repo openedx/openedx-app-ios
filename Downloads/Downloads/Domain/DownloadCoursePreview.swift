@@ -11,7 +11,7 @@ public struct DownloadCoursePreview: Sendable, Identifiable {
     public let id: String
     public let name: String
     public let image: String?
-    public let totalSize: Int64
+    public var totalSize: Int64
     
     public init(
         id: String,

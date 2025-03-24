@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 //sourcery: AutoMockable
 public protocol DownloadsHelperProtocol: Sendable {
@@ -14,6 +15,7 @@ public protocol DownloadsHelperProtocol: Sendable {
     func isPartiallyDownloaded(courseID: String) async -> Bool
     func hasDownloadedContent(courseID: String) async -> Bool
     func isFullyDownloaded(courseID: String) async -> Bool
+    func getDownloadTasksForCourse(courseID: String) async -> [DownloadDataTask]
 }
 
 #if DEBUG
@@ -24,6 +26,7 @@ public actor DownloadsHelperMock: DownloadsHelperProtocol {
     public var mockIsPartiallyDownloaded: Bool = false
     public var mockHasDownloadedContent: Bool = false
     public var mockIsFullyDownloaded: Bool = false
+    public var mockDownloadTasks: [DownloadDataTask] = []
     
     public init() {}
     
@@ -45,6 +48,10 @@ public actor DownloadsHelperMock: DownloadsHelperProtocol {
     
     public func isFullyDownloaded(courseID: String) async -> Bool {
         return mockIsFullyDownloaded
+    }
+    
+    public func getDownloadTasksForCourse(courseID: String) async -> [DownloadDataTask] {
+        return mockDownloadTasks
     }
 }
 #endif

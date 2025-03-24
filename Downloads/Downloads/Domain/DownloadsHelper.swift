@@ -49,4 +49,10 @@ public actor DownloadsHelper: DownloadsHelperProtocol {
         let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
         return !tasks.isEmpty && tasks.allSatisfy { $0.state == .finished }
     }
+    
+    public func getDownloadTasksForCourse(courseID: String) async -> [DownloadDataTask] {
+        let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
+        downloadTasks = tasks
+        return tasks
+    }
 }

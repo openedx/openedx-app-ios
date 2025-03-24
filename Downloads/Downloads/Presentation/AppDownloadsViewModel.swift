@@ -10,6 +10,7 @@ import Combine
 import Core
 import SwiftUI
 
+//swiftlint:disable type_body_length
 @MainActor
 public final class AppDownloadsViewModel: ObservableObject {
     
@@ -112,6 +113,13 @@ public final class AppDownloadsViewModel: ObservableObject {
         downloadedSizes[courseID] = Int64(downloaded)
         courseSizes[courseID] = Int64(total)
         
+        // Обновляем totalSize в модели курса, если есть более точное значение
+        if let courseIndex = courses.firstIndex(where: { $0.id == courseID }) {
+            if courses[courseIndex].totalSize != Int64(total) {
+                courses[courseIndex].totalSize = Int64(total)
+            }
+        }
+        
         if isFullyDownloaded && downloaded >= total * downloadCompletionThreshold / 100 {
             let previousState = downloadStates[courseID]
             downloadStates[courseID] = .finished
@@ -142,6 +150,13 @@ public final class AppDownloadsViewModel: ObservableObject {
             downloadedSizes[course.id] = Int64(downloaded)
             courseSizes[course.id] = Int64(total)
             
+            // Обновляем totalSize в модели курса, если есть более точное значение
+            if let courseIndex = courses.firstIndex(where: { $0.id == course.id }) {
+                if courses[courseIndex].totalSize != Int64(total) {
+                    courses[courseIndex].totalSize = Int64(total)
+                }
+            }
+            
             if isDownloading {
                 downloadStates[course.id] = .inProgress
             } else if isFullyDownloaded && downloaded >= total * downloadCompletionThreshold / 100 {
@@ -153,16 +168,40 @@ public final class AppDownloadsViewModel: ObservableObject {
     }
     
     private func calculateAccurateDownloadProgress(courseID: String) async -> (downloaded: Int, total: Int) {
-        let (downloaded, _) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
+        let tasks = await downloadsHelper.getDownloadTasksForCourse(courseID: courseID)
+        let downloadedSize = tasks.reduce(0) { $0 + ($1.state == .finished ? $1.actualSize : 0) }
         
         if let courseStructure = await getCourseStructureIfAvailable(courseID: courseID) {
-            let totalSize = calculateTotalSizeFromStructure(courseStructure: courseStructure)
-            return (downloaded, totalSize)
+            let totalSize = calculateTotalSizeFromStructure(courseStructure: courseStructure, downloadedTasks: tasks)
+            return (downloadedSize, totalSize)
         } else {
             let (_, total) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
             let course = courses.first(where: { $0.id == courseID })
-            return (downloaded, course?.totalSize != 0 ? Int(course?.totalSize ?? 0) : total)
+            let finalTotal = course?.totalSize != 0 ? Int(course?.totalSize ?? 0) : total
+            return (downloadedSize, finalTotal)
         }
+    }
+    
+    private func calculateTotalSizeFromStructure(
+        courseStructure: CourseStructure,
+        downloadedTasks: [DownloadDataTask]
+    ) -> Int {
+        let downloadableBlocks = getDownloadableBlocks(from: courseStructure)
+        var totalSize = 0
+        
+        for block in downloadableBlocks {
+            if let downloadTask = downloadedTasks.first(where: { $0.blockId == block.id }),
+               downloadTask.state == .finished,
+               downloadTask.actualSize > 0 {
+                // Use actual size for finished downloads
+                totalSize += downloadTask.actualSize
+            } else {
+                // Use file size for not-yet-downloaded blocks
+                totalSize += block.fileSize ?? 0
+            }
+        }
+        
+        return totalSize
     }
     
     private func getCourseStructureIfAvailable(courseID: String) async -> CourseStructure? {
@@ -177,11 +216,6 @@ public final class AppDownloadsViewModel: ObservableObject {
         } catch {
             return nil
         }
-    }
-    
-    private func calculateTotalSizeFromStructure(courseStructure: CourseStructure) -> Int {
-        let downloadableBlocks = getDownloadableBlocks(from: courseStructure)
-        return downloadableBlocks.reduce(0) { $0 + ($1.fileSize ?? 0) }
     }
     
     private func getDownloadableBlocks(from courseStructure: CourseStructure) -> [CourseBlock] {
@@ -723,3 +757,4 @@ public extension AppDownloadsViewModel {
     )
 }
 #endif
+//swiftlint:enable type_body_length
