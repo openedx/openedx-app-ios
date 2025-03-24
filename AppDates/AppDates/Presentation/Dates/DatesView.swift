@@ -56,11 +56,29 @@ public struct DatesView: View {
                                     }
                                 }
                             }
+                            
+                            // Loading more indicator
+                            if viewModel.isLoadingNextPage {
+                                ProgressBar(size: 40, lineWidth: 8)
+                            }
                         }
                         .padding(.horizontal, 24)
                         Spacer(minLength: 100)
+                        
+                        GeometryReader { geometry in
+                            Color.clear
+                                .preference(key: ScrollViewOffsetPreferenceKey.self,
+                                            value: geometry.frame(in: .named("scrollView")).maxY)
+                                .onAppear {
+                                    Task {
+                                        await viewModel.loadNextPageIfNeeded()
+                                    }
+                                }
+                        }
+                        .frame(height: 20)
                     }
                     .frameLimit(width: proxy.size.width)
+                    .coordinateSpace(name: "scrollView")
                     .refreshable {
                         Task {
                            await viewModel.loadDates(isRefresh: true)
@@ -108,6 +126,14 @@ public struct DatesView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+    }
+}
+
+// To track scroll position
+struct ScrollViewOffsetPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
     }
 }
 

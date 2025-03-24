@@ -12,11 +12,11 @@ public extension DataLayer {
     // MARK: - CourseDatesResponse
     struct CourseDatesResponse: Codable {
         public let count: Int
-        public let next: String?
-        public let previous: String?
+        public let next: Int?
+        public let previous: Int?
         public let results: [CourseDateItem]
         
-        public init(count: Int, next: String?, previous: String?, results: [CourseDateItem]) {
+        public init(count: Int, next: Int?, previous: Int?, results: [CourseDateItem]) {
             self.count = count
             self.next = next
             self.previous = previous
