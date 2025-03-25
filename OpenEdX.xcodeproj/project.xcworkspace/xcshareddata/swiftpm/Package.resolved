@@ -141,8 +141,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/openedx/openedx-app-firebase-analytics-ios",
       "state" : {
-        "revision" : "5b1cb15bbf8d17b5f9692849e86257baef836370",
-        "version" : "1.0.2"
+        "revision" : "99d440b38ad73d3d829c8ec669c03acbf95bbb6b",
+        "version" : "1.0.3"
       }
     },
     {
@@ -150,8 +150,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/openedx/openedx-app-foundation-ios/",
       "state" : {
-        "revision" : "d02b7b1226753950afa9bd0c5c6f810f7d386f8e",
-        "version" : "1.0.2"
+        "revision" : "09e601a74dd68cffddf0055061c71aa5979c4a64",
+        "version" : "1.0.3"
       }
     },
     {

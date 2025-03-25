@@ -136,7 +136,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         }
     }
     
-    private func refreshDownloadStates() async {
+    func refreshDownloadStates() async {
         for course in courses {
             // Skip courses that are currently loading structure
             if structureLoadingTasks[course.id] != nil && downloadStates[course.id] == .loadingStructure {

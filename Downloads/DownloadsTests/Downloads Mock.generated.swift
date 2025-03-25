@@ -4757,6 +4757,20 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
 		return __value
     }
 
+    open func getDownloadTasksForCourse(courseID: String) -> [DownloadDataTask] {
+        addInvocation(.m_getDownloadTasksForCourse__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getDownloadTasksForCourse__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: [DownloadDataTask]
+		do {
+		    __value = try methodReturnValue(.m_getDownloadTasksForCourse__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for getDownloadTasksForCourse(courseID: String). Use given")
+			Failure("Stub return value not specified for getDownloadTasksForCourse(courseID: String). Use given")
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_calculateDownloadProgress__courseID_courseID(Parameter<String>)
@@ -4764,6 +4778,7 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
         case m_isPartiallyDownloaded__courseID_courseID(Parameter<String>)
         case m_hasDownloadedContent__courseID_courseID(Parameter<String>)
         case m_isFullyDownloaded__courseID_courseID(Parameter<String>)
+        case m_getDownloadTasksForCourse__courseID_courseID(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -4791,6 +4806,11 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_getDownloadTasksForCourse__courseID_courseID(let lhsCourseid), .m_getDownloadTasksForCourse__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -4802,6 +4822,7 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
             case let .m_isPartiallyDownloaded__courseID_courseID(p0): return p0.intValue
             case let .m_hasDownloadedContent__courseID_courseID(p0): return p0.intValue
             case let .m_isFullyDownloaded__courseID_courseID(p0): return p0.intValue
+            case let .m_getDownloadTasksForCourse__courseID_courseID(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -4811,6 +4832,7 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
             case .m_isPartiallyDownloaded__courseID_courseID: return ".isPartiallyDownloaded(courseID:)"
             case .m_hasDownloadedContent__courseID_courseID: return ".hasDownloadedContent(courseID:)"
             case .m_isFullyDownloaded__courseID_courseID: return ".isFullyDownloaded(courseID:)"
+            case .m_getDownloadTasksForCourse__courseID_courseID: return ".getDownloadTasksForCourse(courseID:)"
             }
         }
     }
@@ -4838,6 +4860,9 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
         }
         public static func isFullyDownloaded(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_isFullyDownloaded__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getDownloadTasksForCourse(courseID: Parameter<String>, willReturn: [DownloadDataTask]...) -> MethodStub {
+            return Given(method: .m_getDownloadTasksForCourse__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func calculateDownloadProgress(courseID: Parameter<String>, willProduce: (Stubber<(downloaded: Int, total: Int)>) -> Void) -> MethodStub {
             let willReturn: [(downloaded: Int, total: Int)] = []
@@ -4874,6 +4899,13 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func getDownloadTasksForCourse(courseID: Parameter<String>, willProduce: (Stubber<[DownloadDataTask]>) -> Void) -> MethodStub {
+            let willReturn: [[DownloadDataTask]] = []
+			let given: Given = { return Given(method: .m_getDownloadTasksForCourse__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: ([DownloadDataTask]).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -4884,6 +4916,7 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
         public static func isPartiallyDownloaded(courseID: Parameter<String>) -> Verify { return Verify(method: .m_isPartiallyDownloaded__courseID_courseID(`courseID`))}
         public static func hasDownloadedContent(courseID: Parameter<String>) -> Verify { return Verify(method: .m_hasDownloadedContent__courseID_courseID(`courseID`))}
         public static func isFullyDownloaded(courseID: Parameter<String>) -> Verify { return Verify(method: .m_isFullyDownloaded__courseID_courseID(`courseID`))}
+        public static func getDownloadTasksForCourse(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadTasksForCourse__courseID_courseID(`courseID`))}
     }
 
     public struct Perform {
@@ -4904,6 +4937,9 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
         }
         public static func isFullyDownloaded(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_isFullyDownloaded__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func getDownloadTasksForCourse(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getDownloadTasksForCourse__courseID_courseID(`courseID`), performs: perform)
         }
     }
 
