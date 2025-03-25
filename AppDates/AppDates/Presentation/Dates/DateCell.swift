@@ -11,7 +11,7 @@ import Core
 
 public struct DateCell: View, Equatable {
     
-    public static func == (lhs: DateCell, rhs: DateCell) -> Bool {
+    nonisolated public static func == (lhs: DateCell, rhs: DateCell) -> Bool {
         return lhs.courseDate.location == rhs.courseDate.location
     }
     
