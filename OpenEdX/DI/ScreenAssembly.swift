@@ -345,7 +345,9 @@ class ScreenAssembly: Assembly {
             DatesViewModel(
                 interactor: r.resolve(DatesViewInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                courseManager: r.resolve(CourseStructureManagerProtocol.self)!, router: r.resolve(AppDatesRouter.self)!
+                courseManager: r.resolve(CourseStructureManagerProtocol.self)!,
+                analytics: r.resolve(AppDatesAnalytics.self)!,
+                router: r.resolve(AppDatesRouter.self)!
             )
         }
         

@@ -157,6 +157,10 @@ public enum AnalyticsEvent: String {
     case discussionLikeToggle = "Discussion:Like Toggle"
     case discussionReportToggle = "Discussion:Report Toggle"
     case notificationSettingPermissionStatus = "Notification:Setting Permission Status"
+    case datesScreenViewed = "Dates:Screen Viewed"
+    case datesCourseClicked = "Dates:Course Clicked"
+    case datesSettingsClicked = "Dates:Settings Clicked"
+    case datesRefreshPulled = "Dates:Refresh Pulled"
 }
 
 public enum EventBIValue: String {
@@ -259,6 +263,10 @@ public enum EventBIValue: String {
     case discussionLikeToggle = "edx.bi.app.discussion.like_toggle"
     case discussionReportToggle = "edx.bi.app.discussion.report_toggle"
     case notificationSettingPermissionStatus = "edx.bi.app.notification.setting_permission.status"
+    case datesScreenViewed = "edx.bi.app.dates.screen.viewed"
+    case datesCourseClicked = "edx.bi.app.dates.course.clicked"
+    case datesSettingsClicked = "edx.bi.app.dates.settings.clicked"
+    case datesRefreshPulled = "edx.bi.app.dates.refresh.pulled"
 }
 
 public struct EventParamKey {

@@ -35,28 +35,36 @@ public final class DatesViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DatesViewInteractorProtocol
     private let courseManager: CourseStructureManagerProtocol
+    private let analytics: AppDatesAnalytics
     private(set) var router: AppDatesRouter
     
     public init(
         interactor: DatesViewInteractorProtocol,
         connectivity: ConnectivityProtocol,
         courseManager: CourseStructureManagerProtocol,
+        analytics: AppDatesAnalytics,
         router: AppDatesRouter
     ) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.courseManager = courseManager
+        self.analytics = analytics
         self.router = router
+        
+        analytics.datesScreenViewed()
     }
     
     @MainActor
     public func loadDates(isRefresh: Bool = false) async {
+        if isRefresh {
+            analytics.datesRefreshPulled()
+        }
+        
         isShowProgress = !isRefresh
         
         if isRefresh {
             nextPage = 1
             totalPages = 1
-
         }
         
         do {
@@ -113,6 +121,8 @@ public final class DatesViewModel: ObservableObject {
     
     func openVertical(date: CourseDate) async {
         guard let courseId = date.courseId else { return }
+        
+        analytics.datesCourseClicked(courseId: courseId, courseName: date.courseName)
         
         router
             .showCourseScreens(

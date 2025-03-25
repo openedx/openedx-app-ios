@@ -16,6 +16,7 @@ import Discussion
 import WhatsNew
 import Swinject
 import OEXFoundation
+import AppDates
 
 // swiftlint:disable type_body_length file_length
 class AnalyticsManager: AuthorizationAnalytics,
@@ -27,6 +28,7 @@ class AnalyticsManager: AuthorizationAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
                         WhatsNewAnalytics,
+                        AppDatesAnalytics,
                         @unchecked Sendable {
     
     private var services: [AnalyticsService]
@@ -1070,6 +1072,29 @@ class AnalyticsManager: AuthorizationAnalytics,
         ]
         
         logEvent(.whatnewClose, parameters: parameters)
+    }
+    
+    // MARK: - AppDates Analytics
+    
+    public func datesScreenViewed() {
+        trackScreenEvent(.datesScreenViewed, biValue: .datesScreenViewed)
+    }
+    
+    public func datesCourseClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.datesCourseClicked.rawValue
+        ]
+        logEvent(.datesCourseClicked, parameters: parameters)
+    }
+    
+    public func datesSettingsClicked() {
+        trackEvent(.datesSettingsClicked, biValue: .datesSettingsClicked)
+    }
+    
+    public func datesRefreshPulled() {
+        trackEvent(.datesRefreshPulled, biValue: .datesRefreshPulled)
     }
 }
 // swiftlint:enable type_body_length file_length
