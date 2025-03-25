@@ -11,6 +11,7 @@ import Core
 @MainActor
 public protocol AppDatesRouter: BaseRouter {
     func showSettings()
+    func showUpdateRequiredView(showAccountLink: Bool)
     func showCourseScreens(
         courseID: String,
         hasAccess: Bool?,
@@ -29,6 +30,7 @@ public protocol AppDatesRouter: BaseRouter {
 #if DEBUG
 public class AppDatesRouterMock: BaseRouterMock, AppDatesRouter {
     public func showSettings() {}
+    public func showUpdateRequiredView(showAccountLink: Bool) {}
     public func showCourseScreens(
         courseID: String,
         hasAccess: Bool?,

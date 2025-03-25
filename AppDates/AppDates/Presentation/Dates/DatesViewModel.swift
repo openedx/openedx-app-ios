@@ -85,9 +85,15 @@ public final class DatesViewModel: ObservableObject {
             noDates = allDates.isEmpty
             self.isShowProgress = false
             self.processDates(allDates)
-        } catch {
-            self.isShowProgress = false
-            self.errorMessage = error.localizedDescription
+        } catch let error {
+            isShowProgress = false
+            if error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else if error.isUpdateRequeiredError {
+                self.router.showUpdateRequiredView(showAccountLink: true)
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
         }
     }
     
@@ -112,10 +118,16 @@ public final class DatesViewModel: ObservableObject {
             processDates(allDates)
             fetchInProgress = false
             isLoadingNextPage = false
-        } catch {
-            fetchInProgress = false
+        } catch let error {
+            isShowProgress = false
             isLoadingNextPage = false
-            errorMessage = error.localizedDescription
+            if error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else if error.isUpdateRequeiredError {
+                self.router.showUpdateRequiredView(showAccountLink: true)
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
         }
     }
     
