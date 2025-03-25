@@ -20,91 +20,96 @@ public struct DatesView: View {
     
     public var body: some View {
         GeometryReader { proxy in
-            ZStack {
-                if viewModel.isShowProgress {
-                    VStack(alignment: .center) {
-                        ProgressBar(size: 40, lineWidth: 8)
-                    }.frame(maxWidth: .infinity,
-                            maxHeight: .infinity)
-                } else {
-                    ScrollView {
-                        if !viewModel.isShowProgress && viewModel.coursesDates.isEmpty {
-                            DatesEmptyStateView()
-                        }
-                        LazyVStack(spacing: 24) {
-                            ForEach(viewModel.coursesDates, id: \.id) { group in
-                                VStack(alignment: .leading, spacing: 0) {
-                                    Text(group.type.text)
-                                        .font(Theme.Fonts.titleMedium)
-                                        .foregroundColor(Theme.Colors.textPrimary)
-                                        .padding(.bottom, 8)
-                                        .padding(.top, 8)
-                                    
-                                    ForEach(Array(group.dates.enumerated()), id: \.element.location) { index, date in
-                                        Button(action: {
-                                            Task {
-                                                await viewModel.openVertical(date: date)
-                                            }
-                                        }, label: {
-                                            DateCell(
-                                                courseDate: date,
-                                                groupType: group.type,
-                                                isFirst: index == 0,
-                                                isLast: index == group.dates.count - 1
-                                            )
-                                        })
-                                        .id(index)
-                                        .onAppear {
-                                            Task {
-                                                await viewModel.loadNextPageIfNeeded(index: index)
+            VStack {
+                titleAndSettings(proxy: proxy)
+                    .zIndex(1)
+                ZStack(alignment: .top) {
+                    if viewModel.isShowProgress && !viewModel.noDates {
+                        VStack(alignment: .center) {
+                            ProgressBar(size: 40, lineWidth: 8)
+                        }.frame(maxWidth: .infinity,
+                                maxHeight: .infinity)
+                    } else {
+                        ScrollView {
+                            if !viewModel.isShowProgress && viewModel.noDates {
+                                DatesEmptyStateView()
+                            }
+                            LazyVStack(spacing: 24) {
+                                ForEach(viewModel.coursesDates, id: \.id) { group in
+                                    LazyVStack(alignment: .leading, spacing: 0) {
+                                        Text(group.type.text)
+                                            .font(Theme.Fonts.titleMedium)
+                                            .foregroundColor(Theme.Colors.textPrimary)
+                                            .padding(.bottom, 8)
+                                            .padding(.top, 8)
+                                        
+                                        ForEach(
+                                            Array(group.dates.enumerated()),
+                                            id: \.element.location
+                                        ) { index, date in
+                                            Button(action: {
+                                                Task {
+                                                    await viewModel.openVertical(date: date)
+                                                }
+                                            }, label: {
+                                                DateCell(
+                                                    courseDate: date,
+                                                    groupType: group.type,
+                                                    isFirst: index == 0,
+                                                    isLast: index == group.dates.count - 1
+                                                )
+                                            })
+                                            .id(UUID())
+                                            .onAppear {
+                                                Task {
+                                                    await viewModel.loadNextPageIfNeeded(index: index)
+                                                }
                                             }
                                         }
                                     }
+                                    .id(group.id)
                                 }
-                                .id(group.id)
+                                
+                                // Loading more indicator
+                                if viewModel.isLoadingNextPage {
+                                    ProgressBar(size: 40, lineWidth: 8)
+                                        .padding(.top, 20)
+                                }
                             }
-                            
-                            // Loading more indicator
-                            if viewModel.isLoadingNextPage {
-                                ProgressBar(size: 40, lineWidth: 8)
-                                    .padding(.top, 20)
-                            }
+                            .padding(.horizontal, 24)
+                            Spacer(minLength: 100)
                         }
-                        .padding(.horizontal, 24)
-                        Spacer(minLength: 100)
-                    }
-                    .frameLimit(width: proxy.size.width)
-                    .refreshable {
-                        Task {
+                        .frameLimit(width: proxy.size.width)
+                        .refreshableWithoutCancellation {
                             await viewModel.loadDates(isRefresh: true)
                         }
                     }
-                }
-                // MARK: - Offline mode SnackBar
-                OfflineSnackBarView(
-                    connectivity: viewModel.connectivity,
-                    reloadAction: {
-                        Task {
-                            await viewModel.loadDates(isRefresh: true)
+                    // MARK: - Offline mode SnackBar
+                    OfflineSnackBarView(
+                        connectivity: viewModel.connectivity,
+                        reloadAction: {
+                            Task {
+                                await viewModel.loadDates(isRefresh: true)
+                            }
                         }
-                    }
-                )
-                
-                // MARK: - Error Alert
-                if viewModel.showError {
-                    VStack {
-                        Spacer()
-                        SnackBarView(message: viewModel.errorMessage)
-                    }
-                    .padding(
-                        .bottom,
-                        viewModel.connectivity.isInternetAvaliable
-                        ? 0 : OfflineSnackBarView.height
                     )
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModel.errorMessage = nil
+                    
+                    // MARK: - Error Alert
+                    if viewModel.showError {
+                        VStack {
+                            Spacer()
+                            SnackBarView(message: viewModel.errorMessage)
+                        }
+                        .padding(
+                            .bottom,
+                            viewModel.connectivity.isInternetAvaliable
+                            ? 0 : OfflineSnackBarView.height
+                        )
+                        .transition(.move(edge: .bottom))
+                        .onAppear {
+                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                                viewModel.errorMessage = nil
+                            }
                         }
                     }
                 }
@@ -117,12 +122,48 @@ public struct DatesView: View {
         }
         .accessibilityAction {}
         .padding(.top, 8)
-        .navigationBarHidden(false)
-        .navigationBarBackButtonHidden(false)
+        .navigationBarHidden(true)
+        .navigationBarBackButtonHidden(true)
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+    }
+    
+    private func titleAndSettings(proxy: GeometryProxy) -> some View {
+        ZStack(alignment: .top) {
+            Theme.Colors.background
+                .frame(height: 50)
+            ZStack(alignment: .topTrailing) {
+                VStack {
+                    HStack(alignment: .center) {
+                        Text("Dates")
+                            .font(Theme.Fonts.displaySmall)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .accessibilityIdentifier("dates_header_text")
+                        Spacer()
+                    }
+                }
+                .frameLimit(width: proxy.size.width)
+                
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        viewModel.router.showSettings()
+                    }, label: {
+                        CoreAssets.settings.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
+                    })
+                }
+                .padding(.top, 8)
+                .offset(x: UIDevice.current.userInterfaceIdiom == .pad ? 1 : 5,
+                        y: UIDevice.current.userInterfaceIdiom == .pad ? 4 : -5)
+            }
+            .listRowBackground(Color.clear)
+            .padding(.horizontal, 20)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Dates")
+        }
     }
 }
 

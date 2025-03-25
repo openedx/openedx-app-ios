@@ -10,6 +10,7 @@ import Core
 
 @MainActor
 public protocol AppDatesRouter: BaseRouter {
+    func showSettings()
     func showCourseScreens(
         courseID: String,
         hasAccess: Bool?,
@@ -27,6 +28,7 @@ public protocol AppDatesRouter: BaseRouter {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public class AppDatesRouterMock: BaseRouterMock, AppDatesRouter {
+    public func showSettings() {}
     public func showCourseScreens(
         courseID: String,
         hasAccess: Bool?,

@@ -166,8 +166,8 @@ struct MainScreenView: View {
             .tag(MainTab.profile)
             .accessibilityIdentifier("profile_tabitem")
         }
-        .navigationBarHidden(viewModel.selection == .dashboard)
-        .navigationBarBackButtonHidden(viewModel.selection == .dashboard)
+        .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .dates)
+        .navigationBarBackButtonHidden(viewModel.selection == .dashboard  || viewModel.selection == .dates)
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {

@@ -16,6 +16,7 @@ public final class DatesViewModel: ObservableObject {
     @Published private(set) var isShowProgress = false
     @Published var showError: Bool = false
     @Published private(set) var isLoadingNextPage = false
+    @Published private(set) var noDates = false
     
     var errorMessage: String? {
         didSet {
@@ -34,7 +35,7 @@ public final class DatesViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DatesViewInteractorProtocol
     private let courseManager: CourseStructureManagerProtocol
-    private let router: AppDatesRouter
+    private(set) var router: AppDatesRouter
     
     public init(
         interactor: DatesViewInteractorProtocol,
@@ -55,21 +56,25 @@ public final class DatesViewModel: ObservableObject {
         if isRefresh {
             nextPage = 1
             totalPages = 1
-            allDates = []
+
         }
         
         do {
             if connectivity.isInternetAvaliable {
                 let (dates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
+                allDates = []
+                coursesDates = []
                 allDates = dates
                 if nextPageUrl != nil {
                     totalPages += 1
                 }
             } else {
                 let dates = try await interactor.getCourseDatesOffline()
+                allDates = []
+                coursesDates = []
                 allDates = dates
             }
-            
+            noDates = allDates.isEmpty
             self.isShowProgress = false
             self.processDates(allDates)
         } catch {

@@ -9,7 +9,11 @@ import SwiftUI
 import Theme
 import Core
 
-public struct DateCell: View {
+public struct DateCell: View, Equatable {
+    
+    public static func == (lhs: DateCell, rhs: DateCell) -> Bool {
+        return lhs.courseDate.location == rhs.courseDate.location
+    }
     
     private let courseDate: CourseDate
     private let isFirst: Bool
