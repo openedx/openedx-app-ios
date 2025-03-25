@@ -10,7 +10,7 @@ import Core
 import OEXFoundation
 
 public protocol DatesViewRepositoryProtocol: Sendable {
-    func getCourseDates(page: Int) async throws -> ([CourseDate], Int?)
+    func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline() async throws -> [CourseDate]
 }
 
@@ -19,26 +19,29 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
     private let api: API
     private let storage: CoreStorage
     private let config: ConfigProtocol
+    private let persistence: DatesPersistenceProtocol
     
-    public init(api: API, storage: CoreStorage, config: ConfigProtocol) {
+    public init(api: API, storage: CoreStorage, config: ConfigProtocol, persistence: DatesPersistenceProtocol) {
         self.api = api
         self.storage = storage
         self.config = config
+        self.persistence = persistence
     }
     
-    public func getCourseDates(page: Int) async throws -> ([CourseDate], Int?) {
+    public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
         let response = try await api.requestData(
             DatesViewEndpoint.getCourseDates(username: storage.user?.username ?? "", page: page)
         )
             .mapResponse(DataLayer.CourseDatesResponse.self)
         
-        return (response.domain(), response.next)
+        let dates = response.domain()
+        await persistence.saveCourseDates(dates: dates)
+        
+        return (dates, response.next)
     }
     
     public func getCourseDatesOffline() async throws -> [CourseDate] {
-        // In a real implementation, this would fetch from a local database
-        // For now, return an empty array
-        return []
+        return try await persistence.loadCourseDates()
     }
 }
 
@@ -48,13 +51,14 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
     
     public init() {}
     
-    public func getCourseDates(page: Int) async throws -> ([CourseDate], Int?) {
+    public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
         let dates: [CourseDate]
-        let nextPage: Int?
+        let hasNextPage: String?
         
         if page == 1 {
             dates = [
                 CourseDate(
+                    location: "1",
                     date: Date().addingTimeInterval(-86400 * 5),
                     title: "Past Assignment 1",
                     courseName: "Course 1",
@@ -63,6 +67,7 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                     hasAccess: true
                 ),
                 CourseDate(
+                    location: "2",
                     date: Date().addingTimeInterval(-86400 * 4),
                     title: "Past Assignment 2",
                     courseName: "Course 2",
@@ -71,10 +76,11 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                     hasAccess: true
                 )
             ]
-            nextPage = 2
+            hasNextPage = "2"
         } else {
             dates = [
                 CourseDate(
+                    location: "3",
                     date: Date(),
                     title: "Today's Assignment",
                     courseName: "Course 3",
@@ -83,6 +89,7 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                     hasAccess: true
                 ),
                 CourseDate(
+                    location: "4",
                     date: Date().addingTimeInterval(86400 * 2),
                     title: "Future Assignment 1",
                     courseName: "Course 4",
@@ -91,6 +98,7 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                     hasAccess: true
                 ),
                 CourseDate(
+                    location: "5",
                     date: Date().addingTimeInterval(86400 * 7),
                     title: "Future Assignment 2",
                     courseName: "Course 5",
@@ -99,14 +107,24 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                     hasAccess: true
                 )
             ]
-            nextPage = nil
+            hasNextPage = nil
         }
         
-        return (dates, nextPage)
+        return (dates, hasNextPage)
     }
     
     public func getCourseDatesOffline() async throws -> [CourseDate] {
-        return []
+        return [
+            CourseDate(
+                location: "6",
+                date: Date().addingTimeInterval(-86400 * 3),
+                title: "Offline Assignment",
+                courseName: "Cached Course",
+                courseId: "course-v1:1+1+offline",
+                blockId: "block-v1:1+1+offline+type@sequential+block@bafd854414124f6db42fee42ca8acc19",
+                hasAccess: true
+            )
+        ]
     }
 }
 #endif

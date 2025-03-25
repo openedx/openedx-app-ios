@@ -53,6 +53,8 @@ public struct DateCell: View {
                         CoreAssets.assignmentIcon.swiftUIImage
                         Text(courseDate.title)
                             .font(Theme.Fonts.titleMedium)
+                            .lineLimit(1)
+                            .multilineTextAlignment(.leading)
                     }
                     .foregroundColor(Theme.Colors.textPrimary)
                     
@@ -76,6 +78,7 @@ public struct DateCell: View {
 #Preview {
     DateCell(
         courseDate: CourseDate(
+            location: "123",
             date: Date(),
             title: "Assignment Title",
             courseName: "Course Name"

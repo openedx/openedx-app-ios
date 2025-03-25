@@ -26,8 +26,9 @@ public final class DatesViewModel: ObservableObject {
     }
     
     // Pagination properties
-    private var currentPage = 1
-    private var hasNextPage = false
+    private var nextPage = 1
+    private var totalPages = 1
+    private var fetchInProgress = false
     private var allDates: [CourseDate] = []
     
     let connectivity: ConnectivityProtocol
@@ -47,19 +48,23 @@ public final class DatesViewModel: ObservableObject {
         self.router = router
     }
     
+    @MainActor
     public func loadDates(isRefresh: Bool = false) async {
         isShowProgress = !isRefresh
         
         if isRefresh {
-            currentPage = 1
+            nextPage = 1
+            totalPages = 1
             allDates = []
         }
         
         do {
             if connectivity.isInternetAvaliable {
-                let (dates, nextPage) = try await interactor.getCourseDates(page: currentPage)
+                let (dates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
                 allDates = dates
-                hasNextPage = nextPage != nil
+                if nextPageUrl != nil {
+                    totalPages += 1
+                }
             } else {
                 let dates = try await interactor.getCourseDatesOffline()
                 allDates = dates
@@ -73,20 +78,29 @@ public final class DatesViewModel: ObservableObject {
         }
     }
     
-    public func loadNextPageIfNeeded() async {
-        guard connectivity.isInternetAvaliable && hasNextPage && !isLoadingNextPage else { return }
+    public func loadNextPageIfNeeded(index: Int) async {
+        guard connectivity.isInternetAvaliable
+                && !fetchInProgress
+                && nextPage <= totalPages
+                && index == allDates.count - 3 else { return }
         
+        fetchInProgress = true
         isLoadingNextPage = true
         
         do {
-            currentPage += 1
-            
-            let (newDates, nextPage) = try await interactor.getCourseDates(page: currentPage)
+            nextPage += 1
+            let (newDates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
             allDates.append(contentsOf: newDates)
-            hasNextPage = nextPage != nil
+            
+            if nextPageUrl != nil {
+                totalPages += 1
+            }
+            
             processDates(allDates)
+            fetchInProgress = false
             isLoadingNextPage = false
         } catch {
+            fetchInProgress = false
             isLoadingNextPage = false
             errorMessage = error.localizedDescription
         }
@@ -94,7 +108,7 @@ public final class DatesViewModel: ObservableObject {
     
     func openVertical(date: CourseDate) async {
         guard let courseId = date.courseId else { return }
-
+        
         router
             .showCourseScreens(
                 courseID: courseId,

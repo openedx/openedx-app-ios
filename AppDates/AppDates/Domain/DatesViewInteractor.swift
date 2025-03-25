@@ -10,7 +10,7 @@ import Core
 
 //sourcery: AutoMockable
 public protocol DatesViewInteractorProtocol: Sendable {
-    func getCourseDates(page: Int) async throws -> ([CourseDate], Int?)
+    func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline() async throws -> [CourseDate]
 }
 
@@ -22,7 +22,7 @@ public actor DatesViewInteractor: DatesViewInteractorProtocol {
         self.repository = repository
     }
     
-    public func getCourseDates(page: Int) async throws -> ([CourseDate], Int?) {
+    public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
         return try await repository.getCourseDates(page: page)
     }
     

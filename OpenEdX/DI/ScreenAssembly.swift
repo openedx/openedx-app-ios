@@ -316,11 +316,16 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: AppDates
+        container.register(DatesPersistenceProtocol.self) { r in
+            DatesPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+        }
+
         container.register(DatesViewRepositoryProtocol.self) { r in
             DatesViewRepository(
                 api: r.resolve(API.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                persistence: r.resolve(DatesPersistenceProtocol.self)!
             )
         }
                 

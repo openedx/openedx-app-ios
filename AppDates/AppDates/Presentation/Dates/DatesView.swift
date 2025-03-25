@@ -31,8 +31,8 @@ public struct DatesView: View {
                         if !viewModel.isShowProgress && viewModel.coursesDates.isEmpty {
                             DatesEmptyStateView()
                         }
-                        VStack(spacing: 24) {
-                            ForEach(viewModel.coursesDates) { group in
+                        LazyVStack(spacing: 24) {
+                            ForEach(viewModel.coursesDates, id: \.id) { group in
                                 VStack(alignment: .leading, spacing: 0) {
                                     Text(group.type.text)
                                         .font(Theme.Fonts.titleMedium)
@@ -40,10 +40,10 @@ public struct DatesView: View {
                                         .padding(.bottom, 8)
                                         .padding(.top, 8)
                                     
-                                    ForEach(Array(group.dates.enumerated()), id: \.element.id) { index, date in
+                                    ForEach(Array(group.dates.enumerated()), id: \.element.location) { index, date in
                                         Button(action: {
                                             Task {
-                                               await viewModel.openVertical(date: date)
+                                                await viewModel.openVertical(date: date)
                                             }
                                         }, label: {
                                             DateCell(
@@ -53,35 +53,30 @@ public struct DatesView: View {
                                                 isLast: index == group.dates.count - 1
                                             )
                                         })
+                                        .id(index)
+                                        .onAppear {
+                                            Task {
+                                                await viewModel.loadNextPageIfNeeded(index: index)
+                                            }
+                                        }
                                     }
                                 }
+                                .id(group.id)
                             }
                             
                             // Loading more indicator
                             if viewModel.isLoadingNextPage {
                                 ProgressBar(size: 40, lineWidth: 8)
+                                    .padding(.top, 20)
                             }
                         }
                         .padding(.horizontal, 24)
                         Spacer(minLength: 100)
-                        
-                        GeometryReader { geometry in
-                            Color.clear
-                                .preference(key: ScrollViewOffsetPreferenceKey.self,
-                                            value: geometry.frame(in: .named("scrollView")).maxY)
-                                .onAppear {
-                                    Task {
-                                        await viewModel.loadNextPageIfNeeded()
-                                    }
-                                }
-                        }
-                        .frame(height: 20)
                     }
                     .frameLimit(width: proxy.size.width)
-                    .coordinateSpace(name: "scrollView")
                     .refreshable {
                         Task {
-                           await viewModel.loadDates(isRefresh: true)
+                            await viewModel.loadDates(isRefresh: true)
                         }
                     }
                 }
@@ -89,7 +84,9 @@ public struct DatesView: View {
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
                     reloadAction: {
-                        
+                        Task {
+                            await viewModel.loadDates(isRefresh: true)
+                        }
                     }
                 )
                 
@@ -112,7 +109,7 @@ public struct DatesView: View {
                     }
                 }
             }
-            .onAppear {
+            .onFirstAppear {
                 Task {
                     await viewModel.loadDates()
                 }

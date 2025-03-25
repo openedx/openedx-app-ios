@@ -137,15 +137,18 @@ struct MainScreenView: View {
                 .tag(MainTab.discovery)
                 .accessibilityIdentifier("discovery_tabitem")
             }
-            VStack {
-                DatesView(viewModel: Container.shared.resolve(DatesViewModel.self)!)
+            
+            if viewModel.config.features.datesEnabled {
+                VStack {
+                    DatesView(viewModel: Container.shared.resolve(DatesViewModel.self)!)
+                }
+                .tabItem {
+                    CoreAssets.dates.swiftUIImage
+                    Text(AppDatesLocalization.Dates.title)
+                }
+                .tag(MainTab.dates)
+                .accessibilityIdentifier("dates_tabitem")
             }
-            .tabItem {
-                CoreAssets.dates.swiftUIImage
-                Text(AppDatesLocalization.Dates.title)
-            }
-            .tag(MainTab.dates)
-            .accessibilityIdentifier("dates_tabitem")
             
             VStack {
                 ProfileView(

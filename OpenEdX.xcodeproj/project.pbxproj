@@ -67,6 +67,7 @@
 		CE924BE72CD8FAB3000137CA /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CE924BE62CD8FAB3000137CA /* FirebaseMessaging */; };
 		CE9C07D82CD104E5009C44D1 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; };
 		CEBA52772CEBB69100619E2B /* OEXFirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEBA52762CEBB69100619E2B /* OEXFirebaseAnalytics */; };
+		CED29EAD2D91D88E00836226 /* DatesPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED29EAC2D91D88E00836226 /* DatesPersistence.swift */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
@@ -154,6 +155,7 @@
 		CE1D5B7A2CE60E000019CA34 /* ContainerMainActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerMainActor.swift; sourceTree = "<group>"; };
 		CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
 		CE815A982D60DA9300CB9114 /* AppDates.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppDates.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED29EAC2D91D88E00836226 /* DatesPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesPersistence.swift; sourceTree = "<group>"; };
 		D70D30110012B7D52D05E876 /* Pods-App-OpenEdX.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugprod.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FD0CE8D22B755B4003A113BB /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
@@ -192,6 +194,7 @@
 				025AD4AB2A6FB95C00AB8FA7 /* DatabaseManager.swift */,
 				0293A2022A6FCA590090A336 /* CorePersistence.swift */,
 				0293A2042A6FCD430090A336 /* CoursePersistence.swift */,
+				CED29EAC2D91D88E00836226 /* DatesPersistence.swift */,
 				0293A2062A6FCDA30090A336 /* DiscoveryPersistence.swift */,
 				0293A2082A6FCDE50090A336 /* DashboardPersistence.swift */,
 				022213D12C0E08E500B917E6 /* ProfilePersistence.swift */,
@@ -569,6 +572,7 @@
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
 				A50066912B61467B0024680B /* BrazeProvider.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
+				CED29EAD2D91D88E00836226 /* DatesPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
 				02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */,
 				BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */,
