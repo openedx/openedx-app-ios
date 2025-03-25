@@ -15,3 +15,7 @@
 
 "EMPTY.TITLE" = "No Dates";
 "EMPTY.SUBTITLE" = "You currently have no active courses with scheduled events. Enroll in a course to view important dates and deadlines.";
+
+"SHIFT_DUE_DATES.TITLE" = "Missed Some Deadlines?";
+"SHIFT_DUE_DATES.DESCRIPTION" = "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.";
+"SHIFT_DUE_DATES.BUTTON" = "Shift Due Dates";

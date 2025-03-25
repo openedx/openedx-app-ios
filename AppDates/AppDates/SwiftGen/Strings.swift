@@ -33,6 +33,14 @@ public enum AppDatesLocalization {
     /// No Dates
     public static let title = AppDatesLocalization.tr("Localizable", "EMPTY.TITLE", fallback: "No Dates")
   }
+  public enum ShiftDueDates {
+    /// Shift Due Dates
+    public static let button = AppDatesLocalization.tr("Localizable", "SHIFT_DUE_DATES.BUTTON", fallback: "Shift Due Dates")
+    /// Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.
+    public static let description = AppDatesLocalization.tr("Localizable", "SHIFT_DUE_DATES.DESCRIPTION", fallback: "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.")
+    /// Missed Some Deadlines?
+    public static let title = AppDatesLocalization.tr("Localizable", "SHIFT_DUE_DATES.TITLE", fallback: "Missed Some Deadlines?")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

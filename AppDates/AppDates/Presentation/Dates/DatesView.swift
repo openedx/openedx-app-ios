@@ -20,7 +20,7 @@ public struct DatesView: View {
     
     public var body: some View {
         GeometryReader { proxy in
-            VStack {
+            VStack(spacing: 0) {
                 titleAndSettings(proxy: proxy)
                     .zIndex(1)
                 ZStack(alignment: .top) {
@@ -33,6 +33,17 @@ public struct DatesView: View {
                         ScrollView {
                             if !viewModel.isShowProgress && viewModel.noDates {
                                 DatesEmptyStateView()
+                            }
+                            if viewModel.showShiftDueDatesView {
+                                ShiftDueDatesView(
+                                    isShowProgressForDueDates: $viewModel.isShowProgressForDueDates,
+                                    onShiftButtonTap: {
+                                        Task {
+                                            await viewModel.shiftDueDates()
+                                        }
+                                    }
+                                )
+                                .padding(.horizontal, 24)
                             }
                             LazyVStack(spacing: 24) {
                                 ForEach(viewModel.coursesDates, id: \.id) { group in
