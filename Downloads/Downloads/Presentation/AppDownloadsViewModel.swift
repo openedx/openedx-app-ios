@@ -302,6 +302,10 @@ public final class AppDownloadsViewModel: ObservableObject {
         // Get the total size of the course from our existing data
         let totalFileSize = Int(courses.first(where: { $0.id == courseID })?.totalSize ?? 0)
         
+        // Calculate the remaining size to download
+        let downloadedSize = Int(downloadedSizes[courseID] ?? 0)
+        let remainingSize = max(0, totalFileSize - downloadedSize)
+        
         if !connectivity.isInternetAvaliable {
             let sequentials = await fetchCourseSequentialsIfAvailable(courseID: courseID)
             presentNoInternetAlert(sequentials: sequentials)
@@ -321,18 +325,18 @@ public final class AppDownloadsViewModel: ObservableObject {
                 presentDownloadConfirmationAlert(
                     courseID: courseID,
                     sequentials: sequentials,
-                    totalFileSize: totalFileSize,
+                    totalFileSize: remainingSize,
                     type: .confirmDownloadCellular
                 )
                 return
             }
-        } else if totalFileSize > largeDownloadThreshold {
-            // Show large download confirmation
+        } else if remainingSize > largeDownloadThreshold {
+            // Show large download confirmation if the remaining size is above threshold
             let sequentials = await fetchCourseSequentialsIfAvailable(courseID: courseID)
             presentDownloadConfirmationAlert(
                 courseID: courseID,
                 sequentials: sequentials,
-                totalFileSize: totalFileSize,
+                totalFileSize: remainingSize,
                 type: .confirmDownload
             )
             return
