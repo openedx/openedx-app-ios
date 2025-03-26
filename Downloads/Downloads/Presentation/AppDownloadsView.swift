@@ -62,7 +62,6 @@ public struct AppDownloadsView: View {
                                 ForEach(viewModel.courses) { course in
                                     DownloadCourseCell(
                                         course: course,
-                                        router: viewModel.router,
                                         downloadedSize: Binding(
                                             get: { viewModel.downloadedSizes[course.id] ?? 0 },
                                             set: { viewModel.downloadedSizes[course.id] = $0 }
@@ -72,6 +71,21 @@ public struct AppDownloadsView: View {
                                             Task {
                                                 await viewModel.downloadCourse(courseID: course.id)
                                             }
+                                        },
+                                        onCardTap: {
+                                            viewModel.router
+                                                .showCourseScreens(
+                                                    courseID: course.id,
+                                                    hasAccess: true,
+                                                    courseStart: Date(),
+                                                    courseEnd: nil,
+                                                    enrollmentStart: nil,
+                                                    enrollmentEnd: nil,
+                                                    title: course.name,
+                                                    courseRawImage: nil,
+                                                    showDates: false,
+                                                    lastVisitedBlockID: nil
+                                                )
                                         },
                                         onRemoveTap: {
                                             Task {

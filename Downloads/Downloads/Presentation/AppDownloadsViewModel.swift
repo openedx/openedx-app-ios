@@ -150,7 +150,6 @@ public final class AppDownloadsViewModel: ObservableObject {
             downloadedSizes[course.id] = Int64(downloaded)
             courseSizes[course.id] = Int64(total)
             
-            // Обновляем totalSize в модели курса, если есть более точное значение
             if let courseIndex = courses.firstIndex(where: { $0.id == course.id }) {
                 if courses[courseIndex].totalSize != Int64(total) {
                     courses[courseIndex].totalSize = Int64(total)
@@ -255,17 +254,44 @@ public final class AppDownloadsViewModel: ObservableObject {
         analytics.downloadError(courseId: courseID, courseName: courseName, errorType: error.rawValue)
     }
     
+    // Compares server and local sizes and updates if there's a significant difference
+    private func updateSizesFromServer(_ serverCourses: [DownloadCoursePreview]) {
+        for serverCourse in serverCourses {
+            let localSize = courseSizes[serverCourse.id] ?? 0
+            
+            if localSize == 0 {
+                courseSizes[serverCourse.id] = serverCourse.totalSize
+                continue
+            }
+            
+            // Calculate difference percentage
+            let difference = abs(Double(serverCourse.totalSize - localSize) / Double(localSize)) * 100
+            
+            if difference > 5 {
+                courseSizes[serverCourse.id] = serverCourse.totalSize
+                // Also update the course model if it exists
+                if let courseIndex = courses.firstIndex(where: { $0.id == serverCourse.id }) {
+                    courses[courseIndex].totalSize = serverCourse.totalSize
+                }
+            }
+        }
+    }
+
     @MainActor
     func getDownloadCourses(isRefresh: Bool = false) async {
         fetchInProgress = !isRefresh
         do {
             if connectivity.isInternetAvaliable {
-                courses = try await downloadsInteractor.getDownloadCourses()
+                let serverCourses = try await downloadsInteractor.getDownloadCourses()
+                                
+                courses = serverCourses
+                await refreshDownloadStates()
+                updateSizesFromServer(serverCourses)
             } else {
                 courses = try await downloadsInteractor.getDownloadCoursesOffline()
+                await refreshDownloadStates()
             }
             fetchInProgress = false
-            await refreshDownloadStates()
             analytics.downloadsScreenViewed()
         } catch let error {
             handleError(error: error)

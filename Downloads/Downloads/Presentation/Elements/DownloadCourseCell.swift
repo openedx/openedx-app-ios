@@ -12,10 +12,10 @@ import Kingfisher
 
 struct DownloadCourseCell: View {
     let course: DownloadCoursePreview
-    let router: DownloadsRouter
     @Binding var downloadedSize: Int64
     let downloadState: DownloadState?
     let onDownloadTap: () -> Void
+    let onCardTap: () -> Void
     let onRemoveTap: () -> Void
     let onCancelTap: () -> Void
     @State private var isCancelling: Bool = false
@@ -94,19 +94,7 @@ struct DownloadCourseCell: View {
                 }
             }
             .onTapGesture {
-                router
-                    .showCourseScreens(
-                        courseID: course.id,
-                        hasAccess: true,
-                        courseStart: Date(),
-                        courseEnd: nil,
-                        enrollmentStart: nil,
-                        enrollmentEnd: nil,
-                        title: course.name,
-                        courseRawImage: nil,
-                        showDates: false,
-                        lastVisitedBlockID: nil
-                    )
+                onCardTap()
             }
             
             let downloadedFormatted = Int(validDownloadedSize).formattedFileSize()
@@ -298,10 +286,10 @@ private enum DownloadButtonState {
                 image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
                 totalSize: 31213
             ),
-            router: DownloadsRouterMock(),
             downloadedSize: .constant(0),
             downloadState: nil,
             onDownloadTap: {},
+            onCardTap: {},
             onRemoveTap: {},
             onCancelTap: {}
         )
@@ -314,10 +302,10 @@ private enum DownloadButtonState {
                 image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
                 totalSize: 31213
             ),
-            router: DownloadsRouterMock(),
             downloadedSize: .constant(0),
             downloadState: .inProgress,
             onDownloadTap: {},
+            onCardTap: {},
             onRemoveTap: {},
             onCancelTap: {}
         )
@@ -330,10 +318,10 @@ private enum DownloadButtonState {
                 image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
                 totalSize: 31213
             ),
-            router: DownloadsRouterMock(),
             downloadedSize: .constant(15000),
             downloadState: nil,
             onDownloadTap: {},
+            onCardTap: {},
             onRemoveTap: {},
             onCancelTap: {}
         )
@@ -346,10 +334,10 @@ private enum DownloadButtonState {
                 image: "https://sample-videos.com/img/Sample-jpg-image-200kb.jpg",
                 totalSize: 31213
             ),
-            router: DownloadsRouterMock(),
             downloadedSize: .constant(31213),
             downloadState: .finished,
             onDownloadTap: {},
+            onCardTap: {},
             onRemoveTap: {},
             onCancelTap: {}
         )
