@@ -17,3 +17,5 @@ cd ../Profile
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
 cd ../WhatsNew
 ./../Pods/SwiftyMocky/bin/swiftymocky generate
+cd ../AppDates
+./../Pods/SwiftyMocky/bin/swiftymocky generate

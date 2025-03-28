@@ -117,6 +117,16 @@
                ReferencedContainer = "container:Core/Core.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CE815A652D60D75200CB9114"
+               BuildableName = "AppDatesTests.xctest"
+               BlueprintName = "AppDatesTests"
+               ReferencedContainer = "container:AppDates/AppDates.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
