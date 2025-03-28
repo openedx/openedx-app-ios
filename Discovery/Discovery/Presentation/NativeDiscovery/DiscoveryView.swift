@@ -161,6 +161,7 @@ public struct DiscoveryView: View {
                             viewModel.router.showLoginScreen(sourceScreen: .discovery)
                         }
                     }
+                    .frame(maxHeight: .infinity, alignment: .bottom)
                 }
             }.padding(.top, 8)
 
