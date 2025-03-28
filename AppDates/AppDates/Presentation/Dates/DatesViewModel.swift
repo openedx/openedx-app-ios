@@ -19,6 +19,7 @@ public final class DatesViewModel: ObservableObject {
     @Published private(set) var noDates = false
     @Published var showShiftDueDatesView = false
     @Published var isShowProgressForDueDates = false
+    @Published var delayedLoadSecondPage = false
     
     var errorMessage: String? {
         didSet {
@@ -30,7 +31,7 @@ public final class DatesViewModel: ObservableObject {
     
     // Pagination properties
     private var nextPage = 1
-    private var totalPages = 1
+    private var hasNextPage = false
     private var fetchInProgress = false
     private var allDates: [CourseDate] = []
     
@@ -52,8 +53,6 @@ public final class DatesViewModel: ObservableObject {
         self.courseManager = courseManager
         self.analytics = analytics
         self.router = router
-        
-        analytics.datesScreenViewed()
     }
     
     @MainActor
@@ -66,26 +65,53 @@ public final class DatesViewModel: ObservableObject {
         
         if isRefresh {
             nextPage = 1
-            totalPages = 1
+            hasNextPage = false
+            delayedLoadSecondPage = false
         }
         
         do {
             if connectivity.isInternetAvaliable {
-                let (dates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
-                allDates = []
-                coursesDates = []
-                allDates = dates
-                if nextPageUrl != nil {
-                    totalPages += 1
+                
+                let offlineDates = try await interactor.getCourseDatesOffline(page: nextPage)
+                
+                allDates = offlineDates
+                self.processDates(allDates)
+                
+                if !offlineDates.isEmpty && nextPage == 1 {
+                    isShowProgress = false
+                    fetchInProgress = true
+                    await interactor.clearAllCourseDates()
                 }
+                
+                let (dates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
+                
+//                if nextPage == 1 {
+//                    allDates = []
+//                    coursesDates = []
+//                }
+                
+                allDates = dates
+                hasNextPage = nextPageUrl != nil
+                
+                if hasNextPage {
+                    nextPage += 1
+                }
+                
+                if delayedLoadSecondPage {
+                    print(">>> 🐺 delayedLoadSecondPage true, start loadNextPageIfNeeded", allDates.count - 3)
+                    await loadNextPageIfNeeded(index: allDates.count - 3)
+                }
+                
             } else {
-                let dates = try await interactor.getCourseDatesOffline()
+                let dates = try await interactor.getCourseDatesOffline(page: nil)
                 allDates = []
                 coursesDates = []
                 allDates = dates
+                hasNextPage = false
             }
             noDates = allDates.isEmpty
             self.isShowProgress = false
+            self.fetchInProgress = false
             self.processDates(allDates)
         } catch let error {
             isShowProgress = false
@@ -100,21 +126,33 @@ public final class DatesViewModel: ObservableObject {
     }
     
     public func loadNextPageIfNeeded(index: Int) async {
+        if !hasNextPage && nextPage == 1 && index == allDates.count - 3 {
+            delayedLoadSecondPage = true
+            fetchInProgress = false
+            print(">>> 🐺 1")
+            return
+        }
         guard connectivity.isInternetAvaliable
                 && !fetchInProgress
-                && nextPage <= totalPages
+                && hasNextPage
                 && index == allDates.count - 3 else { return }
         
         fetchInProgress = true
         isLoadingNextPage = true
         
+        if delayedLoadSecondPage {
+            print(">>> 🐺 delayedLoadSecondPage = false")
+            delayedLoadSecondPage = false
+        }
+        
         do {
-            nextPage += 1
             let (newDates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
             allDates.append(contentsOf: newDates)
             
-            if nextPageUrl != nil {
-                totalPages += 1
+            hasNextPage = nextPageUrl != nil
+            
+            if hasNextPage {
+                nextPage += 1
             }
             
             processDates(allDates)
@@ -188,24 +226,24 @@ public final class DatesViewModel: ObservableObject {
         var groups: [DateGroup] = []
         
         if !pastDue.isEmpty {
-            groups.append(DateGroup(type: .pastDue, dates: pastDue))
+            groups.append(DateGroup(type: .pastDue, dates: pastDue.sorted(by: { $0.date < $1.date })))
             showShiftDueDatesView = true
         }
         
         if !today.isEmpty {
-            groups.append(DateGroup(type: .today, dates: today))
+            groups.append(DateGroup(type: .today, dates: today.sorted(by: { $0.date < $1.date })))
         }
         
         if !thisWeek.isEmpty {
-            groups.append(DateGroup(type: .thisWeek, dates: thisWeek))
+            groups.append(DateGroup(type: .thisWeek, dates: thisWeek.sorted(by: { $0.date < $1.date })))
         }
         
         if !nextWeek.isEmpty {
-            groups.append(DateGroup(type: .nextWeek, dates: nextWeek))
+            groups.append(DateGroup(type: .nextWeek, dates: nextWeek.sorted(by: { $0.date < $1.date })))
         }
         
         if !upcoming.isEmpty {
-            groups.append(DateGroup(type: .upcoming, dates: upcoming))
+            groups.append(DateGroup(type: .upcoming, dates: upcoming.sorted(by: { $0.date < $1.date })))
         }
         
         self.coursesDates = groups

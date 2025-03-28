@@ -11,8 +11,9 @@ import OEXFoundation
 
 public protocol DatesViewRepositoryProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
-    func getCourseDatesOffline() async throws -> [CourseDate]
+    func getCourseDatesOffline(page: Int?) async throws -> [CourseDate]
     func resetAllRelativeCourseDeadlines() async throws
+    func clearAllCourseDates() async
 }
 
 public actor DatesViewRepository: DatesViewRepositoryProtocol {
@@ -30,24 +31,33 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
     }
     
     public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
+        let startTime = Date()  // Начало замера времени
+
         let response = try await api.requestData(
             DatesViewEndpoint.getCourseDates(username: storage.user?.username ?? "", page: page)
         )
-            .mapResponse(DataLayer.CourseDatesResponse.self)
+        .mapResponse(DataLayer.CourseDatesResponse.self)
         
         let dates = response.domain()
-        await persistence.saveCourseDates(dates: dates)
+        await persistence.saveCourseDates(dates: dates, page: page)
+        
+        let elapsedTime = Date().timeIntervalSince(startTime)  // Вычисляем прошедшее время
+        print("Запрос занял \(elapsedTime) секунд")
         
         return (dates, response.next)
     }
     
-    public func getCourseDatesOffline() async throws -> [CourseDate] {
-        return try await persistence.loadCourseDates()
+    public func getCourseDatesOffline(page: Int?) async throws -> [CourseDate] {
+        return try await persistence.loadCourseDates(page: page)
     }
     
     public func resetAllRelativeCourseDeadlines() async throws {
         let response = try await api.request(DatesViewEndpoint.resetAllRelativeCourseDeadlines)
         print(">>>>> resetAllRelativeCourseDeadlines: statusCode \(response.statusCode)")
+    }
+    
+    public func clearAllCourseDates() async {
+        await persistence.clearAllCourseDates()
     }
 }
 
@@ -119,7 +129,7 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
         return (dates, hasNextPage)
     }
     
-    public func getCourseDatesOffline() async throws -> [CourseDate] {
+    public func getCourseDatesOffline(page: Int?) async throws -> [CourseDate] {
         return [
             CourseDate(
                 location: "6",
@@ -134,5 +144,7 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
     }
     
     public func resetAllRelativeCourseDeadlines() async throws {}
+    
+    public func clearAllCourseDates() async {}
 }
 #endif

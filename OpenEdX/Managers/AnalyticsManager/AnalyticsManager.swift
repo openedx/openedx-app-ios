@@ -161,6 +161,10 @@ class AnalyticsManager: AuthorizationAnalytics,
         trackScreenEvent(.mainProfileTabClicked, biValue: .mainProfileTabClicked)
     }
     
+    public func mainDatesScreenViewed() {
+        trackScreenEvent(.mainDashboardDatesTabClicked, biValue: .mainDashboardDatesTabClicked)
+    }
+    
     public func mainCoursesClicked() {
         trackScreenEvent(.mainDashboardCoursesClicked, biValue: .mainDashboardCoursesClicked)
     }
@@ -1075,11 +1079,6 @@ class AnalyticsManager: AuthorizationAnalytics,
     }
     
     // MARK: - AppDates Analytics
-    
-    public func datesScreenViewed() {
-        trackScreenEvent(.datesScreenViewed, biValue: .datesScreenViewed)
-    }
-    
     public func datesCourseClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,

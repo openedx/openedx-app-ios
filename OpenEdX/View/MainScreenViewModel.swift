@@ -107,6 +107,9 @@ final class MainScreenViewModel: ObservableObject {
     func trackMainProfileTabClicked() {
         analytics.mainProfileTabClicked()
     }
+    func trackMainDatesScreenClicked() {
+        analytics.mainDatesScreenViewed()
+    }
     
     @MainActor
     func showDownloadFailed(downloads: [DownloadDataTask]) async {

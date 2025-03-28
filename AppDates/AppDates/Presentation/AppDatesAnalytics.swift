@@ -9,7 +9,7 @@ import Foundation
 
 //sourcery: AutoMockable
 public protocol AppDatesAnalytics {
-    func datesScreenViewed()
+    func mainDatesScreenViewed()
     func datesCourseClicked(courseId: String, courseName: String)
     func datesSettingsClicked()
     func datesRefreshPulled()
@@ -17,7 +17,7 @@ public protocol AppDatesAnalytics {
 
 #if DEBUG
 class AppDatesAnalyticsMock: AppDatesAnalytics {
-    public func datesScreenViewed() {}
+    public func mainDatesScreenViewed() {}
     public func datesCourseClicked(courseId: String, courseName: String) {}
     public func datesSettingsClicked() {}
     public func datesRefreshPulled() {}

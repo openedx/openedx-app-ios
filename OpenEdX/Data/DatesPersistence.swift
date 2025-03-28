@@ -19,32 +19,34 @@ public final class DatesPersistence: DatesPersistenceProtocol {
         self.container = container
     }
     
-    public func loadCourseDates() async throws -> [CourseDate] {
+    public func loadCourseDates(page: Int? = nil) async throws -> [CourseDate] {
         return try await container.performBackgroundTask { context in
-            let result = try? context.fetch(CDDate.fetchRequest())
-                .map { CourseDate(
-                    location: $0.location ?? "",
-                    date: $0.date ?? Date(),
-                    title: $0.title ?? "",
-                    courseName: $0.courseName ?? "",
-                    courseId: $0.courseId,
-                    blockId: $0.blockId,
-                    hasAccess: $0.hasAccess
-                )}
-            
-            if let result, !result.isEmpty {
-                return result
-            } else {
-                throw NoCachedDataError()
+            let fetchRequest: NSFetchRequest<CDDate> = CDDate.fetchRequest()
+            if let page = page {
+                fetchRequest.predicate = NSPredicate(format: "page == %d", page)
             }
+            let cdDates = try context.fetch(fetchRequest)
+            let result = cdDates.map { cd in
+                CourseDate(
+                    location: cd.location ?? "",
+                    date: cd.date ?? Date(),
+                    title: cd.title ?? "",
+                    courseName: cd.courseName ?? "",
+                    courseId: cd.courseId,
+                    blockId: cd.blockId,
+                    hasAccess: cd.hasAccess
+                )
+            }
+            return result
         }
     }
     
-    public func saveCourseDates(dates: [CourseDate]) async {
+    public func saveCourseDates(dates: [CourseDate], page: Int) async {
         await container.performBackgroundTask { context in
             for date in dates {
                 let newItem = CDDate(context: context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+                newItem.page = Int64(page)
                 newItem.location = date.location
                 newItem.date = date.date
                 newItem.title = date.title
@@ -55,6 +57,20 @@ public final class DatesPersistence: DatesPersistenceProtocol {
             }
             
             do {
+                try context.save()
+            } catch {
+                debugLog(error)
+            }
+        }
+    }
+    
+    public func clearAllCourseDates() async {
+        await container.performBackgroundTask { context in
+            let fetchRequest: NSFetchRequest<NSFetchRequestResult> = CDDate.fetchRequest()
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            
+            do {
+                try context.execute(batchDeleteRequest)
                 try context.save()
             } catch {
                 debugLog(error)

@@ -45,9 +45,9 @@ public struct DatesView: View {
                                 )
                                 .padding(.horizontal, 24)
                             }
-                            VStack(spacing: 24) {
+                            LazyVStack(spacing: 24) {
                                 ForEach(viewModel.coursesDates, id: \.id) { group in
-                                    VStack(alignment: .leading, spacing: 0) {
+                                    LazyVStack(alignment: .leading, spacing: 0) {
                                         Text(group.type.text)
                                             .font(Theme.Fonts.titleMedium)
                                             .foregroundColor(Theme.Colors.textPrimary)
@@ -69,9 +69,6 @@ public struct DatesView: View {
                                                     isFirst: index == 0,
                                                     isLast: index == group.dates.count - 1
                                                 )
-                                                .onAppear {
-                                                    print(">>>>>>>", date.title, index)
-                                                }
                                             })
                                             .id(UUID())
                                             .onAppear {
@@ -85,7 +82,7 @@ public struct DatesView: View {
                                 }
                                 
                                 // Loading more indicator
-                                if viewModel.isLoadingNextPage {
+                                if viewModel.isLoadingNextPage || viewModel.delayedLoadSecondPage {
                                     ProgressBar(size: 40, lineWidth: 8)
                                         .padding(.top, 20)
                                 }

@@ -11,8 +11,9 @@ import Core
 //sourcery: AutoMockable
 public protocol DatesViewInteractorProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
-    func getCourseDatesOffline() async throws -> [CourseDate]
+    func getCourseDatesOffline(page: Int?) async throws -> [CourseDate]
     func resetAllRelativeCourseDeadlines() async throws
+    func clearAllCourseDates() async
 }
 
 public actor DatesViewInteractor: DatesViewInteractorProtocol {
@@ -27,12 +28,16 @@ public actor DatesViewInteractor: DatesViewInteractorProtocol {
         return try await repository.getCourseDates(page: page)
     }
     
-    public func getCourseDatesOffline() async throws -> [CourseDate] {
-        return try await repository.getCourseDatesOffline()
+    public func getCourseDatesOffline(page: Int?) async throws -> [CourseDate] {
+        return try await repository.getCourseDatesOffline(page: page)
     }
     
     public func resetAllRelativeCourseDeadlines() async throws {
         try await repository.resetAllRelativeCourseDeadlines()
+    }
+    
+    public func clearAllCourseDates() async {
+        await repository.clearAllCourseDates()
     }
 }
 

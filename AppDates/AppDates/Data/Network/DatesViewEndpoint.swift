@@ -40,7 +40,8 @@ enum DatesViewEndpoint: EndPointType {
         switch self {
         case let .getCourseDates(_, page):
             let params: Parameters = [
-                "page": page
+                "page": page,
+                "page_size": 20
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             
