@@ -189,10 +189,7 @@ public final class DatesViewModel: ObservableObject {
         
         if !pastDue.isEmpty {
             groups.append(DateGroup(type: .pastDue, dates: pastDue))
-            
-            withAnimation(.bouncy(duration: 0.15)) {
-                showShiftDueDatesView = true
-            }
+            showShiftDueDatesView = true
         }
         
         if !today.isEmpty {
@@ -216,37 +213,60 @@ public final class DatesViewModel: ObservableObject {
     
     @MainActor
     public func shiftDueDates() async {
+        isShowProgressForDueDates = true
+        
+        do {
+            try await interactor.resetAllRelativeCourseDeadlines()
+            sendShiftDatesNotifications()
+            isShowProgressForDueDates = false
+            await loadDates(isRefresh: true)
+        } catch let error {
+            isShowProgressForDueDates = false
+            if error.isInternetError || error is NoCachedDataError {
+                errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else {
+                errorMessage = CoreLocalization.Error.unknownError
+            }
+        }
+        
+//        for course in Set(pastDueCourses) {
+//            do {
+//                guard let courseID = course.id else { continue }
+//                print(">>>>>>> COURSE FOR SHIFT: \(course.id), \(course.name)")
+//
+////                try await courseManager.shiftDueDates(courseID: courseID)
+//                NotificationCenter.default.post(name: .shiftCourseDates, object: (course.id, course.name))
+//                try await Task.sleep(nanoseconds: 2_000_000_000)
+//            } catch let error {
+//                isShowProgressForDueDates = false
+//                if error.isInternetError || error is NoCachedDataError {
+//                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+//                } else {
+//                    errorMessage = CoreLocalization.Error.unknownError
+//                }
+//                
+//            }
+//        }
+        isShowProgressForDueDates = false
+        withAnimation(.bouncy(duration: 0.15)) {
+            showShiftDueDatesView = false
+        }
+    }
+    
+    private func sendShiftDatesNotifications() {
         struct Course: Hashable {
             let id: String?
             let name: String
         }
-
+        
         let pastDueCourses = coursesDates
             .filter { $0.type == .pastDue }
             .flatMap { $0.dates.compactMap { Course(id: $0.courseId, name: $0.courseName) } }
-
-        isShowProgressForDueDates = true
+        
         for course in Set(pastDueCourses) {
-            do {
-                guard let courseID = course.id else { continue }
-                print(">>>>>>> COURSE FOR SHIFT: \(course.id), \(course.name)")
-
-//                try await courseManager.shiftDueDates(courseID: courseID)
-                NotificationCenter.default.post(name: .shiftCourseDates, object: (course.id, course.name))
-                try await Task.sleep(nanoseconds: 2_000_000_000)
-            } catch let error {
-                isShowProgressForDueDates = false
-                if error.isInternetError || error is NoCachedDataError {
-                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-                } else {
-                    errorMessage = CoreLocalization.Error.unknownError
-                }
-                
-            }
-        }
-        isShowProgressForDueDates = false
-        withAnimation(.bouncy(duration: 0.15)) {
-            showShiftDueDatesView = false
+            guard let courseID = course.id else { continue }
+            print(">>>>>>> COURSE FOR SHIFT: \(course.id), \(course.name)")
+            NotificationCenter.default.post(name: .shiftCourseDates, object: (course.id, course.name))
         }
     }
 }

@@ -6,7 +6,7 @@
 //
 
 public struct CourseDate: Identifiable, Sendable {
-    public var id: String { location }
+    public var id: String { location + courseName + title + (blockId ?? "") }
     public let location: String
     public let date: Date
     public let title: String

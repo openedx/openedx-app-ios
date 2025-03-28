@@ -45,9 +45,9 @@ public struct DatesView: View {
                                 )
                                 .padding(.horizontal, 24)
                             }
-                            LazyVStack(spacing: 24) {
+                            VStack(spacing: 24) {
                                 ForEach(viewModel.coursesDates, id: \.id) { group in
-                                    LazyVStack(alignment: .leading, spacing: 0) {
+                                    VStack(alignment: .leading, spacing: 0) {
                                         Text(group.type.text)
                                             .font(Theme.Fonts.titleMedium)
                                             .foregroundColor(Theme.Colors.textPrimary)
@@ -56,7 +56,7 @@ public struct DatesView: View {
                                         
                                         ForEach(
                                             Array(group.dates.enumerated()),
-                                            id: \.element.location
+                                            id: \.element.id
                                         ) { index, date in
                                             Button(action: {
                                                 Task {
@@ -69,6 +69,9 @@ public struct DatesView: View {
                                                     isFirst: index == 0,
                                                     isLast: index == group.dates.count - 1
                                                 )
+                                                .onAppear {
+                                                    print(">>>>>>>", date.title, index)
+                                                }
                                             })
                                             .id(UUID())
                                             .onAppear {

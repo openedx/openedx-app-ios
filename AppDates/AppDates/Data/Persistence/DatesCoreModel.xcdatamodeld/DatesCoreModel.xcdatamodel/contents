@@ -11,6 +11,9 @@
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="location"/>
+                <constraint value="courseName"/>
+                <constraint value="title"/>
+                <constraint value="blockId"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

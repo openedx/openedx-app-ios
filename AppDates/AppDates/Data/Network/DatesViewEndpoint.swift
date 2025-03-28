@@ -12,11 +12,14 @@ import OEXFoundation
 
 enum DatesViewEndpoint: EndPointType {
     case getCourseDates(username: String, page: Int)
+    case resetAllRelativeCourseDeadlines
     
     var path: String {
         switch self {
         case let .getCourseDates(username, _):
             return "/api/mobile/v3/course_dates/\(username)/"
+        case .resetAllRelativeCourseDeadlines:
+            return "/api/course_experience/v1/reset_all_relative_course_deadlines/"
         }
     }
     
@@ -24,6 +27,8 @@ enum DatesViewEndpoint: EndPointType {
         switch self {
         case .getCourseDates:
             return .get
+        case .resetAllRelativeCourseDeadlines:
+            return .post
         }
     }
     
@@ -38,6 +43,9 @@ enum DatesViewEndpoint: EndPointType {
                 "page": page
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
+            
+        case .resetAllRelativeCourseDeadlines:
+            return .request
         }
     }
 }

@@ -65,6 +65,8 @@ public struct DateCell: View, Equatable {
                     Text(courseDate.courseName)
                         .font(Theme.Fonts.labelMedium)
                         .foregroundColor(Theme.Colors.textSecondaryLight)
+                        .lineLimit(1)
+                        .multilineTextAlignment(.leading)
                 }
                 
                 .padding(.leading, 12)

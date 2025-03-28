@@ -12,6 +12,7 @@ import Core
 public protocol DatesViewInteractorProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline() async throws -> [CourseDate]
+    func resetAllRelativeCourseDeadlines() async throws
 }
 
 public actor DatesViewInteractor: DatesViewInteractorProtocol {
@@ -28,6 +29,10 @@ public actor DatesViewInteractor: DatesViewInteractorProtocol {
     
     public func getCourseDatesOffline() async throws -> [CourseDate] {
         return try await repository.getCourseDatesOffline()
+    }
+    
+    public func resetAllRelativeCourseDeadlines() async throws {
+        try await repository.resetAllRelativeCourseDeadlines()
     }
 }
 

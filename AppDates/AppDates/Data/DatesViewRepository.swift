@@ -12,6 +12,7 @@ import OEXFoundation
 public protocol DatesViewRepositoryProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline() async throws -> [CourseDate]
+    func resetAllRelativeCourseDeadlines() async throws
 }
 
 public actor DatesViewRepository: DatesViewRepositoryProtocol {
@@ -42,6 +43,11 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
     
     public func getCourseDatesOffline() async throws -> [CourseDate] {
         return try await persistence.loadCourseDates()
+    }
+    
+    public func resetAllRelativeCourseDeadlines() async throws {
+        let response = try await api.request(DatesViewEndpoint.resetAllRelativeCourseDeadlines)
+        print(">>>>> resetAllRelativeCourseDeadlines: statusCode \(response.statusCode)")
     }
 }
 
@@ -126,5 +132,7 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
             )
         ]
     }
+    
+    public func resetAllRelativeCourseDeadlines() async throws {}
 }
 #endif
