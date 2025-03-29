@@ -9,11 +9,12 @@ import Foundation
 import UIKit
 import Core
 import BranchSDK
+import OEXFoundation
 
 @preconcurrency final class BranchService: DeepLinkService {
     // configure service
     func configureWith(
-        manager: DeepLinkManager,
+        manager: DeepLinkManagerProtocol,
         config: ConfigProtocol,
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?
     ) {

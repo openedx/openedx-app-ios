@@ -131,7 +131,11 @@ struct MainScreenView: View {
                     }
                 }
                 .tabItem {
-                    CoreAssets.discover.swiftUIImage.renderingMode(.template)
+                    if viewModel.selection == .discovery {
+                        CoreAssets.discoverActive.swiftUIImage.renderingMode(.template)
+                    } else {
+                        CoreAssets.discoverInactive.swiftUIImage.renderingMode(.template)
+                    }
                     Text(CoreLocalization.Mainscreen.discovery)
                 }
                 .tag(MainTab.discovery)

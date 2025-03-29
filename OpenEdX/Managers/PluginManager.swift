@@ -11,10 +11,20 @@ import OEXFoundation
 public class PluginManager {
     
     private(set) var analyticsServices: [AnalyticsService] = []
+    private(set) var pushNotificationsProviders: [PushNotificationsProvider] = []
+    private(set) var pushNotificationsListeners: [PushNotificationsListener] = []
     
     public init() {}
     
     func addPlugin(analyticsService: AnalyticsService) {
         analyticsServices.append(analyticsService)
+    }
+
+    func addPlugin(
+        pushNotificationsProvider: PushNotificationsProvider,
+        pushNotificationsListener: PushNotificationsListener
+    ) {
+        pushNotificationsProviders.append(pushNotificationsProvider)
+        pushNotificationsListeners.append(pushNotificationsListener)
     }
 }
