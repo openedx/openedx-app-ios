@@ -147,8 +147,13 @@ struct MainScreenView: View {
                     DatesView(viewModel: Container.shared.resolve(DatesViewModel.self)!)
                 }
                 .tabItem {
-                    CoreAssets.dates.swiftUIImage
-                    Text(AppDatesLocalization.Dates.title)
+                    if viewModel.selection == .dates {
+                        CoreAssets.datesActive.swiftUIImage
+                        Text(AppDatesLocalization.Dates.title)
+                    } else {
+                        CoreAssets.datesInactive.swiftUIImage
+                        Text(AppDatesLocalization.Dates.title)
+                    }
                 }
                 .tag(MainTab.dates)
                 .accessibilityIdentifier("dates_tabitem")
