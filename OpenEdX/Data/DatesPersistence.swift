@@ -19,12 +19,21 @@ public final class DatesPersistence: DatesPersistenceProtocol {
         self.container = container
     }
     
-    public func loadCourseDates(page: Int? = nil) async throws -> [CourseDate] {
+    public func loadCourseDates(limit: Int? = nil, offset: Int? = nil) async throws -> [CourseDate] {
         return try await container.performBackgroundTask { context in
             let fetchRequest: NSFetchRequest<CDDate> = CDDate.fetchRequest()
-            if let page = page {
-                fetchRequest.predicate = NSPredicate(format: "page == %d", page)
+            
+            // Sort by index to ensure consistent order
+            fetchRequest.sortDescriptors = [NSSortDescriptor(key: "index", ascending: true)]
+            
+            // Apply limit and offset if provided
+            if let limit = limit {
+                fetchRequest.fetchLimit = limit
             }
+            if let offset = offset {
+                fetchRequest.fetchOffset = offset
+            }
+            
             let cdDates = try context.fetch(fetchRequest)
             let result = cdDates.map { cd in
                 CourseDate(
@@ -41,12 +50,12 @@ public final class DatesPersistence: DatesPersistenceProtocol {
         }
     }
     
-    public func saveCourseDates(dates: [CourseDate], page: Int) async {
+    public func saveCourseDates(dates: [CourseDate], startIndex: Int) async {
         await container.performBackgroundTask { context in
-            for date in dates {
+            for (index, date) in dates.enumerated() {
                 let newItem = CDDate(context: context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                newItem.page = Int64(page)
+                newItem.index = Int64(startIndex + index)
                 newItem.location = date.location
                 newItem.date = date.date
                 newItem.title = date.title

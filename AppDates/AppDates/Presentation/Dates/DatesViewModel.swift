@@ -35,6 +35,9 @@ public final class DatesViewModel: ObservableObject {
     private var fetchInProgress = false
     private var allDates: [CourseDate] = []
     
+    // Items per page constant
+    private let itemsPerPage = 20
+    
     let connectivity: ConnectivityProtocol
     private let interactor: DatesViewInteractorProtocol
     private let courseManager: CourseStructureManagerProtocol
@@ -72,7 +75,7 @@ public final class DatesViewModel: ObservableObject {
         do {
             if connectivity.isInternetAvaliable {
                 
-                let offlineDates = try await interactor.getCourseDatesOffline(page: nextPage)
+                let offlineDates = try await interactor.getCourseDatesOffline(limit: itemsPerPage, offset: 0)
                 
                 allDates = offlineDates
                 self.processDates(allDates)
@@ -97,7 +100,7 @@ public final class DatesViewModel: ObservableObject {
                 }
                 
             } else {
-                let dates = try await interactor.getCourseDatesOffline(page: nil)
+                let dates = try await interactor.getCourseDatesOffline(limit: nil, offset: nil)
                 allDates = []
                 coursesDates = []
                 allDates = dates
@@ -120,7 +123,7 @@ public final class DatesViewModel: ObservableObject {
     }
     
     public func loadNextPageIfNeeded(index: Int) async {
-        if !hasNextPage && nextPage == 1 && index == allDates.count - 3 {
+        if !hasNextPage && nextPage == 1 && index == allDates.count - 3 && connectivity.isInternetAvaliable {
             delayedLoadSecondPage = true
             fetchInProgress = false
             print(">>> 🐺 1")

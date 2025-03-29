@@ -10,15 +10,15 @@ import Core
 
 //sourcery: AutoMockable
 public protocol DatesPersistenceProtocol: Sendable {
-    func loadCourseDates(page: Int?) async throws -> [CourseDate]
-    func saveCourseDates(dates: [CourseDate], page: Int) async
+    func loadCourseDates(limit: Int?, offset: Int?) async throws -> [CourseDate]
+    func saveCourseDates(dates: [CourseDate], startIndex: Int) async
     func clearAllCourseDates() async
 }
 
 #if DEBUG
 public struct DatesPersistenceMock: DatesPersistenceProtocol {
-    public func loadCourseDates(page: Int?) async throws -> [CourseDate] {[]}
-    public func saveCourseDates(dates: [CourseDate], page: Int) async {}
+    public func loadCourseDates(limit: Int?, offset: Int?) async throws -> [CourseDate] {[]}
+    public func saveCourseDates(dates: [CourseDate], startIndex: Int) async {}
     public func clearAllCourseDates() async {}
 }
 #endif

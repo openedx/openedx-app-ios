@@ -11,7 +11,7 @@ import OEXFoundation
 
 public protocol DatesViewRepositoryProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
-    func getCourseDatesOffline(page: Int?) async throws -> [CourseDate]
+    func getCourseDatesOffline(limit: Int?, offset: Int?) async throws -> [CourseDate]
     func resetAllRelativeCourseDeadlines() async throws
     func clearAllCourseDates() async
 }
@@ -22,6 +22,7 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
     private let storage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: DatesPersistenceProtocol
+    private var totalItemsCount: Int = 0
     
     public init(api: API, storage: CoreStorage, config: ConfigProtocol, persistence: DatesPersistenceProtocol) {
         self.api = api
@@ -31,7 +32,7 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
     }
     
     public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
-        let startTime = Date()  // Начало замера времени
+        let startTime = Date()
 
         let response = try await api.requestData(
             DatesViewEndpoint.getCourseDates(username: storage.user?.username ?? "", page: page)
@@ -39,19 +40,25 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
         .mapResponse(DataLayer.CourseDatesResponse.self)
         
         let dates = response.domain()
+        
         if page == 1 {
             await persistence.clearAllCourseDates()
+            totalItemsCount = 0
         }
-        await persistence.saveCourseDates(dates: dates, page: page)
         
-        let elapsedTime = Date().timeIntervalSince(startTime)  // Вычисляем прошедшее время
-        print("Запрос занял \(elapsedTime) секунд")
+        let startIndex = totalItemsCount
+        totalItemsCount += dates.count
+        
+        await persistence.saveCourseDates(dates: dates, startIndex: startIndex)
+        
+        let elapsedTime = Date().timeIntervalSince(startTime)
+        print("Response takes \(elapsedTime) seconds")
         
         return (dates, response.next)
     }
     
-    public func getCourseDatesOffline(page: Int?) async throws -> [CourseDate] {
-        return try await persistence.loadCourseDates(page: page)
+    public func getCourseDatesOffline(limit: Int? = nil, offset: Int? = nil) async throws -> [CourseDate] {
+        return try await persistence.loadCourseDates(limit: limit, offset: offset)
     }
     
     public func resetAllRelativeCourseDeadlines() async throws {
@@ -167,7 +174,7 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
         return (dates, nil)
     }
     
-    public func getCourseDatesOffline(page: Int?) async throws -> [CourseDate] {
+    public func getCourseDatesOffline(limit: Int? = nil, offset: Int? = nil) async throws -> [CourseDate] {
         return [
             CourseDate(
                 location: "6",
