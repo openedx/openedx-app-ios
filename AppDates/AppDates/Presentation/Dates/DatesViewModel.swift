@@ -80,15 +80,9 @@ public final class DatesViewModel: ObservableObject {
                 if !offlineDates.isEmpty && nextPage == 1 {
                     isShowProgress = false
                     fetchInProgress = true
-                    await interactor.clearAllCourseDates()
                 }
                 
                 let (dates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
-                
-//                if nextPage == 1 {
-//                    allDates = []
-//                    coursesDates = []
-//                }
                 
                 allDates = dates
                 hasNextPage = nextPageUrl != nil
@@ -202,8 +196,10 @@ public final class DatesViewModel: ObservableObject {
         var nextWeek: [CourseDate] = []
         var upcoming: [CourseDate] = []
         
+        let startOfToday = calendar.startOfDay(for: now)
+
         for date in dates {
-            if date.date < now {
+            if date.date < startOfToday {
                 pastDue.append(date)
             } else if calendar.isDateInToday(date.date) {
                 today.append(date)
@@ -211,9 +207,7 @@ public final class DatesViewModel: ObservableObject {
                 thisWeek.append(date)
             } else if calendar.isDate(
                 date.date,
-                equalTo: now.addingTimeInterval(
-                    7*24*60*60
-                ),
+                equalTo: now.addingTimeInterval(7 * 24 * 60 * 60),
                 toGranularity: .weekOfYear
             ) {
                 nextWeek.append(date)
@@ -228,6 +222,8 @@ public final class DatesViewModel: ObservableObject {
         if !pastDue.isEmpty {
             groups.append(DateGroup(type: .pastDue, dates: pastDue.sorted(by: { $0.date < $1.date })))
             showShiftDueDatesView = true
+        } else {
+            showShiftDueDatesView = false
         }
         
         if !today.isEmpty {

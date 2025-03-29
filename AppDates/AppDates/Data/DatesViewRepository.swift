@@ -39,6 +39,9 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
         .mapResponse(DataLayer.CourseDatesResponse.self)
         
         let dates = response.domain()
+        if page == 1 {
+            await persistence.clearAllCourseDates()
+        }
         await persistence.saveCourseDates(dates: dates, page: page)
         
         let elapsedTime = Date().timeIntervalSince(startTime)  // Вычисляем прошедшее время
@@ -68,65 +71,100 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
     public init() {}
     
     public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
-        let dates: [CourseDate]
-        let hasNextPage: String?
+        let dates = [
+            CourseDate(
+                    location: "9",
+                    date: Date().addingTimeInterval(-86400 * 2),
+                    title: "Assignment from the Day Before Yesterday",
+                    courseName: "Course 6",
+                    courseId: "course-v1:1+1+daybeforeyesterday",
+                    blockId: "block-v1:1+1+daybeforeyesterday+type@sequential+block@assignment",
+                    hasAccess: true
+                ),
+                CourseDate(
+                    location: "10",
+                    date: Date().addingTimeInterval(-86400),
+                    title: "Assignment from Yesterday",
+                    courseName: "Course 7",
+                    courseId: "course-v1:1+1+yesterday",
+                    blockId: "block-v1:1+1+yesterday+type@sequential+block@assignment",
+                    hasAccess: true
+                ),
+            CourseDate(
+                location: "1",
+                date: Date(),
+                title: "Today's Assignment 1",
+                courseName: "Course 1",
+                courseId: "course-v1:1+1+today1",
+                blockId: "block-v1:1+1+today1+type@sequential+block@assignment1",
+                hasAccess: true
+            ),
+            CourseDate(
+                location: "2",
+                date: Date(),
+                title: "Today's Assignment 2",
+                courseName: "Course 1",
+                courseId: "course-v1:1+1+today2",
+                blockId: "block-v1:1+1+today2+type@sequential+block@assignment2",
+                hasAccess: true
+            ),
+            CourseDate(
+                location: "3",
+                date: Date().addingTimeInterval(86400), // 1 day
+                title: "Tomorrow's Assignment",
+                courseName: "Course 2",
+                courseId: "course-v1:1+1+tomorrow1",
+                blockId: "block-v1:1+1+tomorrow1+type@sequential+block@assignment3",
+                hasAccess: true
+            ),
+            CourseDate(
+                location: "4",
+                date: Date().addingTimeInterval(86400 * 5),
+                title: "Assignment in 5 Days",
+                courseName: "Course 3",
+                courseId: "course-v1:1+1+5days1",
+                blockId: "block-v1:1+1+5days1+type@sequential+block@assignment4",
+                hasAccess: true
+            ),
+            CourseDate(
+                location: "5",
+                date: Date().addingTimeInterval(86400 * 5),
+                title: "Assignment in 5 Days (Part 2)",
+                courseName: "Course 3",
+                courseId: "course-v1:1+1+5days2",
+                blockId: "block-v1:1+1+5days2+type@sequential+block@assignment5",
+                hasAccess: true
+            ),
+            CourseDate(
+                location: "6",
+                date: Date().addingTimeInterval(86400 * 10),
+                title: "Assignment in 10 Days",
+                courseName: "Course 4",
+                courseId: "course-v1:1+1+10days1",
+                blockId: "block-v1:1+1+10days1+type@sequential+block@assignment6",
+                hasAccess: true
+            ),
+            CourseDate(
+                location: "7",
+                date: Date().addingTimeInterval(86400 * 20),
+                title: "Assignment in 20 Days 1",
+                courseName: "Course 5",
+                courseId: "course-v1:1+1+20days1",
+                blockId: "block-v1:1+1+20days1+type@sequential+block@assignment7",
+                hasAccess: true
+            ),
+            CourseDate(
+                location: "8",
+                date: Date().addingTimeInterval(86400 * 20),
+                title: "Assignment in 20 Days 2",
+                courseName: "Course 5",
+                courseId: "course-v1:1+1+20days2",
+                blockId: "block-v1:1+1+20days2+type@sequential+block@assignment8",
+                hasAccess: true
+            )
+        ]
         
-        if page == 1 {
-            dates = [
-                CourseDate(
-                    location: "1",
-                    date: Date().addingTimeInterval(-86400 * 5),
-                    title: "Past Assignment 1",
-                    courseName: "Course 1",
-                    courseId: "course-v1:1+1+1",
-                    blockId: "block-v1:1+1+1+type@sequential+block@bafd854414124f6db42fee42ca8acc14",
-                    hasAccess: true
-                ),
-                CourseDate(
-                    location: "2",
-                    date: Date().addingTimeInterval(-86400 * 4),
-                    title: "Past Assignment 2",
-                    courseName: "Course 2",
-                    courseId: "course-v1:1+1+2",
-                    blockId: "block-v1:1+1+2+type@sequential+block@bafd854414124f6db42fee42ca8acc15",
-                    hasAccess: true
-                )
-            ]
-            hasNextPage = "2"
-        } else {
-            dates = [
-                CourseDate(
-                    location: "3",
-                    date: Date(),
-                    title: "Today's Assignment",
-                    courseName: "Course 3",
-                    courseId: "course-v1:1+1+3",
-                    blockId: "block-v1:1+1+3+type@sequential+block@bafd854414124f6db42fee42ca8acc16",
-                    hasAccess: true
-                ),
-                CourseDate(
-                    location: "4",
-                    date: Date().addingTimeInterval(86400 * 2),
-                    title: "Future Assignment 1",
-                    courseName: "Course 4",
-                    courseId: "course-v1:1+1+4",
-                    blockId: "block-v1:1+1+4+type@sequential+block@bafd854414124f6db42fee42ca8acc17",
-                    hasAccess: true
-                ),
-                CourseDate(
-                    location: "5",
-                    date: Date().addingTimeInterval(86400 * 7),
-                    title: "Future Assignment 2",
-                    courseName: "Course 5",
-                    courseId: "course-v1:1+1+5",
-                    blockId: "block-v1:1+1+5+type@sequential+block@bafd854414124f6db42fee42ca8acc18",
-                    hasAccess: true
-                )
-            ]
-            hasNextPage = nil
-        }
-        
-        return (dates, hasNextPage)
+        return (dates, nil)
     }
     
     public func getCourseDatesOffline(page: Int?) async throws -> [CourseDate] {
