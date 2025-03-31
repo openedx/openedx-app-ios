@@ -145,7 +145,11 @@ struct MainScreenView: View {
             if viewModel.config.downloads.enabled {
                 AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
                 .tabItem {
-                    CoreAssets.downloadsMenu.swiftUIImage.renderingMode(.template)
+                    if viewModel.selection == .downloads {
+                        CoreAssets.downloadsActive.swiftUIImage.renderingMode(.template)
+                    } else {
+                        CoreAssets.downloadsInactive.swiftUIImage.renderingMode(.template)
+                    }
                     Text(DownloadsLocalization.Downloads.title)
                 }
                 .tag(MainTab.downloads)
