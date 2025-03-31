@@ -95,7 +95,6 @@ public final class DatesViewModel: ObservableObject {
                 }
                 
                 if delayedLoadSecondPage {
-                    print(">>> 🐺 delayedLoadSecondPage true, start loadNextPageIfNeeded", allDates.count - 3)
                     await loadNextPageIfNeeded(index: allDates.count - 3)
                 }
                 
@@ -126,7 +125,6 @@ public final class DatesViewModel: ObservableObject {
         if !hasNextPage && nextPage == 1 && index == allDates.count - 3 && connectivity.isInternetAvaliable {
             delayedLoadSecondPage = true
             fetchInProgress = false
-            print(">>> 🐺 1")
             return
         }
         guard connectivity.isInternetAvaliable
@@ -138,7 +136,6 @@ public final class DatesViewModel: ObservableObject {
         isLoadingNextPage = true
         
         if delayedLoadSecondPage {
-            print(">>> 🐺 delayedLoadSecondPage = false")
             delayedLoadSecondPage = false
         }
         
@@ -265,25 +262,6 @@ public final class DatesViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.unknownError
             }
         }
-        
-//        for course in Set(pastDueCourses) {
-//            do {
-//                guard let courseID = course.id else { continue }
-//                print(">>>>>>> COURSE FOR SHIFT: \(course.id), \(course.name)")
-//
-////                try await courseManager.shiftDueDates(courseID: courseID)
-//                NotificationCenter.default.post(name: .shiftCourseDates, object: (course.id, course.name))
-//                try await Task.sleep(nanoseconds: 2_000_000_000)
-//            } catch let error {
-//                isShowProgressForDueDates = false
-//                if error.isInternetError || error is NoCachedDataError {
-//                    errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
-//                } else {
-//                    errorMessage = CoreLocalization.Error.unknownError
-//                }
-//                
-//            }
-//        }
         isShowProgressForDueDates = false
         withAnimation(.bouncy(duration: 0.15)) {
             showShiftDueDatesView = false
@@ -302,7 +280,6 @@ public final class DatesViewModel: ObservableObject {
         
         for course in Set(pastDueCourses) {
             guard let courseID = course.id else { continue }
-            print(">>>>>>> COURSE FOR SHIFT: \(course.id), \(course.name)")
             NotificationCenter.default.post(name: .shiftCourseDates, object: (course.id, course.name))
         }
     }
