@@ -87,12 +87,12 @@ public final class AppDownloadsViewModel: ObservableObject {
     
     private func observeDownloadEvents() {
         downloadManager.eventPublisher()
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] event in
                 guard let self = self else { return }
                 Task {
                     switch event {
-                    case .progress(let task), .finished(let task), .started(let task):
+                    case .finished(let task), .started(let task):
                         await self.updateDownloadProgress(for: task)
                     case .canceled, .courseCanceled, .allCanceled:
                         await self.refreshDownloadStates()
