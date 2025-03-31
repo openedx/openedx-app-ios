@@ -12,7 +12,9 @@ import Core
 public struct DateCell: View, Equatable {
     
     nonisolated public static func == (lhs: DateCell, rhs: DateCell) -> Bool {
-        return lhs.courseDate.location == rhs.courseDate.location
+        return lhs.courseDate.blockId ?? "" == rhs.courseDate.blockId ?? ""
+        && lhs.courseDate.title == rhs.courseDate.title
+        && lhs.courseDate.date == rhs.courseDate.date
     }
     
     private let courseDate: CourseDate
@@ -84,7 +86,6 @@ public struct DateCell: View, Equatable {
 #Preview {
     DateCell(
         courseDate: CourseDate(
-            location: "123",
             date: Date(),
             title: "Assignment Title",
             courseName: "Course Name"

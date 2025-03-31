@@ -1,5 +1,5 @@
 //
-//  DatesViewEndpoint.swift
+//  DatesEndpoint.swift
 //  AppDates
 //
 //  Created by Ivan Stepanok on 15.02.2025.
@@ -10,7 +10,7 @@ import Core
 import Alamofire
 import OEXFoundation
 
-enum DatesViewEndpoint: EndPointType {
+enum DatesEndpoint: EndPointType {
     case getCourseDates(username: String, page: Int)
     case resetAllRelativeCourseDeadlines
     
@@ -40,8 +40,7 @@ enum DatesViewEndpoint: EndPointType {
         switch self {
         case let .getCourseDates(_, page):
             let params: Parameters = [
-                "page": page,
-                "page_size": 20
+                "page": page
             ]
             return .requestParameters(parameters: params, encoding: URLEncoding.queryString)
             

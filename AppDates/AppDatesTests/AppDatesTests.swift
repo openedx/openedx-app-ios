@@ -16,7 +16,7 @@ final class DatesViewModelTests: XCTestCase {
     
     func testLoadDatesSuccess() async throws {
         // Arrange
-        let interactor = DatesViewInteractorProtocolMock()
+        let interactor = DatesInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = AppDatesAnalyticsMock()
         let courseManager = CourseStructureManagerProtocolMock()
@@ -32,7 +32,6 @@ final class DatesViewModelTests: XCTestCase {
         
         let date = Date()
         let courseDate1 = CourseDate(
-            location: "Test location 1",
             date: date.addingTimeInterval(60 * 60 * 24), // tomorrow
             title: "Test title 1",
             courseName: "Test Course 1",
@@ -42,7 +41,6 @@ final class DatesViewModelTests: XCTestCase {
         )
         
         let courseDate2 = CourseDate(
-            location: "Test location 2",
             date: date.addingTimeInterval(60 * 60 * 24 * 7), // next week
             title: "Test title 2",
             courseName: "Test Course 2",
@@ -71,7 +69,7 @@ final class DatesViewModelTests: XCTestCase {
     
     func testLoadDatesOfflineSuccess() async throws {
         // Arrange
-        let interactor = DatesViewInteractorProtocolMock()
+        let interactor = DatesInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = AppDatesAnalyticsMock()
         let courseManager = CourseStructureManagerProtocolMock()
@@ -87,7 +85,6 @@ final class DatesViewModelTests: XCTestCase {
         
         let date = Date()
         let courseDate1 = CourseDate(
-            location: "Test location 1",
             date: date.addingTimeInterval(-60 * 60 * 24), // yesterday (pastDue)
             title: "Test title 1",
             courseName: "Test Course 1",
@@ -97,7 +94,6 @@ final class DatesViewModelTests: XCTestCase {
         )
         
         let courseDate2 = CourseDate(
-            location: "Test location 2",
             date: date, // today
             title: "Test title 2",
             courseName: "Test Course 2",
@@ -125,7 +121,7 @@ final class DatesViewModelTests: XCTestCase {
     
     func testLoadDatesNoCachedDataError() async throws {
         // Arrange
-        let interactor = DatesViewInteractorProtocolMock()
+        let interactor = DatesInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = AppDatesAnalyticsMock()
         let courseManager = CourseStructureManagerProtocolMock()
@@ -156,7 +152,7 @@ final class DatesViewModelTests: XCTestCase {
     
     func testLoadDatesUnknownError() async throws {
         // Arrange
-        let interactor = DatesViewInteractorProtocolMock()
+        let interactor = DatesInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = AppDatesAnalyticsMock()
         let courseManager = CourseStructureManagerProtocolMock()
@@ -187,7 +183,7 @@ final class DatesViewModelTests: XCTestCase {
     
     func testLoadNextPage() async throws {
         // Arrange
-        let interactor = DatesViewInteractorProtocolMock()
+        let interactor = DatesInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = AppDatesAnalyticsMock()
         let courseManager = CourseStructureManagerProtocolMock()
@@ -204,7 +200,6 @@ final class DatesViewModelTests: XCTestCase {
         let date = Date()
         let dates = (0...22).map { i in
             CourseDate(
-                location: "Test location \(i)",
                 date: date.addingTimeInterval(Double(i) * 60 * 60 * 24),
                 title: "Test title \(i)",
                 courseName: "Test Course \(i)",
@@ -220,7 +215,7 @@ final class DatesViewModelTests: XCTestCase {
         
         // Act
         await viewModel.loadDates()
-        await viewModel.loadNextPageIfNeeded(index: 17)
+        await viewModel.loadNextPageIfNeeded(for: dates[17])
         
         // Assert
         Verify(interactor, 1, .getCourseDatesOffline(limit: .value(20), offset: .value(0)))
@@ -228,11 +223,50 @@ final class DatesViewModelTests: XCTestCase {
         
         XCTAssertFalse(viewModel.isLoadingNextPage)
         XCTAssertFalse(viewModel.isShowProgress)
+        XCTAssertFalse(viewModel.delayedLoadSecondPage)
+    }
+    
+    func testLoadNextPageDelayedLoad() async throws {
+        // Arrange
+        let interactor = DatesInteractorProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let analytics = AppDatesAnalyticsMock()
+        let courseManager = CourseStructureManagerProtocolMock()
+        let router = AppDatesRouterMock()
+        
+        let viewModel = DatesViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            courseManager: courseManager,
+            analytics: analytics,
+            router: router
+        )
+        
+        let date = Date()
+        let dates = (0...22).map { i in
+            CourseDate(
+                date: date.addingTimeInterval(Double(i) * 60 * 60 * 24),
+                title: "Test title \(i)",
+                courseName: "Test Course \(i)",
+                courseId: "course-\(i)",
+                blockId: "block-\(i)",
+                hasAccess: true
+            )
+        }
+        
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        Given(interactor, .getCourseDatesOffline(limit: .value(20), offset: .value(0), willReturn: Array(dates.prefix(20))))
+        Given(interactor, .getCourseDates(page: .any, willReturn: (dates, "next-page")))
+        
+        // Act
+        await viewModel.loadDates()
+        await viewModel.loadNextPageIfNeeded(for: dates[17])
+        XCTAssertFalse(viewModel.fetchInProgress)
     }
     
     func testShiftDueDates() async throws {
         // Arrange
-        let interactor = DatesViewInteractorProtocolMock()
+        let interactor = DatesInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = AppDatesAnalyticsMock()
         let courseManager = CourseStructureManagerProtocolMock()
@@ -249,7 +283,6 @@ final class DatesViewModelTests: XCTestCase {
         // Setup past due date
         let date = Date()
         let pastDueDate = CourseDate(
-            location: "Test location",
             date: date.addingTimeInterval(-60 * 60 * 24), // yesterday
             title: "Past Due",
             courseName: "Test Course",
@@ -274,5 +307,65 @@ final class DatesViewModelTests: XCTestCase {
         
         XCTAssertFalse(viewModel.isShowProgressForDueDates)
         XCTAssertFalse(viewModel.showShiftDueDatesView)
+    }
+    
+    func testShiftDueDatesWithError() async throws {
+        // Arrange
+        let interactor = DatesInteractorProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let analytics = AppDatesAnalyticsMock()
+        let courseManager = CourseStructureManagerProtocolMock()
+        let router = AppDatesRouterMock()
+        
+        let viewModel = DatesViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            courseManager: courseManager,
+            analytics: analytics,
+            router: router
+        )
+        
+        // Setup past due date
+        let date = Date()
+        let pastDueDate = CourseDate(
+            date: date.addingTimeInterval(-60 * 60 * 24), // yesterday
+            title: "Past Due",
+            courseName: "Test Course",
+            courseId: "course-123",
+            blockId: "block-123",
+            hasAccess: true
+        )
+        
+        // Setup coursesDates with a pastDue group
+        viewModel.coursesDates = [DateGroup(type: .pastDue, dates: [pastDueDate])]
+        
+        // Test internet error
+        Given(connectivity, .isInternetAvaliable(getter: true))
+        Given(interactor, .resetAllRelativeCourseDeadlines(willThrow: NoCachedDataError()))
+        
+        // Act
+        await viewModel.shiftDueDates()
+        
+        // Assert
+        Verify(interactor, 1, .resetAllRelativeCourseDeadlines())
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
+        XCTAssertTrue(viewModel.showError)
+        XCTAssertFalse(viewModel.isShowProgressForDueDates)
+        
+        // Reset state
+        viewModel.errorMessage = nil
+        viewModel.showError = false
+        
+        // Test unknown error
+        Given(interactor, .resetAllRelativeCourseDeadlines(willThrow: NSError()))
+        
+        // Act
+        await viewModel.shiftDueDates()
+        
+        // Assert
+        Verify(interactor, 2, .resetAllRelativeCourseDeadlines())
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
+        XCTAssertTrue(viewModel.showError)
+        XCTAssertFalse(viewModel.isShowProgressForDueDates)
     }
 }

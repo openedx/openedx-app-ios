@@ -32,20 +32,20 @@ public final class DatesViewModel: ObservableObject {
     // Pagination properties
     private var nextPage = 1
     private var hasNextPage = false
-    private var fetchInProgress = false
+    private(set) var fetchInProgress = false
     private var allDates: [CourseDate] = []
     
     // Items per page constant
     private let itemsPerPage = 20
     
     let connectivity: ConnectivityProtocol
-    private let interactor: DatesViewInteractorProtocol
+    private let interactor: DatesInteractorProtocol
     private let courseManager: CourseStructureManagerProtocol
     private let analytics: AppDatesAnalytics
     private(set) var router: AppDatesRouter
     
     public init(
-        interactor: DatesViewInteractorProtocol,
+        interactor: DatesInteractorProtocol,
         connectivity: ConnectivityProtocol,
         courseManager: CourseStructureManagerProtocol,
         analytics: AppDatesAnalytics,
@@ -94,8 +94,8 @@ public final class DatesViewModel: ObservableObject {
                     nextPage += 1
                 }
                 
-                if delayedLoadSecondPage {
-                    await loadNextPageIfNeeded(index: allDates.count - 3)
+                if delayedLoadSecondPage, hasNextPage {
+                    await loadNextPageIfNeeded(for: allDates[allDates.count - 3])
                 }
                 
             } else {
@@ -121,7 +121,9 @@ public final class DatesViewModel: ObservableObject {
         }
     }
     
-    public func loadNextPageIfNeeded(index: Int) async {
+    public func loadNextPageIfNeeded(for date: CourseDate) async {
+        guard let index = allDates.firstIndex(where: { $0.id == date.id }) else { return }
+
         if !hasNextPage && nextPage == 1 && index == allDates.count - 3 && connectivity.isInternetAvaliable {
             delayedLoadSecondPage = true
             fetchInProgress = false
@@ -280,7 +282,7 @@ public final class DatesViewModel: ObservableObject {
         
         for course in Set(pastDueCourses) {
             guard let courseID = course.id else { continue }
-            NotificationCenter.default.post(name: .shiftCourseDates, object: (course.id, course.name))
+            NotificationCenter.default.post(name: .shiftCourseDates, object: (courseID, course.name))
         }
     }
 }

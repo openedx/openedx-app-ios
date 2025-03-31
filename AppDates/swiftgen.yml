@@ -7,12 +7,3 @@ strings:
         publicAccess: true
         enumName: AppDatesLocalization
       output: AppDates/SwiftGen/Strings.swift
-#xcassets:
-#  inputs:
-#    - Authorization/Assets.xcassets
-#  outputs:
-#    templateName: swift5
-#    params:
-#        publicAccess: true
-#        enumName: AuthAssets
-#    output: Authorization/SwiftGen/Assets.swift

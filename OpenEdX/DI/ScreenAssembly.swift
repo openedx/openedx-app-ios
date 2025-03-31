@@ -320,8 +320,8 @@ class ScreenAssembly: Assembly {
             DatesPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
         }
 
-        container.register(DatesViewRepositoryProtocol.self) { r in
-            DatesViewRepository(
+        container.register(DatesRepositoryProtocol.self) { r in
+            DatesRepository(
                 api: r.resolve(API.self)!,
                 storage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -335,15 +335,15 @@ class ScreenAssembly: Assembly {
             )
         }
         
-        container.register(DatesViewInteractorProtocol.self) { r in
-            DatesViewInteractor(
-                repository: r.resolve(DatesViewRepositoryProtocol.self)!
+        container.register(DatesInteractorProtocol.self) { r in
+            DatesInteractor(
+                repository: r.resolve(DatesRepositoryProtocol.self)!
             )
         }
         
         container.register(DatesViewModel.self) { @MainActor r in
             DatesViewModel(
-                interactor: r.resolve(DatesViewInteractorProtocol.self)!,
+                interactor: r.resolve(DatesInteractorProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 courseManager: r.resolve(CourseStructureManagerProtocol.self)!,
                 analytics: r.resolve(AppDatesAnalytics.self)!,

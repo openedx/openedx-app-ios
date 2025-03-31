@@ -37,7 +37,6 @@ public final class DatesPersistence: DatesPersistenceProtocol {
             let cdDates = try context.fetch(fetchRequest)
             let result = cdDates.map { cd in
                 CourseDate(
-                    location: cd.location ?? "",
                     date: cd.date ?? Date(),
                     title: cd.title ?? "",
                     courseName: cd.courseName ?? "",
@@ -56,7 +55,6 @@ public final class DatesPersistence: DatesPersistenceProtocol {
                 let newItem = CDDate(context: context)
                 context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
                 newItem.index = Int64(startIndex + index)
-                newItem.location = date.location
                 newItem.date = date.date
                 newItem.title = date.title
                 newItem.courseName = date.courseName

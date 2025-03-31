@@ -27,7 +27,6 @@ public extension DataLayer {
     // MARK: - CourseDateItem
     struct CourseDateItem: Codable {
         public let courseId: String
-        public let location: String
         public let assignmentBlockId: String?
         public let dueDate: String
         public let assignmentTitle: String
@@ -36,7 +35,6 @@ public extension DataLayer {
         
         enum CodingKeys: String, CodingKey {
             case courseId = "course_id"
-            case location = "location"
             case assignmentBlockId = "first_component_block_id"
             case dueDate = "due_date"
             case assignmentTitle = "assignment_title"
@@ -46,7 +44,6 @@ public extension DataLayer {
         
         public init(
             courseId: String,
-            location: String,
             assignmentBlockId: String?,
             dueDate: String,
             assignmentTitle: String,
@@ -54,7 +51,6 @@ public extension DataLayer {
             courseName: String
         ) {
             self.courseId = courseId
-            self.location = location
             self.assignmentBlockId = assignmentBlockId
             self.dueDate = dueDate
             self.assignmentTitle = assignmentTitle
@@ -66,10 +62,9 @@ public extension DataLayer {
 
 // Extension for domain conversion
 public extension DataLayer.CourseDatesResponse {
-    func domain() -> [CourseDate] {
+    var domain: [CourseDate] {
         return results.map { result in
             CourseDate(
-                location: result.location,
                 date: Date(iso8601: result.dueDate),
                 title: result.assignmentTitle,
                 courseName: result.courseName,

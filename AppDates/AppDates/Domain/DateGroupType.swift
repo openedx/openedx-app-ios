@@ -33,15 +33,15 @@ public enum DateGroupType: CaseIterable {
     var color: Color {
         switch self {
         case .pastDue:
-            return Theme.Colors.pastDueTimelineColor
+            Theme.Colors.pastDueTimelineColor
         case .today:
-            return Theme.Colors.todayTimelineColor
+            Theme.Colors.todayTimelineColor
         case .thisWeek:
-            return Theme.Colors.thisWeekTimelineColor
+            Theme.Colors.thisWeekTimelineColor
         case .nextWeek:
-            return Theme.Colors.nextWeekTimelineColor
+            Theme.Colors.nextWeekTimelineColor
         case .upcoming:
-            return Theme.Colors.upcomingTimelineColor
+            Theme.Colors.upcomingTimelineColor
         }
     }
 }

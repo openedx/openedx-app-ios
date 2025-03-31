@@ -1,5 +1,5 @@
 //
-//  DatesViewRepository.swift
+//  DatesRepository.swift
 //  AppDates
 //
 //  Created by Ivan Stepanok on 15.02.2025.
@@ -9,14 +9,13 @@ import Foundation
 import Core
 import OEXFoundation
 
-public protocol DatesViewRepositoryProtocol: Sendable {
+public protocol DatesRepositoryProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline(limit: Int?, offset: Int?) async throws -> [CourseDate]
     func resetAllRelativeCourseDeadlines() async throws
-    func clearAllCourseDates() async
 }
 
-public actor DatesViewRepository: DatesViewRepositoryProtocol {
+public actor DatesRepository: DatesRepositoryProtocol {
     
     private let api: API
     private let storage: CoreStorage
@@ -32,14 +31,12 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
     }
     
     public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
-        let startTime = Date()
-
         let response = try await api.requestData(
-            DatesViewEndpoint.getCourseDates(username: storage.user?.username ?? "", page: page)
+            DatesEndpoint.getCourseDates(username: storage.user?.username ?? "", page: page)
         )
         .mapResponse(DataLayer.CourseDatesResponse.self)
         
-        let dates = response.domain()
+        let dates = response.domain
         
         if page == 1 {
             await persistence.clearAllCourseDates()
@@ -51,9 +48,6 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
         
         await persistence.saveCourseDates(dates: dates, startIndex: startIndex)
         
-        let elapsedTime = Date().timeIntervalSince(startTime)
-        print("Response takes \(elapsedTime) seconds")
-        
         return (dates, response.next)
     }
     
@@ -62,25 +56,19 @@ public actor DatesViewRepository: DatesViewRepositoryProtocol {
     }
     
     public func resetAllRelativeCourseDeadlines() async throws {
-        let response = try await api.request(DatesViewEndpoint.resetAllRelativeCourseDeadlines)
-        print(">>>>> resetAllRelativeCourseDeadlines: statusCode \(response.statusCode)")
-    }
-    
-    public func clearAllCourseDates() async {
-        await persistence.clearAllCourseDates()
+        try await api.request(DatesEndpoint.resetAllRelativeCourseDeadlines)
     }
 }
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
+public final class DatesRepositoryMock: DatesRepositoryProtocol {
     
     public init() {}
     
     public func getCourseDates(page: Int) async throws -> ([CourseDate], String?) {
         let dates = [
             CourseDate(
-                    location: "9",
                     date: Date().addingTimeInterval(-86400 * 2),
                     title: "Assignment from the Day Before Yesterday",
                     courseName: "Course 6",
@@ -89,7 +77,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                     hasAccess: true
                 ),
                 CourseDate(
-                    location: "10",
                     date: Date().addingTimeInterval(-86400),
                     title: "Assignment from Yesterday",
                     courseName: "Course 7",
@@ -98,7 +85,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                     hasAccess: true
                 ),
             CourseDate(
-                location: "1",
                 date: Date(),
                 title: "Today's Assignment 1",
                 courseName: "Course 1",
@@ -107,7 +93,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                location: "2",
                 date: Date(),
                 title: "Today's Assignment 2",
                 courseName: "Course 1",
@@ -116,7 +101,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                location: "3",
                 date: Date().addingTimeInterval(86400), // 1 day
                 title: "Tomorrow's Assignment",
                 courseName: "Course 2",
@@ -125,7 +109,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                location: "4",
                 date: Date().addingTimeInterval(86400 * 5),
                 title: "Assignment in 5 Days",
                 courseName: "Course 3",
@@ -134,7 +117,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                location: "5",
                 date: Date().addingTimeInterval(86400 * 5),
                 title: "Assignment in 5 Days (Part 2)",
                 courseName: "Course 3",
@@ -143,7 +125,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                location: "6",
                 date: Date().addingTimeInterval(86400 * 10),
                 title: "Assignment in 10 Days",
                 courseName: "Course 4",
@@ -152,7 +133,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                location: "7",
                 date: Date().addingTimeInterval(86400 * 20),
                 title: "Assignment in 20 Days 1",
                 courseName: "Course 5",
@@ -161,7 +141,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                location: "8",
                 date: Date().addingTimeInterval(86400 * 20),
                 title: "Assignment in 20 Days 2",
                 courseName: "Course 5",
@@ -177,7 +156,6 @@ public final class DatesViewRepositoryMock: DatesViewRepositoryProtocol {
     public func getCourseDatesOffline(limit: Int? = nil, offset: Int? = nil) async throws -> [CourseDate] {
         return [
             CourseDate(
-                location: "6",
                 date: Date().addingTimeInterval(-86400 * 3),
                 title: "Offline Assignment",
                 courseName: "Cached Course",

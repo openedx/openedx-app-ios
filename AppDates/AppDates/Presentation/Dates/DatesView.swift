@@ -47,33 +47,33 @@ public struct DatesView: View {
                             }
                             LazyVStack(spacing: 24) {
                                 ForEach(viewModel.coursesDates, id: \.id) { group in
-                                    LazyVStack(alignment: .leading, spacing: 0) {
-                                        Text(group.type.text)
-                                            .font(Theme.Fonts.titleMedium)
-                                            .foregroundColor(Theme.Colors.textPrimary)
-                                            .padding(.bottom, 8)
-                                            .padding(.top, 8)
-                                        
-                                        ForEach(
-                                            Array(group.dates.enumerated()),
-                                            id: \.element.id
-                                        ) { index, date in
-                                            Button(action: {
-                                                Task {
-                                                    await viewModel.openVertical(date: date)
-                                                }
-                                            }, label: {
-                                                DateCell(
-                                                    courseDate: date,
-                                                    groupType: group.type,
-                                                    isFirst: index == 0,
-                                                    isLast: index == group.dates.count - 1
-                                                )
-                                            })
-                                            .id(UUID())
-                                            .onAppear {
-                                                Task {
-                                                    await viewModel.loadNextPageIfNeeded(index: index)
+                                        LazyVStack(alignment: .leading, spacing: 0) {
+                                            Text(group.type.text)
+                                                .font(Theme.Fonts.titleMedium)
+                                                .foregroundColor(Theme.Colors.textPrimary)
+                                                .padding(.bottom, 8)
+                                                .padding(.top, 8)
+                                            
+                                            ForEach(
+                                                Array(group.dates.enumerated()),
+                                                id: \.element.id
+                                            ) { index, date in
+                                                Button(action: {
+                                                    Task {
+                                                        await viewModel.openVertical(date: date)
+                                                    }
+                                                }, label: {
+                                                    DateCell(
+                                                        courseDate: date,
+                                                        groupType: group.type,
+                                                        isFirst: index == 0,
+                                                        isLast: index == group.dates.count - 1
+                                                    )
+                                                })
+                                                .id(UUID())
+                                                .onAppear {
+                                                    Task {
+                                                        await viewModel.loadNextPageIfNeeded(for: date)
                                                 }
                                             }
                                         }
@@ -148,7 +148,7 @@ public struct DatesView: View {
             ZStack(alignment: .topTrailing) {
                 VStack {
                     HStack(alignment: .center) {
-                        Text("Dates")
+                        Text(AppDatesLocalization.Dates.title)
                             .font(Theme.Fonts.displaySmall)
                             .foregroundColor(Theme.Colors.textPrimary)
                             .accessibilityIdentifier("dates_header_text")
@@ -173,16 +173,8 @@ public struct DatesView: View {
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel("Dates")
+            .accessibilityLabel(AppDatesLocalization.Dates.title)
         }
-    }
-}
-
-// To track scroll position
-struct ScrollViewOffsetPreferenceKey: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }
 
@@ -214,7 +206,7 @@ struct DatesEmptyStateView: View {
 #Preview {
     DatesView(
         viewModel: DatesViewModel(
-            interactor: DatesViewInteractor.mock,
+            interactor: DatesInteractor.mock,
             connectivity: Connectivity(),
             courseManager: CourseStructureManagerMock(),
             analytics: AppDatesAnalyticsMock(),

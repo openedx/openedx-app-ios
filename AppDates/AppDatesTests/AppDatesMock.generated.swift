@@ -4088,9 +4088,9 @@ open class DatesPersistenceProtocolMock: DatesPersistenceProtocol, Mock {
     }
 }
 
-// MARK: - DatesViewInteractorProtocol
+// MARK: - DatesInteractorProtocol
 
-open class DatesViewInteractorProtocolMock: DatesViewInteractorProtocol, Mock {
+open class DatesInteractorProtocolMock: DatesInteractorProtocol, Mock {
     public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
         SwiftyMockyTestObserver.setup()
         self.sequencingPolicy = sequencingPolicy

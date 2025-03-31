@@ -6,8 +6,7 @@
 //
 
 public struct CourseDate: Identifiable, Sendable {
-    public var id: String { location + courseName + title + (blockId ?? "") }
-    public let location: String
+    public var id: String { courseName + title + (blockId ?? "") }
     public let date: Date
     public let title: String
     public let courseName: String
@@ -16,7 +15,6 @@ public struct CourseDate: Identifiable, Sendable {
     public let hasAccess: Bool
     
     public init(
-        location: String,
         date: Date,
         title: String,
         courseName: String,
@@ -24,7 +22,6 @@ public struct CourseDate: Identifiable, Sendable {
         blockId: String? = nil,
         hasAccess: Bool = true
     ) {
-        self.location = location
         self.date = date
         self.title = title
         self.courseName = courseName

@@ -40,9 +40,12 @@ public struct ShiftDueDatesView: View {
                 }.frame(maxWidth: .infinity,
                         maxHeight: 42)
             } else {
-                StyledButton(AppDatesLocalization.ShiftDueDates.button, action: {
-                    onShiftButtonTap()
-                })
+                StyledButton(
+                    AppDatesLocalization.ShiftDueDates.button,
+                    action: {
+                        onShiftButtonTap()
+                    }
+                )
             }
         }
         .padding(16)

@@ -1,5 +1,5 @@
 //
-//  DatesViewInteractor.swift
+//  DatesInteractor.swift
 //  AppDates
 //
 //  Created by Ivan Stepanok on 15.02.2025.
@@ -9,18 +9,17 @@ import Foundation
 import Core
 
 //sourcery: AutoMockable
-public protocol DatesViewInteractorProtocol: Sendable {
+public protocol DatesInteractorProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline(limit: Int?, offset: Int?) async throws -> [CourseDate]
     func resetAllRelativeCourseDeadlines() async throws
-    func clearAllCourseDates() async
 }
 
-public actor DatesViewInteractor: DatesViewInteractorProtocol {
+public actor DatesInteractor: DatesInteractorProtocol {
     
-    private let repository: DatesViewRepositoryProtocol
+    private let repository: DatesRepositoryProtocol
     
-    public init(repository: DatesViewRepositoryProtocol) {
+    public init(repository: DatesRepositoryProtocol) {
         self.repository = repository
     }
     
@@ -35,15 +34,11 @@ public actor DatesViewInteractor: DatesViewInteractorProtocol {
     public func resetAllRelativeCourseDeadlines() async throws {
         try await repository.resetAllRelativeCourseDeadlines()
     }
-    
-    public func clearAllCourseDates() async {
-        await repository.clearAllCourseDates()
-    }
 }
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public extension DatesViewInteractor {
-    static let mock = DatesViewInteractor(repository: DatesViewRepositoryMock())
+public extension DatesInteractor {
+    static let mock = DatesInteractor(repository: DatesRepositoryMock())
 }
 #endif
