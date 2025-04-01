@@ -183,6 +183,22 @@ public struct HTMLContentView: View {
             // Add closing tags if missing
             var result = processedHTML
             
+            // Fix case where a list appears after <br> inside a list item
+            // Example: <li>point 3<br><ol>... -> <li>point 3</li><li><ol>...
+            let brListPattern = #"<li>(.*?)<br\s*/?\s*>\s*(<[ou]l>)"#
+            let brListRegex = try NSRegularExpression(
+                pattern: brListPattern,
+                options: [.dotMatchesLineSeparators]
+            )
+            let brListRange = NSRange(result.startIndex..<result.endIndex, in: result)
+            
+            result = brListRegex.stringByReplacingMatches(
+                in: result,
+                range: brListRange,
+                withTemplate: "<li>$1</li>$2"
+            )
+            print(">>>DEB After fixing br+list: \(result)")
+            
             // Find nesting patterns like <ul><ul> or <ol><ol> and add proper li elements
             let directNestingPattern = #"(<([ou]l)>)\s*(<([ou]l)>)"#
             let directNestingRegex = try NSRegularExpression(pattern: directNestingPattern, options: [])
@@ -194,6 +210,56 @@ public struct HTMLContentView: View {
                 withTemplate: "$1<li>$3"
             )
             print(">>>DEB After fixing direct nesting: \(result)")
+            
+            // Special case: List inside a list item - needs special handling for proper indentation
+            // This specifically targets the case in the user's example where an ordered list is inside an unordered list item
+            let listInItemPattern = #"(<li>.*?)(<[ou]l>.*?</[ou]l>)(</li>)"#
+            let listInItemRegex = try NSRegularExpression(
+                pattern: listInItemPattern,
+                options: [.dotMatchesLineSeparators]
+            )
+            
+            var listInItemReplacements: [(NSRange, String)] = []
+            
+            listInItemRegex.enumerateMatches(in: result, range: NSRange(result.startIndex..<result.endIndex, in: result)) { match, _, _ in
+                guard let match = match,
+                      let beforeRange = Range(match.range(at: 1), in: result),
+                      let listRange = Range(match.range(at: 2), in: result) else {
+                    return
+                }
+                
+                let beforeContent = result[beforeRange].trimmingCharacters(in: .whitespacesAndNewlines)
+                let listContent = result[listRange]
+                
+                // Get the type of list being nested (ol or ul)
+                if let listStartRange = listContent.range(of: "<ol") {
+                    // Mark the nested ordered list with a special attribute for enhanced detection
+                    let beforeListContent = listContent[..<listStartRange.lowerBound]
+                    let afterListContent = listContent[listStartRange.lowerBound...]
+                    let modifiedListContent = beforeListContent + "<ol data-nested=\"true\" data-parent=\"li\"" + afterListContent.dropFirst(3)
+                    
+                    // Close the li, then put the list
+                    let replacement = "<li>\(beforeContent)</li>\(modifiedListContent)"
+                    listInItemReplacements.append((match.range, replacement))
+                } else if let listStartRange = listContent.range(of: "<ul") {
+                    // Mark the nested unordered list with a special attribute
+                    let beforeListContent = listContent[..<listStartRange.lowerBound]
+                    let afterListContent = listContent[listStartRange.lowerBound...]
+                    let modifiedListContent = beforeListContent + "<ul data-nested=\"true\" data-parent=\"li\"" + afterListContent.dropFirst(3)
+                    
+                    // Close the li, then put the list
+                    let replacement = "<li>\(beforeContent)</li>\(modifiedListContent)"
+                    listInItemReplacements.append((match.range, replacement))
+                }
+            }
+            
+            // Apply replacements in reverse order
+            for (range, replacement) in listInItemReplacements.reversed() {
+                let nsResult = NSMutableString(string: result)
+                nsResult.replaceCharacters(in: range, with: replacement)
+                result = nsResult as String
+            }
+            print(">>>DEB After fixing lists in items: \(result)")
             
             // Normalize whitespace between list elements
             let whitespacePattern = #"(</li>)\s+(</[ou]l>)"#
