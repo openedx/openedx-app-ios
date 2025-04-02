@@ -192,49 +192,41 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
             
             // Increment the active ordered list counter
             activeOrderedListCount += 1
-            print(">>>DEB 📈 Incrementing ordered list count to \(activeOrderedListCount)")
             
-            // Check for data-level attribute to determine nesting
-            var level = activeOrderedListCount
-            if let levelStr = attributes.attributeValue(for: "data-level"), let levelInt = Int(levelStr) {
-                level = levelInt
-                print(">>>DEB 📊 Found list with data-level: \(level)")
-            }
+            let parentLevel = styleStack.filter { style in
+                if case .orderedList = style { return true }
+                if case .unorderedList = style { return true }
+                return false
+            }.count
             
             // Store this list's nesting level
             currentListIndex += 1
-            listNestingLevels[currentListIndex] = level
+            listNestingLevels[currentListIndex] = parentLevel + 1
             
-            print(">>>DEB 📚 Active list counts - ordered: \(activeOrderedListCount), unordered: \(activeUnorderedListCount)")
-            
-            // We need to get the parent numbering for proper sequential numbering
-            // Default is to start at 1 if this is a new list
-            let startNumber = 1
-            styleStack.append(.orderedList(nextElementOrdinal: startNumber))
+            styleStack.append(.orderedList(nextElementOrdinal: 1))
         case "ul":
             blockStateMachine.startOrEndBlock()
             finishRun()
             
             // Increment the active unordered list counter
             activeUnorderedListCount += 1
-            print(">>>DEB 📈 Incrementing unordered list count to \(activeUnorderedListCount)")
             
-            // Check for data-level attribute to determine nesting
-            var level = activeUnorderedListCount
-            if let levelStr = attributes.attributeValue(for: "data-level"), let levelInt = Int(levelStr) {
-                level = levelInt
-                print(">>>DEB 📊 Found list with data-level: \(level)")
-            }
+            let parentLevel = styleStack.filter { style in
+                if case .orderedList = style { return true }
+                if case .unorderedList = style { return true }
+                return false
+            }.count
             
             // Store this list's nesting level
             currentListIndex += 1
-            listNestingLevels[currentListIndex] = level
-            
-            print(">>>DEB 📚 Active list counts - ordered: \(activeOrderedListCount), unordered: \(activeUnorderedListCount)")
+            listNestingLevels[currentListIndex] = parentLevel + 1
             
             styleStack.append(.unorderedList)
         case "li":
-            print(">>>DEB 📝 Processing list item")
+            // Ensure we start a new line for list items
+            blockStateMachine.startListItem()
+            finishRun()
+            
             // Find nesting level by counting list styles in the stack
             let listStyles = styleStack.filter { style in
                 if case .orderedList = style { return true }
@@ -242,10 +234,7 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
                 return false
             }
             
-            guard listStyles.count > 0 else { 
-                print(">>>DEB ⚠️ No list styles found in stack")
-                break 
-            }
+            guard listStyles.count > 0 else { break }
             
             // Determine if this is an ordered or unordered list item
             let isOrdered = listStyles.last.map { style in
@@ -253,43 +242,23 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
                 return false
             } ?? false
             
-            // Get the nesting level based on active list counters
-            var nestingLevel: Int
-            if isOrdered {
-                nestingLevel = activeOrderedListCount
-            } else {
-                nestingLevel = activeUnorderedListCount
-            }
-            
-            print(">>>DEB 📊 List nesting level: \(nestingLevel), isOrdered: \(isOrdered)")
-            print(">>>DEB 🧾 Style stack: \(styleStack)")
-            print(">>>DEB 📚 Active list counts - ordered: \(activeOrderedListCount), unordered: \(activeUnorderedListCount)")
-            
             // Get the marker and update the counter for ordered lists
             let marker: String
             if isOrdered, case .orderedList(let nextElementOrdinal) = styleStack.last! {
                 marker = "\(nextElementOrdinal)."
-                print(">>>DEB 🔢 Ordered list marker: \(marker), next: \(nextElementOrdinal + 1)")
                 // Update the counter for the next item
                 styleStack[styleStack.count - 1] = .orderedList(nextElementOrdinal: nextElementOrdinal + 1)
             } else {
                 marker = "•"
-                print(">>>DEB 🔘 Bullet list marker")
             }
             
-            blockStateMachine.startListItem()
-            
-            // Create the indented marker with proper spacing
+            let nestingLevel = listStyles.count
             if nestingLevel > 1 {
                 // Add spaces for indentation - 5 spaces per level
                 let indent = String(repeating: "     ", count: nestingLevel - 1)
-                let formattedItem = "\(indent)\(marker) "
-                print(">>>DEB 📏 Indented item: '\(formattedItem)'")
-                currentRun.append(formattedItem)
+                currentRun.append("\(indent)\(marker) ")
             } else {
-                let formattedItem = "\(marker) "
-                print(">>>DEB 📏 First level item: '\(formattedItem)'")
-                currentRun.append(formattedItem)
+                currentRun.append("\(marker) ")
             }
         default:
             break
@@ -520,7 +489,7 @@ public class HTMLContentFixProcessor {
     // Fix list structure to ensure proper nesting levels
     func fixListStructure(_ html: String) -> String {
         print(">>>DEB 🛠️ HTMLContentFixProcessor - fixing list structure")
-        var processedHTML = html
+        let processedHTML = html
         
         do {
             // 1. Add nesting attributes to list elements to assist with proper rendering
@@ -531,7 +500,13 @@ public class HTMLContentFixProcessor {
             var result = ""
             var lastIndex = processedHTML.startIndex
             
-            nestingRegex.enumerateMatches(in: processedHTML, range: NSRange(processedHTML.startIndex..<processedHTML.endIndex, in: processedHTML)) { match, _, _ in
+            nestingRegex.enumerateMatches(
+                in: processedHTML,
+                range: NSRange(
+                    processedHTML.startIndex..<processedHTML.endIndex,
+                    in: processedHTML
+                )
+            ) { match, _, _ in
                 guard let match = match,
                       let range = Range(match.range, in: processedHTML),
                       let tagRange = Range(match.range(at: 1), in: processedHTML),
@@ -562,45 +537,15 @@ public class HTMLContentFixProcessor {
                 result.append(String(processedHTML[lastIndex..<processedHTML.endIndex]))
             }
             
-            // Reset levels when list ends
-            let endPattern = #"</(ol|ul)>"#
-            let endRegex = try NSRegularExpression(pattern: endPattern, options: [])
+            let brPattern = #"(<li[^>]*>.*?)(<br>)(.*?<(?:ol|ul))"#
+            let brRegex = try NSRegularExpression(pattern: brPattern, options: [.dotMatchesLineSeparators])
             
-            processedHTML = result
-            result = ""
-            lastIndex = processedHTML.startIndex
-            currentLevel = 0
-            
-            endRegex.enumerateMatches(in: processedHTML, range: NSRange(processedHTML.startIndex..<processedHTML.endIndex, in: processedHTML)) { match, _, _ in
-                guard let match = match,
-                      let range = Range(match.range, in: processedHTML),
-                      let tagRange = Range(match.range(at: 1), in: processedHTML) else {
-                    return
-                }
-                
-                // Add text before this tag
-                if lastIndex < range.lowerBound {
-                    result.append(String(processedHTML[lastIndex..<range.lowerBound]))
-                }
-                
-                let tag = processedHTML[tagRange]
-                
-                if tag == "ol" || tag == "ul" {
-                    // Add closing tag
-                    result.append("</\(tag)>")
-                    // Decrease level for end tags
-                    if currentLevel > 0 {
-                        currentLevel -= 1
-                    }
-                }
-                
-                lastIndex = range.upperBound
-            }
-            
-            // Add remainder of string
-            if lastIndex < processedHTML.endIndex {
-                result.append(String(processedHTML[lastIndex..<processedHTML.endIndex]))
-            }
+            result = brRegex.stringByReplacingMatches(
+                in: result,
+                options: [],
+                range: NSRange(result.startIndex..<result.endIndex, in: result),
+                withTemplate: "$1$3"
+            )
             
             print(">>>DEB 🛠️ Fixed HTML structure: \(result.prefix(100))")
             return result
@@ -626,7 +571,13 @@ public struct AttributedStringConverterConfiguration {
     public var paragraphStyle: NSParagraphStyle
     
     #if os(iOS) || os(visionOS)
-    public init(font: UIFont, monospaceFont: UIFont, fontMetrics: UIFontMetrics, color: UIColor, paragraphStyle: NSParagraphStyle) {
+    public init(
+        font: UIFont,
+        monospaceFont: UIFont,
+        fontMetrics: UIFontMetrics,
+        color: UIColor,
+        paragraphStyle: NSParagraphStyle
+    ) {
         self.font = font
         self.monospaceFont = monospaceFont
         self.fontMetrics = fontMetrics
@@ -634,7 +585,12 @@ public struct AttributedStringConverterConfiguration {
         self.paragraphStyle = paragraphStyle
     }
     #elseif os(macOS)
-    public init(font: NSFont, monospaceFont: NSFont, color: NSColor, paragraphStyle: NSParagraphStyle) {
+    public init(
+        font: NSFont,
+        monospaceFont: NSFont,
+        color: NSColor,
+        paragraphStyle: NSParagraphStyle
+    ) {
         self.font = font
         self.monospaceFont = monospaceFont
         self.color = color
