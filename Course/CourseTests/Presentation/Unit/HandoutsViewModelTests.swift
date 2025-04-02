@@ -74,8 +74,8 @@ final class HandoutsViewModelTests: XCTestCase {
         let router = CourseRouterMock()
         let connectivity = ConnectivityProtocolMock()
         
-        Given(interactor, .getHandouts(courseID: .any, willThrow: NSError()))
-        Given(interactor, .getUpdates(courseID: .any, willThrow: NSError()))
+        Given(interactor, .getHandouts(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
+        Given(interactor, .getUpdates(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         let viewModel = HandoutsViewModel(
             interactor: interactor,
@@ -159,7 +159,7 @@ final class HandoutsViewModelTests: XCTestCase {
             analytics: CourseAnalyticsMock())
         
         
-        Given(interactor, .getUpdates(courseID: .any, willThrow: NSError()))
+        Given(interactor, .getUpdates(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.getUpdates(courseID: "")
         

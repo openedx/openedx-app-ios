@@ -2356,10 +2356,10 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 	}
 	private var __p_program: (DiscoveryConfig)?
 
-    public var downloads: DownloadsConfig {
-		get {	invocations.append(.p_downloads_get); return __p_downloads ?? givenGetterValue(.p_downloads_get, "ConfigProtocolMock - stub value for downloads was not defined") }
+    public var experimentalFeatures: ExperimentalFeaturesConfig {
+		get {	invocations.append(.p_experimentalFeatures_get); return __p_experimentalFeatures ?? givenGetterValue(.p_experimentalFeatures_get, "ConfigProtocolMock - stub value for experimentalFeatures was not defined") }
 	}
-	private var __p_downloads: (DownloadsConfig)?
+	private var __p_experimentalFeatures: (ExperimentalFeaturesConfig)?
 
     public var URIScheme: String {
 		get {	invocations.append(.p_URIScheme_get); return __p_URIScheme ?? givenGetterValue(.p_URIScheme_get, "ConfigProtocolMock - stub value for URIScheme was not defined") }
@@ -2396,7 +2396,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         case p_braze_get
         case p_branch_get
         case p_program_get
-        case p_downloads_get
+        case p_experimentalFeatures_get
         case p_URIScheme_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -2424,7 +2424,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case (.p_braze_get,.p_braze_get): return Matcher.ComparisonResult.match
             case (.p_branch_get,.p_branch_get): return Matcher.ComparisonResult.match
             case (.p_program_get,.p_program_get): return Matcher.ComparisonResult.match
-            case (.p_downloads_get,.p_downloads_get): return Matcher.ComparisonResult.match
+            case (.p_experimentalFeatures_get,.p_experimentalFeatures_get): return Matcher.ComparisonResult.match
             case (.p_URIScheme_get,.p_URIScheme_get): return Matcher.ComparisonResult.match
             default: return .none
             }
@@ -2456,7 +2456,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_braze_get: return 0
             case .p_branch_get: return 0
             case .p_program_get: return 0
-            case .p_downloads_get: return 0
+            case .p_experimentalFeatures_get: return 0
             case .p_URIScheme_get: return 0
             }
         }
@@ -2486,7 +2486,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_braze_get: return "[get] .braze"
             case .p_branch_get: return "[get] .branch"
             case .p_program_get: return "[get] .program"
-            case .p_downloads_get: return "[get] .downloads"
+            case .p_experimentalFeatures_get: return "[get] .experimentalFeatures"
             case .p_URIScheme_get: return "[get] .URIScheme"
             }
         }
@@ -2572,8 +2572,8 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static func program(getter defaultValue: DiscoveryConfig...) -> PropertyStub {
             return Given(method: .p_program_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
-        public static func downloads(getter defaultValue: DownloadsConfig...) -> PropertyStub {
-            return Given(method: .p_downloads_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        public static func experimentalFeatures(getter defaultValue: ExperimentalFeaturesConfig...) -> PropertyStub {
+            return Given(method: .p_experimentalFeatures_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
         public static func URIScheme(getter defaultValue: String...) -> PropertyStub {
             return Given(method: .p_URIScheme_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
@@ -2608,7 +2608,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static var braze: Verify { return Verify(method: .p_braze_get) }
         public static var branch: Verify { return Verify(method: .p_branch_get) }
         public static var program: Verify { return Verify(method: .p_program_get) }
-        public static var downloads: Verify { return Verify(method: .p_downloads_get) }
+        public static var experimentalFeatures: Verify { return Verify(method: .p_experimentalFeatures_get) }
         public static var URIScheme: Verify { return Verify(method: .p_URIScheme_get) }
     }
 

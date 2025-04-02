@@ -91,9 +91,58 @@ struct DropDownMenu: View {
             Text(title)
                 .font(Theme.Fonts.labelLarge)
                 .foregroundStyle(Theme.Colors.textPrimary)
+                .multilineTextAlignment(.leading)
                 .frame(alignment: .leading)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 16)
         }
     }
+}
+
+#Preview {
+    VStack(spacing: 20) {
+        Text("Menu States")
+            .font(.headline)
+        
+        HStack {
+            Text("Downloading")
+            Spacer()
+            DropDownMenu(
+                isDownloading: true,
+                showRemoveOption: true,
+                onRemoveTap: {},
+                onCancelTap: {}
+            )
+        }
+        .padding()
+        .background(Theme.Colors.background)
+        
+        HStack {
+            Text("Remove Only")
+            Spacer()
+            DropDownMenu(
+                isDownloading: false,
+                showRemoveOption: true,
+                onRemoveTap: {},
+                onCancelTap: {}
+            )
+        }
+        .padding()
+        .background(Theme.Colors.background)
+        
+        HStack {
+            Text("Hidden Menu")
+            Spacer()
+            DropDownMenu(
+                isDownloading: false,
+                showRemoveOption: false,
+                onRemoveTap: {},
+                onCancelTap: {}
+            )
+        }
+        .padding()
+        .background(Theme.Colors.background)
+    }
+    .padding()
+    .background(Color.gray.opacity(0.1))
 }

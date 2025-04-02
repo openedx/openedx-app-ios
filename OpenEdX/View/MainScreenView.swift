@@ -142,7 +142,7 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
-            if viewModel.config.downloads.enabled {
+            if viewModel.config.experimentalFeatures.appLevelDownloadsEnabled {
                 AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
                 .tabItem {
                     if viewModel.selection == .downloads {

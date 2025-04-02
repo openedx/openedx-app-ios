@@ -40,7 +40,6 @@ final class DownloadsTests: XCTestCase {
         
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .any, willReturn: (0, 0)))
         Given(downloadsHelper, .isDownloading(courseID: .any, willReturn: false))
-        Given(downloadsHelper, .isPartiallyDownloaded(courseID: .any, willReturn: false))
         Given(downloadsHelper, .isFullyDownloaded(courseID: .any, willReturn: false))
         Given(downloadsHelper, .getDownloadTasksForCourse(courseID: .any, willReturn: []))
         Given(courseManager, .getLoadedCourseBlocks(courseID: .any, willReturn: createMockCourseStructure()))
@@ -128,13 +127,11 @@ final class DownloadsTests: XCTestCase {
         // Setup mocks with specific values
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value("course1"), willReturn: (100, 100)))
         Given(downloadsHelper, .isDownloading(courseID: .value("course1"), willReturn: false))
-        Given(downloadsHelper, .isPartiallyDownloaded(courseID: .value("course1"), willReturn: false))
         Given(downloadsHelper, .isFullyDownloaded(courseID: .value("course1"), willReturn: true))
         Given(downloadsHelper, .getDownloadTasksForCourse(courseID: .value("course1"), willReturn: [task1]))
         
         Given(downloadsHelper, .calculateDownloadProgress(courseID: .value("course2"), willReturn: (50, 100)))
         Given(downloadsHelper, .isDownloading(courseID: .value("course2"), willReturn: true))
-        Given(downloadsHelper, .isPartiallyDownloaded(courseID: .value("course2"), willReturn: false))
         Given(downloadsHelper, .isFullyDownloaded(courseID: .value("course2"), willReturn: false))
         Given(courseManager, .getLoadedCourseBlocks(courseID: .any, willThrow: NoCachedDataError()))
         

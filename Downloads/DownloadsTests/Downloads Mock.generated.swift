@@ -1525,10 +1525,10 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 	}
 	private var __p_program: (DiscoveryConfig)?
 
-    public var downloads: DownloadsConfig {
-		get {	invocations.append(.p_downloads_get); return __p_downloads ?? givenGetterValue(.p_downloads_get, "ConfigProtocolMock - stub value for downloads was not defined") }
+    public var experimentalFeatures: ExperimentalFeaturesConfig {
+		get {	invocations.append(.p_experimentalFeatures_get); return __p_experimentalFeatures ?? givenGetterValue(.p_experimentalFeatures_get, "ConfigProtocolMock - stub value for experimentalFeatures was not defined") }
 	}
-	private var __p_downloads: (DownloadsConfig)?
+	private var __p_experimentalFeatures: (ExperimentalFeaturesConfig)?
 
     public var URIScheme: String {
 		get {	invocations.append(.p_URIScheme_get); return __p_URIScheme ?? givenGetterValue(.p_URIScheme_get, "ConfigProtocolMock - stub value for URIScheme was not defined") }
@@ -1565,7 +1565,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         case p_braze_get
         case p_branch_get
         case p_program_get
-        case p_downloads_get
+        case p_experimentalFeatures_get
         case p_URIScheme_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -1593,7 +1593,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case (.p_braze_get,.p_braze_get): return Matcher.ComparisonResult.match
             case (.p_branch_get,.p_branch_get): return Matcher.ComparisonResult.match
             case (.p_program_get,.p_program_get): return Matcher.ComparisonResult.match
-            case (.p_downloads_get,.p_downloads_get): return Matcher.ComparisonResult.match
+            case (.p_experimentalFeatures_get,.p_experimentalFeatures_get): return Matcher.ComparisonResult.match
             case (.p_URIScheme_get,.p_URIScheme_get): return Matcher.ComparisonResult.match
             default: return .none
             }
@@ -1625,7 +1625,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_braze_get: return 0
             case .p_branch_get: return 0
             case .p_program_get: return 0
-            case .p_downloads_get: return 0
+            case .p_experimentalFeatures_get: return 0
             case .p_URIScheme_get: return 0
             }
         }
@@ -1655,7 +1655,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_braze_get: return "[get] .braze"
             case .p_branch_get: return "[get] .branch"
             case .p_program_get: return "[get] .program"
-            case .p_downloads_get: return "[get] .downloads"
+            case .p_experimentalFeatures_get: return "[get] .experimentalFeatures"
             case .p_URIScheme_get: return "[get] .URIScheme"
             }
         }
@@ -1741,8 +1741,8 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static func program(getter defaultValue: DiscoveryConfig...) -> PropertyStub {
             return Given(method: .p_program_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
-        public static func downloads(getter defaultValue: DownloadsConfig...) -> PropertyStub {
-            return Given(method: .p_downloads_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        public static func experimentalFeatures(getter defaultValue: ExperimentalFeaturesConfig...) -> PropertyStub {
+            return Given(method: .p_experimentalFeatures_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
         public static func URIScheme(getter defaultValue: String...) -> PropertyStub {
             return Given(method: .p_URIScheme_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
@@ -1777,7 +1777,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static var braze: Verify { return Verify(method: .p_braze_get) }
         public static var branch: Verify { return Verify(method: .p_branch_get) }
         public static var program: Verify { return Verify(method: .p_program_get) }
-        public static var downloads: Verify { return Verify(method: .p_downloads_get) }
+        public static var experimentalFeatures: Verify { return Verify(method: .p_experimentalFeatures_get) }
         public static var URIScheme: Verify { return Verify(method: .p_URIScheme_get) }
     }
 
@@ -4715,34 +4715,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
 		return __value
     }
 
-    open func isPartiallyDownloaded(courseID: String) -> Bool {
-        addInvocation(.m_isPartiallyDownloaded__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_isPartiallyDownloaded__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
-		var __value: Bool
-		do {
-		    __value = try methodReturnValue(.m_isPartiallyDownloaded__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for isPartiallyDownloaded(courseID: String). Use given")
-			Failure("Stub return value not specified for isPartiallyDownloaded(courseID: String). Use given")
-		}
-		return __value
-    }
-
-    open func hasDownloadedContent(courseID: String) -> Bool {
-        addInvocation(.m_hasDownloadedContent__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_hasDownloadedContent__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
-		var __value: Bool
-		do {
-		    __value = try methodReturnValue(.m_hasDownloadedContent__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
-		} catch {
-			onFatalFailure("Stub return value not specified for hasDownloadedContent(courseID: String). Use given")
-			Failure("Stub return value not specified for hasDownloadedContent(courseID: String). Use given")
-		}
-		return __value
-    }
-
     open func isFullyDownloaded(courseID: String) -> Bool {
         addInvocation(.m_isFullyDownloaded__courseID_courseID(Parameter<String>.value(`courseID`)))
 		let perform = methodPerformValue(.m_isFullyDownloaded__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
@@ -4775,8 +4747,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
     fileprivate enum MethodType {
         case m_calculateDownloadProgress__courseID_courseID(Parameter<String>)
         case m_isDownloading__courseID_courseID(Parameter<String>)
-        case m_isPartiallyDownloaded__courseID_courseID(Parameter<String>)
-        case m_hasDownloadedContent__courseID_courseID(Parameter<String>)
         case m_isFullyDownloaded__courseID_courseID(Parameter<String>)
         case m_getDownloadTasksForCourse__courseID_courseID(Parameter<String>)
 
@@ -4788,16 +4758,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_isDownloading__courseID_courseID(let lhsCourseid), .m_isDownloading__courseID_courseID(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_isPartiallyDownloaded__courseID_courseID(let lhsCourseid), .m_isPartiallyDownloaded__courseID_courseID(let rhsCourseid)):
-				var results: [Matcher.ParameterComparisonResult] = []
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
-				return Matcher.ComparisonResult(results)
-
-            case (.m_hasDownloadedContent__courseID_courseID(let lhsCourseid), .m_hasDownloadedContent__courseID_courseID(let rhsCourseid)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
@@ -4819,8 +4779,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
             switch self {
             case let .m_calculateDownloadProgress__courseID_courseID(p0): return p0.intValue
             case let .m_isDownloading__courseID_courseID(p0): return p0.intValue
-            case let .m_isPartiallyDownloaded__courseID_courseID(p0): return p0.intValue
-            case let .m_hasDownloadedContent__courseID_courseID(p0): return p0.intValue
             case let .m_isFullyDownloaded__courseID_courseID(p0): return p0.intValue
             case let .m_getDownloadTasksForCourse__courseID_courseID(p0): return p0.intValue
             }
@@ -4829,8 +4787,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
             switch self {
             case .m_calculateDownloadProgress__courseID_courseID: return ".calculateDownloadProgress(courseID:)"
             case .m_isDownloading__courseID_courseID: return ".isDownloading(courseID:)"
-            case .m_isPartiallyDownloaded__courseID_courseID: return ".isPartiallyDownloaded(courseID:)"
-            case .m_hasDownloadedContent__courseID_courseID: return ".hasDownloadedContent(courseID:)"
             case .m_isFullyDownloaded__courseID_courseID: return ".isFullyDownloaded(courseID:)"
             case .m_getDownloadTasksForCourse__courseID_courseID: return ".getDownloadTasksForCourse(courseID:)"
             }
@@ -4852,12 +4808,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
         public static func isDownloading(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_isDownloading__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
-        public static func isPartiallyDownloaded(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
-            return Given(method: .m_isPartiallyDownloaded__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
-        public static func hasDownloadedContent(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
-            return Given(method: .m_hasDownloadedContent__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
-        }
         public static func isFullyDownloaded(courseID: Parameter<String>, willReturn: Bool...) -> MethodStub {
             return Given(method: .m_isFullyDownloaded__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
@@ -4874,20 +4824,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
         public static func isDownloading(courseID: Parameter<String>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
             let willReturn: [Bool] = []
 			let given: Given = { return Given(method: .m_isDownloading__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (Bool).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func isPartiallyDownloaded(courseID: Parameter<String>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
-            let willReturn: [Bool] = []
-			let given: Given = { return Given(method: .m_isPartiallyDownloaded__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
-			let stubber = given.stub(for: (Bool).self)
-			willProduce(stubber)
-			return given
-        }
-        public static func hasDownloadedContent(courseID: Parameter<String>, willProduce: (Stubber<Bool>) -> Void) -> MethodStub {
-            let willReturn: [Bool] = []
-			let given: Given = { return Given(method: .m_hasDownloadedContent__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (Bool).self)
 			willProduce(stubber)
 			return given
@@ -4913,8 +4849,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
 
         public static func calculateDownloadProgress(courseID: Parameter<String>) -> Verify { return Verify(method: .m_calculateDownloadProgress__courseID_courseID(`courseID`))}
         public static func isDownloading(courseID: Parameter<String>) -> Verify { return Verify(method: .m_isDownloading__courseID_courseID(`courseID`))}
-        public static func isPartiallyDownloaded(courseID: Parameter<String>) -> Verify { return Verify(method: .m_isPartiallyDownloaded__courseID_courseID(`courseID`))}
-        public static func hasDownloadedContent(courseID: Parameter<String>) -> Verify { return Verify(method: .m_hasDownloadedContent__courseID_courseID(`courseID`))}
         public static func isFullyDownloaded(courseID: Parameter<String>) -> Verify { return Verify(method: .m_isFullyDownloaded__courseID_courseID(`courseID`))}
         public static func getDownloadTasksForCourse(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getDownloadTasksForCourse__courseID_courseID(`courseID`))}
     }
@@ -4928,12 +4862,6 @@ open class DownloadsHelperProtocolMock: DownloadsHelperProtocol, Mock {
         }
         public static func isDownloading(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_isDownloading__courseID_courseID(`courseID`), performs: perform)
-        }
-        public static func isPartiallyDownloaded(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_isPartiallyDownloaded__courseID_courseID(`courseID`), performs: perform)
-        }
-        public static func hasDownloadedContent(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
-            return Perform(method: .m_hasDownloadedContent__courseID_courseID(`courseID`), performs: perform)
         }
         public static func isFullyDownloaded(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_isFullyDownloaded__courseID_courseID(`courseID`), performs: perform)

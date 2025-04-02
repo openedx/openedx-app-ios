@@ -142,7 +142,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                validator: validator)
 
-        Given(interactor, .resetPassword(email: .any, willThrow: NSError()))
+        Given(interactor, .resetPassword(email: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
 
         var isRecoveryPassword = true
         let binding = Binding(get: {

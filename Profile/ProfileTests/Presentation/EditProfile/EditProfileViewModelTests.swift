@@ -631,7 +631,7 @@ final class EditProfileViewModelTests: XCTestCase {
         
         Given(interactor, .uploadProfilePicture(pictureData: .any, willProduce: {_ in}))
         Given(interactor, .updateUserProfile(parameters: .any,
-                                             willThrow: NSError()))
+                                             willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.saveProfileUpdates()
         

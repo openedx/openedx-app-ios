@@ -113,7 +113,7 @@ public final class AppDownloadsViewModel: ObservableObject {
         downloadedSizes[courseID] = Int64(downloaded)
         courseSizes[courseID] = Int64(total)
         
-        // Обновляем totalSize в модели курса, если есть более точное значение
+        // Update TotalSize in the course model, if there is a more accurate value
         if let courseIndex = courses.firstIndex(where: { $0.id == courseID }) {
             if courses[courseIndex].totalSize != Int64(total) {
                 courses[courseIndex].totalSize = Int64(total)
@@ -406,7 +406,7 @@ public final class AppDownloadsViewModel: ObservableObject {
                 
                 if await checkTaskCancellation(courseID: courseID) { return }
                 
-                if await isShowedAllowLargeDownloadAlert(blocks: downloadableBlocks) { return }
+                if await presentAllowLargeDownloadAlert(blocks: downloadableBlocks) { return }
                 
                 if await checkTaskCancellation(courseID: courseID) { return }
                 
@@ -708,7 +708,7 @@ public final class AppDownloadsViewModel: ObservableObject {
     }
     
     @MainActor
-    func isShowedAllowLargeDownloadAlert(blocks: [CourseBlock]) async -> Bool {
+    func presentAllowLargeDownloadAlert(blocks: [CourseBlock]) async -> Bool {
         waitingDownloads = nil
         if storage.allowedDownloadLargeFile == false, await downloadManager.isLargeVideosSize(blocks: blocks) {
             waitingDownloads = blocks

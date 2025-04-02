@@ -32,19 +32,6 @@ public actor DownloadsHelper: DownloadsHelperProtocol {
         return tasks.contains(where: { $0.state == .inProgress || $0.state == .waiting })
     }
     
-    public func isPartiallyDownloaded(courseID: String) async -> Bool {
-        let (downloaded, total) = await calculateDownloadProgress(courseID: courseID)
-        let isDownloading = await isDownloading(courseID: courseID)
-        
-        // If there's downloaded content, but it's not complete and not currently downloading
-        return downloaded > 0 && downloaded < total && !isDownloading
-    }
-    
-    public func hasDownloadedContent(courseID: String) async -> Bool {
-        let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
-        return tasks.contains(where: { $0.state == .finished })
-    }
-    
     public func isFullyDownloaded(courseID: String) async -> Bool {
         let tasks = await downloadManager.getDownloadTasksForCourse(courseID)
         return !tasks.isEmpty && tasks.allSatisfy { $0.state == .finished }

@@ -329,7 +329,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
-                                           willThrow: NSError()))
+                                           willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.getCourseBlocks(courseID: "123")
         

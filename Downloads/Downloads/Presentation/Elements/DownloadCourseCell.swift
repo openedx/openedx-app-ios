@@ -101,142 +101,18 @@ struct DownloadCourseCell: View {
             let availableBytes = max(course.totalSize - validDownloadedSize, 0)
             let availableFormatted = Int(availableBytes).formattedFileSize()
             
-            // Progress bar
             if downloadButtonState == .partiallyDownloaded || downloadButtonState == .downloading {
-                ZStack(alignment: .leading) {
-                    GeometryReader { geometry in
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Theme.Colors.textSecondary.opacity(0.5))
-                            .frame(width: geometry.size.width, height: 8)
-                        
-                        if progressPercentage > 0 {
-                            let width = max(0, min(geometry.size.width * progressPercentage, geometry.size.width))
-                            
-                            RoundedCorners(
-                                tl: 4,
-                                tr: progressPercentage >= 1.0 ? 4 : 0,
-                                bl: 4,
-                                br: progressPercentage >= 1.0 ? 4 : 0
-                            )
-                            .fill(Theme.Colors.success)
-                            .frame(
-                                width: downloadButtonState == .downloaded
-                                ? geometry.size.width
-                                : width,
-                                height: 8
-                            )
-                        }
-                    }
-                    .frame(height: 8)
-                    
-                    if downloadButtonState == .downloading {
-                        Text(progressText)
-                            .font(Theme.Fonts.labelSmall)
-                            .foregroundColor(Theme.Colors.white)
-                            .padding(.horizontal, 4)
-                            .padding(.vertical, 1)
-                            .background(
-                                RoundedRectangle(cornerRadius: 4)
-                                    .fill(Theme.Colors.textPrimary.opacity(0.7))
-                            )
-                            .offset(y: -14)
-                    }
-                }
-                .cornerRadius(4)
-                .padding(.horizontal, 12)
+                progressBar
             }
             
-            VStack(alignment: .leading, spacing: 4) {
-                switch downloadButtonState {
-                case .downloaded:
-                    HStack {
-                        CoreAssets.deleteDownloading.swiftUIImage
-                        Text(DownloadsLocalization.Downloads.Cell.allDownloaded(downloadedFormatted))
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundStyle(Theme.Colors.success)
-                    }
-                case .partiallyDownloaded, .downloading:
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            CoreAssets.deleteDownloading.swiftUIImage
-                            Text(
-                                DownloadsLocalization.Downloads.Cell.downloaded(downloadedFormatted)
-                            )
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundStyle(Theme.Colors.success)
-                        }
-                        
-                        HStack {
-                            CoreAssets.startDownloading.swiftUIImage
-                                .foregroundStyle(Theme.Colors.textSecondary)
-                            Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
-                                .font(Theme.Fonts.labelLarge)
-                                .foregroundStyle(Theme.Colors.textSecondary)
-                        }
-                    }
-                case .notDownloaded, .loadingStructure:
-                    HStack {
-                        CoreAssets.startDownloading.swiftUIImage
-                            .foregroundStyle(Theme.Colors.textSecondary)
-                        Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
-                            .font(Theme.Fonts.labelLarge)
-                            .foregroundStyle(Theme.Colors.textSecondary)
-                    }
-                }
-            }
-            .padding(.horizontal, 12)
-            .padding(
-                .bottom,
-                (downloadButtonState == .notDownloaded || downloadButtonState == .partiallyDownloaded) ? 0 : 12
+            downloadProgressState(
+                downloadedFormatted: downloadedFormatted,
+                availableBytes: availableBytes,
+                availableFormatted: availableFormatted
             )
             
-            switch downloadButtonState {
-            case .notDownloaded, .partiallyDownloaded:
-                StyledButton(
-                    DownloadsLocalization.Downloads.Cell.downloadCourse,
-                    action: {
-                        isCancelling = false
-                        onDownloadTap()
-                    },
-                    iconImage: CoreAssets.downloads.swiftUIImage,
-                    iconPosition: .left,
-                    maxWidthIpad: .infinity
-                )
-                .padding(.horizontal, 12)
-                .padding(.bottom, 12)
-            case .downloading:
-                HStack {
-                    DownloadProgressView()
-                        .padding(.trailing, 4)
-                        .onTapGesture {
-                            isCancelling = true
-                            onCancelTap()
-                        }
-                    Text(DownloadsLocalization.Downloads.Cell.downloading)
-                        .font(Theme.Fonts.bodyMedium)
-                        .foregroundStyle(Theme.Colors.textPrimary)
-                }
-                .padding(.bottom, 12)
-                .frame(maxWidth: .infinity, maxHeight: 42, alignment: .center)
-                .padding(.horizontal, 16)
-            case .loadingStructure:
-                HStack {
-                    DownloadProgressView()
-                        .padding(.trailing, 4)
-                        .onTapGesture {
-                            isCancelling = true
-                            onCancelTap()
-                        }
-                    Text(DownloadsLocalization.Downloads.Cell.loadingCourseStructure)
-                        .font(Theme.Fonts.bodyMedium)
-                        .foregroundStyle(Theme.Colors.textPrimary)
-                }
-                .padding(.bottom, 12)
-                .frame(maxWidth: .infinity, maxHeight: 42, alignment: .center)
-                .padding(.horizontal, 16)
-            case .downloaded:
-                EmptyView()
-            }
+            downloadButton
+            
         }
         .cornerRadius(8)
         .padding(.horizontal, 16)
@@ -263,6 +139,153 @@ struct DownloadCourseCell: View {
                 isCancelling = false
             }
         }
+    }
+
+    @ViewBuilder
+    var downloadButton: some View {
+        switch downloadButtonState {
+        case .notDownloaded, .partiallyDownloaded:
+            StyledButton(
+                DownloadsLocalization.Downloads.Cell.downloadCourse,
+                action: {
+                    isCancelling = false
+                    onDownloadTap()
+                },
+                iconImage: CoreAssets.downloads.swiftUIImage,
+                iconPosition: .left,
+                maxWidthIpad: .infinity
+            )
+            .padding(.horizontal, 12)
+            .padding(.bottom, 12)
+        case .downloading:
+            HStack {
+                DownloadProgressView()
+                    .padding(.trailing, 4)
+                    .onTapGesture {
+                        isCancelling = true
+                        onCancelTap()
+                    }
+                Text(DownloadsLocalization.Downloads.Cell.downloading)
+                    .font(Theme.Fonts.bodyMedium)
+                    .foregroundStyle(Theme.Colors.textPrimary)
+            }
+            .padding(.bottom, 12)
+            .frame(maxWidth: .infinity, maxHeight: 42, alignment: .center)
+            .padding(.horizontal, 16)
+        case .loadingStructure:
+            HStack {
+                DownloadProgressView()
+                    .padding(.trailing, 4)
+                    .onTapGesture {
+                        isCancelling = true
+                        onCancelTap()
+                    }
+                Text(DownloadsLocalization.Downloads.Cell.loadingCourseStructure)
+                    .font(Theme.Fonts.bodyMedium)
+                    .foregroundStyle(Theme.Colors.textPrimary)
+            }
+            .padding(.bottom, 12)
+            .frame(maxWidth: .infinity, maxHeight: 42, alignment: .center)
+            .padding(.horizontal, 16)
+        case .downloaded:
+            EmptyView()
+        }
+    }
+    
+    @ViewBuilder
+    func downloadProgressState(
+        downloadedFormatted: String,
+        availableBytes: Int64,
+        availableFormatted: String
+    ) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            switch downloadButtonState {
+            case .downloaded:
+                HStack {
+                    CoreAssets.deleteDownloading.swiftUIImage
+                    Text(DownloadsLocalization.Downloads.Cell.allDownloaded(downloadedFormatted))
+                        .font(Theme.Fonts.labelLarge)
+                        .foregroundStyle(Theme.Colors.success)
+                }
+            case .partiallyDownloaded, .downloading:
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        CoreAssets.deleteDownloading.swiftUIImage
+                        Text(
+                            DownloadsLocalization.Downloads.Cell.downloaded(downloadedFormatted)
+                        )
+                        .font(Theme.Fonts.labelLarge)
+                        .foregroundStyle(Theme.Colors.success)
+                    }
+                    
+                    HStack {
+                        CoreAssets.startDownloading.swiftUIImage
+                            .foregroundStyle(Theme.Colors.textSecondary)
+                        Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
+                            .font(Theme.Fonts.labelLarge)
+                            .foregroundStyle(Theme.Colors.textSecondary)
+                    }
+                }
+            case .notDownloaded, .loadingStructure:
+                HStack {
+                    CoreAssets.startDownloading.swiftUIImage
+                        .foregroundStyle(Theme.Colors.textSecondary)
+                    Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
+                        .font(Theme.Fonts.labelLarge)
+                        .foregroundStyle(Theme.Colors.textSecondary)
+                }
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(
+            .bottom,
+            (downloadButtonState == .notDownloaded || downloadButtonState == .partiallyDownloaded) ? 0 : 12
+        )
+    }
+    
+    @ViewBuilder
+    var progressBar: some View {
+        ZStack(alignment: .leading) {
+            GeometryReader { geometry in
+                RoundedRectangle(cornerRadius: 4)
+                    .fill(Theme.Colors.textSecondary.opacity(0.5))
+                    .frame(width: geometry.size.width, height: 8)
+                
+                if progressPercentage > 0 {
+                    let width = max(0, min(geometry.size.width * progressPercentage, geometry.size.width))
+                    
+                    RoundedCorners(
+                        tl: 4,
+                        tr: progressPercentage >= 1.0 ? 4 : 0,
+                        bl: 4,
+                        br: progressPercentage >= 1.0 ? 4 : 0
+                    )
+                    .fill(Theme.Colors.success)
+                    .frame(
+                        width: downloadButtonState == .downloaded
+                        ? geometry.size.width
+                        : width,
+                        height: 8
+                    )
+                }
+            }
+            .frame(height: 8)
+            
+            if downloadButtonState == .downloading {
+                Text(progressText)
+                    .font(Theme.Fonts.labelSmall)
+                    .foregroundColor(Theme.Colors.white)
+                    .padding(.horizontal, 4)
+                    .padding(.vertical, 1)
+                    .background(
+                        RoundedRectangle(cornerRadius: 4)
+                            .fill(Theme.Colors.textPrimary.opacity(0.7))
+                    )
+                    .offset(y: -14)
+            }
+        }
+        .cornerRadius(4)
+        .padding(.horizontal, 12)
     }
 }
 
