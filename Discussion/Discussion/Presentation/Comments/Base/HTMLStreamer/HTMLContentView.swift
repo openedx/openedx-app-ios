@@ -65,7 +65,8 @@ public struct HTMLContentView: View {
     
     private mutating func parseHTMLContent() {
         // Предварительно обрабатываем HTML для исправления проблем со вложенными списками
-        let fixedHTML = fixNestedLists(html)
+        let htmlProcessor = HTMLContentFixProcessor()
+        let fixedHTML = htmlProcessor.fixListStructure(html)
         
         // Извлекаем все теги img и их позиции в тексте
         do {
@@ -115,7 +116,7 @@ public struct HTMLContentView: View {
         } catch {
             print("Error parsing HTML content: \(error)")
             // Если что-то пошло не так, отображаем весь HTML как текст
-            contentItems.append(.text(convertHTMLToAttributedString(html: fixNestedLists(html))))
+            contentItems.append(.text(convertHTMLToAttributedString(html: html)))
         }
     }
     
@@ -172,208 +173,6 @@ public struct HTMLContentView: View {
         }
     }
     
-    // Исправляем проблемы с вложенными списками
-    private func fixNestedLists(_ html: String) -> String {
-        print(">>>DEB 🔄 fixNestedLists - START")
-        print(">>>DEB Original HTML: \(html)")
-        var processedHTML = html
-        
-        do {
-            // First, let's fix any broken list structure
-            // Add closing tags if missing
-            var result = processedHTML
-            
-            // Fix case where a list appears after <br> inside a list item
-            // Example: <li>point 3<br><ol>... -> <li>point 3</li><li><ol>...
-            let brListPattern = #"<li>(.*?)<br\s*/?\s*>\s*(<[ou]l>)"#
-            let brListRegex = try NSRegularExpression(
-                pattern: brListPattern,
-                options: [.dotMatchesLineSeparators]
-            )
-            let brListRange = NSRange(result.startIndex..<result.endIndex, in: result)
-            
-            result = brListRegex.stringByReplacingMatches(
-                in: result,
-                range: brListRange,
-                withTemplate: "<li>$1</li>$2"
-            )
-            print(">>>DEB After fixing br+list: \(result)")
-            
-            // Find nesting patterns like <ul><ul> or <ol><ol> and add proper li elements
-            let directNestingPattern = #"(<([ou]l)>)\s*(<([ou]l)>)"#
-            let directNestingRegex = try NSRegularExpression(pattern: directNestingPattern, options: [])
-            let directNestingRange = NSRange(result.startIndex..<result.endIndex, in: result)
-            
-            result = directNestingRegex.stringByReplacingMatches(
-                in: result,
-                range: directNestingRange,
-                withTemplate: "$1<li>$3"
-            )
-            print(">>>DEB After fixing direct nesting: \(result)")
-            
-            // Special case: List inside a list item - needs special handling for proper indentation
-            // This specifically targets the case in the user's example where an ordered list is inside an unordered list item
-            let listInItemPattern = #"(<li>.*?)(<[ou]l>.*?</[ou]l>)(</li>)"#
-            let listInItemRegex = try NSRegularExpression(
-                pattern: listInItemPattern,
-                options: [.dotMatchesLineSeparators]
-            )
-            
-            var listInItemReplacements: [(NSRange, String)] = []
-            
-            listInItemRegex.enumerateMatches(in: result, range: NSRange(result.startIndex..<result.endIndex, in: result)) { match, _, _ in
-                guard let match = match,
-                      let beforeRange = Range(match.range(at: 1), in: result),
-                      let listRange = Range(match.range(at: 2), in: result) else {
-                    return
-                }
-                
-                let beforeContent = result[beforeRange].trimmingCharacters(in: .whitespacesAndNewlines)
-                let listContent = result[listRange]
-                
-                // Get the type of list being nested (ol or ul)
-                if let listStartRange = listContent.range(of: "<ol") {
-                    // Mark the nested ordered list with a special attribute for enhanced detection
-                    let beforeListContent = listContent[..<listStartRange.lowerBound]
-                    let afterListContent = listContent[listStartRange.lowerBound...]
-                    let modifiedListContent = beforeListContent + "<ol data-nested=\"true\" data-parent=\"li\"" + afterListContent.dropFirst(3)
-                    
-                    // Close the li, then put the list
-                    let replacement = "<li>\(beforeContent)</li>\(modifiedListContent)"
-                    listInItemReplacements.append((match.range, replacement))
-                } else if let listStartRange = listContent.range(of: "<ul") {
-                    // Mark the nested unordered list with a special attribute
-                    let beforeListContent = listContent[..<listStartRange.lowerBound]
-                    let afterListContent = listContent[listStartRange.lowerBound...]
-                    let modifiedListContent = beforeListContent + "<ul data-nested=\"true\" data-parent=\"li\"" + afterListContent.dropFirst(3)
-                    
-                    // Close the li, then put the list
-                    let replacement = "<li>\(beforeContent)</li>\(modifiedListContent)"
-                    listInItemReplacements.append((match.range, replacement))
-                }
-            }
-            
-            // Apply replacements in reverse order
-            for (range, replacement) in listInItemReplacements.reversed() {
-                let nsResult = NSMutableString(string: result)
-                nsResult.replaceCharacters(in: range, with: replacement)
-                result = nsResult as String
-            }
-            print(">>>DEB After fixing lists in items: \(result)")
-            
-            // Normalize whitespace between list elements
-            let whitespacePattern = #"(</li>)\s+(</[ou]l>)"#
-            let whitespaceRegex = try NSRegularExpression(pattern: whitespacePattern, options: [])
-            let whitespaceRange = NSRange(result.startIndex..<result.endIndex, in: result)
-            
-            result = whitespaceRegex.stringByReplacingMatches(
-                in: result,
-                range: whitespaceRange,
-                withTemplate: "$1$2"
-            )
-            print(">>>DEB After whitespace normalization: \(result)")
-            
-            // Important fix: Make sure nested lists are wrapped in list items
-            // Pattern: <ul>...<ul> (without <li> in between)
-            let nestedListPattern = #"(<[ou]l>[^<]*?)(<[ou]l>)"#
-            let nestedListRegex = try NSRegularExpression(pattern: nestedListPattern, options: [])
-            let nestedListRange = NSRange(result.startIndex..<result.endIndex, in: result)
-            
-            result = nestedListRegex.stringByReplacingMatches(
-                in: result, 
-                range: nestedListRange,
-                withTemplate: "$1<li>$2"
-            )
-            print(">>>DEB After fixing nested lists: \(result)")
-            
-            // Fix case where <br /> is used before nested list
-            // Example: <li>point 3<br /><ol>... -> <li>point 3</li><ol>...
-            let brNestingPattern = #"<li>(.*?)<br\s*/?\s*>(\s*<[ou]l>)"#
-            let brNestingRegex = try NSRegularExpression(
-                pattern: brNestingPattern,
-                options: [.dotMatchesLineSeparators]
-            )
-            let brNestingRange = NSRange(result.startIndex..<result.endIndex, in: result)
-            
-            result = brNestingRegex.stringByReplacingMatches(
-                in: result,
-                range: brNestingRange,
-                withTemplate: "<li>$1</li>$2"
-            )
-            print(">>>DEB After fixing br tags: \(result)")
-            
-            // Set data-nested attributes for proper indentation tracking
-            // Mark each list with its nesting level
-            var orderedListLevel = 0
-            var unorderedListLevel = 0
-            var replacements: [(NSRange, String)] = []
-            
-            // Find all list start tags
-            let listStartPattern = #"<(ol|ul)([^>]*)>"#
-            let listStartRegex = try NSRegularExpression(pattern: listStartPattern, options: [])
-            
-            listStartRegex.enumerateMatches(in: result, range: NSRange(result.startIndex..<result.endIndex, in: result)) { match, _, _ in
-                guard let match = match,
-                      let matchRange = Range(match.range, in: result),
-                      let tagRange = Range(match.range(at: 1), in: result),
-                      let attrsRange = Range(match.range(at: 2), in: result) else {
-                    return
-                }
-                
-                let tag = result[tagRange]
-                let attrs = result[attrsRange]
-                
-                if tag == "ol" {
-                    orderedListLevel += 1
-                    replacements.append((match.range, "<ol\(attrs) data-level=\"\(orderedListLevel)\" data-ordered=\"true\">"))
-                } else if tag == "ul" {
-                    unorderedListLevel += 1
-                    replacements.append((match.range, "<ul\(attrs) data-level=\"\(unorderedListLevel)\" data-unordered=\"true\">"))
-                }
-            }
-            
-            // Apply replacements
-            for (range, replacement) in replacements.reversed() {
-                let nsResult = NSMutableString(string: result)
-                nsResult.replaceCharacters(in: range, with: replacement)
-                result = nsResult as String
-            }
-            
-            // Reset counters when list ends
-            replacements = []
-            let listEndPattern = #"</(ol|ul)>"#
-            let listEndRegex = try NSRegularExpression(pattern: listEndPattern, options: [])
-            
-            listEndRegex.enumerateMatches(in: result, range: NSRange(result.startIndex..<result.endIndex, in: result)) { match, _, _ in
-                guard let match = match,
-                      let tagRange = Range(match.range(at: 1), in: result) else {
-                    return
-                }
-                
-                let tag = result[tagRange]
-                
-                if tag == "ol" {
-                    if orderedListLevel > 0 {
-                        orderedListLevel -= 1
-                    }
-                } else if tag == "ul" {
-                    if unorderedListLevel > 0 {
-                        unorderedListLevel -= 1
-                    }
-                }
-            }
-            
-            print(">>>DEB After adding nesting levels: \(result.prefix(100))")
-            processedHTML = result
-            
-        } catch {
-            print(">>>DEB ❌ Error fixing nested lists: \(error)")
-        }
-        
-        print(">>>DEB 🏁 fixNestedLists - END")
-        return processedHTML
-    }
-    
     private func extractImage(from imgTag: String) -> HTMLImage? {
         do {
             let srcPattern = #"src=["']([^"']+)["']"#
@@ -409,6 +208,10 @@ public struct HTMLContentView: View {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 8
         
+        // Process the HTML to fix any issues 
+        let htmlProcessor = HTMLContentFixProcessor()
+        let processedHTML = htmlProcessor.fixListStructure(html)
+        
         let converter = AttributedStringConverter<CustomHTMLCallbacks>(
             configuration: AttributedStringConverterConfiguration(
                 font: .systemFont(ofSize: 16),
@@ -420,7 +223,7 @@ public struct HTMLContentView: View {
         )
         
         // The link styling will be handled in the AttributedStringConverter
-        return AttributedString(converter.convert(html: html))
+        return AttributedString(converter.convert(html: processedHTML))
     }
     
     public var body: some View {

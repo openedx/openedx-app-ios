@@ -25,28 +25,27 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
     private var fontCache: [PlatformFont?] = Array(repeating: nil, count: 8)
     
     private var tokenizer: Tokenizer<String.UnicodeScalarView.Iterator>!
-    private var str = NSMutableAttributedString()
+    private var str: NSMutableAttributedString!
     
     private var actionStack: [ElementAction] = [] {
         didSet {
-            hasSkipOrReplaceElementAction = actionStack.contains { action in
-                switch action {
-                case .skip, .replace:
-                    return true
+            hasSkipOrReplaceElementAction = actionStack.contains(where: {
+                switch $0 {
+                case .skip, .replace(_):
+                    true
                 default:
-                    return false
+                    false
                 }
-            }
+            })
         }
     }
     private var hasSkipOrReplaceElementAction = false
     private var styleStack: [Style] = []
-    private lazy var blockStateMachine: BlockStateMachine = createBlockStateMachine()
+    private var blockStateMachine = BlockStateMachine(blockBreak: "", lineBreak: "", listIndentForContentOutsideItem: "", append: { _ in }, removeChar: {})
     private var currentElementIsEmpty = true
     private var previouslyFinishedListItem = false
     // The current run of text w/o styles changing
-    private var currentRun = ""
-    private var result = ""
+    private var currentRun: String = ""
     
     // Dictionary to store nesting level of lists by their index position in the document
     private var listNestingLevels: [Int: Int] = [:]
@@ -65,22 +64,6 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
     
     public init(configuration: AttributedStringConverterConfiguration, callbacks _: Callbacks.Type = Callbacks.self) {
         self.configuration = configuration
-        // blockStateMachine is now lazily initialized
-    }
-    
-    func reset(with tokenizer: Tokenizer<String.UnicodeScalarView.Iterator>) {
-        self.tokenizer = tokenizer
-        actionStack = []
-        hasSkipOrReplaceElementAction = false
-        styleStack = []
-        result = ""
-        str = NSMutableAttributedString()
-        currentRun = ""
-        activeOrderedListCount = 0
-        activeUnorderedListCount = 0
-        blockStateMachine = createBlockStateMachine()
-        currentElementIsEmpty = true
-        previouslyFinishedListItem = false
     }
     
     @MainActor public func convert(html: String) -> NSAttributedString {
@@ -95,7 +78,11 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
         currentListIndex = 0
         activeOrderedListCount = 0
         activeUnorderedListCount = 0
-        blockStateMachine = createBlockStateMachine()
+        blockStateMachine = BlockStateMachine(blockBreak: "\n\n", lineBreak: "\n", listIndentForContentOutsideItem: "\t\t", append: { [unowned self] in
+            self.append($0)
+        }, removeChar: { [unowned self] in
+            self.removeChar()
+        })
         currentElementIsEmpty = true
         previouslyFinishedListItem = false
         currentRun = ""
@@ -156,105 +143,96 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
     }
     
     @MainActor private func handleStartTag(_ name: String, selfClosing: Bool, attributes: [Attribute]) {
-        print(">>>DEB 🚀 Start tag: \(name)")
-        // Handle tracking whether the current element contains any content
-        currentElementIsEmpty = true
-        var mutableAttributes = attributes
+        if name == "br" {
+            blockStateMachine.breakTag()
+            return
+        }
+        // self closing tags are ignored since they have no content
+        guard !selfClosing else {
+            return
+        }
         
         switch name {
-        case "p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "div", "blockquote", "figcaption":
+        case "a":
+            // we need to always insert in attribute, because we need to always have one
+            // to remove from the stack in handleEndTag
+            // but we only need to finish the run if we have a URL, since otherwise
+            // the final attribute run won't be affected
+            let url = attributes.attributeValue(for: "href").flatMap(Callbacks.makeURL(string:))
+            if url != nil {
+                finishRun()
+            }
+            styleStack.append(.link(url))
+        case "em", "i":
+            finishRun()
+            styleStack.append(.italic)
+        case "strong", "b":
+            finishRun()
+            styleStack.append(.bold)
+        case "del":
+            finishRun()
+            styleStack.append(.strikethrough)
+        case "code":
+            finishRun()
+            styleStack.append(.monospace)
+        case "pre":
+            blockStateMachine.startOrEndBlock()
+            blockStateMachine.startPreformatted()
+            finishRun()
+            styleStack.append(.monospace)
+        case "blockquote":
+            blockStateMachine.startOrEndBlock()
+            finishRun()
+            styleStack.append(.blockquote)
+        case "p":
             blockStateMachine.startOrEndBlock()
         case "ol":
-            print(">>>DEB 📝 Starting ordered list")
+            blockStateMachine.startOrEndBlock()
+            finishRun()
             
-            // Get the starting number
-            let startValue: Int
-            if let startAttribute = attributes.attributeValue(for: "start"), let value = Int(startAttribute) {
-                startValue = value
-            } else {
-                startValue = 1
-            }
-            print(">>>DEB 🔢 Ordered list starts at: \(startValue)")
-            
-            // Check for nested list data
-            var nestingLevel = 1
-            if let nestedAttr = attributes.attributeValue(for: "data-nested"), nestedAttr == "true" {
-                // Find parent type to determine correct nesting behavior
-                let parentType = attributes.attributeValue(for: "data-parent") ?? "unknown"
-                print(">>>DEB 🔄 Nested ordered list with parent type: \(parentType)")
-                
-                // Calculate nesting level
-                let listStyles = styleStack.filter { style in
-                    if case .orderedList = style { return true }
-                    if case .unorderedList = style { return true }
-                    return false
-                }
-                nestingLevel = listStyles.count + 1
-            }
-            
-            // Add the level as attribute to the list for future reference
-            // Create a new data-level attribute
-            let levelAttribute = Attribute(name: "data-level", value: "\(nestingLevel)")
-            
-            // Add to existing attributes or replace if already exists
-            var newAttributes = attributes
-            if let existingIndex = newAttributes.firstIndex(where: { $0.name == "data-level" }) {
-                newAttributes[existingIndex] = levelAttribute
-            } else {
-                newAttributes.append(levelAttribute)
-            }
-            
-            // Update our working copy of attributes
-            mutableAttributes = newAttributes
-            
+            // Increment the active ordered list counter
             activeOrderedListCount += 1
-            print(">>>DEB 📚 Active ordered lists: \(activeOrderedListCount)")
-            styleStack.append(.orderedList(nextElementOrdinal: startValue))
-            print(">>>DEB 🧾 Updated style stack: \(styleStack)")
-            blockStateMachine.startOrEndBlock()
-            finishRun()
+            print(">>>DEB 📈 Incrementing ordered list count to \(activeOrderedListCount)")
             
+            // Check for data-level attribute to determine nesting
+            var level = activeOrderedListCount
+            if let levelStr = attributes.attributeValue(for: "data-level"), let levelInt = Int(levelStr) {
+                level = levelInt
+                print(">>>DEB 📊 Found list with data-level: \(level)")
+            }
+            
+            // Store this list's nesting level
+            currentListIndex += 1
+            listNestingLevels[currentListIndex] = level
+            
+            print(">>>DEB 📚 Active list counts - ordered: \(activeOrderedListCount), unordered: \(activeUnorderedListCount)")
+            
+            // We need to get the parent numbering for proper sequential numbering
+            // Default is to start at 1 if this is a new list
+            let startNumber = 1
+            styleStack.append(.orderedList(nextElementOrdinal: startNumber))
         case "ul":
-            print(">>>DEB 📝 Starting unordered list")
-            
-            // Check for nested list data
-            var nestingLevel = 1
-            if let nestedAttr = attributes.attributeValue(for: "data-nested"), nestedAttr == "true" {
-                // Find parent type to determine correct nesting behavior
-                let parentType = attributes.attributeValue(for: "data-parent") ?? "unknown"
-                print(">>>DEB 🔄 Nested unordered list with parent type: \(parentType)")
-                
-                // Calculate nesting level
-                let listStyles = styleStack.filter { style in
-                    if case .orderedList = style { return true }
-                    if case .unorderedList = style { return true }
-                    return false
-                }
-                nestingLevel = listStyles.count + 1
-            }
-            
-            // Add the level as attribute to the list for future reference
-            // Create a new data-level attribute
-            let levelAttribute = Attribute(name: "data-level", value: "\(nestingLevel)")
-            
-            // Add to existing attributes or replace if already exists
-            var newAttributes = attributes
-            if let existingIndex = newAttributes.firstIndex(where: { $0.name == "data-level" }) {
-                newAttributes[existingIndex] = levelAttribute
-            } else {
-                newAttributes.append(levelAttribute)
-            }
-            
-            // Update our working copy of attributes
-            mutableAttributes = newAttributes
-            
-            activeUnorderedListCount += 1
-            print(">>>DEB 📚 Active unordered lists: \(activeUnorderedListCount)")
-            styleStack.append(.unorderedList)
-            print(">>>DEB 🧾 Updated style stack: \(styleStack)")
             blockStateMachine.startOrEndBlock()
             finishRun()
             
+            // Increment the active unordered list counter
+            activeUnorderedListCount += 1
+            print(">>>DEB 📈 Incrementing unordered list count to \(activeUnorderedListCount)")
+            
+            // Check for data-level attribute to determine nesting
+            var level = activeUnorderedListCount
+            if let levelStr = attributes.attributeValue(for: "data-level"), let levelInt = Int(levelStr) {
+                level = levelInt
+                print(">>>DEB 📊 Found list with data-level: \(level)")
+            }
+            
+            // Store this list's nesting level
+            currentListIndex += 1
+            listNestingLevels[currentListIndex] = level
+            
+            print(">>>DEB 📚 Active list counts - ordered: \(activeOrderedListCount), unordered: \(activeUnorderedListCount)")
+            
+            styleStack.append(.unorderedList)
         case "li":
             print(">>>DEB 📝 Processing list item")
             // Find nesting level by counting list styles in the stack
@@ -275,29 +253,12 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
                 return false
             } ?? false
             
-            // Check if we're inside a data-nested list by inspecting attributes for the current list
-            var isNested = false
-            var nestingLevel = 1
-            
-            // Look specifically for data-nested attribute to determine if this is in a nested list
-            if let nestedAttr = attributes.attributeValue(for: "data-nested"), nestedAttr == "true" {
-                isNested = true
-                // If we have a data-level attribute, use that for precise indentation
-                if let levelAttr = attributes.attributeValue(for: "data-level"), let level = Int(levelAttr) {
-                    nestingLevel = level
-                } else {
-                    // Otherwise compute nesting level from stack
-                    nestingLevel = listStyles.count
-                }
-                print(">>>DEB 🔄 Nested list detected, level: \(nestingLevel)")
+            // Get the nesting level based on active list counters
+            var nestingLevel: Int
+            if isOrdered {
+                nestingLevel = activeOrderedListCount
             } else {
-                // Get the nesting level based on active list counters or data-level attribute
-                if let levelAttr = attributes.attributeValue(for: "data-level"), let level = Int(levelAttr) {
-                    nestingLevel = level
-                } else {
-                    // Fall back to list style count in the stack
-                    nestingLevel = listStyles.count
-                }
+                nestingLevel = activeUnorderedListCount
             }
             
             print(">>>DEB 📊 List nesting level: \(nestingLevel), isOrdered: \(isOrdered)")
@@ -335,64 +296,8 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
         }
     }
     
-    private func handleEndTag(_ tag: String) {
-        print(">>>DEB 🏁 End tag: \(tag)")
-        
-        switch tag {
-        case "p", "h1", "h2", "h3", "h4", "h5", "h6", "pre", "div", "blockquote", "figcaption":
-            blockStateMachine.startOrEndBlock()
-        case "ol":
-            print(">>>DEB 📝 Ending ordered list")
-            guard activeOrderedListCount > 0 else {
-                print(">>>DEB ⚠️ No active ordered lists to end")
-                break
-            }
-            
-            // Check the style stack and remove the ordered list style
-            if case .orderedList = styleStack.last {
-                styleStack.removeLast()
-                print(">>>DEB 🧾 Removed ordered list from style stack")
-            }
-            
-            // Decrement the active ordered list counter
-            activeOrderedListCount -= 1
-            finishRun()
-            blockStateMachine.startOrEndBlock()
-            previouslyFinishedListItem = false
-            
-        case "ul":
-            print(">>>DEB 📝 Ending unordered list")
-            guard activeUnorderedListCount > 0 else {
-                print(">>>DEB ⚠️ No active unordered lists to end")
-                break
-            }
-            
-            // Check the style stack and remove the unordered list style
-            if case .unorderedList = styleStack.last {
-                styleStack.removeLast()
-                print(">>>DEB 🧾 Removed unordered list from style stack")
-            }
-            
-            // Decrement the active unordered list counter
-            activeUnorderedListCount -= 1
-            finishRun()
-            blockStateMachine.startOrEndBlock()
-            previouslyFinishedListItem = false
-            
-        case "li":
-            print(">>>DEB 📝 Ending list item")
-            finishRun()
-            
-            // Check if we need to add spacing after list items
-            if !currentRun.isEmpty && !currentRun.hasSuffix("\n") {
-                currentRun.append("\n")
-                print(">>>DEB 📏 Adding newline after list item")
-            }
-            
-            // Update block state machine
-            blockStateMachine.endListItem()
-            previouslyFinishedListItem = true
-            
+    private func handleEndTag(_ name: String) {
+        switch name {
         case "a":
             if case .link(.some(_)) = lastStyle(.link) {
                 finishRun()
@@ -421,6 +326,28 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
             blockStateMachine.startOrEndBlock()
         case "p":
             blockStateMachine.startOrEndBlock()
+        case "ol":
+            finishRun()
+            removeLastStyle(.orderedList)
+            // Decrease the active ordered list count when exiting an ordered list
+            if activeOrderedListCount > 0 {
+                activeOrderedListCount -= 1
+            }
+            blockStateMachine.startOrEndBlock()
+            previouslyFinishedListItem = false
+        case "ul":
+            finishRun()
+            removeLastStyle(.unorderedList)
+            // Decrease the active unordered list count when exiting an unordered list
+            if activeUnorderedListCount > 0 {
+                activeUnorderedListCount -= 1
+            }
+            blockStateMachine.startOrEndBlock()
+            previouslyFinishedListItem = false
+        case "li":
+            finishRun()
+            previouslyFinishedListItem = true
+            blockStateMachine.endListItem()
         default:
             break
         }
@@ -586,27 +513,10 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
         return font
         #endif
     }
-    
-    // Add a helper method to create the BlockStateMachine
-    private func createBlockStateMachine() -> BlockStateMachine {
-        return BlockStateMachine(
-            blockBreak: "\n\n",
-            lineBreak: "\n",
-            listIndentForContentOutsideItem: "\t\t",
-            append: { [weak self] str in
-                self?.currentRun.append(str)
-            },
-            removeChar: { [weak self] in
-                if let last = self?.currentRun.last {
-                    self?.currentRun.removeLast()
-                }
-            }
-        )
-    }
 }
 
 // Class to preprocess HTML and fix issues before processing
-private class HTMLContentFixProcessor {
+public class HTMLContentFixProcessor {
     // Fix list structure to ensure proper nesting levels
     func fixListStructure(_ html: String) -> String {
         print(">>>DEB 🛠️ HTMLContentFixProcessor - fixing list structure")

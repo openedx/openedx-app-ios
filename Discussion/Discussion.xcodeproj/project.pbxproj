@@ -60,6 +60,7 @@
 		9FC0EF907C0334E383C300C4 /* Pods_App_Discussion_DiscussionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */; };
 		BA3C45672BA9E13000672C96 /* Data_DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */; };
 		BA3C45692BA9E18D00672C96 /* DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */; };
+		CE2691DD2D9D2868002B8B50 /* HTMLContentFixProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */; };
 		CE517F492D9C0AA80012EF71 /* HTMLConversionCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */; };
 		CE517F4A2D9C0AA80012EF71 /* HTMLEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */; };
 		CE517F4B2D9C0AA80012EF71 /* AttributedStringConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */; };
@@ -175,6 +176,7 @@
 		BBF5EC7249109D6718A229CF /* Pods-App-Discussion.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugdev.xcconfig"; sourceTree = "<group>"; };
 		C214357310D8AC9185B38ABA /* Pods-App-Discussion-DiscussionTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discussion_DiscussionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentFixProcessor.swift; sourceTree = "<group>"; };
 		CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringConverter.swift; sourceTree = "<group>"; };
 		CE517F432D9C0AA80012EF71 /* BlockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockState.swift; sourceTree = "<group>"; };
 		CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLConversionCallbacks.swift; sourceTree = "<group>"; };
@@ -495,6 +497,7 @@
 				CE517F472D9C0AA80012EF71 /* TextConverter.swift */,
 				CE517F482D9C0AA80012EF71 /* Tokenizer.swift */,
 				CE517F562D9C17D40012EF71 /* HTMLContentView.swift */,
+				CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */,
 			);
 			path = HTMLStreamer;
 			sourceTree = "<group>";
@@ -754,6 +757,7 @@
 				0766DFCA299AA3D400EBEF6A /* Data_CreatedComment.swift in Sources */,
 				0218197228F735B300202564 /* Strings.swift in Sources */,
 				075DBBB1292631C600E56134 /* ThreadPostState.swift in Sources */,
+				CE2691DD2D9D2868002B8B50 /* HTMLContentFixProcessor.swift in Sources */,
 				029B78F7292526D60097ACD8 /* BaseResponsesViewModel.swift in Sources */,
 				029B78F5292519910097ACD8 /* ResponsesViewModel.swift in Sources */,
 				0282DA6128F893E9003C3F07 /* PostsViewModel.swift in Sources */,
