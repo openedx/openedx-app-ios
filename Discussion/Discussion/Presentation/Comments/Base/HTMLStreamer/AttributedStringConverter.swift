@@ -18,7 +18,6 @@ private typealias PlatformFont = UIFont
 private typealias PlatformFont = NSFont
 #endif
 
-//swiftlint: disable all
 public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
     private let configuration: AttributedStringConverterConfiguration
     // There are only 8 combinations of FontTraits
@@ -31,7 +30,7 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
         didSet {
             hasSkipOrReplaceElementAction = actionStack.contains(where: {
                 switch $0 {
-                case .skip, .replace(_):
+                case .skip, .replace:
                     true
                 default:
                     false
@@ -73,7 +72,6 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
     }
     
     @MainActor public func convert(html: String) -> NSAttributedString {
-        print(">>>DEB 🔄 Starting HTML conversion")
         // Clear any pending state from previous conversions
         tokenizer = Tokenizer(chars: html.unicodeScalars.makeIterator())
         str = NSMutableAttributedString()
@@ -279,7 +277,7 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
     private func handleEndTag(_ name: String) {
         switch name {
         case "a":
-            if case .link(.some(_)) = lastStyle(.link) {
+            if case .link(.some) = lastStyle(.link) {
                 finishRun()
             }
             removeLastStyle(.link)
@@ -399,7 +397,6 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
     
     // Get paragraph style with indentation appropriate for the current nesting level
     private func getListParagraphStyle() -> NSParagraphStyle {
-        print(">>>DEB 📐 Getting list paragraph style")
         let style = configuration.paragraphStyle.mutableCopy() as! NSMutableParagraphStyle
 
         // No tab stops or special formatting needed
@@ -413,7 +410,6 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
         style.headIndent = 0
         style.firstLineHeadIndent = 0
         
-        print(">>>DEB 📐 Paragraph style configured - tabStops: \(style.tabStops.count), headIndent: \(style.headIndent), firstLineHeadIndent: \(style.firstLineHeadIndent)")
         return style
     }
     
@@ -482,7 +478,8 @@ public class AttributedStringConverter<Callbacks: HTMLConversionCallbacks> {
            let italic = descriptor.withSymbolicTraits(.traitItalic) {
             descriptor = italic
         } else {
-            // N.B.: this does not go through the UIFontMetrics, the configuration fonts are expected to be setup for Dynamic Type already
+            // N.B.: this does not go through the UIFontMetrics, the configuration fonts
+            // are expected to be setup for Dynamic Type already
             fontCache[traits.rawValue] = baseFont
             return baseFont
         }
@@ -559,10 +556,6 @@ private struct FontTrait: OptionSet, Hashable {
     static let monospace = FontTrait(rawValue: 1 << 2)
     
     let rawValue: Int
-    
-    init(rawValue: Int) {
-        self.rawValue = rawValue
-    }
 }
 
 private enum Style {
@@ -583,13 +576,13 @@ private enum Style {
             return .italic
         case .monospace:
             return .monospace
-        case .link(_):
+        case .link:
             return .link
         case .strikethrough:
             return .strikethrough
         case .blockquote:
             return .blockquote
-        case .orderedList(nextElementOrdinal: _):
+        case .orderedList:
             return .orderedList
         case .unorderedList:
             return .unorderedList
@@ -619,4 +612,3 @@ private class OrderedNumberTextList: NSTextList {
         "\(super.marker(forItemNumber: itemNumber))."
     }
 }
-//swiftlint: enable all

@@ -8,7 +8,7 @@
 import Foundation
 import OEXFoundation
 
-//swiftlint: disable all
+//swiftlint: disable file_length large_tuple function_body_length
 struct Tokenizer<Chars: IteratorProtocol<Unicode.Scalar>>: IteratorProtocol {
     typealias Element = Token
     
@@ -36,7 +36,7 @@ struct Tokenizer<Chars: IteratorProtocol<Unicode.Scalar>>: IteratorProtocol {
             if temporaryBuffer == nil || temporaryBuffer!.isEmpty {
                 return next()
             } else {
-                var buffer: String? = nil
+                var buffer: String?
                 swap(&buffer, &temporaryBuffer)
                 return .characterSequence(buffer!)
             }
@@ -173,7 +173,6 @@ struct Tokenizer<Chars: IteratorProtocol<Unicode.Scalar>>: IteratorProtocol {
         }
     }
     
-    // TODO: extract this all out into a standalone type and test it separately
     private mutating func peek(count: Int) -> String {
         precondition(count >= 0)
         var buf = String.UnicodeScalarView()
@@ -404,7 +403,7 @@ private extension Tokenizer {
         }
         
         if let referent {
-            if case .attributeValue(_) = returnState,
+            if case .attributeValue = returnState,
                temporaryBuffer!.last != ";",
                let next = peekChar(),
                next == "=" || ("a"..."z").contains(next) || ("A"..."Z").contains(next) || ("0"..."9").contains(next) {
@@ -421,7 +420,7 @@ private extension Tokenizer {
     }
     
     mutating func flushCharacterReference() {
-        if case .attributeValue(_) = returnState {
+        if case .attributeValue = returnState {
             currentStartTag!.attributes.uncheckedLast.value.append(temporaryBuffer!)
             temporaryBuffer = nil
             state = returnState!
@@ -458,7 +457,6 @@ private extension Tokenizer {
         case let c where Unicode.Scalar(c) == nil:
             // parse error: noncharacter-character-reference
             // "The parser resolves such character references as-is."
-            // TODO: idfk what that means
             characterReferenceCode = nil
             state = returnState!
             return next()
@@ -573,7 +571,7 @@ private extension Tokenizer {
         let c = nextChar()
         switch c {
         case .some("0"..."9"), .some("a"..."z"), .some("A"..."Z"):
-            if case .attributeValue(_) = returnState {
+            if case .attributeValue = returnState {
                 currentStartTag!.attributes.uncheckedLast.value.unicodeScalars.append(c!)
                 return tokenizeAmbiguousAmpersand()
             } else {
@@ -610,7 +608,7 @@ private extension Tokenizer {
             reconsume(c)
             state = .tagName
             return tokenizeTagName()
-        case .some(_):
+        case .some:
             // parse error: invalid-first-character-of-tag-name
             reconsume(c)
             state = .data
@@ -936,7 +934,6 @@ private extension Tokenizer {
             state = .doctype
             return tokenizeDoctype()
         } else if peeked == "[CDATA[" {
-            // TODO: we don't do any of the tree construction stuff yet, so can't really handle this
             // consume(count: 7)
             currentComment = ""
             state = .bogusComment
@@ -1544,4 +1541,4 @@ private extension Unicode.Scalar {
         ("0"..."9").contains(self)
     }
 }
-//swiftlint: enable all
+//swiftlint: enable file_length large_tuple function_body_length

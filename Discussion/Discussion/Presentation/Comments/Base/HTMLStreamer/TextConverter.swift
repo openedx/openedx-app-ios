@@ -7,7 +7,6 @@
 
 import Foundation
 
-//swiftlint: disable all
 public class TextConverter<Callbacks: HTMLConversionCallbacks> {
     private let configuration: TextConverterConfiguration
     
@@ -18,7 +17,7 @@ public class TextConverter<Callbacks: HTMLConversionCallbacks> {
         didSet {
             hasSkipOrReplaceElementAction = actionStack.contains(where: {
                 switch $0 {
-                case .skip, .replace(_):
+                case .skip, .replace:
                     true
                 default:
                     false
@@ -50,8 +49,8 @@ public class TextConverter<Callbacks: HTMLConversionCallbacks> {
         str = ""
         
         blockStateMachine = BlockStateMachine(
-            blockBreak: configuration.insertNewlines ? "\n\n" : " " ,
-            lineBreak: configuration.insertNewlines ? "\n" : " " ,
+            blockBreak: configuration.insertNewlines ? "\n\n" : " ",
+            lineBreak: configuration.insertNewlines ? "\n" : " ",
             listIndentForContentOutsideItem: "",
             append: { [unowned self] in
                 self.append($0)
@@ -181,4 +180,3 @@ public struct TextConverterConfiguration {
         self.insertNewlines = insertNewlines
     }
 }
-//swiftlint: enable all

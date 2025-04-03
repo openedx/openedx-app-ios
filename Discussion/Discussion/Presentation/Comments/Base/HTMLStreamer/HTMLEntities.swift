@@ -12,7 +12,7 @@ import Foundation
 
 // Split map into two halves; otherwise, segmentation fault when compiling
 let namedCharactersDecodeMap = namedCharactersDecodeMap1.merging(namedCharactersDecodeMap2, uniquingKeysWith: { $1 })
-//swiftlint: disable all
+//swiftlint: disable colon comma line_length
 private let namedCharactersDecodeMap1: [String: Character] = [
     "Aacute;":"\u{C1}","aacute;":"\u{E1}","Abreve;":"\u{102}","abreve;":"\u{103}",
     "ac;":"\u{223E}","acd;":"\u{223F}","acE;":"\u{223E}\u{333}","Acirc;":"\u{C2}",
@@ -558,4 +558,4 @@ private let namedCharactersDecodeMap2: [String: Character] = [
     "zigrarr;":"\u{21DD}","Zopf;":"\u{2124}","zopf;":"\u{1D56B}","Zscr;":"\u{1D4B5}",
     "zscr;":"\u{1D4CF}","zwj;":"\u{200D}","zwnj;":"\u{200C}"
 ]
-//swiftlint: enable all
+//swiftlint: enable colon comma line_length

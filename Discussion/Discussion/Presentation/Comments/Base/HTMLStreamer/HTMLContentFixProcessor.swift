@@ -11,7 +11,6 @@ import Foundation
 public class HTMLContentFixProcessor {
     // Fix list structure to ensure proper nesting levels
     func fixListStructure(_ html: String) -> String {
-        print(">>>DEB 🛠️ HTMLContentFixProcessor - fixing list structure")
         let processedHTML = html
         
         do {
@@ -70,11 +69,9 @@ public class HTMLContentFixProcessor {
                 withTemplate: "$1$3"
             )
             
-            print(">>>DEB 🛠️ Fixed HTML structure: \(result.prefix(100))")
             return result
             
         } catch {
-            print(">>>DEB ❌ Error fixing list structure: \(error)")
             return html
         }
     }

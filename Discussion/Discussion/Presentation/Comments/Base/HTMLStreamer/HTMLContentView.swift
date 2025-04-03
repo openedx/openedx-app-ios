@@ -10,7 +10,6 @@ import Core
 import Kingfisher
 import Theme
 
-//swiftlint: disable all
 // Custom callbacks for HTML conversion
 struct CustomHTMLCallbacks: HTMLConversionCallbacks {
     static func makeURL(string: String) -> URL? {
@@ -252,4 +251,3 @@ public struct HTMLContentView: View {
         }
     }
 }
-//swiftlint: enable all

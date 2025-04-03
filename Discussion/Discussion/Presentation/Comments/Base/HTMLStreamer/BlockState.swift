@@ -19,7 +19,6 @@ import OEXFoundation
 
  */
 
-//swiftlint: disable all
 struct BlockStateMachine {
     #if false
     var blockState: BlockState = .start {
@@ -65,9 +64,9 @@ extension BlockStateMachine {
             temporaryBuffer = ""
         case .atLeastTwoLineBreakTagsInListItemContent:
             blockState = .emptyBlockWithAtLeastTwoPreviousLineBreakTags
-        case .preformattedStart(depth: _):
+        case .preformattedStart:
             break
-        case .preformattedEmptyBlock(depth: _):
+        case .preformattedEmptyBlock:
             break
         case .preformattedNonEmptyBlock(let depth):
             blockState = .preformattedEmptyBlock(depth: depth)
@@ -83,11 +82,12 @@ extension BlockStateMachine {
         case .preformattedNonEmptyBlockWithTrailingWhitespace(let depth):
             blockState = .preformattedEmptyBlockWithLeadingWhitespace(depth: depth)
             temporaryBuffer.append(blockBreak)
-        case .preformattedEmptyBlockWithLeadingWhitespace(depth: _):
+        case .preformattedEmptyBlockWithLeadingWhitespace:
             break
         }
     }
     
+    //swiftlint: disable function_body_length
     mutating func continueBlock(char: UnicodeScalar) -> Bool {
         let isNewline = char == "\n"
         let isWhitespace = isNewline || isWhitespace(char)
@@ -301,6 +301,7 @@ extension BlockStateMachine {
             }
         }
     }
+    //swiftlint: enable function_body_length
     
     mutating func breakTag() {
         switch blockState {
@@ -333,7 +334,7 @@ extension BlockStateMachine {
             temporaryBuffer.append(lineBreak)
         case .atLeastTwoLineBreakTagsInListItemContent:
             temporaryBuffer.append(lineBreak)
-        case .preformattedStart(depth: _):
+        case .preformattedStart:
             break
         case .preformattedEmptyBlock(let depth):
             blockState = .preformattedLineBreak(depth: depth)
@@ -344,7 +345,7 @@ extension BlockStateMachine {
         case .preformattedLineBreak(let depth):
             blockState = .preformattedAtLeastTwoLineBreaks(depth: depth)
             temporaryBuffer.append(lineBreak)
-        case .preformattedAtLeastTwoLineBreaks(depth: _):
+        case .preformattedAtLeastTwoLineBreaks:
             temporaryBuffer.append(lineBreak)
         case .afterPreStartTag(let depth):
             blockState = .preformattedLineBreak(depth: depth)
@@ -390,17 +391,17 @@ extension BlockStateMachine {
             blockState = .preformattedStart(depth: depth + 1)
         case .preformattedEmptyBlock(let depth):
             blockState = .afterPreStartTag(depth: depth + 1)
-        case .preformattedNonEmptyBlock(depth: _):
+        case .preformattedNonEmptyBlock:
             debugLog("preformattedNonEmptyBlock unreachable")
-        case .preformattedLineBreak(depth: _):
+        case .preformattedLineBreak:
             debugLog("preformattedLineBreak unreachable")
-        case .preformattedAtLeastTwoLineBreaks(depth: _):
+        case .preformattedAtLeastTwoLineBreaks:
             debugLog("preformattedAtLeastTwoLineBreaks unreachable")
-        case .afterPreStartTag(depth: _):
+        case .afterPreStartTag:
             debugLog("afterPreStartTag unreachable")
-        case .afterPreStartTagWithLeadingWhitespace(depth: _):
+        case .afterPreStartTagWithLeadingWhitespace:
             debugLog("afterPreStartTagWithLeadingWhitespace unreachable")
-        case .preformattedNonEmptyBlockWithTrailingWhitespace(depth: _):
+        case .preformattedNonEmptyBlockWithTrailingWhitespace:
             debugLog("preformattedNonEmptyBlockWithTrailingWhitespace unreachable")
         case .preformattedEmptyBlockWithLeadingWhitespace(let depth):
             blockState = .afterPreStartTagWithLeadingWhitespace(depth: depth + 1)
@@ -443,17 +444,17 @@ extension BlockStateMachine {
             } else {
                 blockState = .preformattedEmptyBlock(depth: depth - 1)
             }
-        case .preformattedNonEmptyBlock(depth: _):
+        case .preformattedNonEmptyBlock:
             debugLog("preformattedNonEmptyBlock unreachable")
-        case .preformattedLineBreak(depth: _):
+        case .preformattedLineBreak:
             debugLog("preformattedLineBreak unreachable")
-        case .preformattedAtLeastTwoLineBreaks(depth: _):
+        case .preformattedAtLeastTwoLineBreaks:
             debugLog("preformattedAtLeastTwoLineBreaks unreachable")
-        case .afterPreStartTag(depth: _):
+        case .afterPreStartTag:
             debugLog("afterPreStartTag unreachable")
-        case .afterPreStartTagWithLeadingWhitespace(depth: _):
+        case .afterPreStartTagWithLeadingWhitespace:
             debugLog("afterPreStartTagWithLeadingWhitespace unreachable")
-        case .preformattedNonEmptyBlockWithTrailingWhitespace(depth: _):
+        case .preformattedNonEmptyBlockWithTrailingWhitespace:
             debugLog("preformattedNonEmptyBlockWithTrailingWhitespace unreachable")
         case .preformattedEmptyBlockWithLeadingWhitespace(let depth):
             if depth <= 1 {
@@ -560,4 +561,3 @@ private func isWhitespace(_ c: UnicodeScalar) -> Bool {
     // and this should cover the vast majority of actual use
     c == " " || c == "\n" || c == "\t"
 }
-//swiftlint: enable all
