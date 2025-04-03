@@ -1,3 +1,10 @@
+//
+//  HTMLContentView.swift
+//  Discussion
+//
+//  Created by  Stepanok Ivan on 3.04.2025.
+//
+
 import SwiftUI
 import Core
 import Kingfisher
@@ -12,7 +19,6 @@ struct CustomHTMLCallbacks: HTMLConversionCallbacks {
     }
 }
 
-// Тип контента HTML - может быть текстом или изображением
 enum HTMLContentItem: Identifiable {
     case text(AttributedString)
     case image(HTMLImage)
@@ -64,32 +70,32 @@ public struct HTMLContentView: View {
     }
     
     private mutating func parseHTMLContent() {
-        // Предварительно обрабатываем HTML для исправления проблем со вложенными списками
+        // Pre-process HTML to fix problems with nested lists
         let htmlProcessor = HTMLContentFixProcessor()
         let fixedHTML = htmlProcessor.fixListStructure(html)
         
-        // Извлекаем все теги img и их позиции в тексте
+        // Extract all img tags and their positions in the text
         do {
-            // Регулярное выражение для поиска тегов img и blockquotes
+            // Regular expression to search for img and blockquotes tags
             let imgPattern = #"(<img[^>]*>(?:</img>)?)"#
             let regex = try NSRegularExpression(pattern: imgPattern)
             let range = NSRange(fixedHTML.startIndex..<fixedHTML.endIndex, in: fixedHTML)
             let matches = regex.matches(in: fixedHTML, range: range)
             
-            // Если изображений нет, используем отдельный метод для обработки текстового содержимого с blockquote
+            // If there are no images, we use a separate method to handle text content with blockquote
             if matches.isEmpty {
                 parseTextWithBlockquotes(html: fixedHTML)
                 return
             }
             
-            // Разбиваем HTML на сегменты текста и изображений
+            // Split HTML into text and image segments
             var lastEndIndex = fixedHTML.startIndex
             
             for match in matches {
                 let matchRange = Range(match.range, in: fixedHTML)!
                 let imgTag = String(fixedHTML[matchRange])
                 
-                // Если перед тегом img есть текст, добавляем его
+                // If there is text before the img tag, add it
                 if lastEndIndex < matchRange.lowerBound {
                     let textBefore = String(fixedHTML[lastEndIndex..<matchRange.lowerBound])
                     if !textBefore.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -97,7 +103,7 @@ public struct HTMLContentView: View {
                     }
                 }
                 
-                // Добавляем изображение
+                // Add an image
                 if let image = extractImage(from: imgTag) {
                     contentItems.append(.image(image))
                 }
@@ -105,7 +111,7 @@ public struct HTMLContentView: View {
                 lastEndIndex = matchRange.upperBound
             }
             
-            // Если после последнего изображения есть текст, добавляем его
+            // If there is text after the last image, add it
             if lastEndIndex < fixedHTML.endIndex {
                 let textAfter = String(fixedHTML[lastEndIndex..<fixedHTML.endIndex])
                 if !textAfter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -115,15 +121,14 @@ public struct HTMLContentView: View {
             
         } catch {
             print("Error parsing HTML content: \(error)")
-            // Если что-то пошло не так, отображаем весь HTML как текст
+            // If something went wrong, display all HTML as text
             contentItems.append(.text(convertHTMLToAttributedString(html: html)))
         }
     }
     
-    // Парсим текст и выделяем blockquote элементы
+    // Parsing text and selecting blockquote elements
     private mutating func parseTextWithBlockquotes(html: String) {
         do {
-            // Поищем blockquote теги
             let blockquotePattern = #"<blockquote>(.*?)</blockquote>"#
             let blockquoteRegex = try NSRegularExpression(
                 pattern: blockquotePattern,
@@ -132,20 +137,20 @@ public struct HTMLContentView: View {
             let range = NSRange(html.startIndex..<html.endIndex, in: html)
             let matches = blockquoteRegex.matches(in: html, range: range)
             
-            // Если blockquotes нет, просто добавляем текст как обычно
+            // If there are no blockquotes, just add text as usual.
             if matches.isEmpty {
                 contentItems.append(.text(convertHTMLToAttributedString(html: html)))
                 return
             }
             
-            // Разбиваем HTML на обычный текст и blockquotes
+            // Split HTML into plain text and blockquotes
             var lastEndIndex = html.startIndex
             
             for match in matches {
                 let matchRange = Range(match.range, in: html)!
                 let blockquoteRange = Range(match.range(at: 1), in: html)!
                 
-                // Если перед blockquote есть текст, добавляем его
+                // If there is text before the blockquote, add it
                 if lastEndIndex < matchRange.lowerBound {
                     let textBefore = String(html[lastEndIndex..<matchRange.lowerBound])
                     if !textBefore.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -153,14 +158,14 @@ public struct HTMLContentView: View {
                     }
                 }
                 
-                // Добавляем blockquote
+                // Add blockquote
                 let blockquoteContent = String(html[blockquoteRange])
                 contentItems.append(.blockquote(convertHTMLToAttributedString(html: blockquoteContent)))
                 
                 lastEndIndex = matchRange.upperBound
             }
             
-            // Если после последнего blockquote есть текст, добавляем его
+            // If there is text after the last blockquote, add it.
             if lastEndIndex < html.endIndex {
                 let textAfter = String(html[lastEndIndex..<html.endIndex])
                 if !textAfter.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
@@ -188,7 +193,7 @@ public struct HTMLContentView: View {
                 return nil
             }
             
-            // Извлекаем alt текст, если он есть
+            // Extract alt text, if any
             var altText: String?
             let altRegex = try NSRegularExpression(pattern: altPattern)
             if let altMatch = altRegex.firstMatch(in: imgTag, range: srcRange),
@@ -204,7 +209,7 @@ public struct HTMLContentView: View {
     }
     
     private func convertHTMLToAttributedString(html: String) -> AttributedString {
-        // Базовый параграф-стиль
+        // Basic paragraph style
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 8
         

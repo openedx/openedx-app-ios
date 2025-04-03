@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 /*
  
@@ -368,39 +369,39 @@ extension BlockStateMachine {
         case .emptyBlock:
             blockState = .afterPreStartTag(depth: 1)
         case .nonEmptyBlock:
-            fatalError("unreachable")
+            debugLog("nonEmptyBlock unreachable")
         case .lineBreakTag:
-            fatalError("unreachable")
+            debugLog("lineBreakTag unreachable")
         case .atLeastTwoLineBreakTags:
-            fatalError("unreachable")
+            debugLog("atLeastTwoLineBreakTags unreachable")
         case .emptyBlockWithAtLeastTwoPreviousLineBreakTags:
             blockState = .afterPreStartTagWithLeadingWhitespace(depth: 1)
         case .beginListItem:
             blockState = .afterPreStartTagWithLeadingWhitespace(depth: 1)
         case .endListItem:
-            fatalError("unreachable")
+            debugLog("endListItem unreachable")
         case .listItemContent:
-            fatalError("unreachable")
+            debugLog("listItemContent unreachable")
         case .lineBreakTagInListItemContent:
-            fatalError("unreachable")
+            debugLog("lineBreakTagInListItemContent unreachable")
         case .atLeastTwoLineBreakTagsInListItemContent:
-            fatalError("unreachable")
+            debugLog("atLeastTwoLineBreakTagsInListItemContent unreachable")
         case .preformattedStart(let depth):
             blockState = .preformattedStart(depth: depth + 1)
         case .preformattedEmptyBlock(let depth):
             blockState = .afterPreStartTag(depth: depth + 1)
         case .preformattedNonEmptyBlock(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedNonEmptyBlock unreachable")
         case .preformattedLineBreak(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedLineBreak unreachable")
         case .preformattedAtLeastTwoLineBreaks(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedAtLeastTwoLineBreaks unreachable")
         case .afterPreStartTag(depth: _):
-            fatalError("unreachable")
+            debugLog("afterPreStartTag unreachable")
         case .afterPreStartTagWithLeadingWhitespace(depth: _):
-            fatalError("unreachable")
+            debugLog("afterPreStartTagWithLeadingWhitespace unreachable")
         case .preformattedNonEmptyBlockWithTrailingWhitespace(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedNonEmptyBlockWithTrailingWhitespace unreachable")
         case .preformattedEmptyBlockWithLeadingWhitespace(let depth):
             blockState = .afterPreStartTagWithLeadingWhitespace(depth: depth + 1)
         }
@@ -413,23 +414,23 @@ extension BlockStateMachine {
         case .emptyBlock:
             break
         case .nonEmptyBlock:
-            fatalError("unreachable")
+            debugLog("nonEmptyBlock unreachable")
         case .lineBreakTag:
-            fatalError("unreachable")
+            debugLog("lineBreakTag unreachable")
         case .atLeastTwoLineBreakTags:
-            fatalError("unreachable")
+            debugLog("atLeastTwoLineBreakTags unreachable")
         case .emptyBlockWithAtLeastTwoPreviousLineBreakTags:
             break
         case .beginListItem:
             break
         case .endListItem:
-            fatalError("unreachable")
+            debugLog("endListItem unreachable")
         case .listItemContent:
-            fatalError("unreachable")
+            debugLog("listItemContent unreachable")
         case .lineBreakTagInListItemContent:
-            fatalError("unreachable")
+            debugLog("lineBreakTagInListItemContent unreachable")
         case .atLeastTwoLineBreakTagsInListItemContent:
-            fatalError("unreachable")
+            debugLog("atLeastTwoLineBreakTagsInListItemContent unreachable")
         case .preformattedStart(let depth):
             if depth <= 1 {
                 blockState = .start
@@ -443,17 +444,17 @@ extension BlockStateMachine {
                 blockState = .preformattedEmptyBlock(depth: depth - 1)
             }
         case .preformattedNonEmptyBlock(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedNonEmptyBlock unreachable")
         case .preformattedLineBreak(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedLineBreak unreachable")
         case .preformattedAtLeastTwoLineBreaks(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedAtLeastTwoLineBreaks unreachable")
         case .afterPreStartTag(depth: _):
-            fatalError("unreachable")
+            debugLog("afterPreStartTag unreachable")
         case .afterPreStartTagWithLeadingWhitespace(depth: _):
-            fatalError("unreachable")
+            debugLog("afterPreStartTagWithLeadingWhitespace unreachable")
         case .preformattedNonEmptyBlockWithTrailingWhitespace(depth: _):
-            fatalError("unreachable")
+            debugLog("preformattedNonEmptyBlockWithTrailingWhitespace unreachable")
         case .preformattedEmptyBlockWithLeadingWhitespace(let depth):
             if depth <= 1 {
                 blockState = .emptyBlock

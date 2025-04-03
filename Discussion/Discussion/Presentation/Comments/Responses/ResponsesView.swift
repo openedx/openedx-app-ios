@@ -165,9 +165,6 @@ public struct ResponsesView: View {
                                     }
                                     Spacer(minLength: 84)
                                 }
-                                .onRightSwipeGesture {
-                                    viewModel.router.back()
-                                }
                                 .frameLimit(width: proxy.size.width)
                             }
                             .refreshable {

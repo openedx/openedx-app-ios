@@ -27,7 +27,13 @@ public class TextConverter<Callbacks: HTMLConversionCallbacks> {
         }
     }
     private var hasSkipOrReplaceElementAction = false
-    var blockStateMachine = BlockStateMachine(blockBreak: "", lineBreak: "", listIndentForContentOutsideItem: "", append: { _ in }, removeChar: {})
+    var blockStateMachine = BlockStateMachine(
+        blockBreak: "",
+        lineBreak: "",
+        listIndentForContentOutsideItem: "",
+        append: { _ in
+        },
+        removeChar: {})
     private var currentElementIsEmpty = true
     private var currentRun = ""
     

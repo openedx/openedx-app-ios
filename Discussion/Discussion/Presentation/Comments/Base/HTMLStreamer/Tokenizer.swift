@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 //swiftlint: disable all
 struct Tokenizer<Chars: IteratorProtocol<Unicode.Scalar>>: IteratorProtocol {
@@ -197,7 +198,11 @@ struct Tokenizer<Chars: IteratorProtocol<Unicode.Scalar>>: IteratorProtocol {
     private mutating func takeCurrentToken() -> Token {
         if let currentStartTag {
             self.currentStartTag = nil
-            return .startTag(currentStartTag.0, selfClosing: currentStartTag.selfClosing, attributes: currentStartTag.attributes)
+            return .startTag(
+                currentStartTag.0,
+                selfClosing: currentStartTag.selfClosing,
+                attributes: currentStartTag.attributes
+            )
         } else if let currentEndTag {
             self.currentEndTag = nil
             return .endTag(currentEndTag)
@@ -206,7 +211,12 @@ struct Tokenizer<Chars: IteratorProtocol<Unicode.Scalar>>: IteratorProtocol {
             return .comment(currentComment)
         } else if let currentDoctype {
             self.currentDoctype = nil
-            return .doctype(currentDoctype.0, forceQuirks: currentDoctype.forceQuirks, publicIdentifier: currentDoctype.publicIdentifier, systemIdentifier: currentDoctype.systemIdentifier)
+            return .doctype(
+                currentDoctype.0,
+                forceQuirks: currentDoctype.forceQuirks,
+                publicIdentifier: currentDoctype.publicIdentifier,
+                systemIdentifier: currentDoctype.systemIdentifier
+            )
         } else {
             preconditionFailure("takeCurrentToken called without current token")
         }
@@ -235,43 +245,9 @@ private enum State {
     
     // States defined by the spec
     case data
-    // RCDATA not currently supported
-//    case rcdata
-    // RAWTEXT not currently supported
-//    case rawtext
-    // script tag not currently supported
-//    case scriptData
-    // plaintext tag not currently supported
-//    case plaintext
     case tagOpen
     case endTagOpen
     case tagName
-    // RCDATA not currently supported
-//    case rcdataLessThanSign
-//    case rcdataEndTagOpen
-//    case rcdataEndTagName
-    // RAWTEXT not currently supported
-//    case rawtextLessThanSign
-//    case rawtextEndTagOpen
-//    case rawtextEndTagName
-    // script not currently supported
-//    case scriptDataLessThanSign
-//    case scriptDataEndTagOpen
-//    case scriptDataEndTagName
-//    case scriptDataEscapeStart
-//    case scriptDataEscapeStartDash
-//    case scriptDataEscaped
-//    case scriptDataEscapedDash
-//    case scriptDataEscapedDashDash
-//    case scriptDataEscapedLessThanSign
-//    case scriptDataEscapedEndTagOpen
-//    case scriptDataEscapedEndTagName
-//    case scriptDataDoubleEscapeStart
-//    case scriptDataDoubleEscaped
-//    case scriptDataDoubleEscapedDash
-//    case scriptDataDoubleEscapedDashDash
-//    case scriptDataDoubleEscapedLessThanSign
-//    case scriptDataDoubleEscapeEnd
     case beforeAttributeName
     case attributeName
     case afterAttributeName
@@ -305,10 +281,6 @@ private enum State {
     case doctypeSystemIdentifier(DoctypeIdentifierQuotation)
     case afterDoctypeSystemIdentifier
     case bogusDoctype
-    // CDATA not currently supported
-//    case cdataSection
-//    case cdataSectionBracket
-//    case cdataSectionEndState
     case characterReference
     case namedCharacterReference
     case ambiguousAmpersand
@@ -703,7 +675,7 @@ private extension Tokenizer {
                     currentEndTag!.unicodeScalars.append(c)
                     continue
                 } else {
-                    fatalError("bad current token")
+                    debugLog("bad current token")
                 }
             }
         }
@@ -754,7 +726,8 @@ private extension Tokenizer {
                 state = .attributeName
                 return tokenizeAttributeName()
             } else {
-                fatalError("bad current token")
+                debugLog("bad current token")
+                return nil
             }
         }
     }
@@ -785,7 +758,7 @@ private extension Tokenizer {
                 } else if currentEndTag != nil {
                     continue
                 } else {
-                    fatalError("bad curren token")
+                    debugLog("bad curren token")
                 }
             }
         }
@@ -820,7 +793,8 @@ private extension Tokenizer {
                 state = .attributeName
                 return tokenizeAttributeName()
             } else {
-                fatalError("bad current token")
+                debugLog("bad current token")
+                return nil
             }
         }
     }
@@ -873,7 +847,7 @@ private extension Tokenizer {
                     } else if currentEndTag != nil {
                         continue
                     } else {
-                        fatalError("bad current token")
+                        debugLog("bad current token")
                     }
                 }
             } else {

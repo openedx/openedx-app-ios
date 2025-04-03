@@ -166,11 +166,6 @@ public struct ThreadView: View {
                                         Spacer(minLength: 84)
                                     }
                                 }
-                                .onRightSwipeGesture {
-                                    viewModel.router.back()
-                                    onBackTapped()
-                                    viewModel.sendUpdateUnreadState()
-                                }
                                 .frameLimit(width: proxy.size.width)
                             }
                             .refreshable {

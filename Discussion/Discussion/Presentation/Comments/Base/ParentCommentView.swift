@@ -86,7 +86,6 @@ public struct ParentCommentView: View {
                 .font(Theme.Fonts.titleLarge)
                 .foregroundColor(Theme.Colors.textPrimary)
             ZStack(alignment: .topLeading) {
-                // Use the new HTMLContentView to display both text and images
                 HTMLContentView(
                     html: comments.postBodyHtml,
                     textColor: Theme.Colors.textPrimary

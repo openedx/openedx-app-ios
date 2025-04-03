@@ -88,25 +88,6 @@ public struct CommentCell: View {
                                       : Theme.Colors.textSecondaryLight)
             }
             ZStack(alignment: .topLeading) {
-//                HTMLFormattedText(
-//                    cssInjector.injectCSS(
-//                        colorScheme: colorScheme,
-//                        html: comment.postBodyHtml,
-//                        type: .discovery,
-//                        screenWidth: UIScreen.main.bounds.width - 48),
-//                    processing: { rendering in
-//                        isHtmlRendering = rendering
-//                    }
-//                )
-//                CommentFormattedText(
-//                    html: comment.postBodyHtml,
-//                    colorScheme: colorScheme,
-//                    screenWidth: UIScreen.main.bounds.width - 96,
-//                    processing: { rendering in
-//                        isHtmlRendering = rendering
-//                    }
-//                )
-//                .id(comment.commentID)
                 HTMLContentView(
                     html: comment.postBodyHtml,
                     textColor: Theme.Colors.textPrimary
@@ -114,28 +95,6 @@ public struct CommentCell: View {
                 .id(comment.commentID)
             }
             .padding(.bottom, 18)
-                    
-//            ForEach(Array(comment.postBody.extractURLs().enumerated()), id: \.offset) { _, url in
-//                if url.isImage() {
-//                    if isImageVisible {
-//                        KFAnimatedImage(url)
-//                            .onFailure { _ in
-//                                isImageVisible = false
-//                            }
-//                            .scaledToFit()
-//                    }
-//                } else {
-//                    HStack(alignment: .top) {
-//                        Image(systemName: "globe")
-//                        Link(destination: url) {
-//                            Text(url.absoluteString)
-//                            .multilineTextAlignment(.leading)
-//                        }
-//                    }
-//                    .foregroundColor(Theme.Colors.accentColor)
-//                    .font(Theme.Fonts.bodyMedium)
-//                }
-//            }
             
             LazyVStack {
                 VStack {}

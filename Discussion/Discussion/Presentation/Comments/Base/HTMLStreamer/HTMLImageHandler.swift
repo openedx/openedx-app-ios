@@ -1,3 +1,10 @@
+//
+//  HTMLImageHandler.swift
+//  Discussion
+//
+//  Created by  Stepanok Ivan on 3.04.2025.
+//
+
 import Foundation
 import Core
 import SwiftUI

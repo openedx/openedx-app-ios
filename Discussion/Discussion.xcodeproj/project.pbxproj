@@ -64,7 +64,6 @@
 		CE517F492D9C0AA80012EF71 /* HTMLConversionCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */; };
 		CE517F4A2D9C0AA80012EF71 /* HTMLEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */; };
 		CE517F4B2D9C0AA80012EF71 /* AttributedStringConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */; };
-		CE517F4C2D9C0AA80012EF71 /* HTMLParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F462D9C0AA80012EF71 /* HTMLParser.swift */; };
 		CE517F4D2D9C0AA80012EF71 /* BlockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F432D9C0AA80012EF71 /* BlockState.swift */; };
 		CE517F4E2D9C0AA80012EF71 /* TextConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F472D9C0AA80012EF71 /* TextConverter.swift */; };
 		CE517F4F2D9C0AA80012EF71 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F482D9C0AA80012EF71 /* Tokenizer.swift */; };
@@ -181,7 +180,6 @@
 		CE517F432D9C0AA80012EF71 /* BlockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockState.swift; sourceTree = "<group>"; };
 		CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLConversionCallbacks.swift; sourceTree = "<group>"; };
 		CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLEntities.swift; sourceTree = "<group>"; };
-		CE517F462D9C0AA80012EF71 /* HTMLParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLParser.swift; sourceTree = "<group>"; };
 		CE517F472D9C0AA80012EF71 /* TextConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextConverter.swift; sourceTree = "<group>"; };
 		CE517F482D9C0AA80012EF71 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		CE517F562D9C17D40012EF71 /* HTMLContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentView.swift; sourceTree = "<group>"; };
@@ -493,7 +491,6 @@
 				CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */,
 				CE517F582D9C17F60012EF71 /* HTMLImageHandler.swift */,
 				CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */,
-				CE517F462D9C0AA80012EF71 /* HTMLParser.swift */,
 				CE517F472D9C0AA80012EF71 /* TextConverter.swift */,
 				CE517F482D9C0AA80012EF71 /* Tokenizer.swift */,
 				CE517F562D9C17D40012EF71 /* HTMLContentView.swift */,
@@ -778,7 +775,6 @@
 				CE517F492D9C0AA80012EF71 /* HTMLConversionCallbacks.swift in Sources */,
 				CE517F4A2D9C0AA80012EF71 /* HTMLEntities.swift in Sources */,
 				CE517F4B2D9C0AA80012EF71 /* AttributedStringConverter.swift in Sources */,
-				CE517F4C2D9C0AA80012EF71 /* HTMLParser.swift in Sources */,
 				CE517F4D2D9C0AA80012EF71 /* BlockState.swift in Sources */,
 				CE517F4E2D9C0AA80012EF71 /* TextConverter.swift in Sources */,
 				CE517F4F2D9C0AA80012EF71 /* Tokenizer.swift in Sources */,
