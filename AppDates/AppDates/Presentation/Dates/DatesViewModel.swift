@@ -222,26 +222,26 @@ public final class DatesViewModel: ObservableObject {
         var groups: [DateGroup] = []
         
         if !pastDue.isEmpty {
-            groups.append(DateGroup(type: .pastDue, dates: pastDue.sorted(by: { $0.date < $1.date })))
+            groups.append(DateGroup(type: .pastDue, dates: pastDue))
             showShiftDueDatesView = true
         } else {
             showShiftDueDatesView = false
         }
         
         if !today.isEmpty {
-            groups.append(DateGroup(type: .today, dates: today.sorted(by: { $0.date < $1.date })))
+            groups.append(DateGroup(type: .today, dates: today))
         }
         
         if !thisWeek.isEmpty {
-            groups.append(DateGroup(type: .thisWeek, dates: thisWeek.sorted(by: { $0.date < $1.date })))
+            groups.append(DateGroup(type: .thisWeek, dates: thisWeek))
         }
         
         if !nextWeek.isEmpty {
-            groups.append(DateGroup(type: .nextWeek, dates: nextWeek.sorted(by: { $0.date < $1.date })))
+            groups.append(DateGroup(type: .nextWeek, dates: nextWeek))
         }
         
         if !upcoming.isEmpty {
-            groups.append(DateGroup(type: .upcoming, dates: upcoming.sorted(by: { $0.date < $1.date })))
+            groups.append(DateGroup(type: .upcoming, dates: upcoming))
         }
         
         self.coursesDates = groups
