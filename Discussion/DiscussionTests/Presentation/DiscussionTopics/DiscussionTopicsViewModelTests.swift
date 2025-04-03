@@ -103,7 +103,7 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
                                                   analytics: analytics,
                                                   config: config)
         
-        Given(interactor, .getTopics(courseID: .any, willThrow: NSError()))
+        Given(interactor, .getTopics(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
 
         await viewModel.getTopics(courseID: "1")

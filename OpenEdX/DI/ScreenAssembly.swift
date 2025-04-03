@@ -13,6 +13,7 @@ import OEXFoundation
 import Authorization
 import Discovery
 import Dashboard
+import Downloads
 import Profile
 import Course
 import Discussion
@@ -676,6 +677,53 @@ class ScreenAssembly: Assembly {
         container.register(BackNavigationProtocol.self) { r in
             r.resolve(Router.self)!
         }
+        
+        // MARK: Downloads
+        
+        container.register(DownloadsPersistenceProtocol.self) { r in
+            DownloadsPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+        }
+        
+        container.register(DownloadsRepositoryProtocol.self) { r in
+            DownloadsRepository(
+                api: r.resolve(API.self)!,
+                coreStorage: r.resolve(CoreStorage.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                persistence: r.resolve(DownloadsPersistenceProtocol.self)!
+            )
+        }
+        
+        container.register(DownloadsInteractorProtocol.self) { r in
+            DownloadsInteractor(
+                repository: r.resolve(DownloadsRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(
+            DownloadsHelperProtocol.self
+        ) { @MainActor r in
+            DownloadsHelper(downloadManager: r.resolve(DownloadManagerProtocol.self)!)
+        }
+        
+        container.register(CourseStructureManagerProtocol.self) { r in
+            CourseInteractor(
+                repository: r.resolve(CourseRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(AppDownloadsViewModel.self) { @MainActor r in
+            AppDownloadsViewModel(
+                interactor: r.resolve(DownloadsInteractorProtocol.self)!,
+                courseManager: r.resolve(CourseStructureManagerProtocol.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                downloadsHelper: r.resolve(DownloadsHelperProtocol.self)!,
+                router: r.resolve(DownloadsRouter.self)!,
+                storage: r.resolve(DownloadsStorage.self)!,
+                analytics: r.resolve(DownloadsAnalytics.self)!
+            )
+        }
+        
     }
 }
 // swiftlint:enable function_body_length closure_parameter_position

@@ -15,6 +15,7 @@ import Course
 import Discussion
 import Discovery
 import Dashboard
+import Downloads
 import Profile
 import WhatsNew
 import Combine
@@ -25,6 +26,7 @@ public class Router: AuthorizationRouter,
                      WhatsNewRouter,
                      DiscoveryRouter,
                      ProfileRouter,
+                     DownloadsRouter,
                      DashboardRouter,
                      CourseRouter,
                      DiscussionRouter,

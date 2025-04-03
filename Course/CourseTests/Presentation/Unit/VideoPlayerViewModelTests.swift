@@ -158,7 +158,7 @@ final class VideoPlayerViewModelTests: XCTestCase {
             analytics: CourseAnalyticsMock()
         )
         
-        Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: NSError()))
+        Given(interactor, .blockCompletionRequest(courseID: .any, blockID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await playerHolder.sendCompletion()
         

@@ -20,6 +20,34 @@
                ReferencedContainer = "container:OpenEdX.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "07169468296D996800E3DED6"
+               BuildableName = "CoreTests.xctest"
+               BlueprintName = "CoreTests"
+               ReferencedContainer = "container:Core/Core.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "NO"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "CEB36E102D6A0D0B00907A89"
+               BuildableName = "DownloadsTests.xctest"
+               BlueprintName = "DownloadsTests"
+               ReferencedContainer = "container:Downloads/Downloads.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -124,7 +152,11 @@
                BlueprintIdentifier = "CE815A652D60D75200CB9114"
                BuildableName = "AppDatesTests.xctest"
                BlueprintName = "AppDatesTests"
-               ReferencedContainer = "container:AppDates/AppDates.xcodeproj">
+               ReferencedContainer = "container:AppDates/AppDates.xcodeproj"
+               BlueprintIdentifier = "CEB36E102D6A0D0B00907A89"
+               BuildableName = "DownloadsTests.xctest"
+               BlueprintName = "DownloadsTests"
+               ReferencedContainer = "container:Downloads/Downloads.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>

@@ -190,8 +190,8 @@ final class PostViewModelTests: XCTestCase {
                 
         viewModel.isBlackedOut = false
 
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError()))
-        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willThrow: NSError()))
+        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
+        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
 
         viewModel.courseID = "1"
         viewModel.type = .allPosts
