@@ -143,7 +143,7 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
-            if viewModel.config.features.datesEnabled {
+            if viewModel.config.experimentalFeatures.appLevelDatesEnabled {
                 VStack {
                     DatesView(viewModel: Container.shared.resolve(DatesViewModel.self)!)
                 }

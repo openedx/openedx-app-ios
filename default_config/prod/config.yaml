@@ -8,6 +8,12 @@ OAUTH_CLIENT_ID: ''
 SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
+    
+EXPERIMENTAL_FEATURES:
+    APP_LEVEL_DOWNLOADS:
+        ENABLED: false
+    APP_LEVEL_DATES:
+        ENABLED: false
 
 
 UI_COMPONENTS:
