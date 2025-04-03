@@ -20,7 +20,7 @@ import Discussion
 import AppDates
 @preconcurrency import Combine
 
-// swiftlint:disable function_body_length closure_parameter_position
+// swiftlint:disable function_body_length closure_parameter_position type_body_length
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
@@ -726,4 +726,4 @@ class ScreenAssembly: Assembly {
         
     }
 }
-// swiftlint:enable function_body_length closure_parameter_position
+// swiftlint:enable function_body_length closure_parameter_position type_body_length

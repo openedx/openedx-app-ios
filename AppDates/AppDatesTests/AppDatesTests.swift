@@ -167,7 +167,7 @@ final class DatesViewModelTests: XCTestCase {
         )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getCourseDatesOffline(limit: .any, offset: .any, willThrow: NSError()))
+        Given(interactor, .getCourseDatesOffline(limit: .any, offset: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         // Act
         await viewModel.loadDates()
@@ -357,7 +357,7 @@ final class DatesViewModelTests: XCTestCase {
         viewModel.showError = false
         
         // Test unknown error
-        Given(interactor, .resetAllRelativeCourseDeadlines(willThrow: NSError()))
+        Given(interactor, .resetAllRelativeCourseDeadlines(willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         // Act
         await viewModel.shiftDueDates()
