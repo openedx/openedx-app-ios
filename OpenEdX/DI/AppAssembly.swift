@@ -15,6 +15,7 @@ import Dashboard
 import Course
 import Discussion
 import Authorization
+import Downloads
 import Profile
 import WhatsNew
 
@@ -82,6 +83,10 @@ class AppAssembly: Assembly {
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
+        container.register(DownloadsAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConnectivityProtocol.self) { @MainActor _ in
             Connectivity()
         }
@@ -134,6 +139,10 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
+        container.register(DownloadsRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConfigProtocol.self) { _ in
             Config()
         }.inObjectScope(.container)
@@ -168,6 +177,10 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
 
         container.register(CourseStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
+        
+        container.register(DownloadsStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
 

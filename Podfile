@@ -58,6 +58,15 @@ abstract_target "App" do
     end
   end
   
+  target "Downloads" do
+    project './Downloads/Downloads.xcodeproj'
+    workspace './Downloads/Downloads.xcodeproj'
+    
+    target 'DownloadsTests' do
+      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+    end
+  end
+  
   target "Profile" do
     project './Profile/Profile.xcodeproj'
     workspace './Profile/Profile.xcodeproj'

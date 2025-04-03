@@ -26,6 +26,7 @@ public struct StyledButton: View {
     private let borderColor: Color
     private let iconImage: Image?
     private let iconPosition: IconImagePosition
+    private let maxWidthIpad: CGFloat?
     
     public init(_ title: String,
                 action: @escaping () -> Void,
@@ -36,7 +37,8 @@ public struct StyledButton: View {
                 iconImage: Image? = nil,
                 iconPosition: IconImagePosition = .none,
                 isActive: Bool = true,
-                horizontalPadding: Bool = false) {
+                horizontalPadding: Bool = false,
+                maxWidthIpad: CGFloat? = 260) {
         self.title = title
         self.action = action
         self.isTransparent = isTransparent
@@ -47,6 +49,7 @@ public struct StyledButton: View {
         self.iconImage = iconImage
         self.iconPosition = iconPosition
         self.horizontalPadding = horizontalPadding
+        self.maxWidthIpad = maxWidthIpad
     }
     
     public var body: some View {
@@ -75,7 +78,7 @@ public struct StyledButton: View {
             .padding(.horizontal, horizontalPadding ? 20 : 0)
         }
         .disabled(!isActive)
-        .frame(maxWidth: idiom == .pad ? 260: .infinity, minHeight: isTransparent ? 36 : 42)
+        .frame(maxWidth: idiom == .pad ? maxWidthIpad: .infinity, minHeight: isTransparent ? 36 : 42)
         .background(
             Theme.Shapes.buttonShape
                 .fill(isTransparent ? .clear : buttonColor)

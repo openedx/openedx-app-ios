@@ -174,7 +174,7 @@ final class AllCoursesViewModelTests: XCTestCase {
             storage: storage
         )
         
-        Given(interactor, .getAllCourses(filteredBy: .any, page: .any, willThrow: NSError()))
+        Given(interactor, .getAllCourses(filteredBy: .any, page: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         // When
         await viewModel.getCourses(page: 1)

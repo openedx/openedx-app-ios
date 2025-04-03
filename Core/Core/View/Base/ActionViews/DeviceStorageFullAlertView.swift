@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Core
 import Theme
 
 public struct DeviceStorageFullAlertView: View {
@@ -18,7 +17,7 @@ public struct DeviceStorageFullAlertView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     
-    init(
+    public init(
         sequentials: [CourseSequential],
         usedSpace: Int,
         freeSpace: Int,
@@ -31,8 +30,8 @@ public struct DeviceStorageFullAlertView: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            Color.black.opacity(fadeEffect ? 0.15 : 0)
+        ZStack(alignment: .center) {
+            Color.black.opacity(fadeEffect ? 0.4 : 0)
                 .onTapGesture {
                     close()
                     fadeEffect = false
@@ -54,7 +53,7 @@ public struct DeviceStorageFullAlertView: View {
                 CoreAssets.reportOctagon.swiftUIImage
                     .scaledToFit()
                     .foregroundStyle(Theme.Colors.alert)
-                Text(CourseLocalization.Course.StorageAlert.title)
+                Text(CoreLocalization.Course.StorageAlert.title)
                     .font(Theme.Fonts.titleLarge)
             }
             .padding(.top, 16)
@@ -80,7 +79,7 @@ public struct DeviceStorageFullAlertView: View {
                 
                 HStack {
                     Text(
-                        CourseLocalization.Course.StorageAlert.usedAndFree(
+                        CoreLocalization.Course.StorageAlert.usedAndFree(
                             usedSpace.formattedFileSize(),
                             freeSpace.formattedFileSize()
                         )
@@ -96,7 +95,7 @@ public struct DeviceStorageFullAlertView: View {
                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
             }
             
-            Text(CourseLocalization.Course.StorageAlert.description)
+            Text(CoreLocalization.Course.StorageAlert.description)
                 .font(.subheadline)
                 .padding(.horizontal, 16)
                 .padding(.top, 8)
@@ -107,7 +106,7 @@ public struct DeviceStorageFullAlertView: View {
                     fadeEffect = false
                     close()
                 }) {
-                    Text(CourseLocalization.Course.Alert.close)
+                    Text(CoreLocalization.Course.Alert.close)
                         .font(Theme.Fonts.bodyMedium)
                         .foregroundStyle(Theme.Colors.accentColor)
                         .frame(maxWidth: .infinity)

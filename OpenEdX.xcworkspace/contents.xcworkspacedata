@@ -20,6 +20,9 @@
       location = "group:Dashboard/Dashboard.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:Downloads/Downloads.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Profile/Profile.xcodeproj">
    </FileRef>
    <FileRef

@@ -87,7 +87,7 @@ final class CourseDateViewModelTests: XCTestCase {
         let connectivity = ConnectivityProtocolMock()
         let config = ConfigMock()
         
-        Given(interactor, .getCourseDates(courseID: .any, willThrow: NSError()))
+        Given(interactor, .getCourseDates(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         let viewModel = CourseDatesViewModel(
             interactor: interactor,

@@ -265,7 +265,7 @@ final class SignInViewModelTests: XCTestCase {
             sourceScreen: .default
         )
         
-        Given(interactor, .login(username: .any, password: .any, willThrow: NSError()))
+        Given(interactor, .login(username: .any, password: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
         

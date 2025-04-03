@@ -173,7 +173,7 @@ final class ResponsesViewModelTests: XCTestCase {
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
         
-        Given(interactor, .getCommentResponses(commentID: .any, page: .any, willThrow: NSError()))
+        Given(interactor, .getCommentResponses(commentID: .any, page: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         result = await viewModel.getResponsesData(commentID: "1", parentComment: post, page: 1)
         
@@ -249,7 +249,7 @@ final class ResponsesViewModelTests: XCTestCase {
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
         
-        Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willThrow: NSError()))
+        Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
 
         await viewModel.postComment(threadID: "1", rawBody: "1", parentID: nil)
         
