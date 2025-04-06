@@ -34,6 +34,7 @@ public final class DatesViewModel: ObservableObject {
     private var hasNextPage = false
     private(set) var fetchInProgress = false
     private var allDates: [CourseDate] = []
+    private var datesLoadedFromServer = false
     
     // Items per page constant
     private let itemsPerPage = 20
@@ -70,6 +71,7 @@ public final class DatesViewModel: ObservableObject {
             nextPage = 1
             hasNextPage = false
             delayedLoadSecondPage = false
+            datesLoadedFromServer = false
         }
         
         do {
@@ -86,12 +88,15 @@ public final class DatesViewModel: ObservableObject {
                 }
                 
                 let (dates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
+                datesLoadedFromServer = true
                 
                 allDates = dates
                 hasNextPage = nextPageUrl != nil
                 
                 if hasNextPage {
                     nextPage += 1
+                } else {
+                    delayedLoadSecondPage = false
                 }
                 
                 if delayedLoadSecondPage, hasNextPage {
@@ -124,7 +129,11 @@ public final class DatesViewModel: ObservableObject {
     public func loadNextPageIfNeeded(for date: CourseDate) async {
         guard let index = allDates.firstIndex(where: { $0.id == date.id }) else { return }
 
-        if !hasNextPage && nextPage == 1 && index == allDates.count - 3 && connectivity.isInternetAvaliable {
+        if !datesLoadedFromServer
+            && !hasNextPage
+            && nextPage == 1
+            && index == allDates.count - 3
+            && connectivity.isInternetAvaliable {
             delayedLoadSecondPage = true
             fetchInProgress = false
             return

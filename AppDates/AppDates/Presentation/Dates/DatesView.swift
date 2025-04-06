@@ -179,6 +179,7 @@ public struct DatesView: View {
 }
 
 struct DatesEmptyStateView: View {
+    @Environment(\.isHorizontal) private var isHorizontal
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             CoreAssets.dates.swiftUIImage
@@ -197,7 +198,7 @@ struct DatesEmptyStateView: View {
                 .frame(width: 245)
                 .accessibilityIdentifier("empty_page_subtitle_text")
         }
-        .padding(.top, 200)
+        .padding(.top, isHorizontal ? 20 : 200)
         .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
     }
 }
