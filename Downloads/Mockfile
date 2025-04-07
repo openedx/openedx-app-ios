@@ -1,0 +1,18 @@
+sourceryCommand: mint run krzysztofzablocki/Sourcery@2.1.2 sourcery
+sourceryTemplate: ../MockTemplate.swifttemplate
+unit.tests.mock:
+  sources:
+    include:
+    - ./../Core
+    - ./Downloads
+    exclude: []
+  output: ./DownloadsTests/Downloads Mock.generated.swift
+  targets:
+  - MyAppUnitTests
+  import:
+  - Core
+  - Downloads
+  - Foundation
+  - SwiftUI
+  - Combine
+  - OEXFoundation

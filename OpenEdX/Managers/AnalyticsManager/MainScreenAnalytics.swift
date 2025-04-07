@@ -11,6 +11,7 @@ import Foundation
 public protocol MainScreenAnalytics: Sendable {
     func mainDiscoveryTabClicked()
     func mainLearnTabClicked()
+    func mainDownloadsTabClicked()
     func mainProfileTabClicked()
     func mainProgramsTabClicked()
     func mainCoursesClicked()
@@ -22,6 +23,7 @@ public protocol MainScreenAnalytics: Sendable {
 final public class MainScreenAnalyticsMock: MainScreenAnalytics {
     public func mainDiscoveryTabClicked() {}
     public func mainLearnTabClicked() {}
+    public func mainDownloadsTabClicked() {}
     public func mainProfileTabClicked() {}
     public func mainProgramsTabClicked() {}
     public func mainProgramsClicked() {}

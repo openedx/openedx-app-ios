@@ -231,7 +231,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
 
         var result = false
         
-        Given(interactor, .voteThread(voted: .any, threadID: .any, willThrow: NSError()))
+        Given(interactor, .voteThread(voted: .any, threadID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         result = await viewModel.vote(id: "1", isThread: true, voted: true, index: nil, courseID: "courseID")
         
@@ -343,7 +343,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
 
         var result = false
 
-        Given(interactor, .flagThread(abuseFlagged: .any, threadID: .any, willThrow: NSError()))
+        Given(interactor, .flagThread(abuseFlagged: .any, threadID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         result = await viewModel.flag(id: "1", isThread: true, abuseFlagged: true, index: nil, courseID: "courseID")
         
@@ -426,7 +426,7 @@ final class BaseResponsesViewModelTests: XCTestCase {
 
         var result = false
 
-        Given(interactor, .followThread(following: .any, threadID: .any, willThrow: NSError()))
+        Given(interactor, .followThread(following: .any, threadID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         result = await viewModel.followThread(following: true, threadID: "1")
 

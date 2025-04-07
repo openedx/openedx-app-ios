@@ -95,7 +95,7 @@ final class DeleteAccountViewModelTests: XCTestCase {
             analytics: ProfileAnalyticsMock()
         )
         
-        Given(interactor, .deleteAccount(password: .any, willThrow: NSError()))
+        Given(interactor, .deleteAccount(password: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         try await viewModel.deleteAccount(password: "123")
         

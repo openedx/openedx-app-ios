@@ -100,7 +100,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                                                         router: router,
                                                         debounce: .test)
 
-        Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willThrow: NSError()))
+        Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
 
         viewModel.searchText = "Test"
         

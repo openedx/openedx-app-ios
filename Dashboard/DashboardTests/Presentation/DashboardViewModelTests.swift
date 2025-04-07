@@ -162,7 +162,7 @@ final class ListDashboardViewModelTests: XCTestCase {
         )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getEnrollments(page: .any, willThrow: NSError()) )
+        Given(interactor, .getEnrollments(page: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)) )
         
         await viewModel.getMyCourses(page: 1)
         

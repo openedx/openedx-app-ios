@@ -25,6 +25,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Dashboard/DashboardTests
   - Discovery/DiscoveryTests
   - Discussion/DiscussionTests
+  - Downloads/DownloadsTests
   - Profile/ProfileTests
   - WhatsNew/WhatsNewTests
   - Theme/ThemeTests
@@ -35,6 +36,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Discussion/Discussion/SwiftGen
   - Discovery/Discovery/SwiftGen
   - Dashboard/Dashboard/SwiftGen
+  - Downloads/Downloads/SwiftGen
   - Profile/Profile/SwiftGen
   - WhatsNew/WhatsNew/SwiftGen
   - Theme/Theme/SwiftGen

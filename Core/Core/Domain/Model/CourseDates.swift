@@ -350,17 +350,3 @@ public enum CompletionStatus: String, Sendable {
         }
     }
 }
-
-public extension Array {
-    mutating func modifyForEach(_ body: (_ element: inout Element) -> Void) {
-        for index in indices {
-            modifyElement(atIndex: index) { body(&$0) }
-        }
-    }
-
-    mutating func modifyElement(atIndex index: Index, _ modifyElement: (_ element: inout Element) -> Void) {
-        var element = self[index]
-        modifyElement(&element)
-        self[index] = element
-    }
-}

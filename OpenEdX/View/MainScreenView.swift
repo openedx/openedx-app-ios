@@ -10,6 +10,7 @@ import Discovery
 import Core
 import Swinject
 import Dashboard
+import Downloads
 import Profile
 import WhatsNew
 import SwiftUIIntrospect
@@ -141,6 +142,20 @@ struct MainScreenView: View {
                 .accessibilityIdentifier("discovery_tabitem")
             }
             
+            if viewModel.config.experimentalFeatures.appLevelDownloadsEnabled {
+                AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
+                .tabItem {
+                    if viewModel.selection == .downloads {
+                        CoreAssets.downloadsActive.swiftUIImage.renderingMode(.template)
+                    } else {
+                        CoreAssets.downloadsInactive.swiftUIImage.renderingMode(.template)
+                    }
+                    Text(DownloadsLocalization.Downloads.title)
+                }
+                .tag(MainTab.downloads)
+                .accessibilityIdentifier("downloads_tabitem")
+            }
+            
             VStack {
                 ProfileView(
                     viewModel: Container.shared.resolve(ProfileViewModel.self)!
@@ -157,19 +172,21 @@ struct MainScreenView: View {
             .tag(MainTab.profile)
             .accessibilityIdentifier("profile_tabitem")
         }
-        .navigationBarHidden(viewModel.selection == .dashboard)
-        .navigationBarBackButtonHidden(viewModel.selection == .dashboard)
+        .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
+        .navigationBarBackButtonHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
         .navigationTitle(titleBar())
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing, content: {
-                Button(action: {
-                    let router = Container.shared.resolve(ProfileRouter.self)!
-                    router.showSettings()
-                }, label: {
-                    CoreAssets.settings.swiftUIImage.renderingMode(.template)
-                        .foregroundColor(Theme.Colors.accentColor)
-                })
-                .accessibilityIdentifier("edit_profile_button")
+                if viewModel.selection != .downloads {
+                    Button(action: {
+                        let router = Container.shared.resolve(ProfileRouter.self)!
+                        router.showSettings()
+                    }, label: {
+                        CoreAssets.settings.swiftUIImage.renderingMode(.template)
+                            .foregroundColor(Theme.Colors.accentColor)
+                    })
+                    .accessibilityIdentifier("edit_profile_button")
+                }
             })
         }
         .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
@@ -201,6 +218,8 @@ struct MainScreenView: View {
                 viewModel.trackMainProgramsTabClicked()
             case .profile:
                 viewModel.trackMainProfileTabClicked()
+            case .downloads:
+                viewModel.trackMainDownloadsTabClicked()
             }
         })
         .onFirstAppear {
@@ -242,6 +261,8 @@ struct MainScreenView: View {
             : DashboardLocalization.Learn.title
         case .programs:
             return CoreLocalization.Mainscreen.programs
+        case .downloads:
+            return DownloadsLocalization.Downloads.title
         case .profile:
             return ProfileLocalization.title
         }

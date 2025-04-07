@@ -1,0 +1,22 @@
+/* 
+  Localizable.strings
+  Downloads
+
+  Created by Ivan Stepanok on 22.02.2025.
+  
+*/
+
+"DOWNLOADS.TITLE" = "Downloads";
+"DOWNLOADS.MANAGE_DOWNLOAD_SETTINGS" = "Manage Download Settings";
+"DOWNLOADS.NO_COURSES_TO_DOWNLOAD.TITLE" = "No Courses with Downloadable Content";
+"DOWNLOADS.NO_COURSES_TO_DOWNLOAD.DESCRIPTION" = "You currently have no courses with downloadable content.";
+
+"DOWNLOADS.CELL.DOWNLOADED" = "%@ downloaded";
+"DOWNLOADS.CELL.ALL_DOWNLOADED" = "All %@ downloaded";
+"DOWNLOADS.CELL.AVAILABLE" = "%@ available";
+"DOWNLOADS.CELL.DOWNLOAD_COURSE" = "Download course";
+"DOWNLOADS.CELL.DOWNLOADING" = "Downloading";
+"DOWNLOADS.CELL.LOADING_COURSE_STRUCTURE" = "Loading course structure...";
+
+"MENU_OPTION.REMOVE" = "Remove course downloads";
+"MENU_OPTION.CANCEL" = "Cancel download";

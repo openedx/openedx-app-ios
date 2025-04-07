@@ -154,7 +154,7 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
         )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getPrimaryEnrollment(pageSize: .any, willThrow: NSError()))
+        Given(interactor, .getPrimaryEnrollment(pageSize: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         // When
         await viewModel.getEnrollments()

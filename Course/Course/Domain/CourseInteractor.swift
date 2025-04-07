@@ -24,7 +24,7 @@ public protocol CourseInteractorProtocol: Sendable {
     func shiftDueDates(courseID: String) async throws
 }
 
-public actor CourseInteractor: CourseInteractorProtocol {
+public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerProtocol {
     
     private let repository: CourseRepositoryProtocol
     

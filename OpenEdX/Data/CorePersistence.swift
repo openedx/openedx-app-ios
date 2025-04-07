@@ -417,20 +417,3 @@ public final class CorePersistence: CorePersistenceProtocol {
         return "\(userId)_\(id)"
     }
 }
-
-extension Array where Element == DownloadDataTask {
-    func filter(userId: Int?) -> [DownloadDataTask] {
-        filter {
-            guard let userId else {
-                return true
-            }
-            return $0.userId == userId
-        }
-    }
-}
-
-extension Array where Element == CDDownloadData {
-    func downloadDataTasks() -> [DownloadDataTask] {
-        compactMap { DownloadDataTask(sourse: $0) }
-    }
-}
