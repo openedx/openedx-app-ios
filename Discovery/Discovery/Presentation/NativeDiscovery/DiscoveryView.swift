@@ -200,7 +200,6 @@ public struct DiscoveryView: View {
                     viewModel.router.showCourseDetais(courseID: courseID, title: courseTitle)
                 }
             }
-            viewModel.setupNotifications()
         }
         .background(Theme.Colors.background.ignoresSafeArea())
     }

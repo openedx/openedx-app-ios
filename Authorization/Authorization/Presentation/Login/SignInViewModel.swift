@@ -162,6 +162,8 @@ public class SignInViewModel: ObservableObject {
             errorMessage = CoreLocalization.Error.invalidCredentials
         } else if error.isInternetError {
             errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+        } else if error.isUpdateRequeiredError {
+            router.showUpdateRequiredView(showAccountLink: false)
         } else {
             errorMessage = CoreLocalization.Error.unknownError
         }

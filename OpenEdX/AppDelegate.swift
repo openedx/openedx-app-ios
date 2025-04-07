@@ -43,6 +43,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initDI()
         initPlugins()
         
+        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.updateRequired)
+        
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
             Theme.Shapes.buttonCornersRadius = config.theme.buttonCornersRadius

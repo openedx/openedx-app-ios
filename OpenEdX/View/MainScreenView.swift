@@ -84,7 +84,6 @@ struct MainScreenView: View {
                 ZStack {
                     PrimaryCourseDashboardView(
                         viewModel: Container.shared.resolve(PrimaryCourseDashboardViewModel.self)!,
-                        router: Container.shared.resolve(DashboardRouter.self)!,
                         programView: ProgramWebviewView(
                             viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
                             router: Container.shared.resolve(DiscoveryRouter.self)!

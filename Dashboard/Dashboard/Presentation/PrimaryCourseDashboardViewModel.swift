@@ -2,7 +2,7 @@
 //  PrimaryCourseDashboardViewModel.swift
 //  Dashboard
 //
-//  Created by  Stepanok Ivan on 16.04.2024.
+//  Created by  Stepanok Ivan on 16.04.2024.
 //
 
 import Foundation
@@ -19,6 +19,8 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     @Published var enrollments: PrimaryEnrollment?
     @Published var showError: Bool = false
     @Published var updateNeeded: Bool = false
+    private var updateShowedOnce: Bool = false
+    
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -32,6 +34,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     let analytics: DashboardAnalytics
     let config: ConfigProtocol
     let storage: CoreStorage
+    let router: DashboardRouter
     private var cancellables = Set<AnyCancellable>()
 
     private let ipadPageSize = 7
@@ -42,13 +45,15 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
         connectivity: ConnectivityProtocol,
         analytics: DashboardAnalytics,
         config: ConfigProtocol,
-        storage: CoreStorage
+        storage: CoreStorage,
+        router: DashboardRouter
     ) {
         self.interactor = interactor
         self.connectivity = connectivity
         self.analytics = analytics
         self.config = config
         self.storage = storage
+        self.router = router
         
         let enrollmentPublisher = NotificationCenter.default.publisher(for: .onCourseEnrolled)
         let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
@@ -82,6 +87,33 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             .store(in: &cancellables)
     }
     
+    func setupNotifications() {
+        NotificationCenter.default.publisher(for: .onActualVersionReceived)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] notification in
+                if let latestVersion = notification.object as? String {
+                    // Save the latest version to UserDefaults
+                    UserDefaults.standard.set(latestVersion, forKey: UserDefaultsKeys.latestVersion)
+                    
+                    if let info = Bundle.main.infoDictionary {
+                        guard let currentVersion = info["CFBundleShortVersionString"] as? String,
+                                let self else { return }
+                        switch self.compareVersions(currentVersion, latestVersion) {
+                        case .orderedAscending:
+                            if self.updateShowedOnce == false {
+                                DispatchQueue.main.async {
+                                    self.router.showUpdateRecomendedView()
+                                }
+                                self.updateShowedOnce = true
+                            }
+                        default:
+                            return
+                        }
+                    }
+                }
+            }.store(in: &cancellables)
+    }
+    
     private func updateEnrollmentsIfNeeded() {
         guard updateNeeded else { return }
         Task {
@@ -106,6 +138,9 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             fetchInProgress = false
             if error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.noCachedData
+            } else if error.isUpdateRequeiredError {
+                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.updateRequired)
+                self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
@@ -114,5 +149,31 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     
     func trackDashboardCourseClicked(courseID: String, courseName: String) {
         analytics.dashboardCourseClicked(courseID: courseID, courseName: courseName)
+    }
+    
+    private func compareVersions(_ version1: String, _ version2: String) -> ComparisonResult {
+        let components1 = version1.components(separatedBy: ".").prefix(2)
+        let components2 = version2.components(separatedBy: ".").prefix(2)
+        
+        guard let major1 = Int(components1.first ?? ""),
+              let minor1 = Int(components1.last ?? ""),
+              let major2 = Int(components2.first ?? ""),
+              let minor2 = Int(components2.last ?? "") else {
+            return .orderedSame
+        }
+        
+        if major1 < major2 {
+            return .orderedAscending
+        } else if major1 > major2 {
+            return .orderedDescending
+        } else {
+            if minor1 < minor2 {
+                return .orderedAscending
+            } else if minor1 > minor2 {
+                return .orderedDescending
+            } else {
+                return .orderedSame
+            }
+        }
     }
 }
