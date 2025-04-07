@@ -68,7 +68,7 @@
 		CE517F4E2D9C0AA80012EF71 /* TextConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F472D9C0AA80012EF71 /* TextConverter.swift */; };
 		CE517F4F2D9C0AA80012EF71 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F482D9C0AA80012EF71 /* Tokenizer.swift */; };
 		CE517F572D9C17D40012EF71 /* HTMLContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F562D9C17D40012EF71 /* HTMLContentView.swift */; };
-		CE517F592D9C17F60012EF71 /* HTMLImageHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F582D9C17F60012EF71 /* HTMLImageHandler.swift */; };
+		CE517F592D9C17F60012EF71 /* HTMLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F582D9C17F60012EF71 /* HTMLImageView.swift */; };
 		CE7CAF472CC1566D00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF462CC1566D00E0AC9D /* OEXFoundation */; };
 		CEB1E2762CC14ED700921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2752CC14ED700921517 /* OEXFoundation */; };
 /* End PBXBuildFile section */
@@ -183,7 +183,7 @@
 		CE517F472D9C0AA80012EF71 /* TextConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextConverter.swift; sourceTree = "<group>"; };
 		CE517F482D9C0AA80012EF71 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		CE517F562D9C17D40012EF71 /* HTMLContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentView.swift; sourceTree = "<group>"; };
-		CE517F582D9C17F60012EF71 /* HTMLImageHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageHandler.swift; sourceTree = "<group>"; };
+		CE517F582D9C17F60012EF71 /* HTMLImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageView.swift; sourceTree = "<group>"; };
 		ED561A5DE961B1E12B42F4E0 /* Pods-App-Discussion.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F57B9404423B3E624DD25D81 /* Pods-App-Discussion.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasestage.xcconfig"; sourceTree = "<group>"; };
 		FE1509B856949D2742A10836 /* Pods-App-Discussion-DiscussionTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; sourceTree = "<group>"; };
@@ -489,7 +489,7 @@
 				CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */,
 				CE517F432D9C0AA80012EF71 /* BlockState.swift */,
 				CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */,
-				CE517F582D9C17F60012EF71 /* HTMLImageHandler.swift */,
+				CE517F582D9C17F60012EF71 /* HTMLImageView.swift */,
 				CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */,
 				CE517F472D9C0AA80012EF71 /* TextConverter.swift */,
 				CE517F482D9C0AA80012EF71 /* Tokenizer.swift */,
@@ -668,13 +668,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -749,7 +745,7 @@
 				02D1267428F75BB700C8E689 /* Data_TopicsResponse.swift in Sources */,
 				02D1266E28F73BA700C8E689 /* DiscussionRepository.swift in Sources */,
 				0218197828F7363000202564 /* DiscussionEndpoint.swift in Sources */,
-				CE517F592D9C17F60012EF71 /* HTMLImageHandler.swift in Sources */,
+				CE517F592D9C17F60012EF71 /* HTMLImageView.swift in Sources */,
 				023F14AB291BF30300FD0EFF /* CommentCell.swift in Sources */,
 				0766DFCA299AA3D400EBEF6A /* Data_CreatedComment.swift in Sources */,
 				0218197228F735B300202564 /* Strings.swift in Sources */,

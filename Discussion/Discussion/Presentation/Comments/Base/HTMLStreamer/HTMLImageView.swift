@@ -1,5 +1,5 @@
 //
-//  HTMLImageHandler.swift
+//  HTMLImageView.swift
 //  Discussion
 //
 //  Created by  Stepanok Ivan on 3.04.2025.
