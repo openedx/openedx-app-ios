@@ -155,7 +155,6 @@
 		CE38BBD72D9D8294002CD276 /* ExperimentalFeaturesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE38BBD62D9D8294002CD276 /* ExperimentalFeaturesConfig.swift */; };
 		CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */; };
 		CE57127C2CD109DB00D4AB17 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE57127B2CD109DB00D4AB17 /* OEXFoundation */; };
-		CE5CD22C2D9EE70D00BB3CA1 /* UserDefaultsKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5CD22B2D9EE70D00BB3CA1 /* UserDefaultsKeys.swift */; };
 		CE7CAF392CC1561E00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF382CC1561E00E0AC9D /* OEXFoundation */; };
 		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
 		CEC873BE2D75D55600A2626C /* CourseStructureManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */; };
@@ -373,7 +372,6 @@
 		CE1D5B7C2CE65D360019CA34 /* Protected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protected.swift; sourceTree = "<group>"; };
 		CE38BBD62D9D8294002CD276 /* ExperimentalFeaturesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeaturesConfig.swift; sourceTree = "<group>"; };
 		CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerTests.swift; sourceTree = "<group>"; };
-		CE5CD22B2D9EE70D00BB3CA1 /* UserDefaultsKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultsKeys.swift; sourceTree = "<group>"; };
 		CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMock.generated.swift; sourceTree = "<group>"; };
 		CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureManagerProtocol.swift; sourceTree = "<group>"; };
 		CEC875352D7845DB00A2626C /* DownloadActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadActionView.swift; sourceTree = "<group>"; };
@@ -498,7 +496,6 @@
 				0283347F28D4DCD200C828FC /* ViewExtension.swift */,
 				02F6EF4928D9F0A700835477 /* DateExtension.swift */,
 				07460FE2294B72D700F70538 /* Notification.swift */,
-				CE5CD22B2D9EE70D00BB3CA1 /* UserDefaultsKeys.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1267,7 +1264,6 @@
 				BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */,
 				02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */,
 				027BD3AD2909475000392132 /* KeyboardScroller.swift in Sources */,
-				CE5CD22C2D9EE70D00BB3CA1 /* UserDefaultsKeys.swift in Sources */,
 				070019A528F6F17900D5FC78 /* Data_Media.swift in Sources */,
 				024D723529C8BB1A006D36ED /* NavigationBar.swift in Sources */,
 				0727877928D23BE0002E9142 /* RequestInterceptor.swift in Sources */,

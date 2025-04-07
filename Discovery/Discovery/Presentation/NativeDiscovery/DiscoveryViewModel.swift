@@ -36,7 +36,7 @@ public final class DiscoveryViewModel: ObservableObject {
     let connectivity: ConnectivityProtocol
     private let interactor: DiscoveryInteractorProtocol
     private let analytics: DiscoveryAnalytics
-    let storage: CoreStorage
+    var storage: CoreStorage
     
     public init(
         router: DiscoveryRouter,
@@ -97,7 +97,7 @@ public final class DiscoveryViewModel: ObservableObject {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else if error.isUpdateRequeiredError {
-                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.updateRequired)
+                storage.updateRequired = true
                 self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError

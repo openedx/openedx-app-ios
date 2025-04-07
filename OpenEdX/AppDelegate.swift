@@ -43,7 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initDI()
         initPlugins()
         
-        UserDefaults.standard.set(false, forKey: UserDefaultsKeys.updateRequired)
+        if var storage = Container.shared.resolve(CoreStorage.self) {
+            storage.updateRequired = false
+        }
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners

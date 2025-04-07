@@ -75,6 +75,7 @@ public final class SettingsViewModel: ObservableObject {
     let config: ConfigProtocol
     let corePersistence: CorePersistenceProtocol
     let connectivity: ConnectivityProtocol
+    var storage: ProfileStorage
     
     public init(
         interactor: ProfileInteractorProtocol,
@@ -84,7 +85,8 @@ public final class SettingsViewModel: ObservableObject {
         coreAnalytics: CoreAnalytics,
         config: ConfigProtocol,
         corePersistence: CorePersistenceProtocol,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        storage: ProfileStorage
     ) {
         self.interactor = interactor
         self.downloadManager = downloadManager
@@ -94,6 +96,7 @@ public final class SettingsViewModel: ObservableObject {
         self.config = config
         self.corePersistence = corePersistence
         self.connectivity = connectivity
+        self.storage = storage
         
         let userSettings = interactor.getSettings()
         self.userSettings = userSettings
@@ -108,12 +111,12 @@ public final class SettingsViewModel: ObservableObject {
         guard let currentVersion = info["CFBundleShortVersionString"] as? String else { return }
         self.currentVersion = currentVersion
         
-        guard !UserDefaults.standard.bool(forKey: UserDefaultsKeys.updateRequired) else {
+        guard !storage.updateRequired else {
             self.versionState = .updateRequired
             return
         }
         
-        if let latestVersion = UserDefaults.standard.string(forKey: UserDefaultsKeys.latestVersion) {
+        if let latestVersion = storage.latestVersion {
             self.latestVersion = latestVersion
             
             if isVersion(latestVersion, greaterThan: currentVersion) {

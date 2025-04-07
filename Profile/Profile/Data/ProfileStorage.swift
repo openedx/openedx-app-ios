@@ -19,6 +19,8 @@ public protocol ProfileStorage: Sendable {
     var lastCalendarName: String? {get set}
     var lastCalendarUpdateDate: Date? {get set}
     var firstCalendarUpdate: Bool? {get set}
+    var latestVersion: String? {get set}
+    var updateRequired: Bool {get set}
 }
 
 #if DEBUG
@@ -32,6 +34,8 @@ public final class ProfileStorageMock: ProfileStorage, @unchecked Sendable {
     public var lastCalendarName: String?
     public var lastCalendarUpdateDate: Date?
     public var firstCalendarUpdate: Bool?
+    public var latestVersion: String?
+    public var updateRequired: Bool = false
     
     public init() {}
 }

@@ -33,7 +33,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     private let interactor: DashboardInteractorProtocol
     let analytics: DashboardAnalytics
     let config: ConfigProtocol
-    let storage: CoreStorage
+    var storage: CoreStorage
     let router: DashboardRouter
     private var cancellables = Set<AnyCancellable>()
 
@@ -92,8 +92,8 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] notification in
                 if let latestVersion = notification.object as? String {
-                    // Save the latest version to UserDefaults
-                    UserDefaults.standard.set(latestVersion, forKey: UserDefaultsKeys.latestVersion)
+                    // Save the latest version to storage
+                    self?.storage.latestVersion = latestVersion
                     
                     if let info = Bundle.main.infoDictionary {
                         guard let currentVersion = info["CFBundleShortVersionString"] as? String,
@@ -139,7 +139,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             if error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.noCachedData
             } else if error.isUpdateRequeiredError {
-                UserDefaults.standard.set(true, forKey: UserDefaultsKeys.updateRequired)
+                storage.updateRequired = true
                 self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
