@@ -38,201 +38,192 @@ struct MainScreenView: View {
     }
     
     var body: some View {
-        TabView(selection: $viewModel.selection) {
-            switch viewModel.config.dashboard.type {
-            case .list:
-                ZStack {
-                    ListDashboardView(
-                        viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
-                        router: Container.shared.resolve(DashboardRouter.self)!
-                    )
-                    
-                    if updateAvailable {
-                        UpdateNotificationView(config: viewModel.config)
-                    }
-                    registerBanner
-                }
-                .tabItem {
-                    CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
-                    Text(CoreLocalization.Mainscreen.dashboard)
-                }
-                .tag(MainTab.dashboard)
-                .accessibilityIdentifier("dashboard_tabitem")
-                .animation(.easeInOut, value: viewModel.showRegisterBanner)
-                if viewModel.config.program.enabled {
+        ZStack(alignment: .bottom) {
+            TabView(selection: $viewModel.selection) {
+                switch viewModel.config.dashboard.type {
+                case .list:
                     ZStack {
-                        if viewModel.config.program.type == .webview {
-                            ProgramWebviewView(
+                        ListDashboardView(
+                            viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
+                            router: Container.shared.resolve(DashboardRouter.self)!
+                        )
+
+                        registerBanner
+                    }
+                    .tabItem {
+                        CoreAssets.dashboard.swiftUIImage.renderingMode(.template)
+                        Text(CoreLocalization.Mainscreen.dashboard)
+                    }
+                    .tag(MainTab.dashboard)
+                    .accessibilityIdentifier("dashboard_tabitem")
+                    .animation(.easeInOut, value: viewModel.showRegisterBanner)
+                    if viewModel.config.program.enabled {
+                        ZStack {
+                            if viewModel.config.program.type == .webview {
+                                ProgramWebviewView(
+                                    viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
+                                    router: Container.shared.resolve(DiscoveryRouter.self)!
+                                )
+                            } else if viewModel.config.program.type == .native {
+                                Text(CoreLocalization.Mainscreen.inDeveloping)
+                            }
+                        }
+                        .tabItem {
+                            CoreAssets.programs.swiftUIImage.renderingMode(.template)
+                            Text(CoreLocalization.Mainscreen.programs)
+                        }
+                        .tag(MainTab.programs)
+                    }
+                case .gallery:
+                    ZStack {
+                        PrimaryCourseDashboardView(
+                            viewModel: Container.shared.resolve(PrimaryCourseDashboardViewModel.self)!,
+                            programView: ProgramWebviewView(
                                 viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
                                 router: Container.shared.resolve(DiscoveryRouter.self)!
-                            )
-                        } else if viewModel.config.program.type == .native {
-                            Text(CoreLocalization.Mainscreen.inDeveloping)
+                            ),
+                            openDiscoveryPage: { viewModel.selection = .discovery }
+                        )
+                        registerBanner
+                    }
+                    .tabItem {
+                        if viewModel.selection == .dashboard {
+                            CoreAssets.learnActive.swiftUIImage.renderingMode(.template)
+                        } else {
+                            CoreAssets.learnInactive.swiftUIImage.renderingMode(.template)
                         }
-                        
-                        if updateAvailable {
-                            UpdateNotificationView(config: viewModel.config)
+                        Text(CoreLocalization.Mainscreen.learn)
+                    }
+                    .tag(MainTab.dashboard)
+                    .accessibilityIdentifier("dashboard_tabitem")
+                    .animation(.easeInOut, value: viewModel.showRegisterBanner)
+                }
+                
+                if viewModel.config.discovery.enabled {
+                    ZStack {
+                        if viewModel.config.discovery.type == .native {
+                            DiscoveryView(
+                                viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
+                                router: Container.shared.resolve(DiscoveryRouter.self)!,
+                                sourceScreen: viewModel.sourceScreen
+                            )
+                        } else if viewModel.config.discovery.type == .webview {
+                            DiscoveryWebview(
+                                viewModel: Container.shared.resolve(
+                                    DiscoveryWebviewViewModel.self,
+                                    argument: viewModel.sourceScreen)!,
+                                router: Container.shared.resolve(DiscoveryRouter.self)!
+                            )
                         }
                     }
                     .tabItem {
-                        CoreAssets.programs.swiftUIImage.renderingMode(.template)
-                        Text(CoreLocalization.Mainscreen.programs)
+                        if viewModel.selection == .discovery {
+                            CoreAssets.discoverActive.swiftUIImage.renderingMode(.template)
+                        } else {
+                            CoreAssets.discoverInactive.swiftUIImage.renderingMode(.template)
+                        }
+                        Text(CoreLocalization.Mainscreen.discovery)
                     }
-                    .tag(MainTab.programs)
+                    .tag(MainTab.discovery)
+                    .accessibilityIdentifier("discovery_tabitem")
                 }
-            case .gallery:
-                ZStack {
-                    PrimaryCourseDashboardView(
-                        viewModel: Container.shared.resolve(PrimaryCourseDashboardViewModel.self)!,
-                        programView: ProgramWebviewView(
-                            viewModel: Container.shared.resolve(ProgramWebviewViewModel.self)!,
-                            router: Container.shared.resolve(DiscoveryRouter.self)!
-                        ),
-                        openDiscoveryPage: { viewModel.selection = .discovery }
+                
+                if viewModel.config.experimentalFeatures.appLevelDownloadsEnabled {
+                    AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
+                        .tabItem {
+                            if viewModel.selection == .downloads {
+                                CoreAssets.downloadsActive.swiftUIImage.renderingMode(.template)
+                            } else {
+                                CoreAssets.downloadsInactive.swiftUIImage.renderingMode(.template)
+                            }
+                            Text(DownloadsLocalization.Downloads.title)
+                        }
+                        .tag(MainTab.downloads)
+                        .accessibilityIdentifier("downloads_tabitem")
+                }
+                
+                VStack {
+                    ProfileView(
+                        viewModel: Container.shared.resolve(ProfileViewModel.self)!
                     )
-                    if updateAvailable {
-                        UpdateNotificationView(config: viewModel.config)
-                    }
-                    registerBanner
                 }
                 .tabItem {
-                    if viewModel.selection == .dashboard {
-                        CoreAssets.learnActive.swiftUIImage.renderingMode(.template)
+                    if viewModel.selection == .profile {
+                        CoreAssets.profileActive.swiftUIImage.renderingMode(.template)
                     } else {
-                        CoreAssets.learnInactive.swiftUIImage.renderingMode(.template)
+                        CoreAssets.profileInactive.swiftUIImage.renderingMode(.template)
                     }
-                    Text(CoreLocalization.Mainscreen.learn)
+                    Text(CoreLocalization.Mainscreen.profile)
                 }
-                .tag(MainTab.dashboard)
-                .accessibilityIdentifier("dashboard_tabitem")
-                .animation(.easeInOut, value: viewModel.showRegisterBanner)
+                .tag(MainTab.profile)
+                .accessibilityIdentifier("profile_tabitem")
             }
-            
-            if viewModel.config.discovery.enabled {
-                ZStack {
-                    if viewModel.config.discovery.type == .native {
-                        DiscoveryView(
-                            viewModel: Container.shared.resolve(DiscoveryViewModel.self)!,
-                            router: Container.shared.resolve(DiscoveryRouter.self)!,
-                            sourceScreen: viewModel.sourceScreen
-                        )
-                    } else if viewModel.config.discovery.type == .webview {
-                        DiscoveryWebview(
-                            viewModel: Container.shared.resolve(
-                                DiscoveryWebviewViewModel.self,
-                                argument: viewModel.sourceScreen)!,
-                            router: Container.shared.resolve(DiscoveryRouter.self)!
-                        )
+            .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
+            .navigationBarBackButtonHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
+            .navigationTitle(titleBar())
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing, content: {
+                    if viewModel.selection != .downloads {
+                        Button(action: {
+                            let router = Container.shared.resolve(ProfileRouter.self)!
+                            router.showSettings()
+                        }, label: {
+                            CoreAssets.settings.swiftUIImage.renderingMode(.template)
+                                .foregroundColor(Theme.Colors.accentColor)
+                        })
+                        .accessibilityIdentifier("edit_profile_button")
                     }
-                    
-                    if updateAvailable {
-                        UpdateNotificationView(config: viewModel.config)
+                })
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
+                viewModel.selection = .profile
+                disableAllTabs = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
+                updateAvailable = true
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .showDownloadFailed)) { downloads in
+                if let downloads = downloads.object as? [DownloadDataTask] {
+                    Task {
+                        await viewModel.showDownloadFailed(downloads: downloads)
                     }
                 }
-                .tabItem {
-                    if viewModel.selection == .discovery {
-                        CoreAssets.discoverActive.swiftUIImage.renderingMode(.template)
-                    } else {
-                        CoreAssets.discoverInactive.swiftUIImage.renderingMode(.template)
-                    }
-                    Text(CoreLocalization.Mainscreen.discovery)
+            }
+            .onChange(of: viewModel.selection) { _ in
+                if disableAllTabs {
+                    viewModel.selection = .profile
                 }
-                .tag(MainTab.discovery)
-                .accessibilityIdentifier("discovery_tabitem")
             }
-            
-            if viewModel.config.experimentalFeatures.appLevelDownloadsEnabled {
-                AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
-                .tabItem {
-                    if viewModel.selection == .downloads {
-                        CoreAssets.downloadsActive.swiftUIImage.renderingMode(.template)
-                    } else {
-                        CoreAssets.downloadsInactive.swiftUIImage.renderingMode(.template)
-                    }
-                    Text(DownloadsLocalization.Downloads.title)
-                }
-                .tag(MainTab.downloads)
-                .accessibilityIdentifier("downloads_tabitem")
-            }
-            
-            VStack {
-                ProfileView(
-                    viewModel: Container.shared.resolve(ProfileViewModel.self)!
-                )
-            }
-            .tabItem {
-                if viewModel.selection == .profile {
-                    CoreAssets.profileActive.swiftUIImage.renderingMode(.template)
-                } else {
-                    CoreAssets.profileInactive.swiftUIImage.renderingMode(.template)
-                }
-                Text(CoreLocalization.Mainscreen.profile)
-            }
-            .tag(MainTab.profile)
-            .accessibilityIdentifier("profile_tabitem")
-        }
-        .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
-        .navigationBarBackButtonHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
-        .navigationTitle(titleBar())
-        .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing, content: {
-                if viewModel.selection != .downloads {
-                    Button(action: {
-                        let router = Container.shared.resolve(ProfileRouter.self)!
-                        router.showSettings()
-                    }, label: {
-                        CoreAssets.settings.swiftUIImage.renderingMode(.template)
-                            .foregroundColor(Theme.Colors.accentColor)
-                    })
-                    .accessibilityIdentifier("edit_profile_button")
+            .onChange(of: viewModel.selection, perform: { selection in
+                switch selection {
+                case .discovery:
+                    viewModel.trackMainDiscoveryTabClicked()
+                case .dashboard:
+                    viewModel.trackMainDashboardLearnTabClicked()
+                case .programs:
+                    viewModel.trackMainProgramsTabClicked()
+                case .profile:
+                    viewModel.trackMainProfileTabClicked()
+                case .downloads:
+                    viewModel.trackMainDownloadsTabClicked()
                 }
             })
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
-            viewModel.selection = .profile
-            disableAllTabs = true
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
-            updateAvailable = true
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .showDownloadFailed)) { downloads in
-            if let downloads = downloads.object as? [DownloadDataTask] {
+            .onFirstAppear {
                 Task {
-                   await viewModel.showDownloadFailed(downloads: downloads)
+                    await viewModel.prefetchDataForOffline()
+                    await viewModel.loadCalendar()
+                }
+                viewModel.trackMainDashboardLearnTabClicked()
+                viewModel.trackMainDashboardMyCoursesClicked()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                    viewModel.checkIfNeedToShowRegisterBanner()
                 }
             }
-        }
-        .onChange(of: viewModel.selection) { _ in
-            if disableAllTabs {
-                viewModel.selection = .profile
+            .accentColor(Theme.Colors.accentXColor)
+            if updateAvailable {
+                UpdateNotificationView(config: viewModel.config)
             }
         }
-        .onChange(of: viewModel.selection, perform: { selection in
-            switch selection {
-            case .discovery:
-                viewModel.trackMainDiscoveryTabClicked()
-            case .dashboard:
-                viewModel.trackMainDashboardLearnTabClicked()
-            case .programs:
-                viewModel.trackMainProgramsTabClicked()
-            case .profile:
-                viewModel.trackMainProfileTabClicked()
-            case .downloads:
-                viewModel.trackMainDownloadsTabClicked()
-            }
-        })
-        .onFirstAppear {
-            Task {
-                await viewModel.prefetchDataForOffline()
-                await viewModel.loadCalendar()
-            }
-            viewModel.trackMainDashboardLearnTabClicked()
-            viewModel.trackMainDashboardMyCoursesClicked()
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                viewModel.checkIfNeedToShowRegisterBanner()
-            }
-        }
-        .accentColor(Theme.Colors.accentXColor)
     }
     
     @ViewBuilder
