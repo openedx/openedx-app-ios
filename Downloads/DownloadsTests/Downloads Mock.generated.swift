@@ -3072,6 +3072,18 @@ open class CoreStorageMock: CoreStorage, Mock {
 	}
 	private var __p_lastUsedSocialAuth: (String)?
 
+    public var latestVersion: String? {
+		get {	invocations.append(.p_latestVersion_get); return __p_latestVersion ?? optionalGivenGetterValue(.p_latestVersion_get, "CoreStorageMock - stub value for latestVersion was not defined") }
+		set {	invocations.append(.p_latestVersion_set(.value(newValue))); __p_latestVersion = newValue }
+	}
+	private var __p_latestVersion: (String)?
+
+    public var updateRequired: Bool {
+		get {	invocations.append(.p_updateRequired_get); return __p_updateRequired ?? givenGetterValue(.p_updateRequired_get, "CoreStorageMock - stub value for updateRequired was not defined") }
+		set {	invocations.append(.p_updateRequired_set(.value(newValue))); __p_updateRequired = newValue }
+	}
+	private var __p_updateRequired: (Bool)?
+
 
 
 
@@ -3111,6 +3123,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 		case p_useRelativeDates_set(Parameter<Bool>)
         case p_lastUsedSocialAuth_get
 		case p_lastUsedSocialAuth_set(Parameter<String?>)
+        case p_latestVersion_get
+		case p_latestVersion_set(Parameter<String?>)
+        case p_updateRequired_get
+		case p_updateRequired_set(Parameter<Bool>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3141,6 +3157,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case (.p_useRelativeDates_set(let left),.p_useRelativeDates_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             case (.p_lastUsedSocialAuth_get,.p_lastUsedSocialAuth_get): return Matcher.ComparisonResult.match
 			case (.p_lastUsedSocialAuth_set(let left),.p_lastUsedSocialAuth_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_latestVersion_get,.p_latestVersion_get): return Matcher.ComparisonResult.match
+			case (.p_latestVersion_set(let left),.p_latestVersion_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_updateRequired_get,.p_updateRequired_get): return Matcher.ComparisonResult.match
+			case (.p_updateRequired_set(let left),.p_updateRequired_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             default: return .none
             }
         }
@@ -3174,6 +3194,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_useRelativeDates_set(let newValue): return newValue.intValue
             case .p_lastUsedSocialAuth_get: return 0
 			case .p_lastUsedSocialAuth_set(let newValue): return newValue.intValue
+            case .p_latestVersion_get: return 0
+			case .p_latestVersion_set(let newValue): return newValue.intValue
+            case .p_updateRequired_get: return 0
+			case .p_updateRequired_set(let newValue): return newValue.intValue
             }
         }
         func assertionName() -> String {
@@ -3205,6 +3229,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_useRelativeDates_set: return "[set] .useRelativeDates"
             case .p_lastUsedSocialAuth_get: return "[get] .lastUsedSocialAuth"
 			case .p_lastUsedSocialAuth_set: return "[set] .lastUsedSocialAuth"
+            case .p_latestVersion_get: return "[get] .latestVersion"
+			case .p_latestVersion_set: return "[set] .latestVersion"
+            case .p_updateRequired_get: return "[get] .updateRequired"
+			case .p_updateRequired_set: return "[set] .updateRequired"
             }
         }
     }
@@ -3256,6 +3284,12 @@ open class CoreStorageMock: CoreStorage, Mock {
         public static func lastUsedSocialAuth(getter defaultValue: String?...) -> PropertyStub {
             return Given(method: .p_lastUsedSocialAuth_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
+        public static func latestVersion(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_latestVersion_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func updateRequired(getter defaultValue: Bool...) -> PropertyStub {
+            return Given(method: .p_updateRequired_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
 
     }
 
@@ -3289,6 +3323,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 		public static func useRelativeDates(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_useRelativeDates_set(newValue)) }
         public static var lastUsedSocialAuth: Verify { return Verify(method: .p_lastUsedSocialAuth_get) }
 		public static func lastUsedSocialAuth(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_lastUsedSocialAuth_set(newValue)) }
+        public static var latestVersion: Verify { return Verify(method: .p_latestVersion_get) }
+		public static func latestVersion(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_latestVersion_set(newValue)) }
+        public static var updateRequired: Verify { return Verify(method: .p_updateRequired_get) }
+		public static func updateRequired(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_updateRequired_set(newValue)) }
     }
 
     public struct Perform {
