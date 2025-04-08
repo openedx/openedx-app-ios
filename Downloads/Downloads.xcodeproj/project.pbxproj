@@ -69,14 +69,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		CE0E04FA2D6DFFA800B8CF04 /* Exceptions for "Downloads" folder in "Downloads" target */ = {
+		CE0E04FA2D6DFFA800B8CF04 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			publicHeaders = (
 				Downloads.h,
 			);
 			target = CEB36E082D6A0D0B00907A89 /* Downloads */;
 		};
-		CE0E05022D6E00F100B8CF04 /* Exceptions for "Downloads" folder in "DownloadsTests" target */ = {
+		CE0E05022D6E00F100B8CF04 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Data/Persistence/DownloadCoursePreviewModel.xcdatamodeld,
@@ -86,19 +86,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		CE0E04F22D6DFFA800B8CF04 /* Downloads */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				CE0E04FA2D6DFFA800B8CF04 /* Exceptions for "Downloads" folder in "Downloads" target */,
-				CE0E05022D6E00F100B8CF04 /* Exceptions for "Downloads" folder in "DownloadsTests" target */,
-			);
-			explicitFileTypes = {
-			};
-			explicitFolders = (
-			);
-			path = Downloads;
-			sourceTree = "<group>";
-		};
+		CE0E04F22D6DFFA800B8CF04 /* Downloads */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (CE0E04FA2D6DFFA800B8CF04 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, CE0E05022D6E00F100B8CF04 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Downloads; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -339,9 +327,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
