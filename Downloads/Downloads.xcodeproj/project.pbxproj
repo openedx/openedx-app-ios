@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 77;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -91,6 +91,10 @@
 			exceptions = (
 				CE0E04FA2D6DFFA800B8CF04 /* Exceptions for "Downloads" folder in "Downloads" target */,
 				CE0E05022D6E00F100B8CF04 /* Exceptions for "Downloads" folder in "DownloadsTests" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
 			);
 			path = Downloads;
 			sourceTree = "<group>";
@@ -265,6 +269,7 @@
 				};
 			};
 			buildConfigurationList = CEB36E032D6A0D0B00907A89 /* Build configuration list for PBXProject "Downloads" */;
+			compatibilityVersion = "Xcode 13.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -272,11 +277,9 @@
 				Base,
 			);
 			mainGroup = CEB36DFF2D6A0D0B00907A89;
-			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				CEB36E262D6A0D6C00907A89 /* XCRemoteSwiftPackageReference "openedx-app-foundation-ios" */,
 			);
-			preferredProjectObjectVersion = 77;
 			productRefGroup = CEB36E0A2D6A0D0B00907A89 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -336,13 +339,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
