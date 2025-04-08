@@ -85,6 +85,15 @@ abstract_target "App" do
     end
   end
   
+  target "AppDates" do
+    project './AppDates/AppDates.xcodeproj'
+    workspace './AppDates/AppDates.xcodeproj'
+    
+    target 'AppDatesTests' do
+      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+    end
+  end
+  
   target "Discussion" do
     project './Discussion/Discussion.xcodeproj'
     workspace './Discussion/Discussion.xcodeproj'

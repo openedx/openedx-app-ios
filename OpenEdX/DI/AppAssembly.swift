@@ -18,6 +18,7 @@ import Authorization
 import Downloads
 import Profile
 import WhatsNew
+import AppDates
 
 // swiftlint:disable function_body_length
 class AppAssembly: Assembly {
@@ -83,6 +84,10 @@ class AppAssembly: Assembly {
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
+        container.register(AppDatesAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+
         container.register(DownloadsAnalytics.self) { r in
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
@@ -112,6 +117,10 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(AuthorizationRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
+        container.register(AppDatesRouter.self) { r in
             r.resolve(Router.self)!
         }.inObjectScope(.container)
                 

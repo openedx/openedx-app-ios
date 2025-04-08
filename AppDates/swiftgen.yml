@@ -1,0 +1,9 @@
+strings:
+  inputs:
+    - AppDates/en.lproj
+  outputs:
+    - templateName: structured-swift5
+      params:
+        publicAccess: true
+        enumName: AppDatesLocalization
+      output: AppDates/SwiftGen/Strings.swift

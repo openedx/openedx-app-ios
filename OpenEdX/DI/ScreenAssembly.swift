@@ -17,9 +17,10 @@ import Downloads
 import Profile
 import Course
 import Discussion
+import AppDates
 @preconcurrency import Combine
 
-// swiftlint:disable function_body_length closure_parameter_position
+// swiftlint:disable function_body_length closure_parameter_position type_body_length
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
@@ -312,6 +313,42 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(ProfileRouter.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!
+            )
+        }
+        
+        // MARK: AppDates
+        container.register(DatesPersistenceProtocol.self) { r in
+            DatesPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+        }
+
+        container.register(DatesRepositoryProtocol.self) { r in
+            DatesRepository(
+                api: r.resolve(API.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                persistence: r.resolve(DatesPersistenceProtocol.self)!
+            )
+        }
+                
+        container.register(CourseStructureManagerProtocol.self) { r in
+            CourseInteractor(
+                repository: r.resolve(CourseRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(DatesInteractorProtocol.self) { r in
+            DatesInteractor(
+                repository: r.resolve(DatesRepositoryProtocol.self)!
+            )
+        }
+        
+        container.register(DatesViewModel.self) { @MainActor r in
+            DatesViewModel(
+                interactor: r.resolve(DatesInteractorProtocol.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                courseManager: r.resolve(CourseStructureManagerProtocol.self)!,
+                analytics: r.resolve(AppDatesAnalytics.self)!,
+                router: r.resolve(AppDatesRouter.self)!
             )
         }
         
@@ -689,4 +726,4 @@ class ScreenAssembly: Assembly {
         
     }
 }
-// swiftlint:enable function_body_length closure_parameter_position
+// swiftlint:enable function_body_length closure_parameter_position type_body_length

@@ -32,6 +32,9 @@
       location = "group:Discussion/Discussion.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:AppDates/AppDates.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:Theme/Theme.xcodeproj">
    </FileRef>
    <FileRef
