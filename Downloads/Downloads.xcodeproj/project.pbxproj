@@ -8,6 +8,26 @@
 
 /* Begin PBXBuildFile section */
 		1CB2F17F0A984BD27F49F2E9 /* Pods_App_Downloads_DownloadsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3FC4AE0884E758D75EDD5E4 /* Pods_App_Downloads_DownloadsTests.framework */; };
+		CE8648812DA575DF00821EC9 /* Downloads.h in Headers */ = {isa = PBXBuildFile; fileRef = CE86487C2DA575DF00821EC9 /* Downloads.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CE8648822DA575DF00821EC9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE86487E2DA575DF00821EC9 /* Localizable.strings */; };
+		CE8648832DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648632DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift */; };
+		CE8648842DA575DF00821EC9 /* DownloadsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648652DA575DF00821EC9 /* DownloadsEndpoint.swift */; };
+		CE8648852DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE8648672DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld */; };
+		CE8648862DA575DF00821EC9 /* DownloadsPersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648682DA575DF00821EC9 /* DownloadsPersistenceProtocol.swift */; };
+		CE8648872DA575DF00821EC9 /* DownloadsRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86486A2DA575DF00821EC9 /* DownloadsRepository.swift */; };
+		CE8648882DA575DF00821EC9 /* DownloadsStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86486B2DA575DF00821EC9 /* DownloadsStorage.swift */; };
+		CE8648892DA575DF00821EC9 /* DownloadCoursePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86486D2DA575DF00821EC9 /* DownloadCoursePreview.swift */; };
+		CE86488A2DA575DF00821EC9 /* DownloadsHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86486E2DA575DF00821EC9 /* DownloadsHelper.swift */; };
+		CE86488B2DA575DF00821EC9 /* DownloadsHelperProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86486F2DA575DF00821EC9 /* DownloadsHelperProtocol.swift */; };
+		CE86488C2DA575DF00821EC9 /* DownloadsInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648702DA575DF00821EC9 /* DownloadsInteractor.swift */; };
+		CE86488D2DA575DF00821EC9 /* DownloadCourseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648722DA575DF00821EC9 /* DownloadCourseCell.swift */; };
+		CE86488E2DA575DF00821EC9 /* MenuOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648732DA575DF00821EC9 /* MenuOption.swift */; };
+		CE86488F2DA575DF00821EC9 /* AppDownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648752DA575DF00821EC9 /* AppDownloadsView.swift */; };
+		CE8648902DA575DF00821EC9 /* AppDownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648762DA575DF00821EC9 /* AppDownloadsViewModel.swift */; };
+		CE8648912DA575DF00821EC9 /* DownloadsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648772DA575DF00821EC9 /* DownloadsAnalytics.swift */; };
+		CE8648922DA575DF00821EC9 /* DownloadsRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648782DA575DF00821EC9 /* DownloadsRouter.swift */; };
+		CE8648932DA575DF00821EC9 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE86487A2DA575DF00821EC9 /* Strings.swift */; };
+		CE8648942DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CE8648672DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld */; };
 		CEB36E122D6A0D0B00907A89 /* Downloads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB36E092D6A0D0B00907A89 /* Downloads.framework */; };
 		CEB36E282D6A0D6C00907A89 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB36E272D6A0D6C00907A89 /* OEXFoundation */; };
 		CEB36E402D6A0DE800907A89 /* DownloadsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */; };
@@ -58,6 +78,25 @@
 		C3FC4AE0884E758D75EDD5E4 /* Pods_App_Downloads_DownloadsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Downloads_DownloadsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBAF7DDC4CDC8CA40A2E10F7 /* Pods-App-Downloads.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugstage.xcconfig"; sourceTree = "<group>"; };
 		CE4EC0036E64DA88BB2D053F /* Pods_App_Downloads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Downloads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE8648632DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadCoursePreviewResponse.swift; sourceTree = "<group>"; };
+		CE8648652DA575DF00821EC9 /* DownloadsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsEndpoint.swift; sourceTree = "<group>"; };
+		CE8648682DA575DF00821EC9 /* DownloadsPersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsPersistenceProtocol.swift; sourceTree = "<group>"; };
+		CE86486A2DA575DF00821EC9 /* DownloadsRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsRepository.swift; sourceTree = "<group>"; };
+		CE86486B2DA575DF00821EC9 /* DownloadsStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsStorage.swift; sourceTree = "<group>"; };
+		CE86486D2DA575DF00821EC9 /* DownloadCoursePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadCoursePreview.swift; sourceTree = "<group>"; };
+		CE86486E2DA575DF00821EC9 /* DownloadsHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsHelper.swift; sourceTree = "<group>"; };
+		CE86486F2DA575DF00821EC9 /* DownloadsHelperProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsHelperProtocol.swift; sourceTree = "<group>"; };
+		CE8648702DA575DF00821EC9 /* DownloadsInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsInteractor.swift; sourceTree = "<group>"; };
+		CE8648722DA575DF00821EC9 /* DownloadCourseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadCourseCell.swift; sourceTree = "<group>"; };
+		CE8648732DA575DF00821EC9 /* MenuOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuOption.swift; sourceTree = "<group>"; };
+		CE8648752DA575DF00821EC9 /* AppDownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDownloadsView.swift; sourceTree = "<group>"; };
+		CE8648762DA575DF00821EC9 /* AppDownloadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDownloadsViewModel.swift; sourceTree = "<group>"; };
+		CE8648772DA575DF00821EC9 /* DownloadsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsAnalytics.swift; sourceTree = "<group>"; };
+		CE8648782DA575DF00821EC9 /* DownloadsRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsRouter.swift; sourceTree = "<group>"; };
+		CE86487A2DA575DF00821EC9 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		CE86487C2DA575DF00821EC9 /* Downloads.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Downloads.h; sourceTree = "<group>"; };
+		CE86487D2DA575DF00821EC9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		CE8648802DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DownloadCoursePreviewModel.xcdatamodel; sourceTree = "<group>"; };
 		CEB36E092D6A0D0B00907A89 /* Downloads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Downloads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB36E112D6A0D0B00907A89 /* DownloadsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DownloadsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsTests.swift; sourceTree = "<group>"; };
@@ -67,35 +106,6 @@
 		F88F26577D0F66933184E825 /* Pods-App-Downloads.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugprod.xcconfig"; sourceTree = "<group>"; };
 		FA71B94B494DEAD479651F27 /* Pods-App-Downloads.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.releasestage.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		CE0E04FA2D6DFFA800B8CF04 /* Exceptions for "Downloads" folder in "Downloads" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			publicHeaders = (
-				Downloads.h,
-			);
-			target = CEB36E082D6A0D0B00907A89 /* Downloads */;
-		};
-		CE0E05022D6E00F100B8CF04 /* Exceptions for "Downloads" folder in "DownloadsTests" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Data/Persistence/DownloadCoursePreviewModel.xcdatamodeld,
-			);
-			target = CEB36E102D6A0D0B00907A89 /* DownloadsTests */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		CE0E04F22D6DFFA800B8CF04 /* Downloads */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				CE0E04FA2D6DFFA800B8CF04 /* Exceptions for "Downloads" folder in "Downloads" target */,
-				CE0E05022D6E00F100B8CF04 /* Exceptions for "Downloads" folder in "DownloadsTests" target */,
-			);
-			path = Downloads;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		CEB36E062D6A0D0B00907A89 /* Frameworks */ = {
@@ -145,11 +155,101 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		CE8648642DA575DF00821EC9 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CE8648632DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CE8648662DA575DF00821EC9 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				CE8648652DA575DF00821EC9 /* DownloadsEndpoint.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		CE8648692DA575DF00821EC9 /* Persistence */ = {
+			isa = PBXGroup;
+			children = (
+				CE8648672DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld */,
+				CE8648682DA575DF00821EC9 /* DownloadsPersistenceProtocol.swift */,
+			);
+			path = Persistence;
+			sourceTree = "<group>";
+		};
+		CE86486C2DA575DF00821EC9 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				CE8648642DA575DF00821EC9 /* Model */,
+				CE8648662DA575DF00821EC9 /* Network */,
+				CE8648692DA575DF00821EC9 /* Persistence */,
+				CE86486A2DA575DF00821EC9 /* DownloadsRepository.swift */,
+				CE86486B2DA575DF00821EC9 /* DownloadsStorage.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		CE8648712DA575DF00821EC9 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				CE86486D2DA575DF00821EC9 /* DownloadCoursePreview.swift */,
+				CE86486E2DA575DF00821EC9 /* DownloadsHelper.swift */,
+				CE86486F2DA575DF00821EC9 /* DownloadsHelperProtocol.swift */,
+				CE8648702DA575DF00821EC9 /* DownloadsInteractor.swift */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		CE8648742DA575DF00821EC9 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				CE8648722DA575DF00821EC9 /* DownloadCourseCell.swift */,
+				CE8648732DA575DF00821EC9 /* MenuOption.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		CE8648792DA575DF00821EC9 /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				CE8648742DA575DF00821EC9 /* Elements */,
+				CE8648752DA575DF00821EC9 /* AppDownloadsView.swift */,
+				CE8648762DA575DF00821EC9 /* AppDownloadsViewModel.swift */,
+				CE8648772DA575DF00821EC9 /* DownloadsAnalytics.swift */,
+				CE8648782DA575DF00821EC9 /* DownloadsRouter.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		CE86487B2DA575DF00821EC9 /* SwiftGen */ = {
+			isa = PBXGroup;
+			children = (
+				CE86487A2DA575DF00821EC9 /* Strings.swift */,
+			);
+			path = SwiftGen;
+			sourceTree = "<group>";
+		};
+		CE86487F2DA575DF00821EC9 /* Downloads */ = {
+			isa = PBXGroup;
+			children = (
+				CE86486C2DA575DF00821EC9 /* Data */,
+				CE8648712DA575DF00821EC9 /* Domain */,
+				CE8648792DA575DF00821EC9 /* Presentation */,
+				CE86487B2DA575DF00821EC9 /* SwiftGen */,
+				CE86487C2DA575DF00821EC9 /* Downloads.h */,
+				CE86487E2DA575DF00821EC9 /* Localizable.strings */,
+			);
+			path = Downloads;
+			sourceTree = "<group>";
+		};
 		CEB36DFF2D6A0D0B00907A89 = {
 			isa = PBXGroup;
 			children = (
 				CEB36E412D6A0E2C00907A89 /* swiftgen.yml */,
-				CE0E04F22D6DFFA800B8CF04 /* Downloads */,
+				CE86487F2DA575DF00821EC9 /* Downloads */,
 				CEB36E3F2D6A0DE800907A89 /* DownloadsTests */,
 				CEB36E0A2D6A0D0B00907A89 /* Products */,
 				B020C5F22CBC6B88CC8A70EB /* Pods */,
@@ -192,6 +292,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8648812DA575DF00821EC9 /* Downloads.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -212,9 +313,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				CE0E04F22D6DFFA800B8CF04 /* Downloads */,
 			);
 			name = Downloads;
 			packageProductDependencies = (
@@ -293,6 +391,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEB36E422D6A0E2C00907A89 /* swiftgen.yml in Resources */,
+				CE8648822DA575DF00821EC9 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,6 +495,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE8648832DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift in Sources */,
+				CE8648842DA575DF00821EC9 /* DownloadsEndpoint.swift in Sources */,
+				CE8648852DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld in Sources */,
+				CE8648862DA575DF00821EC9 /* DownloadsPersistenceProtocol.swift in Sources */,
+				CE8648872DA575DF00821EC9 /* DownloadsRepository.swift in Sources */,
+				CE8648882DA575DF00821EC9 /* DownloadsStorage.swift in Sources */,
+				CE8648892DA575DF00821EC9 /* DownloadCoursePreview.swift in Sources */,
+				CE86488A2DA575DF00821EC9 /* DownloadsHelper.swift in Sources */,
+				CE86488B2DA575DF00821EC9 /* DownloadsHelperProtocol.swift in Sources */,
+				CE86488C2DA575DF00821EC9 /* DownloadsInteractor.swift in Sources */,
+				CE86488D2DA575DF00821EC9 /* DownloadCourseCell.swift in Sources */,
+				CE86488E2DA575DF00821EC9 /* MenuOption.swift in Sources */,
+				CE86488F2DA575DF00821EC9 /* AppDownloadsView.swift in Sources */,
+				CE8648902DA575DF00821EC9 /* AppDownloadsViewModel.swift in Sources */,
+				CE8648912DA575DF00821EC9 /* DownloadsAnalytics.swift in Sources */,
+				CE8648922DA575DF00821EC9 /* DownloadsRouter.swift in Sources */,
+				CE8648932DA575DF00821EC9 /* Strings.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +521,7 @@
 			files = (
 				CEB36E402D6A0DE800907A89 /* DownloadsTests.swift in Sources */,
 				CEC873C02D75E15C00A2626C /* Downloads Mock.generated.swift in Sources */,
+				CE8648942DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +534,17 @@
 			targetProxy = CEB36E132D6A0D0B00907A89 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CE86487E2DA575DF00821EC9 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CE86487D2DA575DF00821EC9 /* en */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		CEB36E1B2D6A0D0B00907A89 /* Debug */ = {
@@ -1484,6 +1612,19 @@
 			productName = OEXFoundation;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		CE8648672DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CE8648802DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodel */,
+			);
+			currentVersion = CE8648802DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodel */;
+			path = DownloadCoursePreviewModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CEB36E002D6A0D0B00907A89 /* Project object */;
 }
