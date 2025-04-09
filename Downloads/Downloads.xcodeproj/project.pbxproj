@@ -1611,13 +1611,13 @@
 /* Begin XCVersionGroup section */
 		CE8648672DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld */ = {
 			isa = XCVersionGroup;
-				children = (
-					CE8648802DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodel */,
-				);
-				currentVersion = CE8648802DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodel */;
-				path = DownloadCoursePreviewModel.xcdatamodeld;
-				sourceTree = "<group>";
-				versionGroupType = wrapper.xcdatamodel;
+			children = (
+				CE8648802DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodel */,
+			);
+			currentVersion = CE8648802DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodel */;
+			path = DownloadCoursePreviewModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
 		};
 /* End XCVersionGroup section */
 	};

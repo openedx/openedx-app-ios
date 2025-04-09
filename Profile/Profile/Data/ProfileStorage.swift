@@ -22,10 +22,25 @@ public protocol ProfileStorage: Sendable {
 }
 
 #if DEBUG
-public final class ProfileStorageMock: ProfileStorage, @unchecked Sendable {
-  
-    public var userProfile: DataLayer.UserProfile?
+public final class ProfileStorageMock: ProfileStorage, CoreStorage, @unchecked Sendable {
+    public var accessToken: String?
+    public var refreshToken: String?
+    public var pushToken: String?
+    public var appleSignFullName: String?
+    public var appleSignEmail: String?
+    public var cookiesDate: Date?
+    public var reviewLastShownVersion: String?
+    public var lastReviewDate: Date?
+    public var user: DataLayer.User?
+    public var userSettings: UserSettings?
+    public var resetAppSupportDirectoryUserData: Bool?
     public var useRelativeDates: Bool = true
+    public var lastUsedSocialAuth: String?
+    public var latestAvailableAppVersion: String?
+    public var updateAppRequired: Bool = false
+    public func clear() {}
+    
+    public var userProfile: DataLayer.UserProfile?
     public var calendarSettings: CalendarSettings?
     public var hideInactiveCourses: Bool?
     public var lastLoginUsername: String?
@@ -35,4 +50,5 @@ public final class ProfileStorageMock: ProfileStorage, @unchecked Sendable {
     
     public init() {}
 }
+
 #endif
