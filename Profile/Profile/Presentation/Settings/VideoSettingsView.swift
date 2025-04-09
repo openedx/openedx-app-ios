@@ -142,7 +142,7 @@ public struct VideoSettingsView: View {
             config: ConfigMock(),
             corePersistence: CorePersistenceMock(),
             connectivity: Connectivity(),
-            storage: ProfileStorageMock()
+            coreStorage: CoreStorageMock()
         )
         
         VideoSettingsView(viewModel: vm)

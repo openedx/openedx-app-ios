@@ -255,7 +255,7 @@ public struct SettingsView: View {
         config: ConfigMock(),
         corePersistence: CorePersistenceMock(),
         connectivity: Connectivity(),
-        storage: ProfileStorageMock()
+        coreStorage: CoreStorageMock()
     )
     
     SettingsView(viewModel: vm)

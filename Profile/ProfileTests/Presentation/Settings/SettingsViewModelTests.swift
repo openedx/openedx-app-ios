@@ -20,9 +20,9 @@ final class SettingsViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
-        let storage = ProfileStorageMock()
+        let storage = CoreStorageMock()
         
-        Given(storage, .updateRequired(getter: false))
+        Given(storage, .updateAppRequired(getter: false))
         Given(
             interactor,
             .getSettings(
@@ -45,7 +45,7 @@ final class SettingsViewModelTests: XCTestCase {
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
             connectivity: Connectivity(),
-            storage: storage
+            coreStorage: storage
         )
         
         await viewModel.logOut()
@@ -59,9 +59,9 @@ final class SettingsViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
-        let storage = ProfileStorageMock()
-        
-        Given(storage, .updateRequired(getter: false))
+        let storage = CoreStorageMock()
+
+        Given(storage, .updateAppRequired(getter: false))
         Given(
             interactor,
             .getSettings(
@@ -83,7 +83,7 @@ final class SettingsViewModelTests: XCTestCase {
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
             connectivity: Connectivity(),
-            storage: storage
+            coreStorage: storage
         )
         
         viewModel.trackProfileVideoSettingsClicked()
@@ -96,9 +96,9 @@ final class SettingsViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
-        let storage = ProfileStorageMock()
-        
-        Given(storage, .updateRequired(getter: false))
+        let storage = CoreStorageMock()
+
+        Given(storage, .updateAppRequired(getter: false))
         Given(
             interactor,
             .getSettings(
@@ -120,7 +120,7 @@ final class SettingsViewModelTests: XCTestCase {
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
             connectivity: Connectivity(),
-            storage: storage
+            coreStorage: storage
         )
         
         viewModel.trackEmailSupportClicked()
@@ -133,9 +133,9 @@ final class SettingsViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
-        let storage = ProfileStorageMock()
-        
-        Given(storage, .updateRequired(getter: false))
+        let storage = CoreStorageMock()
+
+        Given(storage, .updateAppRequired(getter: false))
         Given(
             interactor,
             .getSettings(
@@ -157,7 +157,7 @@ final class SettingsViewModelTests: XCTestCase {
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
             connectivity: Connectivity(),
-            storage: storage
+            coreStorage: storage
         )
         
         viewModel.trackCookiePolicyClicked()
@@ -170,9 +170,9 @@ final class SettingsViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
-        let storage = ProfileStorageMock()
-        
-        Given(storage, .updateRequired(getter: false))
+        let storage = CoreStorageMock()
+
+        Given(storage, .updateAppRequired(getter: false))
         Given(
             interactor,
             .getSettings(
@@ -194,7 +194,7 @@ final class SettingsViewModelTests: XCTestCase {
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
             connectivity: Connectivity(),
-            storage: storage
+            coreStorage: storage
         )
         
         viewModel.trackPrivacyPolicyClicked()
@@ -207,9 +207,9 @@ final class SettingsViewModelTests: XCTestCase {
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
-        let storage = ProfileStorageMock()
-        
-        Given(storage, .updateRequired(getter: false))
+        let storage = CoreStorageMock()
+
+        Given(storage, .updateAppRequired(getter: false))
         Given(
             interactor,
             .getSettings(
@@ -231,7 +231,7 @@ final class SettingsViewModelTests: XCTestCase {
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
             connectivity: Connectivity(),
-            storage: storage
+            coreStorage: storage
         )
         
         viewModel.trackProfileEditClicked()

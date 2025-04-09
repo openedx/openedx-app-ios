@@ -282,7 +282,7 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 corePersistence: r.resolve(CorePersistenceProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                storage: r.resolve(AppStorage.self)!
+                coreStorage: r.resolve(AppStorage.self)!
             )
         }
         
