@@ -93,7 +93,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             .sink { [weak self] notification in
                 if let latestVersion = notification.object as? String {
                     // Save the latest version to storage
-                    self?.storage.latestVersion = latestVersion
+                    self?.storage.latestAvailableAppVersion = latestVersion
                     
                     if let info = Bundle.main.infoDictionary {
                         guard let currentVersion = info["CFBundleShortVersionString"] as? String,
@@ -139,7 +139,7 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
             if error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.noCachedData
             } else if error.isUpdateRequeiredError {
-                storage.updateRequired = true
+                storage.updateAppRequired = true
                 self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError

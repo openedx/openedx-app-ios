@@ -97,7 +97,7 @@ public final class DiscoveryViewModel: ObservableObject {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else if error.isUpdateRequeiredError {
-                storage.updateRequired = true
+                storage.updateAppRequired = true
                 self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
                 errorMessage = CoreLocalization.Error.unknownError

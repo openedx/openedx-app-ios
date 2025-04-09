@@ -43,8 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         initDI()
         initPlugins()
         
+        // Reset the value to false to get the actual status from the API
         if var storage = Container.shared.resolve(CoreStorage.self) {
-            storage.updateRequired = false
+            storage.updateAppRequired = false
         }
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
