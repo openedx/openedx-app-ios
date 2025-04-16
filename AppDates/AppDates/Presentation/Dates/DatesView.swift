@@ -44,6 +44,7 @@ public struct DatesView: View {
                                     }
                                 )
                                 .padding(.horizontal, 24)
+                                .padding(.bottom, 16)
                             }
                             LazyVStack(spacing: 16) {
                                 ForEach(viewModel.coursesDates, id: \.id) { group in
