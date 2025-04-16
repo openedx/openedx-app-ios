@@ -45,14 +45,14 @@ public struct DatesView: View {
                                 )
                                 .padding(.horizontal, 24)
                             }
-                            LazyVStack(spacing: 24) {
+                            LazyVStack(spacing: 16) {
                                 ForEach(viewModel.coursesDates, id: \.id) { group in
                                         LazyVStack(alignment: .leading, spacing: 0) {
                                             Text(group.type.text)
                                                 .font(Theme.Fonts.titleMedium)
                                                 .foregroundColor(Theme.Colors.textPrimary)
                                                 .padding(.bottom, 8)
-                                                .padding(.top, 8)
+                                                .padding(.top, 4)
                                             
                                             ForEach(
                                                 Array(group.dates.enumerated()),
@@ -144,7 +144,7 @@ public struct DatesView: View {
     private func titleAndSettings(proxy: GeometryProxy) -> some View {
         ZStack(alignment: .top) {
             Theme.Colors.background
-                .frame(height: 50)
+                .frame(height: 64)
             ZStack(alignment: .topTrailing) {
                 VStack {
                     HStack(alignment: .center) {
