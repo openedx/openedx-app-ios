@@ -98,16 +98,14 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
                     if let info = Bundle.main.infoDictionary {
                         guard let currentVersion = info["CFBundleShortVersionString"] as? String,
                                 let self else { return }
-                        switch self.compareVersions(currentVersion, latestVersion) {
-                        case .orderedAscending:
+                        if currentVersion.isAppVersionGreater(than: latestVersion) == false
+                            && currentVersion != latestVersion {
                             if self.updateShowedOnce == false {
                                 DispatchQueue.main.async {
                                     self.router.showUpdateRecomendedView()
                                 }
                                 self.updateShowedOnce = true
                             }
-                        default:
-                            return
                         }
                     }
                 }
@@ -149,31 +147,5 @@ public class PrimaryCourseDashboardViewModel: ObservableObject {
     
     func trackDashboardCourseClicked(courseID: String, courseName: String) {
         analytics.dashboardCourseClicked(courseID: courseID, courseName: courseName)
-    }
-    
-    private func compareVersions(_ version1: String, _ version2: String) -> ComparisonResult {
-        let components1 = version1.components(separatedBy: ".").prefix(2)
-        let components2 = version2.components(separatedBy: ".").prefix(2)
-        
-        guard let major1 = Int(components1.first ?? ""),
-              let minor1 = Int(components1.last ?? ""),
-              let major2 = Int(components2.first ?? ""),
-              let minor2 = Int(components2.last ?? "") else {
-            return .orderedSame
-        }
-        
-        if major1 < major2 {
-            return .orderedAscending
-        } else if major1 > major2 {
-            return .orderedDescending
-        } else {
-            if minor1 < minor2 {
-                return .orderedAscending
-            } else if minor1 > minor2 {
-                return .orderedDescending
-            } else {
-                return .orderedSame
-            }
-        }
     }
 }
