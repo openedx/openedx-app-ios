@@ -19,7 +19,7 @@ import Course
 import Discussion
 @preconcurrency import Combine
 
-// swiftlint:disable function_body_length closure_parameter_position
+// swiftlint:disable function_body_length closure_parameter_position type_body_length
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
@@ -219,7 +219,8 @@ class ScreenAssembly: Assembly {
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 analytics: r.resolve(DashboardAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                storage: r.resolve(CoreStorage.self)!
+                storage: r.resolve(CoreStorage.self)!,
+                router: r.resolve(DashboardRouter.self)!
             )
         }
         
@@ -280,7 +281,8 @@ class ScreenAssembly: Assembly {
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 corePersistence: r.resolve(CorePersistenceProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                coreStorage: r.resolve(AppStorage.self)!
             )
         }
         
@@ -689,4 +691,4 @@ class ScreenAssembly: Assembly {
         
     }
 }
-// swiftlint:enable function_body_length closure_parameter_position
+// swiftlint:enable function_body_length closure_parameter_position type_body_length

@@ -22,6 +22,8 @@ public protocol CoreStorage: Sendable {
     var resetAppSupportDirectoryUserData: Bool? {get set}
     var useRelativeDates: Bool {get set}
     var lastUsedSocialAuth: String? {get set}
+    var latestAvailableAppVersion: String? {get set}
+    var updateAppRequired: Bool {get set}
     func clear()
 }
 
@@ -40,6 +42,8 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
     public var resetAppSupportDirectoryUserData: Bool?
     public var useRelativeDates: Bool = true
     public var lastUsedSocialAuth: String?
+    public var latestAvailableAppVersion: String?
+    public var updateAppRequired: Bool = false
     public func clear() {}
     
     public init() {}

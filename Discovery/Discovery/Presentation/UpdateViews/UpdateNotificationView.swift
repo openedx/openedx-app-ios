@@ -12,6 +12,7 @@ import Theme
 public struct UpdateNotificationView: View {
     
     private let config: ConfigProtocol
+    @Environment(\.isHorizontal) private var isHorizontal
     
     public init(config: ConfigProtocol) {
         self.config = config
@@ -20,7 +21,6 @@ public struct UpdateNotificationView: View {
     public var body: some View {
         ZStack {
             VStack {
-                Spacer()
                 HStack(spacing: 10) {
                     Image(systemName: "arrow.up.circle")
                         .resizable()
@@ -40,7 +40,7 @@ public struct UpdateNotificationView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .shadow(color: Color.black.opacity(0.4), radius: 12, x: 0, y: 0)
                     .padding(24)
-                
+                    .padding(.bottom, isHorizontal ? 20 : 40)
             }
         }.onTapGesture {
             openAppStore()
