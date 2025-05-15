@@ -53,6 +53,14 @@ public enum DiscussionLocalization {
     /// Unreport
     public static let unreport = DiscussionLocalization.tr("Localizable", "COMMENT.UNREPORT", fallback: "Unreport")
   }
+  public enum CommentCount {
+    /// Comment
+    public static let oneComment = DiscussionLocalization.tr("Localizable", "COMMENT_COUNT.ONE_COMMENT", fallback: "Comment")
+    /// Comments
+    public static let otherComment = DiscussionLocalization.tr("Localizable", "COMMENT_COUNT.OTHER_COMMENT", fallback: "Comments")
+    /// Comments
+    public static let zeroComment = DiscussionLocalization.tr("Localizable", "COMMENT_COUNT.ZERO_COMMENT", fallback: "Comments")
+  }
   public enum CreateThread {
     /// Create new discussion
     public static let createDiscussion = DiscussionLocalization.tr("Localizable", "CREATE_THREAD.CREATE_DISCUSSION", fallback: "Create new discussion")
