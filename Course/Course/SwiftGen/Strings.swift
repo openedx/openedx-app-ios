@@ -123,6 +123,8 @@ public enum CourseLocalization {
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
   public enum CourseContainer {
+    /// Content
+    public static let content = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.CONTENT", fallback: "Content")
     /// Dates
     public static let dates = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DATES", fallback: "Dates")
     /// Discussions

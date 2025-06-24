@@ -16,6 +16,7 @@ public enum CourseTab: Int, CaseIterable, Identifiable, Sendable {
         rawValue
     }
     case course
+    case content
     case videos
     case dates
     case offline
@@ -38,6 +39,8 @@ extension CourseTab {
             return CourseLocalization.CourseContainer.discussions
         case .handounds:
             return CourseLocalization.CourseContainer.handouts
+        case .content:
+            return CourseLocalization.CourseContainer.content
         }
     }
     
@@ -55,6 +58,8 @@ extension CourseTab {
             return  CoreAssets.discussions.swiftUIImage.renderingMode(.template)
         case .handounds:
             return CoreAssets.more.swiftUIImage.renderingMode(.template)
+        case .content:
+            return CoreAssets.content.swiftUIImage.renderingMode(.template)
         }
     }
 }
@@ -378,6 +383,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             analytics.courseOutlineDiscussionTabClicked(courseId: courseId, courseName: courseName)
         case .handounds:
             analytics.courseOutlineHandoutsTabClicked(courseId: courseId, courseName: courseName)
+        case .content:
+            analytics.courseOutlineContentTabClicked(courseId: courseId, courseName: courseName)
         }
     }
     
@@ -644,7 +651,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                     guard let self else { return }
                     if let courseID = self.courseStructure?.id {
                         Task {
-                            await manager.delete(blocks: blocks, courseId: courseID)
+                            await self.manager.delete(blocks: blocks, courseId: courseID)
                             self.router.dismiss(animated: true)
                         }
                     }
