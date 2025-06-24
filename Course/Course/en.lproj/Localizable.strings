@@ -48,6 +48,11 @@
 "COURSE_CONTAINER.HANDOUTS" =  "More";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
 
+// MARK: - Course Content
+"COURSE_CONTENT.ALL" = "All";
+"COURSE_CONTENT.VIDEOS" = "Videos";
+"COURSE_CONTENT.ASSIGNMENTS" = "Assignments";
+
 "HANDOUTS_CELL_HANDOUTS.TITLE" = "Handouts";
 "HANDOUTS_CELL_ANNOUNCEMENTS.TITLE" = "Announcements";
 "HANDOUTS_CELL_HANDOUTS.DESCRIPTION" = "Find important course information";

@@ -19,6 +19,7 @@ public struct CourseContentView: View {
     private let courseID: String
     
     @State private var runOnce: Bool = false
+    @State private var selectedTab: ContentTab = .all
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
@@ -57,8 +58,13 @@ public struct CourseContentView: View {
                             )
                             RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                             VStack(alignment: .leading) {
-                                // MARK: - Content placeholder
-                                contentPlaceholder
+                                // MARK: - Segmented Control
+                                ContentSegmentedControl(selectedTab: $selectedTab)
+                                    .padding(.horizontal, 16)
+                                    .padding(.top, 16)
+                                
+                                // MARK: - Content based on selected tab
+                                contentForSelectedTab
                             }
                             .frameLimit(width: proxy.size.width)
                         }
@@ -125,7 +131,19 @@ public struct CourseContentView: View {
     }
     
     @ViewBuilder
-    private var contentPlaceholder: some View {
+    private var contentForSelectedTab: some View {
+        switch selectedTab {
+        case .all:
+            allContentPlaceholder
+        case .videos:
+            videosContentPlaceholder
+        case .assignments:
+            assignmentsContentPlaceholder
+        }
+    }
+    
+    @ViewBuilder
+    private var allContentPlaceholder: some View {
         VStack(spacing: 16) {
             Spacer()
             
@@ -133,11 +151,61 @@ public struct CourseContentView: View {
                 .font(.system(size: 60))
                 .foregroundColor(Theme.Colors.textSecondary)
             
-            Text("Content")
+            Text("All Content")
                 .font(Theme.Fonts.titleLarge)
                 .foregroundColor(Theme.Colors.textPrimary)
             
-            Text("This screen is under development")
+            Text("All course content will be displayed here")
+                .font(Theme.Fonts.bodyMedium)
+                .foregroundColor(Theme.Colors.textSecondary)
+                .multilineTextAlignment(.center)
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 24)
+        .padding(.top, 60)
+    }
+    
+    @ViewBuilder
+    private var videosContentPlaceholder: some View {
+        VStack(spacing: 16) {
+            Spacer()
+            
+            Image(systemName: "play.rectangle")
+                .font(.system(size: 60))
+                .foregroundColor(Theme.Colors.textSecondary)
+            
+            Text("Videos")
+                .font(Theme.Fonts.titleLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+            
+            Text("Course videos will be displayed here")
+                .font(Theme.Fonts.bodyMedium)
+                .foregroundColor(Theme.Colors.textSecondary)
+                .multilineTextAlignment(.center)
+            
+            Spacer()
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 24)
+        .padding(.top, 60)
+    }
+    
+    @ViewBuilder
+    private var assignmentsContentPlaceholder: some View {
+        VStack(spacing: 16) {
+            Spacer()
+            
+            Image(systemName: "doc.on.clipboard")
+                .font(.system(size: 60))
+                .foregroundColor(Theme.Colors.textSecondary)
+            
+            Text("Assignments")
+                .font(Theme.Fonts.titleLarge)
+                .foregroundColor(Theme.Colors.textPrimary)
+            
+            Text("Course assignments will be displayed here")
                 .font(Theme.Fonts.bodyMedium)
                 .foregroundColor(Theme.Colors.textSecondary)
                 .multilineTextAlignment(.center)

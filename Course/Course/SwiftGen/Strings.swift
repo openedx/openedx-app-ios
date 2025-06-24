@@ -140,6 +140,14 @@ public enum CourseLocalization {
     /// Videos
     public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.VIDEOS", fallback: "Videos")
   }
+  public enum CourseContent {
+    /// All
+    public static let all = CourseLocalization.tr("Localizable", "COURSE_CONTENT.ALL", fallback: "All")
+    /// Assignments
+    public static let assignments = CourseLocalization.tr("Localizable", "COURSE_CONTENT.ASSIGNMENTS", fallback: "Assignments")
+    /// Videos
+    public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTENT.VIDEOS", fallback: "Videos")
+  }
   public enum CourseDates {
     /// Would you like to add the %@ calendar "%@" ? 
     ///  You can edit or remove the course calendar any time in Calendar or Settings
