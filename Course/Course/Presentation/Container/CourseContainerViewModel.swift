@@ -16,6 +16,7 @@ public enum CourseTab: Int, CaseIterable, Identifiable, Sendable {
         rawValue
     }
     case course
+    case progress
     case videos
     case dates
     case offline
@@ -28,6 +29,8 @@ extension CourseTab {
         switch self {
         case .course:
             return CourseLocalization.CourseContainer.home
+        case .progress:
+            return CourseLocalization.CourseContainer.progress
         case .videos:
             return CourseLocalization.CourseContainer.videos
         case .dates:
@@ -45,6 +48,8 @@ extension CourseTab {
         switch self {
         case .course:
             return CoreAssets.home.swiftUIImage.renderingMode(.template)
+        case .progress:
+            return CoreAssets.progress.swiftUIImage.renderingMode(.template)
         case .videos:
             return CoreAssets.videos.swiftUIImage.renderingMode(.template)
         case .dates:
@@ -368,6 +373,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         switch selection {
         case .course:
             analytics.courseOutlineCourseTabClicked(courseId: courseId, courseName: courseName)
+        case .progress:
+            analytics.courseOutlineProgressTabClicked(courseId: courseId, courseName: courseName)
         case .videos:
             analytics.courseOutlineVideosTabClicked(courseId: courseId, courseName: courseName)
         case .offline:

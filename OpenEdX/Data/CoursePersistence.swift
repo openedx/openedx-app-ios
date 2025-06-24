@@ -300,4 +300,230 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     public func loadCourseDates(courseID: String) async throws -> CourseDates {
         throw NoCachedDataError()
     }
+    
+    public func saveCourseProgress(courseID: String, courseProgress: CourseProgressDetails) async {
+        await container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            
+            // Remove existing progress data for this course
+            let deleteRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "CDCourseProgress")
+            deleteRequest.predicate = NSPredicate(format: "courseID = %@", courseID)
+            let deleteRequestExecution = NSBatchDeleteRequest(fetchRequest: deleteRequest)
+            try? context.execute(deleteRequestExecution)
+            
+            let newProgress = CDCourseProgress(context: context)
+            newProgress.courseID = courseID
+            newProgress.verifiedMode = courseProgress.verifiedMode
+            newProgress.accessExpiration = courseProgress.accessExpiration
+            newProgress.creditCourseRequirements = courseProgress.creditCourseRequirements
+            newProgress.end = courseProgress.end
+            newProgress.enrollmentMode = courseProgress.enrollmentMode
+            newProgress.hasScheduledContent = courseProgress.hasScheduledContent
+            
+            // Certificate Data
+            let certificateData = CDCertificateData(context: context)
+            certificateData.certStatus = courseProgress.certificateData.certStatus
+            certificateData.certWebViewUrl = courseProgress.certificateData.certWebViewUrl
+            certificateData.downloadUrl = courseProgress.certificateData.downloadUrl
+            certificateData.certificateAvailableDate = courseProgress.certificateData.certificateAvailableDate
+            newProgress.certificateData = certificateData
+            
+            // Completion Summary
+            let completionSummary = CDCompletionSummary(context: context)
+            completionSummary.completeCount = Int32(courseProgress.completionSummary.completeCount)
+            completionSummary.incompleteCount = Int32(courseProgress.completionSummary.incompleteCount)
+            completionSummary.lockedCount = Int32(courseProgress.completionSummary.lockedCount)
+            newProgress.completionSummary = completionSummary
+            
+            // Course Grade
+            let courseGrade = CDCourseGrade(context: context)
+            courseGrade.letterGrade = courseProgress.courseGrade.letterGrade
+            courseGrade.percent = courseProgress.courseGrade.percent
+            courseGrade.isPassing = courseProgress.courseGrade.isPassing
+            newProgress.courseGrade = courseGrade
+            
+            // Grading Policy
+            let gradingPolicy = CDGradingPolicy(context: context)
+            gradingPolicy.gradeRangeData = courseProgress.gradingPolicy.gradeRange
+            
+            for assignmentPolicy in courseProgress.gradingPolicy.assignmentPolicies {
+                let cdAssignmentPolicy = CDAssignmentPolicy(context: context)
+                cdAssignmentPolicy.numDroppable = Int32(assignmentPolicy.numDroppable)
+                cdAssignmentPolicy.numTotal = Int32(assignmentPolicy.numTotal)
+                cdAssignmentPolicy.shortLabel = assignmentPolicy.shortLabel
+                cdAssignmentPolicy.type = assignmentPolicy.type
+                cdAssignmentPolicy.weight = assignmentPolicy.weight
+                gradingPolicy.addToAssignmentPolicies(cdAssignmentPolicy)
+            }
+            newProgress.gradingPolicy = gradingPolicy
+            
+            // Section Scores
+            for sectionScore in courseProgress.sectionScores {
+                let cdSectionScore = CDSectionScore(context: context)
+                cdSectionScore.displayName = sectionScore.displayName
+                
+                for subsection in sectionScore.subsections {
+                    let cdSubsection = CDSubsection(context: context)
+                    cdSubsection.assignmentType = subsection.assignmentType
+                    cdSubsection.blockKey = subsection.blockKey
+                    cdSubsection.displayName = subsection.displayName
+                    cdSubsection.hasGradedAssignment = subsection.hasGradedAssignment
+                    cdSubsection.override = subsection.override
+                    cdSubsection.learnerHasAccess = subsection.learnerHasAccess
+                    cdSubsection.numPointsEarned = subsection.numPointsEarned
+                    cdSubsection.numPointsPossible = subsection.numPointsPossible
+                    cdSubsection.percentGraded = subsection.percentGraded
+                    cdSubsection.showCorrectness = subsection.showCorrectness
+                    cdSubsection.showGrades = subsection.showGrades
+                    cdSubsection.url = subsection.url
+                    
+                    for problemScore in subsection.problemScores {
+                        let cdProblemScore = CDProblemScore(context: context)
+                        cdProblemScore.earned = problemScore.earned
+                        cdProblemScore.possible = problemScore.possible
+                        cdSubsection.addToProblemScores(cdProblemScore)
+                    }
+                    
+                    cdSectionScore.addToSubsections(cdSubsection)
+                }
+                
+                newProgress.addToSectionScores(cdSectionScore)
+            }
+            
+            // Verification Data
+            let verificationData = CDVerificationData(context: context)
+            verificationData.link = courseProgress.verificationData?.link
+            verificationData.status = courseProgress.verificationData?.status
+            verificationData.statusDate = courseProgress.verificationData?.statusDate
+            newProgress.verificationData = verificationData
+            
+            do {
+                try context.save()
+            } catch {
+                debugLog(error)
+            }
+        }
+    }
+
+    public func loadCourseProgress(courseID: String) async throws -> CourseProgressDetails {
+        let request = CDCourseProgress.fetchRequest()
+        request.predicate = NSPredicate(format: "courseID = %@", courseID)
+        request.relationshipKeyPathsForPrefetching = [
+            "certificateData",
+            "completionSummary",
+            "courseGrade",
+            "gradingPolicy",
+            "gradingPolicy.assignmentPolicies",
+            "sectionScores",
+            "sectionScores.subsections",
+            "sectionScores.subsections.problemScores",
+            "verificationData"
+        ]
+        
+        return try await container.performBackgroundTask { context in
+            guard let progress = try? context.fetch(request).first else { throw NoCachedDataError() }
+            
+            // Certificate Data
+            let certificateData = CourseProgressCertificateData(
+                certStatus: progress.certificateData?.certStatus,
+                certWebViewUrl: progress.certificateData?.certWebViewUrl,
+                downloadUrl: progress.certificateData?.downloadUrl,
+                certificateAvailableDate: progress.certificateData?.certificateAvailableDate
+            )
+            
+            // Completion Summary
+            let completionSummary = CourseProgressCompletionSummary(
+                completeCount: Int(progress.completionSummary?.completeCount ?? 0),
+                incompleteCount: Int(progress.completionSummary?.incompleteCount ?? 0),
+                lockedCount: Int(progress.completionSummary?.lockedCount ?? 0)
+            )
+            
+            // Course Grade
+            let courseGrade = CourseProgressGrade(
+                letterGrade: progress.courseGrade?.letterGrade,
+                percent: progress.courseGrade?.percent ?? 0.0,
+                isPassing: progress.courseGrade?.isPassing ?? false
+            )
+            
+            // Grading Policy
+            let assignmentPolicies: [CourseProgressAssignmentPolicy]
+            = progress.gradingPolicy?.assignmentPolicies?.allObjects.compactMap { obj in
+                guard let policy = obj as? CDAssignmentPolicy else { return nil }
+                return CourseProgressAssignmentPolicy(
+                    numDroppable: Int(policy.numDroppable),
+                    numTotal: Int(policy.numTotal),
+                    shortLabel: policy.shortLabel ?? "",
+                    type: policy.type ?? "",
+                    weight: policy.weight
+                )
+            } ?? []
+            
+            let gradingPolicy = CourseProgressGradingPolicy(
+                assignmentPolicies: assignmentPolicies,
+                gradeRange: progress.gradingPolicy?.gradeRangeData ?? [:]
+            )
+            
+            // Section Scores
+            let sectionScores: [CourseProgressSectionScore] = progress.sectionScores?.allObjects.compactMap { obj in
+                guard let sectionScore = obj as? CDSectionScore else { return nil }
+                
+                let subsections: [CourseProgressSubsection]
+                = sectionScore.subsections?.allObjects.compactMap { subObj in
+                    guard let subsection = subObj as? CDSubsection else { return nil }
+                    
+                    let problemScores: [CourseProgressProblemScore]
+                    = subsection.problemScores?.allObjects.compactMap { probObj in
+                        guard let problemScore = probObj as? CDProblemScore else { return nil }
+                        return CourseProgressProblemScore(
+                            earned: problemScore.earned,
+                            possible: problemScore.possible
+                        )
+                    } ?? []
+                    
+                    return CourseProgressSubsection(
+                        assignmentType: subsection.assignmentType,
+                        blockKey: subsection.blockKey ?? "",
+                        displayName: subsection.displayName ?? "",
+                        hasGradedAssignment: subsection.hasGradedAssignment,
+                        override: subsection.override,
+                        learnerHasAccess: subsection.learnerHasAccess,
+                        numPointsEarned: subsection.numPointsEarned,
+                        numPointsPossible: subsection.numPointsPossible,
+                        percentGraded: subsection.percentGraded,
+                        problemScores: problemScores,
+                        showCorrectness: subsection.showCorrectness ?? "",
+                        showGrades: subsection.showGrades,
+                        url: subsection.url ?? ""
+                    )
+                } ?? []
+                
+                return CourseProgressSectionScore(
+                    displayName: sectionScore.displayName ?? "",
+                    subsections: subsections
+                )
+            } ?? []
+            
+            // Verification Data
+            let verificationData = CourseProgressVerificationData(
+                link: progress.verificationData?.link,
+                status: progress.verificationData?.status ?? "",
+                statusDate: progress.verificationData?.statusDate
+            )
+            
+            return CourseProgressDetails(
+                verifiedMode: progress.verifiedMode,
+                accessExpiration: progress.accessExpiration,
+                certificateData: certificateData,
+                completionSummary: completionSummary,
+                courseGrade: courseGrade,
+                creditCourseRequirements: progress.creditCourseRequirements,
+                end: progress.end,
+                enrollmentMode: progress.enrollmentMode ?? "",
+                gradingPolicy: gradingPolicy,
+                hasScheduledContent: progress.hasScheduledContent,
+                sectionScores: sectionScores,
+                verificationData: verificationData
+            )
+        }
+    }
 }

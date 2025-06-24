@@ -19,12 +19,34 @@ public enum CourseLocalization {
     return CourseLocalization.tr("Localizable", "past_due", p1, fallback: "Plural format key: \"%#@past_due@\"")
   }
   public enum Accessibility {
+    /// Assignment item
+    public static let assignmentItem = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_ITEM", fallback: "Assignment item")
+    /// %@, %@ of %@ complete, %@ out of %@ percent of grade
+    public static func assignmentProgressDetails(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_PROGRESS_DETAILS", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), fallback: "%@, %@ of %@ complete, %@ out of %@ percent of grade")
+    }
     /// Cancel download
     public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
     /// Delete download
     public static let deleteDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DELETE_DOWNLOAD", fallback: "Delete download")
     /// Download
     public static let download = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DOWNLOAD", fallback: "Download")
+    /// Grade details section
+    public static let gradeDetailsSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.GRADE_DETAILS_SECTION", fallback: "Grade details section")
+    /// Overall grade section
+    public static let overallGradeSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.OVERALL_GRADE_SECTION", fallback: "Overall grade section")
+    /// %@ percent completed
+    public static func progressPercentageCompleted(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.PROGRESS_PERCENTAGE_COMPLETED", String(describing: p1), fallback: "%@ percent completed")
+    }
+    /// Course completion progress ring
+    public static let progressRing = CourseLocalization.tr("Localizable", "ACCESSIBILITY.PROGRESS_RING", fallback: "Course completion progress ring")
+    /// Required grade to pass indicator
+    public static let requiredGradeIndicator = CourseLocalization.tr("Localizable", "ACCESSIBILITY.REQUIRED_GRADE_INDICATOR", fallback: "Required grade to pass indicator")
+    /// %@ percent required to pass
+    public static func requiredGradeToPass(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.REQUIRED_GRADE_TO_PASS", String(describing: p1), fallback: "%@ percent required to pass")
+    }
   }
   public enum Alert {
     /// Are you sure you want to delete all video(s) for
@@ -135,8 +157,62 @@ public enum CourseLocalization {
     public static let home = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.HOME", fallback: "Home")
     /// Offline
     public static let offline = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.OFFLINE", fallback: "Offline")
+    /// Progress
+    public static let progress = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS", fallback: "Progress")
     /// Videos
     public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.VIDEOS", fallback: "Videos")
+    public enum Progress {
+      /// Assignment Type
+      public static let assignmentType = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.ASSIGNMENT_TYPE", fallback: "Assignment Type")
+      /// Complete
+      public static let complete = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.COMPLETE", fallback: "Complete")
+      /// Completed
+      public static let completed = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.COMPLETED", fallback: "Completed")
+      /// Current / Max %%
+      public static let currentMaxPercent = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.CURRENT_MAX_PERCENT", fallback: "Current / Max %%")
+      /// Current Overall Weighted Grade:
+      public static let currentOverallWeightedGrade = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.CURRENT_OVERALL_WEIGHTED_GRADE", fallback: "Current Overall Weighted Grade:")
+      /// This represents how much of the course content you have completed. Note that some content may not yet be released.
+      public static let description = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.DESCRIPTION", fallback: "This represents how much of the course content you have completed. Note that some content may not yet be released.")
+      /// Grade Details
+      public static let gradeDetails = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.GRADE_DETAILS", fallback: "Grade Details")
+      /// Grade Progress
+      public static let gradeProgress = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.GRADE_PROGRESS", fallback: "Grade Progress")
+      /// Locked
+      public static let locked = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.LOCKED", fallback: "Locked")
+      /// This course does not contain exams or graded assignments.
+      public static let noGradedAssignments = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.NO_GRADED_ASSIGNMENTS", fallback: "This course does not contain exams or graded assignments.")
+      /// No progress available
+      public static let noProgressAvailable = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.NO_PROGRESS_AVAILABLE", fallback: "No progress available")
+      /// Not Passing
+      public static let notPassing = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.NOT_PASSING", fallback: "Not Passing")
+      /// of Grade
+      public static let ofGrade = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.OF_GRADE", fallback: "of Grade")
+      /// Overall Grade
+      public static let overallGrade = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.OVERALL_GRADE", fallback: "Overall Grade")
+      /// This represents your weighted grade against the grade needed to pass this course.
+      public static let overallGradeDescription = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.OVERALL_GRADE_DESCRIPTION", fallback: "This represents your weighted grade against the grade needed to pass this course.")
+      /// Overall Progress
+      public static let overallProgress = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.OVERALL_PROGRESS", fallback: "Overall Progress")
+      /// Passing
+      public static let passing = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.PASSING", fallback: "Passing")
+      /// Remaining
+      public static let remaining = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.REMAINING", fallback: "Remaining")
+      /// Required
+      public static let `required` = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.REQUIRED", fallback: "Required")
+      /// Sections Progress
+      public static let sectionsProgress = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.SECTIONS_PROGRESS", fallback: "Sections Progress")
+      /// Start learning to see your progress here
+      public static let startLearning = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.START_LEARNING", fallback: "Start learning to see your progress here")
+      /// Course Completion
+      public static let title = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.TITLE", fallback: "Course Completion")
+      /// View Certificate
+      public static let viewCertificate = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.VIEW_CERTIFICATE", fallback: "View Certificate")
+      /// A weighted grade of %@%% is required to pass this course
+      public static func weightedGradeRequired(_ p1: Any) -> String {
+        return CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.WEIGHTED_GRADE_REQUIRED", String(describing: p1), fallback: "A weighted grade of %@%% is required to pass this course")
+      }
+    }
   }
   public enum CourseDates {
     /// Would you like to add the %@ calendar "%@" ? 
