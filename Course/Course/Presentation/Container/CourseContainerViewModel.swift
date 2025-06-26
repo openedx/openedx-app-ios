@@ -87,6 +87,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var realDownloadedFilesSize: Int = 0
     @Published var largestDownloadBlocks: [CourseBlock] = []
     @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
+    @Published var expandedSections: [String: Bool] = [:]
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
@@ -231,6 +232,11 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
             courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
+            
+            if expandedSections.isEmpty {
+                initializeExpandedSections()
+            }
+            
             isShowProgress = false
             isShowRefresh = false
             
@@ -946,6 +952,25 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             totalFilesSize = value.totalFilesSize
             largestDownloadBlocks = value.largestBlocks
         }
+    }
+
+    private func initializeExpandedSections() {
+        guard let courseStructure = courseStructure else { return }
+        
+        for chapter in courseStructure.childs {
+            let progress = chapterProgress(for: chapter)
+            let isNotCompleted = progress < 1.0
+            expandedSections[chapter.id] = isNotCompleted
+        }
+    }
+    
+    func chapterProgress(for chapter: CourseChapter) -> Double {
+        guard !chapter.childs.isEmpty else { return 0.0 }
+        
+        let totalProgress = chapter.childs.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = totalProgress / Double(chapter.childs.count)
+        
+        return max(0.0, min(1.0, averageProgress))
     }
 
     private func addObservers() {

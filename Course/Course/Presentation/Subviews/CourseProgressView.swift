@@ -20,26 +20,26 @@ public struct CourseProgressView: View {
         VStack(alignment: .leading) {
             ZStack(alignment: .leading) {
                 GeometryReader { geometry in
-                    RoundedRectangle(cornerRadius: 10)
+                    RoundedRectangle(cornerRadius: 2)
                         .fill(Theme.Colors.courseProgressBG)
-                        .frame(width: geometry.size.width, height: 10)
+                        .frame(width: geometry.size.width, height: 4)
                     
                     if let total = progress.totalAssignmentsCount,
                        let completed = progress.assignmentsCompleted {
-                        RoundedCorners(tl: 5, tr: 0, bl: 5, br: 0)
-                            .fill(Theme.Colors.accentColor)
-                            .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total), height: 10)
+                        RoundedCorners(tl: 2, tr: 0, bl: 2, br: 0)
+                            .fill(Theme.Colors.success)
+                            .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total), height: 4)
                     }
                 }
-                .frame(height: 10)
+                .frame(height: 4)
             }
-            .cornerRadius(10)
+            .cornerRadius(2)
             
             if let total = progress.totalAssignmentsCount,
                 let completed = progress.assignmentsCompleted {
                 Text(CourseLocalization.Course.progressCompleted(completed, total))
                     .foregroundColor(Theme.Colors.textPrimary)
-                    .font(Theme.Fonts.labelSmall)
+                    .font(Theme.Fonts.labelMedium)
                     .padding(.top, 4)
             }
         }

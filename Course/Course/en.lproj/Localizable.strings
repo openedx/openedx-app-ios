@@ -118,7 +118,7 @@
 "COURSE.DUE_TODAY" = "Due Today";
 "COURSE.DUE_TOMORROW" = "Due Tomorrow";
 
-"COURSE.PROGRESS_COMPLETED" = "%@ of %@ assignments complete";
+"COURSE.PROGRESS_COMPLETED" = "%@/%@ Sections Completed";
 
 "COURSE.LARGEST_DOWNLOADS.TITLE" = "Largest Downloads";
 "COURSE.LARGEST_DOWNLOADS.DONE" = "Done";

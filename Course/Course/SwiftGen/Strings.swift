@@ -51,9 +51,9 @@ public enum CourseLocalization {
     public static let dueToday = CourseLocalization.tr("Localizable", "COURSE.DUE_TODAY", fallback: "Due Today")
     /// Due Tomorrow
     public static let dueTomorrow = CourseLocalization.tr("Localizable", "COURSE.DUE_TOMORROW", fallback: "Due Tomorrow")
-    /// %@ of %@ assignments complete
+    /// %@/%@ Sections Completed
     public static func progressCompleted(_ p1: Any, _ p2: Any) -> String {
-      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@ of %@ assignments complete")
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Sections Completed")
     }
     public enum LargestDownloads {
       /// Done

@@ -60,11 +60,11 @@ public struct CourseContentView: View {
                             VStack(alignment: .leading) {
                                 // MARK: - Segmented Control
                                 ContentSegmentedControl(selectedTab: $selectedTab)
-                                    .padding(.horizontal, 16)
+                                    .padding(.horizontal, 24)
                                     .padding(.top, 16)
                                 
                                 // MARK: - Content based on selected tab
-                                contentForSelectedTab
+                                contentForSelectedTab(proxy: proxy)
                             }
                             .frameLimit(width: proxy.size.width)
                         }
@@ -131,40 +131,21 @@ public struct CourseContentView: View {
     }
     
     @ViewBuilder
-    private var contentForSelectedTab: some View {
+    private func contentForSelectedTab(proxy: GeometryProxy) -> some View {
         switch selectedTab {
         case .all:
-            allContentPlaceholder
+            AllContentView(
+                viewModel: viewModel,
+                proxy: proxy,
+                title: title,
+                courseID: courseID,
+                dateTabIndex: CourseTab.dates.rawValue
+            )
         case .videos:
             videosContentPlaceholder
         case .assignments:
             assignmentsContentPlaceholder
         }
-    }
-    
-    @ViewBuilder
-    private var allContentPlaceholder: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            
-            Image(systemName: "doc.text")
-                .font(.system(size: 60))
-                .foregroundColor(Theme.Colors.textSecondary)
-            
-            Text("All Content")
-                .font(Theme.Fonts.titleLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-            
-            Text("All course content will be displayed here")
-                .font(Theme.Fonts.bodyMedium)
-                .foregroundColor(Theme.Colors.textSecondary)
-                .multilineTextAlignment(.center)
-            
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 24)
-        .padding(.top, 60)
     }
     
     @ViewBuilder
