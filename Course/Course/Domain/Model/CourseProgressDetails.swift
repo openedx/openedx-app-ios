@@ -21,6 +21,7 @@ public struct CourseProgressDetails: Sendable {
     public let hasScheduledContent: Bool
     public let sectionScores: [CourseProgressSectionScore]
     public let verificationData: CourseProgressVerificationData?
+    public let assignmentColors: [String]
     
     public init(
         verifiedMode: String?,
@@ -34,7 +35,8 @@ public struct CourseProgressDetails: Sendable {
         gradingPolicy: CourseProgressGradingPolicy,
         hasScheduledContent: Bool,
         sectionScores: [CourseProgressSectionScore],
-        verificationData: CourseProgressVerificationData?
+        verificationData: CourseProgressVerificationData?,
+        assignmentColors: [String]
     ) {
         self.verifiedMode = verifiedMode
         self.accessExpiration = accessExpiration
@@ -48,6 +50,7 @@ public struct CourseProgressDetails: Sendable {
         self.hasScheduledContent = hasScheduledContent
         self.sectionScores = sectionScores
         self.verificationData = verificationData
+        self.assignmentColors = assignmentColors
     }
 }
 

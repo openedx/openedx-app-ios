@@ -550,7 +550,8 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                 link: "https://courses.edx.org/verify_student/verify",
                 status: "verified",
                 statusDate: "2024-03-15T14:30:00Z"
-            )
+            ),
+            assignmentColors: ["#D24242", "#7B9645", "#5A5AD8"]
         )
     }
     

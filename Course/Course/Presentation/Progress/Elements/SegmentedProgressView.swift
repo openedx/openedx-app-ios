@@ -145,20 +145,11 @@ extension SegmentedProgressView {
     init(
         assignmentPolicies: [CourseProgressAssignmentPolicy],
         assignmentProgressData: [String: AssignmentProgressData],
+        assignmentColors: [String] = [],
         requiredGrade: Double = 0.0
     ) {
         // Create segments from assignment policies
         var segments: [ProgressSegment] = []
-        let colors: [Color] = [
-            Color.orange,
-            Color.green,
-            Color.blue,
-            Color.purple,
-            Color.pink,
-            Color.mint,
-            Color.yellow,
-            Color.red
-        ]
         
         for (index, policy) in assignmentPolicies.enumerated() {
             let progressData = assignmentProgressData[policy.type] ?? AssignmentProgressData(
@@ -169,9 +160,18 @@ extension SegmentedProgressView {
                 percentGraded: 0.0
             )
             
+            let color: Color
+            if !assignmentColors.isEmpty {
+                let colorIndex = index % assignmentColors.count
+                let hexColor = assignmentColors[colorIndex]
+                color = Color(hex: hexColor) ?? Theme.Colors.textSecondary
+            } else {
+                color = Theme.Colors.textSecondary
+            }
+            
             let segment = ProgressSegment(
                 progress: progressData.pointsPercentage,
-                color: colors[index % colors.count],
+                color: color,
                 weight: policy.weight,
                 label: policy.shortLabel
             )

@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Foundation
+import Theme
 
 @MainActor
 public class CourseProgressViewModel: ObservableObject {
@@ -164,11 +165,19 @@ public class CourseProgressViewModel: ObservableObject {
         )
     }
     
-    public func getRandomColor(for index: Int) -> Color {
-        let colors: [Color] = [
-            .red, .green, .blue, .purple, .orange, .pink, .yellow, .mint
-        ]
-        return colors[index % colors.count]
+    public func getAssignmentColor(for index: Int) -> Color {
+        guard let courseProgress = courseProgress else {
+            return Theme.Colors.textSecondary
+        }
+        
+        if courseProgress.assignmentColors.isEmpty {
+            return Theme.Colors.textSecondary
+        }
+        
+        let colorIndex = index % courseProgress.assignmentColors.count
+        let hexColor = courseProgress.assignmentColors[colorIndex]
+        
+        return Color(hex: hexColor) ?? Theme.Colors.textSecondary
     }
     
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {

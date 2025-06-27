@@ -45,7 +45,7 @@ struct GradeDetailsView: View {
                     GradeItemView(
                         assignmentPolicy: policy,
                         progressData: progressData,
-                        color: viewModel.getRandomColor(for: index)
+                        color: viewModel.getAssignmentColor(for: index)
                     )
                     
                     Divider()

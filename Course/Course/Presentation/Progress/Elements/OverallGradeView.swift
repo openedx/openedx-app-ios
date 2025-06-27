@@ -15,6 +15,7 @@ struct OverallGradeView: View {
     let requiredGrade: Double
     let assignmentPolicies: [CourseProgressAssignmentPolicy]
     let assignmentProgressData: [String: AssignmentProgressData]
+    let assignmentColors: [String]
     
     private var currentGradePercent: Int {
         Int(currentGrade * 100)
@@ -54,6 +55,7 @@ struct OverallGradeView: View {
             SegmentedProgressView(
                 assignmentPolicies: assignmentPolicies,
                 assignmentProgressData: assignmentProgressData,
+                assignmentColors: assignmentColors,
                 requiredGrade: requiredGrade
             )
             
@@ -114,7 +116,8 @@ struct OverallGradeView: View {
                 possiblePoints: 100.0,
                 percentGraded: 0.75
             )
-        ]
+        ],
+        assignmentColors: ["#D24242", "#7B9645"]
     )
     .padding()
     .background(Theme.Colors.background)

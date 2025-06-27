@@ -103,6 +103,7 @@
     </entity>
     <entity name="CDCourseProgress" representedClassName="CDCourseProgress" syncable="YES" codeGenerationType="class">
         <attribute name="accessExpiration" optional="YES" attributeType="String"/>
+        <attribute name="assignmentColors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
         <attribute name="courseID" optional="YES" attributeType="String"/>
         <attribute name="creditCourseRequirements" optional="YES" attributeType="String"/>
         <attribute name="disableProgressGraph" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
