@@ -265,8 +265,8 @@ public enum CourseLocalization {
     public static let noInternet = CourseLocalization.tr("Localizable", "ERROR.NO_INTERNET", fallback: "You are not connected to the Internet. Please check your Internet connection.")
     /// Reload
     public static let reload = CourseLocalization.tr("Localizable", "ERROR.RELOAD", fallback: "Reload")
-    /// There are currently no vidoes for this course.
-    public static let videosUnavailable = CourseLocalization.tr("Localizable", "ERROR.VIDEOS_UNAVAILABLE", fallback: "There are currently no vidoes for this course.")
+    /// There are currently no videos for this course.
+    public static let videosUnavailable = CourseLocalization.tr("Localizable", "ERROR.VIDEOS_UNAVAILABLE", fallback: "There are currently no videos for this course.")
   }
   public enum HandoutsCellAnnouncements {
     /// Keep up with the latest news

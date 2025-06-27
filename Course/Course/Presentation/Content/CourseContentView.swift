@@ -142,7 +142,13 @@ public struct CourseContentView: View {
                 dateTabIndex: CourseTab.dates.rawValue
             )
         case .videos:
-            videosContentPlaceholder
+            VideosContentView(
+                viewModel: viewModel,
+                proxy: proxy,
+                title: title,
+                courseID: courseID,
+                dateTabIndex: CourseTab.dates.rawValue
+            )
         case .assignments:
             assignmentsContentPlaceholder
         }
