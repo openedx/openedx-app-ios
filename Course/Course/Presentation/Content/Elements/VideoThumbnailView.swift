@@ -9,6 +9,7 @@ import SwiftUI
 import Core
 import Theme
 import Kingfisher
+import AVFoundation
 
 struct VideoThumbnailView: View, Equatable {
     
@@ -23,12 +24,38 @@ struct VideoThumbnailView: View, Equatable {
     private let thumbnailWidth: CGFloat = 192
     private let thumbnailHeight: CGFloat = 108
     
+    @State private var thumbnailImage: UIImage?
+    @State private var isGeneratingThumbnail = false
+    
     private var thumbnailURL: URL? {
+        // First priority: YouTube thumbnail
         if let youtubeVideo = video.encodedVideo?.youtube,
            let youtubeURL = youtubeVideo.url,
            let videoID = extractYouTubeVideoID(from: youtubeURL) {
             return URL(string: "https://img.youtube.com/vi/\(videoID)/hqdefault.jpg")
         }
+        
+        return nil
+    }
+    
+    private func getVideoURL() -> URL? {
+        let encodedVideo = video.encodedVideo
+        
+        // Priority order for video sources
+        let videoSources = [
+            encodedVideo?.desktopMP4,
+            encodedVideo?.mobileHigh,
+            encodedVideo?.mobileLow,
+            encodedVideo?.hls,
+            encodedVideo?.fallback
+        ].compactMap { $0 }
+        
+        for videoSource in videoSources {
+            if let urlString = videoSource.url, !urlString.isEmpty {
+                return URL(string: urlString)
+            }
+        }
+        
         return nil
     }
     
@@ -38,11 +65,7 @@ struct VideoThumbnailView: View, Equatable {
         }) {
             ZStack {
                 // MARK: - Thumbnail Image
-                KFImage(thumbnailURL)
-                    .placeholder {
-                        Theme.Colors.commentCellBackground
-                    }
-                    .resizable()
+                thumbnailImageView()
                     .aspectRatio(16/9, contentMode: .fill)
                     .scaleEffect(y: 1.35, anchor: .center)
                     .clipped()
@@ -85,9 +108,106 @@ struct VideoThumbnailView: View, Equatable {
         }
         .buttonStyle(PlainButtonStyle())
         .padding(1)
+        .task {
+            // Generate video thumbnail if needed
+            if thumbnailURL == nil, let videoURL = getVideoURL() {
+                await generateVideoThumbnailIfNeeded(from: videoURL)
+            }
+        }
     }
     
     // MARK: - Helper Functions
+    @ViewBuilder
+    private func thumbnailImageView() -> some View {
+        if let thumbnailURL = thumbnailURL {
+            // For YouTube thumbnails
+            KFImage(thumbnailURL)
+                .placeholder {
+                    Theme.Colors.commentCellBackground
+                }
+                .resizable()
+        } else if let thumbnailImage = thumbnailImage {
+            // For generated video thumbnails
+            Image(uiImage: thumbnailImage)
+                .resizable()
+        } else if isGeneratingThumbnail {
+            // Loading state
+            ZStack {
+                Theme.Colors.commentCellBackground
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Theme.Colors.accentColor))
+            }
+        } else {
+            // Default placeholder
+            Theme.Colors.commentCellBackground
+        }
+    }
+    
+    private func generateVideoThumbnailIfNeeded(from url: URL) async {
+        let cacheKey = "video_thumbnail_\(url.absoluteString.hash)"
+        
+        // Check if thumbnail is already cached
+        if let cachedImage = ImageCache.default.retrieveImageInMemoryCache(forKey: cacheKey) {
+            await MainActor.run {
+                self.thumbnailImage = cachedImage
+            }
+            return
+        }
+        
+        await MainActor.run {
+            self.isGeneratingThumbnail = true
+        }
+        
+        do {
+            let image = try await generateVideoThumbnail(from: url)
+            
+            // Cache the generated thumbnail
+            try await ImageCache.default.store(image, forKey: cacheKey)
+            
+            await MainActor.run {
+                self.thumbnailImage = image
+                self.isGeneratingThumbnail = false
+            }
+        } catch {
+            await MainActor.run {
+                self.isGeneratingThumbnail = false
+            }
+        }
+    }
+    
+    private func generateVideoThumbnail(from url: URL) async throws -> UIImage {
+        let asset = AVAsset(url: url)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        imageGenerator.appliesPreferredTrackTransform = true
+        imageGenerator.requestedTimeToleranceBefore = .zero
+        imageGenerator.requestedTimeToleranceAfter = .zero
+        
+        let time = CMTime(seconds: 1.0, preferredTimescale: 600)
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            imageGenerator.generateCGImagesAsynchronously(
+                forTimes: [NSValue(time: time)]) { _, cgImage, _, _, error in
+                if let error = error {
+                    continuation.resume(throwing: error)
+                    return
+                }
+                
+                guard let cgImage = cgImage else {
+                    continuation.resume(
+                        throwing: NSError(
+                            domain: "VideoThumbnailError", code: -1,
+                            userInfo: [NSLocalizedDescriptionKey: "Failed to generate thumbnail"]
+                        )
+                    )
+                    return
+                }
+                
+                let image = UIImage(cgImage: cgImage)
+                continuation.resume(returning: image)
+            }
+        }
+    }
+    
     private func extractYouTubeVideoID(from urlString: String) -> String? {
         guard let url = URL(string: urlString) else { return nil }
         
@@ -204,14 +324,24 @@ struct VideoThumbnailView: View, Equatable {
             studentUrl: "",
             webUrl: "",
             encodedVideo: CourseBlockEncodedVideo(
-                fallback: nil,
+                fallback: CourseBlockVideo(
+                    url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                    fileSize: 1000000,
+                    streamPriority: 2,
+                    type: .fallback
+                ),
                 youtube: CourseBlockVideo(
                     url: "https://www.youtube.com/watch?v=uFdWM1a44C8",
                     fileSize: 999,
                     streamPriority: 1,
                     type: .youtube
                 ),
-                desktopMP4: nil,
+                desktopMP4: CourseBlockVideo(
+                    url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                    fileSize: 2000000,
+                    streamPriority: 3,
+                    type: .desktopMP4
+                ),
                 mobileHigh: nil,
                 mobileLow: nil,
                 hls: nil
