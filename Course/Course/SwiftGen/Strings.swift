@@ -55,6 +55,14 @@ public enum CourseLocalization {
     public static func progressCompleted(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Sections Completed")
     }
+    /// Hide Completed
+    public static let progressHideCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_HIDE_COMPLETED", fallback: "Hide Completed")
+    /// View Completed
+    public static let progressViewCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_VIEW_COMPLETED", fallback: "View Completed")
+    /// %@/%@ Watched
+    public static func progressWatched(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_WATCHED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Watched")
+    }
     public enum LargestDownloads {
       /// Done
       public static let done = CourseLocalization.tr("Localizable", "COURSE.LARGEST_DOWNLOADS.DONE", fallback: "Done")

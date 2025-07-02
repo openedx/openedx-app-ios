@@ -10,9 +10,11 @@ import Core
 import Theme
 
 struct VideoSectionView: View {
+
     let chapter: CourseChapter
     @ObservedObject var viewModel: CourseContainerViewModel
     let proxy: GeometryProxy
+    @Binding var isShowingCompletedVideos: Bool
     
     @State private var uiScrollView: UIScrollView?
     
@@ -24,95 +26,125 @@ struct VideoSectionView: View {
         allVideos.filter { $0.completion >= 1.0 }
     }
     
+    private var visibleVideos: [CourseBlock] {
+        if isShowingCompletedVideos {
+            return allVideos
+        } else {
+            return allVideos.filter { $0.completion < 1.0 }
+        }
+    }
+    
     private var firstUnwatchedVideo: CourseBlock? {
         allVideos.first { $0.completion == 0.0 }
     }
     
+    // Only show section if there are visible videos
+    private var shouldShowSection: Bool {
+        !visibleVideos.isEmpty
+    }
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            // MARK: - Section Header
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(chapter.displayName)
-                        .font(Theme.Fonts.titleSmall)
-                        .foregroundColor(Theme.Colors.textPrimary)
-                        .lineLimit(2)
-                    
-                    Text("\(completedVideos.count) / \(allVideos.count) Completed")
-                        .font(Theme.Fonts.bodySmall)
-                        .foregroundColor(Theme.Colors.textPrimary)
-                }
-                
-                Spacer()
-                
-                // Download button for section
-                if canDownloadSection,
-                   let state = downloadButtonState {
-                    Button(action: {
-                        downloadSection(state: state)
-                    }) {
-                        switch state {
-                        case .available:
-                            DownloadAvailableView()
-                        case .downloading:
-                            DownloadProgressView()
-                        case .finished:
-                            DownloadFinishedView()
-                        }
-                    }
-                }
-            }
-            .padding(.horizontal, 22)
-            
-            // MARK: - Video Thumbnails Scroll
-            ScrollViewReader { scrollProxy in
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 0) {
-                        ForEach(Array(allVideos.enumerated()), id: \.offset) { index, video in
-                            VideoThumbnailView(
-                                video: video,
-                                viewModel: viewModel,
-                                chapter: chapter
+        if shouldShowSection {
+            VStack(alignment: .leading, spacing: 12) {
+                // MARK: - Section Header
+                HStack {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(chapter.displayName)
+                            .font(Theme.Fonts.titleSmall)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .lineLimit(2)
+                        
+                        Text(
+                            CourseLocalization.Course.progressWatched(
+                                completedVideos.count,
+                                allVideos.count
                             )
-                            .padding(.leading, index == 0 ? 24 : 8)
-                            .id(video.id)
+                        )
+                            .font(Theme.Fonts.bodySmall)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                    }
+                    
+                    Spacer()
+                    
+                    // Download button for section
+                    if canDownloadSection,
+                       let state = downloadButtonState {
+                        Button(action: {
+                            downloadSection(state: state)
+                        }) {
+                            switch state {
+                            case .available:
+                                DownloadAvailableView()
+                            case .downloading:
+                                DownloadProgressView()
+                            case .finished:
+                                DownloadFinishedView()
+                            }
                         }
                     }
                 }
-                .introspect(.scrollView, on: .iOS(.v16, .v17, .v18)) { scroll in
-                    guard uiScrollView == nil else { return }
-                    print(">>>> INTROSPECT", scroll)
-                    DispatchQueue.main.async {
-                        uiScrollView = scroll
+                .padding(.horizontal, 22)
+                
+                // MARK: - Video Thumbnails Scroll
+                ScrollViewReader { scrollProxy in
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHStack(spacing: 0) {
+                            ForEach(Array(visibleVideos.enumerated()), id: \.element.id) { index, video in
+                                VideoThumbnailView(
+                                    video: video,
+                                    viewModel: viewModel,
+                                    chapter: chapter
+                                )
+                                .padding(.leading, index == 0 ? 24 : 8)
+                                .id(video.id)
+                                
+                                if index == visibleVideos.count - 1 {
+                                    Spacer(minLength: 100)
+                                }
+                            }
+                        }
+                    }
+                    .introspect(.scrollView, on: .iOS(.v16, .v17, .v18)) { scroll in
+                        DispatchQueue.main.async {
+                            uiScrollView = scroll
+                        }
+                    }
+                    .onAppear {
+                        guard isShowingCompletedVideos else {
+                            scrollProxy.scrollTo(visibleVideos.first, anchor: .leading)
+                            return
+                        }
+                        scrollToFirstUnwatchedVideo { id in
+                            scrollProxy.scrollTo(id, anchor: .leading)
+                        }
+                    }
+                    .onChange(of: isShowingCompletedVideos) { show in
+                        if show {
+                            scrollToFirstUnwatchedVideo { id in
+                                scrollProxy.scrollTo(id, anchor: .leading)
+                            }
+                        } else {
+                            guard let scroll = uiScrollView else { return }
+                            scroll.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+                        }
                     }
                 }
-                .onAppear {
-                    guard let firstUnwatched = firstUnwatchedVideo else { return }
-                    
-                    // ② обычный scrollTo
-//                    withAnimation(.easeInOut(duration: 0.5)) {
-                        scrollProxy.scrollTo(firstUnwatched.id, anchor: .leading)
-//                    }
-                    
-                    // ③ добавляем точный сдвиг 24 pt
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        guard let scroll = uiScrollView else { return }
-                        let newX = max(scroll.contentOffset.x - 20, 0)
-                        scroll.setContentOffset(CGPoint(x: newX, y: 0), animated: true)
-                    }
-                }
-//                .onAppear {
-//                    // Auto-scroll to first unwatched video if there are completed videos
-//                    if completedVideos.count > 0,
-//                       let firstUnwatched = firstUnwatchedVideo {
-//                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-//                            withAnimation(.easeInOut(duration: 0.5)) {
-//                                scrollProxy.scrollTo(firstUnwatched.id, anchor: .leading)
-//                            }
-//                        }
-//                    }
-//                }
+                Divider()
+                    .padding(.top, 16)
             }
+        }
+    }
+    
+    private func scrollToFirstUnwatchedVideo(scrollTo: @escaping (String) -> Void) {
+        guard let firstUnwatched = firstUnwatchedVideo,
+              visibleVideos.contains(where: { $0.id == firstUnwatched.id }) else { return }
+        
+        scrollTo(firstUnwatched.id)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            guard let scroll = uiScrollView else { return }
+            let newX = max(scroll.contentOffset.x - 20, 0)
+            scroll.setContentOffset(CGPoint(x: newX, y: 0), animated: true)
         }
     }
     
@@ -181,7 +213,8 @@ struct VideoSectionView: View {
                 childs: []
             ),
             viewModel: viewModel,
-            proxy: proxy
+            proxy: proxy,
+            isShowingCompletedVideos: .constant(true)
         )
     }
 }

@@ -110,13 +110,6 @@ public struct CourseContentView: View {
                         }
                     }
                 }
-                if viewModel.isShowProgress {
-                    VStack(alignment: .center) {
-                        ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.horizontal)
-                    }.frame(maxWidth: .infinity,
-                            maxHeight: .infinity)
-                }
             }
         }
         .onAppear {

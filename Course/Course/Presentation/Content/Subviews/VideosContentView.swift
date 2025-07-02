@@ -22,6 +22,7 @@ struct VideosContentView: View {
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
     @State private var showingNoWifiMessage: Bool = false
+    @State private var isShowingCompletedVideos: Bool = true
     
     init(
         viewModel: CourseContainerViewModel,
@@ -69,8 +70,15 @@ struct VideosContentView: View {
                             // MARK: Course Progress (only videos)
                             if let progress = courseVideosStructure.courseProgress,
                                progress.totalAssignmentsCount != 0 {
-                                CourseProgressView(progress: progress)
-                                    .padding(.horizontal, 24)
+                                CourseProgressView(
+                                    progress: progress,
+                                    showCompletedToggle: true,
+                                    isShowingCompleted: isShowingCompletedVideos,
+                                    onToggleCompleted: {
+                                        isShowingCompletedVideos.toggle()
+                                    }
+                                )
+                                .padding(.horizontal, 24)
                             }
                             
                             Spacer(minLength: 16)
@@ -97,16 +105,24 @@ struct VideosContentView: View {
                             } else {
                                 ScrollView {
                                     LazyVStack(alignment: .leading, spacing: 16) {
-                                        ForEach(courseVideosStructure.childs) { chapter in
+                                        ForEach(
+                                            Array(courseVideosStructure.childs.enumerated()),
+                                            id: \.offset
+                                        ) { index, chapter in
+                                            
+                                            if index == 0 {
+                                                Divider()
+                                            }
+                                            
                                             VideoSectionView(
                                                 chapter: chapter,
                                                 viewModel: viewModel,
-                                                proxy: proxy
+                                                proxy: proxy,
+                                                isShowingCompletedVideos: $isShowingCompletedVideos
                                             )
-                                            
-                                            Divider()
                                         }
                                     }
+                                    .animation(.default, value: isShowingCompletedVideos)
                                 }
                             }
                             

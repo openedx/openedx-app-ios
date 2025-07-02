@@ -10,7 +10,12 @@ import Core
 import Theme
 import Kingfisher
 
-struct VideoThumbnailView: View {
+struct VideoThumbnailView: View, Equatable {
+    
+    nonisolated static func == (lhs: VideoThumbnailView, rhs: VideoThumbnailView) -> Bool {
+        lhs.video == rhs.video
+    }
+
     let video: CourseBlock
     @ObservedObject var viewModel: CourseContainerViewModel
     let chapter: CourseChapter
@@ -142,6 +147,7 @@ struct VideoThumbnailView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     
     let viewModel = CourseContainerViewModel(
@@ -201,3 +207,4 @@ struct VideoThumbnailView: View {
         )
     )
 }
+#endif

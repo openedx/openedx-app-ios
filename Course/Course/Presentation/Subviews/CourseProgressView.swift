@@ -11,9 +11,20 @@ import Core
 
 public struct CourseProgressView: View {
     private var progress: CourseProgress
+    private var showCompletedToggle: Bool
+    private var isShowingCompleted: Bool
+    private var onToggleCompleted: (() -> Void)?
     
-    public init(progress: CourseProgress) {
+    public init(
+        progress: CourseProgress,
+        showCompletedToggle: Bool = false,
+        isShowingCompleted: Bool = true,
+        onToggleCompleted: (() -> Void)? = nil
+    ) {
         self.progress = progress
+        self.showCompletedToggle = showCompletedToggle
+        self.isShowingCompleted = isShowingCompleted
+        self.onToggleCompleted = onToggleCompleted
     }
     
     public var body: some View {
@@ -35,12 +46,37 @@ public struct CourseProgressView: View {
             }
             .cornerRadius(2)
             
-            if let total = progress.totalAssignmentsCount,
-                let completed = progress.assignmentsCompleted {
-                Text(CourseLocalization.Course.progressCompleted(completed, total))
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .font(Theme.Fonts.labelMedium)
-                    .padding(.top, 4)
+            HStack {
+                if let total = progress.totalAssignmentsCount,
+                   let completed = progress.assignmentsCompleted {
+                    Text(CourseLocalization.Course.progressCompleted(completed, total))
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .font(Theme.Fonts.labelMedium)
+                        .padding(.top, 5)
+                }
+                
+                Spacer()
+                
+                if showCompletedToggle {
+                    Button(action: {
+                        onToggleCompleted?()
+                    }) {
+                        HStack(spacing: 2) {
+                            Text(
+                                isShowingCompleted
+                                ? CourseLocalization.Course.progressHideCompleted
+                                : CourseLocalization.Course.progressViewCompleted
+                            )
+                            .font(Theme.Fonts.labelMedium)
+                            .foregroundColor(Theme.Colors.accentColor)
+                            CoreAssets.chevronRight.swiftUIImage
+                                .rotationEffect(
+                                    .degrees(isShowingCompleted ? -90 : 90)
+                                )
+                                .animation(.default, value: isShowingCompleted)
+                        }
+                    }
+                }
             }
         }
     }

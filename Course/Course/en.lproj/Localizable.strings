@@ -119,6 +119,9 @@
 "COURSE.DUE_TOMORROW" = "Due Tomorrow";
 
 "COURSE.PROGRESS_COMPLETED" = "%@/%@ Sections Completed";
+"COURSE.PROGRESS_WATCHED" = "%@/%@ Watched";
+"COURSE.PROGRESS_VIEW_COMPLETED" = "View Completed";
+"COURSE.PROGRESS_HIDE_COMPLETED" = "Hide Completed";
 
 "COURSE.LARGEST_DOWNLOADS.TITLE" = "Largest Downloads";
 "COURSE.LARGEST_DOWNLOADS.DONE" = "Done";
