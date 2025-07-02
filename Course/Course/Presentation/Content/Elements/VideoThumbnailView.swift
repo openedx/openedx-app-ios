@@ -146,12 +146,17 @@ struct VideoThumbnailView: View, Equatable {
     private func generateVideoThumbnailIfNeeded(from url: URL) async {
         let cacheKey = "video_thumbnail_\(url.absoluteString.hash)"
         
-        // Check if thumbnail is already cached
-        if let cachedImage = ImageCache.default.retrieveImageInMemoryCache(forKey: cacheKey) {
-            await MainActor.run {
-                self.thumbnailImage = cachedImage
+        // Check if thumbnail is already cached (both memory and disk)
+        do {
+            let cacheResult = try await ImageCache.default.retrieveImage(forKey: cacheKey)
+            if let cachedImage = cacheResult.image {
+                await MainActor.run {
+                    self.thumbnailImage = cachedImage
+                }
+                return
             }
-            return
+        } catch {
+            // Cache retrieval failed, continue to generate new thumbnail
         }
         
         await MainActor.run {
@@ -161,8 +166,12 @@ struct VideoThumbnailView: View, Equatable {
         do {
             let image = try await generateVideoThumbnail(from: url)
             
-            // Cache the generated thumbnail
-            try await ImageCache.default.store(image, forKey: cacheKey)
+            // Cache the generated thumbnail to both memory and disk
+            try await ImageCache.default.store(
+                image,
+                forKey: cacheKey,
+                toDisk: true
+            )
             
             await MainActor.run {
                 self.thumbnailImage = image
