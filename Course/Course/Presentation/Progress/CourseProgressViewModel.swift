@@ -147,8 +147,24 @@ public class CourseProgressViewModel: ObservableObject {
         let assignments = courseProgress.sectionScores.flatMap { $0.subsections }
             .filter { $0.assignmentType == assignmentType && $0.hasGradedAssignment }
         
-        let completed = assignments.filter { $0.numPointsEarned > 0 }.count
-        let total = policy.numTotal // Use numTotal from policy, not assignments.count
+        // Calculate completed and total based on problem scores
+        var completedProblems = 0
+        var totalProblems = 0
+        
+        for assignment in assignments {
+            // Count problems in this assignment
+            totalProblems += assignment.problemScores.count
+            
+            // Count completed problems (where earned > 0)
+            completedProblems += assignment.problemScores.filter { $0.earned > 0 }.count
+        }
+        
+        // If no problem scores available, fall back to subsection-based counting
+        if totalProblems == 0 {
+            completedProblems = assignments.filter { $0.numPointsEarned > 0 }.count
+            totalProblems = policy.numTotal
+        }
+        
         let earnedPoints = assignments.reduce(0.0) { $0 + $1.numPointsEarned }
         let possiblePoints = assignments.reduce(0.0) { $0 + $1.numPointsPossible }
         
@@ -157,8 +173,8 @@ public class CourseProgressViewModel: ObservableObject {
         let averagePercentGraded = assignments.isEmpty ? 0.0 : totalPercentGraded / Double(assignments.count)
         
         return AssignmentProgressData(
-            completed: completed,
-            total: total,
+            completed: completedProblems,
+            total: totalProblems,
             earnedPoints: earnedPoints,
             possiblePoints: possiblePoints,
             percentGraded: averagePercentGraded

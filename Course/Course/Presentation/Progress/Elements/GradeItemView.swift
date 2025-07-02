@@ -50,12 +50,6 @@ struct GradeItemView: View {
                             }
                             
                             HStack(spacing: 4) {
-                                Text("\(Int(progressData.percentGraded * 100))%")
-                                    .font(Theme.Fonts.bodySmall)
-                                    .foregroundColor(Theme.Colors.textSecondary)
-                                Text("completion,")
-                                    .font(Theme.Fonts.bodySmall)
-                                    .foregroundColor(Theme.Colors.textSecondary)
                                 Text("\(maxPercent)%")
                                     .font(Theme.Fonts.bodySmall)
                                     .fontWeight(.bold)
