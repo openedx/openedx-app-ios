@@ -142,6 +142,7 @@ public enum CoreAssets {
   public static let settings = ImageAsset(name: "settings")
   public static let star = ImageAsset(name: "star")
   public static let starOutline = ImageAsset(name: "star_outline")
+  public static let videoPlayButton = ImageAsset(name: "videoPlayButton")
   public static let viewAll = ImageAsset(name: "viewAll")
   public static let visibility = ImageAsset(name: "visibility")
   public static let warning = ImageAsset(name: "warning")

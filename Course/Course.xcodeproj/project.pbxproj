@@ -111,6 +111,8 @@
 		CE63866C2D0721D600C01D69 /* BlockStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866B2D0721D600C01D69 /* BlockStatusView.swift */; };
 		CE63866E2D07220600C01D69 /* CourseDateStyleBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */; };
 		CE7CAF412CC1563500E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF402CC1563500E0AC9D /* OEXFoundation */; };
+		CE812FAB2E15157600EDCC63 /* VideoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE812FAA2E15157600EDCC63 /* VideoSectionView.swift */; };
+		CE812FAD2E15168C00EDCC63 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE812FAC2E15168C00EDCC63 /* VideoThumbnailView.swift */; };
 		CEB1E2732CC14EC400921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2722CC14EC400921517 /* OEXFoundation */; };
 		CEBCA4342CC13CDE00076589 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA4332CC13CDE00076589 /* YouTubePlayerKit */; };
 		DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */; };
@@ -262,6 +264,8 @@
 		CE6386692D0721B600C01D69 /* CompletedBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedBlocks.swift; sourceTree = "<group>"; };
 		CE63866B2D0721D600C01D69 /* BlockStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStatusView.swift; sourceTree = "<group>"; };
 		CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateStyleBlock.swift; sourceTree = "<group>"; };
+		CE812FAA2E15157600EDCC63 /* VideoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSectionView.swift; sourceTree = "<group>"; };
+		CE812FAC2E15168C00EDCC63 /* VideoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailView.swift; sourceTree = "<group>"; };
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
 		DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDatesView.swift; sourceTree = "<group>"; };
 		DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesViewModel.swift; sourceTree = "<group>"; };
@@ -680,6 +684,8 @@
 		CE4BA9182E0AC99A0050F2C7 /* Elements */ = {
 			isa = PBXGroup;
 			children = (
+				CE812FAC2E15168C00EDCC63 /* VideoThumbnailView.swift */,
+				CE812FAA2E15157600EDCC63 /* VideoSectionView.swift */,
 				CE4BA9172E0AC99A0050F2C7 /* ContentSegmentedControl.swift */,
 				CE4BA91D2E0AED930050F2C7 /* CustomProgressShape.swift */,
 				CE4BA91F2E0AF22A0050F2C7 /* SectionProgressView.swift */,
@@ -1012,6 +1018,7 @@
 				022F8E182A1E2642008EFAB9 /* EncodedVideoPlayerViewModel.swift in Sources */,
 				0248C92729C097EB00DC8402 /* CourseVerticalViewModel.swift in Sources */,
 				02F0145728F4A2FF002E513D /* CourseContainerViewModel.swift in Sources */,
+				CE812FAD2E15168C00EDCC63 /* VideoThumbnailView.swift in Sources */,
 				02B6B3B728E1D11E00232911 /* CourseInteractor.swift in Sources */,
 				073512E229C0E400005CFA41 /* BaseCourseViewModel.swift in Sources */,
 				0231124F28EDA811002588FB /* CourseUnitViewModel.swift in Sources */,
@@ -1028,6 +1035,7 @@
 				02197DC52C1AFC0600CC8FF2 /* CalendarSyncStatusView.swift in Sources */,
 				060E8BCA2B5FD68C0080C952 /* UnitStack.swift in Sources */,
 				CE4BA91C2E0AE2960050F2C7 /* AllContentView.swift in Sources */,
+				CE812FAB2E15157600EDCC63 /* VideoSectionView.swift in Sources */,
 				02228B2F2C221412009A5F28 /* LargestDownloadsView.swift in Sources */,
 				0295C889299BBE8200ABE571 /* CourseNavigationView.swift in Sources */,
 				06FD7EDF2B1F29F3008D632B /* CourseVerticalImageView.swift in Sources */,
