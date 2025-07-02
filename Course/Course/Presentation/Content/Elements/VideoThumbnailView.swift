@@ -104,10 +104,10 @@ struct VideoThumbnailView: View, Equatable {
     }
     
     private func openVideo() {
-        // Find indices for navigation
-        guard let chapterIndex = findChapterIndex(),
-              let sequentialIndex = findSequentialIndex(),
-              let verticalIndex = findVerticalIndex(),
+        // Find indices for navigation using full course structure
+        guard let chapterIndex = findChapterIndexInFullStructure(),
+              let sequentialIndex = findSequentialIndexInFullStructure(),
+              let verticalIndex = findVerticalIndexInFullStructure(),
               let courseStructure = viewModel.courseStructure else {
             return
         }
@@ -123,24 +123,46 @@ struct VideoThumbnailView: View, Equatable {
         )
     }
     
-    private func findChapterIndex() -> Int? {
-        return viewModel.courseStructure?.childs.firstIndex { $0.id == chapter.id }
-    }
-    
-    private func findSequentialIndex() -> Int? {
-        chapter.childs.firstIndex { sequential in
-            sequential.childs.contains { vertical in
-                vertical.childs.contains { $0.id == video.id }
+    private func findChapterIndexInFullStructure() -> Int? {
+        guard let courseStructure = viewModel.courseStructure else { return nil }
+        
+        // Find the chapter that contains this video in the full structure
+        return courseStructure.childs.firstIndex { fullChapter in
+            fullChapter.childs.contains { sequential in
+                sequential.childs.contains { vertical in
+                    vertical.childs.contains { $0.id == video.id }
+                }
             }
         }
     }
     
-    private func findVerticalIndex() -> Int? {
-        for sequential in chapter.childs {
-            for vertical in sequential.childs
-            where vertical.childs.contains(where: { $0.id == video.id }) {
-                
-                return sequential.childs.firstIndex { $0.id == vertical.id }
+    private func findSequentialIndexInFullStructure() -> Int? {
+        guard let courseStructure = viewModel.courseStructure else { return nil }
+        
+        // Find the chapter and sequential that contains this video in the full structure
+        for fullChapter in courseStructure.childs {
+            if let sequentialIndex = fullChapter.childs.firstIndex(where: { sequential in
+                sequential.childs.contains { vertical in
+                    vertical.childs.contains { $0.id == video.id }
+                }
+            }) {
+                return sequentialIndex
+            }
+        }
+        return nil
+    }
+    
+    private func findVerticalIndexInFullStructure() -> Int? {
+        guard let courseStructure = viewModel.courseStructure else { return nil }
+        
+        // Find the vertical that contains this video in the full structure
+        for fullChapter in courseStructure.childs {
+            for sequential in fullChapter.childs {
+                if let verticalIndex = sequential.childs.firstIndex(where: { vertical in
+                    vertical.childs.contains { $0.id == video.id }
+                }) {
+                    return verticalIndex
+                }
             }
         }
         return nil
