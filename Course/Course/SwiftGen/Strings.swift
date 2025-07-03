@@ -180,8 +180,8 @@ public enum CourseLocalization {
       public static let gradeProgress = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.GRADE_PROGRESS", fallback: "Grade Progress")
       /// Locked
       public static let locked = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.LOCKED", fallback: "Locked")
-      /// This course does not contain exams or graded assignments.
-      public static let noGradedAssignments = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.NO_GRADED_ASSIGNMENTS", fallback: "This course does not contain exams or graded assignments.")
+      /// This course does not contain graded assignments.
+      public static let noGradedAssignments = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.NO_GRADED_ASSIGNMENTS", fallback: "This course does not contain graded assignments.")
       /// No progress available
       public static let noProgressAvailable = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.PROGRESS.NO_PROGRESS_AVAILABLE", fallback: "No progress available")
       /// Not Passing

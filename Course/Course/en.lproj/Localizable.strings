@@ -71,7 +71,7 @@
 "COURSE_CONTAINER.PROGRESS.CURRENT_MAX_PERCENT" = "Current / Max %%";
 "COURSE_CONTAINER.PROGRESS.COMPLETE" = "Complete";
 "COURSE_CONTAINER.PROGRESS.OF_GRADE" = "of Grade";
-"COURSE_CONTAINER.PROGRESS.NO_GRADED_ASSIGNMENTS" = "This course does not contain exams or graded assignments.";
+"COURSE_CONTAINER.PROGRESS.NO_GRADED_ASSIGNMENTS" = "This course does not contain graded assignments.";
 
 "HANDOUTS_CELL_HANDOUTS.TITLE" = "Handouts";
 "HANDOUTS_CELL_ANNOUNCEMENTS.TITLE" = "Announcements";
