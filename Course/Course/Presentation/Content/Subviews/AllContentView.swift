@@ -68,12 +68,12 @@ struct AllContentView: View {
                                 
                                 Spacer(minLength: 16)
                                 // MARK: Course Progress
-                                if let progress = course.courseProgress,
-                                   progress.totalAssignmentsCount != 0 {
+                                if let progress = viewModel.courseProgress(),
+                                   let total = progress.totalAssignmentsCount, total > 0 {
                                     CourseProgressView(progress: progress)
                                         .padding(.horizontal, 24)
+                                    Spacer(minLength: 16)
                                 }
-                                Spacer(minLength: 16)
                                 
                                 // MARK: Continue Unit
                                 if let continueWith = viewModel.continueWith,

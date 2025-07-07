@@ -19,7 +19,7 @@ struct VideosContentView: View {
     private let dateTabIndex: Int
     
     private let proxy: GeometryProxy
-    @State private var isShowingCompletedVideos: Bool = true
+    @State private var isShowingCompletedVideos: Bool = false
     
     init(
         viewModel: CourseContainerViewModel,

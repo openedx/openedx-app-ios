@@ -1045,6 +1045,14 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         
         return updatedStructure
     }
+    
+    func courseProgress() -> CourseProgress? {
+        guard let course = courseStructure else { return nil }
+        let total = course.childs.count
+        guard total > 0 else { return nil }
+        let completed = course.childs.filter { chapterProgress(for: $0) >= 1.0 }.count
+        return CourseProgress(totalAssignmentsCount: total, assignmentsCompleted: completed)
+    }
 }
 
 extension CourseContainerViewModel {
