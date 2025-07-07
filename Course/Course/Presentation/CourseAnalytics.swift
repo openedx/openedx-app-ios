@@ -64,6 +64,11 @@ public protocol CourseAnalytics {
     func courseOutlineDatesTabClicked(courseId: String, courseName: String)
     func courseOutlineDiscussionTabClicked(courseId: String, courseName: String)
     func courseOutlineHandoutsTabClicked(courseId: String, courseName: String)
+    func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String)
+    func courseContentAllTabClicked(courseId: String, courseName: String)
+    func courseContentVideosTabClicked(courseId: String, courseName: String)
+    func courseContentAssignmentsTabClicked(courseId: String, courseName: String)
+    func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func datesComponentTapped(
         courseId: String,
         blockId: String,
@@ -186,6 +191,11 @@ class CourseAnalyticsMock: CourseAnalytics {
     public func courseOutlineDatesTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineDiscussionTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineHandoutsTabClicked(courseId: String, courseName: String) {}
+    public func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String) {}
+    public func courseContentAllTabClicked(courseId: String, courseName: String) {}
+    public func courseContentVideosTabClicked(courseId: String, courseName: String) {}
+    public func courseContentAssignmentsTabClicked(courseId: String, courseName: String) {}
+    public func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func datesComponentTapped(
         courseId: String,
         blockId: String,

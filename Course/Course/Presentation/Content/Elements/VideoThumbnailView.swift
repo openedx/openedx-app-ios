@@ -74,30 +74,10 @@ struct VideoThumbnailView: View, Equatable {
                 // MARK: - Play Button Overlay
                 CoreAssets.videoPlayButton.swiftUIImage
                 
-                // MARK: - Completion Indicator
-                if video.completion >= 1.0 {
-                    ZStack(alignment: .trailing) {
-                        // Progress bar for completed videos
-                        Rectangle()
-                            .fill(Theme.Colors.success)
-                            .frame(height: 4)
-                            .cornerRadius(2)
-                            .padding(.horizontal, 4)
-                            .padding(.bottom, 4)
-                        
-                        Image(systemName: "checkmark.circle.fill")
-                            .font(.system(size: 20))
-                            .foregroundColor(Theme.Colors.success)
-                            .background(
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 14, height: 14)
-                            )
-                            .offset(y: -3)
-                    }
+                // MARK: - Progress Indicator
+                progressIndicatorView()
                     .padding(.horizontal, 2)
                     .frame(width: thumbnailWidth, height: thumbnailHeight, alignment: .bottomTrailing)
-                }
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 12)
@@ -117,6 +97,92 @@ struct VideoThumbnailView: View, Equatable {
     }
     
     // MARK: - Helper Functions
+    @ViewBuilder
+    private func progressIndicatorView() -> some View {
+        let effectiveProgress = getEffectiveProgress()
+        let shouldShowAsCompleted = video.completion >= 1.0
+        let shouldShowGreenBar = shouldShowAsCompleted && (
+            video.localVideoProgress == 0 || video.localVideoProgress >= 0.9
+        )
+        
+        if shouldShowAsCompleted {
+            // Video completed on server - show checkmark
+            ZStack(alignment: .trailing) {
+                if shouldShowGreenBar {
+                    // Show green bar when no local progress OR local progress >= 90%
+                    Rectangle()
+                        .fill(Theme.Colors.success)
+                        .frame(height: 4)
+                        .cornerRadius(2)
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 4)
+                } else if effectiveProgress > 0 {
+                    // Show local progress bar when rewatching
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(height: 4)
+                            .cornerRadius(2)
+                            .padding(.horizontal, 4)
+                            .padding(.bottom, 4)
+                        
+                        Rectangle()
+                            .fill(Theme.Colors.accentColor)
+                            .frame(width: max(8, thumbnailWidth * effectiveProgress - 8), height: 4)
+                            .cornerRadius(2)
+                            .padding(.horizontal, 4)
+                            .padding(.bottom, 4)
+                    }
+                }
+                
+                // Always show checkmark for completed videos
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(Theme.Colors.success)
+                    .background(
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 14, height: 14)
+                    )
+                    .offset(y: -3)
+            }
+        } else if effectiveProgress > 0 {
+            // Partially watched - show progress bar
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(Color.gray.opacity(0.3))
+                    .frame(height: 4)
+                    .cornerRadius(2)
+                    .padding(.horizontal, 4)
+                    .padding(.bottom, 4)
+                
+                Rectangle()
+                    .fill(Theme.Colors.accentColor)
+                    .frame(width: max(8, thumbnailWidth * effectiveProgress - 8), height: 4)
+                    .cornerRadius(2)
+                    .padding(.horizontal, 4)
+                    .padding(.bottom, 4)
+            }
+        }
+    }
+    
+    private func getEffectiveProgress() -> Double {
+        let effectiveProgress: Double
+        
+        // Always prioritize local progress if available
+        if video.localVideoProgress > 0 {
+            effectiveProgress = video.localVideoProgress
+        } else if video.completion >= 1.0 {
+            // If no local progress but completed on server, show as 100%
+            effectiveProgress = 1.0
+        } else {
+            // Not completed and no local progress
+            effectiveProgress = 0.0
+        }
+        
+        return effectiveProgress
+    }
+    
     @ViewBuilder
     private func thumbnailImageView() -> some View {
         if let thumbnailURL = thumbnailURL {
@@ -240,6 +306,14 @@ struct VideoThumbnailView: View, Equatable {
               let courseStructure = viewModel.courseStructure else {
             return
         }
+        
+        // Track video click analytics
+        viewModel.analytics.courseVideoClicked(
+            courseId: courseStructure.id,
+            courseName: courseStructure.displayName,
+            blockId: video.id,
+            blockName: video.displayName
+        )
         
         viewModel.router.showCourseUnit(
             courseName: courseStructure.displayName,

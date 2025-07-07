@@ -22,6 +22,9 @@ public protocol CourseInteractorProtocol: Sendable {
     func getCourseDates(courseID: String) async throws -> CourseDates
     func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner
     func shiftDueDates(courseID: String) async throws
+    func updateLocalVideoProgress(blockID: String, progress: Double) async
+    func loadLocalVideoProgress(blockID: String) async -> Double?
+    func enrichCourseStructureWithLocalProgress(_ structure: CourseStructure) async -> CourseStructure
 }
 
 public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerProtocol {
@@ -44,7 +47,16 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
                 newChilds.append(newChapter)
             }
         }
-        return CourseStructure(
+        
+        // Calculate video progress specifically
+        let allVideos = getAllVideosFromStructure(childs: newChilds)
+        let completedVideos = allVideos.filter { $0.completion >= 1.0 }
+        let videoProgress = allVideos.isEmpty ? nil : CourseProgress(
+            totalAssignmentsCount: allVideos.count,
+            assignmentsCompleted: completedVideos.count
+        )
+        
+        let filteredStructure = CourseStructure(
             id: course.id,
             graded: course.graded,
             completion: course.completion,
@@ -57,11 +69,34 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
             certificate: course.certificate,
             org: course.org,
             isSelfPaced: course.isSelfPaced,
-            courseProgress: course.courseProgress == nil ? nil : CourseProgress(
-                totalAssignmentsCount: course.courseProgress?.totalAssignmentsCount ?? 0,
-                assignmentsCompleted: course.courseProgress?.assignmentsCompleted ?? 0
-            )
+            courseProgress: videoProgress
         )
+        
+        // Enrich with local video progress
+        let enrichedStructure = await enrichCourseStructureWithLocalProgress(filteredStructure)
+        
+        // After enrichment, recalculate progress with updated video states
+        let enrichedVideos = getAllVideosFromStructure(childs: enrichedStructure.childs)
+        let enrichedCompletedVideos = enrichedVideos.filter { $0.completion >= 1.0 }
+        let finalVideoProgress = enrichedVideos.isEmpty ? nil : CourseProgress(
+            totalAssignmentsCount: enrichedVideos.count,
+            assignmentsCompleted: enrichedCompletedVideos.count
+        )
+        
+        var finalStructure = enrichedStructure
+        finalStructure.courseProgress = finalVideoProgress
+                
+        return finalStructure
+    }
+    
+    private func getAllVideosFromStructure(childs: [CourseChapter]) -> [CourseBlock] {
+        return childs.flatMap { chapter in
+            chapter.childs.flatMap { sequential in
+                sequential.childs.flatMap { vertical in
+                    vertical.childs.filter { $0.type == .video }
+                }
+            }
+        }
     }
     
     public func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure {
@@ -230,6 +265,97 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
             }
         }
         return subtitles
+    }
+    
+    public func updateLocalVideoProgress(blockID: String, progress: Double) async {
+        await repository.updateLocalVideoProgress(blockID: blockID, progress: progress)
+    }
+    
+    public func loadLocalVideoProgress(blockID: String) async -> Double? {
+        let progress = await repository.loadLocalVideoProgress(blockID: blockID)
+        return progress
+    }
+    
+    public func enrichCourseStructureWithLocalProgress(_ structure: CourseStructure) async -> CourseStructure {
+        var enrichedStructure = structure
+        enrichedStructure.childs = await withTaskGroup(of: CourseChapter.self) { group in
+            for chapter in structure.childs {
+                group.addTask {
+                    await self.enrichChapterWithLocalProgress(chapter)
+                }
+            }
+            
+            var enrichedChapters: [CourseChapter] = []
+            for await enrichedChapter in group {
+                enrichedChapters.append(enrichedChapter)
+            }
+            return enrichedChapters.sorted { $0.id < $1.id }
+        }
+        return enrichedStructure
+    }
+    
+    private func enrichChapterWithLocalProgress(_ chapter: CourseChapter) async -> CourseChapter {
+        var enrichedChapter = chapter
+        enrichedChapter.childs = await withTaskGroup(of: CourseSequential.self) { group in
+            for sequential in chapter.childs {
+                group.addTask {
+                    await self.enrichSequentialWithLocalProgress(sequential)
+                }
+            }
+            
+            var enrichedSequentials: [CourseSequential] = []
+            for await enrichedSequential in group {
+                enrichedSequentials.append(enrichedSequential)
+            }
+            return enrichedSequentials.sorted { $0.id < $1.id }
+        }
+        return enrichedChapter
+    }
+    
+    private func enrichSequentialWithLocalProgress(_ sequential: CourseSequential) async -> CourseSequential {
+        var enrichedSequential = sequential
+        enrichedSequential.childs = await withTaskGroup(of: CourseVertical.self) { group in
+            for vertical in sequential.childs {
+                group.addTask {
+                    await self.enrichVerticalWithLocalProgress(vertical)
+                }
+            }
+            
+            var enrichedVerticals: [CourseVertical] = []
+            for await enrichedVertical in group {
+                enrichedVerticals.append(enrichedVertical)
+            }
+            return enrichedVerticals.sorted { $0.id < $1.id }
+        }
+        return enrichedSequential
+    }
+    
+    private func enrichVerticalWithLocalProgress(_ vertical: CourseVertical) async -> CourseVertical {
+        var enrichedVertical = vertical
+        enrichedVertical.childs = await withTaskGroup(of: CourseBlock.self) { group in
+            for block in vertical.childs {
+                group.addTask {
+                    await self.enrichBlockWithLocalProgress(block)
+                }
+            }
+            
+            var enrichedBlocks: [CourseBlock] = []
+            for await enrichedBlock in group {
+                enrichedBlocks.append(enrichedBlock)
+            }
+            return enrichedBlocks.sorted { $0.id < $1.id }
+        }
+        return enrichedVertical
+    }
+    
+    private func enrichBlockWithLocalProgress(_ block: CourseBlock) async -> CourseBlock {
+        var enrichedBlock = block
+        if block.type == .video {
+            if let localProgress = await repository.loadLocalVideoProgress(blockID: block.id) {
+                enrichedBlock.localVideoProgress = localProgress
+            }
+        }
+        return enrichedBlock
     }
 }
 

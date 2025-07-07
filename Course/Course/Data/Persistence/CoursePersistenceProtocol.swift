@@ -17,6 +17,8 @@ public protocol CoursePersistenceProtocol: Sendable {
     func loadSubtitles(url: String) async -> String?
     func saveCourseDates(courseID: String, courseDates: CourseDates) async
     func loadCourseDates(courseID: String) async throws -> CourseDates
+    func updateLocalVideoProgress(blockID: String, progress: Double) async
+    func loadLocalVideoProgress(blockID: String) async -> Double?
 }
 
 public final class CourseBundle {

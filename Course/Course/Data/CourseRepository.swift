@@ -21,6 +21,8 @@ public protocol CourseRepositoryProtocol: Sendable {
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates
     func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner
     func shiftDueDates(courseID: String) async throws
+    func updateLocalVideoProgress(blockID: String, progress: Double) async
+    func loadLocalVideoProgress(blockID: String) async -> Double?
 }
 
 public actor CourseRepository: CourseRepositoryProtocol {
@@ -289,6 +291,15 @@ public actor CourseRepository: CourseRepositoryProtocol {
             type: type
         )
     }
+    
+    public func updateLocalVideoProgress(blockID: String, progress: Double) async {
+        await persistence.updateLocalVideoProgress(blockID: blockID, progress: progress)
+    }
+    
+    public func loadLocalVideoProgress(blockID: String) async -> Double? {
+        let progress = await persistence.loadLocalVideoProgress(blockID: blockID)
+        return progress
+    }
 }
 
 // Mark - For testing and SwiftUI preview
@@ -296,6 +307,10 @@ public actor CourseRepository: CourseRepositoryProtocol {
 #if DEBUG
 @MainActor
 class CourseRepositoryMock: CourseRepositoryProtocol {
+    func updateLocalVideoProgress(blockID: String, progress: Double) async {}
+
+    func loadLocalVideoProgress(blockID: String) async -> Double? {nil}
+
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
         throw NoCachedDataError()
     }

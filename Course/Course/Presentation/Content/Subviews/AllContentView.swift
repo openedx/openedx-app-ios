@@ -58,6 +58,7 @@ struct AllContentView: View {
                     if viewModel.isShowProgress && !viewModel.isShowRefresh {
                         HStack(alignment: .center) {
                             ProgressBar(size: 40, lineWidth: 8)
+                                .padding(.top, 200)
                                 .padding(.horizontal)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)

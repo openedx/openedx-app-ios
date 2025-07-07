@@ -373,9 +373,6 @@ final class CourseContainerViewModelTests: XCTestCase {
         viewModel.trackSelectedTab(selection: .course, courseId: "1", courseName: "name")
         Verify(analytics, .courseOutlineCourseTabClicked(courseId: .value("1"), courseName: .value("name")))
         
-        viewModel.trackSelectedTab(selection: .videos, courseId: "1", courseName: "name")
-        Verify(analytics, .courseOutlineVideosTabClicked(courseId: .value("1"), courseName: .value("name")))
-        
         viewModel.trackSelectedTab(selection: .discussion, courseId: "1", courseName: "name")
         Verify(analytics, .courseOutlineDiscussionTabClicked(courseId: .value("1"), courseName: .value("name")))
         

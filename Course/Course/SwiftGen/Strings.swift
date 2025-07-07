@@ -57,6 +57,10 @@ public enum CourseLocalization {
     }
     /// Hide Completed
     public static let progressHideCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_HIDE_COMPLETED", fallback: "Hide Completed")
+    /// %@/%@ Completed
+    public static func progressVideosCompleted(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_VIDEOS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Completed")
+    }
     /// View Completed
     public static let progressViewCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_VIEW_COMPLETED", fallback: "View Completed")
     /// %@/%@ Watched
@@ -92,8 +96,8 @@ public enum CourseLocalization {
       }
       /// You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.
       public static let youCanDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CAN_DOWNLOAD", fallback: "You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.")
-      /// None of this course’s content is currently avaliable to download offline.
-      public static let youCantDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CANT_DOWNLOAD", fallback: "None of this course’s content is currently avaliable to download offline.")
+      /// None of this course's content is currently available to download offline.
+      public static let youCantDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CANT_DOWNLOAD", fallback: "None of this course's content is currently available to download offline.")
     }
     public enum TotalProgress {
       /// Available to Download
@@ -261,6 +265,8 @@ public enum CourseLocalization {
   public enum Error {
     /// There are currently no announcements for this course.
     public static let announcementsUnavailable = CourseLocalization.tr("Localizable", "ERROR.ANNOUNCEMENTS_UNAVAILABLE", fallback: "There are currently no announcements for this course.")
+    /// There are no assignments currently available for this course
+    public static let assignmentsUnavailable = CourseLocalization.tr("Localizable", "ERROR.ASSIGNMENTS_UNAVAILABLE", fallback: "There are no assignments currently available for this course")
     /// Course component not found, please reload
     public static let componentNotFount = CourseLocalization.tr("Localizable", "ERROR.COMPONENT_NOT_FOUNT", fallback: "Course component not found, please reload")
     /// Course dates are not currently available.
@@ -273,8 +279,8 @@ public enum CourseLocalization {
     public static let noInternet = CourseLocalization.tr("Localizable", "ERROR.NO_INTERNET", fallback: "You are not connected to the Internet. Please check your Internet connection.")
     /// Reload
     public static let reload = CourseLocalization.tr("Localizable", "ERROR.RELOAD", fallback: "Reload")
-    /// There are currently no videos for this course.
-    public static let videosUnavailable = CourseLocalization.tr("Localizable", "ERROR.VIDEOS_UNAVAILABLE", fallback: "There are currently no videos for this course.")
+    /// There are no videos currently available for this course
+    public static let videosUnavailable = CourseLocalization.tr("Localizable", "ERROR.VIDEOS_UNAVAILABLE", fallback: "There are no videos currently available for this course")
   }
   public enum HandoutsCellAnnouncements {
     /// Keep up with the latest news

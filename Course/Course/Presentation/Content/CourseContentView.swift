@@ -59,7 +59,12 @@ public struct CourseContentView: View {
                             RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                             VStack(alignment: .leading) {
                                 // MARK: - Segmented Control
-                                ContentSegmentedControl(selectedTab: $selectedTab)
+                                ContentSegmentedControl(
+                                    selectedTab: $selectedTab,
+                                    courseId: courseID,
+                                    courseName: title,
+                                    analytics: viewModel.analytics
+                                )
                                     .padding(.horizontal, 24)
                                     .padding(.top, 16)
                                 
@@ -143,58 +148,11 @@ public struct CourseContentView: View {
                 dateTabIndex: CourseTab.dates.rawValue
             )
         case .assignments:
-            assignmentsContentPlaceholder
+            NoContentAvailable(
+                type: .assignments,
+                action: { viewModel.selection = CourseTab.course.id }
+            )
         }
-    }
-    
-    @ViewBuilder
-    private var videosContentPlaceholder: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            
-            Image(systemName: "play.rectangle")
-                .font(.system(size: 60))
-                .foregroundColor(Theme.Colors.textSecondary)
-            
-            Text("Videos")
-                .font(Theme.Fonts.titleLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-            
-            Text("Course videos will be displayed here")
-                .font(Theme.Fonts.bodyMedium)
-                .foregroundColor(Theme.Colors.textSecondary)
-                .multilineTextAlignment(.center)
-            
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 24)
-        .padding(.top, 60)
-    }
-    
-    @ViewBuilder
-    private var assignmentsContentPlaceholder: some View {
-        VStack(spacing: 16) {
-            Spacer()
-            
-            Image(systemName: "doc.on.clipboard")
-                .font(.system(size: 60))
-                .foregroundColor(Theme.Colors.textSecondary)
-            
-            Text("Assignments")
-                .font(Theme.Fonts.titleLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
-            
-            Text("Course assignments will be displayed here")
-                .font(Theme.Fonts.bodyMedium)
-                .foregroundColor(Theme.Colors.textSecondary)
-                .multilineTextAlignment(.center)
-            
-            Spacer()
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, 24)
-        .padding(.top, 60)
     }
 }
 

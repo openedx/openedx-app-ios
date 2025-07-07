@@ -42,6 +42,7 @@ public class VideoPlayerViewModel: ObservableObject {
     internal var subscription = Set<AnyCancellable>()
     private var appStorage: CoreStorage?
     private var analytics: CourseAnalytics?
+    private var lastSavedTime: Double = 0
 
     public init(
         languages: [SubtitleUrl],
@@ -97,6 +98,7 @@ public class VideoPlayerViewModel: ObservableObject {
                 guard isReady else { return }
                 self?.isLoading = false
                 self?.trackVideoLoaded()
+                self?.loadAndApplyLocalProgress()
             }
             .store(in: &subscription)
         
@@ -255,6 +257,42 @@ public class VideoPlayerViewModel: ObservableObject {
                     currentTime: currentTime,
                     duration: playerHolder.duration
                 )
+            }
+        }
+    }
+    
+    public func saveCurrentProgress() {
+        
+        Task {
+            let time = currentTime
+            let duration = playerHolder.duration
+            let blockID = playerHolder.blockID
+                        
+            if duration > 0 && time > 0 {
+                let progress = min(time / duration, 1.0)
+                await playerHolder.getService().updateVideoProgress(progress: progress)
+            }
+        }
+    }
+    
+    private func loadAndApplyLocalProgress() {
+        Task {
+            let blockID = playerHolder.blockID
+            let duration = playerHolder.duration
+            
+            if let localProgress = await playerHolder.getService().loadVideoProgress() {
+                
+                if localProgress > 0 && duration > 0 {
+                    let timeToSeek = localProgress * duration
+                    
+                    await MainActor.run {
+                        // Seek to the saved position
+                        if let playerController = playerHolder.playerController {
+                            let seekDate = Date(timeIntervalSince1970: timeToSeek)
+                            playerController.seekTo(to: seekDate)
+                        }
+                    }
+                }
             }
         }
     }

@@ -32,6 +32,7 @@ public enum CoreAssets {
   public static let facebookButtonColor = ColorAsset(name: "FacebookButtonColor")
   public static let googleButtonColor = ColorAsset(name: "GoogleButtonColor")
   public static let microsoftButtonColor = ColorAsset(name: "MicrosoftButtonColor")
+  public static let iconWarning = ImageAsset(name: "icon-warning")
   public static let assignmentIcon = ImageAsset(name: "assignment_icon")
   public static let calendarIcon = ImageAsset(name: "calendar_icon")
   public static let certificateIcon = ImageAsset(name: "certificate_icon")

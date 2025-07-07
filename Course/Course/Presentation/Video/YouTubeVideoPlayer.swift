@@ -78,6 +78,9 @@ public struct YouTubeVideoPlayer: View {
                 }
                
             }
+            .onDisappear {
+                viewModel.saveCurrentProgress()
+            }
         }
 }
 

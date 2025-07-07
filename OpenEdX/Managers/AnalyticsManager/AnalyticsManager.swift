@@ -592,6 +592,53 @@ class AnalyticsManager: AuthorizationAnalytics,
         logScreenEvent(.courseOutlineHandoutsTabClicked, parameters: parameters)
     }
     
+    public func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineAssignmentsTabClicked.rawValue
+        ]
+        logScreenEvent(.courseOutlineAssignmentsTabClicked, parameters: parameters)
+    }
+    
+    public func courseContentAllTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseContentAllTabClicked.rawValue
+        ]
+        logScreenEvent(.courseContentAllTabClicked, parameters: parameters)
+    }
+    
+    public func courseContentVideosTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseContentVideosTabClicked.rawValue
+        ]
+        logScreenEvent(.courseContentVideosTabClicked, parameters: parameters)
+    }
+    
+    public func courseContentAssignmentsTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseContentAssignmentsTabClicked.rawValue
+        ]
+        logScreenEvent(.courseContentAssignmentsTabClicked, parameters: parameters)
+    }
+    
+    public func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.courseVideoClicked.rawValue
+        ]
+        logEvent(.courseVideoClicked, parameters: parameters)
+    }
+    
     func datesComponentTapped(
         courseId: String,
         blockId: String,

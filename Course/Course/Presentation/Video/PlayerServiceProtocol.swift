@@ -20,6 +20,8 @@ public protocol PlayerServiceProtocol: Sendable {
         content: @MainActor () -> any View
     )
     func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle]
+    func updateVideoProgress(progress: Double) async
+    func loadVideoProgress() async -> Double?
 }
 
 public final class PlayerService: PlayerServiceProtocol {
@@ -66,5 +68,20 @@ public final class PlayerService: PlayerServiceProtocol {
             url: url,
             selectedLanguage: selectedLanguage
         )
+    }
+    
+    public func updateVideoProgress(progress: Double) async {
+        await interactor.updateLocalVideoProgress(blockID: blockID, progress: progress)
+        
+        NotificationCenter.default.post(
+            name: .onVideoProgressUpdated,
+            object: nil,
+            userInfo: ["blockID": blockID, "progress": progress]
+        )
+    }
+    
+    public func loadVideoProgress() async -> Double? {
+        let progress = await interactor.loadLocalVideoProgress(blockID: blockID)
+        return progress
     }
 }

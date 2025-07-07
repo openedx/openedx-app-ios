@@ -24,7 +24,7 @@ public struct CourseStructure: Equatable, Sendable {
     public let certificate: Certificate?
     public let org: String
     public let isSelfPaced: Bool
-    public let courseProgress: CourseProgress?
+    public var courseProgress: CourseProgress?
     
     public init(
         id: String,
@@ -261,6 +261,7 @@ public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
     public let graded: Bool
     public let due: Date?
     public var completion: Double
+    public var localVideoProgress: Double
     public let type: BlockType
     public let displayName: String
     public let studentUrl: String
@@ -300,6 +301,7 @@ public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
         graded: Bool,
         due: Date?,
         completion: Double,
+        localVideoProgress: Double = 0.0,
         type: BlockType,
         displayName: String,
         studentUrl: String,
@@ -316,6 +318,7 @@ public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
         self.graded = graded
         self.due = due
         self.completion = completion
+        self.localVideoProgress = localVideoProgress
         self.type = type
         self.displayName = displayName
         self.studentUrl = studentUrl

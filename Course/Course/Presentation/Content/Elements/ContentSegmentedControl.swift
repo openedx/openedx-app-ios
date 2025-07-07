@@ -27,12 +27,25 @@ enum ContentTab: CaseIterable {
 
 struct ContentSegmentedControl: View {
     @Binding var selectedTab: ContentTab
+    let courseId: String
+    let courseName: String
+    let analytics: CourseAnalytics
     
     var body: some View {
         HStack(spacing: 0) {
             ForEach(Array(ContentTab.allCases.enumerated()), id: \.element) { index, tab in
                 Button(action: {
                     selectedTab = tab
+                    
+                    // Track analytics for tab selection
+                    switch tab {
+                    case .all:
+                        analytics.courseContentAllTabClicked(courseId: courseId, courseName: courseName)
+                    case .videos:
+                        analytics.courseContentVideosTabClicked(courseId: courseId, courseName: courseName)
+                    case .assignments:
+                        analytics.courseContentAssignmentsTabClicked(courseId: courseId, courseName: courseName)
+                    }
                 }) {
                     Text(tab.title)
                         .font(Theme.Fonts.titleSmall)
@@ -66,7 +79,12 @@ struct ContentSegmentedControl: View {
     @State var selectedTab: ContentTab = .all
     
     return VStack(spacing: 20) {
-        ContentSegmentedControl(selectedTab: $selectedTab)
+        ContentSegmentedControl(
+            selectedTab: $selectedTab,
+            courseId: "test",
+            courseName: "Test Course",
+            analytics: CourseAnalyticsMock()
+        )
             .padding(.horizontal, 16)
         
         Text("Selected: \(selectedTab.title)")

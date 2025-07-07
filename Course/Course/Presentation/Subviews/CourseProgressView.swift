@@ -49,10 +49,13 @@ public struct CourseProgressView: View {
             HStack {
                 if let total = progress.totalAssignmentsCount,
                    let completed = progress.assignmentsCompleted {
-                    Text(CourseLocalization.Course.progressCompleted(completed, total))
-                        .foregroundColor(Theme.Colors.textPrimary)
-                        .font(Theme.Fonts.labelMedium)
-                        .padding(.top, 5)
+                    Text(showCompletedToggle
+                         ? CourseLocalization.Course.progressVideosCompleted(completed, total)
+                         : CourseLocalization.Course.progressCompleted(completed, total)
+                    )
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .font(Theme.Fonts.labelMedium)
+                    .padding(.top, 5)
                 }
                 
                 Spacer()

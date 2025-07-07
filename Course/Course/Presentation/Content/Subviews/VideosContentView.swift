@@ -19,9 +19,6 @@ struct VideosContentView: View {
     private let dateTabIndex: Int
     
     private let proxy: GeometryProxy
-    @State private var showingDownloads: Bool = false
-    @State private var showingVideoDownloadQuality: Bool = false
-    @State private var showingNoWifiMessage: Bool = false
     @State private var isShowingCompletedVideos: Bool = true
     
     init(
@@ -58,6 +55,7 @@ struct VideosContentView: View {
                 if viewModel.isShowProgress && !viewModel.isShowRefresh {
                     HStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
+                            .padding(.top, 200)
                             .padding(.horizontal)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -84,24 +82,12 @@ struct VideosContentView: View {
                             Spacer(minLength: 16)
                             
                             // MARK: - Video Sections
-                            if courseVideosStructure.childs.isEmpty {
+                            if courseVideosStructure.childs.isEmpty && !viewModel.isShowProgress {
                                 // No videos available
-                                VStack(spacing: 16) {
-                                    Spacer()
-                                    
-                                    Image(systemName: "play.rectangle")
-                                        .font(.system(size: 60))
-                                        .foregroundColor(Theme.Colors.textSecondary)
-                                    
-                                    Text(CourseLocalization.Error.videosUnavailable)
-                                        .font(Theme.Fonts.titleLarge)
-                                        .foregroundColor(Theme.Colors.textPrimary)
-                                        .multilineTextAlignment(.center)
-                                    
-                                    Spacer()
-                                }
-                                .frame(maxWidth: .infinity)
-                                .padding(.horizontal, 24)
+                                NoContentAvailable(
+                                    type: .video,
+                                    action: { viewModel.selection = CourseTab.course.id }
+                                )
                             } else {
                                 ScrollView {
                                     LazyVStack(alignment: .leading, spacing: 16) {
@@ -120,30 +106,13 @@ struct VideosContentView: View {
                                                 proxy: proxy,
                                                 isShowingCompletedVideos: $isShowingCompletedVideos
                                             )
+                                            .id("\(chapter.id)_\(viewModel.videoProgressUpdateTrigger)")
                                         }
                                     }
+                                    .id("video_list_\(viewModel.videoProgressUpdateTrigger)")
                                     .animation(.default, value: isShowingCompletedVideos)
                                 }
                             }
-                            
-                        } else {
-                            // Loading or error state
-                            VStack(spacing: 16) {
-                                Spacer()
-                                
-                                Image(systemName: "play.rectangle")
-                                    .font(.system(size: 60))
-                                    .foregroundColor(Theme.Colors.textSecondary)
-                                
-                                Text(CourseLocalization.Error.videosUnavailable)
-                                    .font(Theme.Fonts.titleLarge)
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                                    .multilineTextAlignment(.center)
-                                
-                                Spacer()
-                            }
-                            .frame(maxWidth: .infinity)
-                            .padding(.horizontal, 24)
                         }
                         
                         Spacer(minLength: 200)
@@ -154,6 +123,16 @@ struct VideosContentView: View {
         .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in
             Task {
                 await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onVideoProgressUpdated)) { notification in
+            guard let userInfo = notification.userInfo,
+                  let blockID = userInfo["blockID"] as? String,
+                  let progress = userInfo["progress"] as? Double else {
+                return
+            }
+            Task {
+                await viewModel.updateVideoProgress(blockID: blockID, progress: progress)
             }
         }
         .navigationBarHidden(true)

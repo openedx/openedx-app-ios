@@ -120,8 +120,10 @@ struct VideoSectionView: View {
                     }
                     .onChange(of: isShowingCompletedVideos) { show in
                         if show {
-                            scrollToFirstUnwatchedVideo { id in
-                                scrollProxy.scrollTo(id, anchor: .leading)
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                scrollToFirstUnwatchedVideo { id in
+                                    scrollProxy.scrollTo(id, anchor: .leading)
+                                }
                             }
                         } else {
                             guard let scroll = uiScrollView else { return }

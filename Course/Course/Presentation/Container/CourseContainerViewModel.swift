@@ -17,7 +17,6 @@ public enum CourseTab: Int, CaseIterable, Identifiable, Sendable {
     }
     case course
     case content
-    case videos
     case dates
     case offline
     case discussion
@@ -29,8 +28,6 @@ extension CourseTab {
         switch self {
         case .course:
             return CourseLocalization.CourseContainer.home
-        case .videos:
-            return CourseLocalization.CourseContainer.videos
         case .dates:
             return CourseLocalization.CourseContainer.dates
         case .offline:
@@ -48,8 +45,6 @@ extension CourseTab {
         switch self {
         case .course:
             return CoreAssets.home.swiftUIImage.renderingMode(.template)
-        case .videos:
-            return CoreAssets.videos.swiftUIImage.renderingMode(.template)
         case .dates:
             return CoreAssets.dates.swiftUIImage.renderingMode(.template)
         case .offline:
@@ -69,7 +64,7 @@ extension CourseTab {
 public final class CourseContainerViewModel: BaseCourseViewModel {
     
     @Published public var selection: Int
-    @Published var isShowProgress = true
+    @Published var isShowProgress = false
     @Published var isShowRefresh = false
     @Published var courseStructure: CourseStructure?
     @Published var courseDeadlineInfo: CourseDateBanner?
@@ -79,7 +74,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
     @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
-    @Published var isInternetAvaliable: Bool = true
+    @Published var isInternetAvaliable = true
     @Published var dueDatesShifted: Bool = false
     @Published var updateCourseProgress: Bool = false
     @Published var totalFilesSize: Int = 1
@@ -88,6 +83,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var largestDownloadBlocks: [CourseBlock] = []
     @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
     @Published var expandedSections: [String: Bool] = [:]
+    @Published var courseDeadlines: CourseDates?
+    @Published var videoProgressUpdateTrigger: UUID = UUID()
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
@@ -379,8 +376,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         switch selection {
         case .course:
             analytics.courseOutlineCourseTabClicked(courseId: courseId, courseName: courseName)
-        case .videos:
-            analytics.courseOutlineVideosTabClicked(courseId: courseId, courseName: courseName)
         case .offline:
             analytics.courseOutlineOfflineTabClicked(courseId: courseId, courseName: courseName)
         case .dates:
@@ -1005,6 +1000,50 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    @MainActor
+    func updateVideoProgress(blockID: String, progress: Double) async {
+        
+        if let courseStructure = courseStructure {
+            let updatedStructure = updateBlockProgress(in: courseStructure, blockID: blockID, progress: progress)
+            self.courseStructure = updatedStructure
+        }
+        
+        if let courseStructure = courseStructure {
+            let videoStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
+            self.courseVideosStructure = videoStructure
+        }
+        
+        objectWillChange.send()
+        videoProgressUpdateTrigger = UUID()
+    }
+    
+    private func updateBlockProgress(
+        in structure: CourseStructure,
+        blockID: String,
+        progress: Double
+    ) -> CourseStructure {
+        var updatedStructure = structure
+        
+        for (chapterIndex, chapter) in structure.childs.enumerated() {
+            for (sequentialIndex, sequential) in chapter.childs.enumerated() {
+                for (verticalIndex, vertical) in sequential.childs.enumerated() {
+                    for (blockIndex, block) in vertical.childs.enumerated() where block.id == blockID {
+                        var updatedBlock = block
+                        updatedBlock.localVideoProgress = progress
+                        updatedStructure
+                            .childs[chapterIndex]
+                            .childs[sequentialIndex]
+                            .childs[verticalIndex]
+                            .childs[blockIndex] = updatedBlock
+                        return updatedStructure
+                    }
+                }
+            }
+        }
+        
+        return updatedStructure
     }
 }
 
