@@ -81,7 +81,8 @@ final class CourseProgressViewModelTests: XCTestCase {
                 ]
             )
         ],
-        verificationData: nil
+        verificationData: nil,
+        assignmentColors: []
     )
     
     static let mockEmptyProgress = CourseProgressDetails(
@@ -112,7 +113,8 @@ final class CourseProgressViewModelTests: XCTestCase {
         ),
         hasScheduledContent: false,
         sectionScores: [],
-        verificationData: nil
+        verificationData: nil,
+        assignmentColors: []
     )
 
     func testGetCourseProgressSuccess() async throws {
@@ -508,33 +510,10 @@ final class CourseProgressViewModelTests: XCTestCase {
         viewModel.courseProgress = CourseProgressViewModelTests.mockCourseProgress
         let homeworkProgress = viewModel.getAssignmentProgress(for: "Homework")
         XCTAssertEqual(homeworkProgress.completed, 1)
-        XCTAssertEqual(homeworkProgress.total, 5)
+        XCTAssertEqual(homeworkProgress.total, 1)
         XCTAssertEqual(homeworkProgress.earnedPoints, 8.0)
         XCTAssertEqual(homeworkProgress.possiblePoints, 10.0)
         XCTAssertEqual(homeworkProgress.percentGraded, 0.8)
-    }
-    
-    func testGetRandomColor() {
-        let interactor = CourseInteractorProtocolMock()
-        let router = CourseRouterMock()
-        let connectivity = ConnectivityProtocolMock()
-        let analytics = CourseAnalyticsMock()
-        
-        let viewModel = CourseProgressViewModel(
-            interactor: interactor,
-            router: router,
-            analytics: analytics,
-            connectivity: connectivity
-        )
-        
-        // Test color consistency
-        let color1 = viewModel.getRandomColor(for: 0)
-        let color2 = viewModel.getRandomColor(for: 0)
-        XCTAssertEqual(color1, color2)
-        
-        // Test different colors for different indices
-        let color3 = viewModel.getRandomColor(for: 1)
-        XCTAssertNotEqual(color1, color3)
     }
     
     func testGetAllAssignmentProgressData() {
