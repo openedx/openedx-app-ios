@@ -213,6 +213,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         isShowProgress = withProgress
         isShowRefresh = !withProgress
         do {
+            let courseProgress = try await interactor.getCourseProgress(courseID: courseID)
             let courseStructure = try await getCourseStructure(courseID: courseID)
             courseHelper.courseStructure = courseStructure
             await courseHelper.refreshValue()

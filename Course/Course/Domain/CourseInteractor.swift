@@ -25,6 +25,8 @@ public protocol CourseInteractorProtocol: Sendable {
     func updateLocalVideoProgress(blockID: String, progress: Double) async
     func loadLocalVideoProgress(blockID: String) async -> Double?
     func enrichCourseStructureWithLocalProgress(_ structure: CourseStructure) async -> CourseStructure
+    func getCourseProgress(courseID: String) async throws -> CourseProgressDetails
+    func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails
 }
 
 public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerProtocol {
@@ -131,6 +133,14 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
     
     public func shiftDueDates(courseID: String) async throws {
         return try await repository.shiftDueDates(courseID: courseID)
+    }
+    
+    public func getCourseProgress(courseID: String) async throws -> CourseProgressDetails {
+        return try await repository.getCourseProgress(courseID: courseID)
+    }
+    
+    public func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails {
+        return try await repository.getCourseProgressOffline(courseID: courseID)
     }
     
     public func getHandouts(courseID: String) async throws -> String? {
