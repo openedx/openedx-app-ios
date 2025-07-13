@@ -13,9 +13,10 @@ import Theme
 @MainActor
 public class CourseProgressViewModel: ObservableObject {
     
-    @Published public var courseProgress: CourseProgressDetails?
-    @Published public var isLoading: Bool = false
-    @Published public var showError: Bool = false
+    @Published var courseProgress: CourseProgressDetails?
+    @Published var isLoading: Bool = false
+    @Published var isShowRefresh = false
+    @Published var showError: Bool = false
     
     let router: CourseRouter
     let analytics: CourseAnalytics
@@ -42,31 +43,30 @@ public class CourseProgressViewModel: ObservableObject {
         self.connectivity = connectivity
     }
     
-    @MainActor
     public func getCourseProgress(courseID: String, withProgress: Bool = true) async {
-        isLoading = true
+        isLoading = withProgress
+        isShowRefresh = !withProgress
         do {
             if connectivity.isInternetAvaliable {
                 courseProgress = try await interactor.getCourseProgress(courseID: courseID)
             } else {
                 courseProgress = try await interactor.getCourseProgressOffline(courseID: courseID)
             }
+            isLoading = false
+            isShowRefresh = false
         } catch let error {
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
+            isLoading = false
+            isShowRefresh = false
         }
-        isLoading = false
     }
     
     public func trackProgressTabClicked(courseId: String, courseName: String) {
         analytics.courseOutlineProgressTabClicked(courseId: courseId, courseName: courseName)
-    }
-    
-    public func refreshProgress(courseID: String) async {
-        await getCourseProgress(courseID: courseID)
     }
     
     public var isProgressEmpty: Bool {
@@ -133,52 +133,7 @@ public class CourseProgressViewModel: ObservableObject {
             )
         }
         
-        guard let policy = courseProgress.gradingPolicy.assignmentPolicies
-            .first(where: { $0.type == assignmentType }) else {
-            return AssignmentProgressData(
-                completed: 0,
-                total: 0,
-                earnedPoints: 0.0,
-                possiblePoints: 0.0,
-                percentGraded: 0.0
-            )
-        }
-        
-        let assignments = courseProgress.sectionScores.flatMap { $0.subsections }
-            .filter { $0.assignmentType == assignmentType && $0.hasGradedAssignment }
-        
-        // Calculate completed and total based on problem scores
-        var completedProblems = 0
-        var totalProblems = 0
-        
-        for assignment in assignments {
-            // Count problems in this assignment
-            totalProblems += assignment.problemScores.count
-            
-            // Count completed problems (where earned > 0)
-            completedProblems += assignment.problemScores.filter { $0.earned > 0 }.count
-        }
-        
-        // If no problem scores available, fall back to subsection-based counting
-        if totalProblems == 0 {
-            completedProblems = assignments.filter { $0.numPointsEarned > 0 }.count
-            totalProblems = policy.numTotal
-        }
-        
-        let earnedPoints = assignments.reduce(0.0) { $0 + $1.numPointsEarned }
-        let possiblePoints = assignments.reduce(0.0) { $0 + $1.numPointsPossible }
-        
-        // Calculate average percent_graded for this assignment type (from server data)
-        let totalPercentGraded = assignments.reduce(0.0) { $0 + $1.percentGraded }
-        let averagePercentGraded = assignments.isEmpty ? 0.0 : totalPercentGraded / Double(assignments.count)
-        
-        return AssignmentProgressData(
-            completed: completedProblems,
-            total: totalProblems,
-            earnedPoints: earnedPoints,
-            possiblePoints: possiblePoints,
-            percentGraded: averagePercentGraded
-        )
+        return courseProgress.getAssignmentProgress(for: assignmentType)
     }
     
     public func getAssignmentColor(for index: Int) -> Color {
