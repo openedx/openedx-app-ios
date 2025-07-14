@@ -94,6 +94,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             name: .userLoggedOut,
             object: nil
         )
+        
+        loadRocketSimConnect()
 
         return true
     }
@@ -269,5 +271,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             debugLog("Could not schedule app refresh: \(error)")
         }
+    }
+    
+    private func loadRocketSimConnect() {
+        let path = "/Applications/RocketSim.app/Contents/Frameworks/RocketSimConnectLinker.nocache.framework"
+        guard Bundle(path: path)?.load() == true else {
+            print("Failed to load linker framework")
+            return
+        }
+        print("RocketSim Connect successfully linked")
     }
 }

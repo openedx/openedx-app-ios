@@ -194,17 +194,33 @@ public struct CourseContainerView: View {
             ForEach(CourseTab.allCases) { tab in
                 switch tab {
                 case .course:
-                    CourseOutlineView(
-                        viewModel: viewModel,
-                        title: title,
-                        courseID: courseID,
-                        isVideo: false,
-                        selection: $viewModel.selection,
-                        coordinate: $coordinate,
-                        collapsed: $collapsed,
-                        viewHeight: $viewHeight,
-                        dateTabIndex: CourseTab.dates.rawValue
-                    )
+                    
+                    VStack {
+                        CourseOutlineAndProgressView(
+                            viewModelContainer: viewModel,
+                            viewModelProgress: courseProgressViewModel,
+                            title: title,
+                            courseID: courseID,
+                            isVideo: false,
+                            selection: $viewModel.selection,
+                            coordinate: $coordinate,
+                            collapsed: $collapsed,
+                            viewHeight: $viewHeight,
+                            dateTabIndex: CourseTab.dates.rawValue,
+                            connectivity: viewModel.connectivity
+                        )
+//                        CourseOutlineView(
+//                            viewModel: viewModel,
+//                            title: title,
+//                            courseID: courseID,
+//                            isVideo: false,
+//                            selection: $viewModel.selection,
+//                            coordinate: $coordinate,
+//                            collapsed: $collapsed,
+//                            viewHeight: $viewHeight,
+//                            dateTabIndex: CourseTab.dates.rawValue
+//                        )
+                    }
                     .tabItem {
                         tab.image
                         Text(tab.title)

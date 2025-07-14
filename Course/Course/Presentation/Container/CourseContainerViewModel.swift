@@ -88,6 +88,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var largestDownloadBlocks: [CourseBlock] = []
     @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
     
+    @Published var tabBarIndex = 0
+    
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
     var errorMessage: String? {
