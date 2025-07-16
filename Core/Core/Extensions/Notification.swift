@@ -24,4 +24,5 @@ public extension Notification.Name {
     static let tryDownloadAgain = Notification.Name("tryDownloadAgain")
     static let refreshEnrollments = Notification.Name("refreshEnrollments")
     static let onVideoProgressUpdated = Notification.Name("onVideoProgressUpdated")
+    static let onAssignmentProgressUpdated = Notification.Name("onAssignmentProgressUpdated")
 }

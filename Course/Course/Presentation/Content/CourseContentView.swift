@@ -148,9 +148,12 @@ public struct CourseContentView: View {
                 dateTabIndex: CourseTab.dates.rawValue
             )
         case .assignments:
-            NoContentAvailable(
-                type: .assignments,
-                action: { viewModel.selection = CourseTab.course.id }
+            AssignmentsContentView(
+                viewModel: viewModel,
+                proxy: proxy,
+                title: title,
+                courseID: courseID,
+                dateTabIndex: CourseTab.dates.rawValue
             )
         }
     }

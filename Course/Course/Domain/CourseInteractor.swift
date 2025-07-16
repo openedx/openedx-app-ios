@@ -12,6 +12,7 @@ import Core
 public protocol CourseInteractorProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseVideoBlocks(fullStructure: CourseStructure) async -> CourseStructure
+    func getCourseAssignmentBlocks(fullStructure: CourseStructure) async -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
     func getSequentialsContainsBlocks(blockIds: [String], courseID: String) async throws -> [CourseSequential]
     func blockCompletionRequest(courseID: String, blockID: String) async throws
@@ -91,11 +92,56 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
         return finalStructure
     }
     
+    public func getCourseAssignmentBlocks(fullStructure course: CourseStructure) async -> CourseStructure {
+        var newChilds = [CourseChapter]()
+        for chapter in course.childs {
+            let newChapter = filterAssignmentChapter(chapter: chapter)
+            if !newChapter.childs.isEmpty {
+                newChilds.append(newChapter)
+            }
+        }
+        
+        let allAssignments = getAllAssignmentsFromStructure(childs: newChilds)
+        let completedAssignments = allAssignments.filter { $0.completion >= 1.0 }
+        let assignmentProgress = allAssignments.isEmpty ? nil : CourseProgress(
+            totalAssignmentsCount: allAssignments.count,
+            assignmentsCompleted: completedAssignments.count
+        )
+        
+        let filteredStructure = CourseStructure(
+            id: course.id,
+            graded: course.graded,
+            completion: course.completion,
+            viewYouTubeUrl: course.viewYouTubeUrl,
+            encodedVideo: course.encodedVideo,
+            displayName: course.displayName,
+            topicID: course.topicID,
+            childs: newChilds,
+            media: course.media,
+            certificate: course.certificate,
+            org: course.org,
+            isSelfPaced: course.isSelfPaced,
+            courseProgress: assignmentProgress
+        )
+        
+        return filteredStructure
+    }
+    
     private func getAllVideosFromStructure(childs: [CourseChapter]) -> [CourseBlock] {
         return childs.flatMap { chapter in
             chapter.childs.flatMap { sequential in
                 sequential.childs.flatMap { vertical in
                     vertical.childs.filter { $0.type == .video }
+                }
+            }
+        }
+    }
+    
+    private func getAllAssignmentsFromStructure(childs: [CourseChapter]) -> [CourseBlock] {
+        return childs.flatMap { chapter in
+            chapter.childs.flatMap { sequential in
+                sequential.childs.flatMap { vertical in
+                    vertical.childs.filter { $0.graded }
                 }
             }
         }
@@ -207,6 +253,57 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
     
     private func filterVertical(vertical: CourseVertical) -> CourseVertical {
         let newChilds = vertical.childs.filter { $0.type == .video }
+        return CourseVertical(
+            blockId: vertical.blockId,
+            id: vertical.id,
+            courseId: vertical.courseId,
+            displayName: vertical.displayName,
+            type: vertical.type,
+            completion: vertical.completion,
+            childs: newChilds,
+            webUrl: vertical.webUrl
+        )
+    }
+    
+    private func filterAssignmentChapter(chapter: CourseChapter) -> CourseChapter {
+        var newChilds = [CourseSequential]()
+        for sequential in chapter.childs {
+            let newSequential = filterAssignmentSequential(sequential: sequential)
+            if !newSequential.childs.isEmpty {
+                newChilds.append(newSequential)
+            }
+        }
+        return CourseChapter(
+            blockId: chapter.blockId,
+            id: chapter.id,
+            displayName: chapter.displayName,
+            type: chapter.type,
+            childs: newChilds
+        )
+    }
+    
+    private func filterAssignmentSequential(sequential: CourseSequential) -> CourseSequential {
+        var newChilds = [CourseVertical]()
+        for vertical in sequential.childs {
+            let newVertical = filterAssignmentVertical(vertical: vertical)
+            if !newVertical.childs.isEmpty {
+                newChilds.append(newVertical)
+            }
+        }
+        return CourseSequential(
+            blockId: sequential.blockId,
+            id: sequential.id,
+            displayName: sequential.displayName,
+            type: sequential.type,
+            completion: sequential.completion,
+            childs: newChilds,
+            sequentialProgress: sequential.sequentialProgress,
+            due: sequential.due
+        )
+    }
+    
+    private func filterAssignmentVertical(vertical: CourseVertical) -> CourseVertical {
+        let newChilds = vertical.childs.filter { $0.graded }
         return CourseVertical(
             blockId: vertical.blockId,
             id: vertical.id,

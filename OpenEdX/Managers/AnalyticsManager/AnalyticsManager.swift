@@ -639,6 +639,17 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.courseVideoClicked, parameters: parameters)
     }
     
+    public func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.courseAssignmentClicked.rawValue
+        ]
+        logEvent(.courseAssignmentClicked, parameters: parameters)
+    }
+    
     func datesComponentTapped(
         courseId: String,
         blockId: String,

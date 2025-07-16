@@ -69,6 +69,7 @@ public protocol CourseAnalytics {
     func courseContentVideosTabClicked(courseId: String, courseName: String)
     func courseContentAssignmentsTabClicked(courseId: String, courseName: String)
     func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func datesComponentTapped(
         courseId: String,
         blockId: String,
@@ -196,6 +197,7 @@ class CourseAnalyticsMock: CourseAnalytics {
     public func courseContentVideosTabClicked(courseId: String, courseName: String) {}
     public func courseContentAssignmentsTabClicked(courseId: String, courseName: String) {}
     public func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func datesComponentTapped(
         courseId: String,
         blockId: String,

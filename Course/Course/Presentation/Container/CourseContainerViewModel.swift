@@ -69,6 +69,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var courseStructure: CourseStructure?
     @Published var courseDeadlineInfo: CourseDateBanner?
     @Published var courseVideosStructure: CourseStructure?
+    @Published var courseAssignmentsStructure: CourseStructure?
+    @Published var courseProgressDetails: CourseProgressDetails?
     @Published var showError: Bool = false
     @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
     @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
@@ -85,6 +87,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var expandedSections: [String: Bool] = [:]
     @Published var courseDeadlines: CourseDates?
     @Published var videoProgressUpdateTrigger: UUID = UUID()
+    @Published var assignmentProgressUpdateTrigger: UUID = UUID()
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
@@ -219,6 +222,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             await courseHelper.refreshValue()
             update(from: courseHelper.value ?? .empty)
             self.courseStructure = courseStructure
+            self.courseProgressDetails = courseProgress
 
             if isInternetAvaliable {
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
@@ -230,6 +234,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 }
             }
             courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
+            courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure!)
             
             if expandedSections.isEmpty {
                 initializeExpandedSections()
@@ -243,6 +248,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             isShowRefresh = false
             courseStructure = nil
             courseVideosStructure = nil
+            courseAssignmentsStructure = nil
+            courseProgressDetails = nil
         }
     }
     
@@ -469,6 +476,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         
         if let courseStructure {
             courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
+            courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure)
         }
     }
     
@@ -1014,10 +1022,29 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         if let courseStructure = courseStructure {
             let videoStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
             self.courseVideosStructure = videoStructure
+            self.courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure)
         }
         
         objectWillChange.send()
         videoProgressUpdateTrigger = UUID()
+    }
+    
+    @MainActor
+    func updateAssignmentProgress(blockID: String, progress: Double) async {
+        
+        if let courseStructure = courseStructure {
+            let updatedStructure = updateBlockProgress(in: courseStructure, blockID: blockID, progress: progress)
+            self.courseStructure = updatedStructure
+        }
+        
+        if let courseStructure = courseStructure {
+            let assignmentStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure)
+            self.courseAssignmentsStructure = assignmentStructure
+            self.courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
+        }
+        
+        objectWillChange.send()
+        assignmentProgressUpdateTrigger = UUID()
     }
     
     private func updateBlockProgress(
@@ -1053,6 +1080,168 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         guard total > 0 else { return nil }
         let completed = course.childs.filter { chapterProgress(for: $0) >= 1.0 }.count
         return CourseProgress(totalAssignmentsCount: total, assignmentsCompleted: completed)
+    }
+    
+    func assignmentTypeProgress(for assignmentType: String) -> AssignmentProgressData? {
+        guard let progressDetails = courseProgressDetails else { return nil }
+        
+        let subsectionsOfType = progressDetails.sectionScores.flatMap { $0.subsections }
+            .filter { $0.assignmentType == assignmentType }
+        
+        guard !subsectionsOfType.isEmpty else { return nil }
+        
+        let totalPoints = subsectionsOfType.reduce(0) { $0 + $1.numPointsPossible }
+        let earnedPoints = subsectionsOfType.reduce(0) { $0 + $1.numPointsEarned }
+        let completed = subsectionsOfType.filter { $0.numPointsEarned >= $0.numPointsPossible }.count
+        
+        return AssignmentProgressData(
+            completed: completed,
+            total: subsectionsOfType.count,
+            earnedPoints: earnedPoints,
+            possiblePoints: totalPoints
+        )
+    }
+    
+    func assignmentTypeWeight(for assignmentType: String) -> Double? {
+        guard let progressDetails = courseProgressDetails else { return nil }
+        
+        return progressDetails.gradingPolicy.assignmentPolicies
+            .first { $0.type == assignmentType }?
+            .weight
+    }
+    
+    func assignmentTypeLabel(for assignmentType: String) -> String? {
+        guard let progressDetails = courseProgressDetails else { return nil }
+        
+        return progressDetails.gradingPolicy.assignmentPolicies
+            .first { $0.type == assignmentType }?
+            .type
+    }
+        
+    func assignmentSections() -> [AssignmentSection] {
+        guard let progressDetails = courseProgressDetails else { return [] }
+
+        let subsectionsByType = Dictionary(
+            grouping: progressDetails.sectionScores.flatMap { $0.subsections }
+        ) { subsection in
+            subsection.assignmentType ?? "unknown"
+        }
+
+        return progressDetails.gradingPolicy.assignmentPolicies.compactMap { policy in
+            guard
+                let subsections = subsectionsByType[policy.type],
+                !subsections.isEmpty
+            else { return nil }
+
+            return AssignmentSection(
+                assignmentType: policy.type,
+                label: policy.type,
+                weight: policy.weight,
+                subsections: subsections.sorted { $0.displayName < $1.displayName }
+            )
+        }
+    }
+    
+    // MARK: - Assignment Deadline Methods
+    
+    func getAssignmentDeadline(for subsection: CourseProgressSubsection) -> CourseDateBlock? {
+        guard let courseDeadlines = courseDeadlines else { return nil }
+        
+        // Trying to find deadline by Blockkey or other parameters
+        return courseDeadlines.courseDateBlocks.first { dateBlock in
+            // Binding by AssignmentType and name
+            dateBlock.assignmentType == subsection.assignmentType &&
+            dateBlock.firstComponentBlockID.contains(subsection.blockKey)
+        }
+    }
+    
+    func getAssignmentStatus(for subsection: CourseProgressSubsection) -> AssignmentCardStatus {
+        // Check accessibility
+        if !subsection.learnerHasAccess {
+            return .notAvailable
+        }
+        
+        // Check the completeness
+        if subsection.numPointsEarned >= subsection.numPointsPossible {
+            return .completed
+        }
+        
+        // Check the deadlines
+        if let deadline = getAssignmentDeadline(for: subsection) {
+            let now = Date()
+            if deadline.date.isInPast {
+                // Check criticality (for example, more than a week expired)
+                let weekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: now) ?? now
+                if deadline.date < weekAgo {
+                    return .criticalDue
+                } else {
+                    return .pastDue
+                }
+            }
+        }
+        
+        return .incomplete
+    }
+    
+    func getDaysUntilDeadline(for subsection: CourseProgressSubsection) -> Int? {
+        guard let deadline = getAssignmentDeadline(for: subsection) else { return nil }
+        
+        let calendar = Calendar.current
+        let now = Date()
+        let components = calendar.dateComponents([.day], from: now, to: deadline.date)
+        return components.day
+    }
+    
+    func getAssignmentStatusText(for subsection: CourseProgressSubsection) -> String {
+        let status = getAssignmentStatus(for: subsection)
+        
+        switch status {
+        case .completed:
+            return "Complete - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+        case .pastDue:
+            return "Past Due - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+        case .criticalDue:
+            return "Upload Assignment - Past Due"
+        case .notAvailable:
+            return "Not Yet Available"
+        case .incomplete:
+            if let daysUntil = getDaysUntilDeadline(for: subsection) {
+                if daysUntil >= 0 {
+                    return "Due in \(daysUntil) day\(daysUntil == 1 ? "" : "s")"
+                } else {
+                    return "Past Due - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+                }
+            } else {
+                return "In Progress - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+            }
+        case .special:
+            return "Special Assignment"
+        }
+    }
+    
+    func getAssignmentWeekInfo(for subsection: CourseProgressSubsection) -> String {
+        // temporarily return the static value
+        // Toddoo: Extract a week from the structure of the course or other data
+        return "Week 1"
+    }
+    
+    func getAssignmentSequenceName(for subsection: CourseProgressSubsection) -> String {
+        // Trying to find Sequence Name from Course Structure
+        guard let courseStructure = courseStructure else {
+            return "Sequence Name"
+        }
+        
+        // Looking for a block in the structure of the course
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                for vertical in sequential.childs where vertical.childs
+                    .contains(where: { $0.id == subsection.blockKey }) {
+                    return sequential.displayName
+                }
+            }
+        }
+        
+        return subsection.displayName
     }
 }
 

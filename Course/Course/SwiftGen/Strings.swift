@@ -47,6 +47,32 @@ public enum CourseLocalization {
     public static let synced = CourseLocalization.tr("Localizable", "CALENDAR_SYNC_STATUS.SYNCED", fallback: "Synced to Calendar")
   }
   public enum Course {
+    /// Completed
+    public static let assignmentCompleted = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_COMPLETED", fallback: "Completed")
+    /// Discussion
+    public static let assignmentDiscussion = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_DISCUSSION", fallback: "Discussion")
+    /// Drag and Drop
+    public static let assignmentDragAndDrop = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_DRAG_AND_DROP", fallback: "Drag and Drop")
+    /// Assignment
+    public static let assignmentGeneric = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_GENERIC", fallback: "Assignment")
+    /// Graded
+    public static let assignmentGraded = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_GRADED", fallback: "Graded")
+    /// In Progress
+    public static let assignmentInProgress = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_IN_PROGRESS", fallback: "In Progress")
+    /// External Tool
+    public static let assignmentLti = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_LTI", fallback: "External Tool")
+    /// Not Started
+    public static let assignmentNotStarted = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_NOT_STARTED", fallback: "Not Started")
+    /// Open Assessment
+    public static let assignmentOpenAssessment = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_OPEN_ASSESSMENT", fallback: "Open Assessment")
+    /// Peer Instruction
+    public static let assignmentPeerInstruction = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_PEER_INSTRUCTION", fallback: "Peer Instruction")
+    /// Problem
+    public static let assignmentProblem = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_PROBLEM", fallback: "Problem")
+    /// Survey
+    public static let assignmentSurvey = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_SURVEY", fallback: "Survey")
+    /// Word Cloud
+    public static let assignmentWordCloud = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_WORD_CLOUD", fallback: "Word Cloud")
     /// Due Today
     public static let dueToday = CourseLocalization.tr("Localizable", "COURSE.DUE_TODAY", fallback: "Due Today")
     /// Due Tomorrow

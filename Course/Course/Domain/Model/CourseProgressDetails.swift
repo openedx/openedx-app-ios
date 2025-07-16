@@ -182,7 +182,14 @@ public struct CourseProgressSectionScore: Sendable {
     }
 }
 
-public struct CourseProgressSubsection: Sendable {
+public struct CourseProgressSubsection: Sendable, Equatable {
+    public static func == (lhs: CourseProgressSubsection, rhs: CourseProgressSubsection) -> Bool {
+        lhs.assignmentType == rhs.assignmentType &&
+        lhs.blockKey == rhs.blockKey &&
+        lhs.displayName == rhs.displayName &&
+        lhs.url == rhs.url
+    }
+
     public let assignmentType: String?
     public let blockKey: String
     public let displayName: String
