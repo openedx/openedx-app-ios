@@ -16,6 +16,7 @@ public struct CourseOutlineAndProgressView: View {
     private let isVideo: Bool
     private let dateTabIndex: Int
     private let connectivity: ConnectivityProtocol
+
     private var carouselSections: [AnyView] { [
         AnyView(CourseCompletionCarouselSlideView(
             viewModelProgress: viewModelProgress,
@@ -25,14 +26,12 @@ public struct CourseOutlineAndProgressView: View {
         ) { proxy in
             downloadQualityBars(proxy: proxy)
         }),
-        AnyView(CourseCompletionCarouselSlideView(
-            viewModelProgress: viewModelProgress,
-            viewModelContainer: viewModelContainer,
-            isVideo: isVideo,
-            idiom: UIDevice.current.userInterfaceIdiom
-        ) { proxy in
-            downloadQualityBars(proxy: proxy)
-        })
+        AnyView(
+            CourseGradeCarouselSlideView(
+                viewModelProgress: viewModelProgress,
+                viewModelContainer: viewModelContainer
+            )
+        )
     ]}
     
     @State private var openCertificateView: Bool = false
@@ -133,6 +132,13 @@ public struct CourseOutlineAndProgressView: View {
                                     await viewModelProgress.getCourseProgress(courseID: courseID)
                                 }
                             }
+                        }
+                    }
+                    .refreshable {
+                        Task {
+                            await viewModelContainer.getCourseBlocks(courseID: courseID, withProgress: false)
+                            await viewModelProgress.getCourseProgress(courseID: courseID)
+
                         }
                     }
                     
