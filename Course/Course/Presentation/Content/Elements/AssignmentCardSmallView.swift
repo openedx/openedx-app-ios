@@ -29,7 +29,28 @@ struct AssignmentCardSmallView: View, Equatable {
     }
     
     private var assignmentShortName: String {
+        guard let assignmentType = subsection.assignmentType else {
+            return String(subsection.displayName.prefix(3)).uppercased()
+                .filter { !$0.isNumber && !$0.isWhitespace } + String(index+1)
+        }
+        
+        // Get shortLabel from assignment policy
+        if let shortLabel = viewModel.getAssignmentShortLabel(for: assignmentType) {
+            // If shortLabel is 3-4 characters, use it as is
+            if shortLabel.count <= 4 {
+                return shortLabel.filter { !$0.isNumber && !$0.isWhitespace }.uppercased() + String(index+1)
+            } else {
+                // If longer, take first 3 characters
+                return shortLabel.filter { !$0.isNumber && !$0.isWhitespace }
+                    .prefix(3)
+                    .uppercased()
+                + String(index+1)
+            }
+        }
+        
+        // Fallback to first 3 characters of displayName
         return String(subsection.displayName.prefix(3)).uppercased()
+            .filter { !$0.isNumber && !$0.isWhitespace } + String(index+1)
     }
     
     private var isPastDue: Bool {

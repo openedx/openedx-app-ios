@@ -1117,6 +1117,14 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             .first { $0.type == assignmentType }?
             .type
     }
+    
+    func getAssignmentShortLabel(for assignmentType: String) -> String? {
+        guard let progressDetails = courseProgressDetails else { return nil }
+        
+        return progressDetails.gradingPolicy.assignmentPolicies
+            .first { $0.type == assignmentType }?
+            .shortLabel
+    }
         
     func assignmentSections() -> [AssignmentSection] {
         guard let progressDetails = courseProgressDetails else { return [] }
@@ -1137,7 +1145,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 assignmentType: policy.type,
                 label: policy.type,
                 weight: policy.weight,
-                subsections: subsections.sorted { $0.displayName < $1.displayName }
+                subsections: subsections
             )
         }
     }

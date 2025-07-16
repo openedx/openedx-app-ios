@@ -47,7 +47,7 @@ struct ProgressAssignmentTypeSection: View, Equatable {
                 HStack(spacing: 12) {
                     ForEach(
                         Array(filteredSubsections.enumerated()),
-                        id: \.element.blockKey
+                        id: \.offset
                     ) { index, subsection in
                         AssignmentCardSmallView(
                             subsection: subsection,
