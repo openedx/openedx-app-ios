@@ -3,21 +3,27 @@ import Theme
 import Core
 
 struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
-    
+
     // MARK: - Variables
     let viewModelProgress: CourseProgressViewModel
     let viewModelContainer: CourseContainerViewModel
     let isVideo: Bool
     let idiom: UIUserInterfaceIdiom
     let downloadQualityBars: (GeometryProxy) -> DownloadBarsView
-    
+
     // MARK: - Body
     var body: some View {
         VStack(alignment: .leading) {
             headerView
             progressView
             sectionView
-            Text("Show all")
+
+            ViewAllButton(section: CourseLocalization.CourseCarousel.allContent) {
+                print("All Content")
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.top, 16)
+
         }
         .padding(16)
         .overlay(
@@ -26,7 +32,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                 .foregroundColor(Theme.Colors.cardViewStroke)
         )
     }
-    
+
     // MARK: - Header View
     private var headerView: some View {
         Text(CourseLocalization.CourseContainer.Progress.title)
@@ -35,27 +41,27 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .clipped()
     }
-    
+
     // MARK: - Progress View
     private var progressView: some View {
-        
+
         let progressPercentage = Int(ceil(viewModelProgress.overallProgressPercentage * 100))
-        
+
         return HStack(alignment: .center) {
             VStack(alignment: .leading, spacing: 4) {
-                Text("Progress")
+                Text(CourseLocalization.CourseContainer.progress)
                     .font(Theme.Fonts.titleMedium)
                     .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityAddTraits(.isHeader)
-                
-                Text("You have completed \(progressPercentage)% of the course progress")
+
+                Text(CourseLocalization.CourseCarousel.progressCompletion(progressPercentage))
                     .font(Theme.Fonts.bodyMedium)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textSecondary)
                     .lineLimit(nil)
             }
-            
+
             Spacer()
-            
+
             CourseProgressCircleView(
                 progressPercentage: viewModelProgress.overallProgressPercentage,
                 size: 90
@@ -66,7 +72,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
             )
         }
     }
-    
+
     // MARK: - Section View
     private var sectionView: some View {
         VStack {
@@ -82,13 +88,15 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                     RoundedCorners(tl: 8, tr: 8, bl: 0, br: 0)
                                         .fill(Theme.Colors.courseProgressBG)
                                         .frame(width: geometry.size.width, height: 6)
-                                    
+                                        .padding(.horizontal, 1)
+
                                     if let total = progress.totalAssignmentsCount,
                                        let completed = progress.assignmentsCompleted {
                                         RoundedCorners(tl: 8, tr: completed == total ? 8 : 0, bl: 0, br: 0)
-                                            .fill(Theme.Colors.accentColor)
+                                            .fill(Theme.Colors.success)
                                             .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total),
                                                    height: 6)
+                                            .padding(.horizontal, 1)
                                     }
                                 }
                                 .frame(height: 6)
@@ -96,32 +104,32 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                             .padding(.top, -10)
                         }
                     }
-                    
+
                     VStack {
                         if let continueWith = viewModelContainer.continueWith,
                            let courseStructure = viewModelContainer.courseStructure {
                             let chapter = courseStructure.childs[continueWith.chapterIndex]
                             let sequential = chapter.childs[continueWith.sequentialIndex]
                             let continueUnit = sequential.childs[continueWith.verticalIndex]
-                            
+
                             HStack {
                                 Text("\(sequential.displayName)")
                                     .font(Theme.Fonts.titleMedium)
                                     .foregroundColor(Theme.Colors.textPrimary)
-                                
+
                                 Spacer()
-                                
+
                                 if isVideo, viewModelContainer.isShowProgress == false {
                                     downloadQualityBars(proxy)
                                 }
                             }
-                            
+
                             HStack {
                                 CoreAssets.chapter.swiftUIImage
                                     .renderingMode(.template)
                                     .resizable()
                                     .frame(width: 20, height: 20)
-                                
+
                                 Text(continueUnit.displayName)
                                     .font(Theme.Fonts.titleSmall)
                                     .multilineTextAlignment(.leading)
@@ -132,9 +140,9 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                         : proxy.size.width * 0.6,
                                         alignment: .leading
                                     )
-                                
+
                                 Spacer()
-                                
+
                                 CoreAssets.chevronRight.swiftUIImage
                                     .foregroundColor(Theme.Colors.textPrimary)
                             }

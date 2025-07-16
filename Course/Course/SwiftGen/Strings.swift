@@ -144,6 +144,18 @@ public enum CourseLocalization {
     /// You've completed “
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
+  public enum CourseCarousel {
+    /// All Content
+    public static let allContent = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_CONTENT", fallback: "All Content")
+    /// Grades
+    public static let grades = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES", fallback: "Grades")
+    /// This represents your weighted grade against the grade needed to pass this course.
+    public static let gradesDescription = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES_DESCRIPTION", fallback: "This represents your weighted grade against the grade needed to pass this course.")
+    /// You have completed %@%% of the course progress
+    public static func progressCompletion(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.PROGRESS_COMPLETION", String(describing: p1), fallback: "You have completed %@%% of the course progress")
+    }
+  }
   public enum CourseContainer {
     /// Dates
     public static let dates = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DATES", fallback: "Dates")

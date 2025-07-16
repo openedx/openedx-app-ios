@@ -17,6 +17,8 @@ struct OverallGradeView: View {
     let assignmentProgressData: [String: AssignmentProgressData]
     let assignmentColors: [String]
     
+    var isCarousel: Bool = false
+    
     private var currentGradePercent: Int {
         Int(currentGrade * 100)
     }
@@ -28,16 +30,18 @@ struct OverallGradeView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Header
-            VStack(alignment: .leading, spacing: 8) {
-                Text(CourseLocalization.CourseContainer.Progress.overallGrade)
-                    .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .accessibilityAddTraits(.isHeader)
-                
-                Text(CourseLocalization.CourseContainer.Progress.overallGradeDescription)
-                    .font(Theme.Fonts.bodySmall)
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .lineLimit(nil)
+            if !isCarousel {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(CourseLocalization.CourseContainer.Progress.overallGrade)
+                        .font(Theme.Fonts.titleMedium)
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .accessibilityAddTraits(.isHeader)
+                    
+                    Text(CourseLocalization.CourseContainer.Progress.overallGradeDescription)
+                        .font(Theme.Fonts.bodySmall)
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .lineLimit(nil)
+                }
             }
             
             // Current Grade Label
@@ -59,23 +63,25 @@ struct OverallGradeView: View {
                 requiredGrade: requiredGrade
             )
             
-            // Warning Message
-            HStack(alignment: .top, spacing: 8) {
-                Image(systemName: "exclamationmark.triangle.fill")
-                    .foregroundColor(Theme.Colors.warning)
-                
-                Text(CourseLocalization.CourseContainer.Progress.weightedGradeRequired("\(requiredGradePercent)"))
-                    .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+            if !isCarousel {
+                // Warning Message
+                HStack(alignment: .top, spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .foregroundColor(Theme.Colors.warning)
+                    
+                    Text(CourseLocalization.CourseContainer.Progress.weightedGradeRequired("\(requiredGradePercent)"))
+                        .font(Theme.Fonts.labelLarge)
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .padding(12)
+                .background(Theme.Colors.shade)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Theme.Colors.warning, lineWidth: 1)
+                )
+                .cornerRadius(8)
             }
-            .padding(12)
-            .background(Theme.Colors.shade)
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(Theme.Colors.warning, lineWidth: 1)
-            )
-            .cornerRadius(8)
         }
     }
 }

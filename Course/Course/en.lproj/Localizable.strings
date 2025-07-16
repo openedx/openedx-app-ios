@@ -48,6 +48,11 @@
 "COURSE_CONTAINER.HANDOUTS" =  "More";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
 
+"COURSE_CAROUSEL.PROGRESS_COMPLETION" = "You have completed %@%% of the course progress";
+"COURSE_CAROUSEL.GRADES" = "Grades";
+"COURSE_CAROUSEL.GRADES_DESCRIPTION" = "This represents your weighted grade against the grade needed to pass this course.";
+"COURSE_CAROUSEL.ALL_CONTENT" = "All Content";
+
 "COURSE_CONTAINER.PROGRESS.TITLE" = "Course Completion";
 "COURSE_CONTAINER.PROGRESS.DESCRIPTION" = "This represents how much of the course content you have completed. Note that some content may not yet be released.";
 "COURSE_CONTAINER.PROGRESS.COMPLETED" = "Completed";
