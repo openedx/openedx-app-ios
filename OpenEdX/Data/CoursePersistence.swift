@@ -129,7 +129,8 @@ public final class CoursePersistence: CoursePersistenceProtocol {
                     assignmentProgress: DataLayer.AssignmentProgress(
                         assignmentType: $0.assignmentType,
                         numPointsEarned: $0.numPointsEarned,
-                        numPointsPossible: $0.numPointsPossible
+                        numPointsPossible: $0.numPointsPossible,
+                        shortLabel: $0.shortLabel
                     ),
                     offlineDownload: DataLayer.OfflineDownload(
                         fileUrl: $0.fileUrl,
@@ -211,6 +212,9 @@ public final class CoursePersistence: CoursePersistenceProtocol {
                 }
                 if let assignmentType = block.assignmentProgress?.assignmentType {
                     courseDetail.assignmentType = assignmentType
+                }
+                if let shortLabel = block.assignmentProgress?.shortLabel {
+                    courseDetail.shortLabel = shortLabel
                 }
                 if let due = block.due {
                     courseDetail.due = due

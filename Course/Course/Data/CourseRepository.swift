@@ -199,7 +199,8 @@ public actor CourseRepository: CourseRepositoryProtocol {
             sequentialProgress: SequentialProgress(
                 assignmentType: sequential.assignmentProgress?.assignmentType,
                 numPointsEarned: Int(sequential.assignmentProgress?.numPointsEarned ?? 0),
-                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0)
+                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0),
+                shortLabel: sequential.assignmentProgress?.shortLabel
             ),
             due: sequential.due == nil ? nil : Date(iso8601: sequential.due!)
         )
@@ -718,7 +719,8 @@ And there are various ways of describing it-- call it oral poetry or
             sequentialProgress: SequentialProgress(
                 assignmentType: sequential.assignmentProgress?.assignmentType,
                 numPointsEarned: Int(sequential.assignmentProgress?.numPointsEarned ?? 0),
-                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0)
+                numPointsPossible: Int(sequential.assignmentProgress?.numPointsPossible ?? 0),
+                shortLabel: sequential.assignmentProgress?.shortLabel
             ),
             due: sequential.due == nil ? nil : Date(iso8601: sequential.due!)
         )

@@ -18,6 +18,7 @@
         <attribute name="multiDevice" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="numPointsEarned" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="numPointsPossible" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="shortLabel" optional="YES" attributeType="String"/>
         <attribute name="studentUrl" optional="YES" attributeType="String"/>
         <attribute name="transcripts" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>

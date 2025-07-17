@@ -323,7 +323,8 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Advanced Assessment Tools",
                             numPointsEarned: 1,
-                            numPointsPossible: 3
+                            numPointsPossible: 3,
+                            shortLabel: nil
                         ),
                         due: Date()
                     ),
@@ -348,7 +349,8 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Basic Assessment Tools",
                             numPointsEarned: 1,
-                            numPointsPossible: 3
+                            numPointsPossible: 3,
+                            shortLabel: nil
                         ),
                         due: Date()
                     )
@@ -391,7 +393,8 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Advanced Assessment Tools",
                             numPointsEarned: 1,
-                            numPointsPossible: 3
+                            numPointsPossible: 3,
+                            shortLabel: nil
                         ),
                         due: Date()
                     )

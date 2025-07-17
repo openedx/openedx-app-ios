@@ -235,11 +235,13 @@ public struct SequentialProgress: Sendable {
     public let assignmentType: String?
     public let numPointsEarned: Int?
     public let numPointsPossible: Int?
+    public let shortLabel: String?
     
-    public init(assignmentType: String?, numPointsEarned: Int?, numPointsPossible: Int?) {
+    public init(assignmentType: String?, numPointsEarned: Int?, numPointsPossible: Int?, shortLabel: String?) {
         self.assignmentType = assignmentType
         self.numPointsEarned = numPointsEarned
         self.numPointsPossible = numPointsPossible
+        self.shortLabel = shortLabel
     }
 }
 
