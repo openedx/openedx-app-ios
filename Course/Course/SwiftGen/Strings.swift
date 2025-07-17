@@ -155,6 +155,10 @@ public enum CourseLocalization {
     public static func progressCompletion(_ p1: Any) -> String {
       return CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.PROGRESS_COMPLETION", String(describing: p1), fallback: "You have completed %@%% of the course progress")
     }
+    /// You’re auditing this course now and have limited access to course material.
+    public static let upgradeNowBody = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BODY", fallback: "You’re auditing this course now and have limited access to course material.")
+    /// Upgrade now
+    public static let upgradeNowButton = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BUTTON", fallback: "Upgrade now")
   }
   public enum CourseContainer {
     /// Dates

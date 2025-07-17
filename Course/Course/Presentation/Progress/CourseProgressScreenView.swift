@@ -42,8 +42,6 @@ struct CourseProgressScreenView: View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
                 VStack(alignment: .center) {
-                    
-                    // MARK: - Page Body
                     if viewModel.isLoading {
                         HStack(alignment: .center) {
                             ProgressBar(size: 40, lineWidth: 8)
