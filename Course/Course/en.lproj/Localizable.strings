@@ -53,6 +53,9 @@
 "COURSE_CAROUSEL.GRADES_DESCRIPTION" = "This represents your weighted grade against the grade needed to pass this course.";
 "COURSE_CAROUSEL.ALL_CONTENT" = "All Content";
 
+"COURSE_CAROUSEL.UPGRADE_NOW_BODY" = "You’re auditing this course now and have limited access to course material.";
+"COURSE_CAROUSEL.UPGRADE_NOW_BUTTON" = "Upgrade now";
+
 "COURSE_CONTAINER.PROGRESS.TITLE" = "Course Completion";
 "COURSE_CONTAINER.PROGRESS.DESCRIPTION" = "This represents how much of the course content you have completed. Note that some content may not yet be released.";
 "COURSE_CONTAINER.PROGRESS.COMPLETED" = "Completed";

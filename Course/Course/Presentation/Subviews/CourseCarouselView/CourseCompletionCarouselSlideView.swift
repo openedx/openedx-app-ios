@@ -76,14 +76,14 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
     // MARK: - Section View
     private var sectionView: some View {
         VStack {
-            GeometryReader { proxy in
-                VStack(spacing: 18) {
-                    if let course = isVideo
-                        ? viewModelContainer.courseVideosStructure
-                        : viewModelContainer.courseStructure {
-                        if let progress = course.courseProgress,
-                           progress.totalAssignmentsCount != 0 {
-                            ZStack(alignment: .leading) {
+            if let course = isVideo
+                ? viewModelContainer.courseVideosStructure
+                : viewModelContainer.courseStructure {
+                if let progress = course.courseProgress,
+                   progress.totalAssignmentsCount != 0 {
+                    GeometryReader { proxy in
+                        VStack(spacing: 18) {
+                            ZStack {
                                 GeometryReader { geometry in
                                     RoundedCorners(tl: 8, tr: 8, bl: 0, br: 0)
                                         .fill(Theme.Colors.courseProgressBG)
@@ -92,82 +92,82 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
 
                                     if let total = progress.totalAssignmentsCount,
                                        let completed = progress.assignmentsCompleted {
-                                        RoundedCorners(tl: 8, tr: completed == total ? 8 : 0, bl: 0, br: 0)
+                                        RoundedCorners(tl: 4, tr: completed == total ? 4 : 0, bl: 0, br: 0)
                                             .fill(Theme.Colors.success)
                                             .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total),
                                                    height: 6)
-                                            .padding(.horizontal, 1)
+                                            .padding(.horizontal, 2)
                                     }
                                 }
                                 .frame(height: 6)
                             }
-                            .padding(.top, -10)
                         }
-                    }
 
-                    VStack {
-                        if let continueWith = viewModelContainer.continueWith,
-                           let courseStructure = viewModelContainer.courseStructure {
-                            let chapter = courseStructure.childs[continueWith.chapterIndex]
-                            let sequential = chapter.childs[continueWith.sequentialIndex]
-                            let continueUnit = sequential.childs[continueWith.verticalIndex]
+                        VStack {
+                            if let continueWith = viewModelContainer.continueWith,
+                               let courseStructure = viewModelContainer.courseStructure {
+                                let chapter = courseStructure.childs[continueWith.chapterIndex]
+                                let sequential = chapter.childs[continueWith.sequentialIndex]
+                                let continueUnit = sequential.childs[continueWith.verticalIndex]
 
-                            HStack {
-                                Text("\(sequential.displayName)")
-                                    .font(Theme.Fonts.titleMedium)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                HStack {
+                                    Text("\(sequential.displayName)")
+                                        .font(Theme.Fonts.titleMedium)
+                                        .foregroundColor(Theme.Colors.textPrimary)
 
-                                Spacer()
+                                    Spacer()
 
-                                if isVideo, viewModelContainer.isShowProgress == false {
-                                    downloadQualityBars(proxy)
+                                    if isVideo, viewModelContainer.isShowProgress == false {
+                                        downloadQualityBars(proxy)
+                                    }
+                                }
+
+                                HStack {
+                                    CoreAssets.chapter.swiftUIImage
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .frame(width: 20, height: 20)
+
+                                    Text(continueUnit.displayName)
+                                        .font(Theme.Fonts.titleSmall)
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(1)
+                                        .frame(
+                                            maxWidth: idiom == .pad
+                                            ? proxy.size.width * 0.5
+                                            : proxy.size.width * 0.6,
+                                            alignment: .leading
+                                        )
+
+                                    Spacer()
+
+                                    CoreAssets.chevronRight.swiftUIImage
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                }
+                                .onTapGesture {
+                                    viewModelContainer.router.showCourseVerticalView(
+                                        courseID: viewModelContainer.courseStructure?.id ?? "",
+                                        courseName: viewModelContainer.courseStructure?.displayName ?? "",
+                                        title: sequential.displayName,
+                                        chapters: courseStructure.childs,
+                                        chapterIndex: continueWith.chapterIndex,
+                                        sequentialIndex: continueWith.sequentialIndex
+                                    )
                                 }
                             }
-
-                            HStack {
-                                CoreAssets.chapter.swiftUIImage
-                                    .renderingMode(.template)
-                                    .resizable()
-                                    .frame(width: 20, height: 20)
-
-                                Text(continueUnit.displayName)
-                                    .font(Theme.Fonts.titleSmall)
-                                    .multilineTextAlignment(.leading)
-                                    .lineLimit(1)
-                                    .frame(
-                                        maxWidth: idiom == .pad
-                                        ? proxy.size.width * 0.5
-                                        : proxy.size.width * 0.6,
-                                        alignment: .leading
-                                    )
-
-                                Spacer()
-
-                                CoreAssets.chevronRight.swiftUIImage
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                            }
-                            .onTapGesture {
-                                viewModelContainer.router.showCourseVerticalView(
-                                    courseID: viewModelContainer.courseStructure?.id ?? "",
-                                    courseName: viewModelContainer.courseStructure?.displayName ?? "",
-                                    title: sequential.displayName,
-                                    chapters: courseStructure.childs,
-                                    chapterIndex: continueWith.chapterIndex,
-                                    sequentialIndex: continueWith.sequentialIndex
-                                )
-                            }
                         }
+                        .padding(.horizontal, 16)
+                        //                }
+                        .frame(height: 96)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+                                .foregroundColor(Theme.Colors.cardViewStroke)
+                        )
                     }
-                    .padding(.horizontal, 16)
+                    .frame(height: 96)
                 }
-                .frame(height: 96)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
-                        .foregroundColor(Theme.Colors.cardViewStroke)
-                )
             }
-            .frame(height: 96)
         }
     }
 }

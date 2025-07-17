@@ -45,6 +45,9 @@ public class CourseProgressViewModel: ObservableObject {
     @MainActor
     public func getCourseProgress(courseID: String, withProgress: Bool = true) async {
         isLoading = true
+        
+        defer { isLoading = false }
+
         do {
             if connectivity.isInternetAvaliable {
                 courseProgress = try await interactor.getCourseProgress(courseID: courseID)
@@ -58,7 +61,6 @@ public class CourseProgressViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.unknownError
             }
         }
-        isLoading = false
     }
     
     public func trackProgressTabClicked(courseId: String, courseName: String) {

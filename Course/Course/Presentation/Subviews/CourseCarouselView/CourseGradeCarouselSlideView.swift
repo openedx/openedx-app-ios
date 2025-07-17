@@ -25,7 +25,7 @@ struct CourseGradeCarouselSlideView: View {
             }
             .frame(maxWidth: .infinity)
         }
-        .padding(16)
+        .padding(.vertical, 16)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
@@ -41,6 +41,7 @@ struct CourseGradeCarouselSlideView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .clipped()
             .padding(.bottom, 16)
+            .padding(.horizontal, 16)
     }
     
     // MARK: - Description View
@@ -51,6 +52,8 @@ struct CourseGradeCarouselSlideView: View {
             .lineLimit(2)
             .padding(.bottom, 12)
             .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
+            .padding(.horizontal, 16)
+
     }
 
     // MARK: - Grade View
@@ -65,6 +68,7 @@ struct CourseGradeCarouselSlideView: View {
                 isCarousel: true
             )
             .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
+            .padding(.horizontal, 16)
 
             gradeDetailsItems
         }
@@ -73,24 +77,26 @@ struct CourseGradeCarouselSlideView: View {
     // MARK: - Grade Details Items
     private var gradeDetailsItems: some View {
         let columns = [
-            GridItem(.adaptive(minimum: 140))
+            GridItem(.flexible(minimum: 160), spacing: 16),
+            GridItem(.flexible(minimum: 160), spacing: 16)
         ]
 
         return LazyVGrid(columns: columns, spacing: 16) {
-                ForEach(
-                    Array(viewModelProgress.assignmentPolicies.prefix(3).enumerated()),
-                    id: \.element.type
-                ) { index, policy in
-                    let progressData = viewModelProgress.getAssignmentProgress(for: policy.type)
+            ForEach(
+                Array(viewModelProgress.assignmentPolicies.prefix(4).enumerated()),
+                id: \.element.type
+            ) { index, policy in
+                let progressData = viewModelProgress.getAssignmentProgress(for: policy.type)
 
-                    GradeItemCarouselView(
-                        assignmentPolicy: policy,
-                        progressData: progressData,
-                        color: viewModelProgress.getAssignmentColor(for: index)
-                    )
-                }
+                GradeItemCarouselView(
+                    assignmentPolicy: policy,
+                    progressData: progressData,
+                    color: viewModelProgress.getAssignmentColor(for: index)
+                )
+                .frame(maxWidth: .infinity)
             }
-            .padding(16)
+        }
+        .padding(.horizontal, 0)
     }
 
     // MARK: - No Grade Assignment View

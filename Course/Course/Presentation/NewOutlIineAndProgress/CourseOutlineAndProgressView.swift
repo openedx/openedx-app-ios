@@ -25,12 +25,15 @@ public struct CourseOutlineAndProgressView: View {
             idiom: UIDevice.current.userInterfaceIdiom
         ) { proxy in
             downloadQualityBars(proxy: proxy)
-        }),
+        }
+            .frame(height: 326)
+        ),
         AnyView(
             CourseGradeCarouselSlideView(
                 viewModelProgress: viewModelProgress,
                 viewModelContainer: viewModelContainer
             )
+            .frame(height: 420)
         )
     ]}
     
@@ -80,99 +83,129 @@ public struct CourseOutlineAndProgressView: View {
     // MARK: - Body
     public var body: some View {
         ZStack(alignment: .top) {
+            if viewModelProgress.isLoading || viewModelContainer.isShowRefresh {
+                HStack(alignment: .center) {
+                    ProgressBar(size: 40, lineWidth: 8)
+                        .padding(.top, 200)
+                        .padding(.horizontal)
+                }
+            } else {
             GeometryReader { _ in
                 VStack(alignment: .center) {
-                    ScrollView {
-                        VStack(spacing: 0) {
-                            DynamicOffsetView(
-                                coordinate: $coordinate,
-                                collapsed: $collapsed,
-                                viewHeight: $viewHeight
-                            )
-                            
-                            RefreshProgressView(isShowRefresh: $viewModelContainer.isShowRefresh)
-                            
-                            VStack(alignment: .leading) {
-                                
-                                Spacer()
-                                
-                                if let continueWith = viewModelContainer.continueWith,
-                                   let courseStructure = viewModelContainer.courseStructure {
-                                    let chapter = courseStructure.childs[continueWith.chapterIndex]
-                                    
-                                    UnitButtonView(
-                                        type: .continueLessonCustom(
-                                            chapter.displayName
-                                        ),
-                                        action: {
-                                            viewModelContainer.openLastVisitedBlock()
-                                        })
-                                    .padding(.horizontal, 24)
+                    // MARK: - Page Body
+                        ScrollView {
+                            VStack(spacing: 0) {
+                                DynamicOffsetView(
+                                    coordinate: $coordinate,
+                                    collapsed: $collapsed,
+                                    viewHeight: $viewHeight
+                                )
+
+                                VStack(alignment: .leading) {
+
+                                    Spacer()
+
+                                    if let continueWith = viewModelContainer.continueWith,
+                                       let courseStructure = viewModelContainer.courseStructure {
+                                        let chapter = courseStructure.childs[continueWith.chapterIndex]
+
+                                        UnitButtonView(
+                                            type: .continueLessonCustom(
+                                                chapter.displayName
+                                            ),
+                                            action: {
+                                                viewModelContainer.openLastVisitedBlock()
+                                            })
+                                        .padding(.horizontal, 24)
+                                        .padding(.top, 16)
+
+                                    }
+
+                                    if let courseDeadlineInfo = viewModelContainer.courseDeadlineInfo,
+                                    let verifiedUpgradeLink = courseDeadlineInfo.datesBannerInfo.verifiedUpgradeLink {
+                                        upgradeNowBanner(url: verifiedUpgradeLink)
+                                            .padding(.horizontal, 24)
+                                            .padding(.bottom, 16)
+                                    }
+
+                                    ZStack {
+                                        carouselContent
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .hidden()
+                                    .overlay {
+                                        carouselTabView
+                                    }
+
                                 }
-                                
-                                ZStack {
-                                    carouselContent
-                                }
-                                .frame(maxWidth: .infinity)
-                                .hidden()
-                                .overlay {
-                                    carouselTabView
-                                }
-                                                                
+                                .background(
+                                    Theme.Colors.background
+                                        .ignoresSafeArea()
+                                )
+                                .opacity(viewModelProgress.isLoading || viewModelContainer.isShowProgress ? 0 : 1)
                             }
-                            .background(
-                                Theme.Colors.background
-                                    .ignoresSafeArea()
-                            )
-                            .opacity(viewModelProgress.isLoading || viewModelContainer.isShowProgress ? 0 : 1)
+                            .onAppear {
+                                if viewModelProgress.courseProgress == nil {
+                                    Task {
+                                        await viewModelProgress.getCourseProgress(courseID: courseID)
+                                        await viewModelContainer
+                                            .getCourseBlocks(courseID: courseID, withProgress: false)
+                                    }
+                                }
+                            }
                         }
-                        .onAppear {
-                            if viewModelProgress.courseProgress == nil {
-                                Task {
+                        .refreshable {
+                            Task {
+                                await viewModelContainer.getCourseBlocks(courseID: courseID, withProgress: false)
+                                await viewModelProgress.getCourseProgress(courseID: courseID)
+
+                            }
+                        }
+
+                        pageControlView
+                            .padding(.bottom, 10)
+                            .frame(alignment: .bottom)
+                            .opacity(viewModelProgress.isLoading || viewModelContainer.isShowProgress ? 0 : 1)
+
+                            .onRightSwipeGesture {
+                                viewModelContainer.router.back()
+                            }
+                    }
+
+                    OfflineSnackBarView(
+                        connectivity: connectivity,
+                        reloadAction: {
+                            await withTaskGroup(of: Void.self) { group in
+                                group.addTask {
+                                    await viewModelContainer.getCourseBlocks(courseID: courseID, withProgress: false)
+                                }
+                                group.addTask {
+                                    await viewModelContainer
+                                        .getCourseDeadlineInfo(courseID: courseID, withProgress: false)
+                                }
+
+                                group.addTask {
                                     await viewModelProgress.getCourseProgress(courseID: courseID)
                                 }
                             }
                         }
-                    }
-                    .refreshable {
-                        Task {
-                            await viewModelContainer.getCourseBlocks(courseID: courseID, withProgress: false)
-                            await viewModelProgress.getCourseProgress(courseID: courseID)
+                    )
 
+                    // MARK: - Error Alert
+                    if viewModelContainer.showError {
+                        VStack {
+                            Spacer()
+                            SnackBarView(message: viewModelContainer.errorMessage)
+                        }
+                        .padding(.bottom, viewModelContainer.isInternetAvaliable
+                                 ? 0 : OfflineSnackBarView.height)
+                        .transition(.move(edge: .bottom))
+                        .onAppear {
+                            doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
+                                viewModelContainer.errorMessage = nil
+                            }
                         }
                     }
-                    
-                    pageControlView
-                        .padding(.bottom, 16)
-                        .frame(alignment: .bottom)
-                        .opacity(viewModelProgress.isLoading || viewModelContainer.isShowProgress ? 0 : 1)
-                    
-                }
-                .onRightSwipeGesture {
-                    viewModelContainer.router.back()
-                }
-                
-                // MARK: - Error Alert
-                if viewModelContainer.showError {
-                    VStack {
-                        Spacer()
-                        SnackBarView(message: viewModelContainer.errorMessage)
-                    }
-                    .padding(.bottom, viewModelContainer.isInternetAvaliable
-                             ? 0 : OfflineSnackBarView.height)
-                    .transition(.move(edge: .bottom))
-                    .onAppear {
-                        doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                            viewModelContainer.errorMessage = nil
-                        }
-                    }
-                }
-                if viewModelProgress.isLoading || viewModelContainer.isShowProgress {
-                    VStack(alignment: .center) {
-                        ProgressBar(size: 40, lineWidth: 8)
-                            .padding(.horizontal)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
         }
@@ -233,10 +266,15 @@ public struct CourseOutlineAndProgressView: View {
     // MARK: - Carousel Content
     private var carouselContent: some View {
         ForEach(carouselSections.indices, id: \.self) { idx in
-            carouselSections[idx]
-                .tag(idx)
-                .padding(.horizontal, 24)
-                .padding(.top, 16)
+            VStack {
+                carouselSections[idx]
+                if idx == 0 {
+                    Spacer()
+                }
+            }
+            .tag(idx)
+            .padding(.horizontal, 24)
+            .padding(.top, 16)
         }
     }
     
@@ -276,7 +314,7 @@ public struct CourseOutlineAndProgressView: View {
         .padding(.horizontal, 24)
     }
     
-    // MARK: - Download?
+    // MARK: - Download
     @ViewBuilder
     private func downloadQualityBars(proxy: GeometryProxy) -> some View {
         if let courseVideosStructure = viewModelContainer.courseVideosStructure,
@@ -346,6 +384,40 @@ public struct CourseOutlineAndProgressView: View {
                 viewModelProgress.errorMessage = nil
             }
         }
+    }
+
+    // MARK: - Upgrade Now Banner
+    private func upgradeNowBanner(url: String) -> some View {
+        VStack(alignment: .leading) {
+            HStack(alignment: .top) {
+                CoreAssets.lockIcon.swiftUIImage
+                    .renderingMode(.template)
+                    .foregroundStyle(Theme.Colors.textPrimary)
+                    .padding(.trailing, 8)
+
+                VStack(alignment: .leading) {
+                    Text(CourseLocalization.CourseCarousel.upgradeNowBody)
+                        .font(Theme.Fonts.bodySmall)
+                        .foregroundStyle(Theme.Colors.textPrimary)
+
+                    if let url = URL(string: url) {
+                        Link(destination: url) {
+                            Text(CourseLocalization.CourseCarousel.upgradeNowButton)
+                                .underline()
+                                .font(Theme.Fonts.bodySmall)
+                                .foregroundStyle(Theme.Colors.textPrimary)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+            }
+        }
+        .padding(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                .foregroundColor(Theme.Colors.cardViewStroke)
+        )
     }
 }
 
