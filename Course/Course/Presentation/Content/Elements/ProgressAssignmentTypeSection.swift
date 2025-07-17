@@ -10,11 +10,7 @@ import Core
 import OEXFoundation
 import Theme
 
-struct ProgressAssignmentTypeSection: View, Equatable {
-    nonisolated static func == (lhs: ProgressAssignmentTypeSection, rhs: ProgressAssignmentTypeSection) -> Bool {
-        lhs.sectionName == rhs.sectionName &&
-        lhs.subsections == rhs.subsections
-    }
+struct ProgressAssignmentTypeSection: View {
     
     let subsections: [CourseProgressSubsection]
     let sectionName: String
@@ -53,7 +49,10 @@ struct ProgressAssignmentTypeSection: View, Equatable {
                             subsection: subsection,
                             index: index,
                             sectionName: sectionName,
-                            isSelected: index == selectedIndex,
+                            isSelected: Binding(
+                                get: { index == selectedIndex },
+                                set: { _ in selectedIndex = index }
+                            ),
                             onTap: {
                                 selectedIndex = index
                             },

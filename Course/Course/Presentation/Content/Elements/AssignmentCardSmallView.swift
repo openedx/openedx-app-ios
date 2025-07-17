@@ -9,15 +9,12 @@ import SwiftUI
 import Core
 import Theme
 
-struct AssignmentCardSmallView: View, Equatable {
-    nonisolated static func == (lhs: AssignmentCardSmallView, rhs: AssignmentCardSmallView) -> Bool {
-        lhs.index == rhs.index
-    }
+struct AssignmentCardSmallView: View {
     
     let subsection: CourseProgressSubsection
     let index: Int
     let sectionName: String
-    let isSelected: Bool
+    @Binding var isSelected: Bool
     let onTap: () -> Void
     let viewModel: CourseContainerViewModel
     
@@ -58,8 +55,10 @@ struct AssignmentCardSmallView: View, Equatable {
         return dueDate < Date() && subsection.numPointsEarned < subsection.numPointsPossible
     }
     
-    var strokeColor: Color {
-        if subsection.numPointsEarned >= subsection.numPointsPossible && subsection.numPointsPossible > 0 {
+    private var strokeColor: Color {
+        if isSelected {
+            return Theme.Colors.accentColor
+        } else if subsection.numPointsEarned >= subsection.numPointsPossible && subsection.numPointsPossible > 0 {
             return Theme.Colors.success
         } else if isPastDue {
             return Theme.Colors.alert
@@ -76,7 +75,24 @@ struct AssignmentCardSmallView: View, Equatable {
         }
     }
     
+    init(
+        subsection: CourseProgressSubsection,
+        index: Int,
+        sectionName: String,
+        isSelected: Binding<Bool>,
+        onTap: @escaping () -> Void,
+        viewModel: CourseContainerViewModel
+    ) {
+        self.subsection = subsection
+        self.index = index
+        self.sectionName = sectionName
+        self._isSelected = isSelected
+        self.onTap = onTap
+        self.viewModel = viewModel
+    }
+    
     var body: some View {
+        VStack(alignment: .center, spacing: 2) {
         Button(action: onTap) {
             VStack(spacing: 8) {
                 Text(assignmentShortName)
@@ -87,13 +103,13 @@ struct AssignmentCardSmallView: View, Equatable {
             .frame(width: cardWidth, height: cardHeight)
             .background(completionBackgroundColor)
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 4)
                     .stroke(
-                        isSelected ? Theme.Colors.accentColor : strokeColor,
+                        strokeColor,
                         lineWidth: isSelected ? 2 : 1
                     )
             )
-            .cornerRadius(8)
+            .cornerRadius(4)
             .overlay {
                 ZStack(alignment: .center) {
                     if subsection.numPointsEarned >= subsection.numPointsPossible && subsection.numPointsPossible > 0 {
@@ -109,5 +125,65 @@ struct AssignmentCardSmallView: View, Equatable {
             }
         }
         .buttonStyle(PlainButtonStyle())
+        .id("\(index)-\(isSelected)")
+            
+            // MARK: Selection pointer
+            CoreAssets.pointer.swiftUIImage
+                .opacity(isSelected ? 1 : 0)
+        }
     }
 }
+
+#if DEBUG
+#Preview {
+    HStack {
+        AssignmentCardSmallView(
+            subsection: CourseProgressSubsection(
+                assignmentType: "1",
+                blockKey: "block1",
+                displayName: "Test Assignment",
+                hasGradedAssignment: true,
+                override: nil,
+                learnerHasAccess: true,
+                numPointsEarned: 0.0,
+                numPointsPossible: 1.0,
+                percentGraded: 0.0,
+                problemScores: [],
+                showCorrectness: "always",
+                showGrades: true,
+                url: "https://example.com"
+            ),
+            index: 0,
+            sectionName: "Labs",
+            isSelected: .constant(false),
+            onTap: {},
+            viewModel: CourseContainerViewModel.mock
+        )
+        
+        AssignmentCardSmallView(
+            subsection: CourseProgressSubsection(
+                assignmentType: "1",
+                blockKey: "block2",
+                displayName: "Test Assignment 2",
+                hasGradedAssignment: true,
+                override: nil,
+                learnerHasAccess: true,
+                numPointsEarned: 0.0,
+                numPointsPossible: 1.0,
+                percentGraded: 0.0,
+                problemScores: [],
+                showCorrectness: "always",
+                showGrades: true,
+                url: "https://example.com"
+            ),
+            index: 1,
+            sectionName: "Labs",
+            isSelected: .constant(true),
+            onTap: {},
+            viewModel: CourseContainerViewModel.mock
+        )
+    }
+    .padding()
+    .previewLayout(.sizeThatFits)
+}
+#endif
