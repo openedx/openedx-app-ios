@@ -26,28 +26,33 @@ struct AssignmentCardSmallView: View {
     }
     
     private var assignmentShortName: String {
+        if let shortLabel = subsection.shortLabel, !shortLabel.isEmpty {
+            return clearLabel(shortLabel)
+        }
+        
         guard let assignmentType = subsection.assignmentType else {
-            return String(subsection.displayName.prefix(3)).uppercased()
-                .filter { !$0.isNumber && !$0.isWhitespace } + String(index+1)
+            return clearLabel(subsection.displayName)
         }
-        
-        // Get shortLabel from assignment policy
-        if let shortLabel = viewModel.getAssignmentShortLabel(for: assignmentType), shortLabel != "" {
-            // If shortLabel is 3-4 characters, use it as is
-            if shortLabel.count <= 4 {
-                return shortLabel.filter { !$0.isNumber && !$0.isWhitespace }.uppercased() + String(index+1)
-            } else {
-                // If longer, take first 3 characters
-                return shortLabel.filter { !$0.isNumber && !$0.isWhitespace }
-                    .prefix(3)
-                    .uppercased()
-                + String(index+1)
-            }
+
+        return clearLabel(assignmentType)
+    }
+    
+    private func clearLabel(_ text: String) -> String {
+        let words = text.split(separator: " ")
+        if let last = words.last, last.allSatisfy({ $0.isNumber }) {
+            let rightRaw = String(last)
+            let leftRaw = words.dropLast().joined(separator: " ")
+            let leftLetters = leftRaw.filter { !$0.isNumber }
+            let leftShort = String(leftLetters.prefix(3)).uppercased()
+            
+            let trimmed = rightRaw.trimmingCharacters(in: CharacterSet(charactersIn: "0"))
+            let rightClean = trimmed.isEmpty ? "0" : trimmed
+            
+            return leftShort + rightClean
+        } else {
+            let leftLetters = text.filter { !$0.isNumber }
+            return String(leftLetters.prefix(3)).uppercased()
         }
-        
-        // Fallback to first 3 characters of displayName
-        return String(sectionName.prefix(3)).uppercased()
-            .filter { !$0.isNumber && !$0.isWhitespace } + String(index+1)
     }
     
     private var isPastDue: Bool {
@@ -151,7 +156,8 @@ struct AssignmentCardSmallView: View {
                 problemScores: [],
                 showCorrectness: "always",
                 showGrades: true,
-                url: "https://example.com"
+                url: "https://example.com",
+                shortLabel: "HW1 01"
             ),
             index: 0,
             sectionName: "Labs",
@@ -174,7 +180,8 @@ struct AssignmentCardSmallView: View {
                 problemScores: [],
                 showCorrectness: "always",
                 showGrades: true,
-                url: "https://example.com"
+                url: "https://example.com",
+                shortLabel: "HW1 02"
             ),
             index: 1,
             sectionName: "Labs",
@@ -184,6 +191,5 @@ struct AssignmentCardSmallView: View {
         )
     }
     .padding()
-    .previewLayout(.sizeThatFits)
 }
 #endif

@@ -87,66 +87,66 @@ struct ProgressAssignmentTypeSection: View {
 }
 
 #if DEBUG
-struct ProgressAssignmentTypeSection_Previews: PreviewProvider {
-    static var previews: some View {
-        GeometryReader { proxy in
-            ProgressAssignmentTypeSection(
-                subsections: [
-                    CourseProgressSubsection(
-                        assignmentType: "1",
-                        blockKey: "block1",
-                        displayName: "Test Assignment 1",
-                        hasGradedAssignment: true,
-                        override: nil,
-                        learnerHasAccess: true,
-                        numPointsEarned: 1.0,
-                        numPointsPossible: 1.0,
-                        percentGraded: 1.0,
-                        problemScores: [],
-                        showCorrectness: "always",
-                        showGrades: true,
-                        url: "https://example.com"
-                    ),
-                    CourseProgressSubsection(
-                        assignmentType: "1",
-                        blockKey: "block2",
-                        displayName: "Test Assignment 2",
-                        hasGradedAssignment: true,
-                        override: nil,
-                        learnerHasAccess: true,
-                        numPointsEarned: 0.0,
-                        numPointsPossible: 1.0,
-                        percentGraded: 0.0,
-                        problemScores: [],
-                        showCorrectness: "always",
-                        showGrades: true,
-                        url: "https://example.com"
-                    ),
-                    CourseProgressSubsection(
-                        assignmentType: "1",
-                        blockKey: "block3",
-                        displayName: "Test Assignment 3",
-                        hasGradedAssignment: true,
-                        override: nil,
-                        learnerHasAccess: false,
-                        numPointsEarned: 0.0,
-                        numPointsPossible: 1.0,
-                        percentGraded: 0.0,
-                        problemScores: [],
-                        showCorrectness: "always",
-                        showGrades: true,
-                        url: "https://example.com"
-                    )
-                ],
-                sectionName: "Labs",
-                viewModel: CourseContainerViewModel.mock,
-                proxy: proxy,
-                isShowingCompletedAssignments: .constant(false)
-            )
-        }
-        .previewLayout(.sizeThatFits)
-        .padding()
+#Preview {
+    GeometryReader { proxy in
+        ProgressAssignmentTypeSection(
+            subsections: [
+                CourseProgressSubsection(
+                    assignmentType: "1",
+                    blockKey: "block1",
+                    displayName: "Test Assignment 1",
+                    hasGradedAssignment: true,
+                    override: nil,
+                    learnerHasAccess: true,
+                    numPointsEarned: 1.0,
+                    numPointsPossible: 1.0,
+                    percentGraded: 1.0,
+                    problemScores: [],
+                    showCorrectness: "always",
+                    showGrades: true,
+                    url: "https://example.com",
+                    shortLabel: "HW1 01"
+                ),
+                CourseProgressSubsection(
+                    assignmentType: "1",
+                    blockKey: "block2",
+                    displayName: "Test Assignment 2",
+                    hasGradedAssignment: true,
+                    override: nil,
+                    learnerHasAccess: true,
+                    numPointsEarned: 0.0,
+                    numPointsPossible: 1.0,
+                    percentGraded: 0.0,
+                    problemScores: [],
+                    showCorrectness: "always",
+                    showGrades: true,
+                    url: "https://example.com",
+                    shortLabel: "HW1 02"
+                ),
+                CourseProgressSubsection(
+                    assignmentType: "1",
+                    blockKey: "block3",
+                    displayName: "Test Assignment 3",
+                    hasGradedAssignment: true,
+                    override: nil,
+                    learnerHasAccess: false,
+                    numPointsEarned: 0.0,
+                    numPointsPossible: 1.0,
+                    percentGraded: 0.0,
+                    problemScores: [],
+                    showCorrectness: "always",
+                    showGrades: true,
+                    url: "https://example.com",
+                    shortLabel: "HW1 03"
+                )
+            ],
+            sectionName: "Labs",
+            viewModel: CourseContainerViewModel.mock,
+            proxy: proxy,
+            isShowingCompletedAssignments: .constant(false)
+        )
     }
+    .padding()
 }
 
 extension CourseContainerViewModel {

@@ -1118,12 +1118,39 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             .type
     }
     
-    func getAssignmentShortLabel(for assignmentType: String) -> String? {
-        guard let progressDetails = courseProgressDetails else { return nil }
+    func getSequentialShortLabel(for blockKey: String) -> String? {
+        guard let courseStructure = courseStructure else { return nil }
         
-        return progressDetails.gradingPolicy.assignmentPolicies
-            .first { $0.type == assignmentType }?
-            .shortLabel
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == blockKey || sequential.id == blockKey {
+                    return sequential.sequentialProgress?.shortLabel
+                }
+            }
+        }
+        return nil
+    }
+    
+    func enrichSubsectionsWithShortLabels(_ subsections: [CourseProgressSubsection]) -> [CourseProgressSubsection] {
+        return subsections.map { subsection in
+            let shortLabel = getSequentialShortLabel(for: subsection.blockKey)
+            return CourseProgressSubsection(
+                assignmentType: subsection.assignmentType,
+                blockKey: subsection.blockKey,
+                displayName: subsection.displayName,
+                hasGradedAssignment: subsection.hasGradedAssignment,
+                override: subsection.override,
+                learnerHasAccess: subsection.learnerHasAccess,
+                numPointsEarned: subsection.numPointsEarned,
+                numPointsPossible: subsection.numPointsPossible,
+                percentGraded: subsection.percentGraded,
+                problemScores: subsection.problemScores,
+                showCorrectness: subsection.showCorrectness,
+                showGrades: subsection.showGrades,
+                url: subsection.url,
+                shortLabel: shortLabel
+            )
+        }
     }
         
     func assignmentSections() -> [AssignmentSection] {
@@ -1141,11 +1168,13 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 !subsections.isEmpty
             else { return nil }
 
+            let enrichedSubsections = enrichSubsectionsWithShortLabels(subsections)
+
             return AssignmentSection(
                 assignmentType: policy.type,
                 label: policy.type,
                 weight: policy.weight,
-                subsections: subsections
+                subsections: enrichedSubsections
             )
         }
     }
