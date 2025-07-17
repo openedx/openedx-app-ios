@@ -26,14 +26,12 @@ public struct CourseOutlineAndProgressView: View {
         ) { proxy in
             downloadQualityBars(proxy: proxy)
         }
-            .frame(height: 326)
         ),
         AnyView(
             CourseGradeCarouselSlideView(
                 viewModelProgress: viewModelProgress,
                 viewModelContainer: viewModelContainer
             )
-            .frame(height: 420)
         )
     ]}
     

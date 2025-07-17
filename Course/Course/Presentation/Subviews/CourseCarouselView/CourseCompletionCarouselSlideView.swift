@@ -14,6 +14,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
     // MARK: - Body
     var body: some View {
         VStack(alignment: .leading) {
+
             headerView
             progressView
             sectionView
@@ -103,13 +104,12 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                             }
                         }
 
-                        VStack {
-                            if let continueWith = viewModelContainer.continueWith,
-                               let courseStructure = viewModelContainer.courseStructure {
-                                let chapter = courseStructure.childs[continueWith.chapterIndex]
-                                let sequential = chapter.childs[continueWith.sequentialIndex]
-                                let continueUnit = sequential.childs[continueWith.verticalIndex]
-
+                        if let continueWith = viewModelContainer.continueWith,
+                           let courseStructure = viewModelContainer.courseStructure {
+                            let chapter = courseStructure.childs[continueWith.chapterIndex]
+                            let sequential = chapter.childs[continueWith.sequentialIndex]
+                            let continueUnit = sequential.childs[continueWith.verticalIndex]
+                            VStack {
                                 HStack {
                                     Text("\(sequential.displayName)")
                                         .font(Theme.Fonts.titleMedium)
@@ -155,15 +155,15 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                     )
                                 }
                             }
-                        }
-                        .padding(.horizontal, 16)
+                            .padding(.horizontal, 16)
                         //                }
-                        .frame(height: 96)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
-                                .foregroundColor(Theme.Colors.cardViewStroke)
-                        )
+                            .frame(height: 96)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8)
+                                    .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+                                    .foregroundColor(Theme.Colors.cardViewStroke)
+                            )
+                        }
                     }
                     .frame(height: 96)
                 }
