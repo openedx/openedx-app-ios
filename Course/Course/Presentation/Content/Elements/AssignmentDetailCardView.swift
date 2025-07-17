@@ -59,10 +59,7 @@ struct AssignmentDetailCardView: View, Equatable {
     
     var body: some View {
         Button(action: {
-            // Переход к заданию
-            if let url = URL(string: subsection.url) {
-                UIApplication.shared.open(url)
-            }
+            viewModel.navigateToAssignment(for: subsection)
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {

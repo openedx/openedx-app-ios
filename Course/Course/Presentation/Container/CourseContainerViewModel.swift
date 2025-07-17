@@ -1251,6 +1251,45 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         
         return subsection.displayName
     }
+    
+    func navigateToAssignment(for subsection: CourseProgressSubsection) {
+        guard let courseStructure = courseStructure else { return }
+
+        for (chapterIndex, chapter) in courseStructure.childs.enumerated() {
+            for (sequentialIndex, sequential) in chapter.childs.enumerated()
+                where sequential.id == subsection.blockKey {
+                guard let courseVertical = sequential.childs.first else { return }
+                guard let firstBlock = courseVertical.childs.first else {
+                    router.showGatedContentError(url: courseVertical.webUrl)
+                    return
+                }
+
+                trackSequentialClicked(sequential)
+
+                if config.uiComponents.courseDropDownNavigationEnabled {
+                    router.showCourseUnit(
+                        courseName: courseStructure.displayName,
+                        blockId: firstBlock.id,
+                        courseID: courseStructure.id,
+                        verticalIndex: 0,
+                        chapters: courseStructure.childs,
+                        chapterIndex: chapterIndex,
+                        sequentialIndex: sequentialIndex
+                    )
+                } else {
+                    router.showCourseVerticalView(
+                        courseID: courseStructure.id,
+                        courseName: courseStructure.displayName,
+                        title: sequential.displayName,
+                        chapters: courseStructure.childs,
+                        chapterIndex: chapterIndex,
+                        sequentialIndex: sequentialIndex
+                    )
+                }
+                return
+            }
+        }
+    }
 }
 
 extension CourseContainerViewModel {

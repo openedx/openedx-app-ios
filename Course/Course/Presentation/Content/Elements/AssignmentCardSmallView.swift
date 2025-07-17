@@ -32,7 +32,7 @@ struct AssignmentCardSmallView: View {
         }
         
         // Get shortLabel from assignment policy
-        if let shortLabel = viewModel.getAssignmentShortLabel(for: assignmentType) {
+        if let shortLabel = viewModel.getAssignmentShortLabel(for: assignmentType), shortLabel != "" {
             // If shortLabel is 3-4 characters, use it as is
             if shortLabel.count <= 4 {
                 return shortLabel.filter { !$0.isNumber && !$0.isWhitespace }.uppercased() + String(index+1)
@@ -46,7 +46,7 @@ struct AssignmentCardSmallView: View {
         }
         
         // Fallback to first 3 characters of displayName
-        return String(subsection.displayName.prefix(3)).uppercased()
+        return String(sectionName.prefix(3)).uppercased()
             .filter { !$0.isNumber && !$0.isWhitespace } + String(index+1)
     }
     
