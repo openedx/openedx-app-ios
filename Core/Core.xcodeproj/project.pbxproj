@@ -155,6 +155,7 @@
 		CE38BBD72D9D8294002CD276 /* ExperimentalFeaturesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE38BBD62D9D8294002CD276 /* ExperimentalFeaturesConfig.swift */; };
 		CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */; };
 		CE57127C2CD109DB00D4AB17 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE57127B2CD109DB00D4AB17 /* OEXFoundation */; };
+		CE5BBFF42E24236500D51C92 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5BBFF32E24236500D51C92 /* ColorExtension.swift */; };
 		CE7CAF392CC1561E00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF382CC1561E00E0AC9D /* OEXFoundation */; };
 		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
 		CEC873BE2D75D55600A2626C /* CourseStructureManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */; };
@@ -373,6 +374,7 @@
 		CE1D5B7C2CE65D360019CA34 /* Protected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protected.swift; sourceTree = "<group>"; };
 		CE38BBD62D9D8294002CD276 /* ExperimentalFeaturesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeaturesConfig.swift; sourceTree = "<group>"; };
 		CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerTests.swift; sourceTree = "<group>"; };
+		CE5BBFF32E24236500D51C92 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMock.generated.swift; sourceTree = "<group>"; };
 		CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureManagerProtocol.swift; sourceTree = "<group>"; };
 		CEC875352D7845DB00A2626C /* DownloadActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadActionView.swift; sourceTree = "<group>"; };
@@ -494,6 +496,7 @@
 		0283347E28D4DCC100C828FC /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				CE5BBFF32E24236500D51C92 /* ColorExtension.swift */,
 				CEC8753E2D786F7B00A2626C /* ArrayExtension.swift */,
 				0283347F28D4DCD200C828FC /* ViewExtension.swift */,
 				02F6EF4928D9F0A700835477 /* DateExtension.swift */,
@@ -1167,6 +1170,7 @@
 				0727877728D23847002E9142 /* DataLayer.swift in Sources */,
 				0241666B28F5A78B00082765 /* HTMLFormattedText.swift in Sources */,
 				02D800CC29348F460099CF16 /* ImagePicker.swift in Sources */,
+				CE5BBFF42E24236500D51C92 /* ColorExtension.swift in Sources */,
 				CE38BBD72D9D8294002CD276 /* ExperimentalFeaturesConfig.swift in Sources */,
 				027BD3B92909476200392132 /* KeyboardAvoidingModifier.swift in Sources */,
 				BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */,

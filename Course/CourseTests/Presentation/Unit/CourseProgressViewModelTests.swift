@@ -279,7 +279,7 @@ final class CourseProgressViewModelTests: XCTestCase {
         Given(connectivity, .isInternetAvaliable(getter: true))
         Given(interactor, .getCourseProgress(courseID: .any, willReturn: CourseProgressViewModelTests.mockCourseProgress))
         
-        await viewModel.refreshProgress(courseID: "test-course-id")
+        await viewModel.getCourseProgress(courseID: "test-course-id", withProgress: false)
         
         Verify(interactor, .getCourseProgress(courseID: .any))
         

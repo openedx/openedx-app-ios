@@ -295,7 +295,6 @@ public extension DataLayer {
     }
 }
 
-// MARK: - Domain Conversion
 public extension DataLayer.CourseProgressResponse {
     func domain() -> CourseProgressDetails {
         CourseProgressDetails(
