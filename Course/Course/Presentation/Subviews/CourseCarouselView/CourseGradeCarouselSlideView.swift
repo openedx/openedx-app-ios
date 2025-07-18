@@ -76,14 +76,12 @@ struct CourseGradeCarouselSlideView: View {
 
     // MARK: - Grade Details Items
     private var gradeDetailsItems: some View {
-        let columns = [
-            GridItem(.flexible(minimum: 160), spacing: 16),
-            GridItem(.flexible(minimum: 160), spacing: 16)
-        ]
+
+        let columns = Array(repeating: GridItem(.flexible(), spacing: 16), count: 2)
 
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(
-                Array(viewModelProgress.assignmentPolicies.prefix(4).enumerated()),
+                Array(viewModelProgress.assignmentPolicies.prefix(3).enumerated()),
                 id: \.element.type
             ) { index, policy in
                 let progressData = viewModelProgress.getAssignmentProgress(for: policy.type)
@@ -96,7 +94,7 @@ struct CourseGradeCarouselSlideView: View {
                 .frame(maxWidth: .infinity)
             }
         }
-        .padding(.horizontal, 0)
+        .padding(.horizontal, 16)
     }
 
     // MARK: - No Grade Assignment View
