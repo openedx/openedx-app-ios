@@ -49,11 +49,10 @@ struct GradeItemCarouselView: View {
                     }
                 }
             }
-            .fixedSize(horizontal: false, vertical: true)
-
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 8)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(content: {
             Rectangle()
                 .fill(color.opacity(0.14))
