@@ -39,20 +39,18 @@ struct AssignmentCardSmallView: View {
     
     private func clearLabel(_ text: String) -> String {
         let words = text.split(separator: " ")
-        if let last = words.last, last.allSatisfy({ $0.isNumber }) {
-            let rightRaw = String(last)
-            let leftRaw = words.dropLast().joined(separator: " ")
-            let leftLetters = leftRaw.filter { !$0.isNumber }
-            let leftShort = String(leftLetters.prefix(3)).uppercased()
-            
-            let trimmed = rightRaw.trimmingCharacters(in: CharacterSet(charactersIn: "0"))
-            let rightClean = trimmed.isEmpty ? "0" : trimmed
-            
-            return leftShort + rightClean
-        } else {
-            let leftLetters = text.filter { !$0.isNumber }
-            return String(leftLetters.prefix(3)).uppercased()
+
+        guard let last = words.last, last.allSatisfy(\.isNumber) else {
+            let letters = text.filter { !$0.isNumber }
+            return String(letters.prefix(3)).uppercased()
         }
+
+        let rightRaw = String(last)
+        let leftRaw  = words.dropLast().joined(separator: " ")
+        let leftShort = String(leftRaw.filter { !$0.isNumber }.prefix(3)).uppercased()
+        let rightClean = String(Int(rightRaw) ?? 0)
+
+        return leftShort + rightClean
     }
     
     private var isPastDue: Bool {
