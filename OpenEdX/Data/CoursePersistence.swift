@@ -322,7 +322,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
             newProgress.end = courseProgress.end
             newProgress.enrollmentMode = courseProgress.enrollmentMode
             newProgress.hasScheduledContent = courseProgress.hasScheduledContent
-            newProgress.assignmentColors = courseProgress.assignmentColors
+            newProgress.assignmentColors = courseProgress.gradingPolicy.assignmentColors
             
             let certificateData = CDCertificateData(context: context)
             certificateData.certStatus = courseProgress.certificateData.certStatus
@@ -442,7 +442,8 @@ public final class CoursePersistence: CoursePersistenceProtocol {
             
             let gradingPolicy = CourseProgressGradingPolicy(
                 assignmentPolicies: assignmentPolicies,
-                gradeRange: progress.gradingPolicy?.gradeRangeData ?? [:]
+                gradeRange: progress.gradingPolicy?.gradeRangeData ?? [:],
+                assignmentColors: progress.assignmentColors ?? []
             )
             
             let sectionScores = (progress.sectionScores as? Set<CDSectionScore> ?? [])
@@ -498,8 +499,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
                 gradingPolicy: gradingPolicy,
                 hasScheduledContent: progress.hasScheduledContent,
                 sectionScores: sectionScores,
-                verificationData: verificationData,
-                assignmentColors: progress.assignmentColors ?? []
+                verificationData: verificationData
             )
         }
     }

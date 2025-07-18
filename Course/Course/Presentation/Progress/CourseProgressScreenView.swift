@@ -159,7 +159,7 @@ struct CourseProgressScreenView: View {
                         requiredGrade: viewModel.requiredGradePercentage,
                         assignmentPolicies: viewModel.assignmentPolicies,
                         assignmentProgressData: viewModel.getAllAssignmentProgressData(),
-                        assignmentColors: viewModel.courseProgress?.assignmentColors ?? []
+                        assignmentColors: viewModel.courseProgress?.gradingPolicy.assignmentColors ?? []
                     )
                     .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
                     
