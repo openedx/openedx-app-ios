@@ -27,7 +27,6 @@ public extension DataLayer {
         public let userHasPassingGrade: Bool
         public let verificationData: VerificationData
         public let disableProgressGraph: Bool
-        public let assignmentColors: [String]?
         
         enum CodingKeys: String, CodingKey {
             case verifiedMode = "verified_mode"
@@ -46,7 +45,6 @@ public extension DataLayer {
             case userHasPassingGrade = "user_has_passing_grade"
             case verificationData = "verification_data"
             case disableProgressGraph = "disable_progress_graph"
-            case assignmentColors = "assignment_colors"
         }
         
         public init(
@@ -65,8 +63,7 @@ public extension DataLayer {
             username: String,
             userHasPassingGrade: Bool,
             verificationData: VerificationData,
-            disableProgressGraph: Bool,
-            assignmentColors: [String]?
+            disableProgressGraph: Bool
         ) {
             self.verifiedMode = verifiedMode
             self.accessExpiration = accessExpiration
@@ -84,7 +81,6 @@ public extension DataLayer {
             self.userHasPassingGrade = userHasPassingGrade
             self.verificationData = verificationData
             self.disableProgressGraph = disableProgressGraph
-            self.assignmentColors = assignmentColors
         }
     }
     
@@ -153,15 +149,18 @@ public extension DataLayer {
     struct GradingPolicy: Codable, Sendable {
         public let assignmentPolicies: [AssignmentPolicy]
         public let gradeRange: [String: Double]
+        public let assignmentColors: [String]?
         
         enum CodingKeys: String, CodingKey {
             case assignmentPolicies = "assignment_policies"
             case gradeRange = "grade_range"
+            case assignmentColors = "assignment_colors"
         }
         
-        public init(assignmentPolicies: [AssignmentPolicy], gradeRange: [String: Double]) {
+        public init(assignmentPolicies: [AssignmentPolicy], gradeRange: [String: Double], assignmentColors: [String]?) {
             self.assignmentPolicies = assignmentPolicies
             self.gradeRange = gradeRange
+            self.assignmentColors = assignmentColors
         }
     }
     
@@ -310,8 +309,7 @@ public extension DataLayer.CourseProgressResponse {
             gradingPolicy: gradingPolicy.domain,
             hasScheduledContent: hasScheduledContent ?? false,
             sectionScores: sectionScores.map { $0.domain },
-            verificationData: verificationData.domain,
-            assignmentColors: assignmentColors ?? []
+            verificationData: verificationData.domain
         )
     }
 }
@@ -351,7 +349,8 @@ public extension DataLayer.GradingPolicy {
     var domain: CourseProgressGradingPolicy {
         CourseProgressGradingPolicy(
             assignmentPolicies: assignmentPolicies.map { $0.domain },
-            gradeRange: gradeRange
+            gradeRange: gradeRange,
+            assignmentColors: assignmentColors ?? []
         )
     }
 }

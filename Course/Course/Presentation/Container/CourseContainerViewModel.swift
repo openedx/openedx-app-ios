@@ -1118,6 +1118,17 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             .type
     }
     
+    func assignmentTypeColor(for assignmentType: String) -> String? {
+        guard let progressDetails = courseProgressDetails else { return nil }
+        
+        if let index = progressDetails.gradingPolicy.assignmentPolicies
+            .firstIndex(where: { $0.type == assignmentType }) {
+            let colors = progressDetails.gradingPolicy.assignmentColors
+            return index < colors.count ? colors[index] : nil
+        }
+        return nil
+    }
+    
     func getSequentialShortLabel(for blockKey: String) -> String? {
         guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return nil }
         
