@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Core
 
 // MARK: - CourseProgressDetails
 public struct CourseProgressDetails: Sendable {
@@ -204,6 +205,7 @@ public struct CourseProgressSubsection: Sendable, Equatable {
     public let showGrades: Bool
     public let url: String
     public let shortLabel: String?
+    public let status: AssignmentCardStatus?
     
     public var progress: Double {
         guard numPointsPossible > 0 else { return 0.0 }
@@ -224,7 +226,8 @@ public struct CourseProgressSubsection: Sendable, Equatable {
         showCorrectness: String,
         showGrades: Bool,
         url: String,
-        shortLabel: String? = nil
+        shortLabel: String? = nil,
+        status: AssignmentCardStatus? = nil
     ) {
         self.assignmentType = assignmentType
         self.blockKey = blockKey
@@ -240,6 +243,7 @@ public struct CourseProgressSubsection: Sendable, Equatable {
         self.showGrades = showGrades
         self.url = url
         self.shortLabel = shortLabel
+        self.status = status
     }
 }
 

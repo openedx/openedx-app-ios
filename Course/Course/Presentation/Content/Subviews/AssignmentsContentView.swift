@@ -44,12 +44,12 @@ struct AssignmentsContentView: View {
     
     private func sectionProgress(_ subsections: [CourseProgressSubsection]) -> Double {
         guard !subsections.isEmpty else { return 0.0 }
-        let completed = subsections.filter { $0.numPointsEarned >= $0.numPointsPossible }.count
+        let completed = subsections.filter { $0.status == .completed }.count
         return Double(completed) / Double(subsections.count)
     }
     
     private func sectionProgressText(_ subsections: [CourseProgressSubsection]) -> String {
-        let completed = subsections.filter { $0.numPointsEarned >= $0.numPointsPossible }.count
+        let completed = subsections.filter { $0.status == .completed }.count
         return "\(completed)/\(subsections.count) Completed"
     }
     
@@ -103,7 +103,7 @@ struct AssignmentsContentView: View {
                                     .flatMap { $0.subsections }.count
                                 let completedAssignments = courseProgressDetails.sectionScores
                                     .flatMap { $0.subsections }
-                                    .filter { $0.numPointsEarned >= $0.numPointsPossible }.count
+                                    .filter { $0.status == .completed }.count
                                 
                                 CourseProgressView(
                                     progress: CourseProgress(

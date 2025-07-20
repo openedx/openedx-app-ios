@@ -24,13 +24,13 @@ struct ProgressAssignmentTypeSection: View {
         if isShowingCompletedAssignments {
             return subsections
         } else {
-            return subsections.filter { $0.numPointsEarned < $0.numPointsPossible }
+            return subsections.filter { $0.status != .completed }
         }
     }
     
     private var firstIncompleteIndex: Int {
         for (index, subsection) in filteredSubsections.enumerated()
-            where subsection.numPointsEarned < subsection.numPointsPossible {
+            where subsection.status != .completed {
             return index
         }
         return 0
@@ -38,7 +38,6 @@ struct ProgressAssignmentTypeSection: View {
     
     var body: some View {
         VStack(spacing: 16) {
-            // Горизонтальный скролл карточек
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(

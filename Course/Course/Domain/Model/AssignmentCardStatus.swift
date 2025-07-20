@@ -9,13 +9,11 @@ import SwiftUI
 import Core
 import Theme
 
-public enum AssignmentCardStatus {
+public enum AssignmentCardStatus: Sendable {
     case completed
     case incomplete
     case pastDue
     case notAvailable
-    case criticalDue
-    case special // для статуса с долларом
     
     public var backgroundColor: Color {
         switch self {
@@ -27,10 +25,6 @@ public enum AssignmentCardStatus {
             return Theme.Colors.warning.opacity(0.1)
         case .notAvailable:
             return Theme.Colors.textSecondary.opacity(0.1)
-        case .criticalDue:
-            return Theme.Colors.alert.opacity(0.1)
-        case .special:
-            return Theme.Colors.warning.opacity(0.1)
         }
     }
     
@@ -44,10 +38,6 @@ public enum AssignmentCardStatus {
             return Theme.Colors.warning
         case .notAvailable:
             return Theme.Colors.textSecondary
-        case .criticalDue:
-            return Theme.Colors.alert
-        case .special:
-            return Theme.Colors.warning
         }
     }
     
@@ -55,12 +45,10 @@ public enum AssignmentCardStatus {
         switch self {
         case .completed:
             return CoreAssets.checkmark.swiftUIImage
-        case .pastDue, .criticalDue:
+        case .pastDue:
             return CoreAssets.alarm.swiftUIImage
         case .notAvailable:
             return CoreAssets.lockIcon.swiftUIImage
-        case .special:
-            return CoreAssets.star.swiftUIImage // иконка для особого статуса
         case .incomplete:
             return nil
         }

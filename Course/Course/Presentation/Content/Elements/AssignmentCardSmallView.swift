@@ -27,44 +27,27 @@ struct AssignmentCardSmallView: View {
     
     private var assignmentShortName: String {
         if let shortLabel = subsection.shortLabel, !shortLabel.isEmpty {
-            return clearLabel(shortLabel)
+            return viewModel.clearShortLabel(shortLabel)
         }
         
         guard let assignmentType = subsection.assignmentType else {
-            return clearLabel(subsection.displayName)
+            return viewModel.clearShortLabel(subsection.displayName)
         }
 
-        return clearLabel(assignmentType)
-    }
-    
-    private func clearLabel(_ text: String) -> String {
-        let words = text.split(separator: " ")
-
-        guard let last = words.last, last.allSatisfy(\.isNumber) else {
-            let letters = text.filter { !$0.isNumber }
-            return String(letters.prefix(3)).uppercased()
-        }
-
-        let rightRaw = String(last)
-        let leftRaw  = words.dropLast().joined(separator: " ")
-        let leftShort = String(leftRaw.filter { !$0.isNumber }.prefix(3)).uppercased()
-        let rightClean = String(Int(rightRaw) ?? 0)
-
-        return leftShort + rightClean
+        return viewModel.clearShortLabel(assignmentType)
     }
     
     private var isPastDue: Bool {
-        guard let dueDate = viewModel.getAssignmentDeadline(for: subsection)?.date else { return false }
-        return dueDate < Date() && subsection.numPointsEarned < subsection.numPointsPossible
+        return subsection.status == .pastDue
     }
     
     private var strokeColor: Color {
         if isSelected {
             return Theme.Colors.accentColor
-        } else if subsection.numPointsEarned >= subsection.numPointsPossible && subsection.numPointsPossible > 0 {
+        } else if subsection.status == .completed {
             return Theme.Colors.success
         } else if isPastDue {
-            return Theme.Colors.alert
+            return Theme.Colors.warning
         } else {
             return Theme.Colors.assignmentColor
         }
@@ -73,6 +56,8 @@ struct AssignmentCardSmallView: View {
     private var completionBackgroundColor: Color {
         if subsection.numPointsEarned >= subsection.numPointsPossible && subsection.numPointsPossible > 0 {
             return Theme.Colors.success.opacity(0.1)
+        } else if isPastDue {
+            return Theme.Colors.warning.opacity(0.1)
         } else {
             return Theme.Colors.cardViewBackground
         }

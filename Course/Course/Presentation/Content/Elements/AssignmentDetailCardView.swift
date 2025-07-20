@@ -20,7 +20,7 @@ struct AssignmentDetailCardView: View, Equatable {
     let viewModel: CourseContainerViewModel
     
     private var status: AssignmentCardStatus {
-        return viewModel.getAssignmentStatus(for: subsection)
+        return subsection.status ?? viewModel.getAssignmentStatus(for: subsection)
     }
     
     private var statusText: String {
@@ -33,8 +33,6 @@ struct AssignmentDetailCardView: View, Equatable {
             return Theme.Colors.success.opacity(0.1)
         case .pastDue:
             return Theme.Colors.warning.opacity(0.1)
-        case .criticalDue:
-            return Theme.Colors.alert.opacity(0.1)
         case .notAvailable:
             return Theme.Colors.textSecondary.opacity(0.1)
         default:
@@ -48,8 +46,6 @@ struct AssignmentDetailCardView: View, Equatable {
             return Theme.Colors.success
         case .pastDue:
             return Theme.Colors.warning
-        case .criticalDue:
-            return Theme.Colors.alert
         case .notAvailable:
             return Theme.Colors.textSecondary
         default:
@@ -63,9 +59,6 @@ struct AssignmentDetailCardView: View, Equatable {
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(viewModel.getAssignmentWeekInfo(for: subsection))
-                        .font(Theme.Fonts.bodySmall)
-                        .foregroundColor(Theme.Colors.textPrimary)
                     
                     Text(viewModel.getAssignmentSequenceName(for: subsection))
                         .font(Theme.Fonts.bodyLarge)

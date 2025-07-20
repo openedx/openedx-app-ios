@@ -1119,7 +1119,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     func getSequentialShortLabel(for blockKey: String) -> String? {
-        guard let courseStructure = courseStructure else { return nil }
+        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return nil }
         
         for chapter in courseStructure.childs {
             for sequential in chapter.childs {
@@ -1131,9 +1131,31 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         return nil
     }
     
+    func getSequentialAssignmentStatus(for blockKey: String) -> AssignmentCardStatus? {
+        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return nil }
+        
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == blockKey || sequential.id == blockKey {
+                    if sequential.completion >= 1.0 {
+                        return .completed
+                    }
+                    
+                    if let due = sequential.due, due < Date() {
+                        return .pastDue
+                    }
+                    
+                    return .incomplete
+                }
+            }
+        }
+        return nil
+    }
+    
     func enrichSubsectionsWithShortLabels(_ subsections: [CourseProgressSubsection]) -> [CourseProgressSubsection] {
         return subsections.map { subsection in
             let shortLabel = getSequentialShortLabel(for: subsection.blockKey)
+            let status = getSequentialAssignmentStatus(for: subsection.blockKey) ?? getAssignmentStatus(for: subsection)
             return CourseProgressSubsection(
                 assignmentType: subsection.assignmentType,
                 blockKey: subsection.blockKey,
@@ -1148,7 +1170,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 showCorrectness: subsection.showCorrectness,
                 showGrades: subsection.showGrades,
                 url: subsection.url,
-                shortLabel: shortLabel
+                shortLabel: shortLabel,
+                status: status
             )
         }
     }
@@ -1203,16 +1226,18 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             return .completed
         }
         
-        // Check the deadlines
-        if let deadline = getAssignmentDeadline(for: subsection) {
-            let now = Date()
-            if deadline.date.isInPast {
-                // Check criticality (for example, more than a week expired)
-                let weekAgo = Calendar.current.date(byAdding: .weekOfYear, value: -1, to: now) ?? now
-                if deadline.date < weekAgo {
-                    return .criticalDue
-                } else {
-                    return .pastDue
+        // Check due date from CourseSequential in course structure
+        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else {
+            return .incomplete
+        }
+        
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == subsection.blockKey || sequential.id == subsection.blockKey {
+                    if let due = sequential.due, due < Date() {
+                        return .pastDue
+                    }
+                    break
                 }
             }
         }
@@ -1221,45 +1246,74 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     func getDaysUntilDeadline(for subsection: CourseProgressSubsection) -> Int? {
-        guard let deadline = getAssignmentDeadline(for: subsection) else { return nil }
+        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return nil }
         
-        let calendar = Calendar.current
-        let now = Date()
-        let components = calendar.dateComponents([.day], from: now, to: deadline.date)
-        return components.day
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == subsection.blockKey || sequential.id == subsection.blockKey {
+                    if let due = sequential.due {
+                        let calendar = Calendar.current
+                        let now = Date()
+                        let components = calendar.dateComponents([.day], from: now, to: due)
+                        return components.day
+                    }
+                    break
+                }
+            }
+        }
+        return nil
+    }
+    
+    func getAssignmentDueDate(for subsection: CourseProgressSubsection) -> Date? {
+        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return nil }
+        
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == subsection.blockKey || sequential.id == subsection.blockKey {
+                    return sequential.due
+                }
+            }
+        }
+        return nil
+    }
+    
+    func clearShortLabel(_ text: String) -> String {
+        let words = text.split(separator: " ")
+
+        guard let last = words.last, last.allSatisfy(\.isNumber) else {
+            let letters = text.filter { !$0.isNumber }
+            return String(letters.prefix(3)).uppercased()
+        }
+
+        let rightRaw = String(last)
+        let leftRaw  = words.dropLast().joined(separator: " ")
+        let leftShort = String(leftRaw.filter { !$0.isNumber }.prefix(3)).uppercased()
+        let rightClean = String(Int(rightRaw) ?? 0)
+
+        return leftShort + rightClean
     }
     
     func getAssignmentStatusText(for subsection: CourseProgressSubsection) -> String {
         let status = getAssignmentStatus(for: subsection)
         
+        let shortLabel = clearShortLabel(subsection.shortLabel ?? "")
+        
+        //swiftlint: disable line_length
         switch status {
         case .completed:
-            return "Complete - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+            return "\(shortLabel) Complete - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
         case .pastDue:
-            return "Past Due - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
-        case .criticalDue:
-            return "Upload Assignment - Past Due"
+            return "\(shortLabel) Past Due - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
         case .notAvailable:
-            return "Not Yet Available"
+            return "\(shortLabel) Not Yet Available"
         case .incomplete:
-            if let daysUntil = getDaysUntilDeadline(for: subsection) {
-                if daysUntil >= 0 {
-                    return "Due in \(daysUntil) day\(daysUntil == 1 ? "" : "s")"
-                } else {
-                    return "Past Due - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
-                }
+            if let dueDate = getAssignmentDueDate(for: subsection) {
+                return "\(shortLabel) \(dueDate.timeAgoDisplay(dueIn: true))"
             } else {
-                return "In Progress - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+                return "\(shortLabel) In Progress - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
             }
-        case .special:
-            return "Special Assignment"
+            //swiftlint: enable line_length
         }
-    }
-    
-    func getAssignmentWeekInfo(for subsection: CourseProgressSubsection) -> String {
-        // temporarily return the static value
-        // Toddoo: Extract a week from the structure of the course or other data
-        return "Week 1"
     }
     
     func getAssignmentSequenceName(for subsection: CourseProgressSubsection) -> String {
