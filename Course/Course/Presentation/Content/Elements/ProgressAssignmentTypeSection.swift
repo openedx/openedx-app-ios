@@ -16,9 +16,9 @@ struct ProgressAssignmentTypeSection: View {
     let sectionName: String
     let viewModel: CourseContainerViewModel
     let proxy: GeometryProxy
-    @Binding var isShowingCompletedAssignments: Bool
     
     @State private var selectedIndex: Int = 0
+    @State private var isShowingCompletedAssignments: Bool = false
     
     private var filteredSubsections: [CourseProgressSubsection] {
         if isShowingCompletedAssignments {
@@ -36,8 +36,30 @@ struct ProgressAssignmentTypeSection: View {
         return 0
     }
     
+    private var completedCount: Int {
+        return subsections.filter { $0.status == .completed }.count
+    }
+    
+    private var totalCount: Int {
+        return subsections.count
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
+            // Section Progress with Toggle
+            CourseProgressView(
+                progress: CourseProgress(
+                    totalAssignmentsCount: totalCount,
+                    assignmentsCompleted: completedCount
+                ),
+                showCompletedToggle: true,
+                isShowingCompleted: isShowingCompletedAssignments,
+                onToggleCompleted: {
+                    isShowingCompletedAssignments.toggle()
+                }
+            )
+            .padding(.horizontal, 24)
+            
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 12) {
                     ForEach(
@@ -82,6 +104,7 @@ struct ProgressAssignmentTypeSection: View {
         .onChange(of: isShowingCompletedAssignments) { _ in
             selectedIndex = firstIncompleteIndex
         }
+        .animation(.default, value: isShowingCompletedAssignments)
     }
 }
 
@@ -141,8 +164,7 @@ struct ProgressAssignmentTypeSection: View {
             ],
             sectionName: "Labs",
             viewModel: CourseContainerViewModel.mock,
-            proxy: proxy,
-            isShowingCompletedAssignments: .constant(false)
+            proxy: proxy
         )
     }
     .padding()

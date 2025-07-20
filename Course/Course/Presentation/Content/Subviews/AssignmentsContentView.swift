@@ -19,7 +19,6 @@ struct AssignmentsContentView: View {
     private let dateTabIndex: Int
     
     private let proxy: GeometryProxy
-    @State private var isShowingCompletedAssignments: Bool = false
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
@@ -41,18 +40,7 @@ struct AssignmentsContentView: View {
             )
         }
     }
-    
-    private func sectionProgress(_ subsections: [CourseProgressSubsection]) -> Double {
-        guard !subsections.isEmpty else { return 0.0 }
-        let completed = subsections.filter { $0.status == .completed }.count
-        return Double(completed) / Double(subsections.count)
-    }
-    
-    private func sectionProgressText(_ subsections: [CourseProgressSubsection]) -> String {
-        let completed = subsections.filter { $0.status == .completed }.count
-        return "\(completed)/\(subsections.count) Completed"
-    }
-    
+        
     init(
         viewModel: CourseContainerViewModel,
         proxy: GeometryProxy,
@@ -98,10 +86,10 @@ struct AssignmentsContentView: View {
                             Spacer(minLength: 16)
                             
                             // MARK: Course Progress (only assignments)
-                            if let courseProgressDetails = viewModel.courseProgressDetails {
-                                let totalAssignments = courseProgressDetails.sectionScores
+                            if !assignmentSections.isEmpty {
+                                let totalAssignments = assignmentSections
                                     .flatMap { $0.subsections }.count
-                                let completedAssignments = courseProgressDetails.sectionScores
+                                let completedAssignments = assignmentSections
                                     .flatMap { $0.subsections }
                                     .filter { $0.status == .completed }.count
                                 
@@ -109,14 +97,9 @@ struct AssignmentsContentView: View {
                                     progress: CourseProgress(
                                         totalAssignmentsCount: totalAssignments,
                                         assignmentsCompleted: completedAssignments
-                                    ),
-                                    showCompletedToggle: true,
-                                    isShowingCompleted: isShowingCompletedAssignments,
-                                    onToggleCompleted: {
-                                        isShowingCompletedAssignments.toggle()
-                                    }
+                                    )
                                 )
-                                .padding(.horizontal, isTablet ? 24 : 16)
+                                .padding(.horizontal, 24)
                                 .accessibilityIdentifier("assignments_overall_progress")
                             }
                             
@@ -161,35 +144,17 @@ struct AssignmentsContentView: View {
                                                         )
                                                 }
                                                 .padding(.horizontal, isTablet ? 32 : 24)
-                                                
-                                                // Progress Bar
-                                                VStack(alignment: .leading, spacing: 8) {
-                                                    ProgressView(value: sectionProgress(section.subsections))
-                                                        .progressViewStyle(
-                                                            LinearProgressViewStyle(tint: Theme.Colors.success)
-                                                        )
-                                                        .frame(height: 8)
-                                                      .accessibilityIdentifier("section_progress_bar_\(section.weight)")
-                                                    
-                                                Text(sectionProgressText(section.subsections))
-                                                        .font(Theme.Fonts.bodySmall)
-                                                        .foregroundColor(Theme.Colors.textPrimary)
-                                                    .accessibilityIdentifier("section_progress_text_\(section.weight)")
-                                                }
-                                                .padding(.horizontal, isTablet ? 32 : 24)
-                                                
+                                                                                                
                                                 // Assignment Cards for this section
                                                 ProgressAssignmentTypeSection(
                                                     subsections: section.subsections,
                                                     sectionName: section.key,
                                                     viewModel: viewModel,
-                                                    proxy: proxy,
-                                                    isShowingCompletedAssignments: $isShowingCompletedAssignments
+                                                    proxy: proxy
                                                 )
                                             }
                                         }
                                     }
-                                    .animation(.default, value: isShowingCompletedAssignments)
                                 }
                             }
                         }
