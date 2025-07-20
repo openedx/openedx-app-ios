@@ -1298,21 +1298,22 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         
         let shortLabel = clearShortLabel(subsection.shortLabel ?? "")
         
-        //swiftlint: disable line_length
         switch status {
         case .completed:
-            return "\(shortLabel) Complete - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+            return CourseLocalization.AssignmentStatus
+                .complete(shortLabel, Int(subsection.numPointsEarned), Int(subsection.numPointsPossible))
         case .pastDue:
-            return "\(shortLabel) Past Due - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+            return CourseLocalization.AssignmentStatus
+                .pastDue(shortLabel, Int(subsection.numPointsEarned), Int(subsection.numPointsPossible))
         case .notAvailable:
-            return "\(shortLabel) Not Yet Available"
+            return CourseLocalization.AssignmentStatus.notYetAvailable(shortLabel)
         case .incomplete:
             if let dueDate = getAssignmentDueDate(for: subsection) {
                 return "\(shortLabel) \(dueDate.timeAgoDisplay(dueIn: true))"
             } else {
-                return "\(shortLabel) In Progress - \(Int(subsection.numPointsEarned))/\(Int(subsection.numPointsPossible)) points"
+                return CourseLocalization.AssignmentStatus
+                    .inProgress(shortLabel, Int(subsection.numPointsEarned), Int(subsection.numPointsPossible))
             }
-            //swiftlint: enable line_length
         }
     }
     

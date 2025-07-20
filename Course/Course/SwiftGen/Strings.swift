@@ -38,6 +38,28 @@ public enum CourseLocalization {
     /// Warning
     public static let warning = CourseLocalization.tr("Localizable", "ALERT.WARNING", fallback: "Warning")
   }
+  public enum AssignmentStatus {
+    /// %@ Complete - %@/%@ points
+    public static func complete(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.COMPLETE", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ Complete - %@/%@ points")
+    }
+    /// %@ %@
+    public static func dueWithDate(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.DUE_WITH_DATE", String(describing: p1), String(describing: p2), fallback: "%@ %@")
+    }
+    /// %@ In Progress - %@/%@ points
+    public static func inProgress(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.IN_PROGRESS", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ In Progress - %@/%@ points")
+    }
+    /// %@ Not Yet Available
+    public static func notYetAvailable(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.NOT_YET_AVAILABLE", String(describing: p1), fallback: "%@ Not Yet Available")
+    }
+    /// %@ Past Due - %@/%@ points
+    public static func pastDue(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.PAST_DUE", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ Past Due - %@/%@ points")
+    }
+  }
   public enum CalendarSyncStatus {
     /// Calendar Sync Failed
     public static let failed = CourseLocalization.tr("Localizable", "CALENDAR_SYNC_STATUS.FAILED", fallback: "Calendar Sync Failed")

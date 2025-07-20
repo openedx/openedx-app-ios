@@ -169,3 +169,10 @@
 "CALENDAR_SYNC_STATUS.SYNCED" = "Synced to Calendar";
 "CALENDAR_SYNC_STATUS.FAILED" = "Calendar Sync Failed";
 "CALENDAR_SYNC_STATUS.OFFLINE" = "Offline";
+
+// MARK: - Assignment Status
+"ASSIGNMENT_STATUS.COMPLETE" = "%@ Complete - %@/%@ points";
+"ASSIGNMENT_STATUS.PAST_DUE" = "%@ Past Due - %@/%@ points";
+"ASSIGNMENT_STATUS.NOT_YET_AVAILABLE" = "%@ Not Yet Available";
+"ASSIGNMENT_STATUS.IN_PROGRESS" = "%@ In Progress - %@/%@ points";
+"ASSIGNMENT_STATUS.DUE_WITH_DATE" = "%@ %@";
