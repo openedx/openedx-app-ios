@@ -39,6 +39,7 @@ struct OverallGradeView: View {
                     .foregroundColor(Theme.Colors.textPrimary)
                     .lineLimit(nil)
             }
+            .accessibilityElement(children: .combine)
             
             // Current Grade Label
             HStack(spacing: 4) {
@@ -50,6 +51,9 @@ struct OverallGradeView: View {
                     .font(Theme.Fonts.bodyMedium)
                     .foregroundColor(Theme.Colors.accentColor)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(CourseLocalization.Accessibility.currentGrade("\(currentGradePercent)"))
+            .accessibilityAddTraits(.updatesFrequently)
             
             // Segmented Progress Bar
             SegmentedProgressView(
@@ -76,6 +80,9 @@ struct OverallGradeView: View {
                     .stroke(Theme.Colors.warning, lineWidth: 1)
             )
             .cornerRadius(8)
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(CourseLocalization.Accessibility.gradeRequirementWarning("\(requiredGradePercent)"))
+            .accessibilityAddTraits(.isStaticText)
         }
     }
 }

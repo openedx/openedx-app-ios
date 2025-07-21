@@ -73,7 +73,7 @@ struct CourseProgressScreenView: View {
                         }
                     }
                 }
-                .accessibilityAction {}
+                .accessibilityElement(children: .contain)
                 .frameLimit(width: proxy.size.width)
                 
                 // MARK: - Offline mode SnackBar
@@ -134,6 +134,7 @@ struct CourseProgressScreenView: View {
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .lineLimit(nil)
                         }
+                        .accessibilityElement(children: .combine)
                         
                         Spacer()
                         
@@ -147,6 +148,7 @@ struct CourseProgressScreenView: View {
                                 "\(Int(ceil(viewModel.overallProgressPercentage * 100)))"
                             )
                         )
+                        .accessibilityAddTraits(.updatesFrequently)
                     }
                 }
                 .padding(.top, 16)
@@ -181,6 +183,8 @@ struct CourseProgressScreenView: View {
                     .padding(32)
                     .frame(maxWidth: .infinity)
                     .accessibilityElement(children: .combine)
+                    .accessibilityLabel(CourseLocalization.CourseContainer.Progress.noGradedAssignments)
+                    .accessibilityHint(CourseLocalization.Accessibility.noGradedAssignmentsHint)
                 }
                 
             } else if viewModel.isProgressEmpty {
@@ -203,6 +207,8 @@ struct CourseProgressScreenView: View {
                 .padding(32)
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
+                .accessibilityLabel(CourseLocalization.CourseContainer.Progress.noProgressAvailable)
+                .accessibilityHint(CourseLocalization.Accessibility.noProgressHint)
             }
         }
     }

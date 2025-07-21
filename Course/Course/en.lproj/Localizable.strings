@@ -95,6 +95,13 @@
 "ACCESSIBILITY.PROGRESS_PERCENTAGE_COMPLETED" = "%@ percent completed";
 "ACCESSIBILITY.REQUIRED_GRADE_TO_PASS" = "%@ percent required to pass";
 "ACCESSIBILITY.ASSIGNMENT_PROGRESS_DETAILS" = "%@, %@ of %@ complete, %@ out of %@ percent of grade";
+"ACCESSIBILITY.CURRENT_GRADE" = "Current grade: %@ percent";
+"ACCESSIBILITY.GRADE_REQUIREMENT_WARNING" = "Grade requirement warning: %@ percent required to pass";
+"ACCESSIBILITY.PROGRESS_VISUALIZATION" = "Progress visualization showing %@ assignment categories";
+"ACCESSIBILITY.OVERALL_PROGRESS_VALUE" = "Overall progress: %@ percent";
+"ACCESSIBILITY.PROGRESS_HINT" = "Shows progress breakdown by assignment type";
+"ACCESSIBILITY.NO_GRADED_ASSIGNMENTS_HINT" = "This course has no graded assignments to display";
+"ACCESSIBILITY.NO_PROGRESS_HINT" = "Complete course activities to view your progress here";
 
 "DOWNLOAD.DOWNLOADS" = "Downloads";
 "DOWNLOAD.ALL_VIDEOS_DOWNLOADED" = "All videos downloaded";

@@ -27,20 +27,42 @@ public enum CourseLocalization {
     }
     /// Cancel download
     public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
+    /// Current grade: %@ percent
+    public static func currentGrade(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.CURRENT_GRADE", String(describing: p1), fallback: "Current grade: %@ percent")
+    }
     /// Delete download
     public static let deleteDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DELETE_DOWNLOAD", fallback: "Delete download")
     /// Download
     public static let download = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DOWNLOAD", fallback: "Download")
     /// Grade details section
     public static let gradeDetailsSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.GRADE_DETAILS_SECTION", fallback: "Grade details section")
+    /// Grade requirement warning: %@ percent required to pass
+    public static func gradeRequirementWarning(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.GRADE_REQUIREMENT_WARNING", String(describing: p1), fallback: "Grade requirement warning: %@ percent required to pass")
+    }
+    /// This course has no graded assignments to display
+    public static let noGradedAssignmentsHint = CourseLocalization.tr("Localizable", "ACCESSIBILITY.NO_GRADED_ASSIGNMENTS_HINT", fallback: "This course has no graded assignments to display")
+    /// Complete course activities to view your progress here
+    public static let noProgressHint = CourseLocalization.tr("Localizable", "ACCESSIBILITY.NO_PROGRESS_HINT", fallback: "Complete course activities to view your progress here")
     /// Overall grade section
     public static let overallGradeSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.OVERALL_GRADE_SECTION", fallback: "Overall grade section")
+    /// Overall progress: %@ percent
+    public static func overallProgressValue(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.OVERALL_PROGRESS_VALUE", String(describing: p1), fallback: "Overall progress: %@ percent")
+    }
+    /// Shows progress breakdown by assignment type
+    public static let progressHint = CourseLocalization.tr("Localizable", "ACCESSIBILITY.PROGRESS_HINT", fallback: "Shows progress breakdown by assignment type")
     /// %@ percent completed
     public static func progressPercentageCompleted(_ p1: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.PROGRESS_PERCENTAGE_COMPLETED", String(describing: p1), fallback: "%@ percent completed")
     }
     /// Course completion progress ring
     public static let progressRing = CourseLocalization.tr("Localizable", "ACCESSIBILITY.PROGRESS_RING", fallback: "Course completion progress ring")
+    /// Progress visualization showing %@ assignment categories
+    public static func progressVisualization(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.PROGRESS_VISUALIZATION", String(describing: p1), fallback: "Progress visualization showing %@ assignment categories")
+    }
     /// Required grade to pass indicator
     public static let requiredGradeIndicator = CourseLocalization.tr("Localizable", "ACCESSIBILITY.REQUIRED_GRADE_INDICATOR", fallback: "Required grade to pass indicator")
     /// %@ percent required to pass
