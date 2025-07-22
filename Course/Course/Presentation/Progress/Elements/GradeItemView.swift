@@ -25,7 +25,7 @@ struct GradeItemView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(assignmentPolicy.shortLabel)
+            Text(assignmentPolicy.type)
                 .font(Theme.Fonts.labelLarge)
                 .foregroundColor(Theme.Colors.textPrimary)
             
