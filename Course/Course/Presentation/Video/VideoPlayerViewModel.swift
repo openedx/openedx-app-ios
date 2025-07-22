@@ -16,6 +16,7 @@ public class VideoPlayerViewModel: ObservableObject {
     @Published var pause: Bool = false
     @Published var currentTime: Double = 0
     @Published var isLoading: Bool = true
+    @Published var isLocalProgressApplied: Bool = false
 
     public let connectivity: ConnectivityProtocol
 
@@ -82,6 +83,7 @@ public class VideoPlayerViewModel: ObservableObject {
         playerHolder.getTimePublisher()
             .sink {[weak self] time in
                 self?.currentTime = time
+                self?.loadAndApplyLocalProgress()
             }
             .store(in: &subscription)
         playerHolder.getErrorPublisher()
@@ -98,7 +100,6 @@ public class VideoPlayerViewModel: ObservableObject {
                 guard isReady else { return }
                 self?.isLoading = false
                 self?.trackVideoLoaded()
-                self?.loadAndApplyLocalProgress()
             }
             .store(in: &subscription)
         
@@ -266,7 +267,6 @@ public class VideoPlayerViewModel: ObservableObject {
         Task {
             let time = currentTime
             let duration = playerHolder.duration
-            let blockID = playerHolder.blockID
                         
             if duration > 0 && time > 0 {
                 let progress = min(time / duration, 1.0)
@@ -276,23 +276,24 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     private func loadAndApplyLocalProgress() {
+        guard playerHolder.duration != 0, !isLocalProgressApplied else { return }
         Task {
-            let blockID = playerHolder.blockID
             let duration = playerHolder.duration
             
             if let localProgress = await playerHolder.getService().loadVideoProgress() {
                 
                 if localProgress > 0 && duration > 0 {
                     let timeToSeek = localProgress * duration
-                    
                     await MainActor.run {
                         // Seek to the saved position
                         if let playerController = playerHolder.playerController {
-                            let seekDate = Date(timeIntervalSince1970: timeToSeek)
+                            let seekDate = Date(timeIntervalSince1970: Date().timeIntervalSince1970 -
+                               Date().secondsSinceMidnight() + timeToSeek)
                             playerController.seekTo(to: seekDate)
                         }
                     }
                 }
+                isLocalProgressApplied = true
             }
         }
     }
