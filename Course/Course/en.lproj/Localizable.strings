@@ -102,6 +102,12 @@
 "ACCESSIBILITY.PROGRESS_HINT" = "Shows progress breakdown by assignment type";
 "ACCESSIBILITY.NO_GRADED_ASSIGNMENTS_HINT" = "This course has no graded assignments to display";
 "ACCESSIBILITY.NO_PROGRESS_HINT" = "Complete course activities to view your progress here";
+"ACCESSIBILITY.ASSIGNMENT_TYPE_HEADER" = "Assignment type column header";
+"ACCESSIBILITY.CURRENT_MAX_PERCENT_HEADER" = "Current and maximum percent column header";
+"ACCESSIBILITY.WEIGHT_CONTRIBUTION" = "Weight: %@ percent of grade";
+"ACCESSIBILITY.ASSIGNMENT_COMPLETION" = "%@ of %@ complete";
+"ACCESSIBILITY.ASSIGNMENT_GRADE_EARNED" = "Current grade: %@ out of %@ percent";
+"ACCESSIBILITY.ASSIGNMENT_FULL_DETAILS" = "%@ of %@ complete. Weight: %@ percent of grade. Current grade: %@ out of %@ percent";
 
 "DOWNLOAD.DOWNLOADS" = "Downloads";
 "DOWNLOAD.ALL_VIDEOS_DOWNLOADED" = "All videos downloaded";

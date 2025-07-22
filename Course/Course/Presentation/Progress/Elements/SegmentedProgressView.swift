@@ -88,6 +88,7 @@ struct SegmentedProgressView: View {
         .accessibilityLabel(CourseLocalization.Accessibility.progressVisualization("\(segments.count)"))
         .accessibilityValue(CourseLocalization.Accessibility.overallProgressValue("\(Int(totalProgress * 100))"))
         .accessibilityHint(CourseLocalization.Accessibility.progressHint)
+        .accessibilityAddTraits(.updatesFrequently)
     }
 }
 

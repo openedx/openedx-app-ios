@@ -28,12 +28,15 @@ struct GradeItemView: View {
             Text(assignmentPolicy.type)
                 .font(Theme.Fonts.labelLarge)
                 .foregroundColor(Theme.Colors.textPrimary)
+                .accessibilityLabel(assignmentPolicy.type)
+                .accessibilityAddTraits(.isHeader)
             
             HStack(spacing: 8) {
                 // Color indicator
                 RoundedRectangle(cornerRadius: 4)
                     .fill(color)
                     .frame(width: 7)
+                    .accessibilityHidden(true)
                 
                 // Content
                 VStack(alignment: .leading, spacing: 8) {
@@ -48,6 +51,12 @@ struct GradeItemView: View {
                                     .font(Theme.Fonts.bodySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                             }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel(
+                                CourseLocalization.Accessibility.assignmentCompletion(
+                                    "\(progressData.completed)", "\(progressData.total)"
+                                )
+                            )
                             
                             HStack(spacing: 4) {
                                 Text("\(maxPercent)%")
@@ -58,6 +67,8 @@ struct GradeItemView: View {
                                     .font(Theme.Fonts.bodySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                             }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel(CourseLocalization.Accessibility.weightContribution("\(maxPercent)"))
                         }
                         
                         Spacer()
@@ -67,21 +78,26 @@ struct GradeItemView: View {
                             .font(Theme.Fonts.bodyLarge)
                             .fontWeight(.bold)
                             .foregroundColor(Theme.Colors.textPrimary)
+                            .accessibilityLabel(CourseLocalization.Accessibility.assignmentGradeEarned(
+                                "\(earnedPercent)", "\(maxPercent)")
+                            )
                     }
                 }
             }
             .fixedSize(horizontal: false, vertical: true)
             .padding(.vertical, 8)
         }
-        .accessibilityElement(children: .combine)
-        .accessibilityLabel(CourseLocalization.Accessibility.assignmentItem)
-        .accessibilityValue(CourseLocalization.Accessibility.assignmentProgressDetails(
-            assignmentPolicy.shortLabel,
+        
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(assignmentPolicy.type)
+        .accessibilityValue(CourseLocalization.Accessibility.assignmentFullDetails(
             "\(progressData.completed)",
             "\(progressData.total)",
+            "\(maxPercent)",
             "\(earnedPercent)",
             "\(maxPercent)"
         ))
+        .accessibilityAddTraits(.updatesFrequently)
     }
 }
 

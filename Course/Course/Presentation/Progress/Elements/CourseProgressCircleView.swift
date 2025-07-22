@@ -48,7 +48,6 @@ struct CourseProgressCircleView: View {
                 )
                 .frame(width: size, height: size)
                 .rotationEffect(.degrees(-90))
-                .animation(.easeInOut(duration: 1.0), value: progressPercentage)
             
             // Progress text
             VStack(spacing: 2) {

@@ -19,18 +19,34 @@ public enum CourseLocalization {
     return CourseLocalization.tr("Localizable", "past_due", p1, fallback: "Plural format key: \"%#@past_due@\"")
   }
   public enum Accessibility {
+    /// %@ of %@ complete
+    public static func assignmentCompletion(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_COMPLETION", String(describing: p1), String(describing: p2), fallback: "%@ of %@ complete")
+    }
+    /// %@ of %@ complete. Weight: %@ percent of grade. Current grade: %@ out of %@ percent
+    public static func assignmentFullDetails(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_FULL_DETAILS", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), fallback: "%@ of %@ complete. Weight: %@ percent of grade. Current grade: %@ out of %@ percent")
+    }
+    /// Current grade: %@ out of %@ percent
+    public static func assignmentGradeEarned(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_GRADE_EARNED", String(describing: p1), String(describing: p2), fallback: "Current grade: %@ out of %@ percent")
+    }
     /// Assignment item
     public static let assignmentItem = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_ITEM", fallback: "Assignment item")
     /// %@, %@ of %@ complete, %@ out of %@ percent of grade
     public static func assignmentProgressDetails(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_PROGRESS_DETAILS", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), fallback: "%@, %@ of %@ complete, %@ out of %@ percent of grade")
     }
+    /// Assignment type column header
+    public static let assignmentTypeHeader = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_TYPE_HEADER", fallback: "Assignment type column header")
     /// Cancel download
     public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
     /// Current grade: %@ percent
     public static func currentGrade(_ p1: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.CURRENT_GRADE", String(describing: p1), fallback: "Current grade: %@ percent")
     }
+    /// Current and maximum percent column header
+    public static let currentMaxPercentHeader = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CURRENT_MAX_PERCENT_HEADER", fallback: "Current and maximum percent column header")
     /// Delete download
     public static let deleteDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DELETE_DOWNLOAD", fallback: "Delete download")
     /// Download
@@ -68,6 +84,10 @@ public enum CourseLocalization {
     /// %@ percent required to pass
     public static func requiredGradeToPass(_ p1: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.REQUIRED_GRADE_TO_PASS", String(describing: p1), fallback: "%@ percent required to pass")
+    }
+    /// Weight: %@ percent of grade
+    public static func weightContribution(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.WEIGHT_CONTRIBUTION", String(describing: p1), fallback: "Weight: %@ percent of grade")
     }
   }
   public enum Alert {

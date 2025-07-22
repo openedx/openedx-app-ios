@@ -26,13 +26,23 @@ struct GradeDetailsView: View {
                 Text(CourseLocalization.CourseContainer.Progress.assignmentType)
                     .font(Theme.Fonts.bodySmall)
                     .foregroundColor(Theme.Colors.textPrimary)
+                    .accessibilityLabel(CourseLocalization.Accessibility.assignmentTypeHeader)
+                    .accessibilityAddTraits(.isHeader)
                 
                 Spacer()
                 
                 Text(CourseLocalization.CourseContainer.Progress.currentMaxPercent)
                     .font(Theme.Fonts.bodySmall)
                     .foregroundColor(Theme.Colors.textPrimary)
+                    .accessibilityLabel(CourseLocalization.Accessibility.currentMaxPercentHeader)
+                    .accessibilityAddTraits(.isHeader)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(
+                CourseLocalization.Accessibility.assignmentTypeHeader
+                + ", "
+                + CourseLocalization.Accessibility.currentMaxPercentHeader
+            )
             
             // Assignment Items
             VStack(spacing: 0) {
@@ -65,6 +75,11 @@ struct GradeDetailsView: View {
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.accentColor)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(
+                CourseLocalization.Accessibility.currentGrade("\(Int(viewModel.gradePercentage * 100))")
+            )
+            .accessibilityAddTraits(.updatesFrequently)
         }
     }
 }

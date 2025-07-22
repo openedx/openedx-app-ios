@@ -163,10 +163,12 @@ struct CourseProgressScreenView: View {
                         assignmentProgressData: viewModel.getAllAssignmentProgressData(),
                         assignmentColors: viewModel.courseProgress?.gradingPolicy.assignmentColors ?? []
                     )
+                    .accessibilityElement(children: .contain)
                     .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
                     
                     // Grade Details Section
                     GradeDetailsView(viewModel: viewModel)
+                        .accessibilityElement(children: .contain)
                         .accessibilityLabel(CourseLocalization.Accessibility.gradeDetailsSection)
                 } else {
                     // No graded assignments message

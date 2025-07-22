@@ -40,6 +40,8 @@ struct OverallGradeView: View {
                     .lineLimit(nil)
             }
             .accessibilityElement(children: .combine)
+            .accessibilityLabel(CourseLocalization.CourseContainer.Progress.overallGrade)
+            .accessibilityValue(CourseLocalization.CourseContainer.Progress.overallGradeDescription)
             
             // Current Grade Label
             HStack(spacing: 4) {
