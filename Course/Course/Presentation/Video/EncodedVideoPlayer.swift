@@ -113,7 +113,6 @@ public struct EncodedVideoPlayer: View {
         .padding(.horizontal, 8)
         .statusBarHidden(false)
         .onDisappear {
-            viewModel.saveCurrentProgress()
             viewModel.controller.player?.allowsExternalPlayback = false
         }
         .onAppear {

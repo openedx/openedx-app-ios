@@ -72,6 +72,7 @@ public class VideoPlayerViewModel: ObservableObject {
                 }
             case .kill:
                 if self?.playerHolder.isPlayingInPip != true {
+                    self?.saveCurrentProgress(duration: self?.playerHolder.duration ?? .nan)
                     self?.playerHolder.playerController?.stop()
                 }
             case .none:
@@ -262,11 +263,11 @@ public class VideoPlayerViewModel: ObservableObject {
         }
     }
     
-    public func saveCurrentProgress() {
+    public func saveCurrentProgress(duration: TimeInterval) {
         
         Task {
             let time = currentTime
-            let duration = playerHolder.duration
+//            let duration = playerHolder.duration
                         
             if duration > 0 && time > 0 {
                 let progress = min(time / duration, 1.0)
@@ -276,7 +277,7 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     private func loadAndApplyLocalProgress() {
-        guard playerHolder.duration != 0, !isLocalProgressApplied else { return }
+        guard playerHolder.duration != 0, !playerHolder.duration.isNaN, !isLocalProgressApplied else { return }
         Task {
             let duration = playerHolder.duration
             
