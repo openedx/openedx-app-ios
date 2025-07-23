@@ -1226,34 +1226,49 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
-    func getAssignmentStatus(for subsection: CourseProgressSubsection) -> AssignmentCardStatus {
-        // Check accessibility
-        if !subsection.learnerHasAccess {
-            return .notAvailable
-        }
-        
-        // Check the completeness
-        if subsection.numPointsEarned >= subsection.numPointsPossible {
-            return .completed
-        }
-        
-        // Check due date from CourseSequential in course structure
-        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else {
-            return .incomplete
-        }
-        
-        for chapter in courseStructure.childs {
-            for sequential in chapter.childs {
-                if sequential.blockId == subsection.blockKey || sequential.id == subsection.blockKey {
-                    if let due = sequential.due, due < Date() {
-                        return .pastDue
-                    }
-                    break
-                }
-            }
-        }
-        
-        return .incomplete
+    func getAssignmentStatus(
+      for subsection: CourseProgressSubsection
+    ) -> AssignmentCardStatus {
+      // 1. No access
+      guard subsection.learnerHasAccess else {
+        return .notAvailable
+      }
+
+      // 2. Completed
+      if subsection.numPointsEarned >= subsection.numPointsPossible {
+        return .completed
+      }
+
+      // 3. Past due?
+      if isPastDue(subsection) {
+        return .pastDue
+      }
+
+      // 4. All other cases
+      return .incomplete
+    }
+
+    // Helper function to check if past due:
+    private func isPastDue(
+      _ subsection: CourseProgressSubsection
+    ) -> Bool {
+      guard
+        let structure = courseAssignmentsStructure ?? courseStructure
+      else {
+        return false
+      }
+
+      // Flatten all sequentials into one array and find by key
+      let allSequentials = structure.childs.flatMap { $0.childs }
+      if let seq = allSequentials.first(
+        where: { $0.blockId == subsection.blockKey || $0.id == subsection.blockKey }
+      ),
+         let due = seq.due,
+         due < Date() {
+        return true
+      }
+
+      return false
     }
     
     func getDaysUntilDeadline(for subsection: CourseProgressSubsection) -> Int? {

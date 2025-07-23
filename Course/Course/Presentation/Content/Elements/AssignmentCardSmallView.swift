@@ -38,7 +38,7 @@ struct AssignmentCardSmallView: View {
     }
     
     private var isPastDue: Bool {
-        return subsection.status == .pastDue
+        return status == .pastDue
     }
     
     private var strokeColor: Color {

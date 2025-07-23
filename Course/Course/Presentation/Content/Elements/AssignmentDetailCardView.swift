@@ -20,7 +20,7 @@ struct AssignmentDetailCardView: View, Equatable {
     let viewModel: CourseContainerViewModel
     
     private var status: AssignmentCardStatus {
-        return subsection.status ?? viewModel.getAssignmentStatus(for: subsection)
+        return viewModel.getAssignmentStatus(for: subsection)
     }
     
     private var statusText: String {
