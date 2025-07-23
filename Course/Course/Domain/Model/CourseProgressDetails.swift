@@ -80,7 +80,7 @@ public struct CourseProgressDetails: Sendable {
         // If no problem scores available, fall back to subsection-based counting
         if totalProblems == 0 {
             completedProblems = assignments.filter { $0.numPointsEarned > 0 }.count
-            totalProblems = policy.numTotal
+            totalProblems = assignments.count > 0 ? policy.numTotal : 0
         }
         
         let earnedPoints = assignments.reduce(0.0) { $0 + $1.numPointsEarned }
