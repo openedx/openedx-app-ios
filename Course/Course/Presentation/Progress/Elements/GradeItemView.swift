@@ -44,7 +44,7 @@ struct GradeItemView: View {
                         // Assignment type name
                         VStack(alignment: .leading, spacing: 4) {
                             HStack(spacing: 4) {
-                                Text("\(progressData.completed) / \(Int(progressData.possiblePoints))")
+                                Text("\(Int(progressData.earnedPoints)) / \(Int(progressData.possiblePoints))")
                                     .font(Theme.Fonts.bodySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                 Text(CourseLocalization.CourseContainer.Progress.complete)
@@ -54,7 +54,7 @@ struct GradeItemView: View {
                             .accessibilityElement(children: .combine)
                             .accessibilityLabel(
                                 CourseLocalization.Accessibility.assignmentCompletion(
-                                    "\(progressData.completed)", "\(Int(progressData.possiblePoints))"
+                                    "\(Int(progressData.earnedPoints))", "\(Int(progressData.possiblePoints))"
                                 )
                             )
                             
@@ -91,8 +91,8 @@ struct GradeItemView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(assignmentPolicy.type)
         .accessibilityValue(CourseLocalization.Accessibility.assignmentFullDetails(
-            "\(progressData.completed)",
-            "\(progressData.possiblePoints)",
+            "\(Int(progressData.earnedPoints))",
+            "\(Int(progressData.possiblePoints))",
             "\(maxPercent)",
             "\(earnedPercent)",
             "\(maxPercent)"
