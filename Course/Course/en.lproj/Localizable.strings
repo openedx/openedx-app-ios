@@ -30,7 +30,7 @@
 "ERROR.HANDOUTS_UNAVAILABLE" = "There are currently no handouts for this course.";
 "ERROR.ANNOUNCEMENTS_UNAVAILABLE" = "There are currently no announcements for this course.";
 "ERROR.VIDEOS_UNAVAILABLE" = "There are no videos currently available for this course";
-"ERROR.ASSIGNMENTS_UNAVAILABLE" = "There are no assignments currently available for this course";
+"ERROR.ASSIGNMENTS_UNAVAILABLE" = "No assignments available for this course.";
 "ERROR.COURSE_DATE_UNAVAILABLE" = "Course dates are not currently available.";
 "ERROR.COURSEWARE_UNAVAILABLE" = "No course content is currently available.";
 
@@ -119,7 +119,7 @@
 "COURSE.DUE_TODAY" = "Due Today";
 "COURSE.DUE_TOMORROW" = "Due Tomorrow";
 
-"COURSE.PROGRESS_COMPLETED" = "%@/%@ Sections Completed";
+"COURSE.PROGRESS_COMPLETED" = "%@/%@ Completed";
 "COURSE.PROGRESS_VIDEOS_COMPLETED" = "%@/%@ Completed";
 "COURSE.PROGRESS_WATCHED" = "%@/%@ Watched";
 "COURSE.PROGRESS_VIEW_COMPLETED" = "View Completed";

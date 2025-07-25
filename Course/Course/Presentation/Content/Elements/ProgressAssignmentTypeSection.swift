@@ -11,81 +11,88 @@ import OEXFoundation
 import Theme
 
 struct ProgressAssignmentTypeSection: View {
-    
+
     let subsections: [CourseProgressSubsection]
     let sectionName: String
     let viewModel: CourseContainerViewModel
     let proxy: GeometryProxy
-    
+
     @State private var selectedIndex: Int = 0
-    @State private var isShowingCompletedAssignments: Bool = false
-    
+    @State private var isShowingCompletedAssignments: Bool = true
+    @State private var uiScrollView: UIScrollView?
+
+    // MARK: – Filters and metrics
     private var filteredSubsections: [CourseProgressSubsection] {
-        if isShowingCompletedAssignments {
-            return subsections
-        } else {
-            return subsections.filter { $0.status != .completed }
-        }
+        isShowingCompletedAssignments ? subsections
+                                      : subsections.filter { $0.status != .completed }
     }
-    
+
     private var firstIncompleteIndex: Int {
-        for (index, subsection) in filteredSubsections.enumerated()
-            where subsection.status != .completed {
-            return index
-        }
-        return 0
+        filteredSubsections.firstIndex { $0.status != .completed } ?? 0
     }
-    
+
     private var completedCount: Int {
-        return subsections.filter { $0.status == .completed }.count
+        subsections.filter { $0.status == .completed }.count
     }
-    
-    private var totalCount: Int {
-        return subsections.count
-    }
-    
+    private var totalCount: Int { subsections.count }
+
+    // MARK: – View
     var body: some View {
         VStack(spacing: 16) {
-            // Section Progress with Toggle
+            // MARK: – Progress + Toggle
             CourseProgressView(
-                progress: CourseProgress(
-                    totalAssignmentsCount: totalCount,
-                    assignmentsCompleted: completedCount
-                ),
-                showCompletedToggle: true,
+                progress: CourseProgress(totalAssignmentsCount: totalCount,
+                                          assignmentsCompleted: completedCount),
+                showCompletedToggle: completedCount >= 1 || completedCount == totalCount,
                 isShowingCompleted: isShowingCompletedAssignments,
-                onToggleCompleted: {
-                    isShowingCompletedAssignments.toggle()
-                }
+                onToggleCompleted: { isShowingCompletedAssignments.toggle() }
             )
             .padding(.horizontal, 24)
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 12) {
-                    ForEach(
-                        Array(filteredSubsections.enumerated()),
-                        id: \.offset
-                    ) { index, subsection in
-                        AssignmentCardSmallView(
-                            subsection: subsection,
-                            index: index,
-                            sectionName: sectionName,
-                            isSelected: Binding(
-                                get: { index == selectedIndex },
-                                set: { _ in selectedIndex = index }
-                            ),
-                            onTap: {
-                                selectedIndex = index
-                            },
-                            viewModel: viewModel
-                        )
-                        .padding(.top, 9)
+
+            ScrollViewReader { reader in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    if filteredSubsections.count > 1 {
+                        LazyHStack(spacing: 12) {
+                            ForEach(Array(filteredSubsections.enumerated()), id: \.offset) { index, subsection in
+                                AssignmentCardSmallView(
+                                    subsection: subsection,
+                                    index: index,
+                                    sectionName: sectionName,
+                                    isSelected: Binding(
+                                        get: { index == selectedIndex },
+                                        set: { _ in selectedIndex = index }
+                                    ),
+                                    onTap: { selectedIndex = index },
+                                    viewModel: viewModel
+                                )
+                                .padding(.leading, index == 0 ? 24 : 0)
+                                .padding(.top, 9)
+                                .id(index)
+                            }
+                            
+                            Spacer(minLength: 200)
+                        }
                     }
                 }
-                .padding(.horizontal, 24)
+                .accessibilityIdentifier("assignment_cards_horizontal_scroll_\(sectionName)")
+
+                .introspect(.scrollView, on: .iOS(.v16, .v17, .v18)) { scroll in
+                    DispatchQueue.main.async { uiScrollView = scroll }
+                }
+
+                // MARK: – Behavior when the filter appears and changes
+                .onAppear {
+                    applyInitialScroll(using: reader, animated: false)
+                    hideCompletedAssignments()
+                }
+                .onChange(of: isShowingCompletedAssignments) { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        applyInitialScroll(using: reader, animated: true)
+                    }
+                }
             }
-            .accessibilityIdentifier("assignment_cards_horizontal_scroll_\(sectionName)")
-            
+
+            // MARK: – Detail Card
             if selectedIndex < filteredSubsections.count {
                 AssignmentDetailCardView(
                     subsection: filteredSubsections[selectedIndex],
@@ -95,16 +102,30 @@ struct ProgressAssignmentTypeSection: View {
                 .accessibilityIdentifier("assignment_detail_card_\(sectionName)")
             }
         }
-        .onAppear {
+    }
+
+    // MARK: – Helpers
+    
+    private func hideCompletedAssignments() {
+        if totalCount == completedCount {
+            isShowingCompletedAssignments = false
+        }
+    }
+    
+    private func applyInitialScroll(using reader: ScrollViewProxy, animated: Bool) {
+        if isShowingCompletedAssignments {
             selectedIndex = firstIncompleteIndex
+            reader.scrollTo(firstIncompleteIndex, anchor: .leading)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                guard let scroll = uiScrollView else { return }
+                let newX = max(scroll.contentOffset.x - 20, 0)
+                scroll.setContentOffset(CGPoint(x: newX, y: 0), animated: animated)
+            }
+        } else {
+            selectedIndex = 0
+            uiScrollView?.setContentOffset(.zero, animated: animated)
         }
-        .onChange(of: firstIncompleteIndex) { newIndex in
-            selectedIndex = newIndex
-        }
-        .onChange(of: isShowingCompletedAssignments) { _ in
-            selectedIndex = firstIncompleteIndex
-        }
-        .animation(.default, value: isShowingCompletedAssignments)
     }
 }
 
