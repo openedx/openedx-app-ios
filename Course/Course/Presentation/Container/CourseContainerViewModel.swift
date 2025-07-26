@@ -88,6 +88,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var courseDeadlines: CourseDates?
     @Published var videoProgressUpdateTrigger: UUID = UUID()
     @Published var assignmentProgressUpdateTrigger: UUID = UUID()
+    @Published private(set) var assignmentSectionsData: [AssignmentSection] = []
+    private var lastCourseDataUpdate: Date = Date()
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
@@ -171,6 +173,14 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         }
     }
     
+    func forceUpdateIfNeeded(courseID: String) async {
+        let timeSinceLastUpdate = Date().timeIntervalSince(lastCourseDataUpdate)
+        if updateCourseProgress || timeSinceLastUpdate > 5.0 {
+            await getCourseBlocks(courseID: courseID, withProgress: false)
+            updateCourseProgress = false
+        }
+    }
+    
     func openLastVisitedBlock() {
         guard let continueWith = continueWith,
               let courseStructure = courseStructure else { return }
@@ -223,6 +233,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             update(from: courseHelper.value ?? .empty)
             self.courseStructure = courseStructure
             self.courseProgressDetails = courseProgress
+            
+            lastCourseDataUpdate = Date()
 
             if isInternetAvaliable {
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
@@ -235,6 +247,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             }
             courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
             courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure!)
+            updateAssignmentSections()
             
             if expandedSections.isEmpty {
                 initializeExpandedSections()
@@ -250,6 +263,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             courseVideosStructure = nil
             courseAssignmentsStructure = nil
             courseProgressDetails = nil
+            assignmentSectionsData = []
         }
     }
     
@@ -477,6 +491,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         if let courseStructure {
             courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
             courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure)
+            updateAssignmentSections()
         }
     }
     
@@ -1000,9 +1015,14 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         
         completionPublisher
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
+            .sink { [weak self] notification in
                 guard let self = self else { return }
                 updateCourseProgress = true
+                if let courseID = notification.object as? String {
+                    Task { @MainActor in
+                        await self.getCourseBlocks(courseID: courseID, withProgress: false)
+                    }
+                }
             }
             .store(in: &cancellables)
     }
@@ -1023,6 +1043,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             let videoStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
             self.courseVideosStructure = videoStructure
             self.courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure)
+            updateAssignmentSections()
         }
         
         objectWillChange.send()
@@ -1041,6 +1062,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             let assignmentStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure)
             self.courseAssignmentsStructure = assignmentStructure
             self.courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure)
+            updateAssignmentSections()
         }
         
         objectWillChange.send()
@@ -1167,6 +1189,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         return subsections.map { subsection in
             let shortLabel = getSequentialShortLabel(for: subsection.blockKey)
             let status = getSequentialAssignmentStatus(for: subsection.blockKey) ?? getAssignmentStatus(for: subsection)
+            let statusText = computeStatusText(for: subsection, status: status, shortLabel: shortLabel)
+            let sequenceName = getAssignmentSequenceName(for: subsection)
+            
             return CourseProgressSubsection(
                 assignmentType: subsection.assignmentType,
                 blockKey: subsection.blockKey,
@@ -1182,21 +1207,26 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 showGrades: subsection.showGrades,
                 url: subsection.url,
                 shortLabel: shortLabel,
-                status: status
+                status: status,
+                statusText: statusText,
+                sequenceName: sequenceName
             )
         }
     }
         
-    func assignmentSections() -> [AssignmentSection] {
-        guard let progressDetails = courseProgressDetails else { return [] }
-
+    private func updateAssignmentSections() {
+        guard let progressDetails = courseProgressDetails else {
+            assignmentSectionsData = []
+            return
+        }
+        
         let subsectionsByType = Dictionary(
             grouping: progressDetails.sectionScores.flatMap { $0.subsections }
         ) { subsection in
             subsection.assignmentType ?? "unknown"
         }
 
-        return progressDetails.gradingPolicy.assignmentPolicies.compactMap { policy in
+        assignmentSectionsData = progressDetails.gradingPolicy.assignmentPolicies.compactMap { policy in
             guard
                 let subsections = subsectionsByType[policy.type],
                 !subsections.isEmpty
@@ -1211,6 +1241,12 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 subsections: enrichedSubsections
             )
         }
+                
+        assignmentProgressUpdateTrigger = UUID()
+    }
+    
+    func assignmentSections() -> [AssignmentSection] {
+        return assignmentSectionsData
     }
     
     // MARK: - Assignment Deadline Methods
@@ -1317,6 +1353,32 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         let rightClean = String(Int(rightRaw) ?? 0)
 
         return leftShort + rightClean
+    }
+    
+    private func computeStatusText(
+        for subsection: CourseProgressSubsection,
+        status: AssignmentCardStatus,
+        shortLabel: String?
+    ) -> String {
+        let cleanShortLabel = clearShortLabel(shortLabel ?? "")
+                
+        switch status {
+        case .completed:
+            return CourseLocalization.AssignmentStatus
+                .complete(cleanShortLabel, Int(subsection.numPointsEarned), Int(subsection.numPointsPossible))
+        case .pastDue:
+            return CourseLocalization.AssignmentStatus
+                .pastDue(cleanShortLabel, Int(subsection.numPointsEarned), Int(subsection.numPointsPossible))
+        case .notAvailable:
+            return CourseLocalization.AssignmentStatus.notYetAvailable(cleanShortLabel)
+        case .incomplete:
+            if let dueDate = getAssignmentDueDate(for: subsection) {
+                return "\(cleanShortLabel) \(dueDate.timeAgoDisplay(dueIn: true))"
+            } else {
+                return CourseLocalization.AssignmentStatus
+                    .inProgress(cleanShortLabel, Int(subsection.numPointsEarned), Int(subsection.numPointsPossible))
+            }
+        }
     }
     
     func getAssignmentStatusText(for subsection: CourseProgressSubsection) -> String {

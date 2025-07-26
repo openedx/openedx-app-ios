@@ -24,15 +24,15 @@ struct ProgressAssignmentTypeSection: View {
     // MARK: – Filters and metrics
     private var filteredSubsections: [CourseProgressSubsection] {
         isShowingCompletedAssignments ? subsections
-                                      : subsections.filter { $0.status != .completed }
+                                      : subsections.filter { ($0.status ?? .incomplete) != .completed }
     }
 
     private var firstIncompleteIndex: Int {
-        filteredSubsections.firstIndex { $0.status != .completed } ?? 0
+        filteredSubsections.firstIndex { ($0.status ?? .incomplete) != .completed } ?? 0
     }
 
     private var completedCount: Int {
-        subsections.filter { $0.status == .completed }.count
+        subsections.filter { ($0.status ?? .incomplete) == .completed }.count
     }
     private var totalCount: Int { subsections.count }
 
@@ -102,6 +102,7 @@ struct ProgressAssignmentTypeSection: View {
                 .accessibilityIdentifier("assignment_detail_card_\(sectionName)")
             }
         }
+        .id(viewModel.assignmentProgressUpdateTrigger)
     }
 
     // MARK: – Helpers

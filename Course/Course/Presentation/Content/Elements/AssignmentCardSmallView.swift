@@ -22,7 +22,7 @@ struct AssignmentCardSmallView: View {
     private let cardHeight: CGFloat = 48
     
     private var status: AssignmentCardStatus {
-        return viewModel.getAssignmentStatus(for: subsection)
+        return subsection.status ?? .incomplete
     }
     
     private var assignmentShortName: String {
@@ -113,7 +113,7 @@ struct AssignmentCardSmallView: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
-        .id("\(index)-\(isSelected)")
+        .id("\(index)-\(isSelected)-\(viewModel.assignmentProgressUpdateTrigger)")
             
             // MARK: Selection pointer
             CoreAssets.pointer.swiftUIImage

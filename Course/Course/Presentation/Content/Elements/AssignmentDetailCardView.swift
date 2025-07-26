@@ -20,11 +20,11 @@ struct AssignmentDetailCardView: View, Equatable {
     let viewModel: CourseContainerViewModel
     
     private var status: AssignmentCardStatus {
-        return viewModel.getAssignmentStatus(for: subsection)
+        return subsection.status ?? .incomplete
     }
     
     private var statusText: String {
-        return viewModel.getAssignmentStatusText(for: subsection)
+        return subsection.statusText ?? ""
     }
     
     private var cardBackgroundColor: Color {
@@ -60,7 +60,7 @@ struct AssignmentDetailCardView: View, Equatable {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     
-                    Text(viewModel.getAssignmentSequenceName(for: subsection))
+                    Text(subsection.sequenceName ?? subsection.displayName)
                         .font(Theme.Fonts.bodyLarge)
                         .foregroundColor(Theme.Colors.textPrimary)
                     HStack {
@@ -92,5 +92,6 @@ struct AssignmentDetailCardView: View, Equatable {
         }
         .buttonStyle(PlainButtonStyle())
         .padding(.horizontal, 24)
+        .id(viewModel.assignmentProgressUpdateTrigger)
     }
 }

@@ -209,6 +209,8 @@ public struct CourseProgressSubsection: Sendable, Equatable {
     public let url: String
     public let shortLabel: String?
     public let status: AssignmentCardStatus?
+    public let statusText: String?
+    public let sequenceName: String?
     
     public var progress: Double {
         guard numPointsPossible > 0 else { return 0.0 }
@@ -230,7 +232,9 @@ public struct CourseProgressSubsection: Sendable, Equatable {
         showGrades: Bool,
         url: String,
         shortLabel: String? = nil,
-        status: AssignmentCardStatus? = nil
+        status: AssignmentCardStatus? = nil,
+        statusText: String? = nil,
+        sequenceName: String? = nil
     ) {
         self.assignmentType = assignmentType
         self.blockKey = blockKey
@@ -247,6 +251,8 @@ public struct CourseProgressSubsection: Sendable, Equatable {
         self.url = url
         self.shortLabel = shortLabel
         self.status = status
+        self.statusText = statusText
+        self.sequenceName = sequenceName
     }
 }
 

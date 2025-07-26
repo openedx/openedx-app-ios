@@ -9,7 +9,7 @@ import SwiftUI
 import Core
 import Theme
 
-public enum AssignmentCardStatus: Sendable {
+public enum AssignmentCardStatus: Sendable, Equatable {
     case completed
     case incomplete
     case pastDue

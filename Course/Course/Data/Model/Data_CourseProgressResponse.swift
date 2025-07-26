@@ -391,7 +391,11 @@ public extension DataLayer.Subsection {
             problemScores: problemScores.map { $0.domain },
             showCorrectness: showCorrectness,
             showGrades: showGrades,
-            url: url
+            url: url,
+            shortLabel: nil,
+            status: nil,
+            statusText: nil,
+            sequenceName: nil
         )
     }
 }

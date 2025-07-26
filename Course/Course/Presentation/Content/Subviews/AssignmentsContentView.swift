@@ -48,7 +48,7 @@ struct AssignmentsContentView: View {
     }
     
     private var assignmentSections: [AssignmentSectionUI] {
-        viewModel.assignmentSections().map { section in
+        viewModel.assignmentSectionsData.map { section in
             AssignmentSectionUI(
                 key: section.label,
                 subsections: section.subsections,
@@ -107,7 +107,7 @@ struct AssignmentsContentView: View {
                                     .flatMap { $0.subsections }.count
                                 let completedAssignments = assignmentSections
                                     .flatMap { $0.subsections }
-                                    .filter { $0.status == .completed }.count
+                                    .filter { ($0.status ?? .incomplete) == .completed }.count
                                 
                                 CourseProgressView(
                                     progress: CourseProgress(
@@ -190,8 +190,22 @@ struct AssignmentsContentView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in
+            viewModel.updateCourseProgress = true
             Task {
                 await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: .onblockCompletionRequested)) { _ in
+            Task {
+                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+            }
+        }
+        .task {
+            await viewModel.updateCourseIfNeeded(courseID: courseID)
+        }
+        .onAppear {
+            Task {
+                await viewModel.forceUpdateIfNeeded(courseID: courseID)
             }
         }
         .navigationBarHidden(true)
