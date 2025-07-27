@@ -12,8 +12,19 @@ import Theme
 struct GradeItemView: View {
     
     let assignmentPolicy: CourseProgressAssignmentPolicy
-    let progressData: AssignmentProgressData
+    @Binding var assignmentProgressData: [String: AssignmentProgressData]
+    let assignmentType: String
     let color: Color
+    
+    private var progressData: AssignmentProgressData {
+        assignmentProgressData[assignmentType] ?? AssignmentProgressData(
+            completed: 0,
+            total: 0,
+            earnedPoints: 0.0,
+            possiblePoints: 0.0,
+            percentGraded: 0.0
+        )
+    }
     
     private var earnedPercent: Int {
         return Int(assignmentPolicy.weight * progressData.percentGraded * 100)
@@ -113,13 +124,16 @@ struct GradeItemView: View {
     
     GradeItemView(
         assignmentPolicy: mockPolicy,
-        progressData: AssignmentProgressData(
-            completed: 13,
-            total: 16,
-            earnedPoints: 10.0,
-            possiblePoints: 15.0,
-            percentGraded: 0.67
-        ),
+        assignmentProgressData: .constant([
+            "Basic Assessment Tools": AssignmentProgressData(
+                completed: 13,
+                total: 16,
+                earnedPoints: 10.0,
+                possiblePoints: 15.0,
+                percentGraded: 0.67
+            )
+        ]),
+        assignmentType: "Basic Assessment Tools",
         color: .red
     )
     .padding()

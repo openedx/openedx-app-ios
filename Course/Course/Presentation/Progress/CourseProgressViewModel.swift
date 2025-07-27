@@ -14,6 +14,7 @@ import Theme
 public class CourseProgressViewModel: ObservableObject {
     
     @Published var courseProgress: CourseProgressDetails?
+    @Published var assignmentProgressData: [String: AssignmentProgressData] = [:]
     @Published var isLoading: Bool = false
     @Published var isShowRefresh = false
     @Published var showError: Bool = false
@@ -52,6 +53,10 @@ public class CourseProgressViewModel: ObservableObject {
             } else {
                 courseProgress = try await interactor.getCourseProgressOffline(courseID: courseID)
             }
+            
+            // Update assignment progress data
+            assignmentProgressData = getAllAssignmentProgressData()
+            
             isLoading = false
             isShowRefresh = false
         } catch let error {

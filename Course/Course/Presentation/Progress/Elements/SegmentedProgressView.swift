@@ -149,7 +149,7 @@ struct Triangle: Shape {
 extension SegmentedProgressView {
     init(
         assignmentPolicies: [CourseProgressAssignmentPolicy],
-        assignmentProgressData: [String: AssignmentProgressData],
+        assignmentProgressData: Binding<[String: AssignmentProgressData]>,
         assignmentColors: [String] = [],
         requiredGrade: Double = 0.0
     ) {
@@ -157,7 +157,7 @@ extension SegmentedProgressView {
         var segments: [ProgressSegment] = []
         
         for (index, policy) in assignmentPolicies.enumerated() {
-            let progressData = assignmentProgressData[policy.type] ?? AssignmentProgressData(
+            let progressData = assignmentProgressData.wrappedValue[policy.type] ?? AssignmentProgressData(
                 completed: 0,
                 total: 0,
                 earnedPoints: 0.0,
