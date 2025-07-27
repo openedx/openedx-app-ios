@@ -12,7 +12,7 @@ import Theme
 
 struct ProgressAssignmentTypeSection: View {
 
-    let subsections: [CourseProgressSubsection]
+    let subsectionsUI: [CourseProgressSubsectionUI]
     let sectionName: String
     let viewModel: CourseContainerViewModel
     let proxy: GeometryProxy
@@ -22,19 +22,19 @@ struct ProgressAssignmentTypeSection: View {
     @State private var uiScrollView: UIScrollView?
 
     // MARK: – Filters and metrics
-    private var filteredSubsections: [CourseProgressSubsection] {
-        isShowingCompletedAssignments ? subsections
-                                      : subsections.filter { ($0.status ?? .incomplete) != .completed }
+    private var filteredSubsections: [CourseProgressSubsectionUI] {
+        isShowingCompletedAssignments ? subsectionsUI
+                                      : subsectionsUI.filter { $0.status != .completed }
     }
 
     private var firstIncompleteIndex: Int {
-        filteredSubsections.firstIndex { ($0.status ?? .incomplete) != .completed } ?? 0
+        filteredSubsections.firstIndex { $0.status != .completed } ?? 0
     }
 
     private var completedCount: Int {
-        subsections.filter { ($0.status ?? .incomplete) == .completed }.count
+        subsectionsUI.filter { $0.status == .completed }.count
     }
-    private var totalCount: Int { subsections.count }
+    private var totalCount: Int { subsectionsUI.count }
 
     // MARK: – View
     var body: some View {
@@ -53,9 +53,9 @@ struct ProgressAssignmentTypeSection: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     if filteredSubsections.count > 1 {
                         LazyHStack(spacing: 12) {
-                            ForEach(Array(filteredSubsections.enumerated()), id: \.offset) { index, subsection in
+                            ForEach(Array(filteredSubsections.enumerated()), id: \.offset) { index, subsectionUI in
                                 AssignmentCardSmallView(
-                                    subsection: subsection,
+                                    subsectionUI: subsectionUI,
                                     index: index,
                                     sectionName: sectionName,
                                     isSelected: Binding(
@@ -95,7 +95,7 @@ struct ProgressAssignmentTypeSection: View {
             // MARK: – Detail Card
             if selectedIndex < filteredSubsections.count {
                 AssignmentDetailCardView(
-                    subsection: filteredSubsections[selectedIndex],
+                    subsectionUI: filteredSubsections[selectedIndex],
                     sectionName: sectionName,
                     viewModel: viewModel
                 )
@@ -134,53 +134,71 @@ struct ProgressAssignmentTypeSection: View {
 #Preview {
     GeometryReader { proxy in
         ProgressAssignmentTypeSection(
-            subsections: [
-                CourseProgressSubsection(
-                    assignmentType: "1",
-                    blockKey: "block1",
-                    displayName: "Test Assignment 1",
-                    hasGradedAssignment: true,
-                    override: nil,
-                    learnerHasAccess: true,
-                    numPointsEarned: 1.0,
-                    numPointsPossible: 1.0,
-                    percentGraded: 1.0,
-                    problemScores: [],
-                    showCorrectness: "always",
-                    showGrades: true,
-                    url: "https://example.com",
+            subsectionsUI: [
+                CourseProgressSubsectionUI(
+                    subsection: CourseProgressSubsection(
+                        assignmentType: "1",
+                        blockKey: "block1",
+                        displayName: "Test Assignment 1",
+                        hasGradedAssignment: true,
+                        override: nil,
+                        learnerHasAccess: true,
+                        numPointsEarned: 1.0,
+                        numPointsPossible: 1.0,
+                        percentGraded: 1.0,
+                        problemScores: [],
+                        showCorrectness: "always",
+                        showGrades: true,
+                        url: "https://example.com",
+                        shortLabel: "HW1 01"
+                    ),
+                    statusText: "Complete - 100%",
+                    sequenceName: "Test Assignment 1",
+                    status: .completed,
                     shortLabel: "HW1 01"
                 ),
-                CourseProgressSubsection(
-                    assignmentType: "1",
-                    blockKey: "block2",
-                    displayName: "Test Assignment 2",
-                    hasGradedAssignment: true,
-                    override: nil,
-                    learnerHasAccess: true,
-                    numPointsEarned: 0.0,
-                    numPointsPossible: 1.0,
-                    percentGraded: 0.0,
-                    problemScores: [],
-                    showCorrectness: "always",
-                    showGrades: true,
-                    url: "https://example.com",
+                CourseProgressSubsectionUI(
+                    subsection: CourseProgressSubsection(
+                        assignmentType: "1",
+                        blockKey: "block2",
+                        displayName: "Test Assignment 2",
+                        hasGradedAssignment: true,
+                        override: nil,
+                        learnerHasAccess: true,
+                        numPointsEarned: 0.0,
+                        numPointsPossible: 1.0,
+                        percentGraded: 0.0,
+                        problemScores: [],
+                        showCorrectness: "always",
+                        showGrades: true,
+                        url: "https://example.com",
+                        shortLabel: "HW1 02"
+                    ),
+                    statusText: "Not Started",
+                    sequenceName: "Test Assignment 2",
+                    status: .incomplete,
                     shortLabel: "HW1 02"
                 ),
-                CourseProgressSubsection(
-                    assignmentType: "1",
-                    blockKey: "block3",
-                    displayName: "Test Assignment 3",
-                    hasGradedAssignment: true,
-                    override: nil,
-                    learnerHasAccess: false,
-                    numPointsEarned: 0.0,
-                    numPointsPossible: 1.0,
-                    percentGraded: 0.0,
-                    problemScores: [],
-                    showCorrectness: "always",
-                    showGrades: true,
-                    url: "https://example.com",
+                CourseProgressSubsectionUI(
+                    subsection: CourseProgressSubsection(
+                        assignmentType: "1",
+                        blockKey: "block3",
+                        displayName: "Test Assignment 3",
+                        hasGradedAssignment: true,
+                        override: nil,
+                        learnerHasAccess: false,
+                        numPointsEarned: 0.0,
+                        numPointsPossible: 1.0,
+                        percentGraded: 0.0,
+                        problemScores: [],
+                        showCorrectness: "always",
+                        showGrades: true,
+                        url: "https://example.com",
+                        shortLabel: "HW1 03"
+                    ),
+                    statusText: "Not Available",
+                    sequenceName: "Test Assignment 3",
+                    status: .notAvailable,
                     shortLabel: "HW1 03"
                 )
             ],

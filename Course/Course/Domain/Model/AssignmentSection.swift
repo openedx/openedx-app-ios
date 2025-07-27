@@ -11,11 +11,19 @@ struct AssignmentSection {
     let assignmentType: String
     let label: String
     let weight: Double
-    let subsections: [CourseProgressSubsection]
+    let subsections: [CourseProgressSubsectionUI]
 }
 
 struct AssignmentSectionUI {
     let key: String
-    let subsections: [CourseProgressSubsection]
+    let subsections: [CourseProgressSubsectionUI]
     let weight: Double
+}
+
+struct CourseProgressSubsectionUI {
+    let subsection: CourseProgressSubsection
+    let statusText: String
+    let sequenceName: String
+    let status: AssignmentCardStatus
+    let shortLabel: String
 }

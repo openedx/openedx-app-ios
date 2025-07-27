@@ -107,7 +107,7 @@ struct AssignmentsContentView: View {
                                     .flatMap { $0.subsections }.count
                                 let completedAssignments = assignmentSections
                                     .flatMap { $0.subsections }
-                                    .filter { ($0.status ?? .incomplete) == .completed }.count
+                                    .filter { $0.status == .completed }.count
                                 
                                 CourseProgressView(
                                     progress: CourseProgress(
@@ -172,7 +172,7 @@ struct AssignmentsContentView: View {
                                                                                                 
                                                 // Assignment Cards for this section
                                                 ProgressAssignmentTypeSection(
-                                                    subsections: section.subsections,
+                                                    subsectionsUI: section.subsections,
                                                     sectionName: section.key,
                                                     viewModel: viewModel,
                                                     proxy: proxy

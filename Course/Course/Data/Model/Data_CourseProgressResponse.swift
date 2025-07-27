@@ -392,10 +392,7 @@ public extension DataLayer.Subsection {
             showCorrectness: showCorrectness,
             showGrades: showGrades,
             url: url,
-            shortLabel: nil,
-            status: nil,
-            statusText: nil,
-            sequenceName: nil
+            shortLabel: nil
         )
     }
 }

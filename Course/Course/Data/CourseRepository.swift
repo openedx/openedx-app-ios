@@ -411,10 +411,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "always",
                             showGrades: true,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week1/hw1",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         ),
                         CourseProgressSubsection(
                             assignmentType: "Lab",
@@ -432,10 +429,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "always",
                             showGrades: true,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week1/lab1",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         )
                     ]
                 ),
@@ -461,10 +455,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "always",
                             showGrades: true,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week2/hw2",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         ),
                         CourseProgressSubsection(
                             assignmentType: "Quiz",
@@ -484,10 +475,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "always",
                             showGrades: true,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week2/quiz1",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         )
                     ]
                 ),
@@ -514,10 +502,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "always",
                             showGrades: true,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week3/hw3",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         )
                     ]
                 ),
@@ -538,10 +523,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "always",
                             showGrades: true,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week4/hw4",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         ),
                         CourseProgressSubsection(
                             assignmentType: "Lab",
@@ -557,10 +539,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "always",
                             showGrades: false,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week4/lab4",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         )
                     ]
                 ),
@@ -587,10 +566,7 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
                             showCorrectness: "past_due",
                             showGrades: true,
                             url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/midterm/exam",
-                            shortLabel: nil,
-                            status: nil,
-                            statusText: nil,
-                            sequenceName: nil
+                            shortLabel: nil
                         )
                     ]
                 )

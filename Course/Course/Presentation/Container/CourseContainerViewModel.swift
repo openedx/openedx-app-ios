@@ -1185,31 +1185,19 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         return nil
     }
     
-    func enrichSubsectionsWithShortLabels(_ subsections: [CourseProgressSubsection]) -> [CourseProgressSubsection] {
+    private func createUIModels(from subsections: [CourseProgressSubsection]) -> [CourseProgressSubsectionUI] {
         return subsections.map { subsection in
-            let shortLabel = getSequentialShortLabel(for: subsection.blockKey)
+            let shortLabel = getSequentialShortLabel(for: subsection.blockKey) ?? ""
             let status = getSequentialAssignmentStatus(for: subsection.blockKey) ?? getAssignmentStatus(for: subsection)
             let statusText = computeStatusText(for: subsection, status: status, shortLabel: shortLabel)
             let sequenceName = getAssignmentSequenceName(for: subsection)
-            
-            return CourseProgressSubsection(
-                assignmentType: subsection.assignmentType,
-                blockKey: subsection.blockKey,
-                displayName: subsection.displayName,
-                hasGradedAssignment: subsection.hasGradedAssignment,
-                override: subsection.override,
-                learnerHasAccess: subsection.learnerHasAccess,
-                numPointsEarned: subsection.numPointsEarned,
-                numPointsPossible: subsection.numPointsPossible,
-                percentGraded: subsection.percentGraded,
-                problemScores: subsection.problemScores,
-                showCorrectness: subsection.showCorrectness,
-                showGrades: subsection.showGrades,
-                url: subsection.url,
-                shortLabel: shortLabel,
-                status: status,
+                        
+            return CourseProgressSubsectionUI(
+                subsection: subsection,
                 statusText: statusText,
-                sequenceName: sequenceName
+                sequenceName: sequenceName,
+                status: status,
+                shortLabel: shortLabel
             )
         }
     }
@@ -1232,13 +1220,13 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 !subsections.isEmpty
             else { return nil }
 
-            let enrichedSubsections = enrichSubsectionsWithShortLabels(subsections)
+            let uiSubsections = createUIModels(from: subsections)
 
             return AssignmentSection(
                 assignmentType: policy.type,
                 label: policy.type,
                 weight: policy.weight,
-                subsections: enrichedSubsections
+                subsections: uiSubsections
             )
         }
                 

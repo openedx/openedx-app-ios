@@ -11,7 +11,7 @@ import Theme
 
 struct AssignmentCardSmallView: View {
     
-    let subsection: CourseProgressSubsection
+    let subsectionUI: CourseProgressSubsectionUI
     let index: Int
     let sectionName: String
     @Binding var isSelected: Bool
@@ -22,16 +22,16 @@ struct AssignmentCardSmallView: View {
     private let cardHeight: CGFloat = 48
     
     private var status: AssignmentCardStatus {
-        return subsection.status ?? .incomplete
+        return subsectionUI.status
     }
     
     private var assignmentShortName: String {
-        if let shortLabel = subsection.shortLabel, !shortLabel.isEmpty {
-            return viewModel.clearShortLabel(shortLabel)
+        if !subsectionUI.shortLabel.isEmpty {
+            return viewModel.clearShortLabel(subsectionUI.shortLabel)
         }
         
-        guard let assignmentType = subsection.assignmentType else {
-            return viewModel.clearShortLabel(subsection.displayName)
+        guard let assignmentType = subsectionUI.subsection.assignmentType else {
+            return viewModel.clearShortLabel(subsectionUI.subsection.displayName)
         }
 
         return viewModel.clearShortLabel(assignmentType)
@@ -44,7 +44,7 @@ struct AssignmentCardSmallView: View {
     private var strokeColor: Color {
         if isSelected {
             return Theme.Colors.accentColor
-        } else if subsection.status == .completed {
+        } else if subsectionUI.status == .completed {
             return Theme.Colors.success
         } else if isPastDue {
             return Theme.Colors.warning
@@ -54,7 +54,8 @@ struct AssignmentCardSmallView: View {
     }
     
     private var completionBackgroundColor: Color {
-        if subsection.numPointsEarned >= subsection.numPointsPossible && subsection.numPointsPossible > 0 {
+        if subsectionUI.subsection.numPointsEarned >= subsectionUI.subsection.numPointsPossible
+            && subsectionUI.subsection.numPointsPossible > 0 {
             return Theme.Colors.success.opacity(0.1)
         } else if isPastDue {
             return Theme.Colors.warning.opacity(0.1)
@@ -64,14 +65,14 @@ struct AssignmentCardSmallView: View {
     }
     
     init(
-        subsection: CourseProgressSubsection,
+        subsectionUI: CourseProgressSubsectionUI,
         index: Int,
         sectionName: String,
         isSelected: Binding<Bool>,
         onTap: @escaping () -> Void,
         viewModel: CourseContainerViewModel
     ) {
-        self.subsection = subsection
+        self.subsectionUI = subsectionUI
         self.index = index
         self.sectionName = sectionName
         self._isSelected = isSelected
@@ -100,7 +101,8 @@ struct AssignmentCardSmallView: View {
             .cornerRadius(4)
             .overlay {
                 ZStack(alignment: .center) {
-                    if subsection.numPointsEarned >= subsection.numPointsPossible && subsection.numPointsPossible > 0 {
+                    if subsectionUI.subsection.numPointsEarned >= subsectionUI.subsection.numPointsPossible
+                        && subsectionUI.subsection.numPointsPossible > 0 {
                         CoreAssets.assignmentsCheckbox.swiftUIImage
                             .frame(width: 20, height: 20)
                     } else if isPastDue {
@@ -126,20 +128,26 @@ struct AssignmentCardSmallView: View {
 #Preview {
     HStack {
         AssignmentCardSmallView(
-            subsection: CourseProgressSubsection(
-                assignmentType: "1",
-                blockKey: "block1",
-                displayName: "Test Assignment",
-                hasGradedAssignment: true,
-                override: nil,
-                learnerHasAccess: true,
-                numPointsEarned: 0.0,
-                numPointsPossible: 1.0,
-                percentGraded: 0.0,
-                problemScores: [],
-                showCorrectness: "always",
-                showGrades: true,
-                url: "https://example.com",
+            subsectionUI: CourseProgressSubsectionUI(
+                subsection: CourseProgressSubsection(
+                    assignmentType: "1",
+                    blockKey: "block1",
+                    displayName: "Test Assignment",
+                    hasGradedAssignment: true,
+                    override: nil,
+                    learnerHasAccess: true,
+                    numPointsEarned: 0.0,
+                    numPointsPossible: 1.0,
+                    percentGraded: 0.0,
+                    problemScores: [],
+                    showCorrectness: "always",
+                    showGrades: true,
+                    url: "https://example.com",
+                    shortLabel: "HW1 01"
+                ),
+                statusText: "Not Started",
+                sequenceName: "Test Assignment",
+                status: .incomplete,
                 shortLabel: "HW1 01"
             ),
             index: 0,
@@ -150,20 +158,26 @@ struct AssignmentCardSmallView: View {
         )
         
         AssignmentCardSmallView(
-            subsection: CourseProgressSubsection(
-                assignmentType: "1",
-                blockKey: "block2",
-                displayName: "Test Assignment 2",
-                hasGradedAssignment: true,
-                override: nil,
-                learnerHasAccess: true,
-                numPointsEarned: 0.0,
-                numPointsPossible: 1.0,
-                percentGraded: 0.0,
-                problemScores: [],
-                showCorrectness: "always",
-                showGrades: true,
-                url: "https://example.com",
+            subsectionUI: CourseProgressSubsectionUI(
+                subsection: CourseProgressSubsection(
+                    assignmentType: "1",
+                    blockKey: "block2",
+                    displayName: "Test Assignment 2",
+                    hasGradedAssignment: true,
+                    override: nil,
+                    learnerHasAccess: true,
+                    numPointsEarned: 0.0,
+                    numPointsPossible: 1.0,
+                    percentGraded: 0.0,
+                    problemScores: [],
+                    showCorrectness: "always",
+                    showGrades: true,
+                    url: "https://example.com",
+                    shortLabel: "HW1 02"
+                ),
+                statusText: "Not Started",
+                sequenceName: "Test Assignment 2",
+                status: .incomplete,
                 shortLabel: "HW1 02"
             ),
             index: 1,

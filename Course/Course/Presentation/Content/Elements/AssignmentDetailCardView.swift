@@ -12,19 +12,19 @@ import Theme
 struct AssignmentDetailCardView: View, Equatable {
     nonisolated static func == (lhs: AssignmentDetailCardView, rhs: AssignmentDetailCardView) -> Bool {
         lhs.sectionName == rhs.sectionName &&
-        lhs.subsection.blockKey == rhs.subsection.blockKey
+        lhs.subsectionUI.subsection.blockKey == rhs.subsectionUI.subsection.blockKey
     }
     
-    let subsection: CourseProgressSubsection
+    let subsectionUI: CourseProgressSubsectionUI
     let sectionName: String
     let viewModel: CourseContainerViewModel
     
     private var status: AssignmentCardStatus {
-        return subsection.status ?? .incomplete
+        return subsectionUI.status
     }
     
     private var statusText: String {
-        return subsection.statusText ?? ""
+        return subsectionUI.statusText
     }
     
     private var cardBackgroundColor: Color {
@@ -55,12 +55,12 @@ struct AssignmentDetailCardView: View, Equatable {
     
     var body: some View {
         Button(action: {
-            viewModel.navigateToAssignment(for: subsection)
+            viewModel.navigateToAssignment(for: subsectionUI.subsection)
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     
-                    Text(subsection.sequenceName ?? subsection.displayName)
+                    Text(subsectionUI.sequenceName)
                         .font(Theme.Fonts.bodyLarge)
                         .foregroundColor(Theme.Colors.textPrimary)
                     HStack {
