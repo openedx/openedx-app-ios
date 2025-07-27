@@ -3575,6 +3575,12 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 		perform?(`courseId`, `courseName`, `blockId`, `blockName`)
     }
 
+    open func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        addInvocation(.m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`), Parameter<String>.value(`blockName`)))
+		let perform = methodPerformValue(.m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`blockId`), Parameter<String>.value(`blockName`))) as? (String, String, String, String) -> Void
+		perform?(`courseId`, `courseName`, `blockId`, `blockName`)
+    }
+
     open func datesComponentTapped(courseId: String, blockId: String, link: String, supported: Bool) {
         addInvocation(.m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(Parameter<String>.value(`courseId`), Parameter<String>.value(`blockId`), Parameter<String>.value(`link`), Parameter<Bool>.value(`supported`)))
 		let perform = methodPerformValue(.m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(Parameter<String>.value(`courseId`), Parameter<String>.value(`blockId`), Parameter<String>.value(`link`), Parameter<Bool>.value(`supported`))) as? (String, String, String, Bool) -> Void
@@ -3705,6 +3711,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         case m_courseContentVideosTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseContentAssignmentsTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseVideoClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
+        case m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
         case m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<Bool>)
         case m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(Parameter<EnrollmentMode>, Parameter<CoursePacing>, Parameter<String>, Parameter<CalendarDialogueAction>)
         case m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(Parameter<EnrollmentMode>, Parameter<CoursePacing>, Parameter<String>, Parameter<CalendarDialogueType>, Parameter<CalendarDialogueAction>)
@@ -3854,6 +3861,14 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_courseVideoClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(let lhsCourseid, let lhsCoursename, let lhsBlockid, let lhsBlockname), .m_courseVideoClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(let rhsCourseid, let rhsCoursename, let rhsBlockid, let rhsBlockname)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "blockId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockname, rhs: rhsBlockname, with: matcher), lhsBlockname, rhsBlockname, "blockName"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(let lhsCourseid, let lhsCoursename, let lhsBlockid, let lhsBlockname), .m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(let rhsCourseid, let rhsCoursename, let rhsBlockid, let rhsBlockname)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
@@ -4030,6 +4045,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case let .m_courseContentVideosTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseContentAssignmentsTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseVideoClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
+            case let .m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
@@ -4072,6 +4088,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case .m_courseContentVideosTabClicked__courseId_courseIdcourseName_courseName: return ".courseContentVideosTabClicked(courseId:courseName:)"
             case .m_courseContentAssignmentsTabClicked__courseId_courseIdcourseName_courseName: return ".courseContentAssignmentsTabClicked(courseId:courseName:)"
             case .m_courseVideoClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".courseVideoClicked(courseId:courseName:blockId:blockName:)"
+            case .m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".courseAssignmentClicked(courseId:courseName:blockId:blockName:)"
             case .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported: return ".datesComponentTapped(courseId:blockId:link:supported:)"
             case .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action: return ".calendarSyncToggle(enrollmentMode:pacing:courseId:action:)"
             case .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action: return ".calendarSyncDialogAction(enrollmentMode:pacing:courseId:dialog:action:)"
@@ -4128,6 +4145,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         public static func courseContentVideosTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseContentVideosTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseContentAssignmentsTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseContentAssignmentsTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseVideoClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_courseVideoClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
+        public static func courseAssignmentClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
         public static func datesComponentTapped(courseId: Parameter<String>, blockId: Parameter<String>, link: Parameter<String>, supported: Parameter<Bool>) -> Verify { return Verify(method: .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(`courseId`, `blockId`, `link`, `supported`))}
         public static func calendarSyncToggle(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, action: Parameter<CalendarDialogueAction>) -> Verify { return Verify(method: .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(`enrollmentMode`, `pacing`, `courseId`, `action`))}
         public static func calendarSyncDialogAction(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, dialog: Parameter<CalendarDialogueType>, action: Parameter<CalendarDialogueAction>) -> Verify { return Verify(method: .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(`enrollmentMode`, `pacing`, `courseId`, `dialog`, `action`))}
@@ -4211,6 +4229,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         }
         public static func courseVideoClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>, perform: @escaping (String, String, String, String) -> Void) -> Perform {
             return Perform(method: .m_courseVideoClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`), performs: perform)
+        }
+        public static func courseAssignmentClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>, perform: @escaping (String, String, String, String) -> Void) -> Perform {
+            return Perform(method: .m_courseAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`), performs: perform)
         }
         public static func datesComponentTapped(courseId: Parameter<String>, blockId: Parameter<String>, link: Parameter<String>, supported: Parameter<Bool>, perform: @escaping (String, String, String, Bool) -> Void) -> Perform {
             return Perform(method: .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(`courseId`, `blockId`, `link`, `supported`), performs: perform)
@@ -4882,6 +4903,20 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
+    open func getCourseAssignmentBlocks(fullStructure: CourseStructure) -> CourseStructure {
+        addInvocation(.m_getCourseAssignmentBlocks__fullStructure_fullStructure(Parameter<CourseStructure>.value(`fullStructure`)))
+		let perform = methodPerformValue(.m_getCourseAssignmentBlocks__fullStructure_fullStructure(Parameter<CourseStructure>.value(`fullStructure`))) as? (CourseStructure) -> Void
+		perform?(`fullStructure`)
+		var __value: CourseStructure
+		do {
+		    __value = try methodReturnValue(.m_getCourseAssignmentBlocks__fullStructure_fullStructure(Parameter<CourseStructure>.value(`fullStructure`))).casted()
+		} catch {
+			onFatalFailure("Stub return value not specified for getCourseAssignmentBlocks(fullStructure: CourseStructure). Use given")
+			Failure("Stub return value not specified for getCourseAssignmentBlocks(fullStructure: CourseStructure). Use given")
+		}
+		return __value
+    }
+
     open func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
         addInvocation(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`)))
 		let perform = methodPerformValue(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
@@ -5068,10 +5103,43 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
+    open func getCourseProgress(courseID: String) throws -> CourseProgressDetails {
+        addInvocation(.m_getCourseProgress__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getCourseProgress__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseProgressDetails
+		do {
+		    __value = try methodReturnValue(.m_getCourseProgress__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getCourseProgress(courseID: String). Use given")
+			Failure("Stub return value not specified for getCourseProgress(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+    open func getCourseProgressOffline(courseID: String) throws -> CourseProgressDetails {
+        addInvocation(.m_getCourseProgressOffline__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getCourseProgressOffline__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseProgressDetails
+		do {
+		    __value = try methodReturnValue(.m_getCourseProgressOffline__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getCourseProgressOffline(courseID: String). Use given")
+			Failure("Stub return value not specified for getCourseProgressOffline(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_getCourseBlocks__courseID_courseID(Parameter<String>)
         case m_getCourseVideoBlocks__fullStructure_fullStructure(Parameter<CourseStructure>)
+        case m_getCourseAssignmentBlocks__fullStructure_fullStructure(Parameter<CourseStructure>)
         case m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>)
         case m_getSequentialsContainsBlocks__blockIds_blockIdscourseID_courseID(Parameter<[String]>, Parameter<String>)
         case m_blockCompletionRequest__courseID_courseIDblockID_blockID(Parameter<String>, Parameter<String>)
@@ -5085,6 +5153,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         case m_updateLocalVideoProgress__blockID_blockIDprogress_progress(Parameter<String>, Parameter<Double>)
         case m_loadLocalVideoProgress__blockID_blockID(Parameter<String>)
         case m_enrichCourseStructureWithLocalProgress__structure(Parameter<CourseStructure>)
+        case m_getCourseProgress__courseID_courseID(Parameter<String>)
+        case m_getCourseProgressOffline__courseID_courseID(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -5094,6 +5164,11 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_getCourseVideoBlocks__fullStructure_fullStructure(let lhsFullstructure), .m_getCourseVideoBlocks__fullStructure_fullStructure(let rhsFullstructure)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFullstructure, rhs: rhsFullstructure, with: matcher), lhsFullstructure, rhsFullstructure, "fullStructure"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getCourseAssignmentBlocks__fullStructure_fullStructure(let lhsFullstructure), .m_getCourseAssignmentBlocks__fullStructure_fullStructure(let rhsFullstructure)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFullstructure, rhs: rhsFullstructure, with: matcher), lhsFullstructure, rhsFullstructure, "fullStructure"))
 				return Matcher.ComparisonResult(results)
@@ -5166,6 +5241,16 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsStructure, rhs: rhsStructure, with: matcher), lhsStructure, rhsStructure, "_ structure"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_getCourseProgress__courseID_courseID(let lhsCourseid), .m_getCourseProgress__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getCourseProgressOffline__courseID_courseID(let lhsCourseid), .m_getCourseProgressOffline__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -5174,6 +5259,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             switch self {
             case let .m_getCourseBlocks__courseID_courseID(p0): return p0.intValue
             case let .m_getCourseVideoBlocks__fullStructure_fullStructure(p0): return p0.intValue
+            case let .m_getCourseAssignmentBlocks__fullStructure_fullStructure(p0): return p0.intValue
             case let .m_getLoadedCourseBlocks__courseID_courseID(p0): return p0.intValue
             case let .m_getSequentialsContainsBlocks__blockIds_blockIdscourseID_courseID(p0, p1): return p0.intValue + p1.intValue
             case let .m_blockCompletionRequest__courseID_courseIDblockID_blockID(p0, p1): return p0.intValue + p1.intValue
@@ -5187,12 +5273,15 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case let .m_updateLocalVideoProgress__blockID_blockIDprogress_progress(p0, p1): return p0.intValue + p1.intValue
             case let .m_loadLocalVideoProgress__blockID_blockID(p0): return p0.intValue
             case let .m_enrichCourseStructureWithLocalProgress__structure(p0): return p0.intValue
+            case let .m_getCourseProgress__courseID_courseID(p0): return p0.intValue
+            case let .m_getCourseProgressOffline__courseID_courseID(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_getCourseBlocks__courseID_courseID: return ".getCourseBlocks(courseID:)"
             case .m_getCourseVideoBlocks__fullStructure_fullStructure: return ".getCourseVideoBlocks(fullStructure:)"
+            case .m_getCourseAssignmentBlocks__fullStructure_fullStructure: return ".getCourseAssignmentBlocks(fullStructure:)"
             case .m_getLoadedCourseBlocks__courseID_courseID: return ".getLoadedCourseBlocks(courseID:)"
             case .m_getSequentialsContainsBlocks__blockIds_blockIdscourseID_courseID: return ".getSequentialsContainsBlocks(blockIds:courseID:)"
             case .m_blockCompletionRequest__courseID_courseIDblockID_blockID: return ".blockCompletionRequest(courseID:blockID:)"
@@ -5206,6 +5295,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case .m_updateLocalVideoProgress__blockID_blockIDprogress_progress: return ".updateLocalVideoProgress(blockID:progress:)"
             case .m_loadLocalVideoProgress__blockID_blockID: return ".loadLocalVideoProgress(blockID:)"
             case .m_enrichCourseStructureWithLocalProgress__structure: return ".enrichCourseStructureWithLocalProgress(_:)"
+            case .m_getCourseProgress__courseID_courseID: return ".getCourseProgress(courseID:)"
+            case .m_getCourseProgressOffline__courseID_courseID: return ".getCourseProgressOffline(courseID:)"
             }
         }
     }
@@ -5224,6 +5315,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willReturn: CourseStructure...) -> MethodStub {
             return Given(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCourseAssignmentBlocks(fullStructure: Parameter<CourseStructure>, willReturn: CourseStructure...) -> MethodStub {
+            return Given(method: .m_getCourseAssignmentBlocks__fullStructure_fullStructure(`fullStructure`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getLoadedCourseBlocks(courseID: Parameter<String>, willReturn: CourseStructure...) -> MethodStub {
             return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
@@ -5255,9 +5349,22 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func enrichCourseStructureWithLocalProgress(_ structure: Parameter<CourseStructure>, willReturn: CourseStructure...) -> MethodStub {
             return Given(method: .m_enrichCourseStructureWithLocalProgress__structure(`structure`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
+        public static func getCourseProgress(courseID: Parameter<String>, willReturn: CourseProgressDetails...) -> MethodStub {
+            return Given(method: .m_getCourseProgress__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCourseProgressOffline(courseID: Parameter<String>, willReturn: CourseProgressDetails...) -> MethodStub {
+            return Given(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willProduce: (Stubber<CourseStructure>) -> Void) -> MethodStub {
             let willReturn: [CourseStructure] = []
 			let given: Given = { return Given(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (CourseStructure).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getCourseAssignmentBlocks(fullStructure: Parameter<CourseStructure>, willProduce: (Stubber<CourseStructure>) -> Void) -> MethodStub {
+            let willReturn: [CourseStructure] = []
+			let given: Given = { return Given(method: .m_getCourseAssignmentBlocks__fullStructure_fullStructure(`fullStructure`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (CourseStructure).self)
 			willProduce(stubber)
 			return given
@@ -5386,6 +5493,26 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func getCourseProgress(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getCourseProgress__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getCourseProgress(courseID: Parameter<String>, willProduce: (StubberThrows<CourseProgressDetails>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getCourseProgress__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (CourseProgressDetails).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getCourseProgressOffline(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getCourseProgressOffline(courseID: Parameter<String>, willProduce: (StubberThrows<CourseProgressDetails>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (CourseProgressDetails).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -5393,6 +5520,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 
         public static func getCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseBlocks__courseID_courseID(`courseID`))}
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>) -> Verify { return Verify(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`))}
+        public static func getCourseAssignmentBlocks(fullStructure: Parameter<CourseStructure>) -> Verify { return Verify(method: .m_getCourseAssignmentBlocks__fullStructure_fullStructure(`fullStructure`))}
         public static func getLoadedCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`))}
         public static func getSequentialsContainsBlocks(blockIds: Parameter<[String]>, courseID: Parameter<String>) -> Verify { return Verify(method: .m_getSequentialsContainsBlocks__blockIds_blockIdscourseID_courseID(`blockIds`, `courseID`))}
         public static func blockCompletionRequest(courseID: Parameter<String>, blockID: Parameter<String>) -> Verify { return Verify(method: .m_blockCompletionRequest__courseID_courseIDblockID_blockID(`courseID`, `blockID`))}
@@ -5406,6 +5534,8 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func updateLocalVideoProgress(blockID: Parameter<String>, progress: Parameter<Double>) -> Verify { return Verify(method: .m_updateLocalVideoProgress__blockID_blockIDprogress_progress(`blockID`, `progress`))}
         public static func loadLocalVideoProgress(blockID: Parameter<String>) -> Verify { return Verify(method: .m_loadLocalVideoProgress__blockID_blockID(`blockID`))}
         public static func enrichCourseStructureWithLocalProgress(_ structure: Parameter<CourseStructure>) -> Verify { return Verify(method: .m_enrichCourseStructureWithLocalProgress__structure(`structure`))}
+        public static func getCourseProgress(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseProgress__courseID_courseID(`courseID`))}
+        public static func getCourseProgressOffline(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`))}
     }
 
     public struct Perform {
@@ -5417,6 +5547,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, perform: @escaping (CourseStructure) -> Void) -> Perform {
             return Perform(method: .m_getCourseVideoBlocks__fullStructure_fullStructure(`fullStructure`), performs: perform)
+        }
+        public static func getCourseAssignmentBlocks(fullStructure: Parameter<CourseStructure>, perform: @escaping (CourseStructure) -> Void) -> Perform {
+            return Perform(method: .m_getCourseAssignmentBlocks__fullStructure_fullStructure(`fullStructure`), performs: perform)
         }
         public static func getLoadedCourseBlocks(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), performs: perform)
@@ -5456,6 +5589,12 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func enrichCourseStructureWithLocalProgress(_ structure: Parameter<CourseStructure>, perform: @escaping (CourseStructure) -> Void) -> Perform {
             return Perform(method: .m_enrichCourseStructureWithLocalProgress__structure(`structure`), performs: perform)
+        }
+        public static func getCourseProgress(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseProgress__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func getCourseProgressOffline(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`), performs: perform)
         }
     }
 
