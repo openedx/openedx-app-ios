@@ -176,3 +176,5 @@
 "ASSIGNMENT_STATUS.NOT_YET_AVAILABLE" = "%@ Not Yet Available";
 "ASSIGNMENT_STATUS.IN_PROGRESS" = "%@ In Progress - %@/%@ points";
 "ASSIGNMENT_STATUS.DUE_WITH_DATE" = "%@ %@";
+
+"ASSIGNMENT.REVIEW_GRADING_POLICY" = "Review Course Grading Policy";

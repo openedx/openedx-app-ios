@@ -38,6 +38,10 @@ public enum CourseLocalization {
     /// Warning
     public static let warning = CourseLocalization.tr("Localizable", "ALERT.WARNING", fallback: "Warning")
   }
+  public enum Assignment {
+    /// Review Course Grading Policy
+    public static let reviewGradingPolicy = CourseLocalization.tr("Localizable", "ASSIGNMENT.REVIEW_GRADING_POLICY", fallback: "Review Course Grading Policy")
+  }
   public enum AssignmentStatus {
     /// %@ Complete - %@/%@ points
     public static func complete(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
