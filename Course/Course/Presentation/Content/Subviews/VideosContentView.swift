@@ -48,6 +48,8 @@ struct VideosContentView: View {
                         viewModel.errorMessage = nil
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(CourseLocalization.Accessibility.errorMessageSection)
             }
             
             ZStack(alignment: .center) {
@@ -59,6 +61,8 @@ struct VideosContentView: View {
                             .padding(.horizontal)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(CourseLocalization.Accessibility.loadingSection)
                 } else {
                     VStack(alignment: .leading) {
                         if let courseVideosStructure = viewModel.courseVideosStructure {
@@ -77,6 +81,13 @@ struct VideosContentView: View {
                                     }
                                 )
                                 .padding(.horizontal, 24)
+                                .accessibilityElement(children: .combine)
+                                .accessibilityLabel(
+                                    CourseLocalization.Accessibility.videoProgressSection(
+                                        progress.assignmentsCompleted ?? 0,
+                                        progress.totalAssignmentsCount ?? 0
+                                    )
+                                )
                             }
                             
                             Spacer(minLength: 16)
@@ -88,6 +99,8 @@ struct VideosContentView: View {
                                     type: .video,
                                     action: { viewModel.selection = CourseTab.course.id }
                                 )
+                                .accessibilityElement(children: .combine)
+                                .accessibilityLabel(CourseLocalization.Accessibility.noContentSection)
                             } else {
                                 ScrollView {
                                     LazyVStack(alignment: .leading, spacing: 16) {
@@ -112,6 +125,8 @@ struct VideosContentView: View {
                                     .id("video_list_\(viewModel.videoProgressUpdateTrigger)")
                                     .animation(.default, value: isShowingCompletedVideos)
                                 }
+                                .accessibilityElement(children: .contain)
+                                .accessibilityLabel(CourseLocalization.Accessibility.videosSection)
                             }
                         }
                         

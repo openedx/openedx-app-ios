@@ -178,3 +178,15 @@
 "ASSIGNMENT_STATUS.DUE_WITH_DATE" = "%@ %@";
 
 "ASSIGNMENT.REVIEW_GRADING_POLICY" = "Review Course Grading Policy";
+
+// MARK: - Accessibility Labels
+"ACCESSIBILITY.COURSE_PROGRESS_SECTION" = "Course progress section";
+"ACCESSIBILITY.CONTINUE_LEARNING_SECTION" = "Continue learning section";
+"ACCESSIBILITY.COURSE_CONTENT_SECTION" = "Course content section";
+"ACCESSIBILITY.ERROR_MESSAGE_SECTION" = "Error message section";
+"ACCESSIBILITY.LOADING_SECTION" = "Loading section";
+"ACCESSIBILITY.VIDEOS_SECTION" = "Videos section";
+"ACCESSIBILITY.VIDEO_PROGRESS_SECTION" = "Video progress %@ of %@ Completed. Tap to show or hide completed videos.";
+"ACCESSIBILITY.ASSIGNMENTS_SECTION" = "Assignments section";
+"ACCESSIBILITY.ASSIGNMENT_PROGRESS_SECTION" = "Assignment progress section";
+"ACCESSIBILITY.NO_CONTENT_SECTION" = "No content available section";

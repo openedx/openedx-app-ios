@@ -51,6 +51,8 @@ struct AllContentView: View {
                             viewModel.errorMessage = nil
                         }
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(CourseLocalization.Accessibility.errorMessageSection)
                 }
                 
                 ZStack(alignment: .center) {
@@ -62,6 +64,8 @@ struct AllContentView: View {
                                 .padding(.horizontal)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(CourseLocalization.Accessibility.loadingSection)
                     } else {
                         VStack(alignment: .leading) {
                             if let course = viewModel.courseStructure {
@@ -72,6 +76,8 @@ struct AllContentView: View {
                                    let total = progress.totalAssignmentsCount, total > 0 {
                                     CourseProgressView(progress: progress)
                                         .padding(.horizontal, 24)
+                                        .accessibilityElement(children: .combine)
+                                        .accessibilityLabel(CourseLocalization.Accessibility.courseProgressSection)
                                     Spacer(minLength: 16)
                                 }
                                 
@@ -88,6 +94,8 @@ struct AllContentView: View {
                                     ) {
                                         viewModel.openLastVisitedBlock()
                                     }
+                                    .accessibilityElement(children: .combine)
+                                    .accessibilityLabel(CourseLocalization.Accessibility.continueLearningSection)
                                 }
                                 
                                 // MARK: - Sections
@@ -96,6 +104,8 @@ struct AllContentView: View {
                                     proxy: proxy,
                                     viewModel: viewModel
                                 )
+                                .accessibilityElement(children: .contain)
+                                .accessibilityLabel(CourseLocalization.Accessibility.courseContentSection)
                                 
                             } else {
                                 if let courseStart = viewModel.courseStart {

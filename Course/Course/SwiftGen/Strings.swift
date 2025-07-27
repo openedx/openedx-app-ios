@@ -19,12 +19,34 @@ public enum CourseLocalization {
     return CourseLocalization.tr("Localizable", "past_due", p1, fallback: "Plural format key: \"%#@past_due@\"")
   }
   public enum Accessibility {
+    /// Assignment progress section
+    public static let assignmentProgressSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_PROGRESS_SECTION", fallback: "Assignment progress section")
+    /// Assignments section
+    public static let assignmentsSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENTS_SECTION", fallback: "Assignments section")
     /// Cancel download
     public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
+    /// Continue learning section
+    public static let continueLearningSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CONTINUE_LEARNING_SECTION", fallback: "Continue learning section")
+    /// Course content section
+    public static let courseContentSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.COURSE_CONTENT_SECTION", fallback: "Course content section")
+    /// Course progress section
+    public static let courseProgressSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.COURSE_PROGRESS_SECTION", fallback: "Course progress section")
     /// Delete download
     public static let deleteDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DELETE_DOWNLOAD", fallback: "Delete download")
     /// Download
     public static let download = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DOWNLOAD", fallback: "Download")
+    /// Error message section
+    public static let errorMessageSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ERROR_MESSAGE_SECTION", fallback: "Error message section")
+    /// Loading section
+    public static let loadingSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.LOADING_SECTION", fallback: "Loading section")
+    /// No content available section
+    public static let noContentSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.NO_CONTENT_SECTION", fallback: "No content available section")
+    /// Video progress %@ of %@ Completed. Tap to show or hide completed videos.
+    public static func videoProgressSection(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PROGRESS_SECTION", String(describing: p1), String(describing: p2), fallback: "Video progress %@ of %@ Completed. Tap to show or hide completed videos.")
+    }
+    /// Videos section
+    public static let videosSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEOS_SECTION", fallback: "Videos section")
   }
   public enum Alert {
     /// Are you sure you want to delete all video(s) for

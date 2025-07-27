@@ -84,6 +84,8 @@ struct AssignmentsContentView: View {
                         viewModel.errorMessage = nil
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(CourseLocalization.Accessibility.errorMessageSection)
             }
             
             ZStack(alignment: .center) {
@@ -95,6 +97,8 @@ struct AssignmentsContentView: View {
                             .padding(.horizontal)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(CourseLocalization.Accessibility.loadingSection)
                 } else {
                     VStack(alignment: .leading) {
                         if viewModel.courseAssignmentsStructure != nil {
@@ -117,6 +121,8 @@ struct AssignmentsContentView: View {
                                 )
                                 .padding(.horizontal, 24)
                                 .accessibilityIdentifier("assignments_overall_progress")
+                                .accessibilityElement(children: .combine)
+                                .accessibilityLabel(CourseLocalization.Accessibility.assignmentProgressSection)
                             }
                             
                             Spacer(minLength: 16)
@@ -129,6 +135,8 @@ struct AssignmentsContentView: View {
                                     action: { viewModel.selection = CourseTab.course.id }
                                 )
                                 .accessibilityIdentifier("no_assignments_available")
+                                .accessibilityElement(children: .combine)
+                                .accessibilityLabel(CourseLocalization.Accessibility.noContentSection)
                             } else {
                                 ScrollView {
                                     LazyVStack(alignment: .leading, spacing: 32) {
@@ -178,6 +186,10 @@ struct AssignmentsContentView: View {
                                                     proxy: proxy
                                                 )
                                             }
+                                            .accessibilityElement(children: .contain)
+                                            .accessibilityLabel(
+                                                "\(section.key) \(CourseLocalization.Accessibility.assignmentsSection)"
+                                            )
                                         }
                                     }
                                 }
