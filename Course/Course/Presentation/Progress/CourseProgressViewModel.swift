@@ -153,7 +153,7 @@ public class CourseProgressViewModel: ObservableObject {
         let colorIndex = index % courseProgress.gradingPolicy.assignmentColors.count
         let hexColor = courseProgress.gradingPolicy.assignmentColors[colorIndex]
         
-        return Color(hex: hexColor) ?? Theme.Colors.textSecondary
+        return Color(hex: hexColor) ?? Theme.Colors.accentColor
     }
     
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {
