@@ -11,22 +11,6 @@ import OEXFoundation
 import Kingfisher
 import Theme
 
-private func colorFromHex(_ hex: String) -> Color {
-    let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-    var int: UInt64 = 0
-    Scanner(string: hex).scanHexInt64(&int)
-    let r, g, b: UInt64
-    switch hex.count {
-    case 3: // RGB (12-bit)
-        (r, g, b) = ((int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-    case 6: // RGB (24-bit)
-        (r, g, b) = (int >> 16, int >> 8 & 0xFF, int & 0xFF)
-    default:
-        (r, g, b) = (102, 102, 102) // Default gray color
-    }
-    return Color(red: Double(r) / 255, green: Double(g) / 255, blue: Double(b) / 255)
-}
-
 struct AssignmentsContentView: View {
     
     @StateObject private var viewModel: CourseContainerViewModel
@@ -153,10 +137,10 @@ struct AssignmentsContentView: View {
                                                     
                                                     Spacer()
                                                     
-                                                    let weightColor = colorFromHex(
-                                                        viewModel.assignmentTypeColor(for: section.key)
+                                                    let weightColor = Color(
+                                                        hex: viewModel.assignmentTypeColor(for: section.key)
                                                         ?? "#666666"
-                                                    )
+                                                    ) ?? Color.accentColor
                                                     
                                                     Text("\(Int(section.weight * 100))% of Grade")
                                                         .font(Theme.Fonts.bodySmall)
