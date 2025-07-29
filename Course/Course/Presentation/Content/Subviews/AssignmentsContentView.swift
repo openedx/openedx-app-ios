@@ -215,11 +215,6 @@ struct AssignmentsContentView: View {
         .task {
             await viewModel.updateCourseIfNeeded(courseID: courseID)
         }
-        .onAppear {
-            Task {
-                await viewModel.forceUpdateIfNeeded(courseID: courseID)
-            }
-        }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
     }

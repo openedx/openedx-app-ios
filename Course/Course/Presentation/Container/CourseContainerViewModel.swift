@@ -89,7 +89,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var videoProgressUpdateTrigger: UUID = UUID()
     @Published var assignmentProgressUpdateTrigger: UUID = UUID()
     @Published private(set) var assignmentSectionsData: [AssignmentSection] = []
-    private var lastCourseDataUpdate: Date = Date()
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
@@ -168,15 +167,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     
     func updateCourseIfNeeded(courseID: String) async {
         if updateCourseProgress {
-            await getCourseBlocks(courseID: courseID, withProgress: false)
-            updateCourseProgress = false
-        }
-    }
-    
-    func forceUpdateIfNeeded(courseID: String) async {
-        let timeSinceLastUpdate = Date().timeIntervalSince(lastCourseDataUpdate)
-        if updateCourseProgress || timeSinceLastUpdate > 5.0 {
-            await getCourseBlocks(courseID: courseID, withProgress: false)
+            await getCourseBlocks(courseID: courseID, withProgress: true)
             updateCourseProgress = false
         }
     }
@@ -234,8 +225,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             self.courseStructure = courseStructure
             self.courseProgressDetails = courseProgress
             
-            lastCourseDataUpdate = Date()
-
             if isInternetAvaliable {
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
                 if let courseStructure {
