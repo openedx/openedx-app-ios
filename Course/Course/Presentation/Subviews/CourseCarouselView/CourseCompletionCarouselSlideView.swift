@@ -111,7 +111,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                             let continueUnit = sequential.childs[continueWith.verticalIndex]
                             VStack {
                                 HStack {
-                                    Text("\(sequential.displayName)")
+                                    Text("\(chapter.displayName)")
                                         .font(Theme.Fonts.titleMedium)
                                         .foregroundColor(Theme.Colors.textPrimary)
 
@@ -128,7 +128,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                         .resizable()
                                         .frame(width: 20, height: 20)
 
-                                    Text(continueUnit.displayName)
+                                    Text(sequential.displayName)
                                         .font(Theme.Fonts.titleSmall)
                                         .multilineTextAlignment(.leading)
                                         .lineLimit(1)

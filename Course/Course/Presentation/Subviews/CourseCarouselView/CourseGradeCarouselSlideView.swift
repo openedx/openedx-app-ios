@@ -81,7 +81,7 @@ struct CourseGradeCarouselSlideView: View {
 
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(
-                Array(viewModelProgress.assignmentPolicies.prefix(3).enumerated()),
+                Array(viewModelProgress.assignmentPolicies.prefix(4).enumerated()),
                 id: \.element.type
             ) { index, policy in
                 let progressData = viewModelProgress.getAssignmentProgress(for: policy.type)
@@ -109,7 +109,6 @@ struct CourseGradeCarouselSlideView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
                 .multilineTextAlignment(.center)
         }
-        .padding(32)
         .frame(maxWidth: .infinity)
         .accessibilityElement(children: .combine)
     }
