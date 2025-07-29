@@ -43,7 +43,7 @@ struct ProgressAssignmentTypeSection: View {
             CourseProgressView(
                 progress: CourseProgress(totalAssignmentsCount: totalCount,
                                           assignmentsCompleted: completedCount),
-                showCompletedToggle: completedCount >= 1 || completedCount == totalCount,
+                showCompletedToggle: completedCount == totalCount,
                 isShowingCompleted: isShowingCompletedAssignments,
                 onToggleCompleted: { isShowingCompletedAssignments.toggle() }
             )
