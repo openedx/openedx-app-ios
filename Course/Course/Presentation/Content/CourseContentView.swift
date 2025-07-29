@@ -18,7 +18,6 @@ public struct CourseContentView: View {
     private let title: String
     private let courseID: String
     
-    @State private var runOnce: Bool = false
     @State private var selectedTab: ContentTab = .all
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat

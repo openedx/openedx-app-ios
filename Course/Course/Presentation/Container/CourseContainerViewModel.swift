@@ -1473,4 +1473,27 @@ public struct VerticalsDownloadState: Hashable, Sendable {
         vertical.childs.filter { $0.isDownloadable && $0.type == .video }
     }
 }
+
+extension CourseContainerViewModel {
+    static var mock: CourseContainerViewModel {
+        CourseContainerViewModel(
+            interactor: CourseInteractor.mock,
+            authInteractor: AuthInteractor.mock,
+            router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
+            config: ConfigMock(),
+            connectivity: Connectivity(),
+            manager: DownloadManagerMock(),
+            storage: CourseStorageMock(),
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: Date(),
+            enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+        )
+    }
+}
 //swiftlint:enable type_body_length file_length

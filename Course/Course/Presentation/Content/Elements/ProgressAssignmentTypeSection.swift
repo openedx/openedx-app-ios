@@ -209,27 +209,4 @@ struct ProgressAssignmentTypeSection: View {
     }
     .padding()
 }
-
-extension CourseContainerViewModel {
-    static var mock: CourseContainerViewModel {
-        CourseContainerViewModel(
-            interactor: CourseInteractor.mock,
-            authInteractor: AuthInteractor.mock,
-            router: CourseRouterMock(),
-            analytics: CourseAnalyticsMock(),
-            config: ConfigMock(),
-            connectivity: Connectivity(),
-            manager: DownloadManagerMock(),
-            storage: CourseStorageMock(),
-            isActive: true,
-            courseStart: Date(),
-            courseEnd: nil,
-            enrollmentStart: Date(),
-            enrollmentEnd: nil,
-            lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
-        )
-    }
-}
 #endif

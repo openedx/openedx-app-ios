@@ -70,7 +70,9 @@ struct VideoSectionView: View {
                     if canDownloadSection,
                        let state = downloadButtonState {
                         Button(action: {
-                            downloadSection(state: state)
+                            Task {
+                                await viewModel.onDownloadViewTap(chapter: chapter, state: state)
+                            }
                         }) {
                             switch state {
                             case .available:
@@ -174,12 +176,6 @@ struct VideoSectionView: View {
             }
         }
         return nil
-    }
-    
-    private func downloadSection(state: DownloadViewState) {
-        Task {
-            await viewModel.onDownloadViewTap(chapter: chapter, state: state)
-        }
     }
 }
 

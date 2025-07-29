@@ -31,7 +31,7 @@ struct VideoThumbnailView: View, Equatable {
         // First priority: YouTube thumbnail
         if let youtubeVideo = video.encodedVideo?.youtube,
            let youtubeURL = youtubeVideo.url,
-           let videoID = extractYouTubeVideoID(from: youtubeURL) {
+           let videoID = youtubeURL.youtubeVideoID() {
             return URL(string: "https://img.youtube.com/vi/\(videoID)/hqdefault.jpg")
         }
         
@@ -281,21 +281,6 @@ struct VideoThumbnailView: View, Equatable {
                 continuation.resume(returning: image)
             }
         }
-    }
-    
-    private func extractYouTubeVideoID(from urlString: String) -> String? {
-        guard let url = URL(string: urlString) else { return nil }
-        
-        if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
-            return queryItems.first(where: { $0.name == "v" })?.value
-        }
-        
-        // Handle youtu.be format
-        if url.host == "youtu.be" {
-            return url.lastPathComponent
-        }
-        
-        return nil
     }
     
     private func openVideo() {

@@ -25,6 +25,10 @@ struct AssignmentCardSmallView: View {
         return subsectionUI.status
     }
     
+    private var cardID: String {
+        "\(index)-\(isSelected)-\(viewModel.assignmentProgressUpdateTrigger)"
+    }
+    
     private var assignmentShortName: String {
         if !subsectionUI.shortLabel.isEmpty {
             return viewModel.clearShortLabel(subsectionUI.shortLabel)
@@ -115,7 +119,7 @@ struct AssignmentCardSmallView: View {
             }
         }
         .buttonStyle(PlainButtonStyle())
-        .id("\(index)-\(isSelected)-\(viewModel.assignmentProgressUpdateTrigger)")
+        .id(cardID)
             
             // MARK: Selection pointer
             CoreAssets.pointer.swiftUIImage
