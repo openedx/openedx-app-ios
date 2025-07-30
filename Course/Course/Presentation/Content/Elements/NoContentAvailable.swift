@@ -40,7 +40,7 @@ struct NoContentAvailable: View {
                 .multilineTextAlignment(.center)
             
             StyledButton(
-                "Return to Course Home",
+                CourseLocalization.Course.returnToHome,
                 action: action,
                 iconImage: CoreAssets.arrowLeft.swiftUIImage,
                 iconPosition: .left

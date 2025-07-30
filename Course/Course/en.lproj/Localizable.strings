@@ -160,6 +160,7 @@
 
 "COURSE.OFFLINE.YOU_CAN_DOWNLOAD" = "You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.";
 "COURSE.OFFLINE.YOU_CANT_DOWNLOAD" = "None of this course's content is currently available to download offline.";
+"COURSE.RETURN_TO_HOME" = "Return to Course Home";
 
 "OFFLINE.NOT_DOWNLOADED.TITLE" = "This component is not downloaded";
 "OFFLINE.NOT_DOWNLOADED.DESCRIPTION" = "Explore other parts of this course or download this when you reconnect.";
@@ -178,6 +179,7 @@
 "ASSIGNMENT_STATUS.DUE_WITH_DATE" = "%@ %@";
 
 "ASSIGNMENT.REVIEW_GRADING_POLICY" = "Review Course Grading Policy";
+"ASSIGNMENT.UNKNOWN_SEQUENCE" = "Unknown";
 
 // MARK: - Accessibility Labels
 "ACCESSIBILITY.COURSE_PROGRESS_SECTION" = "Course progress section";

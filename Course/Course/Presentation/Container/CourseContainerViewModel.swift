@@ -217,57 +217,65 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         
         isShowProgress = withProgress
         isShowRefresh = !withProgress
+        
+        async let structureTask = getCourseStructure(courseID: courseID)
+        async let progressTask: CourseProgressDetails? = {
+            do {
+                if await isInternetAvaliable {
+                    return try await interactor.getCourseProgress(courseID: courseID)
+                } else {
+                    return try await interactor.getCourseProgressOffline(courseID: courseID)
+                }
+            } catch {
+                debugLog("Failed to load course progress: \(error.localizedDescription)")
+                return nil
+            }
+        }()
+        
         do {
-            let courseStructure = try await getCourseStructure(courseID: courseID)
+            guard let courseStructure = try await structureTask else {
+                throw NSError(
+                    domain: "GetCourseBlocks",
+                    code: 0,
+                    userInfo: [NSLocalizedDescriptionKey: "Course structure is nil"]
+                )
+            }
+            
+            self.courseStructure = courseStructure
             courseHelper.courseStructure = courseStructure
             await courseHelper.refreshValue()
             update(from: courseHelper.value ?? .empty)
-            self.courseStructure = courseStructure
             
-            // Try to fetch course progress with fallback to offline/cached version
-            do {
-                if isInternetAvaliable {
-                    let courseProgress = try await interactor.getCourseProgress(courseID: courseID)
-                    self.courseProgressDetails = courseProgress
-                } else {
-                    let courseProgress = try await interactor.getCourseProgressOffline(courseID: courseID)
-                    self.courseProgressDetails = courseProgress
-                }
-            } catch {
-                // If course progress fails (offline with no cached data), continue without it
-                debugLog("Failed to load course progress: \(error.localizedDescription)")
-                self.courseProgressDetails = nil
-            }
+            // progress may still be downloading; assign when ready
+            self.courseProgressDetails = await progressTask
+            
+            async let videosTask = interactor.getCourseVideoBlocks(fullStructure: courseStructure)
+            async let assignmentsTask = interactor.getCourseAssignmentBlocks(fullStructure: courseStructure)
+            
+            courseVideosStructure = await videosTask
+            courseAssignmentsStructure = await assignmentsTask
+            updateAssignmentSections()
             
             if isInternetAvaliable {
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)
-                if let courseStructure {
-                    try await getResumeBlock(
-                        courseID: courseID,
-                        courseStructure: courseStructure
-                    )
-                }
+                try? await getResumeBlock(courseID: courseID, courseStructure: courseStructure)
             }
-            courseVideosStructure = await interactor.getCourseVideoBlocks(fullStructure: courseStructure!)
-            courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: courseStructure!)
-            updateAssignmentSections()
             
             if expandedSections.isEmpty {
                 initializeExpandedSections()
             }
             
-            isShowProgress = false
-            isShowRefresh = false
-            
         } catch {
-            isShowProgress = false
-            isShowRefresh = false
+            // Critical failure (no structure) — wipe everything
+            debugLog("Failed to load course blocks: \(error.localizedDescription)")
             courseStructure = nil
             courseVideosStructure = nil
             courseAssignmentsStructure = nil
             courseProgressDetails = nil
             assignmentSectionsData = []
         }
+        isShowProgress = false
+        isShowRefresh = false
     }
     
     @MainActor
@@ -1109,7 +1117,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
 
     @MainActor
     func updateVideoProgress(blockID: String, progress: Double) async {
-        
         if let courseStructure = courseStructure {
             let updatedStructure = updateBlockProgress(in: courseStructure, blockID: blockID, progress: progress)
             self.courseStructure = updatedStructure
@@ -1127,7 +1134,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     
     @MainActor
     func updateAssignmentProgress(blockID: String, progress: Double) async {
-        
         if let courseStructure = courseStructure {
             let updatedStructure = updateBlockProgress(in: courseStructure, blockID: blockID, progress: progress)
             self.courseStructure = updatedStructure
@@ -1469,7 +1475,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     func getAssignmentSequenceName(for subsection: CourseProgressSubsection) -> String {
         // Trying to find Sequence Name from Course Structure
         guard let courseStructure = courseStructure else {
-            return "Sequence Name"
+            return CourseLocalization.Assignment.unknownSequence
         }
         
         // Looking for a block in the structure of the course

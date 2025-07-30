@@ -63,6 +63,8 @@ public enum CourseLocalization {
   public enum Assignment {
     /// Review Course Grading Policy
     public static let reviewGradingPolicy = CourseLocalization.tr("Localizable", "ASSIGNMENT.REVIEW_GRADING_POLICY", fallback: "Review Course Grading Policy")
+    /// Unknown
+    public static let unknownSequence = CourseLocalization.tr("Localizable", "ASSIGNMENT.UNKNOWN_SEQUENCE", fallback: "Unknown")
   }
   public enum AssignmentStatus {
     /// %@ Complete - %@/%@ points
@@ -141,6 +143,8 @@ public enum CourseLocalization {
     public static func progressWatched(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_WATCHED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Watched")
     }
+    /// Return to Course Home
+    public static let returnToHome = CourseLocalization.tr("Localizable", "COURSE.RETURN_TO_HOME", fallback: "Return to Course Home")
     public enum LargestDownloads {
       /// Done
       public static let done = CourseLocalization.tr("Localizable", "COURSE.LARGEST_DOWNLOADS.DONE", fallback: "Done")
