@@ -126,6 +126,7 @@
 		CEBCA4342CC13CDE00076589 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA4332CC13CDE00076589 /* YouTubePlayerKit */; };
 		CECF38342E3A4BB100184EC4 /* VideoContentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF38322E3A4BB100184EC4 /* VideoContentData.swift */; };
 		CECF38362E3A545B00184EC4 /* AssignmentContentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF38352E3A545B00184EC4 /* AssignmentContentData.swift */; };
+		CECF38382E3A73C200184EC4 /* VideoThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF38372E3A73C200184EC4 /* VideoThumbnailService.swift */; };
 		DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */; };
 		DB7D6EAC2ADFCAC50036BB13 /* CourseDatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */; };
 		DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */; };
@@ -288,6 +289,7 @@
 		CEAB6C3D2E1D3B3900E8E800 /* AssignmentCardStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCardStatus.swift; sourceTree = "<group>"; };
 		CECF38322E3A4BB100184EC4 /* VideoContentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoContentData.swift; sourceTree = "<group>"; };
 		CECF38352E3A545B00184EC4 /* AssignmentContentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentContentData.swift; sourceTree = "<group>"; };
+		CECF38372E3A73C200184EC4 /* VideoThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailService.swift; sourceTree = "<group>"; };
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
 		DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDatesView.swift; sourceTree = "<group>"; };
 		DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesViewModel.swift; sourceTree = "<group>"; };
@@ -409,6 +411,7 @@
 			children = (
 				070019A328F6EFC100D5FC78 /* Model */,
 				02B6B3B628E1D11E00232911 /* CourseInteractor.swift */,
+				CECF38372E3A73C200184EC4 /* VideoThumbnailService.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -1070,6 +1073,7 @@
 				0231124F28EDA811002588FB /* CourseUnitViewModel.swift in Sources */,
 				02F0144F28F46474002E513D /* CourseContainerView.swift in Sources */,
 				CE6386642D07215E00C01D69 /* Line.swift in Sources */,
+				CECF38382E3A73C200184EC4 /* VideoThumbnailService.swift in Sources */,
 				CE02086C2E0EC88C005999E2 /* VideosContentView.swift in Sources */,
 				02A8076829474831007F53AB /* CourseVerticalView.swift in Sources */,
 				97E7DF0F2B7C852A00A2A09B /* DatesStatusInfoView.swift in Sources */,
