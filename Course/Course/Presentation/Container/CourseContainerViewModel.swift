@@ -86,7 +86,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
     @Published var expandedSections: [String: Bool] = [:]
     @Published var courseDeadlines: CourseDates?
-    @Published var videoProgressUpdateTrigger: UUID = UUID()
     @Published var assignmentProgressUpdateTrigger: UUID = UUID()
     @Published private(set) var assignmentSectionsData: [AssignmentSection] = []
     
@@ -1052,7 +1051,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         }
         
         objectWillChange.send()
-        videoProgressUpdateTrigger = UUID()
     }
     
     @MainActor

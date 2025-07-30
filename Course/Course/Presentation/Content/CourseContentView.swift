@@ -19,6 +19,16 @@ public struct CourseContentView: View {
     private let courseID: String
     
     @State private var selectedTab: ContentTab = .all
+    private var videoContentData: VideoContentData {
+        VideoContentData(
+            courseVideosStructure: viewModel.courseVideosStructure,
+            courseProgress: viewModel.courseVideosStructure?.courseProgress,
+            sequentialsDownloadState: viewModel.sequentialsDownloadState,
+            isShowProgress: viewModel.isShowProgress,
+            showError: viewModel.showError,
+            errorMessage: viewModel.errorMessage
+        )
+    }
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
@@ -159,12 +169,36 @@ public struct CourseContentView: View {
             )
         case .videos:
             VideosContentView(
-                viewModel: viewModel,
+                videoContentData: videoContentData,
                 proxy: proxy,
-                title: title,
-                courseID: courseID,
-                dateTabIndex: CourseTab.dates.rawValue
+                onVideoTap: { video, chapter in
+                    handleVideoTap(video: video, chapter: chapter)
+                },
+                onDownloadSectionTap: { chapter, state in
+                    await viewModel.onDownloadViewTap(chapter: chapter, state: state)
+                },
+                onTabSelection: { tabId in
+                    viewModel.selection = tabId
+                },
+                onErrorDismiss: {
+                    viewModel.errorMessage = nil
+                }
             )
+            .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in
+                Task {
+                    await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .onVideoProgressUpdated)) { notification in
+                guard let userInfo = notification.userInfo,
+                      let blockID = userInfo["blockID"] as? String,
+                      let progress = userInfo["progress"] as? Double else {
+                    return
+                }
+                Task {
+                    await viewModel.updateVideoProgress(blockID: blockID, progress: progress)
+                }
+            }
         case .assignments:
             AssignmentsContentView(
                 viewModel: viewModel,
@@ -174,6 +208,79 @@ public struct CourseContentView: View {
                 dateTabIndex: CourseTab.dates.rawValue
             )
         }
+    }
+    
+    private func handleVideoTap(video: CourseBlock, chapter: CourseChapter) {
+        // Find indices for navigation using full course structure
+        guard let chapterIndex = findChapterIndexInFullStructure(video: video),
+              let sequentialIndex = findSequentialIndexInFullStructure(video: video),
+              let verticalIndex = findVerticalIndexInFullStructure(video: video),
+              let courseStructure = viewModel.courseStructure else {
+            return
+        }
+        
+        // Track video click analytics
+        viewModel.analytics.courseVideoClicked(
+            courseId: courseStructure.id,
+            courseName: courseStructure.displayName,
+            blockId: video.id,
+            blockName: video.displayName
+        )
+        
+        viewModel.router.showCourseUnit(
+            courseName: courseStructure.displayName,
+            blockId: video.id,
+            courseID: courseStructure.id,
+            verticalIndex: verticalIndex,
+            chapters: courseStructure.childs,
+            chapterIndex: chapterIndex,
+            sequentialIndex: sequentialIndex
+        )
+    }
+    
+    private func findChapterIndexInFullStructure(video: CourseBlock) -> Int? {
+        guard let courseStructure = viewModel.courseStructure else { return nil }
+        
+        // Find the chapter that contains this video in the full structure
+        return courseStructure.childs.firstIndex { fullChapter in
+            fullChapter.childs.contains { sequential in
+                sequential.childs.contains { vertical in
+                    vertical.childs.contains { $0.id == video.id }
+                }
+            }
+        }
+    }
+    
+    private func findSequentialIndexInFullStructure(video: CourseBlock) -> Int? {
+        guard let courseStructure = viewModel.courseStructure else { return nil }
+        
+        // Find the chapter and sequential that contains this video in the full structure
+        for fullChapter in courseStructure.childs {
+            if let sequentialIndex = fullChapter.childs.firstIndex(where: { sequential in
+                sequential.childs.contains { vertical in
+                    vertical.childs.contains { $0.id == video.id }
+                }
+            }) {
+                return sequentialIndex
+            }
+        }
+        return nil
+    }
+    
+    private func findVerticalIndexInFullStructure(video: CourseBlock) -> Int? {
+        guard let courseStructure = viewModel.courseStructure else { return nil }
+        
+        // Find the vertical that contains this video in the full structure
+        for fullChapter in courseStructure.childs {
+            for sequential in fullChapter.childs {
+                if let verticalIndex = sequential.childs.firstIndex(where: { vertical in
+                    vertical.childs.contains { $0.id == video.id }
+                }) {
+                    return verticalIndex
+                }
+            }
+        }
+        return nil
     }
 }
 

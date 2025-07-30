@@ -13,39 +13,42 @@ import Theme
 
 struct VideosContentView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
-    private let title: String
-    private let courseID: String
-    private let dateTabIndex: Int
-    
+    let videoContentData: VideoContentData
     private let proxy: GeometryProxy
+    private let onVideoTap: (CourseBlock, CourseChapter) -> Void
+    private let onDownloadSectionTap: (CourseChapter, DownloadViewState) async -> Void
+    private let onTabSelection: (Int) -> Void
+    private let onErrorDismiss: () -> Void
+    
     @State private var isShowingCompletedVideos: Bool = false
     
     init(
-        viewModel: CourseContainerViewModel,
+        videoContentData: VideoContentData,
         proxy: GeometryProxy,
-        title: String,
-        courseID: String,
-        dateTabIndex: Int
+        onVideoTap: @escaping (CourseBlock, CourseChapter) -> Void,
+        onDownloadSectionTap: @escaping (CourseChapter, DownloadViewState) async -> Void,
+        onTabSelection: @escaping (Int) -> Void,
+        onErrorDismiss: @escaping () -> Void
     ) {
-        self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.videoContentData = videoContentData
         self.proxy = proxy
-        self.courseID = courseID
-        self.dateTabIndex = dateTabIndex
+        self.onVideoTap = onVideoTap
+        self.onDownloadSectionTap = onDownloadSectionTap
+        self.onTabSelection = onTabSelection
+        self.onErrorDismiss = onErrorDismiss
     }
     
     var body: some View {
         VStack(spacing: 0) {
             // MARK: - Error View
-            if viewModel.showError {
+            if videoContentData.showError {
                 VStack {
-                    SnackBarView(message: viewModel.errorMessage)
+                    SnackBarView(message: videoContentData.errorMessage)
                 }
                 .transition(.move(edge: .bottom))
                 .onAppear {
                     doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
+                        onErrorDismiss()
                     }
                 }
                 .accessibilityElement(children: .combine)
@@ -54,7 +57,7 @@ struct VideosContentView: View {
             
             ZStack(alignment: .center) {
                 // MARK: - Page Body
-                if viewModel.isShowProgress && !viewModel.isShowRefresh {
+                if videoContentData.isShowProgress {
                     HStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
                             .padding(.top, 200)
@@ -65,12 +68,12 @@ struct VideosContentView: View {
                     .accessibilityLabel(CourseLocalization.Accessibility.loadingSection)
                 } else {
                     VStack(alignment: .leading) {
-                        if let courseVideosStructure = viewModel.courseVideosStructure {
+                        if let courseVideosStructure = videoContentData.courseVideosStructure {
                             
                             Spacer(minLength: 16)
                             
                             // MARK: Course Progress (only videos)
-                            if let progress = courseVideosStructure.courseProgress,
+                            if let progress = videoContentData.courseProgress,
                                progress.totalAssignmentsCount != 0 {
                                 CourseProgressView(
                                     progress: progress,
@@ -93,11 +96,11 @@ struct VideosContentView: View {
                             Spacer(minLength: 16)
                             
                             // MARK: - Video Sections
-                            if courseVideosStructure.childs.isEmpty && !viewModel.isShowProgress {
+                            if courseVideosStructure.childs.isEmpty && !videoContentData.isShowProgress {
                                 // No videos available
                                 NoContentAvailable(
                                     type: .video,
-                                    action: { viewModel.selection = CourseTab.course.id }
+                                    action: { onTabSelection(CourseTab.course.id) }
                                 )
                                 .accessibilityElement(children: .combine)
                                 .accessibilityLabel(CourseLocalization.Accessibility.noContentSection)
@@ -114,15 +117,17 @@ struct VideosContentView: View {
                                             }
                                             
                                             VideoSectionView(
-                                                chapter: chapter,
-                                                viewModel: viewModel,
+                                                sectionData: VideoSectionData(
+                                                    chapter: chapter,
+                                                    sequentialsDownloadState: videoContentData.sequentialsDownloadState
+                                                ),
                                                 proxy: proxy,
-                                                isShowingCompletedVideos: $isShowingCompletedVideos
+                                                isShowingCompletedVideos: $isShowingCompletedVideos,
+                                                onVideoTap: onVideoTap,
+                                                onDownloadSectionTap: onDownloadSectionTap
                                             )
-                                            .id("\(chapter.id)_\(viewModel.videoProgressUpdateTrigger)")
                                         }
                                     }
-                                    .id("video_list_\(viewModel.videoProgressUpdateTrigger)")
                                     .animation(.default, value: isShowingCompletedVideos)
                                 }
                                 .accessibilityElement(children: .contain)
@@ -135,21 +140,6 @@ struct VideosContentView: View {
                 }
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in
-            Task {
-                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .onVideoProgressUpdated)) { notification in
-            guard let userInfo = notification.userInfo,
-                  let blockID = userInfo["blockID"] as? String,
-                  let progress = userInfo["progress"] as? Double else {
-                return
-            }
-            Task {
-                await viewModel.updateVideoProgress(blockID: blockID, progress: progress)
-            }
-        }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
     }
@@ -157,32 +147,23 @@ struct VideosContentView: View {
 
 #if DEBUG
 #Preview {
-    let viewModel = CourseContainerViewModel(
-        interactor: CourseInteractor.mock,
-        authInteractor: AuthInteractor.mock,
-        router: CourseRouterMock(),
-        analytics: CourseAnalyticsMock(),
-        config: ConfigMock(),
-        connectivity: Connectivity(),
-        manager: DownloadManagerMock(),
-        storage: CourseStorageMock(),
-        isActive: true,
-        courseStart: Date(),
-        courseEnd: nil,
-        enrollmentStart: Date(),
-        enrollmentEnd: nil,
-        lastVisitedBlockID: nil,
-        coreAnalytics: CoreAnalyticsMock(),
-        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+    let videoContentData = VideoContentData(
+        courseVideosStructure: nil,
+        courseProgress: nil,
+        sequentialsDownloadState: [:],
+        isShowProgress: false,
+        showError: false,
+        errorMessage: nil
     )
     
     GeometryReader { proxy in
         VideosContentView(
-            viewModel: viewModel,
+            videoContentData: videoContentData,
             proxy: proxy,
-            title: "Course title",
-            courseID: "",
-            dateTabIndex: 2
+            onVideoTap: { _, _ in },
+            onDownloadSectionTap: { _, _ in },
+            onTabSelection: { _ in },
+            onErrorDismiss: { }
         )
     }
 }

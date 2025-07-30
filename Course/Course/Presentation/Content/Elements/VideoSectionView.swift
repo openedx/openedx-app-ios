@@ -11,10 +11,15 @@ import Theme
 
 struct VideoSectionView: View {
 
-    let chapter: CourseChapter
-    @ObservedObject var viewModel: CourseContainerViewModel
+    let sectionData: VideoSectionData
     let proxy: GeometryProxy
     @Binding var isShowingCompletedVideos: Bool
+    let onVideoTap: (CourseBlock, CourseChapter) -> Void
+    let onDownloadSectionTap: (CourseChapter, DownloadViewState) async -> Void
+    
+    private var chapter: CourseChapter {
+        sectionData.chapter
+    }
     
     @State private var uiScrollView: UIScrollView?
     
@@ -71,7 +76,7 @@ struct VideoSectionView: View {
                        let state = downloadButtonState {
                         Button(action: {
                             Task {
-                                await viewModel.onDownloadViewTap(chapter: chapter, state: state)
+                                await onDownloadSectionTap(chapter, state)
                             }
                         }) {
                             switch state {
@@ -93,9 +98,12 @@ struct VideoSectionView: View {
                         LazyHStack(spacing: 0) {
                             ForEach(Array(visibleVideos.enumerated()), id: \.element.id) { index, video in
                                 VideoThumbnailView(
-                                    video: video,
-                                    viewModel: viewModel,
-                                    chapter: chapter
+                                    thumbnailData: VideoThumbnailData(
+                                        video: video,
+                                        chapter: chapter,
+                                        courseStructure: nil,
+                                        onVideoTap: onVideoTap
+                                    )
                                 )
                                 .padding(.leading, index == 0 ? 24 : 8)
                                 .id(video.id)
@@ -155,7 +163,7 @@ struct VideoSectionView: View {
     // MARK: - Download Logic
     private var canDownloadSection: Bool {
         chapter.childs.contains { sequential in
-            viewModel.sequentialsDownloadState[sequential.id] != nil
+            sectionData.sequentialsDownloadState[sequential.id] != nil
         }
     }
     
@@ -163,7 +171,7 @@ struct VideoSectionView: View {
         if canDownloadSection {
             var downloads: [DownloadViewState] = []
             for sequential in chapter.childs {
-                if let state = viewModel.sequentialsDownloadState[sequential.id] {
+                if let state = sectionData.sequentialsDownloadState[sequential.id] {
                     downloads.append(state)
                 }
             }
@@ -181,38 +189,22 @@ struct VideoSectionView: View {
 
 #if DEBUG
 #Preview {
-    
-    let viewModel = CourseContainerViewModel(
-        interactor: CourseInteractor.mock,
-        authInteractor: AuthInteractor.mock,
-        router: CourseRouterMock(),
-        analytics: CourseAnalyticsMock(),
-        config: ConfigMock(),
-        connectivity: Connectivity(),
-        manager: DownloadManagerMock(),
-        storage: CourseStorageMock(),
-        isActive: true,
-        courseStart: Date(),
-        courseEnd: nil,
-        enrollmentStart: Date(),
-        enrollmentEnd: nil,
-        lastVisitedBlockID: nil,
-        coreAnalytics: CoreAnalyticsMock(),
-        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
-    )
-    
     GeometryReader { proxy in
         VideoSectionView(
-            chapter: CourseChapter(
-                blockId: "1",
-                id: "2",
-                displayName: "Video",
-                type: .video,
-                childs: []
+            sectionData: VideoSectionData(
+                chapter: CourseChapter(
+                    blockId: "1",
+                    id: "2",
+                    displayName: "Video",
+                    type: .video,
+                    childs: []
+                ),
+                sequentialsDownloadState: [:]
             ),
-            viewModel: viewModel,
             proxy: proxy,
-            isShowingCompletedVideos: .constant(true)
+            isShowingCompletedVideos: .constant(true),
+            onVideoTap: { _, _ in },
+            onDownloadSectionTap: { _, _ in }
         )
     }
 }

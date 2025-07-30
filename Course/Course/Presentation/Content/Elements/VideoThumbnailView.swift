@@ -11,15 +11,17 @@ import Theme
 import Kingfisher
 import AVFoundation
 
-struct VideoThumbnailView: View, Equatable {
+struct VideoThumbnailView: View {
     
-    nonisolated static func == (lhs: VideoThumbnailView, rhs: VideoThumbnailView) -> Bool {
-        lhs.video == rhs.video
+    let thumbnailData: VideoThumbnailData
+    
+    private var video: CourseBlock {
+        thumbnailData.video
     }
-
-    let video: CourseBlock
-    @ObservedObject var viewModel: CourseContainerViewModel
-    let chapter: CourseChapter
+    
+    private var chapter: CourseChapter {
+        thumbnailData.chapter
+    }
     
     private let thumbnailWidth: CGFloat = 192
     private let thumbnailHeight: CGFloat = 108
@@ -284,146 +286,60 @@ struct VideoThumbnailView: View, Equatable {
     }
     
     private func openVideo() {
-        // Find indices for navigation using full course structure
-        guard let chapterIndex = findChapterIndexInFullStructure(),
-              let sequentialIndex = findSequentialIndexInFullStructure(),
-              let verticalIndex = findVerticalIndexInFullStructure(),
-              let courseStructure = viewModel.courseStructure else {
-            return
-        }
-        
-        // Track video click analytics
-        viewModel.analytics.courseVideoClicked(
-            courseId: courseStructure.id,
-            courseName: courseStructure.displayName,
-            blockId: video.id,
-            blockName: video.displayName
-        )
-        
-        viewModel.router.showCourseUnit(
-            courseName: courseStructure.displayName,
-            blockId: video.id,
-            courseID: courseStructure.id,
-            verticalIndex: verticalIndex,
-            chapters: courseStructure.childs,
-            chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
-        )
-    }
-    
-    private func findChapterIndexInFullStructure() -> Int? {
-        guard let courseStructure = viewModel.courseStructure else { return nil }
-        
-        // Find the chapter that contains this video in the full structure
-        return courseStructure.childs.firstIndex { fullChapter in
-            fullChapter.childs.contains { sequential in
-                sequential.childs.contains { vertical in
-                    vertical.childs.contains { $0.id == video.id }
-                }
-            }
-        }
-    }
-    
-    private func findSequentialIndexInFullStructure() -> Int? {
-        guard let courseStructure = viewModel.courseStructure else { return nil }
-        
-        // Find the chapter and sequential that contains this video in the full structure
-        for fullChapter in courseStructure.childs {
-            if let sequentialIndex = fullChapter.childs.firstIndex(where: { sequential in
-                sequential.childs.contains { vertical in
-                    vertical.childs.contains { $0.id == video.id }
-                }
-            }) {
-                return sequentialIndex
-            }
-        }
-        return nil
-    }
-    
-    private func findVerticalIndexInFullStructure() -> Int? {
-        guard let courseStructure = viewModel.courseStructure else { return nil }
-        
-        // Find the vertical that contains this video in the full structure
-        for fullChapter in courseStructure.childs {
-            for sequential in fullChapter.childs {
-                if let verticalIndex = sequential.childs.firstIndex(where: { vertical in
-                    vertical.childs.contains { $0.id == video.id }
-                }) {
-                    return verticalIndex
-                }
-            }
-        }
-        return nil
+        thumbnailData.onVideoTap(video, chapter)
     }
 }
 
 #if DEBUG
 #Preview {
-    
-    let viewModel = CourseContainerViewModel(
-        interactor: CourseInteractor.mock,
-        authInteractor: AuthInteractor.mock,
-        router: CourseRouterMock(),
-        analytics: CourseAnalyticsMock(),
-        config: ConfigMock(),
-        connectivity: Connectivity(),
-        manager: DownloadManagerMock(),
-        storage: CourseStorageMock(),
-        isActive: true,
-        courseStart: Date(),
-        courseEnd: nil,
-        enrollmentStart: Date(),
-        enrollmentEnd: nil,
-        lastVisitedBlockID: nil,
-        coreAnalytics: CoreAnalyticsMock(),
-        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
-    )
-    
     VideoThumbnailView(
-        video: CourseBlock(
-            blockId: "1",
-            id: "1",
-            courseId: "1",
-            graded: true,
-            due: Date(),
-            completion: 1,
-            type: .video,
-            displayName: "Video",
-            studentUrl: "",
-            webUrl: "",
-            encodedVideo: CourseBlockEncodedVideo(
-                fallback: CourseBlockVideo(
-                    url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
-                    fileSize: 1000000,
-                    streamPriority: 2,
-                    type: .fallback
+        thumbnailData: VideoThumbnailData(
+            video: CourseBlock(
+                blockId: "1",
+                id: "1",
+                courseId: "1",
+                graded: true,
+                due: Date(),
+                completion: 1,
+                type: .video,
+                displayName: "Video",
+                studentUrl: "",
+                webUrl: "",
+                encodedVideo: CourseBlockEncodedVideo(
+                    fallback: CourseBlockVideo(
+                        url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        fileSize: 1000000,
+                        streamPriority: 2,
+                        type: .fallback
+                    ),
+                    youtube: CourseBlockVideo(
+                        url: "https://www.youtube.com/watch?v=uFdWM1a44C8",
+                        fileSize: 999,
+                        streamPriority: 1,
+                        type: .youtube
+                    ),
+                    desktopMP4: CourseBlockVideo(
+                        url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        fileSize: 2000000,
+                        streamPriority: 3,
+                        type: .desktopMP4
+                    ),
+                    mobileHigh: nil,
+                    mobileLow: nil,
+                    hls: nil
                 ),
-                youtube: CourseBlockVideo(
-                    url: "https://www.youtube.com/watch?v=uFdWM1a44C8",
-                    fileSize: 999,
-                    streamPriority: 1,
-                    type: .youtube
-                ),
-                desktopMP4: CourseBlockVideo(
-                    url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
-                    fileSize: 2000000,
-                    streamPriority: 3,
-                    type: .desktopMP4
-                ),
-                mobileHigh: nil,
-                mobileLow: nil,
-                hls: nil
+                multiDevice: true,
+                offlineDownload: nil
             ),
-            multiDevice: true,
-            offlineDownload: nil
-        ),
-        viewModel: viewModel,
-        chapter: CourseChapter(
-            blockId: "1",
-            id: "1",
-            displayName: "Chapter",
-            type: .video,
-            childs: []
+            chapter: CourseChapter(
+                blockId: "1",
+                id: "1",
+                displayName: "Chapter",
+                type: .video,
+                childs: []
+            ),
+            courseStructure: nil,
+            onVideoTap: { _, _ in }
         )
     )
 }
