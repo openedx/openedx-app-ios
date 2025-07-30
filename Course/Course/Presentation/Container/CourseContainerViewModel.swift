@@ -225,8 +225,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func getCourseStructure(courseID: String) async throws -> CourseStructure? {
         if isInternetAvaliable {
-            if let test = try await getCourseBlocksWithTimeout(courseID: courseID, timeoutSeconds: timeOutIntervalSeconds) {
-                return test
+            if let courseStructure = try await getCourseBlocksWithTimeout(courseID: courseID, timeoutSeconds: timeOutIntervalSeconds) {
+                return courseStructure
             }
             connectivity.internetReachableSubject.send(.notReachable)
             isShowProgress = false
