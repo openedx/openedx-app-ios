@@ -169,6 +169,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         if updateCourseProgress {
             await getCourseBlocks(courseID: courseID, withProgress: true)
             updateCourseProgress = false
+        } else if courseStructure == nil {
+            // Load course structure if not already loaded (important for offline mode)
+            await getCourseBlocks(courseID: courseID, withProgress: false)
         }
     }
     
@@ -217,13 +220,26 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         isShowProgress = withProgress
         isShowRefresh = !withProgress
         do {
-            let courseProgress = try await interactor.getCourseProgress(courseID: courseID)
             let courseStructure = try await getCourseStructure(courseID: courseID)
             courseHelper.courseStructure = courseStructure
             await courseHelper.refreshValue()
             update(from: courseHelper.value ?? .empty)
             self.courseStructure = courseStructure
-            self.courseProgressDetails = courseProgress
+            
+            // Try to fetch course progress with fallback to offline/cached version
+            do {
+                if isInternetAvaliable {
+                    let courseProgress = try await interactor.getCourseProgress(courseID: courseID)
+                    self.courseProgressDetails = courseProgress
+                } else {
+                    let courseProgress = try await interactor.getCourseProgressOffline(courseID: courseID)
+                    self.courseProgressDetails = courseProgress
+                }
+            } catch {
+                // If course progress fails (offline with no cached data), continue without it
+                debugLog("Failed to load course progress: \(error.localizedDescription)")
+                self.courseProgressDetails = nil
+            }
             
             if isInternetAvaliable {
                 NotificationCenter.default.post(name: .getCourseDates, object: courseID)

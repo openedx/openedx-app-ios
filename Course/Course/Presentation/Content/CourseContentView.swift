@@ -84,6 +84,25 @@ public struct CourseContentView: View {
                 }
                 .accessibilityAction {}
                 
+                // MARK: Review Course Grading Policy
+                if selectedTab == .assignments {
+                    VStack(spacing: 18) {
+                        Divider()
+                        Button(action: {
+    //                        viewModel.selection = 0
+                        }, label: {
+                        HStack(spacing: 4) {
+                            CoreAssets.gallery.swiftUIImage.renderingMode(.template)
+                            Text(CourseLocalization.Assignment.reviewGradingPolicy)
+                                .font(Theme.Fonts.labelLarge)
+                        }
+                        .foregroundStyle(Theme.Colors.accentColor)
+                        })
+                    }
+                    .background(Theme.Colors.background)
+                    .frame(maxHeight: .infinity, alignment: .bottom)
+                }
+                
                 // MARK: - Offline mode SnackBar
                 OfflineSnackBarView(
                     connectivity: viewModel.connectivity,
@@ -114,25 +133,6 @@ public struct CourseContentView: View {
                         }
                     }
                 }
-            }
-            
-            // MARK: Review Course Grading Policy
-            if selectedTab == .assignments {
-                VStack(spacing: 18) {
-                    Divider()
-                    Button(action: {
-//                        viewModel.selection = 0
-                    }, label: {
-                    HStack(spacing: 4) {
-                        CoreAssets.gallery.swiftUIImage.renderingMode(.template)
-                        Text(CourseLocalization.Assignment.reviewGradingPolicy)
-                            .font(Theme.Fonts.labelLarge)
-                    }
-                    .foregroundStyle(Theme.Colors.accentColor)
-                    })
-                }
-                .background(Theme.Colors.background)
-                .frame(maxHeight: .infinity, alignment: .bottom)
             }
         }
         .onAppear {
