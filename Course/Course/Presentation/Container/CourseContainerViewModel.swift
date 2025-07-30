@@ -81,12 +81,12 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var updateCourseProgress: Bool = false
     @Published var totalFilesSize: Int = 1
     @Published var downloadedFilesSize: Int = 0
-    @Published var realDownloadedFilesSize: Int = 0
     @Published var largestDownloadBlocks: [CourseBlock] = []
     @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
     @Published var expandedSections: [String: Bool] = [:]
     @Published var courseDeadlines: CourseDates?
     @Published private(set) var assignmentSectionsData: [AssignmentSection] = []
+    private(set) var realDownloadedFilesSize: Int = 0
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
