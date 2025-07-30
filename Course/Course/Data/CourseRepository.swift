@@ -127,12 +127,12 @@ public actor CourseRepository: CourseRepositoryProtocol {
             CourseEndpoint.getCourseProgress(courseID: courseID)
         ).mapResponse(DataLayer.CourseProgressResponse.self)
         let domainProgress = courseProgress.domain()
-//        await persistence.saveCourseProgress(courseID: courseID, courseProgress: domainProgress)
+        await persistence.saveCourseProgress(courseID: courseID, courseProgress: domainProgress)
         return domainProgress
     }
     
     public func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails {
-        throw NoCachedDataError()
+        return try await persistence.loadCourseProgress(courseID: courseID)
     }
     
     private func parseCourseStructure(course: DataLayer.CourseStructure) -> CourseStructure {
