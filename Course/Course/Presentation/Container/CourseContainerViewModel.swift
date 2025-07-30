@@ -109,6 +109,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
+
+    private let timeOutIntervalSeconds: UInt64 = 15
+
     let analytics: CourseAnalytics
     let coreAnalytics: CoreAnalytics
     private(set) var storage: CourseStorage
@@ -222,7 +225,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func getCourseStructure(courseID: String) async throws -> CourseStructure? {
         if isInternetAvaliable {
-            if let test = try await getCourseBlocksWithTimeout(courseID: courseID, timeoutSeconds: 15) {
+            if let test = try await getCourseBlocksWithTimeout(courseID: courseID, timeoutSeconds: timeOutIntervalSeconds) {
                 return test
             }
             connectivity.internetReachableSubject.send(.notReachable)
