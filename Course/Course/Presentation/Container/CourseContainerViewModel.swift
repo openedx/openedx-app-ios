@@ -225,13 +225,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     func getCourseStructure(courseID: String) async throws -> CourseStructure? {
         if isInternetAvaliable {
-            if let courseStructure = try await getCourseBlocksWithTimeout(courseID: courseID, timeoutSeconds: timeOutIntervalSeconds) {
-                return courseStructure
-            }
-            connectivity.internetReachableSubject.send(.notReachable)
-            isShowProgress = false
-            isShowRefresh = false
-            return try await interactor.getLoadedCourseBlocks(courseID: courseID)
+            return try await self.interactor.getCourseBlocks(courseID: courseID)
         } else {
             return try await interactor.getLoadedCourseBlocks(courseID: courseID)
         }

@@ -1,9 +1,9 @@
-//
-//  Connectivity.swift
-//  OpenEdX
-//
-//  Created by  Stepanok Ivan on 15.12.2022.
-//
+////
+////  Connectivity.swift
+////  OpenEdX
+////
+////  Created by  Stepanok Ivan on 15.12.2022.
+////
 
 import Alamofire
 import Combine
@@ -24,13 +24,24 @@ public protocol ConnectivityProtocol: Sendable {
 
 @MainActor
 public class Connectivity: ConnectivityProtocol {
-    let networkManager = NetworkReachabilityManager()
-    
-    public var isInternetAvaliable: Bool {
-        //        false
-        networkManager?.isReachable ?? false
-    }
-    
+
+    private let networkManager = NetworkReachabilityManager()
+    private let verificationURL: URL
+    private let verificationTimeout: TimeInterval
+
+    private static var lastVerificationDate: TimeInterval?
+    private static var lastVerificationResult: Bool = false
+
+    private var _isInternetAvailable: Bool = true {
+          didSet {
+              internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
+          }
+      }
+
+      public var isInternetAvaliable: Bool {
+          return _isInternetAvailable
+      }
+
     public var isMobileData: Bool {
         if let networkManager {
            return networkManager.isReachableOnCellular
@@ -38,31 +49,68 @@ public class Connectivity: ConnectivityProtocol {
             return false
         }
     }
-    
+
     public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
-    
-    public init() {
+
+    public init(
+        urlToVerify: URL = Config().baseURL,
+        timeout: TimeInterval = 15
+    ) {
+        self.verificationURL = urlToVerify
+        self.verificationTimeout = timeout
         checkInternet()
     }
-    
-    func checkInternet() {
-        if let networkManager {
-            networkManager.startListening { status in
-                DispatchQueue.main.async {
-                    switch status {
-                    case .unknown:
-                        self.internetReachableSubject.send(InternetState.notReachable)
-                    case .notReachable:
-                        self.internetReachableSubject.send(InternetState.notReachable)
-                    case .reachable:
-                        self.internetReachableSubject.send(InternetState.reachable)
+
+    deinit {
+        networkManager?.stopListening()
+    }
+
+    private func checkInternet() {
+        guard let nm = networkManager else {
+            _isInternetAvailable = false
+            return
+        }
+
+        nm.startListening { [weak self] status in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                switch status {
+                case .reachable:
+                    let nowTS = Date().timeIntervalSince1970
+                    if let lastTS = Connectivity.lastVerificationDate,
+                       nowTS - lastTS < 30 {
+                        self._isInternetAvailable = Connectivity.lastVerificationResult
+                    } else {
+                        Task { @MainActor in
+                            let live = await self.verifyInternet()
+                            Connectivity.lastVerificationDate = Date().timeIntervalSince1970
+                            Connectivity.lastVerificationResult = live
+                            self._isInternetAvailable = live
+                        }
                     }
+                case .notReachable, .unknown:
+                    Connectivity.lastVerificationDate = nil
+                    Connectivity.lastVerificationResult = false
+                    self._isInternetAvailable = false
                 }
             }
-        } else {
-            DispatchQueue.main.async {
-                self.internetReachableSubject.send(InternetState.notReachable)
-            }
         }
+    }
+
+    private func verifyInternet() async -> Bool {
+        var request = URLRequest(url: verificationURL)
+        request.httpMethod = "HEAD"
+        request.timeoutInterval = verificationTimeout
+
+        do {
+            let (_, response) = try await URLSession.shared.data(for: request)
+            if let http = response as? HTTPURLResponse,
+               (200..<400).contains(http.statusCode) {
+                return true
+            }
+        } catch {
+            return false
+        }
+        return false
     }
 }
