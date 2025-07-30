@@ -86,7 +86,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
     @Published var expandedSections: [String: Bool] = [:]
     @Published var courseDeadlines: CourseDates?
-    @Published var assignmentProgressUpdateTrigger: UUID = UUID()
     @Published private(set) var assignmentSectionsData: [AssignmentSection] = []
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
@@ -1142,7 +1141,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         }
         
         objectWillChange.send()
-        assignmentProgressUpdateTrigger = UUID()
     }
     
     private func updateBlockProgress(
@@ -1306,7 +1304,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             )
         }
                 
-        assignmentProgressUpdateTrigger = UUID()
     }
     
     func assignmentSections() -> [AssignmentSection] {

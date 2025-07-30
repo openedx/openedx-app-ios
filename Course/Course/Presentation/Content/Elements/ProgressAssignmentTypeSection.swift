@@ -12,14 +12,21 @@ import Theme
 
 struct ProgressAssignmentTypeSection: View {
 
-    let subsectionsUI: [CourseProgressSubsectionUI]
-    let sectionName: String
-    let viewModel: CourseContainerViewModel
+    let sectionData: AssignmentSectionData
     let proxy: GeometryProxy
+    let onAssignmentTap: (CourseProgressSubsectionUI) -> Void
 
     @State private var selectedIndex: Int = 0
     @State private var isShowingCompletedAssignments: Bool = true
     @State private var uiScrollView: UIScrollView?
+
+    private var subsectionsUI: [CourseProgressSubsectionUI] {
+        sectionData.subsectionsUI
+    }
+    
+    private var sectionName: String {
+        sectionData.sectionName
+    }
 
     // MARK: – Filters and metrics
     private var filteredSubsections: [CourseProgressSubsectionUI] {
@@ -63,7 +70,7 @@ struct ProgressAssignmentTypeSection: View {
                                         set: { _ in selectedIndex = index }
                                     ),
                                     onTap: { selectedIndex = index },
-                                    viewModel: viewModel
+                                    assignmentTypeColors: sectionData.assignmentTypeColors
                                 )
                                 .padding(.leading, index == 0 ? 24 : 0)
                                 .padding(.top, 9)
@@ -95,14 +102,15 @@ struct ProgressAssignmentTypeSection: View {
             // MARK: – Detail Card
             if selectedIndex < filteredSubsections.count {
                 AssignmentDetailCardView(
-                    subsectionUI: filteredSubsections[selectedIndex],
-                    sectionName: sectionName,
-                    viewModel: viewModel
+                    detailData: AssignmentDetailData(
+                        subsectionUI: filteredSubsections[selectedIndex],
+                        sectionName: sectionName,
+                        onAssignmentTap: onAssignmentTap
+                    )
                 )
                 .accessibilityIdentifier("assignment_detail_card_\(sectionName)")
             }
         }
-        .id(viewModel.assignmentProgressUpdateTrigger)
     }
 
     // MARK: – Helpers
@@ -134,7 +142,8 @@ struct ProgressAssignmentTypeSection: View {
 #Preview {
     GeometryReader { proxy in
         ProgressAssignmentTypeSection(
-            subsectionsUI: [
+            sectionData: AssignmentSectionData(
+                subsectionsUI: [
                 CourseProgressSubsectionUI(
                     subsection: CourseProgressSubsection(
                         assignmentType: "1",
@@ -201,10 +210,12 @@ struct ProgressAssignmentTypeSection: View {
                     status: .notAvailable,
                     shortLabel: "HW1 03"
                 )
-            ],
-            sectionName: "Labs",
-            viewModel: CourseContainerViewModel.mock,
-            proxy: proxy
+                ],
+                sectionName: "Labs",
+                assignmentTypeColors: [:]
+            ),
+            proxy: proxy,
+            onAssignmentTap: { _ in }
         )
     }
     .padding()

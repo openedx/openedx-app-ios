@@ -9,15 +9,17 @@ import SwiftUI
 import Core
 import Theme
 
-struct AssignmentDetailCardView: View, Equatable {
-    nonisolated static func == (lhs: AssignmentDetailCardView, rhs: AssignmentDetailCardView) -> Bool {
-        lhs.sectionName == rhs.sectionName &&
-        lhs.subsectionUI.subsection.blockKey == rhs.subsectionUI.subsection.blockKey
+struct AssignmentDetailCardView: View {
+    
+    let detailData: AssignmentDetailData
+    
+    private var subsectionUI: CourseProgressSubsectionUI {
+        detailData.subsectionUI
     }
     
-    let subsectionUI: CourseProgressSubsectionUI
-    let sectionName: String
-    let viewModel: CourseContainerViewModel
+    private var sectionName: String {
+        detailData.sectionName
+    }
     
     private var status: AssignmentCardStatus {
         return subsectionUI.status
@@ -55,7 +57,7 @@ struct AssignmentDetailCardView: View, Equatable {
     
     var body: some View {
         Button(action: {
-            viewModel.navigateToAssignment(for: subsectionUI.subsection)
+            detailData.onAssignmentTap(subsectionUI)
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
@@ -92,6 +94,5 @@ struct AssignmentDetailCardView: View, Equatable {
         }
         .buttonStyle(PlainButtonStyle())
         .padding(.horizontal, 24)
-        .id(viewModel.assignmentProgressUpdateTrigger)
     }
 }

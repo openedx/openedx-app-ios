@@ -16,7 +16,7 @@ struct AssignmentCardSmallView: View {
     let sectionName: String
     @Binding var isSelected: Bool
     let onTap: () -> Void
-    let viewModel: CourseContainerViewModel
+    let assignmentTypeColors: [String: String]
     
     private let cardWidth: CGFloat = 60
     private let cardHeight: CGFloat = 48
@@ -26,19 +26,19 @@ struct AssignmentCardSmallView: View {
     }
     
     private var cardID: String {
-        "\(index)-\(isSelected)-\(viewModel.assignmentProgressUpdateTrigger)"
+        "\(index)-\(isSelected)"
     }
     
     private var assignmentShortName: String {
         if !subsectionUI.shortLabel.isEmpty {
-            return viewModel.clearShortLabel(subsectionUI.shortLabel)
+            return clearShortLabel(subsectionUI.shortLabel)
         }
         
         guard let assignmentType = subsectionUI.subsection.assignmentType else {
-            return viewModel.clearShortLabel(subsectionUI.subsection.displayName)
+            return clearShortLabel(subsectionUI.subsection.displayName)
         }
 
-        return viewModel.clearShortLabel(assignmentType)
+        return clearShortLabel(assignmentType)
     }
     
     private var isPastDue: Bool {
@@ -74,14 +74,22 @@ struct AssignmentCardSmallView: View {
         sectionName: String,
         isSelected: Binding<Bool>,
         onTap: @escaping () -> Void,
-        viewModel: CourseContainerViewModel
+        assignmentTypeColors: [String: String]
     ) {
         self.subsectionUI = subsectionUI
         self.index = index
         self.sectionName = sectionName
         self._isSelected = isSelected
         self.onTap = onTap
-        self.viewModel = viewModel
+        self.assignmentTypeColors = assignmentTypeColors
+    }
+    
+    private func clearShortLabel(_ text: String) -> String {
+        text.replacingOccurrences(of: "|", with: " ")
+            .replacingOccurrences(of: ":", with: " ")
+            .replacingOccurrences(of: "-", with: " ")
+            .replacingOccurrences(of: "–", with: " ")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
     }
     
     var body: some View {
@@ -158,7 +166,7 @@ struct AssignmentCardSmallView: View {
             sectionName: "Labs",
             isSelected: .constant(false),
             onTap: {},
-            viewModel: CourseContainerViewModel.mock
+            assignmentTypeColors: [:]
         )
         
         AssignmentCardSmallView(
@@ -188,7 +196,7 @@ struct AssignmentCardSmallView: View {
             sectionName: "Labs",
             isSelected: .constant(true),
             onTap: {},
-            viewModel: CourseContainerViewModel.mock
+            assignmentTypeColors: [:]
         )
     }
     .padding()

@@ -29,6 +29,27 @@ public struct CourseContentView: View {
             errorMessage: viewModel.errorMessage
         )
     }
+    
+    private var assignmentContentData: AssignmentContentData {
+        AssignmentContentData(
+            courseAssignmentsStructure: viewModel.courseAssignmentsStructure,
+            assignmentSections: viewModel.assignmentSectionsData.map { section in
+                AssignmentSectionUI(
+                    key: section.label,
+                    subsections: section.subsections,
+                    weight: section.weight
+                )
+            },
+            assignmentTypeColors: Dictionary(uniqueKeysWithValues:
+                viewModel.assignmentSectionsData.map { section in
+                    (section.label, viewModel.assignmentTypeColor(for: section.label) ?? "#666666")
+                }
+            ),
+            isShowProgress: viewModel.isShowProgress,
+            showError: viewModel.showError,
+            errorMessage: viewModel.errorMessage
+        )
+    }
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
@@ -201,12 +222,32 @@ public struct CourseContentView: View {
             }
         case .assignments:
             AssignmentsContentView(
-                viewModel: viewModel,
+                assignmentContentData: assignmentContentData,
                 proxy: proxy,
-                title: title,
-                courseID: courseID,
-                dateTabIndex: CourseTab.dates.rawValue
+                onAssignmentTap: { subsectionUI in
+                    viewModel.navigateToAssignment(for: subsectionUI.subsection)
+                },
+                onTabSelection: { tabId in
+                    viewModel.selection = tabId
+                },
+                onErrorDismiss: {
+                    viewModel.errorMessage = nil
+                }
             )
+            .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in
+                viewModel.updateCourseProgress = true
+                Task {
+                    await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                }
+            }
+            .onReceive(NotificationCenter.default.publisher(for: .onblockCompletionRequested)) { _ in
+                Task {
+                    await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
+                }
+            }
+            .task {
+                await viewModel.updateCourseIfNeeded(courseID: courseID)
+            }
         }
     }
 }

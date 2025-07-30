@@ -13,12 +13,11 @@ import Theme
 
 struct AssignmentsContentView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
-    private let title: String
-    private let courseID: String
-    private let dateTabIndex: Int
-    
+    let assignmentContentData: AssignmentContentData
     private let proxy: GeometryProxy
+    private let onAssignmentTap: (CourseProgressSubsectionUI) -> Void
+    private let onTabSelection: (Int) -> Void
+    private let onErrorDismiss: () -> Void
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
@@ -32,40 +31,34 @@ struct AssignmentsContentView: View {
     }
     
     private var assignmentSections: [AssignmentSectionUI] {
-        viewModel.assignmentSectionsData.map { section in
-            AssignmentSectionUI(
-                key: section.label,
-                subsections: section.subsections,
-                weight: section.weight
-            )
-        }
+        assignmentContentData.assignmentSections
     }
         
     init(
-        viewModel: CourseContainerViewModel,
+        assignmentContentData: AssignmentContentData,
         proxy: GeometryProxy,
-        title: String,
-        courseID: String,
-        dateTabIndex: Int
+        onAssignmentTap: @escaping (CourseProgressSubsectionUI) -> Void,
+        onTabSelection: @escaping (Int) -> Void,
+        onErrorDismiss: @escaping () -> Void
     ) {
-        self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.assignmentContentData = assignmentContentData
         self.proxy = proxy
-        self.courseID = courseID
-        self.dateTabIndex = dateTabIndex
+        self.onAssignmentTap = onAssignmentTap
+        self.onTabSelection = onTabSelection
+        self.onErrorDismiss = onErrorDismiss
     }
     
     var body: some View {
         VStack(spacing: 0) {
             // MARK: - Error View
-            if viewModel.showError {
+            if assignmentContentData.showError {
                 VStack {
-                    SnackBarView(message: viewModel.errorMessage)
+                    SnackBarView(message: assignmentContentData.errorMessage)
                 }
                 .transition(.move(edge: .bottom))
                 .onAppear {
                     doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
-                        viewModel.errorMessage = nil
+                        onErrorDismiss()
                     }
                 }
                 .accessibilityElement(children: .combine)
@@ -74,7 +67,7 @@ struct AssignmentsContentView: View {
             
             ZStack(alignment: .center) {
                 // MARK: - Page Body
-                if viewModel.isShowProgress && !viewModel.isShowRefresh {
+                if assignmentContentData.isShowProgress {
                     HStack(alignment: .center) {
                         ProgressBar(size: 40, lineWidth: 8)
                             .padding(.top, 200)
@@ -85,7 +78,7 @@ struct AssignmentsContentView: View {
                     .accessibilityLabel(CourseLocalization.Accessibility.loadingSection)
                 } else {
                     VStack(alignment: .leading) {
-                        if viewModel.courseAssignmentsStructure != nil {
+                        if assignmentContentData.courseAssignmentsStructure != nil {
                             
                             Spacer(minLength: 16)
                             
@@ -112,11 +105,11 @@ struct AssignmentsContentView: View {
                             Spacer(minLength: 16)
                             
                             // MARK: - Assignment Sections
-                            if assignmentSections.isEmpty && !viewModel.isShowProgress {
+                            if assignmentSections.isEmpty && !assignmentContentData.isShowProgress {
                                 // No assignments available
                                 NoContentAvailable(
                                     type: .assignments,
-                                    action: { viewModel.selection = CourseTab.course.id }
+                                    action: { onTabSelection(CourseTab.course.id) }
                                 )
                                 .accessibilityIdentifier("no_assignments_available")
                                 .accessibilityElement(children: .combine)
@@ -138,7 +131,7 @@ struct AssignmentsContentView: View {
                                                     Spacer()
                                                     
                                                     let weightColor = Color(
-                                                        hex: viewModel.assignmentTypeColor(for: section.key)
+                                                        hex: assignmentContentData.assignmentTypeColors[section.key]
                                                         ?? "#666666"
                                                     ) ?? Color.accentColor
                                                     
@@ -164,10 +157,13 @@ struct AssignmentsContentView: View {
                                                                                                 
                                                 // Assignment Cards for this section
                                                 ProgressAssignmentTypeSection(
-                                                    subsectionsUI: section.subsections,
-                                                    sectionName: section.key,
-                                                    viewModel: viewModel,
-                                                    proxy: proxy
+                                                    sectionData: AssignmentSectionData(
+                                                        subsectionsUI: section.subsections,
+                                                        sectionName: section.key,
+                                                        assignmentTypeColors: assignmentContentData.assignmentTypeColors
+                                                    ),
+                                                    proxy: proxy,
+                                                    onAssignmentTap: onAssignmentTap
                                                 )
                                             }
                                             .accessibilityElement(children: .contain)
@@ -185,20 +181,6 @@ struct AssignmentsContentView: View {
                 }
             }
         }
-        .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in
-            viewModel.updateCourseProgress = true
-            Task {
-                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-            }
-        }
-        .onReceive(NotificationCenter.default.publisher(for: .onblockCompletionRequested)) { _ in
-            Task {
-                await viewModel.getCourseBlocks(courseID: courseID, withProgress: false)
-            }
-        }
-        .task {
-            await viewModel.updateCourseIfNeeded(courseID: courseID)
-        }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
     }
@@ -206,32 +188,22 @@ struct AssignmentsContentView: View {
 
 #if DEBUG
 #Preview {
-    let viewModel = CourseContainerViewModel(
-        interactor: CourseInteractor.mock,
-        authInteractor: AuthInteractor.mock,
-        router: CourseRouterMock(),
-        analytics: CourseAnalyticsMock(),
-        config: ConfigMock(),
-        connectivity: Connectivity(),
-        manager: DownloadManagerMock(),
-        storage: CourseStorageMock(),
-        isActive: true,
-        courseStart: Date(),
-        courseEnd: nil,
-        enrollmentStart: Date(),
-        enrollmentEnd: nil,
-        lastVisitedBlockID: nil,
-        coreAnalytics: CoreAnalyticsMock(),
-        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+    let assignmentContentData = AssignmentContentData(
+        courseAssignmentsStructure: nil,
+        assignmentSections: [],
+        assignmentTypeColors: [:],
+        isShowProgress: false,
+        showError: false,
+        errorMessage: nil
     )
     
     GeometryReader { proxy in
         AssignmentsContentView(
-            viewModel: viewModel,
+            assignmentContentData: assignmentContentData,
             proxy: proxy,
-            title: "Course title",
-            courseID: "",
-            dateTabIndex: 2
+            onAssignmentTap: { _ in },
+            onTabSelection: { _ in },
+            onErrorDismiss: { }
         )
     }
 }
