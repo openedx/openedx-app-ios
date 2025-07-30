@@ -193,11 +193,40 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             sequentialIndex: continueWith.sequentialIndex
         )
     }
-    
+
+    private func getCourseBlocksWithTimeout(
+        courseID: String,
+        timeoutSeconds: UInt64
+    ) async throws -> CourseStructure? {
+        return try await withThrowingTaskGroup(of: CourseStructure?.self) { group in
+
+            group.addTask {
+                try await self.interactor.getCourseBlocks(courseID: courseID)
+            }
+
+            group.addTask {
+                try await Task.sleep(nanoseconds: timeoutSeconds * 1_000_000_000)
+                return nil
+            }
+
+            guard let firstResult = try await group.next() else {
+                return nil
+            }
+
+            group.cancelAll()
+
+            return firstResult
+        }
+    }
+
     @MainActor
     func getCourseStructure(courseID: String) async throws -> CourseStructure? {
         if isInternetAvaliable {
-            return try await interactor.getCourseBlocks(courseID: courseID)
+            if let test = try await getCourseBlocksWithTimeout(courseID: courseID, timeoutSeconds: 15) {
+                return test
+            }
+
+            return try await interactor.getLoadedCourseBlocks(courseID: courseID)
         } else {
             return try await interactor.getLoadedCourseBlocks(courseID: courseID)
         }

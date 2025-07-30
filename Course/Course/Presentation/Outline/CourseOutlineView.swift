@@ -67,7 +67,9 @@ public struct CourseOutlineView: View {
                                 collapsed: $collapsed,
                                 viewHeight: $viewHeight
                             )
+
                             RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+
                             VStack(alignment: .leading) {
                                 
                                 if isVideo,
