@@ -181,9 +181,9 @@ struct CourseVerticalView_Previews: PreviewProvider {
             sequentialIndex: 0,
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock()),
         )
-        
+
         return Group {
             CourseVerticalView(
                 title: "Course title",

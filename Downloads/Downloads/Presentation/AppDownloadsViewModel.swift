@@ -779,7 +779,7 @@ public extension AppDownloadsViewModel {
         interactor: DownloadsInteractor.mock,
         courseManager: CourseStructureManagerMock(),
         downloadManager: DownloadManagerMock(),
-        connectivity: Connectivity(),
+        connectivity: Connectivity(config: ConfigMock()),
         downloadsHelper: DownloadsHelperMock(),
         router: DownloadsRouterMock(),
         storage: DownloadsStorageMock(),

@@ -124,7 +124,7 @@ struct SubtittlesView_Previews: PreviewProvider {
             viewModel: VideoPlayerViewModel(
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
-                connectivity: Connectivity(),
+                connectivity: Connectivity(config: ConfigMock()),
                 playerHolder: PlayerViewControllerHolder.mock,
                 appStorage: CoreStorageMock(),
                 analytics: CourseAnalyticsMock()
