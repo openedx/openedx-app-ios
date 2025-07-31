@@ -29,7 +29,6 @@ public class Connectivity: ConnectivityProtocol {
     private let verificationURL: URL
     private let verificationTimeout: TimeInterval
     private let secondsPast: TimeInterval = 30
-
     private static var lastVerificationDate: TimeInterval?
     private static var lastVerificationResult: Bool = false
 
