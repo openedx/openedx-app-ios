@@ -22,32 +22,42 @@ public protocol ConnectivityProtocol: Sendable {
     var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
 }
 
-@MainActor
 public class Connectivity: ConnectivityProtocol {
 
     private let networkManager = NetworkReachabilityManager()
     private let verificationURL: URL
     private let verificationTimeout: TimeInterval
-    private let secondsPast: TimeInterval = 30
+    private let cacheValidity: TimeInterval = 5//30
 
-    private static var lastVerificationDate: TimeInterval?
-    private static var lastVerificationResult: Bool = false
+    private var lastVerificationDate: TimeInterval?
+    private var lastVerificationResult: Bool = true
 
-    private var _isInternetAvailable: Bool = true {
+    public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
+
+    private(set) var _isInternetAvailable: Bool = true {
         didSet {
-            internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
+            Task { @MainActor in
+                internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
+            }
         }
     }
 
     public var isInternetAvaliable: Bool {
-        _isInternetAvailable
+        if let last = lastVerificationDate,
+           Date().timeIntervalSince1970 - last < cacheValidity {
+            return lastVerificationResult
+        }
+
+        Task {
+            await performVerification()
+        }
+
+        return lastVerificationResult
     }
 
     public var isMobileData: Bool {
         networkManager?.isReachableOnCellular == true
     }
-
-    public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
 
     public init(
         config: ConfigProtocol,
@@ -55,57 +65,43 @@ public class Connectivity: ConnectivityProtocol {
     ) {
         self.verificationURL = config.baseURL
         self.verificationTimeout = timeout
-        checkInternet()
+
+        networkManager?.startListening(onQueue: .global()) { [weak self] status in
+            guard let self = self else { return }
+            Task { @MainActor in
+                switch status {
+                case .reachable:
+                    await self.performVerification()
+                case .notReachable, .unknown:
+                    self.updateAvailability(false, at: 0)
+                }
+            }
+        }
     }
 
     deinit {
         networkManager?.stopListening()
     }
 
-    @MainActor
-    private func updateAvailability(
-        _ available: Bool,
-        lastChecked: TimeInterval = Date().timeIntervalSince1970
-    ) {
-        self._isInternetAvailable = available
-        Connectivity.lastVerificationDate = lastChecked
-        Connectivity.lastVerificationResult = available
+    private func performVerification() async {
+        let now = Date().timeIntervalSince1970
+        let live = await verifyInternet()
+        updateAvailability(live, at: now)
     }
 
-    func checkInternet() {
-        networkManager?.startListening(onQueue: .global()) { [weak self] status in
-            guard let self = self else { return }
-            let now = Date().timeIntervalSince1970
-
-            Task { @MainActor in
-                switch status {
-                case .reachable:
-                    if let last = Connectivity.lastVerificationDate,
-                       now - last < self.secondsPast {
-                        self.updateAvailability(Connectivity.lastVerificationResult)
-                    } else {
-                        Task.detached {
-                            let live = await self.verifyInternet()
-                            await self.updateAvailability(live, lastChecked: Date().timeIntervalSince1970)
-                        }
-                    }
-
-                case .notReachable, .unknown:
-                    self.updateAvailability(false, lastChecked: 0)
-                }
-            }
-        }
+    private func updateAvailability(_ available: Bool, at timestamp: TimeInterval) {
+        _isInternetAvailable = available
+        lastVerificationDate = timestamp
+        lastVerificationResult = available
     }
 
     private func verifyInternet() async -> Bool {
         var request = URLRequest(url: verificationURL)
         request.httpMethod = "HEAD"
         request.timeoutInterval = verificationTimeout
-
         do {
             let (_, response) = try await URLSession.shared.data(for: request)
-            if let http = response as? HTTPURLResponse,
-               (200..<400).contains(http.statusCode) {
+            if let http = response as? HTTPURLResponse, (200..<400).contains(http.statusCode) {
                 return true
             }
         } catch {
