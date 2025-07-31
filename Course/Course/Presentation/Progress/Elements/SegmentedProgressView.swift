@@ -40,7 +40,7 @@ struct SegmentedProgressView: View {
                 ZStack(alignment: .leading) {
                     // Background
                     RoundedRectangle(cornerRadius: 3)
-                        .fill(Theme.Colors.cardViewBackground)
+                        .fill(Theme.Colors.progressLineBG)
                         .frame(height: 5)
                     
                     // Progress segments
@@ -51,7 +51,10 @@ struct SegmentedProgressView: View {
                             if segmentWidth > 0 {
                                 Rectangle()
                                     .fill(segment.color)
-                                    .frame(width: segmentWidth, height: 5)
+                                    .frame(width: segmentWidth+1, height: 5)
+                                Rectangle()
+                                    .frame(width: 1, height: 5)
+                                    .foregroundStyle(.black)
                             }
                         }
                         
@@ -67,7 +70,7 @@ struct SegmentedProgressView: View {
                     
                     // Inner border with 10% opacity
                     RoundedRectangle(cornerRadius: 3)
-                        .strokeBorder(Theme.Colors.cardViewStroke, lineWidth: colorScheme == .dark ? 0 : 1)
+                        .strokeBorder(.black, lineWidth: colorScheme == .dark ? 0 : 1)
                         .frame(height: 5)
                 }
             }
