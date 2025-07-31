@@ -53,14 +53,12 @@ public class Connectivity: ConnectivityProtocol {
         config: ConfigProtocol,
         timeout: TimeInterval = 15
     ) {
-        print("+++ go")
         self.verificationURL = config.baseURL
         self.verificationTimeout = timeout
         checkInternet()
     }
 
     deinit {
-        print("+++ deinit")
         networkManager?.stopListening()
     }
 
@@ -84,11 +82,9 @@ public class Connectivity: ConnectivityProtocol {
                 case .reachable:
                     if let last = Connectivity.lastVerificationDate,
                        now - last < self.secondsPast {
-                        print("+++ last")
                         self.updateAvailability(Connectivity.lastVerificationResult)
                     } else {
                         Task.detached {
-                            print("+++ verif")
                             let live = await self.verifyInternet()
                             await self.updateAvailability(live, lastChecked: Date().timeIntervalSince1970)
                         }
@@ -110,14 +106,11 @@ public class Connectivity: ConnectivityProtocol {
             let (_, response) = try await URLSession.shared.data(for: request)
             if let http = response as? HTTPURLResponse,
                (200..<400).contains(http.statusCode) {
-                print("++++ got response")
                 return true
             }
         } catch {
-            print("++++ no response")
             return false
         }
-        print("++++ no response")
         return false
     }
 }

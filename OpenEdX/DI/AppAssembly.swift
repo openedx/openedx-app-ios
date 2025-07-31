@@ -86,11 +86,12 @@ class AppAssembly: Assembly {
         container.register(DownloadsAnalytics.self) { r in
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
-        
-        container.register(ConnectivityProtocol.self) { @MainActor r in
-            Connectivity(config: r.resolve(ConfigProtocol.self)!)
-        }
-        
+
+//        container.register(ConnectivityProtocol.self) { @MainActor r in
+//            Connectivity(config: r.resolve(ConfigProtocol.self)!)
+//        }
+//        
+
         container.register(DatabaseManager.self) { _ in
             DatabaseManager(databaseName: "Database")
         }.inObjectScope(.container)
@@ -242,7 +243,6 @@ class AppAssembly: Assembly {
                 timeout: 15
             )
         }
-        .inObjectScope(.container)
     }
 }
 // swiftlint:enable function_body_length
