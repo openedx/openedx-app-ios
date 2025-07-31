@@ -28,6 +28,7 @@ public class Connectivity: ConnectivityProtocol {
     private let networkManager = NetworkReachabilityManager()
     private let verificationURL: URL
     private let verificationTimeout: TimeInterval
+    private let secondsPast: TimeInterval = 30
 
     private static var lastVerificationDate: TimeInterval?
     private static var lastVerificationResult: Bool = false
@@ -78,7 +79,7 @@ public class Connectivity: ConnectivityProtocol {
                 case .reachable:
                     let nowTS = Date().timeIntervalSince1970
                     if let lastTS = Connectivity.lastVerificationDate,
-                       nowTS - lastTS < 30 {
+                       nowTS - lastTS < self.secondsPast {
                         self._isInternetAvailable = Connectivity.lastVerificationResult
                     } else {
                         Task { @MainActor in
