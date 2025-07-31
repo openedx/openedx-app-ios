@@ -1564,6 +1564,7 @@ public struct VerticalsDownloadState: Hashable, Sendable {
     }
 }
 
+#if DEBUG
 extension CourseContainerViewModel {
     static var mock: CourseContainerViewModel {
         CourseContainerViewModel(
@@ -1586,4 +1587,5 @@ extension CourseContainerViewModel {
         )
     }
 }
+#endif
 //swiftlint:enable type_body_length file_length
