@@ -27,7 +27,7 @@ public class Connectivity: ConnectivityProtocol {
     private let networkManager = NetworkReachabilityManager()
     private let verificationURL: URL
     private let verificationTimeout: TimeInterval
-    private let cacheValidity: TimeInterval = 5//30
+    private let cacheValidity: TimeInterval = 30
 
     private var lastVerificationDate: TimeInterval?
     private var lastVerificationResult: Bool = true
