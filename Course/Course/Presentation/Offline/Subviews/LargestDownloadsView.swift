@@ -93,7 +93,7 @@ struct LargestDownloadsView_Previews: PreviewProvider {
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             manager: DownloadManagerMock(),
             storage: CourseStorageMock(),
             isActive: true,

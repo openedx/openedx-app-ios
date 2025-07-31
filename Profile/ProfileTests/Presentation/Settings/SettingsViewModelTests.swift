@@ -44,7 +44,7 @@ final class SettingsViewModelTests: XCTestCase {
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             coreStorage: storage
         )
         
@@ -82,7 +82,7 @@ final class SettingsViewModelTests: XCTestCase {
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             coreStorage: storage
         )
         
@@ -119,7 +119,7 @@ final class SettingsViewModelTests: XCTestCase {
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             coreStorage: storage
         )
         
@@ -156,7 +156,7 @@ final class SettingsViewModelTests: XCTestCase {
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             coreStorage: storage
         )
         
@@ -193,7 +193,7 @@ final class SettingsViewModelTests: XCTestCase {
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             coreStorage: storage
         )
         
@@ -230,7 +230,7 @@ final class SettingsViewModelTests: XCTestCase {
             coreAnalytics: coreAnalytics,
             config:  ConfigMock(),
             corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             coreStorage: storage
         )
         

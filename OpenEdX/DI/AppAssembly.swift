@@ -86,11 +86,12 @@ class AppAssembly: Assembly {
         container.register(DownloadsAnalytics.self) { r in
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
-        
-        container.register(ConnectivityProtocol.self) { @MainActor _ in
-            Connectivity()
-        }
-        
+
+//        container.register(ConnectivityProtocol.self) { @MainActor r in
+//            Connectivity(config: r.resolve(ConfigProtocol.self)!)
+//        }
+//        
+
         container.register(DatabaseManager.self) { _ in
             DatabaseManager(databaseName: "Database")
         }.inObjectScope(.container)
@@ -193,7 +194,7 @@ class AppAssembly: Assembly {
                 keychain: r.resolve(KeychainSwift.self)!
             )
         }
-        
+
         container.register(Validator.self) { _ in
             Validator()
         }.inObjectScope(.container)
@@ -235,6 +236,13 @@ class AppAssembly: Assembly {
                 courseDropDownNavigationEnabled: config.uiComponents.courseDropDownNavigationEnabled
             )
         }.inObjectScope(.container)
+
+        container.register(ConnectivityProtocol.self) { @MainActor r in
+            Connectivity(
+                config: r.resolve(ConfigProtocol.self)!,
+                timeout: 15
+            )
+        }
     }
 }
 // swiftlint:enable function_body_length

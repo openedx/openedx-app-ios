@@ -188,7 +188,7 @@ struct DatesAndCalendarView_Previews: PreviewProvider {
             profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
             calendarManager: CalendarManagerMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock()),
         )
         DatesAndCalendarView(viewModel: vm)
             .loadFonts()

@@ -1,9 +1,9 @@
-////
-////  Connectivity.swift
-////  OpenEdX
-////
-////  Created by  Stepanok Ivan on 15.12.2022.
-////
+//
+//  Connectivity.swift
+//  OpenEdX
+//
+//  Created by  Stepanok Ivan on 15.12.2022.
+//
 
 import Alamofire
 import Combine
@@ -14,7 +14,7 @@ public enum InternetState: Sendable {
     case notReachable
 }
 
-//sourcery: AutoMockable
+// sourcery: AutoMockable
 @MainActor
 public protocol ConnectivityProtocol: Sendable {
     var isInternetAvaliable: Bool { get }
@@ -29,34 +29,31 @@ public class Connectivity: ConnectivityProtocol {
     private let verificationURL: URL
     private let verificationTimeout: TimeInterval
     private let secondsPast: TimeInterval = 30
+
     private static var lastVerificationDate: TimeInterval?
     private static var lastVerificationResult: Bool = false
 
     private var _isInternetAvailable: Bool = true {
-          didSet {
-              internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
-          }
-      }
+        didSet {
+            internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
+        }
+    }
 
-      public var isInternetAvaliable: Bool {
-          return _isInternetAvailable
-      }
+    public var isInternetAvaliable: Bool {
+        _isInternetAvailable
+    }
 
     public var isMobileData: Bool {
-        if let networkManager {
-           return networkManager.isReachableOnCellular
-        } else {
-            return false
-        }
+        networkManager?.isReachableOnCellular == true
     }
 
     public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
 
     public init(
-        urlToVerify: URL = Config().baseURL,
+        config: ConfigProtocol,
         timeout: TimeInterval = 15
     ) {
-        self.verificationURL = urlToVerify
+        self.verificationURL = config.baseURL
         self.verificationTimeout = timeout
         checkInternet()
     }
@@ -65,33 +62,36 @@ public class Connectivity: ConnectivityProtocol {
         networkManager?.stopListening()
     }
 
-    private func checkInternet() {
-        guard let nm = networkManager else {
-            _isInternetAvailable = false
-            return
-        }
+    @MainActor
+    private func updateAvailability(
+        _ available: Bool,
+        lastChecked: TimeInterval = Date().timeIntervalSince1970
+    ) {
+        self._isInternetAvailable = available
+        Connectivity.lastVerificationDate = lastChecked
+        Connectivity.lastVerificationResult = available
+    }
 
-        nm.startListening { [weak self] status in
-            DispatchQueue.main.async {
-                guard let self = self else { return }
+    func checkInternet() {
+        networkManager?.startListening(onQueue: .global()) { [weak self] status in
+            guard let self = self else { return }
+            let now = Date().timeIntervalSince1970
+
+            Task { @MainActor in
                 switch status {
                 case .reachable:
-                    let nowTS = Date().timeIntervalSince1970
-                    if let lastTS = Connectivity.lastVerificationDate,
-                       nowTS - lastTS < self.secondsPast {
-                        self._isInternetAvailable = Connectivity.lastVerificationResult
+                    if let last = Connectivity.lastVerificationDate,
+                       now - last < self.secondsPast {
+                        self.updateAvailability(Connectivity.lastVerificationResult)
                     } else {
-                        Task { @MainActor in
+                        Task.detached {
                             let live = await self.verifyInternet()
-                            Connectivity.lastVerificationDate = Date().timeIntervalSince1970
-                            Connectivity.lastVerificationResult = live
-                            self._isInternetAvailable = live
+                            await self.updateAvailability(live, lastChecked: Date().timeIntervalSince1970)
                         }
                     }
+
                 case .notReachable, .unknown:
-                    Connectivity.lastVerificationDate = nil
-                    Connectivity.lastVerificationResult = false
-                    self._isInternetAvailable = false
+                    self.updateAvailability(false, lastChecked: 0)
                 }
             }
         }
