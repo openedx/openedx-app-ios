@@ -22,6 +22,8 @@ public protocol CourseInteractorProtocol: Sendable {
     func getCourseDates(courseID: String) async throws -> CourseDates
     func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner
     func shiftDueDates(courseID: String) async throws
+    func getCourseProgress(courseID: String) async throws -> CourseProgressDetails
+    func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails
 }
 
 public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerProtocol {
@@ -96,6 +98,14 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
     
     public func shiftDueDates(courseID: String) async throws {
         return try await repository.shiftDueDates(courseID: courseID)
+    }
+    
+    public func getCourseProgress(courseID: String) async throws -> CourseProgressDetails {
+        return try await repository.getCourseProgress(courseID: courseID)
+    }
+    
+    public func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails {
+        return try await repository.getCourseProgressOffline(courseID: courseID)
     }
     
     public func getHandouts(courseID: String) async throws -> String? {

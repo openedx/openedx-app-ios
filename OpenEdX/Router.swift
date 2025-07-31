@@ -437,9 +437,12 @@ public class Router: AuthorizationRouter,
             title
         )!
         
+        let progressVm = Container.shared.resolve(CourseProgressViewModel.self)!
+        
         let screensView = CourseContainerView(
             viewModel: vm,
             courseDatesViewModel: datesVm,
+            courseProgressViewModel: progressVm,
             courseID: courseID,
             title: title,
             courseRawImage: courseRawImage
