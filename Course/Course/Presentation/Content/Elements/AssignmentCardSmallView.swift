@@ -84,12 +84,20 @@ struct AssignmentCardSmallView: View {
         self.assignmentTypeColors = assignmentTypeColors
     }
     
-    private func clearShortLabel(_ text: String) -> String {
-        text.replacingOccurrences(of: "|", with: " ")
-            .replacingOccurrences(of: ":", with: " ")
-            .replacingOccurrences(of: "-", with: " ")
-            .replacingOccurrences(of: "–", with: " ")
-            .trimmingCharacters(in: .whitespacesAndNewlines)
+    func clearShortLabel(_ text: String) -> String {
+        let words = text.split(separator: " ")
+
+        guard let last = words.last, last.allSatisfy(\.isNumber) else {
+            let letters = text.filter { !$0.isNumber }
+            return String(letters.prefix(3)).uppercased()
+        }
+
+        let rightRaw = String(last)
+        let leftRaw  = words.dropLast().joined(separator: " ")
+        let leftShort = String(leftRaw.filter { !$0.isNumber }.prefix(3)).uppercased()
+        let rightClean = String(Int(rightRaw) ?? 0)
+
+        return leftShort + rightClean
     }
     
     var body: some View {

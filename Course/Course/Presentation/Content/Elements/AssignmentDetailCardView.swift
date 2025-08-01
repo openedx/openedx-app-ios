@@ -29,19 +29,6 @@ struct AssignmentDetailCardView: View {
         return subsectionUI.statusText
     }
     
-    private var cardBackgroundColor: Color {
-        switch status {
-        case .completed:
-            return Theme.Colors.success.opacity(0.1)
-        case .pastDue:
-            return Theme.Colors.warning.opacity(0.1)
-        case .notAvailable:
-            return Theme.Colors.textSecondary.opacity(0.1)
-        default:
-            return Theme.Colors.background
-        }
-    }
-    
     private var cardBorderColor: Color {
         switch status {
         case .completed:
@@ -75,11 +62,12 @@ struct AssignmentDetailCardView: View {
                         Image(systemName: "arrow.right")
                             .foregroundColor(Theme.Colors.accentColor)
                             .font(.title2)
+                            .flipsForRightToLeftLayoutDirection(true)
                     }
                 }
             }
             .padding(.all, 16)
-            .background(cardBackgroundColor)
+            .background(ThemeAssets.tabbarBGColor.swiftUIColor)
             .overlay(
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(cardBorderColor, lineWidth: 2)
