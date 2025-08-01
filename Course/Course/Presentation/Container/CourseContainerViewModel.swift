@@ -164,12 +164,15 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     }
     
     func updateCourseIfNeeded(courseID: String) async {
+        guard !isShowRefresh, !isShowProgress else {
+            return
+        }
         if updateCourseProgress {
             await getCourseBlocks(courseID: courseID, withProgress: true)
             updateCourseProgress = false
         } else if courseStructure == nil {
             // Load course structure if not already loaded (important for offline mode)
-            await getCourseBlocks(courseID: courseID, withProgress: false)
+            await getCourseBlocks(courseID: courseID, withProgress: true)
         }
     }
     
