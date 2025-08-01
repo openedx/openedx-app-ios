@@ -58,11 +58,18 @@ public protocol CourseAnalytics {
     func finishVerticalNextSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func finishVerticalBackToOutlineClicked(courseId: String, courseName: String)
     func courseOutlineCourseTabClicked(courseId: String, courseName: String)
+    func courseOutlineContentTabClicked(courseId: String, courseName: String)
     func courseOutlineVideosTabClicked(courseId: String, courseName: String)
     func courseOutlineOfflineTabClicked(courseId: String, courseName: String)
     func courseOutlineDatesTabClicked(courseId: String, courseName: String)
     func courseOutlineDiscussionTabClicked(courseId: String, courseName: String)
     func courseOutlineHandoutsTabClicked(courseId: String, courseName: String)
+    func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String)
+    func courseContentAllTabClicked(courseId: String, courseName: String)
+    func courseContentVideosTabClicked(courseId: String, courseName: String)
+    func courseContentAssignmentsTabClicked(courseId: String, courseName: String)
+    func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func datesComponentTapped(
         courseId: String,
         blockId: String,
@@ -179,11 +186,18 @@ class CourseAnalyticsMock: CourseAnalytics {
     ) {}
     public func finishVerticalBackToOutlineClicked(courseId: String, courseName: String) {}
     public func courseOutlineCourseTabClicked(courseId: String, courseName: String) {}
+    public func courseOutlineContentTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineVideosTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineOfflineTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineDatesTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineDiscussionTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineHandoutsTabClicked(courseId: String, courseName: String) {}
+    public func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String) {}
+    public func courseContentAllTabClicked(courseId: String, courseName: String) {}
+    public func courseContentVideosTabClicked(courseId: String, courseName: String) {}
+    public func courseContentAssignmentsTabClicked(courseId: String, courseName: String) {}
+    public func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func datesComponentTapped(
         courseId: String,
         blockId: String,

@@ -138,17 +138,25 @@ public extension DataLayer {
         public let assignmentType: String?
         public let numPointsEarned: Double?
         public let numPointsPossible: Double?
+        public let shortLabel: String?
 
         public enum CodingKeys: String, CodingKey {
             case assignmentType = "assignment_type"
             case numPointsEarned = "num_points_earned"
             case numPointsPossible = "num_points_possible"
+            case shortLabel = "short_label"
         }
         
-        public init(assignmentType: String?, numPointsEarned: Double?, numPointsPossible: Double?) {
+        public init(
+            assignmentType: String?,
+            numPointsEarned: Double?,
+            numPointsPossible: Double?,
+            shortLabel: String?
+        ) {
             self.assignmentType = assignmentType
             self.numPointsEarned = numPointsEarned
             self.numPointsPossible = numPointsPossible
+            self.shortLabel = shortLabel
         }
     }
     

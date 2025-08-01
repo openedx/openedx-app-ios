@@ -19,12 +19,34 @@ public enum CourseLocalization {
     return CourseLocalization.tr("Localizable", "past_due", p1, fallback: "Plural format key: \"%#@past_due@\"")
   }
   public enum Accessibility {
+    /// Assignment progress section
+    public static let assignmentProgressSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENT_PROGRESS_SECTION", fallback: "Assignment progress section")
+    /// Assignments section
+    public static let assignmentsSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ASSIGNMENTS_SECTION", fallback: "Assignments section")
     /// Cancel download
     public static let cancelDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CANCEL_DOWNLOAD", fallback: "Cancel download")
+    /// Continue learning section
+    public static let continueLearningSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CONTINUE_LEARNING_SECTION", fallback: "Continue learning section")
+    /// Course content section
+    public static let courseContentSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.COURSE_CONTENT_SECTION", fallback: "Course content section")
+    /// Course progress section
+    public static let courseProgressSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.COURSE_PROGRESS_SECTION", fallback: "Course progress section")
     /// Delete download
     public static let deleteDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DELETE_DOWNLOAD", fallback: "Delete download")
     /// Download
     public static let download = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DOWNLOAD", fallback: "Download")
+    /// Error message section
+    public static let errorMessageSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ERROR_MESSAGE_SECTION", fallback: "Error message section")
+    /// Loading section
+    public static let loadingSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.LOADING_SECTION", fallback: "Loading section")
+    /// No content available section
+    public static let noContentSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.NO_CONTENT_SECTION", fallback: "No content available section")
+    /// Video progress %@ of %@ Completed. Tap to show or hide completed videos.
+    public static func videoProgressSection(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PROGRESS_SECTION", String(describing: p1), String(describing: p2), fallback: "Video progress %@ of %@ Completed. Tap to show or hide completed videos.")
+    }
+    /// Videos section
+    public static let videosSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEOS_SECTION", fallback: "Videos section")
   }
   public enum Alert {
     /// Are you sure you want to delete all video(s) for
@@ -38,6 +60,34 @@ public enum CourseLocalization {
     /// Warning
     public static let warning = CourseLocalization.tr("Localizable", "ALERT.WARNING", fallback: "Warning")
   }
+  public enum Assignment {
+    /// Review Course Grading Policy
+    public static let reviewGradingPolicy = CourseLocalization.tr("Localizable", "ASSIGNMENT.REVIEW_GRADING_POLICY", fallback: "Review Course Grading Policy")
+    /// Unknown
+    public static let unknownSequence = CourseLocalization.tr("Localizable", "ASSIGNMENT.UNKNOWN_SEQUENCE", fallback: "Unknown")
+  }
+  public enum AssignmentStatus {
+    /// %@ Complete - %@/%@ points
+    public static func complete(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.COMPLETE", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ Complete - %@/%@ points")
+    }
+    /// %@ %@
+    public static func dueWithDate(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.DUE_WITH_DATE", String(describing: p1), String(describing: p2), fallback: "%@ %@")
+    }
+    /// %@ In Progress - %@/%@ points
+    public static func inProgress(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.IN_PROGRESS", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ In Progress - %@/%@ points")
+    }
+    /// %@ Not Yet Available
+    public static func notYetAvailable(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.NOT_YET_AVAILABLE", String(describing: p1), fallback: "%@ Not Yet Available")
+    }
+    /// %@ Past Due - %@/%@ points
+    public static func pastDue(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.PAST_DUE", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ Past Due - %@/%@ points")
+    }
+  }
   public enum CalendarSyncStatus {
     /// Calendar Sync Failed
     public static let failed = CourseLocalization.tr("Localizable", "CALENDAR_SYNC_STATUS.FAILED", fallback: "Calendar Sync Failed")
@@ -47,14 +97,54 @@ public enum CourseLocalization {
     public static let synced = CourseLocalization.tr("Localizable", "CALENDAR_SYNC_STATUS.SYNCED", fallback: "Synced to Calendar")
   }
   public enum Course {
+    /// Completed
+    public static let assignmentCompleted = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_COMPLETED", fallback: "Completed")
+    /// Discussion
+    public static let assignmentDiscussion = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_DISCUSSION", fallback: "Discussion")
+    /// Drag and Drop
+    public static let assignmentDragAndDrop = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_DRAG_AND_DROP", fallback: "Drag and Drop")
+    /// Assignment
+    public static let assignmentGeneric = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_GENERIC", fallback: "Assignment")
+    /// Graded
+    public static let assignmentGraded = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_GRADED", fallback: "Graded")
+    /// In Progress
+    public static let assignmentInProgress = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_IN_PROGRESS", fallback: "In Progress")
+    /// External Tool
+    public static let assignmentLti = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_LTI", fallback: "External Tool")
+    /// Not Started
+    public static let assignmentNotStarted = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_NOT_STARTED", fallback: "Not Started")
+    /// Open Assessment
+    public static let assignmentOpenAssessment = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_OPEN_ASSESSMENT", fallback: "Open Assessment")
+    /// Peer Instruction
+    public static let assignmentPeerInstruction = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_PEER_INSTRUCTION", fallback: "Peer Instruction")
+    /// Problem
+    public static let assignmentProblem = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_PROBLEM", fallback: "Problem")
+    /// Survey
+    public static let assignmentSurvey = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_SURVEY", fallback: "Survey")
+    /// Word Cloud
+    public static let assignmentWordCloud = CourseLocalization.tr("Localizable", "COURSE.ASSIGNMENT_WORD_CLOUD", fallback: "Word Cloud")
     /// Due Today
     public static let dueToday = CourseLocalization.tr("Localizable", "COURSE.DUE_TODAY", fallback: "Due Today")
     /// Due Tomorrow
     public static let dueTomorrow = CourseLocalization.tr("Localizable", "COURSE.DUE_TOMORROW", fallback: "Due Tomorrow")
-    /// %@ of %@ assignments complete
+    /// %@/%@ Completed
     public static func progressCompleted(_ p1: Any, _ p2: Any) -> String {
-      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@ of %@ assignments complete")
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Completed")
     }
+    /// Hide Completed
+    public static let progressHideCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_HIDE_COMPLETED", fallback: "Hide Completed")
+    /// %@/%@ Completed
+    public static func progressVideosCompleted(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_VIDEOS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Completed")
+    }
+    /// View Completed
+    public static let progressViewCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_VIEW_COMPLETED", fallback: "View Completed")
+    /// %@/%@ Watched
+    public static func progressWatched(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_WATCHED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Watched")
+    }
+    /// Return to Course Home
+    public static let returnToHome = CourseLocalization.tr("Localizable", "COURSE.RETURN_TO_HOME", fallback: "Return to Course Home")
     public enum LargestDownloads {
       /// Done
       public static let done = CourseLocalization.tr("Localizable", "COURSE.LARGEST_DOWNLOADS.DONE", fallback: "Done")
@@ -84,8 +174,8 @@ public enum CourseLocalization {
       }
       /// You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.
       public static let youCanDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CAN_DOWNLOAD", fallback: "You can download course content offline to learn on the go, without requiring an active internet connection or using mobile data.")
-      /// None of this course’s content is currently avaliable to download offline.
-      public static let youCantDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CANT_DOWNLOAD", fallback: "None of this course’s content is currently avaliable to download offline.")
+      /// None of this course's content is currently available to download offline.
+      public static let youCantDownload = CourseLocalization.tr("Localizable", "COURSE.OFFLINE.YOU_CANT_DOWNLOAD", fallback: "None of this course's content is currently available to download offline.")
     }
     public enum TotalProgress {
       /// Available to Download
@@ -123,6 +213,8 @@ public enum CourseLocalization {
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
   public enum CourseContainer {
+    /// Content
+    public static let content = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.CONTENT", fallback: "Content")
     /// Dates
     public static let dates = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.DATES", fallback: "Dates")
     /// Discussions
@@ -137,6 +229,14 @@ public enum CourseLocalization {
     public static let offline = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.OFFLINE", fallback: "Offline")
     /// Videos
     public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTAINER.VIDEOS", fallback: "Videos")
+  }
+  public enum CourseContent {
+    /// All
+    public static let all = CourseLocalization.tr("Localizable", "COURSE_CONTENT.ALL", fallback: "All")
+    /// Assignments
+    public static let assignments = CourseLocalization.tr("Localizable", "COURSE_CONTENT.ASSIGNMENTS", fallback: "Assignments")
+    /// Videos
+    public static let videos = CourseLocalization.tr("Localizable", "COURSE_CONTENT.VIDEOS", fallback: "Videos")
   }
   public enum CourseDates {
     /// Would you like to add the %@ calendar "%@" ? 
@@ -243,6 +343,8 @@ public enum CourseLocalization {
   public enum Error {
     /// There are currently no announcements for this course.
     public static let announcementsUnavailable = CourseLocalization.tr("Localizable", "ERROR.ANNOUNCEMENTS_UNAVAILABLE", fallback: "There are currently no announcements for this course.")
+    /// No assignments available for this course.
+    public static let assignmentsUnavailable = CourseLocalization.tr("Localizable", "ERROR.ASSIGNMENTS_UNAVAILABLE", fallback: "No assignments available for this course.")
     /// Course component not found, please reload
     public static let componentNotFount = CourseLocalization.tr("Localizable", "ERROR.COMPONENT_NOT_FOUNT", fallback: "Course component not found, please reload")
     /// Course dates are not currently available.
@@ -255,8 +357,8 @@ public enum CourseLocalization {
     public static let noInternet = CourseLocalization.tr("Localizable", "ERROR.NO_INTERNET", fallback: "You are not connected to the Internet. Please check your Internet connection.")
     /// Reload
     public static let reload = CourseLocalization.tr("Localizable", "ERROR.RELOAD", fallback: "Reload")
-    /// There are currently no vidoes for this course.
-    public static let videosUnavailable = CourseLocalization.tr("Localizable", "ERROR.VIDEOS_UNAVAILABLE", fallback: "There are currently no vidoes for this course.")
+    /// There are no videos currently available for this course
+    public static let videosUnavailable = CourseLocalization.tr("Localizable", "ERROR.VIDEOS_UNAVAILABLE", fallback: "There are no videos currently available for this course")
   }
   public enum HandoutsCellAnnouncements {
     /// Keep up with the latest news

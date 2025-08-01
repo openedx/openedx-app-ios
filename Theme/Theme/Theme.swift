@@ -83,6 +83,7 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var resumeButtonBG = ThemeAssets.resumeButtonBG.swiftUIColor
         nonisolated(unsafe) public private(set) static var resumeButtonText = ThemeAssets.resumeButtonText.swiftUIColor
         nonisolated(unsafe) public private(set) static var socialAuthColor = ThemeAssets.socialAuthColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var assignmentColor = ThemeAssets.assignmentStroke.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,

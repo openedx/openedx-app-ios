@@ -639,6 +639,10 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(VideoThumbnailServiceProtocol.self) { _ in
+            VideoThumbnailService()
+        }
+        
         container.register(BackNavigationProtocol.self) { r in
             r.resolve(Router.self)!
         }

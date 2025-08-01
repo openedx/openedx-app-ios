@@ -207,17 +207,15 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
-                case .videos:
-                    CourseOutlineView(
+                case .content:
+                    CourseContentView(
                         viewModel: viewModel,
                         title: title,
                         courseID: courseID,
-                        isVideo: true,
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
-                        viewHeight: $viewHeight,
-                        dateTabIndex: CourseTab.dates.rawValue
+                        viewHeight: $viewHeight
                     )
                     .tabItem {
                         tab.image

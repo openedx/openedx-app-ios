@@ -21,4 +21,28 @@ public extension String {
         }
         return false // equal or less
     }
+    
+    func youtubeVideoID() -> String? {
+            guard let url = URL(string: self) else { return nil }
+
+            if let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+               let id = components.queryItems?.first(where: { $0.name == "v" })?.value,
+               !id.isEmpty {
+                return id
+            }
+
+            // https://youtu.be/ID
+            if url.host == "youtu.be" {
+                let id = url.lastPathComponent
+                return id.isEmpty ? nil : id
+            }
+
+            if url.pathComponents.contains("embed"),
+               let id = url.pathComponents.last,
+               id != "embed" {
+                return id
+            }
+
+            return nil
+        }
 }

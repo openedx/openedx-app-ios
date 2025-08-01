@@ -16,6 +16,7 @@ public class VideoPlayerViewModel: ObservableObject {
     @Published var pause: Bool = false
     @Published var currentTime: Double = 0
     @Published var isLoading: Bool = true
+    @Published var isLocalProgressApplied: Bool = false
 
     public let connectivity: ConnectivityProtocol
 
@@ -42,6 +43,7 @@ public class VideoPlayerViewModel: ObservableObject {
     internal var subscription = Set<AnyCancellable>()
     private var appStorage: CoreStorage?
     private var analytics: CourseAnalytics?
+    private var lastSavedTime: Double = 0
 
     public init(
         languages: [SubtitleUrl],
@@ -70,6 +72,7 @@ public class VideoPlayerViewModel: ObservableObject {
                 }
             case .kill:
                 if self?.playerHolder.isPlayingInPip != true {
+                    self?.saveCurrentProgress(duration: self?.playerHolder.duration ?? .nan)
                     self?.playerHolder.playerController?.stop()
                 }
             case .none:
@@ -81,6 +84,7 @@ public class VideoPlayerViewModel: ObservableObject {
         playerHolder.getTimePublisher()
             .sink {[weak self] time in
                 self?.currentTime = time
+                self?.loadAndApplyLocalProgress()
             }
             .store(in: &subscription)
         playerHolder.getErrorPublisher()
@@ -255,6 +259,42 @@ public class VideoPlayerViewModel: ObservableObject {
                     currentTime: currentTime,
                     duration: playerHolder.duration
                 )
+            }
+        }
+    }
+    
+    public func saveCurrentProgress(duration: TimeInterval) {
+        
+        Task {
+            let time = currentTime
+//            let duration = playerHolder.duration
+                        
+            if duration > 0 && time > 0 {
+                let progress = min(time / duration, 1.0)
+                await playerHolder.getService().updateVideoProgress(progress: progress)
+            }
+        }
+    }
+    
+    private func loadAndApplyLocalProgress() {
+        guard playerHolder.duration != 0, !playerHolder.duration.isNaN, !isLocalProgressApplied else { return }
+        Task {
+            let duration = playerHolder.duration
+            
+            if let localProgress = await playerHolder.getService().loadVideoProgress() {
+                
+                if localProgress > 0 && duration > 0 {
+                    let timeToSeek = localProgress * duration
+                    await MainActor.run {
+                        // Seek to the saved position
+                        if let playerController = playerHolder.playerController {
+                            let seekDate = Date(timeIntervalSince1970: Date().timeIntervalSince1970 -
+                               Date().secondsSinceMidnight() + timeToSeek)
+                            playerController.seekTo(to: seekDate)
+                        }
+                    }
+                }
+                isLocalProgressApplied = true
             }
         }
     }
