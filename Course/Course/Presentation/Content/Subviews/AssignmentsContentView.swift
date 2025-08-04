@@ -165,6 +165,13 @@ struct AssignmentsContentView: View {
                                                     proxy: proxy,
                                                     onAssignmentTap: onAssignmentTap
                                                 )
+                                                if let index = assignmentSections.firstIndex(
+                                                    where: {$0.key == section.key
+                                                    }) {
+                                                    if index < assignmentSections.count - 1 {
+                                                        Divider()
+                                                    }
+                                                }
                                             }
                                             .accessibilityElement(children: .contain)
                                             .accessibilityLabel(
