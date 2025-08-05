@@ -268,7 +268,7 @@ final class CourseContainerViewModelTests: XCTestCase {
             sectionScores: [],
             verificationData: nil
         )
-        Given(interactor, .getCourseProgress(courseID: "123", willReturn: mockCourseProgress))
+        Given(interactor, .getCourseProgressOffline(courseID: "123", willReturn: mockCourseProgress))
         
         await viewModel.getCourseBlocks(courseID: "123")
         

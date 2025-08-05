@@ -456,6 +456,34 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         )
     }
     
+    func trackSectionClicked(_ chapter: CourseChapter) {
+        guard let course = courseStructure else { return }
+        analytics.contentPageSectionClicked(
+            courseId: course.id,
+            courseName: course.displayName,
+            blockId: chapter.blockId,
+            blockName: chapter.displayName
+        )
+    }
+    
+    func trackShowCompletedSubsectionClicked() {
+        guard let course = courseStructure else { return }
+        analytics.contentPageShowCompletedSubsectionClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+    
+    func trackAssignmentClicked(_ sequential: CourseSequential) {
+        guard let course = courseStructure else { return }
+        analytics.courseAssignmentClicked(
+            courseId: course.id,
+            courseName: course.displayName,
+            blockId: sequential.blockId,
+            blockName: sequential.displayName
+        )
+    }
+    
     func trackResumeCourseClicked(blockId: String) {
         guard let course = courseStructure else { return }
         analytics.resumeCourseClicked(
@@ -1506,7 +1534,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                     return
                 }
 
-                trackSequentialClicked(sequential)
+                trackAssignmentClicked(sequential)
 
                 if config.uiComponents.courseDropDownNavigationEnabled {
                     router.showCourseUnit(

@@ -70,6 +70,15 @@ public protocol CourseAnalytics {
     func courseContentAssignmentsTabClicked(courseId: String, courseName: String)
     func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func contentPageSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func contentPageShowCompletedSubsectionClicked(courseId: String, courseName: String)
+    func progressTabClicked(courseId: String, courseName: String)
+    func courseHomeViewAllContentClicked(courseId: String, courseName: String)
+    func courseHomeVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func courseHomeViewAllVideosClicked(courseId: String, courseName: String)
+    func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func courseHomeViewAllAssignmentsClicked(courseId: String, courseName: String)
+    func courseHomeGradesViewProgressClicked(courseId: String, courseName: String)
     func datesComponentTapped(
         courseId: String,
         blockId: String,
@@ -198,6 +207,15 @@ class CourseAnalyticsMock: CourseAnalytics {
     public func courseContentAssignmentsTabClicked(courseId: String, courseName: String) {}
     public func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func contentPageSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func contentPageShowCompletedSubsectionClicked(courseId: String, courseName: String) {}
+    public func progressTabClicked(courseId: String, courseName: String) {}
+    public func courseHomeViewAllContentClicked(courseId: String, courseName: String) {}
+    public func courseHomeVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func courseHomeViewAllVideosClicked(courseId: String, courseName: String) {}
+    public func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func courseHomeViewAllAssignmentsClicked(courseId: String, courseName: String) {}
+    public func courseHomeGradesViewProgressClicked(courseId: String, courseName: String) {}
     public func datesComponentTapped(
         courseId: String,
         blockId: String,

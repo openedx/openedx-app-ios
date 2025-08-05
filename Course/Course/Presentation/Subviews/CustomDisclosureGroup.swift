@@ -36,6 +36,7 @@ struct CustomDisclosureGroup: View {
                             withAnimation(.linear(duration: course.childs.count > 1 ? 0.2 : 0.05)) {
                                 viewModel.expandedSections[chapter.id, default: false].toggle()
                             }
+                            viewModel.trackSectionClicked(chapter)
                         }, label: {
                             HStack {
                                 CoreAssets.chevronRight.swiftUIImage

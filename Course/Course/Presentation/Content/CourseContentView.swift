@@ -203,6 +203,9 @@ public struct CourseContentView: View {
                 },
                 onErrorDismiss: {
                     viewModel.errorMessage = nil
+                },
+                onShowCompletedAnalytics: {
+                    viewModel.trackShowCompletedSubsectionClicked()
                 }
             )
             .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in
@@ -232,6 +235,9 @@ public struct CourseContentView: View {
                 },
                 onErrorDismiss: {
                     viewModel.errorMessage = nil
+                },
+                onShowCompletedAnalytics: {
+                    viewModel.trackShowCompletedSubsectionClicked()
                 }
             )
             .onReceive(NotificationCenter.default.publisher(for: .onBlockCompletion)) { _ in

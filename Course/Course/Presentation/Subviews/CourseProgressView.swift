@@ -14,17 +14,20 @@ public struct CourseProgressView: View {
     private var showCompletedToggle: Bool
     private var isShowingCompleted: Bool
     private var onToggleCompleted: (() -> Void)?
+    private var onShowCompletedAnalytics: (() -> Void)?
     
     public init(
         progress: CourseProgress,
         showCompletedToggle: Bool = false,
         isShowingCompleted: Bool = true,
-        onToggleCompleted: (() -> Void)? = nil
+        onToggleCompleted: (() -> Void)? = nil,
+        onShowCompletedAnalytics: (() -> Void)? = nil
     ) {
         self.progress = progress
         self.showCompletedToggle = showCompletedToggle
         self.isShowingCompleted = isShowingCompleted
         self.onToggleCompleted = onToggleCompleted
+        self.onShowCompletedAnalytics = onShowCompletedAnalytics
     }
     
     public var body: some View {
@@ -63,6 +66,7 @@ public struct CourseProgressView: View {
                 if showCompletedToggle {
                     Button(action: {
                         onToggleCompleted?()
+                        onShowCompletedAnalytics?()
                     }) {
                         HStack(spacing: 2) {
                             Text(

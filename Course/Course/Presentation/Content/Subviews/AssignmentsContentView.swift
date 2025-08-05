@@ -18,6 +18,7 @@ struct AssignmentsContentView: View {
     private let onAssignmentTap: (CourseProgressSubsectionUI) -> Void
     private let onTabSelection: (Int) -> Void
     private let onErrorDismiss: () -> Void
+    private let onShowCompletedAnalytics: () -> Void
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
@@ -39,13 +40,15 @@ struct AssignmentsContentView: View {
         proxy: GeometryProxy,
         onAssignmentTap: @escaping (CourseProgressSubsectionUI) -> Void,
         onTabSelection: @escaping (Int) -> Void,
-        onErrorDismiss: @escaping () -> Void
+        onErrorDismiss: @escaping () -> Void,
+        onShowCompletedAnalytics: @escaping () -> Void = {}
     ) {
         self.assignmentContentData = assignmentContentData
         self.proxy = proxy
         self.onAssignmentTap = onAssignmentTap
         self.onTabSelection = onTabSelection
         self.onErrorDismiss = onErrorDismiss
+        self.onShowCompletedAnalytics = onShowCompletedAnalytics
     }
     
     var body: some View {
@@ -163,7 +166,8 @@ struct AssignmentsContentView: View {
                                                         assignmentTypeColors: assignmentContentData.assignmentTypeColors
                                                     ),
                                                     proxy: proxy,
-                                                    onAssignmentTap: onAssignmentTap
+                                                    onAssignmentTap: onAssignmentTap,
+                                                    onShowCompletedAnalytics: onShowCompletedAnalytics
                                                 )
                                                 if let index = assignmentSections.firstIndex(
                                                     where: {$0.key == section.key
@@ -210,7 +214,8 @@ struct AssignmentsContentView: View {
             proxy: proxy,
             onAssignmentTap: { _ in },
             onTabSelection: { _ in },
-            onErrorDismiss: { }
+            onErrorDismiss: { },
+            onShowCompletedAnalytics: { }
         )
     }
 }

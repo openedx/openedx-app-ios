@@ -19,6 +19,7 @@ struct VideosContentView: View {
     private let onDownloadSectionTap: (CourseChapter, DownloadViewState) async -> Void
     private let onTabSelection: (Int) -> Void
     private let onErrorDismiss: () -> Void
+    private let onShowCompletedAnalytics: () -> Void
     
     @State private var isShowingCompletedVideos: Bool = false
     
@@ -28,7 +29,8 @@ struct VideosContentView: View {
         onVideoTap: @escaping (CourseBlock, CourseChapter) -> Void,
         onDownloadSectionTap: @escaping (CourseChapter, DownloadViewState) async -> Void,
         onTabSelection: @escaping (Int) -> Void,
-        onErrorDismiss: @escaping () -> Void
+        onErrorDismiss: @escaping () -> Void,
+        onShowCompletedAnalytics: @escaping () -> Void = {}
     ) {
         self.videoContentData = videoContentData
         self.proxy = proxy
@@ -36,6 +38,7 @@ struct VideosContentView: View {
         self.onDownloadSectionTap = onDownloadSectionTap
         self.onTabSelection = onTabSelection
         self.onErrorDismiss = onErrorDismiss
+        self.onShowCompletedAnalytics = onShowCompletedAnalytics
     }
     
     var body: some View {
@@ -81,7 +84,8 @@ struct VideosContentView: View {
                                     isShowingCompleted: isShowingCompletedVideos,
                                     onToggleCompleted: {
                                         isShowingCompletedVideos.toggle()
-                                    }
+                                    },
+                                    onShowCompletedAnalytics: onShowCompletedAnalytics
                                 )
                                 .padding(.horizontal, 24)
                                 .accessibilityElement(children: .combine)
@@ -163,7 +167,8 @@ struct VideosContentView: View {
             onVideoTap: { _, _ in },
             onDownloadSectionTap: { _, _ in },
             onTabSelection: { _ in },
-            onErrorDismiss: { }
+            onErrorDismiss: { },
+            onShowCompletedAnalytics: { }
         )
     }
 }

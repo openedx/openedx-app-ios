@@ -15,6 +15,7 @@ struct ProgressAssignmentTypeSection: View {
     let sectionData: AssignmentSectionData
     let proxy: GeometryProxy
     let onAssignmentTap: (CourseProgressSubsectionUI) -> Void
+    let onShowCompletedAnalytics: () -> Void
 
     @State private var selectedIndex: Int = 0
     @State private var isShowingCompletedAssignments: Bool = true
@@ -52,7 +53,8 @@ struct ProgressAssignmentTypeSection: View {
                                           assignmentsCompleted: completedCount),
                 showCompletedToggle: completedCount == totalCount,
                 isShowingCompleted: isShowingCompletedAssignments,
-                onToggleCompleted: { isShowingCompletedAssignments.toggle() }
+                onToggleCompleted: { isShowingCompletedAssignments.toggle() },
+                onShowCompletedAnalytics: onShowCompletedAnalytics
             )
             .padding(.horizontal, 24)
 
@@ -215,7 +217,8 @@ struct ProgressAssignmentTypeSection: View {
                 assignmentTypeColors: [:]
             ),
             proxy: proxy,
-            onAssignmentTap: { _ in }
+            onAssignmentTap: { _ in },
+            onShowCompletedAnalytics: { }
         )
     }
     .padding()
