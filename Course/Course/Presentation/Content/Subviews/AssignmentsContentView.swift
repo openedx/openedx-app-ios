@@ -34,7 +34,7 @@ struct AssignmentsContentView: View {
     private var assignmentSections: [AssignmentSectionUI] {
         assignmentContentData.assignmentSections
     }
-        
+    
     init(
         assignmentContentData: AssignmentContentData,
         proxy: GeometryProxy,
@@ -120,6 +120,7 @@ struct AssignmentsContentView: View {
                             } else {
                                 ScrollView {
                                     LazyVStack(alignment: .leading, spacing: 32) {
+                                        Divider()
                                         ForEach(assignmentSections, id: \.key) { section in
                                             VStack(alignment: .leading, spacing: 16) {
                                                 // Section Title and Progress
@@ -157,7 +158,7 @@ struct AssignmentsContentView: View {
                                                         )
                                                 }
                                                 .padding(.horizontal, isTablet ? 32 : 24)
-                                                                                                
+                                                
                                                 // Assignment Cards for this section
                                                 ProgressAssignmentTypeSection(
                                                     sectionData: AssignmentSectionData(
@@ -169,32 +170,26 @@ struct AssignmentsContentView: View {
                                                     onAssignmentTap: onAssignmentTap,
                                                     onShowCompletedAnalytics: onShowCompletedAnalytics
                                                 )
-                                                if let index = assignmentSections.firstIndex(
-                                                    where: {$0.key == section.key
-                                                    }) {
-                                                    if index < assignmentSections.count - 1 {
-                                                        Divider()
-                                                    }
-                                                }
+                                                Divider()
                                             }
-                                            .accessibilityElement(children: .contain)
-                                            .accessibilityLabel(
-                                                "\(section.key) \(CourseLocalization.Accessibility.assignmentsSection)"
-                                            )
-                                        }
+                                        .accessibilityElement(children: .contain)
+                                        .accessibilityLabel(
+                                            "\(section.key) \(CourseLocalization.Accessibility.assignmentsSection)"
+                                        )
                                     }
                                 }
                             }
                         }
-                        
-                        Spacer(minLength: 200)
                     }
+                    
+                    Spacer(minLength: 200)
                 }
             }
         }
+    }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
-    }
+}
 }
 
 #if DEBUG
