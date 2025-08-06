@@ -158,7 +158,7 @@ struct CoursesToSyncView_Previews: PreviewProvider {
             profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
             calendarManager: CalendarManagerMock(),
-            connectivity: Connectivity(config: ConfigMock()),
+            connectivity: Connectivity(config: ConfigMock())
         )
         return CoursesToSyncView(viewModel: vm)
             .previewDisplayName("Courses to Sync")
