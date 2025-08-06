@@ -195,9 +195,9 @@ struct ProfileView_Previews: PreviewProvider {
             router: router,
             analytics: ProfileAnalyticsMock(),
             config: config,
-            connectivity: Connectivity(config: config),
+            connectivity: Connectivity(config: config)
         )
-        
+
         ProfileView(viewModel: vm)
             .preferredColorScheme(.light)
             .previewDisplayName("DiscoveryView Light")
