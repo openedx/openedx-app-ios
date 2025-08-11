@@ -227,8 +227,9 @@ struct CustomDisclosureGroup: View {
         // Progress
         if let sp = sequential.sequentialProgress,
            let earned = sp.numPointsEarned,
-           let possible = sp.numPointsPossible {
-            parts.append("\(earned) / \(possible) points")
+           let possible = sp.numPointsPossible,
+           possible != 0 {
+            parts.append("\(earned) / \(possible)")
         }
 
         return parts.isEmpty ? nil : parts.joined(separator: " - ")
