@@ -211,22 +211,27 @@ struct CustomDisclosureGroup: View {
     private func assignmentStatusText(
         sequential: CourseSequential
     ) -> String? {
-        guard let sequentialProgress = sequential.sequentialProgress,
-              let assignmentType = sequentialProgress.assignmentType,
-              let due = sequential.due else {
-            return nil
+        var parts: [String] = []
+
+        // Name
+        if let name = sequential.sequentialProgress?.assignmentType,
+           !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            parts.append(name)
         }
-        
-        let daysRemaining = getAssignmentStatus(for: due)
-        
-        let progress: String = {
-            guard let numPointsEarned = sequentialProgress.numPointsEarned,
-                  let numPointsPossible = sequentialProgress.numPointsPossible else {
-                return ""
-            }
-            return " - \(numPointsEarned) / \(numPointsPossible)"
-        }()
-        return "\(assignmentType) - \(daysRemaining)\(progress)"
+
+        // Deadline
+        if let due = sequential.due {
+            parts.append(getAssignmentStatus(for: due))
+        }
+
+        // Progress
+        if let sp = sequential.sequentialProgress,
+           let earned = sp.numPointsEarned,
+           let possible = sp.numPointsPossible {
+            parts.append("\(earned) / \(possible) points")
+        }
+
+        return parts.isEmpty ? nil : parts.joined(separator: " - ")
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
