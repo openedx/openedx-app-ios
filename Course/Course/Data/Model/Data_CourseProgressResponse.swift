@@ -350,7 +350,17 @@ public extension DataLayer.GradingPolicy {
         CourseProgressGradingPolicy(
             assignmentPolicies: assignmentPolicies.map { $0.domain },
             gradeRange: gradeRange,
-            assignmentColors: assignmentColors ?? []
+            assignmentColors: assignmentColors ?? [
+                "#D24242",
+                 "#7B9645",
+                 "#5A5AD8",
+                 "#B0842C",
+                 "#2E90C2",
+                 "#D13F88",
+                 "#36A17D",
+                 "#AE5AD8",
+                 "#3BA03B"
+              ]
         )
     }
 }
