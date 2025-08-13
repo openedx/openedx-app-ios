@@ -351,17 +351,16 @@ public extension DataLayer.GradingPolicy {
             },
             gradeRange: gradeRange,
             assignmentColors: assignmentColors ?? [
-                "#FF5733",
-                "#33C1FF",
-                "#75FF33",
-                "#FF33EC",
-                "#FFD133",
-                "#8E44AD",
-                "#33FFBD",
-                "#FF3333",
-                "#3380FF",
-                "#1ABC9C"
-            ]
+                "#D24242",
+                 "#7B9645",
+                 "#5A5AD8",
+                 "#B0842C",
+                 "#2E90C2",
+                 "#D13F88",
+                 "#36A17D",
+                 "#AE5AD8",
+                 "#3BA03B"
+              ]
         )
     }
 }
