@@ -547,6 +547,15 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        container.register(CourseProgressViewModel.self) { @MainActor r in
+            CourseProgressViewModel(
+                interactor: r.resolve(CourseInteractorProtocol.self)!,
+                router: r.resolve(CourseRouter.self)!,
+                analytics: r.resolve(CourseAnalytics.self)!,
+                connectivity: r.resolve(ConnectivityProtocol.self)!
+            )
+        }
+        
         // MARK: Discussion
         container.register(DiscussionRepositoryProtocol.self) { r in
             DiscussionRepository(
@@ -688,7 +697,6 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(DownloadsAnalytics.self)!
             )
         }
-        
     }
 }
 // swiftlint:enable function_body_length closure_parameter_position type_body_length

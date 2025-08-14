@@ -21,6 +21,8 @@ public protocol CourseRepositoryProtocol: Sendable {
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates
     func getCourseDeadlineInfo(courseID: String) async throws -> CourseDateBanner
     func shiftDueDates(courseID: String) async throws
+    func getCourseProgress(courseID: String) async throws -> CourseProgressDetails
+    func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails
 }
 
 public actor CourseRepository: CourseRepositoryProtocol {
@@ -116,6 +118,19 @@ public actor CourseRepository: CourseRepositoryProtocol {
     
     public func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
         return try await persistence.loadCourseDates(courseID: courseID)
+    }
+    
+    public func getCourseProgress(courseID: String) async throws -> CourseProgressDetails {
+        let courseProgress = try await api.requestData(
+            CourseEndpoint.getCourseProgress(courseID: courseID)
+        ).mapResponse(DataLayer.CourseProgressResponse.self)
+        let domainProgress = courseProgress.domain()
+        await persistence.saveCourseProgress(courseID: courseID, courseProgress: domainProgress)
+        return domainProgress
+    }
+    
+    public func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails {
+        return try await persistence.loadCourseProgress(courseID: courseID)
     }
     
     private func parseCourseStructure(course: DataLayer.CourseStructure) -> CourseStructure {
@@ -297,6 +312,250 @@ public actor CourseRepository: CourseRepositoryProtocol {
 @MainActor
 class CourseRepositoryMock: CourseRepositoryProtocol {
     func getCourseDatesOffline(courseID: String) async throws -> CourseDates {
+        throw NoCachedDataError()
+    }
+    
+    func getCourseProgress(courseID: String) async throws -> CourseProgressDetails {
+        return CourseProgressDetails(
+            verifiedMode: "verified",
+            accessExpiration: "2024-12-31T23:59:59Z",
+            certificateData: CourseProgressCertificateData(
+                certStatus: "downloadable",
+                certWebViewUrl: "https://example.com/certificate/view",
+                downloadUrl: "https://example.com/certificate/download",
+                certificateAvailableDate: "2024-06-15T00:00:00Z"
+            ),
+            completionSummary: CourseProgressCompletionSummary(
+                completeCount: 18,
+                incompleteCount: 7,
+                lockedCount: 2
+            ),
+            courseGrade: CourseProgressGrade(
+                letterGrade: "A-",
+                percent: 0.87,
+                isPassing: true
+            ),
+            creditCourseRequirements: "Complete all assignments with 70% or higher",
+            end: "2024-08-30T23:59:59Z",
+            enrollmentMode: "verified",
+            gradingPolicy: CourseProgressGradingPolicy(
+                assignmentPolicies: [
+                    CourseProgressAssignmentPolicy(
+                        numDroppable: 1,
+                        numTotal: 4,
+                        shortLabel: "HW",
+                        type: "Homework",
+                        weight: 0.3
+                    ),
+                    CourseProgressAssignmentPolicy(
+                        numDroppable: 0,
+                        numTotal: 2,
+                        shortLabel: "Exam",
+                        type: "Exam",
+                        weight: 0.4
+                    ),
+                    CourseProgressAssignmentPolicy(
+                        numDroppable: 0,
+                        numTotal: 1,
+                        shortLabel: "Final",
+                        type: "Final Exam",
+                        weight: 0.3
+                    )
+                ],
+                gradeRange: [
+                    "Pass": 0.5,
+                    "B": 0.8,
+                    "C": 0.7,
+                    "D": 0.6,
+                    "F": 0.0
+                ],
+                assignmentColors: ["#D24242", "#7B9645", "#5A5AD8"]
+            ),
+            hasScheduledContent: true,
+            sectionScores: [
+                CourseProgressSectionScore(
+                    displayName: "Week 1: Introduction to Computer Science",
+                    subsections: [
+                        CourseProgressSubsection(
+                            assignmentType: "Homework",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@hw1",
+                            displayName: "Homework 1: Basic Programming",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: true,
+                            numPointsEarned: 18.5,
+                            numPointsPossible: 20.0,
+                            percentGraded: 100.0,
+                            problemScores: [
+                                CourseProgressProblemScore(earned: 5.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 4.5, possible: 5.0),
+                                CourseProgressProblemScore(earned: 4.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 5.0, possible: 5.0)
+                            ],
+                            showCorrectness: "always",
+                            showGrades: true,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week1/hw1"
+                        ),
+                        CourseProgressSubsection(
+                            assignmentType: "Lab",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@lab1",
+                            displayName: "Lab 1: Python Basics",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: true,
+                            numPointsEarned: 10.0,
+                            numPointsPossible: 10.0,
+                            percentGraded: 100.0,
+                            problemScores: [
+                                CourseProgressProblemScore(earned: 10.0, possible: 10.0)
+                            ],
+                            showCorrectness: "always",
+                            showGrades: true,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week1/lab1"
+                        )
+                    ]
+                ),
+                CourseProgressSectionScore(
+                    displayName: "Week 2: Variables and Simple Data Types",
+                    subsections: [
+                        CourseProgressSubsection(
+                            assignmentType: "Homework",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@hw2",
+                            displayName: "Homework 2: Data Types and Operations",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: true,
+                            numPointsEarned: 16.0,
+                            numPointsPossible: 20.0,
+                            percentGraded: 100.0,
+                            problemScores: [
+                                CourseProgressProblemScore(earned: 4.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 3.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 4.5, possible: 5.0),
+                                CourseProgressProblemScore(earned: 4.5, possible: 5.0)
+                            ],
+                            showCorrectness: "always",
+                            showGrades: true,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week2/hw2"
+                        ),
+                        CourseProgressSubsection(
+                            assignmentType: "Quiz",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@quiz1",
+                            displayName: "Quiz 1: Variables and Expressions",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: true,
+                            numPointsEarned: 7.5,
+                            numPointsPossible: 10.0,
+                            percentGraded: 100.0,
+                            problemScores: [
+                                CourseProgressProblemScore(earned: 2.5, possible: 3.0),
+                                CourseProgressProblemScore(earned: 2.0, possible: 3.0),
+                                CourseProgressProblemScore(earned: 3.0, possible: 4.0)
+                            ],
+                            showCorrectness: "always",
+                            showGrades: true,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week2/quiz1"
+                        )
+                    ]
+                ),
+                CourseProgressSectionScore(
+                    displayName: "Week 3: Control Structures",
+                    subsections: [
+                        CourseProgressSubsection(
+                            assignmentType: "Homework",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@hw3",
+                            displayName: "Homework 3: Loops and Conditionals",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: true,
+                            numPointsEarned: 14.0,
+                            numPointsPossible: 25.0,
+                            percentGraded: 80.0,
+                            problemScores: [
+                                CourseProgressProblemScore(earned: 4.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 2.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 3.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 5.0, possible: 5.0),
+                                CourseProgressProblemScore(earned: 0.0, possible: 5.0)
+                            ],
+                            showCorrectness: "always",
+                            showGrades: true,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week3/hw3"
+                        )
+                    ]
+                ),
+                CourseProgressSectionScore(
+                    displayName: "Week 4: Functions and Modules",
+                    subsections: [
+                        CourseProgressSubsection(
+                            assignmentType: "Homework",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@hw4",
+                            displayName: "Homework 4: Function Design",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: true,
+                            numPointsEarned: 0.0,
+                            numPointsPossible: 20.0,
+                            percentGraded: 0.0,
+                            problemScores: [],
+                            showCorrectness: "always",
+                            showGrades: true,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week4/hw4"
+                        ),
+                        CourseProgressSubsection(
+                            assignmentType: "Lab",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@lab4",
+                            displayName: "Lab 4: Advanced Functions",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: false,
+                            numPointsEarned: 0.0,
+                            numPointsPossible: 15.0,
+                            percentGraded: 0.0,
+                            problemScores: [],
+                            showCorrectness: "always",
+                            showGrades: false,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/week4/lab4"
+                        )
+                    ]
+                ),
+                CourseProgressSectionScore(
+                    displayName: "Midterm Exam",
+                    subsections: [
+                        CourseProgressSubsection(
+                            assignmentType: "Exam",
+                            blockKey: "block-v1:MITx+6.00.1x+2024_Summer+type@sequential+block@midterm",
+                            displayName: "Midterm Examination",
+                            hasGradedAssignment: true,
+                            override: nil,
+                            learnerHasAccess: true,
+                            numPointsEarned: 42.0,
+                            numPointsPossible: 50.0,
+                            percentGraded: 100.0,
+                            problemScores: [
+                                CourseProgressProblemScore(earned: 8.0, possible: 10.0),
+                                CourseProgressProblemScore(earned: 9.0, possible: 10.0),
+                                CourseProgressProblemScore(earned: 7.0, possible: 10.0),
+                                CourseProgressProblemScore(earned: 8.0, possible: 10.0),
+                                CourseProgressProblemScore(earned: 10.0, possible: 10.0)
+                            ],
+                            showCorrectness: "past_due",
+                            showGrades: true,
+                            url: "/courses/course-v1:MITx+6.00.1x+2024_Summer/courseware/midterm/exam"
+                        )
+                    ]
+                )
+            ],
+            verificationData: CourseProgressVerificationData(
+                link: "https://courses.edx.org/verify_student/verify",
+                status: "verified",
+                statusDate: "2024-03-15T14:30:00Z"
+            )
+        )
+    }
+    
+    func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails {
         throw NoCachedDataError()
     }
     

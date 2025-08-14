@@ -101,6 +101,90 @@
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>
+    <entity name="CDCourseProgress" representedClassName="CDCourseProgress" syncable="YES" codeGenerationType="class">
+        <attribute name="accessExpiration" optional="YES" attributeType="String"/>
+        <attribute name="assignmentColors" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="courseID" optional="YES" attributeType="String"/>
+        <attribute name="creditCourseRequirements" optional="YES" attributeType="String"/>
+        <attribute name="disableProgressGraph" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="end" optional="YES" attributeType="String"/>
+        <attribute name="enrollmentMode" optional="YES" attributeType="String"/>
+        <attribute name="hasScheduledContent" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="studioUrl" optional="YES" attributeType="String"/>
+        <attribute name="userHasPassingGrade" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="username" optional="YES" attributeType="String"/>
+        <attribute name="verifiedMode" optional="YES" attributeType="String"/>
+        <relationship name="certificateData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCertificateData"/>
+        <relationship name="completionSummary" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCompletionSummary"/>
+        <relationship name="courseGrade" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDCourseGrade"/>
+        <relationship name="gradingPolicy" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDGradingPolicy"/>
+        <relationship name="sectionScores" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDSectionScore" inverseName="courseProgress" inverseEntity="CDSectionScore"/>
+        <relationship name="verificationData" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="CDVerificationData"/>
+        <uniquenessConstraints>
+            <uniquenessConstraint>
+                <constraint value="courseID"/>
+            </uniquenessConstraint>
+        </uniquenessConstraints>
+    </entity>
+    <entity name="CDCertificateData" representedClassName="CDCertificateData" syncable="YES" codeGenerationType="class">
+        <attribute name="certificateAvailableDate" optional="YES" attributeType="String"/>
+        <attribute name="certStatus" optional="YES" attributeType="String"/>
+        <attribute name="certWebViewUrl" optional="YES" attributeType="String"/>
+        <attribute name="downloadUrl" optional="YES" attributeType="String"/>
+    </entity>
+    <entity name="CDCompletionSummary" representedClassName="CDCompletionSummary" syncable="YES" codeGenerationType="class">
+        <attribute name="completeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="incompleteCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lockedCount" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="CDCourseGrade" representedClassName="CDCourseGrade" syncable="YES" codeGenerationType="class">
+        <attribute name="isPassing" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="letterGrade" optional="YES" attributeType="String"/>
+        <attribute name="percent" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="CDGradingPolicy" representedClassName="CDGradingPolicy" syncable="YES" codeGenerationType="class">
+        <attribute name="gradeRangeData" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String: Double]"/>
+        <relationship name="assignmentPolicies" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDAssignmentPolicy" inverseName="gradingPolicy" inverseEntity="CDAssignmentPolicy"/>
+    </entity>
+    <entity name="CDAssignmentPolicy" representedClassName="CDAssignmentPolicy" syncable="YES" codeGenerationType="class">
+        <attribute name="numDroppable" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="numTotal" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="shortLabel" optional="YES" attributeType="String"/>
+        <attribute name="type" optional="YES" attributeType="String"/>
+        <attribute name="weight" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="gradingPolicy" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDGradingPolicy" inverseName="assignmentPolicies" inverseEntity="CDGradingPolicy"/>
+    </entity>
+    <entity name="CDSectionScore" representedClassName="CDSectionScore" syncable="YES" codeGenerationType="class">
+        <attribute name="displayName" optional="YES" attributeType="String"/>
+        <relationship name="courseProgress" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDCourseProgress" inverseName="sectionScores" inverseEntity="CDCourseProgress"/>
+        <relationship name="subsections" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDSubsection" inverseName="sectionScore" inverseEntity="CDSubsection"/>
+    </entity>
+    <entity name="CDSubsection" representedClassName="CDSubsection" syncable="YES" codeGenerationType="class">
+        <attribute name="assignmentType" optional="YES" attributeType="String"/>
+        <attribute name="blockKey" optional="YES" attributeType="String"/>
+        <attribute name="displayName" optional="YES" attributeType="String"/>
+        <attribute name="hasGradedAssignment" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="learnerHasAccess" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="numPointsEarned" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="numPointsPossible" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="override" optional="YES" attributeType="String"/>
+        <attribute name="percentGraded" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="showCorrectness" optional="YES" attributeType="String"/>
+        <attribute name="showGrades" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="url" optional="YES" attributeType="String"/>
+        <relationship name="problemScores" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDProblemScore" inverseName="subsection" inverseEntity="CDProblemScore"/>
+        <relationship name="sectionScore" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSectionScore" inverseName="subsections" inverseEntity="CDSectionScore"/>
+    </entity>
+    <entity name="CDProblemScore" representedClassName="CDProblemScore" syncable="YES" codeGenerationType="class">
+        <attribute name="earned" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="possible" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="subsection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSubsection" inverseName="problemScores" inverseEntity="CDSubsection"/>
+    </entity>
+    <entity name="CDVerificationData" representedClassName="CDVerificationData" syncable="YES" codeGenerationType="class">
+        <attribute name="link" optional="YES" attributeType="String"/>
+        <attribute name="status" optional="YES" attributeType="String"/>
+        <attribute name="statusDate" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="CDSubtitle" representedClassName="CDSubtitle" syncable="YES" codeGenerationType="class">
         <attribute name="subtitle" optional="YES" attributeType="String"/>
         <attribute name="uploadedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
