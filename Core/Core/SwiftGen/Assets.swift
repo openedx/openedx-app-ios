@@ -45,6 +45,7 @@ public enum CoreAssets {
   public static let home = ImageAsset(name: "home")
   public static let more = ImageAsset(name: "more")
   public static let noVideos = ImageAsset(name: "noVideos")
+  public static let progress = ImageAsset(name: "progress")
   public static let videos = ImageAsset(name: "videos")
   public static let dashboardEmptyPage = ImageAsset(name: "DashboardEmptyPage")
   public static let addComment = ImageAsset(name: "addComment")
