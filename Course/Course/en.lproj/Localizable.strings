@@ -188,7 +188,22 @@
 "ACCESSIBILITY.ERROR_MESSAGE_SECTION" = "Error message section";
 "ACCESSIBILITY.LOADING_SECTION" = "Loading section";
 "ACCESSIBILITY.VIDEOS_SECTION" = "Videos section";
-"ACCESSIBILITY.VIDEO_PROGRESS_SECTION" = "Video progress %@ of %@ Completed. Tap to show or hide completed videos.";
+"ACCESSIBILITY.VIDEO_PROGRESS_SECTION" = "Video progress %@ of %@ Completed.";
 "ACCESSIBILITY.ASSIGNMENTS_SECTION" = "Assignments section";
 "ACCESSIBILITY.ASSIGNMENT_PROGRESS_SECTION" = "Assignment progress section";
 "ACCESSIBILITY.NO_CONTENT_SECTION" = "No content available section";
+
+// MARK: - Show/Hide Completed Accessibility
+"ACCESSIBILITY.HIDE_COMPLETED_SECTIONS" = "Tap to hide completed sections";
+"ACCESSIBILITY.SHOW_COMPLETED_SECTIONS" = "Tap to show completed sections";
+
+// MARK: - Video Section Accessibility
+"ACCESSIBILITY.VIDEO_SECTION_HEADER" = "%@ section, %@ of %@ videos watched";
+"ACCESSIBILITY.DOWNLOAD_SECTION_BUTTON" = "Download section, %@";
+
+// MARK: - Video Thumbnail Accessibility
+"ACCESSIBILITY.VIDEO_THUMBNAIL" = "Video: %@";
+"ACCESSIBILITY.VIDEO_THUMBNAIL_COMPLETED" = "%@, completed";
+"ACCESSIBILITY.VIDEO_THUMBNAIL_IN_PROGRESS" = "%@, %@%% watched";
+"ACCESSIBILITY.VIDEO_THUMBNAIL_NOT_STARTED" = "%@, not started";
+"ACCESSIBILITY.VIDEO_THUMBNAIL_HINT" = "Tap to play video";

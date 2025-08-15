@@ -115,13 +115,6 @@ struct VideosContentView: View {
                                     onShowCompletedAnalytics: onShowCompletedAnalytics
                                 )
                                 .padding(.horizontal, 24)
-                                .accessibilityElement(children: .combine)
-                                .accessibilityLabel(
-                                    CourseLocalization.Accessibility.videoProgressSection(
-                                        progress.assignmentsCompleted ?? 0,
-                                        progress.totalAssignmentsCount ?? 0
-                                    )
-                                )
                             }
                             
                             Spacer(minLength: 16)

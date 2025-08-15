@@ -63,6 +63,14 @@ struct VideoSectionView: View {
                             .font(Theme.Fonts.bodySmall)
                             .foregroundColor(Theme.Colors.textPrimary)
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(
+                        CourseLocalization.Accessibility.videoSectionHeader(
+                            chapter.displayName,
+                            completedVideos.count,
+                            allVideos.count
+                        )
+                    )
                     
                     Spacer()
                     
@@ -83,6 +91,10 @@ struct VideoSectionView: View {
                                 DownloadFinishedView()
                             }
                         }
+                        .accessibilityLabel(
+                            CourseLocalization.Accessibility
+                                .downloadSectionButton(getDownloadStateAccessibilityLabel(state))
+                        )
                     }
                 }
                 .padding(.horizontal, 22)
@@ -159,6 +171,17 @@ struct VideoSectionView: View {
     private var canDownloadSection: Bool {
         chapter.childs.contains { sequential in
             sectionData.sequentialsDownloadState[sequential.id] != nil
+        }
+    }
+    
+    private func getDownloadStateAccessibilityLabel(_ state: DownloadViewState) -> String {
+        switch state {
+        case .available:
+            return CourseLocalization.Course.TotalProgress.avaliableToDownload
+        case .downloading:
+            return CourseLocalization.Course.TotalProgress.downloading
+        case .finished:
+            return CourseLocalization.Course.TotalProgress.downloaded
         }
     }
     

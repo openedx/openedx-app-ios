@@ -95,6 +95,8 @@ struct VideoThumbnailView: View {
         }
         .buttonStyle(PlainButtonStyle())
         .padding(1)
+        .accessibilityLabel(getAccessibilityLabel())
+        .accessibilityHint(CourseLocalization.Accessibility.videoThumbnailHint)
         .task {
             // Generate video thumbnail if needed
             if thumbnailURL == nil, let videoURL = getVideoURL() {
@@ -231,6 +233,19 @@ struct VideoThumbnailView: View {
     
     private func openVideo() {
         thumbnailData.onVideoTap(video, chapter)
+    }
+    
+    private func getAccessibilityLabel() -> String {
+        let baseLabel = CourseLocalization.Accessibility.videoThumbnail(video.displayName)
+        
+        if video.completion >= 1.0 {
+            return CourseLocalization.Accessibility.videoThumbnailCompleted(baseLabel)
+        } else if getEffectiveProgress() > 0 {
+            let progressPercent = Int(getEffectiveProgress() * 100)
+            return CourseLocalization.Accessibility.videoThumbnailInProgress(baseLabel, progressPercent)
+        } else {
+            return CourseLocalization.Accessibility.videoThumbnailNotStarted(baseLabel)
+        }
     }
 }
 

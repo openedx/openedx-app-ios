@@ -35,15 +35,45 @@ public enum CourseLocalization {
     public static let deleteDownload = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DELETE_DOWNLOAD", fallback: "Delete download")
     /// Download
     public static let download = CourseLocalization.tr("Localizable", "ACCESSIBILITY.DOWNLOAD", fallback: "Download")
+    /// Download section, %@
+    public static func downloadSectionButton(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.DOWNLOAD_SECTION_BUTTON", String(describing: p1), fallback: "Download section, %@")
+    }
     /// Error message section
     public static let errorMessageSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.ERROR_MESSAGE_SECTION", fallback: "Error message section")
+    /// Tap to hide completed sections
+    public static let hideCompletedSections = CourseLocalization.tr("Localizable", "ACCESSIBILITY.HIDE_COMPLETED_SECTIONS", fallback: "Tap to hide completed sections")
     /// Loading section
     public static let loadingSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.LOADING_SECTION", fallback: "Loading section")
     /// No content available section
     public static let noContentSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.NO_CONTENT_SECTION", fallback: "No content available section")
+    /// Tap to show completed sections
+    public static let showCompletedSections = CourseLocalization.tr("Localizable", "ACCESSIBILITY.SHOW_COMPLETED_SECTIONS", fallback: "Tap to show completed sections")
     /// Video progress %@ of %@ Completed. Tap to show or hide completed videos.
     public static func videoProgressSection(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PROGRESS_SECTION", String(describing: p1), String(describing: p2), fallback: "Video progress %@ of %@ Completed. Tap to show or hide completed videos.")
+    }
+    /// %@ section, %@ of %@ videos watched
+    public static func videoSectionHeader(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_SECTION_HEADER", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ section, %@ of %@ videos watched")
+    }
+    /// Video: %@
+    public static func videoThumbnail(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_THUMBNAIL", String(describing: p1), fallback: "Video: %@")
+    }
+    /// %@, completed
+    public static func videoThumbnailCompleted(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_THUMBNAIL_COMPLETED", String(describing: p1), fallback: "%@, completed")
+    }
+    /// Tap to play video
+    public static let videoThumbnailHint = CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_THUMBNAIL_HINT", fallback: "Tap to play video")
+    /// %@, %@%% watched
+    public static func videoThumbnailInProgress(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_THUMBNAIL_IN_PROGRESS", String(describing: p1), String(describing: p2), fallback: "%@, %@%% watched")
+    }
+    /// %@, not started
+    public static func videoThumbnailNotStarted(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_THUMBNAIL_NOT_STARTED", String(describing: p1), fallback: "%@, not started")
     }
     /// Videos section
     public static let videosSection = CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEOS_SECTION", fallback: "Videos section")

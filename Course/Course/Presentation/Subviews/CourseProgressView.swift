@@ -48,6 +48,8 @@ public struct CourseProgressView: View {
                 .frame(height: 4)
             }
             .cornerRadius(2)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(CourseLocalization.Accessibility.courseProgressSection)
             
             HStack {
                 if let total = progress.totalAssignmentsCount,
@@ -59,6 +61,13 @@ public struct CourseProgressView: View {
                     .foregroundColor(Theme.Colors.textPrimary)
                     .font(Theme.Fonts.labelMedium)
                     .padding(.top, 5)
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(
+                        CourseLocalization.Accessibility.videoProgressSection(
+                            completed,
+                            total
+                        )
+                    )
                 }
                 
                 Spacer()
@@ -83,6 +92,12 @@ public struct CourseProgressView: View {
                                 .animation(.default, value: isShowingCompleted)
                         }
                     }
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(
+                        isShowingCompleted
+                        ? CourseLocalization.Accessibility.hideCompletedSections
+                        : CourseLocalization.Accessibility.showCompletedSections
+                    )
                 }
             }
         }
