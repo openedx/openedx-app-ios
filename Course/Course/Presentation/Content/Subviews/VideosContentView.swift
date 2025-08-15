@@ -50,14 +50,7 @@ struct VideosContentView: View {
         let allVideos = getAllVideos(from: chapter)
         return !allVideos.isEmpty && allVideos.allSatisfy { $0.completion >= 1.0 }
     }
-    
-    private func shouldShowChapter(_ chapter: CourseChapter) -> Bool {
-        if isHidingCompletedSections {
-            return !isChapterFullyCompleted(chapter)
-        }
-        return true
-    }
-    
+        
     private func hasFullyCompletedSections() -> Bool {
         guard let courseVideosStructure = videoContentData.courseVideosStructure else { return false }
         return courseVideosStructure.childs.contains { isChapterFullyCompleted($0) }
@@ -65,7 +58,14 @@ struct VideosContentView: View {
     
     private func getVisibleChapters() -> [CourseChapter] {
         guard let courseVideosStructure = videoContentData.courseVideosStructure else { return [] }
-        return courseVideosStructure.childs.filter { shouldShowChapter($0) }
+        
+        if isHidingCompletedSections {
+            return courseVideosStructure.childs.filter { !isChapterFullyCompleted($0) }
+        } else {
+            let completedChapters = courseVideosStructure.childs.filter { isChapterFullyCompleted($0) }
+            let incompleteChapters = courseVideosStructure.childs.filter { !isChapterFullyCompleted($0) }
+            return completedChapters + incompleteChapters
+        }
     }
     
     var body: some View {
