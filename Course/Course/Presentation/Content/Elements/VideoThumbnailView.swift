@@ -78,6 +78,14 @@ struct VideoThumbnailView: View {
                     .clipped()
                     .cornerRadius(10)
                 
+                Text(video.displayName)
+                    .lineLimit(2)
+                    .font(Theme.Fonts.bodySmall)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 11)
+                    .padding(.top, 11)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+                
                 // MARK: - Play Button Overlay
                 CoreAssets.videoPlayButton.swiftUIImage
                 
