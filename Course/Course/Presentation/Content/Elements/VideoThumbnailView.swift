@@ -107,7 +107,7 @@ struct VideoThumbnailView: View {
     @ViewBuilder
     private func progressIndicatorView() -> some View {
         let effectiveProgress = getEffectiveProgress()
-        let shouldShowAsCompleted = video.completion >= 1.0
+        let shouldShowAsCompleted = video.completion >= 0.9
         let shouldShowGreenBar = shouldShowAsCompleted && (
             video.localVideoProgress == 0 || video.localVideoProgress >= 0.9
         )

@@ -21,7 +21,7 @@ struct VideosContentView: View {
     private let onErrorDismiss: () -> Void
     private let onShowCompletedAnalytics: () -> Void
     
-    @State private var isShowingCompletedVideos: Bool = false
+    @State private var isHidingCompletedSections: Bool = true
     
     init(
         videoContentData: VideoContentData,
@@ -39,6 +39,33 @@ struct VideosContentView: View {
         self.onTabSelection = onTabSelection
         self.onErrorDismiss = onErrorDismiss
         self.onShowCompletedAnalytics = onShowCompletedAnalytics
+    }
+    
+    // MARK: - Helper Methods
+    private func getAllVideos(from chapter: CourseChapter) -> [CourseBlock] {
+        chapter.childs.flatMap { $0.childs.flatMap { $0.childs } }
+    }
+    
+    private func isChapterFullyCompleted(_ chapter: CourseChapter) -> Bool {
+        let allVideos = getAllVideos(from: chapter)
+        return !allVideos.isEmpty && allVideos.allSatisfy { $0.completion >= 1.0 }
+    }
+    
+    private func shouldShowChapter(_ chapter: CourseChapter) -> Bool {
+        if isHidingCompletedSections {
+            return !isChapterFullyCompleted(chapter)
+        }
+        return true
+    }
+    
+    private func hasFullyCompletedSections() -> Bool {
+        guard let courseVideosStructure = videoContentData.courseVideosStructure else { return false }
+        return courseVideosStructure.childs.contains { isChapterFullyCompleted($0) }
+    }
+    
+    private func getVisibleChapters() -> [CourseChapter] {
+        guard let courseVideosStructure = videoContentData.courseVideosStructure else { return [] }
+        return courseVideosStructure.childs.filter { shouldShowChapter($0) }
     }
     
     var body: some View {
@@ -80,10 +107,10 @@ struct VideosContentView: View {
                                progress.totalAssignmentsCount != 0 {
                                 CourseProgressView(
                                     progress: progress,
-                                    showCompletedToggle: true,
-                                    isShowingCompleted: isShowingCompletedVideos,
+                                    showCompletedToggle: hasFullyCompletedSections(),
+                                    isShowingCompleted: !isHidingCompletedSections,
                                     onToggleCompleted: {
-                                        isShowingCompletedVideos.toggle()
+                                        isHidingCompletedSections.toggle()
                                     },
                                     onShowCompletedAnalytics: onShowCompletedAnalytics
                                 )
@@ -100,6 +127,8 @@ struct VideosContentView: View {
                             Spacer(minLength: 16)
                             
                             // MARK: - Video Sections
+                            let visibleChapters = getVisibleChapters()
+                            
                             if courseVideosStructure.childs.isEmpty && !videoContentData.isShowProgress {
                                 // No videos available
                                 NoContentAvailable(
@@ -112,7 +141,7 @@ struct VideosContentView: View {
                                 ScrollView {
                                     LazyVStack(alignment: .leading, spacing: 16) {
                                         ForEach(
-                                            Array(courseVideosStructure.childs.enumerated()),
+                                            Array(visibleChapters.enumerated()),
                                             id: \.offset
                                         ) { index, chapter in
                                             
@@ -126,13 +155,13 @@ struct VideosContentView: View {
                                                     sequentialsDownloadState: videoContentData.sequentialsDownloadState
                                                 ),
                                                 proxy: proxy,
-                                                isShowingCompletedVideos: $isShowingCompletedVideos,
+                                                isShowingCompletedVideos: .constant(true),
                                                 onVideoTap: onVideoTap,
                                                 onDownloadSectionTap: onDownloadSectionTap
                                             )
                                         }
                                     }
-                                    .animation(.default, value: isShowingCompletedVideos)
+                                    .animation(.default, value: isHidingCompletedSections)
                                 }
                                 .accessibilityElement(children: .contain)
                                 .accessibilityLabel(CourseLocalization.Accessibility.videosSection)

@@ -32,20 +32,15 @@ struct VideoSectionView: View {
     }
     
     private var visibleVideos: [CourseBlock] {
-        if isShowingCompletedVideos {
-            return allVideos
-        } else {
-            return allVideos.filter { $0.completion < 1.0 }
-        }
+        return allVideos
     }
     
     private var firstUnwatchedVideo: CourseBlock? {
         allVideos.first { $0.completion == 0.0 }
     }
     
-    // Only show section if there are visible videos
     private var shouldShowSection: Bool {
-        !visibleVideos.isEmpty
+        !allVideos.isEmpty
     }
     
     var body: some View {

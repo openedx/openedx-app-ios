@@ -385,72 +385,76 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
     
     public func enrichCourseStructureWithLocalProgress(_ structure: CourseStructure) async -> CourseStructure {
         var enrichedStructure = structure
-        enrichedStructure.childs = await withTaskGroup(of: CourseChapter.self) { group in
-            for chapter in structure.childs {
+        enrichedStructure.childs = await withTaskGroup(of: (Int, CourseChapter).self) { group in
+            for (index, chapter) in structure.childs.enumerated() {
                 group.addTask {
-                    await self.enrichChapterWithLocalProgress(chapter)
+                    let enrichedChapter = await self.enrichChapterWithLocalProgress(chapter)
+                    return (index, enrichedChapter)
                 }
             }
             
-            var enrichedChapters: [CourseChapter] = []
-            for await enrichedChapter in group {
-                enrichedChapters.append(enrichedChapter)
+            var indexedChapters: [(Int, CourseChapter)] = []
+            for await indexedChapter in group {
+                indexedChapters.append(indexedChapter)
             }
-            return enrichedChapters.sorted { $0.id < $1.id }
+            return indexedChapters.sorted { $0.0 < $1.0 }.map { $0.1 }
         }
         return enrichedStructure
     }
     
     private func enrichChapterWithLocalProgress(_ chapter: CourseChapter) async -> CourseChapter {
         var enrichedChapter = chapter
-        enrichedChapter.childs = await withTaskGroup(of: CourseSequential.self) { group in
-            for sequential in chapter.childs {
+        enrichedChapter.childs = await withTaskGroup(of: (Int, CourseSequential).self) { group in
+            for (index, sequential) in chapter.childs.enumerated() {
                 group.addTask {
-                    await self.enrichSequentialWithLocalProgress(sequential)
+                    let enrichedSequential = await self.enrichSequentialWithLocalProgress(sequential)
+                    return (index, enrichedSequential)
                 }
             }
             
-            var enrichedSequentials: [CourseSequential] = []
-            for await enrichedSequential in group {
-                enrichedSequentials.append(enrichedSequential)
+            var indexedSequentials: [(Int, CourseSequential)] = []
+            for await indexedSequential in group {
+                indexedSequentials.append(indexedSequential)
             }
-            return enrichedSequentials.sorted { $0.id < $1.id }
+            return indexedSequentials.sorted { $0.0 < $1.0 }.map { $0.1 }
         }
         return enrichedChapter
     }
     
     private func enrichSequentialWithLocalProgress(_ sequential: CourseSequential) async -> CourseSequential {
         var enrichedSequential = sequential
-        enrichedSequential.childs = await withTaskGroup(of: CourseVertical.self) { group in
-            for vertical in sequential.childs {
+        enrichedSequential.childs = await withTaskGroup(of: (Int, CourseVertical).self) { group in
+            for (index, vertical) in sequential.childs.enumerated() {
                 group.addTask {
-                    await self.enrichVerticalWithLocalProgress(vertical)
+                    let enrichedVertical = await self.enrichVerticalWithLocalProgress(vertical)
+                    return (index, enrichedVertical)
                 }
             }
             
-            var enrichedVerticals: [CourseVertical] = []
-            for await enrichedVertical in group {
-                enrichedVerticals.append(enrichedVertical)
+            var indexedVerticals: [(Int, CourseVertical)] = []
+            for await indexedVertical in group {
+                indexedVerticals.append(indexedVertical)
             }
-            return enrichedVerticals.sorted { $0.id < $1.id }
+            return indexedVerticals.sorted { $0.0 < $1.0 }.map { $0.1 }
         }
         return enrichedSequential
     }
     
     private func enrichVerticalWithLocalProgress(_ vertical: CourseVertical) async -> CourseVertical {
         var enrichedVertical = vertical
-        enrichedVertical.childs = await withTaskGroup(of: CourseBlock.self) { group in
-            for block in vertical.childs {
+        enrichedVertical.childs = await withTaskGroup(of: (Int, CourseBlock).self) { group in
+            for (index, block) in vertical.childs.enumerated() {
                 group.addTask {
-                    await self.enrichBlockWithLocalProgress(block)
+                    let enrichedBlock = await self.enrichBlockWithLocalProgress(block)
+                    return (index, enrichedBlock)
                 }
             }
             
-            var enrichedBlocks: [CourseBlock] = []
-            for await enrichedBlock in group {
-                enrichedBlocks.append(enrichedBlock)
+            var indexedBlocks: [(Int, CourseBlock)] = []
+            for await indexedBlock in group {
+                indexedBlocks.append(indexedBlock)
             }
-            return enrichedBlocks.sorted { $0.id < $1.id }
+            return indexedBlocks.sorted { $0.0 < $1.0 }.map { $0.1 }
         }
         return enrichedVertical
     }

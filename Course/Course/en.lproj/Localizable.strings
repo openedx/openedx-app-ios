@@ -29,7 +29,7 @@
 "ERROR.COMPONENT_NOT_FOUNT" = "Course component not found, please reload";
 "ERROR.HANDOUTS_UNAVAILABLE" = "There are currently no handouts for this course.";
 "ERROR.ANNOUNCEMENTS_UNAVAILABLE" = "There are currently no announcements for this course.";
-"ERROR.VIDEOS_UNAVAILABLE" = "There are no videos currently available for this course";
+"ERROR.VIDEOS_UNAVAILABLE" = "No videos available for this course.";
 "ERROR.ASSIGNMENTS_UNAVAILABLE" = "No assignments available for this course.";
 "ERROR.COURSE_DATE_UNAVAILABLE" = "Course dates are not currently available.";
 "ERROR.COURSEWARE_UNAVAILABLE" = "No course content is currently available.";
