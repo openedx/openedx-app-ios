@@ -49,6 +49,10 @@ struct AssignmentDetailCardView: View {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
                     
+                    Text(detailData.sectionName)
+                                .font(Theme.Fonts.labelMedium)
+                                .foregroundColor(Theme.Colors.textPrimary)
+                    
                     Text(subsectionUI.sequenceName)
                         .font(Theme.Fonts.bodyLarge)
                         .foregroundColor(Theme.Colors.textPrimary)
