@@ -1,8 +1,8 @@
 //
-//  CourseProgressResponse.swift
+//  Data_CourseProgressResponse.swift
 //  Course
 //
-//  Created by Ivan Stepanok on 08.07.2025.
+//  Created by Ivan Stepanok on 19.06.2025.
 //
 
 import Foundation

@@ -547,6 +547,15 @@ class AnalyticsManager: AuthorizationAnalytics,
         logScreenEvent(.courseOutlineContentTabClicked, parameters: parameters)
     }
     
+        public func courseOutlineProgressTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineProgressTabClicked.rawValue
+        ]
+        logScreenEvent(.courseOutlineProgressTabClicked, parameters: parameters)
+    }
+    
     public func courseOutlineVideosTabClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,

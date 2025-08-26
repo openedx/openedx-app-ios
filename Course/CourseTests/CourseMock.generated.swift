@@ -3515,6 +3515,12 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 		perform?(`courseId`, `courseName`)
     }
 
+    open func courseOutlineProgressTabClicked(courseId: String, courseName: String) {
+        addInvocation(.m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
+		let perform = methodPerformValue(.m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
+		perform?(`courseId`, `courseName`)
+    }
+
     open func courseOutlineVideosTabClicked(courseId: String, courseName: String) {
         addInvocation(.m_courseOutlineVideosTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`)))
 		let perform = methodPerformValue(.m_courseOutlineVideosTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`))) as? (String, String) -> Void
@@ -3755,6 +3761,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         case m_finishVerticalBackToOutlineClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseOutlineCourseTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseOutlineContentTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseOutlineVideosTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseOutlineOfflineTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseOutlineDatesTabClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
@@ -3864,6 +3871,12 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 				return Matcher.ComparisonResult(results)
 
             case (.m_courseOutlineContentTabClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_courseOutlineContentTabClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(let lhsCourseid, let lhsCoursename), .m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(let rhsCourseid, let rhsCoursename)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
@@ -4158,6 +4171,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case let .m_finishVerticalBackToOutlineClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseOutlineCourseTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseOutlineContentTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case let .m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseOutlineVideosTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseOutlineOfflineTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseOutlineDatesTabClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
@@ -4210,6 +4224,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case .m_finishVerticalBackToOutlineClicked__courseId_courseIdcourseName_courseName: return ".finishVerticalBackToOutlineClicked(courseId:courseName:)"
             case .m_courseOutlineCourseTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineCourseTabClicked(courseId:courseName:)"
             case .m_courseOutlineContentTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineContentTabClicked(courseId:courseName:)"
+            case .m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineProgressTabClicked(courseId:courseName:)"
             case .m_courseOutlineVideosTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineVideosTabClicked(courseId:courseName:)"
             case .m_courseOutlineOfflineTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineOfflineTabClicked(courseId:courseName:)"
             case .m_courseOutlineDatesTabClicked__courseId_courseIdcourseName_courseName: return ".courseOutlineDatesTabClicked(courseId:courseName:)"
@@ -4276,6 +4291,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         public static func finishVerticalBackToOutlineClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_finishVerticalBackToOutlineClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseOutlineCourseTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineCourseTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseOutlineContentTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineContentTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
+        public static func courseOutlineProgressTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseOutlineVideosTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineVideosTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseOutlineOfflineTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineOfflineTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseOutlineDatesTabClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseOutlineDatesTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
@@ -4349,6 +4365,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         }
         public static func courseOutlineContentTabClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .m_courseOutlineContentTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
+        }
+        public static func courseOutlineProgressTabClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
+            return Perform(method: .m_courseOutlineProgressTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
         }
         public static func courseOutlineVideosTabClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .m_courseOutlineVideosTabClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
