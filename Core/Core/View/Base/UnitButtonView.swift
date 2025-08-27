@@ -51,6 +51,8 @@ public struct UnitButtonView: View {
     private let bgColor: Color?
     private let isVerticalNavigation: Bool
     
+    @EnvironmentObject var themeManager: ThemeManager
+    
     private var nextButtonDegrees: Double {
         isVerticalNavigation ? -90 : 180
     }
@@ -75,23 +77,23 @@ public struct UnitButtonView: View {
                     case .first:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                 .rotationEffect(Angle.degrees(nextButtonDegrees))
                         }.padding(.horizontal, 16)
                     case .next, .nextBig:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
                             if type != .nextBig {
                                 Spacer()
                             }
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                 .rotationEffect(Angle.degrees(nextButtonDegrees))
                                 .padding(.trailing, 20)
                         }
@@ -99,19 +101,19 @@ public struct UnitButtonView: View {
                         HStack {
                             if isVerticalNavigation {
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(themeManager.theme.colors.accentColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.leading, 20)
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .rotationEffect(Angle.degrees(90))
                                     .padding(.trailing, 20)
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(themeManager.theme.colors.accentColor)
                             } else {
                                 CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                     .padding(.leading, 20)
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(themeManager.theme.colors.accentColor)
                                 Text(type.stringValue())
-                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .foregroundColor(themeManager.theme.colors.accentColor)
                                     .font(Theme.Fonts.labelLarge)
                                     .padding(.trailing, 20)
                             }
@@ -119,43 +121,43 @@ public struct UnitButtonView: View {
                     case .last:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                 .padding(.leading, 8)
                                 .font(Theme.Fonts.labelLarge)
                                 .scaledToFit()
                             Spacer()
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                 .padding(.trailing, 8)
                         }
                     case .finish:
                         HStack {
                             Text(type.stringValue())
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.check.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                         }.padding(.horizontal, 16)
                     case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
-                                .foregroundColor(bgColor == nil ? .white : Theme.Colors.secondaryButtonTextColor)
+                                .foregroundColor(bgColor == nil ? .white : themeManager.theme.colors.secondaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                         }.padding(.horizontal, 16)
                     case .continueLesson, .nextSection:
                         HStack {
                             Text(type.stringValue())
                                 .foregroundColor(
-                                    type == .continueLesson ? Theme.Colors.resumeButtonText :
-                                    Theme.Colors.styledButtonText
+                                    type == .continueLesson ? themeManager.theme.colors.resumeButtonText :
+                                    themeManager.theme.colors.styledButtonText
                                 )
                                 .padding(.leading, 20)
                                 .font(Theme.Fonts.labelLarge)
                             CoreAssets.arrowLeft.swiftUIImage.renderingMode(.template)
                                 .foregroundColor(
                                         type == .continueLesson
-                                        ? Theme.Colors.resumeButtonText
-                                        : Theme.Colors.styledButtonText
+                                        ? themeManager.theme.colors.resumeButtonText
+                                        : themeManager.theme.colors.styledButtonText
                                     )
                                 .rotationEffect(Angle.degrees(180))
                                 .padding(.trailing, 20)
@@ -169,8 +171,8 @@ public struct UnitButtonView: View {
                         case .first, .next, .nextBig, .previous, .last:
                             Theme.Shapes.buttonShape
                                 .fill(type == .previous
-                                      ? Theme.Colors.background
-                                      : Theme.Colors.accentColor)
+                                      ? themeManager.theme.colors.background
+                                      : themeManager.theme.colors.accentColor)
                                 .shadow(color: Color.black.opacity(0.25), radius: 21, y: 4)
                                 .overlay(
                                     Theme.Shapes.buttonShape
@@ -181,15 +183,15 @@ public struct UnitButtonView: View {
                                             miterLimit: 1)
                                         )
                                         .foregroundColor(
-                                            Theme.Colors.accentColor
+                                            themeManager.theme.colors.accentColor
                                         )
                                 )
                                 
                         case .continueLesson, .nextSection, .reload, .finish, .custom:
                             Theme.Shapes.buttonShape
                                 .fill(
-                                    type == .continueLesson ? Theme.Colors.resumeButtonBG :
-                                    bgColor ?? Theme.Colors.accentButtonColor
+                                    type == .continueLesson ? themeManager.theme.colors.resumeButtonBG :
+                                    bgColor ?? themeManager.theme.colors.accentButtonColor
                                 )
                             
                                 .shadow(color: (type == .first
@@ -209,8 +211,8 @@ public struct UnitButtonView: View {
                                         ))
                                         .foregroundColor(
                                             type == .continueLesson
-                                            ? Theme.Colors.accentButtonColor
-                                            : Theme.Colors.secondaryButtonBorderColor
+                                            ? themeManager.theme.colors.accentButtonColor
+                                            : themeManager.theme.colors.secondaryButtonBorderColor
                                         )
                                 )
                         }

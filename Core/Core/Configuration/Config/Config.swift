@@ -30,6 +30,7 @@ public protocol ConfigProtocol: Sendable {
     var uiComponents: UIComponentsConfig { get }
     var discovery: DiscoveryConfig { get }
     var dashboard: DashboardConfig { get }
+    var tenantsConfig: TenantsConfig { get }
     var braze: BrazeConfig { get }
     var branch: BranchConfig { get }
     var program: DiscoveryConfig { get }
@@ -56,6 +57,7 @@ private enum ConfigKeys: String, Sendable {
     case appstoreID = "APP_STORE_ID"
     case faq = "FAQ_URL"
     case URIScheme = "URI_SCHEME"
+    case tenantsKey = "TENANTS"
 }
 
 public class Config: @unchecked Sendable {
@@ -189,6 +191,15 @@ extension Config: ConfigProtocol {
     
     public var URIScheme: String {
         return string(for: ConfigKeys.URIScheme.rawValue) ?? ""
+    }
+    
+    public var tenantsConfig: TenantsConfig {
+        let array = properties[ConfigKeys.tenantsKey.rawValue] as? [[String: Any]] ?? []
+        return TenantsConfig(array: array)
+    }
+    
+    public var selectedTenantKey: String{
+        UserDefaults.standard.string(forKey: "selectedTenant") ?? ""
     }
 }
 

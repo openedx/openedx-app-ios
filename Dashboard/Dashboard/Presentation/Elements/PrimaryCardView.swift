@@ -28,6 +28,7 @@ public struct PrimaryCardView: View {
     private var openCourseAction: () -> Void
     private var resumeAction: () -> Void
     @Environment(\.isHorizontal) var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         courseName: String,
@@ -71,9 +72,9 @@ public struct PrimaryCardView: View {
                 verticalLayout
             }
         }
-        .background(Theme.Colors.courseCardBackground)
+        .background(themeManager.theme.colors.courseCardBackground)
         .cornerRadius(8)
-        .shadow(color: Theme.Colors.courseCardShadow, radius: 4, x: 0, y: 3)
+        .shadow(color: themeManager.theme.colors.courseCardShadow, radius: 4, x: 0, y: 3)
         .padding(20)
     }
     
@@ -114,7 +115,7 @@ public struct PrimaryCardView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .background(
-                    Theme.Colors.background // need for tap area
+                    themeManager.theme.colors.background // need for tap area
                 )
                 
                 .onTapGesture {
@@ -134,7 +135,7 @@ public struct PrimaryCardView: View {
                     title: pastAssignment.title,
                     description: DashboardLocalization.Learn.PrimaryCard.onePastAssignment,
                     icon: CoreAssets.warning.swiftUIImage,
-                    selected: false,
+                    selected: false, bgColor: <#Color#>,
                     action: { assignmentAction(pastAssignments.first?.firstComponentBlockId) }
                 )
             } else if pastAssignments.count > 1 {
@@ -142,7 +143,7 @@ public struct PrimaryCardView: View {
                     title: DashboardLocalization.Learn.PrimaryCard.viewAssignments,
                     description: DashboardLocalization.Learn.PrimaryCard.pastAssignments(pastAssignments.count),
                     icon: CoreAssets.warning.swiftUIImage,
-                    selected: false,
+                    selected: false, bgColor: themeManager.theme.colors.primaryCardCautionBG,
                     action: { assignmentAction(nil) }
                 )
             }
@@ -188,7 +189,7 @@ public struct PrimaryCardView: View {
                     description: DashboardLocalization.Learn.PrimaryCard.resume,
                     icon: CoreAssets.resumeCourse.swiftUIImage,
                     selected: true,
-                    bgColor: Theme.Colors.accentButtonColor,
+                    bgColor: themeManager.theme.colors.accentButtonColor,
                     action: { resumeAction() }
                 )
             } else {
@@ -197,7 +198,7 @@ public struct PrimaryCardView: View {
                     description: nil,
                     icon: CoreAssets.resumeCourse.swiftUIImage,
                     selected: true,
-                    bgColor: Theme.Colors.accentButtonColor,
+                    bgColor: themeManager.theme.colors.accentButtonColor,
                     action: { resumeAction() }
                 )
             }
@@ -209,7 +210,7 @@ public struct PrimaryCardView: View {
         description: String?,
         icon: Image,
         selected: Bool,
-        bgColor: Color = Theme.Colors.primaryCardCautionBG,
+        bgColor: Color,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: {
@@ -217,7 +218,7 @@ public struct PrimaryCardView: View {
         }, label: {
             ZStack(alignment: .top) {
                 Rectangle().frame(height: selected ? 0 : 1)
-                    .foregroundStyle(Theme.Colors.cardViewStroke)
+                    .foregroundStyle(themeManager.theme.colors.cardViewStroke)
                 HStack(alignment: .center) {
                     VStack(alignment: .leading) {
                         HStack(spacing: 0) {
@@ -258,7 +259,7 @@ public struct PrimaryCardView: View {
     }
     
     private func foregroundColor(_ selected: Bool) -> SwiftUI.Color {
-        return selected ? Theme.Colors.white : Theme.Colors.textPrimary
+        return selected ? themeManager.theme.colors.white : themeManager.theme.colors.textPrimary
     }
     
     private var courseBanner: some View {
@@ -274,19 +275,19 @@ public struct PrimaryCardView: View {
         VStack(alignment: .leading, spacing: 3) {
             Text(org)
                 .font(Theme.Fonts.labelMedium)
-                .foregroundStyle(Theme.Colors.textSecondaryLight)
+                .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
             Text(courseName)
                 .font(Theme.Fonts.titleLarge)
-                .foregroundStyle(Theme.Colors.textPrimary)
+                .foregroundStyle(themeManager.theme.colors.textPrimary)
                 .lineLimit(3)
             if let courseEndDate {
                 Text(courseEndDate.dateToString(style: .courseEndsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelMedium)
-                    .foregroundStyle(Theme.Colors.textSecondaryLight)
+                    .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
             } else if let courseStartDate {
                 Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelMedium)
-                    .foregroundStyle(Theme.Colors.textSecondaryLight)
+                    .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
             }
         }
         .padding(.top, 10)

@@ -22,15 +22,16 @@ public struct DiscoveryView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
+    @EnvironmentObject var themeManager: ThemeManager
     
     private let discoveryNew: some View = VStack(alignment: .leading) {
         Text(DiscoveryLocalization.Header.title1)
             .font(Theme.Fonts.displaySmall)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(themeManager.theme.colors.textPrimary)
             .accessibilityIdentifier("title_text")
         Text(DiscoveryLocalization.Header.title2)
             .font(Theme.Fonts.titleSmall)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(themeManager.theme.colors.textPrimary)
             .accessibilityIdentifier("subtitle_text")
     }.listRowBackground(Color.clear)
         .accessibilityElement(children: .ignore)
@@ -58,12 +59,12 @@ public struct DiscoveryView: View {
                     // MARK: - Search fake field
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(themeManager.theme.colors.textSecondary)
                             .padding(.leading, 16)
                             .padding(.top, 1)
                             .accessibilityIdentifier("search_image")
                         Text(DiscoveryLocalization.search)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(themeManager.theme.colors.textSecondary)
                             .accessibilityIdentifier("search_text")
                         Spacer()
                     }
@@ -75,12 +76,12 @@ public struct DiscoveryView: View {
                     .frame(maxWidth: .infinity)
                     .background(
                         Theme.Shapes.textInputShape
-                            .fill(Theme.Colors.textInputUnfocusedBackground)
+                            .fill(themeManager.theme.colors.textInputUnfocusedBackground)
                     )
                     .overlay(
                         Theme.Shapes.textInputShape
                             .stroke(lineWidth: 1)
-                            .fill(Theme.Colors.textInputUnfocusedStroke)
+                            .fill(themeManager.theme.colors.textInputUnfocusedStroke)
                     ).onTapGesture {
                         router.showDiscoverySearch(searchQuery: searchQuery)
                         viewModel.discoverySearchBarClicked()
@@ -171,6 +172,7 @@ public struct DiscoveryView: View {
                 reloadAction: {
                     await viewModel.discovery(page: 1, withProgress: false)
                 })
+            .environmentObject(ThemeManager.shared)
 
             // MARK: - Error Alert
             if viewModel.showError {
@@ -201,7 +203,13 @@ public struct DiscoveryView: View {
                 }
             }
         }
-        .background(Theme.Colors.background.ignoresSafeArea())
+        .background(themeManager.theme.colors.background.ignoresSafeArea())
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
     }
 }
 

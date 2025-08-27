@@ -13,7 +13,8 @@ public struct WebBrowser: View {
 
     @State private var isLoading: Bool = true
     @Environment(\.presentationMode) var presentationMode
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     private var url: String
     private var pageTitle: String
     private var showProgress: Bool
@@ -34,7 +35,7 @@ public struct WebBrowser: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
-                Theme.Colors.background.ignoresSafeArea()
+                themeManager.theme.colors.background.ignoresSafeArea()
                 webView(proxy: proxy)
                 if isLoading, showProgress {
                     HStack(alignment: .center) {
@@ -73,6 +74,7 @@ public struct WebBrowser: View {
                 connectivity: connectivity
             )
             .accessibilityIdentifier("web_browser")
+            .environmentObject(themeManager)
         }
         .padding(.top, proxy.safeAreaInsets.top)
         .padding(.bottom, proxy.safeAreaInsets.bottom)

@@ -12,6 +12,7 @@ public struct ScrollSlidingTabBar: View {
     
     @Binding private var selection: Int
     @State private var buttonFrames: [Int: CGRect] = [:]
+    @EnvironmentObject var themeManager: ThemeManager
     private let containerWidth: CGFloat
     private let tabs: [(String, Image)]
     private let style: Style
@@ -103,8 +104,8 @@ extension ScrollSlidingTabBar {
                             }
                             .accentColor(
                                 isSelected(index: obj.offset)
-                                ? Theme.Colors.slidingSelectedTextColor
-                                : Theme.Colors.slidingTextColor
+                                ? themeManager.theme.colors.slidingSelectedTextColor
+                                : themeManager.theme.colors.slidingTextColor
                             )
                         }
                         .frame( height: 40)
@@ -210,10 +211,10 @@ extension ScrollSlidingTabBar {
         public static let `default` = Style(
             font: Theme.Fonts.titleSmall,
             selectedFont: Theme.Fonts.titleSmall,
-            activeAccentColor: Theme.Colors.accentXColor,
-            inactiveAccentColor: Theme.Colors.background,
+            activeAccentColor: themeManager.theme.colors.accentXColor,
+            inactiveAccentColor: themeManager.theme.colors.background,
             indicatorHeight: 0,
-            borderColor: Theme.Colors.slidingStrokeColor,
+            borderColor: themeManager.theme.colors.slidingStrokeColor,
             borderHeight: 1,
             buttonHInset: 4,
             buttonVInset: 2,

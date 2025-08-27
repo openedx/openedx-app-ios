@@ -14,6 +14,7 @@ public struct MessageSectionView: View {
     private let title: String
     private let actionTitle: String
     private var action: (() -> Void) = {}
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         title: String,
@@ -30,11 +31,11 @@ public struct MessageSectionView: View {
             CoreAssets.certificateBadge.swiftUIImage
                 .resizable()
                 .frame(width: 24, height: 24)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(themeManager.theme.colors.textPrimary)
             VStack(alignment: .leading, spacing: 8) {
                 Text(title)
                     .font(Theme.Fonts.bodyMicro)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                 
                 Button(action: {
                     action()
@@ -42,7 +43,7 @@ public struct MessageSectionView: View {
                     Text(actionTitle)
                         .font(Theme.Fonts.bodyMicro)
                         .underline()
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                 })
             }
         }
@@ -50,7 +51,7 @@ public struct MessageSectionView: View {
         .padding(.all, 12)
         .background(RoundedRectangle(cornerRadius: 8)
             .stroke(lineWidth: 1)
-            .fill(Theme.Colors.textInputStroke)
+            .fill(themeManager.theme.colors.textInputStroke)
         )
     }
 }

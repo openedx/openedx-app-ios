@@ -19,6 +19,7 @@ struct CourseHeaderView: View {
     @Binding private var collapsed: Bool
     @Binding private var isAnimatingForTap: Bool
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     
     private let collapsedHorizontalHeight: CGFloat = 230
     private let collapsedVerticalHeight: CGFloat = 260
@@ -63,7 +64,7 @@ struct CourseHeaderView: View {
                         .frame(maxHeight: expandedHeight, alignment: .center)
                         .allowsHitTesting(false)
                         .clipped()
-                        .background(Theme.Colors.background)
+                        .background(themeManager.theme.colors.background)
                 }
             }
             .disabled(true)
@@ -73,7 +74,7 @@ struct CourseHeaderView: View {
                     VStack {
                         HStack {
                             BackNavigationButton(
-                                color: Theme.Colors.textPrimary,
+                                color: themeManager.theme.colors.textPrimary,
                                 action: {
                                     viewModel.router.back()
                                 }
@@ -84,7 +85,7 @@ struct CourseHeaderView: View {
                             .offset(y: 10)
                             Text(title)
                                 .lineLimit(1)
-                                .foregroundStyle(Theme.Colors.textPrimary)
+                                .foregroundStyle(themeManager.theme.colors.textPrimary)
                                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                 .clipped()
                                 .font(Theme.Fonts.bodyLarge)
@@ -98,10 +99,10 @@ struct CourseHeaderView: View {
                         ZStack(alignment: .bottom) {
                             Rectangle()
                                 .padding(.top, 24)
-                                .foregroundStyle(Theme.Colors.primaryHeaderColor)
+                                .foregroundStyle(themeManager.theme.colors.primaryHeaderColor)
                                 .matchedGeometryEffect(id: GeometryName.blurPrimaryBg, in: animationNamespace)
                             Rectangle().frame(height: 36)
-                                .foregroundStyle(Theme.Colors.secondaryHeaderColor)
+                                .foregroundStyle(themeManager.theme.colors.secondaryHeaderColor)
                                 .matchedGeometryEffect(id: GeometryName.blurSecondaryBg, in: animationNamespace)
                             VisualEffectView(effect: UIBlurEffect(style: .regular))
                                 .matchedGeometryEffect(id: GeometryName.blurBg, in: animationNamespace)
@@ -114,7 +115,7 @@ struct CourseHeaderView: View {
                             if let org = viewModel.courseStructure?.org {
                                 Text(org)
                                     .font(Theme.Fonts.labelLarge)
-                                    .foregroundStyle(Theme.Colors.textPrimary)
+                                    .foregroundStyle(themeManager.theme.colors.textPrimary)
                                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                     .multilineTextAlignment(.leading)
                                     .padding(.horizontal, 24)
@@ -125,7 +126,7 @@ struct CourseHeaderView: View {
                             Text(title)
                                 .lineLimit(3)
                                 .font(Theme.Fonts.titleLarge)
-                                .foregroundStyle(Theme.Colors.textPrimary)
+                                .foregroundStyle(themeManager.theme.colors.textPrimary)
                                 .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
                                 .multilineTextAlignment(.leading)
                                 .padding(.horizontal, 24)
@@ -138,10 +139,10 @@ struct CourseHeaderView: View {
                             ZStack(alignment: .bottom) {
                                 Rectangle()
                                     .padding(.top, 24)
-                                    .foregroundStyle(Theme.Colors.primaryHeaderColor)
+                                    .foregroundStyle(themeManager.theme.colors.primaryHeaderColor)
                                     .matchedGeometryEffect(id: GeometryName.blurPrimaryBg, in: animationNamespace)
                                 Rectangle().frame(height: 36)
-                                    .foregroundStyle(Theme.Colors.secondaryHeaderColor)
+                                    .foregroundStyle(themeManager.theme.colors.secondaryHeaderColor)
                                     .matchedGeometryEffect(id: GeometryName.blurSecondaryBg, in: animationNamespace)
                                 VisualEffectView(effect: UIBlurEffect(style: .regular))
                                     .matchedGeometryEffect(id: GeometryName.blurBg, in: animationNamespace)
@@ -153,7 +154,7 @@ struct CourseHeaderView: View {
                 }
             }
         }
-        .background(Theme.Colors.background)
+        .background(themeManager.theme.colors.background)
         .frame(
             height: collapsed ? (
                 isHorizontal ? collapsedHorizontalHeight : collapsedVerticalHeight

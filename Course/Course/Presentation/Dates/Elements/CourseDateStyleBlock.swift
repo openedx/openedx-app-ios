@@ -12,6 +12,7 @@ import Theme
 struct CourseDateStyleBlock: View {
     let block: CourseDateBlock
     let viewModel: CourseDatesViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -19,7 +20,7 @@ struct CourseDateStyleBlock: View {
             if !block.description.isEmpty {
                 Text(block.description)
                     .font(Theme.Fonts.labelMedium)
-                    .foregroundStyle(Theme.Colors.thisWeekTimelineColor)
+                    .foregroundStyle(themeManager.theme.colors.thisWeekTimelineColor)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -39,9 +40,9 @@ struct CourseDateStyleBlock: View {
             .lineLimit(1)
             .foregroundStyle({
                 if block.isAssignment {
-                    return block.isAvailable ? Theme.Colors.textPrimary : Color.gray.opacity(0.6)
+                    return block.isAvailable ? themeManager.theme.colors.textPrimary : Color.gray.opacity(0.6)
                 } else {
-                    return Theme.Colors.textPrimary
+                    return themeManager.theme.colors.textPrimary
                 }
             }())
             .onTapGesture {

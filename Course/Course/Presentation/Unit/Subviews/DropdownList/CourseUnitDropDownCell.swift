@@ -10,6 +10,7 @@ import SwiftUI
 import Theme
 
 struct CourseUnitDropDownCell: View {
+    @EnvironmentObject var themeManager: ThemeManager
     var vertical: CourseVertical
     var isLast: Bool = false
     var isSelected: Bool = false
@@ -27,7 +28,7 @@ struct CourseUnitDropDownCell: View {
                             if vertical.completion == 1 {
                                 CoreAssets.finished.swiftUIImage
                                     .renderingMode(.template)
-                                    .foregroundColor(Theme.Colors.accentXColor)
+                                    .foregroundColor(themeManager.theme.colors.accentXColor)
                             }
                         }
                         .frame(width: 25)
@@ -39,7 +40,7 @@ struct CourseUnitDropDownCell: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                         CourseVerticalImageView(blocks: vertical.childs)
                     }
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                 }
             })
             .padding(.horizontal, 20)
@@ -47,7 +48,7 @@ struct CourseUnitDropDownCell: View {
             if !isLast {
                 Divider()
                     .frame(height: 1)
-                    .overlay(Theme.Colors.cardViewStroke)
+                    .overlay(themeManager.theme.colors.cardViewStroke)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 0)
             }

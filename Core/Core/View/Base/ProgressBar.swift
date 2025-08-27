@@ -11,6 +11,7 @@ import Theme
 public struct ProgressBar: View {
     
     @State private var isAnimating = false
+    @EnvironmentObject var themeManager: ThemeManager
     
     private let size: CGFloat
     private let lineWidth: CGFloat
@@ -21,14 +22,18 @@ public struct ProgressBar: View {
             .repeatForever(autoreverses: false)
     }
     
-    private let gradient = AngularGradient(
-        gradient: Gradient(colors: [
-            Theme.Colors.accentColor.opacity(0.7),
-            Theme.Colors.accentColor.opacity(0.35),
-            Theme.Colors.accentColor.opacity(0.01)]),
-        center: .center,
-        startAngle: .degrees(270),
-        endAngle: .degrees(0))
+    private var gradient: AngularGradient {
+            AngularGradient(
+                gradient: Gradient(colors: [
+                    themeManager.theme.colors.accentColor.opacity(0.7),
+                    themeManager.theme.colors.accentColor.opacity(0.35),
+                    themeManager.theme.colors.accentColor.opacity(0.01)
+                ]),
+                center: .center,
+                startAngle: .degrees(270),
+                endAngle: .degrees(0)
+            )
+        }
     
     public init(size: CGFloat = 50, lineWidth: CGFloat = 10) {
         self.size = size
@@ -39,7 +44,7 @@ public struct ProgressBar: View {
         ZStack {
             Circle()
                 .stroke(lineWidth: lineWidth)
-                .foregroundColor(Theme.Colors.accentColor.opacity(0.3))
+                .foregroundColor(themeManager.theme.colors.accentColor.opacity(0.3))
             
             Circle()
                 .trim(from: 0.0, to: 0.7)

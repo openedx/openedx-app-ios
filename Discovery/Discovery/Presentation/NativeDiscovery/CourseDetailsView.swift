@@ -18,6 +18,7 @@ public struct CourseDetailsView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.isHorizontal) var isHorizontal
     @State private var isOverviewRendering = true
+    @EnvironmentObject var themeManager: ThemeManager
     private var title: String
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var courseID: String
@@ -195,6 +196,7 @@ public struct CourseDetailsView: View {
                                     reloadAction: {
                     await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
                 })
+                .environmentObject(ThemeManager.shared)
             }
             
             // MARK: - Error Alert
@@ -214,9 +216,15 @@ public struct CourseDetailsView: View {
             }
         }
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
     }
 }
 
@@ -225,6 +233,7 @@ private struct CourseStateView: View {
     let title: String
     let courseDetails: CourseDetails
     let viewModel: CourseDetailsViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     
     init(title: String,
          courseDetails: CourseDetails,
@@ -284,12 +293,12 @@ private struct CourseStateView: View {
                     HStack(alignment: .center, spacing: 10) {
                         CoreAssets.noWifiMini.swiftUIImage
                             .renderingMode(.template)
-                            .foregroundStyle(Theme.Colors.warning)
+                            .foregroundStyle(themeManager.theme.colors.warning)
                         Text(DiscoveryLocalization.Details.enrollmentNoInternet)
                             .multilineTextAlignment(.leading)
                             .font(Theme.Fonts.titleSmall)
                         Spacer()
-                    }.cardStyle(paddingAll: 12, bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
+                    }.cardStyle(paddingAll: 12, bgColor: themeManager.theme.colors.textInputUnfocusedBackground, strokeColor: .clear)
                 }
             }
             .accessibilityIdentifier("enroll_button")
@@ -348,6 +357,7 @@ private struct PlayButton: View {
 
 private struct CourseTitleView: View {
     let courseDetails: CourseDetails
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -363,7 +373,7 @@ private struct CourseTitleView: View {
             
             Text(courseDetails.org)
                 .font(Theme.Fonts.labelMedium)
-                .foregroundColor(Theme.Colors.accentColor)
+                .foregroundColor(themeManager.theme.colors.accentColor)
                 .padding(.horizontal, 26)
                 .padding(.top, 10)
                 .accessibilityIdentifier("org_text")
@@ -378,6 +388,7 @@ private struct CourseBannerView: View {
     private let idiom: UIUserInterfaceIdiom
     private let proxy: GeometryProxy
     private let onPlayButtonTap: () -> Void
+    
     
     init(courseDetails: CourseDetails,
          proxy: GeometryProxy,

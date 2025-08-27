@@ -21,6 +21,7 @@ struct CourseCardView: View {
     private let hasAccess: Bool
     private let showProgress: Bool
     private let useRelativeDates: Bool
+    @EnvironmentObject var themeManager: ThemeManager
     
     init(
         courseName: String,
@@ -60,18 +61,18 @@ struct CourseCardView: View {
             if !hasAccess {
                 ZStack(alignment: .center) {
                     Circle()
-                        .foregroundStyle(Theme.Colors.primaryHeaderColor)
+                        .foregroundStyle(themeManager.theme.colors.primaryHeaderColor)
                         .opacity(0.7)
                         .frame(width: 24, height: 24)
                     CoreAssets.lockIcon.swiftUIImage
-                        .foregroundStyle(Theme.Colors.textPrimary)
+                        .foregroundStyle(themeManager.theme.colors.textPrimary)
                 }
                 .padding(8)
             }
         }
-        .background(Theme.Colors.courseCardBackground)
+        .background(themeManager.theme.colors.courseCardBackground)
         .cornerRadius(8)
-        .shadow(color: Theme.Colors.courseCardShadow, radius: 6, x: 2, y: 2)
+        .shadow(color: themeManager.theme.colors.courseCardShadow, radius: 6, x: 2, y: 2)
     }
     
     private var courseBanner: some View {
@@ -90,17 +91,17 @@ struct CourseCardView: View {
             if let courseEndDate {
                 Text(courseEndDate.dateToString(style: .courseEndsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundStyle(Theme.Colors.textSecondaryLight)
+                    .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
                     .multilineTextAlignment(.leading)
             } else if let courseStartDate {
                 Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundStyle(Theme.Colors.textSecondaryLight)
+                    .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
                     .multilineTextAlignment(.leading)
             }
             Text(courseName)
                 .font(Theme.Fonts.labelMedium)
-                .foregroundStyle(Theme.Colors.textPrimary)
+                .foregroundStyle(themeManager.theme.colors.textPrimary)
                 .lineLimit(2)
                 .multilineTextAlignment(.leading)
         }

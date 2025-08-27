@@ -38,8 +38,11 @@ class NetworkAssembly: Assembly {
             )
         }.inObjectScope(.container)
         
-        container.register(API.self) {r in
-            API(session: r.resolve(Alamofire.Session.self)!, baseURL: r.resolve(ConfigProtocol.self)!.baseURL)
+        container.register(API.self) { r in
+            let tenantProviderResolver = { r.resolve(TenantProvider.self)! }
+            return API(session: r.resolve(Alamofire.Session.self)!, baseURL: tenantProviderResolver.baseURL,
+                config: r.resolve(ConfigProtocol.self)!,
+                tenantProvider: tenantProviderResolver)
         }.inObjectScope(.container)
     }
 }

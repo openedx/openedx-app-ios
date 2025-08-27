@@ -8,12 +8,14 @@
 import SwiftUI
 import Core
 import Combine
+import Theme
 
 struct CourseNavigationView: View {
     
     @ObservedObject
     private var viewModel: CourseUnitViewModel
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
+    @EnvironmentObject var themeManager: ThemeManager
     
     init(
         viewModel: CourseUnitViewModel,
@@ -55,6 +57,7 @@ struct CourseNavigationView: View {
                 viewModel.select(move: .next)
             }
         )
+        .environmentObject(themeManager)
     }
     
     private var nextButton: some View {
@@ -66,6 +69,7 @@ struct CourseNavigationView: View {
                 viewModel.select(move: .next)
             }
         )
+        .environmentObject(themeManager)
     }
     
     private var prevButton: some View {
@@ -77,6 +81,7 @@ struct CourseNavigationView: View {
                 viewModel.select(move: .previous)
             }
         )
+        .environmentObject(themeManager)
     }
     
     private var lastButton: some View {
@@ -142,6 +147,7 @@ struct CourseNavigationView: View {
                 )
             }
         )
+        .environmentObject(themeManager)
     }
 }
 

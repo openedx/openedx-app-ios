@@ -26,6 +26,8 @@ public protocol BaseRouter: Sendable {
     
     func showStartupScreen()
     
+    func showTenantScreen(sourceScreen: LogistrationSourceScreen)
+    
     func showLoginScreen(sourceScreen: LogistrationSourceScreen)
     
     func showRegisterScreen(sourceScreen: LogistrationSourceScreen)
@@ -83,6 +85,8 @@ open class BaseRouterMock: BaseRouter {
     public func dismiss(animated: Bool) {}
 
     public func showMainOrWhatsNewScreen(sourceScreen: LogistrationSourceScreen, postLoginData: PostLoginData?) {}
+    
+    public func showTenantScreen(sourceScreen: LogistrationSourceScreen) {}
     
     public func showStartupScreen() {}
 

@@ -10,6 +10,7 @@ import Theme
 
 public struct SnackBarView: View {
     
+    @EnvironmentObject var themeManager: ThemeManager
     var message: String
     var action: (() -> Void)?
     
@@ -28,7 +29,7 @@ public struct SnackBarView: View {
         HStack {
             Text(message)
                 .font(Theme.Fonts.titleSmall)
-                .foregroundColor(Theme.Colors.snackbarTextColor)
+                .foregroundColor(themeManager.theme.colors.snackbarTextColor)
                 .accessibilityIdentifier("snackbar_text")
             Spacer()
             
@@ -40,8 +41,8 @@ public struct SnackBarView: View {
                 .accessibilityIdentifier("snackbar_button")
             }
             
-        }.shadowCardStyle(bgColor: Theme.Colors.snackbarErrorColor,
-                          textColor: Theme.Colors.white)
+        }.shadowCardStyle(bgColor: themeManager.theme.colors.snackbarErrorColor,
+                          textColor: themeManager.theme.colors.white)
         .padding(.bottom, 10)
     }
 }

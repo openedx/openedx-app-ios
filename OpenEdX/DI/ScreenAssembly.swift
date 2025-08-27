@@ -43,14 +43,31 @@ class ScreenAssembly: Assembly {
             )
         }
         
+        // MARK: Multi-Tenant
+        container.register(TenantProvider.self) { r in
+            r.resolve(TenantViewModel.self)!
+        }.inObjectScope(.container)
+        
+        container.register(TenantViewModel.self) { r in
+            TenantViewModel(
+                interactor: r.resolve(AuthInteractorProtocol.self)!,
+                router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
+            )
+        }.inObjectScope(.container)
+        
         // MARK: Auth
         container.register(AuthRepositoryProtocol.self) { r in
             AuthRepository(
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
-        }
+        }.inObjectScope(.container)
+        
         container.register(AuthInteractorProtocol.self) { r in
             AuthInteractor(
                 repository: r.resolve(AuthRepositoryProtocol.self)!
@@ -246,9 +263,11 @@ class ScreenAssembly: Assembly {
                 storage: r.resolve(AppStorage.self)!,
                 coreDataHandler: r.resolve(CoreDataHandlerProtocol.self)!,
                 downloadManager: r.resolve(DownloadManagerProtocol.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
-        }
+        }.inObjectScope(.container)
+        
         container.register(ProfileInteractorProtocol.self) { r in
             ProfileInteractor(
                 repository: r.resolve(ProfileRepositoryProtocol.self)!

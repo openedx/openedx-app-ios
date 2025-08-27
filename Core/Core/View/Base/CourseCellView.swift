@@ -17,6 +17,7 @@ public enum CellType {
 public struct CourseCellView: View {
     
     @State private var showView = false
+    @EnvironmentObject var themeManager: ThemeManager
     private var courseImage: String
     private var courseName: String
     private var courseOrg: String
@@ -61,13 +62,13 @@ public struct CourseCellView: View {
                 VStack(alignment: .leading) {
                     Text(courseOrg)
                         .font(Theme.Fonts.labelMedium)
-                        .foregroundColor(Theme.Colors.textSecondary)
+                        .foregroundColor(themeManager.theme.colors.textSecondary)
                         .multilineTextAlignment(.leading)
                         .accessibilityIdentifier("org_text")
                     
                     Text(courseName)
                         .font(Theme.Fonts.titleSmall)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                         .lineLimit(type == .discovery ? 3 : 2)
                         .multilineTextAlignment(.leading)
                         .padding(.top, 1)
@@ -78,12 +79,12 @@ public struct CourseCellView: View {
                             if courseEnd != "" {
                                 Text(courseEnd)
                                     .font(Theme.Fonts.labelMedium)
-                                    .foregroundColor(Theme.Colors.textSecondary)
+                                    .foregroundColor(themeManager.theme.colors.textSecondary)
                                     .accessibilityIdentifier("course_end_text")
                             } else {
                                 Text(courseStart)
                                     .font(Theme.Fonts.labelMedium)
-                                    .foregroundColor(Theme.Colors.textSecondary)
+                                    .foregroundColor(themeManager.theme.colors.textSecondary)
                                     .accessibilityIdentifier("course_start_text")
                             }
                             Spacer()
@@ -91,7 +92,7 @@ public struct CourseCellView: View {
                                 .resizable()
                                 .frame(width: 16, height: 16)
                                 .offset(x: 15)
-                                .foregroundColor(Theme.Colors.accentXColor)
+                                .foregroundColor(themeManager.theme.colors.accentXColor)
                                 .accessibilityIdentifier("arrow_image")
                         }
                     }
@@ -101,7 +102,7 @@ public struct CourseCellView: View {
             }
             
         }.frame(height: 105)
-            .background(Theme.Colors.background)
+            .background(themeManager.theme.colors.background)
             .opacity(showView ? 1 : 0)
             .offset(y: showView ? 0 : 20)
             .accessibilityElement(children: .ignore)
@@ -125,7 +126,7 @@ public struct CourseCellView: View {
             if Int(index) != cellsCount {
                 Divider()
                     .frame(height: 1)
-                    .overlay(Theme.Colors.cardViewStroke)
+                    .overlay(themeManager.theme.colors.cardViewStroke)
                     .padding(.vertical, 18)
                     .padding(.horizontal, 3)
                     .accessibilityIdentifier("divider")

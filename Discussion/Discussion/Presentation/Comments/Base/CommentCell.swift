@@ -23,6 +23,7 @@ public struct CommentCell: View {
     private var leftLineEnabled: Bool
     
     @State private var isImageVisible = true
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         comment: Post,
@@ -59,7 +60,7 @@ public struct CommentCell: View {
                     .cornerRadius(16)
                     .overlay {
                         Circle()
-                            .stroke(Theme.Colors.avatarStroke, lineWidth: 1)
+                            .stroke(themeManager.theme.colors.avatarStroke, lineWidth: 1)
                     }
                 })
                 
@@ -68,7 +69,7 @@ public struct CommentCell: View {
                         .font(Theme.Fonts.titleSmall)
                     Text(comment.postDate.dateToString(style: .lastPost, useRelativeDates: useRelativeDates))
                         .font(Theme.Fonts.labelSmall)
-                        .foregroundColor(Theme.Colors.textSecondary)
+                        .foregroundColor(themeManager.theme.colors.textSecondary)
                 }
                 Spacer()
                 Button(action: {
@@ -84,13 +85,13 @@ public struct CommentCell: View {
                          : DiscussionLocalization.Comment.report)
                     .font(Theme.Fonts.labelMedium)
                 }).foregroundColor(comment.abuseFlagged
-                                   ? Theme.Colors.irreversibleAlert
-                                      : Theme.Colors.textSecondaryLight)
+                                   ? themeManager.theme.colors.irreversibleAlert
+                                      : themeManager.theme.colors.textSecondaryLight)
             }
             ZStack(alignment: .topLeading) {
                 HTMLContentView(
                     html: comment.postBodyHtml,
-                    textColor: Theme.Colors.textPrimary
+                    textColor: themeManager.theme.colors.textPrimary
                 )
                 .id(comment.commentID)
             }
@@ -99,7 +100,7 @@ public struct CommentCell: View {
             LazyVStack {
                 VStack {}
                     .frame(height: 1)
-                    .overlay(Theme.Colors.cardViewStroke)
+                    .overlay(themeManager.theme.colors.cardViewStroke)
                     .padding(.horizontal, 24)
                     .onAppear {
                         onFetchMore()
@@ -115,8 +116,8 @@ public struct CommentCell: View {
                     Text("\(comment.votesCount)")
                     Text(DiscussionLocalization.votesCount(comment.votesCount))
                 }).foregroundColor(comment.voted
-                                   ? Theme.Colors.accentColor
-                                   : Theme.Colors.textSecondaryLight)
+                                   ? themeManager.theme.colors.accentColor
+                                   : themeManager.theme.colors.textSecondaryLight)
                 .font(Theme.Fonts.labelLarge)
 
                 Spacer()
@@ -127,14 +128,14 @@ public struct CommentCell: View {
                             Text("\(comment.responsesCount)")
                             Text(DiscussionLocalization.commentsCount(comment.responsesCount))
                         }
-                        .foregroundColor(Theme.Colors.textSecondary)
+                        .foregroundColor(themeManager.theme.colors.textSecondary)
                         .font(Theme.Fonts.labelLarge)
                 }
-            }.foregroundColor(Theme.Colors.accentColor)
+            }.foregroundColor(themeManager.theme.colors.accentColor)
                 .font(Theme.Fonts.labelMedium)
             
         }.cardStyle(top: leftLineEnabled ? 0 : 8, leftLineEnabled: leftLineEnabled,
-                    bgColor: Theme.Colors.commentCellBackground)
+                    bgColor: themeManager.theme.colors.commentCellBackground)
             .onTapGesture {
                 if addCommentAvailable {
                     onCommentsTap()

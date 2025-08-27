@@ -19,17 +19,20 @@ public struct CourseVerticalView: View {
     @ObservedObject
     private var viewModel: CourseVerticalViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    var themeManager: ThemeManager
     
     public init(
         title: String,
         courseName: String,
         courseID: String,
-        viewModel: CourseVerticalViewModel
+        viewModel: CourseVerticalViewModel,
+        themeManager: ThemeManager
     ) {
         self.title = title
         self.courseName = courseName
         self.courseID = courseID
         self.viewModel = viewModel
+        self.themeManager = themeManager
     }
     
     public var body: some View {
@@ -78,7 +81,7 @@ public struct CourseVerticalView: View {
                                                        alignment: .leading)
                                                 .multilineTextAlignment(.leading)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                        }.foregroundColor(Theme.Colors.textPrimary)
+                                        }.foregroundColor(themeManager.theme.colors.textPrimary)
                                     }).accessibilityElement(children: .ignore)
                                         .accessibilityLabel(vertical.displayName)
                                         Spacer()
@@ -91,7 +94,7 @@ public struct CourseVerticalView: View {
                                 if index != viewModel.verticals.count - 1 {
                                     Divider()
                                         .frame(height: 1)
-                                        .overlay(Theme.Colors.cardViewStroke)
+                                        .overlay(themeManager.theme.colors.cardViewStroke)
                                         .padding(.horizontal, 24)
                                 }
                             }
@@ -131,7 +134,7 @@ public struct CourseVerticalView: View {
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
     }
@@ -189,7 +192,8 @@ struct CourseVerticalView_Previews: PreviewProvider {
                 title: "Course title",
                 courseName: "CourseName",
                 courseID: "1",
-                viewModel: viewModel
+                viewModel: viewModel,
+                themeManager: ThemeManager.shared
             )
             .preferredColorScheme(.light)
             .previewDisplayName("CourseVerticalView Light")
@@ -198,7 +202,8 @@ struct CourseVerticalView_Previews: PreviewProvider {
                 title: "Course title",
                 courseName: "CourseName",
                 courseID: "1",
-                viewModel: viewModel
+                viewModel: viewModel,
+                themeManager: ThemeManager.shared
             )
             .preferredColorScheme(.dark)
             .previewDisplayName("CourseVerticalView Dark")

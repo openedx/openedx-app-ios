@@ -20,6 +20,7 @@ struct ContinueWithView: View {
     private let data: ContinueWith
     private let action: () -> Void
     private let courseContinueUnit: CourseVertical
+    @EnvironmentObject var themeManager: ThemeManager
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
@@ -35,18 +36,20 @@ struct ContinueWithView: View {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading) {
                         ContinueTitle(vertical: courseContinueUnit)
-                    }.foregroundColor(Theme.Colors.textPrimary)
+                    }.foregroundColor(themeManager.theme.colors.textPrimary)
                     Spacer()
                     UnitButtonView(type: .continueLesson, action: action)
                         .frame(width: 200)
+                        .environmentObject(themeManager)
                 }
                 .padding(.horizontal, 24)
             } else {
                 VStack(alignment: .leading) {
                     ContinueTitle(vertical: courseContinueUnit)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                 }
                 UnitButtonView(type: .continueLesson, action: action)
+                    .environmentObject(themeManager)
             }
         }
         .padding(.horizontal, 24)
@@ -55,13 +58,13 @@ struct ContinueWithView: View {
 }
 
 private struct ContinueTitle: View {
-    
+    @EnvironmentObject var themeManager: ThemeManager
     let vertical: CourseVertical
     
     var body: some View {
         Text(CoreLocalization.Courseware.resumeWith)
             .font(Theme.Fonts.labelMedium)
-            .foregroundColor(Theme.Colors.textSecondary)
+            .foregroundColor(themeManager.theme.colors.textSecondary)
         HStack {
             vertical.type.image
             Text(vertical.displayName)

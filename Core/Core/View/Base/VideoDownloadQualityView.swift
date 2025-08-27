@@ -36,7 +36,8 @@ public struct VideoDownloadQualityView: View {
     private var router: BaseRouter
     private var isModal: Bool
     @Environment(\.isHorizontal) private var isHorizontal
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     public init(
         downloadQuality: DownloadQuality,
         didSelect: ((DownloadQuality) -> Void)?,
@@ -74,12 +75,12 @@ public struct VideoDownloadQualityView: View {
                         ZStack {
                             HStack {
                                 Text(CoreLocalization.Settings.videoDownloadQualityTitle)
-                                    .titleSettings(color: Theme.Colors.loginNavigationText)
+                                    .titleSettings(color: themeManager.theme.colors.loginNavigationText)
                                     .accessibilityIdentifier("manage_account_text")
                             }
                             VStack {
                                 BackNavigationButton(
-                                    color: Theme.Colors.loginNavigationText,
+                                    color: themeManager.theme.colors.loginNavigationText,
                                     action: {
                                         router.back()
                                     }
@@ -117,12 +118,12 @@ public struct VideoDownloadQualityView: View {
                                         Spacer()
                                         CoreAssets.checkmark.swiftUIImage
                                             .renderingMode(.template)
-                                            .foregroundColor(Theme.Colors.accentXColor)
+                                            .foregroundColor(themeManager.theme.colors.accentXColor)
                                             .opacity(quality == viewModel.selectedDownloadQuality ? 1 : 0)
                                             .accessibilityIdentifier("checkmark_image")
                                         
                                     }
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(themeManager.theme.colors.textPrimary)
                                 })
                                 .accessibilityIdentifier("select_quality_button")
                                 Divider()
@@ -132,7 +133,7 @@ public struct VideoDownloadQualityView: View {
                         .padding(.horizontal, 24)
                         .padding(.top, 24)
                     }
-                    .roundedBackground(Theme.Colors.background)
+                    .roundedBackground(themeManager.theme.colors.background)
                 }
             }
         }
@@ -141,7 +142,7 @@ public struct VideoDownloadQualityView: View {
         .navigationTitle(CoreLocalization.Settings.videoDownloadQualityTitle)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
     }
@@ -151,7 +152,8 @@ public struct SettingsCell: View {
 
     private var title: String
     private var description: String?
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     public init(title: String, description: String?) {
         self.title = title
         self.description = description
@@ -165,10 +167,10 @@ public struct SettingsCell: View {
             if let description {
                 Text(description)
                     .font(Theme.Fonts.bodySmall)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(themeManager.theme.colors.textSecondary)
                     .accessibilityIdentifier("video_quality_des_text")
             }
-        }.foregroundColor(Theme.Colors.textPrimary)
+        }.foregroundColor(themeManager.theme.colors.textPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

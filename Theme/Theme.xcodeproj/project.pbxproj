@@ -12,6 +12,10 @@
 		0770DE5428D0B00C006D8A5D /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE5328D0B00C006D8A5D /* swiftgen.yml */; };
 		0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7A28D0C78C006D8A5D /* Theme.swift */; };
 		4875747BC644481E79603124 /* Pods_App_Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EFD5ECB23A4898127124B9 /* Pods_App_Theme.framework */; };
+		9972D1752E5F15070020CFBD /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972D1712E5F15070020CFBD /* ThemeManager.swift */; };
+		9972D1762E5F15070020CFBD /* ThemeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972D1722E5F15070020CFBD /* ThemeDefinition.swift */; };
+		9972D1772E5F15070020CFBD /* ThemeFontSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972D1742E5F15070020CFBD /* ThemeFontSet.swift */; };
+		9972D1782E5F15070020CFBD /* ThemeColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9972D1732E5F15070020CFBD /* ThemeColorSet.swift */; };
 		E04A731A2B171D2B00E31764 /* FontParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179F82B0EF981002AB695 /* FontParserTests.swift */; };
 		E0C716A72B0B05BA00858BAB /* fonts.json in Resources */ = {isa = PBXBuildFile; fileRef = E0C716A62B0B05BA00858BAB /* fonts.json */; };
 		E0C716A92B0B065600858BAB /* FontParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C716A82B0B065600858BAB /* FontParser.swift */; };
@@ -58,6 +62,10 @@
 		7AFDB8C1E97070E426F05ABC /* Pods-App-Theme.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.release.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.release.xcconfig"; sourceTree = "<group>"; };
 		8975BD5CEEDBF3A35A67D289 /* Pods-App-Theme.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.debug.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.debug.xcconfig"; sourceTree = "<group>"; };
 		960BB69958C7376CD354D74F /* Pods-App-Theme.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.debugdev.xcconfig"; sourceTree = "<group>"; };
+		9972D1712E5F15070020CFBD /* ThemeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
+		9972D1722E5F15070020CFBD /* ThemeDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeDefinition.swift; sourceTree = "<group>"; };
+		9972D1732E5F15070020CFBD /* ThemeColorSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColorSet.swift; sourceTree = "<group>"; };
+		9972D1742E5F15070020CFBD /* ThemeFontSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFontSet.swift; sourceTree = "<group>"; };
 		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
 		A8316465C7A08B99CB3108AA /* Pods-App-Theme-ThemeTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.releasedev.xcconfig"; sourceTree = "<group>"; };
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
@@ -132,6 +140,10 @@
 				0295B1DB297FF0E9003B0C65 /* Fonts */,
 				0770DE5528D0B142006D8A5D /* SwiftGen */,
 				0770DE7A28D0C78C006D8A5D /* Theme.swift */,
+				9972D1712E5F15070020CFBD /* ThemeManager.swift */,
+				9972D1722E5F15070020CFBD /* ThemeDefinition.swift */,
+				9972D1732E5F15070020CFBD /* ThemeColorSet.swift */,
+				9972D1742E5F15070020CFBD /* ThemeFontSet.swift */,
 				E0C716AA2B0B0B8E00858BAB /* Assets.xcassets */,
 			);
 			path = Theme;
@@ -365,9 +377,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -407,6 +423,10 @@
 				E0C716A92B0B065600858BAB /* FontParser.swift in Sources */,
 				0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */,
 				E0D6E69F2B161BD70089F9C9 /* ThemeAssets.swift in Sources */,
+				9972D1752E5F15070020CFBD /* ThemeManager.swift in Sources */,
+				9972D1762E5F15070020CFBD /* ThemeDefinition.swift in Sources */,
+				9972D1772E5F15070020CFBD /* ThemeFontSet.swift in Sources */,
+				9972D1782E5F15070020CFBD /* ThemeColorSet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

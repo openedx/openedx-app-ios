@@ -148,9 +148,9 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(CSSInjector.self) { r in
-            CSSInjector(
-                config: r.resolve(ConfigProtocol.self)!
-            )
+            CSSInjector(config: r.resolve(ConfigProtocol.self)!,
+                        tenantProvider: r.resolve(TenantProvider.self)!
+                        )
         }.inObjectScope(.container)
         
         container.register(KeychainSwift.self) { _ in

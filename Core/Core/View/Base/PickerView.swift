@@ -13,6 +13,7 @@ public struct PickerView: View {
     @ObservedObject
     private var config: FieldConfiguration
     private var router: BaseRouter
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(config: FieldConfiguration, router: BaseRouter) {
         self.config = config
@@ -24,7 +25,7 @@ public struct PickerView: View {
             Group {
                 Text(config.field.label)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                     .padding(.top, 18)
                     .accessibilityIdentifier("\(config.field.name)_text")
                 HStack {
@@ -54,25 +55,25 @@ public struct PickerView: View {
                     })
                     .accessibilityIdentifier("\(config.field.name)_picker_button")
                 }.padding(.all, 14)
-                    .foregroundColor(Theme.Colors.textInputTextColor)
+                    .foregroundColor(themeManager.theme.colors.textInputTextColor)
                     .background(
                         Theme.Shapes.textInputShape
-                            .fill(Theme.Colors.textInputBackground)
+                            .fill(themeManager.theme.colors.textInputBackground)
                     )
                     .overlay(
                         Theme.Shapes.textInputShape
                             .stroke(lineWidth: 1)
                             .fill(config.error == "" ?
-                                  Theme.Colors.textInputStroke
-                                  : Theme.Colors.irreversibleAlert)
+                                  themeManager.theme.colors.textInputStroke
+                                  : themeManager.theme.colors.irreversibleAlert)
                     )
                     .shake($config.shake)
                 Text(config.error == "" ? config.field.instructions
                      : config.error)
                 .font(Theme.Fonts.labelMedium)
                 .foregroundColor(config.error == ""
-                                 ? Theme.Colors.textPrimary
-                                 : Theme.Colors.irreversibleAlert)
+                                 ? themeManager.theme.colors.textPrimary
+                                 : themeManager.theme.colors.irreversibleAlert)
                 .accessibilityIdentifier("\(config.field.name)_instructions_text")
             }
         }

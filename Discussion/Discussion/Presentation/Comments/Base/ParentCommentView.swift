@@ -20,6 +20,7 @@ public struct ParentCommentView: View {
     private var onReportTap: (() -> Void)
     private var onFollowTap: (() -> Void)
     
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var isImageVisible = true
     
     public init(
@@ -53,18 +54,18 @@ public struct ParentCommentView: View {
                     .cornerRadius(24)
                     .overlay {
                         Circle()
-                            .stroke(Theme.Colors.avatarStroke, lineWidth: 1)
+                            .stroke(themeManager.theme.colors.avatarStroke, lineWidth: 1)
                     }
                     
                 })
                 VStack(alignment: .leading) {
                     Text(comments.authorName)
                         .font(Theme.Fonts.titleMedium)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                     Text(comments.postDate
                         .dateToString(style: .lastPost, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundColor(Theme.Colors.textSecondaryLight)
+                    .foregroundColor(themeManager.theme.colors.textSecondaryLight)
                 }
                 Spacer()
                 if isThread {
@@ -78,17 +79,17 @@ public struct ParentCommentView: View {
                              : DiscussionLocalization.Comment.follow)
                         .font(Theme.Fonts.bodyMedium)
                     }).foregroundColor(comments.followed
-                                       ? Theme.Colors.accentColor
-                                       : Theme.Colors.textSecondaryLight)
+                                       ? themeManager.theme.colors.accentColor
+                                       : themeManager.theme.colors.textSecondaryLight)
                 }
             }.padding(.top, 15)
             Text(comments.postTitle)
                 .font(Theme.Fonts.titleLarge)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(themeManager.theme.colors.textPrimary)
             ZStack(alignment: .topLeading) {
                 HTMLContentView(
                     html: comments.postBodyHtml,
-                    textColor: Theme.Colors.textPrimary
+                    textColor: themeManager.theme.colors.textPrimary
                 )
                 .id(comments.commentID)
             }
@@ -106,8 +107,8 @@ public struct ParentCommentView: View {
                         .font(Theme.Fonts.labelLarge)
                     
                 }).foregroundColor(comments.voted
-                                   ? Theme.Colors.accentColor
-                                   : Theme.Colors.textSecondaryLight)
+                                   ? themeManager.theme.colors.accentColor
+                                   : themeManager.theme.colors.textSecondaryLight)
                 Spacer()
                 Button(action: {
                     onReportTap()
@@ -123,15 +124,15 @@ public struct ParentCommentView: View {
                 })
             }
             .accentColor(comments.abuseFlagged
-                         ? Theme.Colors.irreversibleAlert
-                         : Theme.Colors.textSecondaryLight)
+                         ? themeManager.theme.colors.irreversibleAlert
+                         : themeManager.theme.colors.textSecondaryLight)
                 .font(Theme.Fonts.labelLarge)
         }
         .padding(.horizontal, 24)
         if isThread {
             Divider()
                 .frame(height: 1)
-                .overlay(Theme.Colors.cardViewStroke)
+                .overlay(themeManager.theme.colors.cardViewStroke)
                 .padding(.horizontal, 24)
         }
     }

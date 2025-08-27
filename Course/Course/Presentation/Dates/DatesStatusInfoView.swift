@@ -23,7 +23,8 @@ struct DatesStatusInfoView: View {
     var screen: DatesStatusInfoScreen
     
     @State private var isLoading = false
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             let header = datesBannerInfo.status?.header ?? ""
@@ -73,6 +74,7 @@ struct DatesStatusInfoView: View {
                 }
                 .padding([.leading, .trailing], 16)
                 .disabled(isLoading)
+                .environmentObject(themeManager)
             }
             Spacer()
         }

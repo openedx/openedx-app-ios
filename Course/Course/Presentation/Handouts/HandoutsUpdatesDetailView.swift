@@ -14,6 +14,7 @@ public struct HandoutsUpdatesDetailView: View {
     @Environment(\.colorScheme) var colorSchemeNative
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     @State var colorScheme: ColorScheme = UITraitCollection.current.userInterfaceStyle == .light ? .light : .dark
+    @EnvironmentObject var themeManager: ThemeManager
     
     private var router: CourseRouter
     private let cssInjector: CSSInjector
@@ -77,7 +78,7 @@ public struct HandoutsUpdatesDetailView: View {
     
     public var body: some View {
         ZStack(alignment: .top) {
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
             
             switch type {
@@ -111,6 +112,12 @@ public struct HandoutsUpdatesDetailView: View {
         .onChange(of: colorSchemeNative) { _ in
             guard UIApplication.shared.applicationState == .active else { return }
             updateColorScheme()
+        }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
         }
     }
     

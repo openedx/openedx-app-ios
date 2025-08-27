@@ -14,7 +14,8 @@ public struct CheckBoxView: View {
     private var text: String
     private var font: Font
     private let color: Color
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     public init(
         checked: Binding<Bool>,
         text: String,
@@ -33,7 +34,7 @@ public struct CheckBoxView: View {
                 systemName: checked ? "checkmark.square.fill" : "square"
             )
             .foregroundColor(
-                checked ? Theme.Colors.accentXColor : color
+                checked ? themeManager.theme.color.accentXColor : color
             )
             Text(text)
                 .font(font)

@@ -28,6 +28,7 @@ public struct CourseUnitView: View {
     @State var showDiscussion: Bool = false
     @Environment(\.isPresented) private var isPresented
     @Environment(\.isHorizontal) private var isHorizontal
+    var themeManager: ThemeManager
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
     
     // Dropdown parameters
@@ -63,12 +64,14 @@ public struct CourseUnitView: View {
     
     public init(
         viewModel: CourseUnitViewModel,
-        isDropdownActive: Bool = false
+        isDropdownActive: Bool = false,
+        themeManager: ThemeManager
     ) {
         self.viewModel = viewModel
         self.isDropdownActive = isDropdownActive
         viewModel.loadIndex()
         viewModel.nextTitles()
+        self.themeManager = themeManager
     }
                 
     public var body: some View {
@@ -98,8 +101,8 @@ public struct CourseUnitView: View {
                                     alertMessage = CourseLocalization.Alert.rotateDevice
                                 }
                             Text(alertMessage ?? "")
-                        }.shadowCardStyle(bgColor: Theme.Colors.accentColor,
-                                          textColor: Theme.Colors.white)
+                        }.shadowCardStyle(bgColor: themeManager.theme.colors.accentColor,
+                                          textColor: themeManager.theme.colors.white)
                         .transition(.move(edge: .bottom))
                         .onAppear {
                             doAfter(Theme.Timeout.snackbarMessageLongTimeout) {
@@ -139,11 +142,17 @@ public struct CourseUnitView: View {
                 showDiscussion = viewModel.selectedLesson().type == .discussion
             }
         }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
         .dropdownAnimation(isActive: isDropdownActive, value: showDropdown)
@@ -152,7 +161,7 @@ public struct CourseUnitView: View {
     // MARK: - Content
 
     private func topInset(reader: GeometryProxy) -> some View {
-        VStack { Theme.Colors.background }
+        VStack { themeManager.theme.colors.background }
             .frame(
                 width: reader.size.width,
                 height: isHorizontal ?
@@ -217,6 +226,7 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            .environmentObject(themeManager)
         // MARK: Encoded Video
         case let .video(encodedUrl, blockID):
             videoView(
@@ -237,6 +247,7 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            .environmentObject(themeManager)
         // MARK: Unknown
         case .unknown(let url):
             unknownView(
@@ -473,7 +484,7 @@ public struct CourseUnitView: View {
                 Text(title)
                     .lineLimit(1)
                     .font(Theme.Fonts.titleLarge)
-                    .foregroundStyle(Theme.Colors.textPrimary)
+                    .foregroundStyle(themeManager.theme.colors.textPrimary)
                     .padding(.vertical, 10)
                     .padding(.horizontal, 20)
                 Spacer()
@@ -498,7 +509,7 @@ public struct CourseUnitView: View {
                                     Text(title)
                                         .lineLimit(1)
                                         .font(Theme.Fonts.titleLarge)
-                                        .foregroundStyle(Theme.Colors.textPrimary)
+                                        .foregroundStyle(themeManager.theme.colors.textPrimary)
                                         .padding(.leading, isHorizontal ? 30 : 42)
                                         .padding(.top, isHorizontal ? 14 : 2)
                                     Spacer()
@@ -539,7 +550,7 @@ public struct CourseUnitView: View {
                     .padding(.horizontal, 48)
                 }
             }
-            .background(Theme.Colors.background)
+            .background(themeManager.theme.colors.background)
             .padding(.trailing, isHorizontal ? 215 : 0)
 
             if viewModel.courseUnitProgressEnabled {
@@ -563,6 +574,7 @@ public struct CourseUnitView: View {
                     viewModel: viewModel,
                     playerStateSubject: playerStateSubject
                 )
+                .environmentObject(themeManager)
                 if isHorizontal {
                     Spacer()
                 }
@@ -726,7 +738,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             connectivity: Connectivity(),
             storage: CourseStorageMock(),
             manager: DownloadManagerMock()
-        ))
+        ), themeManager: ThemeManager.shared)
     }
 }
 #endif

@@ -16,6 +16,8 @@ public struct SignUpView: View {
     private var disclosureGroupOpen: Bool = false
     
     @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.layoutDirection) var layoutDirection
+    @EnvironmentObject var themeManager: ThemeManager
     
     @ObservedObject
     private var viewModel: SignUpViewModel
@@ -30,9 +32,19 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
+            #if RIYADAH
+            ThemeAssets.headerBackground.swiftUIImage
+                .resizable()
+                .edgesIgnoringSafeArea(.top)
+#elseif NELC
                 ThemeAssets.headerBackground.swiftUIImage
                     .resizable()
                     .edgesIgnoringSafeArea(.top)
+            #else
+                ThemeAssets.headerBackground.swiftUIImage
+                .resizable()
+                .edgesIgnoringSafeArea(.top)
+            #endif
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
             .accessibilityIdentifier("auth_bg_image")
@@ -42,12 +54,12 @@ public struct SignUpView: View {
                 ZStack {
                     HStack {
                         Text(CoreLocalization.SignIn.registerBtn)
-                            .titleSettings(color: Theme.Colors.loginNavigationText)
+                            .titleSettings(color: themeManager.theme.colors.loginNavigationText)
                             .accessibilityIdentifier("register_text")
                     }
                     VStack {
                         BackNavigationButton(
-                            color: Theme.Colors.loginNavigationText,
+                            color: themeManager.theme.colors.loginNavigationText,
                             action: {
                                 viewModel.router.back()
                             }
@@ -67,44 +79,29 @@ public struct SignUpView: View {
                                 
                                 Text(CoreLocalization.SignIn.registerBtn)
                                     .font(Theme.Fonts.displaySmall)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(themeManager.theme.colors.textPrimary)
                                     .padding(.bottom, 4)
                                     .accessibilityIdentifier("signup_text")
                                 Text(AuthLocalization.SignUp.subtitle)
                                     .font(Theme.Fonts.titleSmall)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(themeManager.theme.colors.textPrimary)
                                     .padding(.bottom, 20)
                                     .accessibilityIdentifier("signup_subtitle_text")
-                                
+
                                 if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(themeManager.theme.colors.textPrimary)
                                         .accessibilityIdentifier("social_auth_success_text")
                                     Text(AuthLocalization.SignUp.successSigninSublabel)
                                         .font(Theme.Fonts.titleSmall)
-                                        .foregroundColor(Theme.Colors.textSecondary)
+                                        .foregroundColor(themeManager.theme.colors.textSecondary)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("social_auth_success_subtext_text")
                                 }
 
                                 let requiredFields = viewModel.requiredFields
                                 let optionalFields = viewModel.optionalFields
-                                
-                                if viewModel.socialAuthEnabled,
-                                    !requiredFields.isEmpty {
-                                    SocialAuthView(
-                                        authType: .register,
-                                        viewModel: .init(
-                                            config: viewModel.config,
-                                            lastUsedOption: viewModel.storage.lastUsedSocialAuth
-                                        ) { result in
-                                            Task { await viewModel.register(with: result) }
-                                        }
-                                    )
-                                    .padding(.top, 22)
-                                    .padding(.bottom, -2)
-                                }
 
                                 FieldsView(
                                     fields: requiredFields,
@@ -132,7 +129,7 @@ public struct SignUpView: View {
                                     }
                                     .accessibilityLabel("optional_fields_text")
                                     .padding(.top, 10)
-                                    .foregroundColor(Theme.Colors.accentXColor)
+                                    .foregroundColor(themeManager.theme.colors.accentXColor)
                                 }
 
                                 FieldsView(
@@ -170,10 +167,19 @@ public struct SignUpView: View {
                             .padding(.top, 24)
                             .frameLimit(width: proxy.size.width)
                         }
-                        .roundedBackground(Theme.Colors.background)
-                        .onRightSwipeGesture {
-                            viewModel.router.back()
-                        }
+                        .roundedBackground(themeManager.theme.colors.background)
+                        .onSwipeGesture(
+                            onLeftSwipe: {
+                                if layoutDirection == .rightToLeft {
+                                    viewModel.router.back()
+                                }
+                            },
+                            onRightSwipe: {
+                                if layoutDirection == .leftToRight {
+                                    viewModel.router.back()
+                                }
+                            }
+                        )
                         .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                         .onChange(of: viewModel.scrollTo, perform: { index in
                             withAnimation {
@@ -198,9 +204,9 @@ public struct SignUpView: View {
             }
         }
         .ignoresSafeArea(.all, edges: .horizontal)
-        .background(Theme.Colors.background.ignoresSafeArea(.all))
+        .background(themeManager.theme.colors.background.ignoresSafeArea(.all))
         .navigationBarHidden(true)
-        .onFirstAppear {
+        .onFirstAppear{
             viewModel.trackScreenEvent()
         }
     }

@@ -14,6 +14,7 @@ public struct UpdateRecommendedView: View {
     @Environment(\.isHorizontal) private var isHorizontal
     private let router: DiscoveryRouter
     private let config: ConfigProtocol
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(router: DiscoveryRouter, config: ConfigProtocol) {
         self.router = router
@@ -33,13 +34,13 @@ public struct UpdateRecommendedView: View {
                     .resizable()
                     .frame(width: isHorizontal ? 50 : 110,
                            height: isHorizontal ? 50 : 110)
-                    .foregroundColor(Theme.Colors.accentColor)
+                    .foregroundColor(themeManager.theme.colors.accentColor)
                     .padding(.bottom, isHorizontal ? 0 : 20)
                 Text(DiscoveryLocalization.updateNeededTitle)
                     .font(Theme.Fonts.titleMedium)
                 Text(DiscoveryLocalization.updateNeededDescription)
                     .font(Theme.Fonts.titleSmall)
-                    .foregroundColor(Theme.Colors.avatarStroke)
+                    .foregroundColor(themeManager.theme.colors.avatarStroke)
                     .multilineTextAlignment(.center)
                 
                 HStack(spacing: 28) {
@@ -50,7 +51,7 @@ public struct UpdateRecommendedView: View {
                         HStack {
                             Text(DiscoveryLocalization.updateNeededNotNow)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(themeManager.theme.colors.accentColor)
                         }.padding(8)
                     })
                     
@@ -60,7 +61,7 @@ public struct UpdateRecommendedView: View {
                 }.padding(.top, isHorizontal ? 0 : 44)
                 
             }.padding(isHorizontal ? 40 : 40)
-                .background(Theme.Colors.background)
+                .background(themeManager.theme.colors.background)
                 .clipShape(RoundedRectangle(cornerRadius: 16))
                 .frame(maxWidth: 400, maxHeight: 400)
                 .padding(24)

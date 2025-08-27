@@ -92,7 +92,7 @@ public final class CalendarManager: CalendarManagerProtocol {
                 let uiColor = UIColor(swiftUIColor)
                 calendar.cgColor = uiColor.cgColor
             } else {
-                calendar.cgColor = Theme.Colors.accentColor.cgColor
+                calendar.cgColor = ThemeManager.shared.theme.colors.accentColor.cgColor
             }
             
             calendar.source = calendarSource

@@ -46,6 +46,7 @@ public struct WebView: UIViewRepresentable {
     
     @ObservedObject var viewModel: ViewModel
     @Binding public var isLoading: Bool
+    @EnvironmentObject var themeManager: ThemeManager
     var webViewNavDelegate: WebViewNavigationDelegate?
     let connectivity: ConnectivityProtocol
     var message: ((WKScriptMessage) -> Void)
@@ -301,7 +302,7 @@ public struct WebView: UIViewRepresentable {
         webView.configuration.suppressesIncrementalRendering = true
         webView.isOpaque = false
         webView.backgroundColor = .clear
-        webView.scrollView.backgroundColor = Theme.Colors.background.uiColor()
+        webView.scrollView.backgroundColor = themeManager.theme.colors.background.uiColor()
         webView.scrollView.alwaysBounceVertical = false
         webView.scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 200, right: 0)
         webView.configuration.defaultWebpagePreferences.preferredContentMode = .mobile

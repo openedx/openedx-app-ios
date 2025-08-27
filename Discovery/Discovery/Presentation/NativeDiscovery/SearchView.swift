@@ -18,6 +18,7 @@ public struct SearchView: View {
     @ObservedObject
     private var viewModel: SearchViewModel<RunLoop>
     @State private var animated: Bool = false
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: SearchViewModel<RunLoop>, searchQuery: String? = nil) {
         self.viewModel = viewModel
@@ -38,13 +39,13 @@ public struct SearchView: View {
                     
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                             .padding(.leading, 16)
                             .padding(.top, 1)
                             .foregroundColor(
                                 viewModel.isSearchActive
-                                ? Theme.Colors.accentColor
-                                : Theme.Colors.textPrimary
+                                ? themeManager.theme.colors.accentColor
+                                : themeManager.theme.colors.textPrimary
                             )
                             .accessibilityHidden(true)
                             .accessibilityIdentifier("search_image")
@@ -61,7 +62,7 @@ public struct SearchView: View {
                             .onAppear {
                                 self.focused = true
                             }
-                            .foregroundColor(Theme.Colors.textInputTextColor)
+                            .foregroundColor(themeManager.theme.colors.textInputTextColor)
                             .font(Theme.Fonts.bodyLarge)
                             .accessibilityIdentifier("search_textfields")
                         Spacer()
@@ -73,7 +74,7 @@ public struct SearchView: View {
                                     .frame(height: 24)
                                     .padding(.horizontal)
                             })
-                            .foregroundColor(Theme.Colors.styledButtonText)
+                            .foregroundColor(themeManager.theme.colors.styledButtonText)
                             .accessibilityIdentifier("search_button")
                         }
                     }
@@ -82,15 +83,15 @@ public struct SearchView: View {
                     .background(
                         Theme.Shapes.textInputShape
                             .fill(viewModel.isSearchActive
-                                  ? Theme.Colors.textInputBackground
-                                  : Theme.Colors.textInputUnfocusedBackground)
+                                  ? themeManager.theme.colors.textInputBackground
+                                  : themeManager.theme.colors.textInputUnfocusedBackground)
                     )
                     .overlay(
                         Theme.Shapes.textInputShape
                             .stroke(lineWidth: 1)
                             .fill(viewModel.isSearchActive
-                                  ? Theme.Colors.accentColor
-                                  : Theme.Colors.textInputUnfocusedStroke)
+                                  ? themeManager.theme.colors.accentColor
+                                  : themeManager.theme.colors.textInputUnfocusedStroke)
                     )
                     .padding(.horizontal, 24)
                     .padding(.bottom, 20)
@@ -179,7 +180,7 @@ public struct SearchView: View {
                 viewModel.searchText = ""
             }
             .avoidKeyboard(dismissKeyboardByTap: true)
-            .background(Theme.Colors.background.ignoresSafeArea())
+            .background(themeManager.theme.colors.background.ignoresSafeArea())
         }
     }
     
@@ -187,11 +188,11 @@ public struct SearchView: View {
         return VStack(alignment: .leading) {
             Text(DiscoveryLocalization.Search.title)
                 .font(Theme.Fonts.displaySmall)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(themeManager.theme.colors.textPrimary)
                 .accessibilityIdentifier("title_text")
             Text(searchDescription(viewModel: viewModel))
                 .font(Theme.Fonts.titleSmall)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(themeManager.theme.colors.textPrimary)
                 .accessibilityIdentifier("description_text")
         }.listRowBackground(Color.clear)
             .accessibilityElement(children: .ignore)

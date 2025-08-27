@@ -15,6 +15,7 @@ public struct AppReviewView: View {
 
     @Environment(\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: AppReviewViewModel) {
         self.viewModel = viewModel
@@ -39,7 +40,7 @@ public struct AppReviewView: View {
                             .resizable()
                             .frame(width: isHorizontal ? 50 : 100,
                                    height: isHorizontal ? 50 : 100)
-                            .foregroundColor(Theme.Colors.accentColor)
+                            .foregroundColor(themeManager.theme.color.accentColor)
                             .onForeground {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                                     self.presentationMode.wrappedValue.dismiss()
@@ -50,7 +51,7 @@ public struct AppReviewView: View {
                         .font(Theme.Fonts.titleMedium)
                     Text(viewModel.state.description)
                         .font(Theme.Fonts.titleSmall)
-                        .foregroundColor(Theme.Colors.avatarStroke)
+                        .foregroundColor(themeManager.theme.color.avatarStroke)
                         .multilineTextAlignment(.center)
                     switch viewModel.state {
                     case .vote:
@@ -59,7 +60,7 @@ public struct AppReviewView: View {
                         HStack(spacing: 28) {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(themeManager.theme.color.accentColor)
                                 .onTapGesture {
                                     viewModel.trackAppReviewAction("dismissed")
                                     presentationMode.wrappedValue.dismiss()
@@ -74,25 +75,25 @@ public struct AppReviewView: View {
                     case .feedback:
                         TextEditor(text: $viewModel.feedback)
                             .font(Theme.Fonts.bodyMedium)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.color.textPrimary)
                             .padding(.horizontal, 12)
                             .padding(.vertical, 4)
                             .scrollContentBackground(.hidden)
                             .background(
                                 Theme.Shapes.textInputShape
-                                    .fill(Theme.Colors.commentCellBackground)
+                                    .fill(themeManager.theme.color.commentCellBackground)
                             )
                             .overlay(
                                 ZStack(alignment: .topLeading) {
                                     Theme.Shapes.textInputShape
                                         .stroke(lineWidth: 1)
                                         .fill(
-                                            Theme.Colors.textInputStroke
+                                            themeManager.theme.color.textInputStroke
                                         )
                                     if viewModel.feedback.isEmpty {
                                         Text(CoreLocalization.Review.better)
                                             .font(Theme.Fonts.bodyMedium)
-                                            .foregroundColor(Theme.Colors.textSecondary)
+                                            .foregroundColor(themeManager.theme.color.textSecondary)
                                             .padding(16)
                                     }
                                 }
@@ -103,7 +104,7 @@ public struct AppReviewView: View {
                         HStack(spacing: 28) {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(themeManager.theme.color.accentColor)
                                 .onTapGesture {
                                     viewModel.trackAppReviewAction("dismissed")
                                     presentationMode.wrappedValue.dismiss()
@@ -119,7 +120,7 @@ public struct AppReviewView: View {
                         HStack(spacing: 28) {
                             Text(CoreLocalization.Review.notNow)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(themeManager.theme.color.accentColor)
                                 .onTapGesture {
                                     viewModel.trackAppReviewAction("dismissed")
                                     presentationMode.wrappedValue.dismiss()
@@ -141,7 +142,7 @@ public struct AppReviewView: View {
                     )
                 }
                 .padding(isHorizontal ? 20 : 40)
-                    .background(Theme.Colors.background)
+                    .background(themeManager.theme.color.background)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
                     .frame(maxWidth: 400)
                     .padding(isHorizontal ? 14 : 24)

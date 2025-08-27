@@ -55,8 +55,8 @@ public extension View {
     func shadowCardStyle(
         top: CGFloat? = 0,
         bottom: CGFloat? = 0,
-        bgColor: Color = Theme.Colors.cardViewBackground,
-        textColor: Color = Theme.Colors.textPrimary
+        bgColor: Color,
+        textColor: Color
     ) -> some View {
         return self
             .padding(.all, 16)
@@ -79,7 +79,7 @@ public extension View {
     func titleSettings(
         top: CGFloat? = 10,
         bottom: CGFloat? = 20,
-        color: Color = Theme.Colors.textPrimary
+        color: Color
     ) -> some View {
         return self
             .lineLimit(1)
@@ -130,6 +130,22 @@ public extension View {
             }
         }
     }
+    
+    func onSwipeGesture(onLeftSwipe: @escaping () -> Void, onRightSwipe: @escaping () -> Void) -> some View {
+            self.gesture(
+                DragGesture(minimumDistance: 20, coordinateSpace: .local)
+                    .onEnded { value in
+                        // Check for right swipe
+                        if value.translation.width > 50 && abs(value.translation.height) < 50 {
+                            onRightSwipe()
+                        }
+                        // Check for left swipe
+                        else if value.translation.width < -50 && abs(value.translation.height) < 50 {
+                            onLeftSwipe()
+                        }
+                    }
+            )
+        }
 }
 
 public extension View {

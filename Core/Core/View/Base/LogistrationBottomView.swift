@@ -42,6 +42,7 @@ public struct LogistrationBottomView: View {
     private let ssoEnabled: Bool
     
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(ssoEnabled: Bool, _ action: @escaping (LogistrationAction) -> Void) {
         self.ssoEnabled = ssoEnabled
@@ -56,9 +57,9 @@ public struct LogistrationBottomView: View {
                     action: {
                         action(.signIn)
                     },
-                    color: Theme.Colors.secondaryButtonBGColor,
-                    textColor: Theme.Colors.secondaryButtonTextColor,
-                    borderColor: Theme.Colors.secondaryButtonBorderColor
+                    color: themeManager.theme.colors.secondaryButtonBGColor,
+                    textColor: themeManager.theme.colors.secondaryButtonTextColor,
+                    borderColor: themeManager.theme.colors.secondaryButtonBorderColor
                 )
                 .frame(width: 100)
                 .accessibilityIdentifier("logistration_signin_button")
@@ -74,9 +75,9 @@ public struct LogistrationBottomView: View {
                         action: {
                             action(.signInWithSSO)
                         },
-                        color: Theme.Colors.white,
-                        textColor: Theme.Colors.secondaryButtonTextColor,
-                        borderColor: Theme.Colors.secondaryButtonBorderColor
+                        color: themeManager.theme.colors.white,
+                        textColor: themeManager.theme.colors.secondaryButtonTextColor,
+                        borderColor: themeManager.theme.colors.secondaryButtonBorderColor
                     )
                     .frame(width: 100)
                     .accessibilityIdentifier("logistration_signin_withsso_button")

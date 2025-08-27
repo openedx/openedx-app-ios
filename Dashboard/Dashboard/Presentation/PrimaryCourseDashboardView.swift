@@ -19,6 +19,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     @State private var selectedMenu: MenuOption = .courses
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         viewModel: PrimaryCourseDashboardViewModel,
@@ -39,6 +40,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     NoCoursesView(openDiscovery: {
                         openDiscoveryPage()
                     }).zIndex(1)
+                        .environmentObject(themeManager)
                 }
                 learnTitleAndSearch(proxy: proxy)
                     .zIndex(1)
@@ -164,7 +166,9 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     reloadAction: {
                         await viewModel.getEnrollments(showProgress: false)
                     }
-                ).zIndex(2)
+                )
+                .zIndex(2)
+                .environmentObject(ThemeManager.shared)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -195,12 +199,18 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                 viewModel.updateNeeded = true
             }
             .background(
-                Theme.Colors.background
+                themeManager.theme.colors.background
                     .ignoresSafeArea()
             )
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
             .navigationTitle(DashboardLocalization.title)
+        }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
         }
     }
     
@@ -257,16 +267,16 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                         CoreAssets.viewAll.swiftUIImage
                         Text(DashboardLocalization.Learn.viewAll)
                             .font(Theme.Fonts.labelMedium)
-                            .foregroundStyle(Theme.Colors.textPrimary)
+                            .foregroundStyle(themeManager.theme.colors.textPrimary)
                         Spacer()
                     }
                     Spacer()
                 }
                 .frame(width: idiom == .pad ? nil : 120)
             }
-            .background(Theme.Colors.cardViewBackground)
+            .background(themeManager.theme.colors.cardViewBackground)
             .cornerRadius(8)
-            .shadow(color: Theme.Colors.courseCardShadow, radius: 6, x: 2, y: 2)
+            .shadow(color: themeManager.theme.colors.courseCardShadow, radius: 6, x: 2, y: 2)
         })
     }
     
@@ -281,7 +291,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                 Image(systemName: "chevron.right")
             }
             .padding(.horizontal, 16)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(themeManager.theme.colors.textPrimary)
             .frame(minWidth: 0, maxWidth: .infinity, alignment: .leading)
         })
     }
@@ -289,14 +299,14 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     private func learnTitleAndSearch(proxy: GeometryProxy) -> some View {
         let showDropdown = viewModel.config.program.enabled && viewModel.config.program.isWebViewConfigured
        return ZStack(alignment: .top) {
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .frame(height: showDropdown ? 70 : 50)
             ZStack(alignment: .topTrailing) {
                 VStack {
                     HStack(alignment: .center) {
                         Text(DashboardLocalization.Learn.title)
                             .font(Theme.Fonts.displaySmall)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                             .accessibilityIdentifier("courses_header_text")
                         Spacer()
                     }
@@ -314,7 +324,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                         viewModel.router.showSettings()
                     }, label: {
                         CoreAssets.settings.swiftUIImage.renderingMode(.template)
-                            .foregroundColor(Theme.Colors.accentColor)
+                            .foregroundColor(themeManager.theme.colors.accentColor)
                     })
                 }
                 .padding(.top, 8)

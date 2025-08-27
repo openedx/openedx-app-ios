@@ -16,7 +16,7 @@ private enum Keys: String, RawStringExtractable {
     case samlSSODefaultLoginButton = "SAML_SSO_DEFAULT_LOGIN_BUTTON"
 }
 
-public class UIComponentsConfig: NSObject {
+public class UIComponentsConfig: NSObject, Codable, Identifiable {
     public var courseDropDownNavigationEnabled: Bool
     public var courseUnitProgressEnabled: Bool
     public var loginRegistrationEnabled: Bool

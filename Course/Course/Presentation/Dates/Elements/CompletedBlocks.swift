@@ -11,6 +11,7 @@ import Theme
 
 struct CompletedBlocks: View {
     @Binding var isExpanded: Bool
+    @EnvironmentObject var themeManager: ThemeManager
     let courseDateBlockDict: [Date: [CourseDateBlock]]
     let viewModel: CourseDatesViewModel
     
@@ -26,7 +27,7 @@ struct CompletedBlocks: View {
                     VStack(alignment: .leading) {
                         Text(CompletionStatus.completed.localized)
                             .font(Theme.Fonts.titleSmall)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                         
                         if !isExpanded {
                             let totalCount = courseDateBlockDict.values.reduce(0) { $0 + $1.count }
@@ -35,7 +36,7 @@ struct CompletedBlocks: View {
                             CourseLocalization.CourseDates.itemsHidden
                             Text("\(totalCount) \(itemsHidden)")
                                 .font(Theme.Fonts.labelMedium)
-                                .foregroundColor(Theme.Colors.textPrimary)
+                                .foregroundColor(themeManager.theme.colors.textPrimary)
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -45,7 +46,7 @@ struct CompletedBlocks: View {
                     Image(systemName: "chevron.down")
                         .labelStyle(.iconOnly)
                         .dropdownArrowRotationAnimation(value: isExpanded)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                         .padding()
                 }
             }
@@ -60,12 +61,12 @@ struct CompletedBlocks: View {
                         Spacer()
                         Text(block.formattedDate)
                             .font(Theme.Fonts.labelMedium)
-                            .foregroundStyle(Theme.Colors.textPrimary)
+                            .foregroundStyle(themeManager.theme.colors.textPrimary)
                         
                         ForEach(blocks) { block in
                             HStack(alignment: .top) {
                                 block.blockImage?.swiftUIImage
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(themeManager.theme.colors.textPrimary)
                                 CourseDateStyleBlock(block: block, viewModel: viewModel)
                                     .padding(.bottom, 15)
                                 Spacer()
@@ -76,7 +77,7 @@ struct CompletedBlocks: View {
                                         .scaledToFit()
                                         .frame(width: 6.55, height: 11.15)
                                         .labelStyle(.iconOnly)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(themeManager.theme.colors.textPrimary)
                                 }
                             }
                             .padding(.trailing, 15)
@@ -89,8 +90,8 @@ struct CompletedBlocks: View {
         }
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(Theme.Colors.datesSectionStroke, lineWidth: 2)
+                .stroke(themeManager.theme.colors.datesSectionStroke, lineWidth: 2)
         )
-        .background(Theme.Colors.datesSectionBackground)
+        .background(themeManager.theme.colors.datesSectionBackground)
     }
 }

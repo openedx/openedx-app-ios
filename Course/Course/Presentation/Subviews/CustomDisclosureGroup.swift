@@ -11,6 +11,7 @@ import Theme
 
 struct CustomDisclosureGroup: View {
     @State private var expandedSections: [String: Bool] = [:]
+    @EnvironmentObject var themeManager: ThemeManager
     
     private let proxy: GeometryProxy
     private let course: CourseStructure
@@ -37,14 +38,14 @@ struct CustomDisclosureGroup: View {
                             HStack {
                                 CoreAssets.chevronRight.swiftUIImage
                                     .rotationEffect(.degrees(expandedSections[chapter.id] ?? false ? -90 : 90))
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(themeManager.theme.colors.textPrimary)
                                 if chapter.childs.allSatisfy({ $0.completion == 1 }) {
                                     CoreAssets.finishedSequence.swiftUIImage.renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.success)
+                                        .foregroundColor(themeManager.theme.colors.success)
                                 }
                                 Text(chapter.displayName)
                                     .font(Theme.Fonts.titleMedium)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(themeManager.theme.colors.textPrimary)
                                     .lineLimit(1)
                                 Spacer()
                                 if canDownloadAllSections(in: chapter),
@@ -113,7 +114,7 @@ struct CustomDisclosureGroup: View {
                                                             CoreAssets.finishedSequence.swiftUIImage
                                                                 .renderingMode(.template)
                                                                 .resizable()
-                                                                .foregroundColor(Theme.Colors.success)
+                                                                .foregroundColor(themeManager.theme.colors.success)
                                                                 .frame(width: 20, height: 20)
                                                         } else {
                                                             sequential.type.image
@@ -138,7 +139,7 @@ struct CustomDisclosureGroup: View {
                                                             .lineLimit(2)
                                                     }
                                                 }
-                                                .foregroundColor(Theme.Colors.textPrimary)
+                                                .foregroundColor(themeManager.theme.colors.textPrimary)
                                                 .accessibilityElement(children: .ignore)
                                                 .accessibilityLabel(sequential.displayName)
                                             }
@@ -146,7 +147,7 @@ struct CustomDisclosureGroup: View {
                                         Spacer()
                                         if sequential.due != nil {
                                             CoreAssets.chevronRight.swiftUIImage
-                                                .foregroundColor(Theme.Colors.textPrimary)
+                                                .foregroundColor(themeManager.theme.colors.textPrimary)
                                         }
                                     }
                                     .padding(.vertical, 4)
@@ -160,12 +161,12 @@ struct CustomDisclosureGroup: View {
                 .padding(.vertical, 12)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .fill(Theme.Colors.datesSectionBackground)
+                        .fill(themeManager.theme.colors.datesSectionBackground)
                 )
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
                         .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(Theme.Colors.cardViewStroke)
+                        .foregroundColor(themeManager.theme.colors.cardViewStroke)
                 )
             }
         }

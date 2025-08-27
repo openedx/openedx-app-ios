@@ -27,6 +27,7 @@ public struct PickerMenu: View {
     @State private var search: String = ""
     @State public var selectedItem: PickerItem = PickerItem(key: "", value: "")
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     private let ipadPickerWidth: CGFloat = 300
     private var items: [PickerItem]
     private let titleText: String
@@ -82,7 +83,7 @@ public struct PickerMenu: View {
                     Spacer()
                     VStack {
                         Text(titleText)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                             .accessibilityIdentifier("picker_title_text")
                             .font(Theme.Fonts.bodyMedium)
                         TextField("", text: $search)
@@ -91,7 +92,7 @@ public struct PickerMenu: View {
                             .overlay(
                                 Theme.Shapes.textInputShape
                                     .stroke(lineWidth: 1)
-                                    .fill(Theme.Colors.textInputStroke)
+                                    .fill(themeManager.theme.colors.textInputStroke)
                             )
                             .background(
                                 Theme.InputFieldBackground(
@@ -103,7 +104,7 @@ public struct PickerMenu: View {
                         Picker("", selection: $selectedItem) {
                             ForEach(filteredItems, id: \.self) { item in
                                 Text(item.value)
-                                    .foregroundColor(Theme.Colors.textPrimary)
+                                    .foregroundColor(themeManager.theme.colors.textPrimary)
                                     .font(Theme.Fonts.bodyMedium)
                             }
                         }
@@ -116,7 +117,7 @@ public struct PickerMenu: View {
                            : .infinity)
 
                     .padding()
-                    .background(Theme.Colors.background.cornerRadius(16))
+                    .background(themeManager.theme.colors.background.cornerRadius(16))
                     .padding(.horizontal, 16)
                     .onChange(of: search, perform: { _ in
                         if let first = filteredItems.first {
@@ -130,13 +131,13 @@ public struct PickerMenu: View {
                     }) {
                         Text(CoreLocalization.Picker.accept)
                             .font(Theme.Fonts.bodyMedium)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                             .frame(minWidth: 0,
                                    maxWidth: (idiom == .pad || (idiom == .phone && isHorizontal))
                                    ? ipadPickerWidth
                                    : .infinity)
                             .padding()
-                            .background(Theme.Colors.background.cornerRadius(16))
+                            .background(themeManager.theme.colors.background.cornerRadius(16))
                             .padding(.horizontal, 16)
                     }
                     .padding(.bottom, 4)

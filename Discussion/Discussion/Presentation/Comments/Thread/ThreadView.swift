@@ -21,6 +21,7 @@ public struct ThreadView: View {
     @State private var isShowProgress: Bool = true
     @State private var commentText: String = ""
     @State private var commentSize: CGFloat = .init(64)
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(thread: UserThread,
                 viewModel: ThreadViewModel) {
@@ -105,7 +106,7 @@ public struct ThreadView: View {
                                         .padding(.top, 20)
                                         .padding(.leading, 24)
                                         .font(Theme.Fonts.titleMedium)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(themeManager.theme.colors.textPrimary)
                                         let useRelativeDates = viewModel.storage.useRelativeDates
                                         
                                         ForEach(Array(comments.comments.enumerated()), id: \.offset) { index, comment in
@@ -229,8 +230,8 @@ public struct ThreadView: View {
                     VStack {
                         Text(viewModel.alertMessage ?? "")
                             .shadowCardStyle(
-                                bgColor: Theme.Colors.accentColor,
-                                textColor: Theme.Colors.primaryButtonTextColor
+                                bgColor: themeManager.theme.colors.accentColor,
+                                textColor: themeManager.theme.colors.primaryButtonTextColor
                             )
                             .padding(.top, 80)
                         Spacer()
@@ -244,6 +245,12 @@ public struct ThreadView: View {
                     }
                 }
             }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
+            }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(true)
@@ -252,7 +259,7 @@ public struct ThreadView: View {
                 ToolbarItem(
                     placement: .navigationBarLeading,
                     content: {
-                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                        BackNavigationButton(color: themeManager.theme.colors.accentColor) {
                             viewModel.router.back()
                         }
                         .offset(x: -8, y: -1.5)
@@ -270,7 +277,7 @@ public struct ThreadView: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .background(
-                Theme.Colors.background
+                themeManager.theme.colors.background
                     .ignoresSafeArea()
             )
         }

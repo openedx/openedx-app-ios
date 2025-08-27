@@ -17,6 +17,7 @@ public struct DownloadsView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isHorizontal) private var isHorizontal
     @StateObject private var viewModel: DownloadsViewModel
+    @EnvironmentObject var themeManager: ThemeManager
 
     var isSheet: Bool = true
 
@@ -38,18 +39,18 @@ public struct DownloadsView: View {
 
     public var body: some View {
         ZStack(alignment: .top) {
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
             if !isSheet {
                 HStack {
                     Text(CourseLocalization.Download.downloads)
-                        .titleSettings(color: Theme.Colors.textPrimary)
+                        .titleSettings(color: themeManager.theme.colors.textPrimary)
                         .accessibilityIdentifier("downloads_text")
                 }
                 .padding(.top, isHorizontal ? 10 : 0)
                 VStack {
                     BackNavigationButton(
-                        color: Theme.Colors.accentColor,
+                        color: themeManager.theme.colors.accentColor,
                         action: {
                             viewModel.router.back()
                         }
@@ -103,7 +104,7 @@ public struct DownloadsView: View {
                         let fileSizeInMbText = task.fileSizeInMbText
                         Text(fileSizeInMbText)
                             .font(Theme.Fonts.titleSmall)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(themeManager.theme.colors.textSecondary)
                             .multilineTextAlignment(.leading)
                             .lineLimit(1)
                             .accessibilityElement(children: .ignore)
@@ -111,7 +112,7 @@ public struct DownloadsView: View {
                             .accessibilityIdentifier("file_size_text")
                         if task.state != .finished {
                             ProgressView(value: task.progress, total: 1.0)
-                                .tint(Theme.Colors.accentColor)
+                                .tint(themeManager.theme.colors.accentColor)
                                 .accessibilityIdentifier("progress_line_view")
                         }
                     }

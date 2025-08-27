@@ -20,6 +20,7 @@ public struct ResponsesView: View {
     
     @ObservedObject private var viewModel: ResponsesViewModel
     @State private var isShowProgress: Bool = true
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         commentID: String,
@@ -102,7 +103,7 @@ public struct ResponsesView: View {
                                         .padding(.bottom, 14)
                                         .padding(.leading, 24)
                                         .font(Theme.Fonts.titleMedium)
-                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .foregroundColor(themeManager.theme.colors.textPrimary)
                                         let useRelativeDates = viewModel.storage.useRelativeDates
                                         ForEach(
                                             Array(comments.comments.enumerated()), id: \.offset
@@ -228,6 +229,12 @@ public struct ResponsesView: View {
                     }
                 }
             }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    titleColor: .white
+                )
+            }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(true)
@@ -236,7 +243,7 @@ public struct ResponsesView: View {
                 ToolbarItem(
                     placement: .navigationBarLeading,
                     content: {
-                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                        BackNavigationButton(color: themeManager.theme.colors.accentColor) {
                             viewModel.router.back()
                         }
                         .offset(x: -8, y: -1.5)
@@ -245,7 +252,7 @@ public struct ResponsesView: View {
             }
             .edgesIgnoringSafeArea(.bottom)
             .background(
-                Theme.Colors.background
+                themeManager.theme.colors.background
                     .ignoresSafeArea()
             )
         }

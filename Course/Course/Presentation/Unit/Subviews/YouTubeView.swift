@@ -20,7 +20,8 @@ struct YouTubeView: View {
     let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
     let languages: [SubtitleUrl]
     let isOnScreen: Bool
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
         let vm = Container.shared.resolve(
             YouTubeVideoPlayerViewModel.self,
@@ -31,6 +32,6 @@ struct YouTubeView: View {
             playerStateSubject
         )!
         YouTubeVideoPlayer(viewModel: vm, isOnScreen: isOnScreen)
-            .background(Theme.Colors.background)
+            .background(themeManager.theme.colors.background)
     }
 }

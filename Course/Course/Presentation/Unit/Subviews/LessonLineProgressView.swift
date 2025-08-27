@@ -12,14 +12,15 @@ struct LessonLineProgressView: View {
     @ObservedObject var viewModel: CourseUnitViewModel
 
     @Environment(\.isHorizontal) private var isHorizontal
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     init(viewModel: CourseUnitViewModel) {
         self.viewModel = viewModel
     }
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Theme.Colors.background
+            themeManager.theme.colors.background
             HStack(spacing: 8) {
                 let vertical = viewModel.verticals[viewModel.verticalIndex]
                 let data = Array(vertical.childs.enumerated())
@@ -28,15 +29,15 @@ struct LessonLineProgressView: View {
                     let isSelected = selected == viewModel.selectedLesson()
                     let isDone = item.completion == 1.0 || vertical.completion == 1.0
                     if  isSelected && isDone {
-                        Theme.Colors.progressSelectedAndDone
+                        themeManager.theme.colors.progressSelectedAndDone
                             .frame(height: 7)
                     } else if isSelected {
-                        Theme.Colors.onProgress
+                        themeManager.theme.colors.onProgress
                             .frame(height: 7)
                     } else if isDone {
-                        Theme.Colors.progressDone
+                        themeManager.theme.colors.progressDone
                     } else {
-                        Theme.Colors.progressSkip
+                        themeManager.theme.colors.progressSkip
                     }
                 }
             }.frame(height: 5)

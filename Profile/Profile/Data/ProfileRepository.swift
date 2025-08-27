@@ -34,19 +34,22 @@ public actor ProfileRepository: ProfileRepositoryProtocol {
     private let downloadManager: DownloadManagerProtocol
     private let coreDataHandler: CoreDataHandlerProtocol
     private let config: ConfigProtocol
+    private let tenantProvider: () -> TenantProvider
     
     public init(
         api: API,
         storage: CoreStorage & ProfileStorage,
         coreDataHandler: CoreDataHandlerProtocol,
         downloadManager: DownloadManagerProtocol,
-        config: ConfigProtocol
+        config: ConfigProtocol,
+        tenantProvider: @escaping () -> TenantProvider
     ) {
         self.api = api
         self.storage = storage
         self.coreDataHandler = coreDataHandler
         self.downloadManager = downloadManager
         self.config = config
+        self.tenantProvider = tenantProvider
     }
     
     public func getUserProfile(username: String) async throws -> UserProfile {

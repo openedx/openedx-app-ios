@@ -26,6 +26,7 @@ enum MenuOption: String, CaseIterable {
 struct DropDownMenu: View {
     @Binding var selectedOption: MenuOption
     @State private var expanded: Bool = false
+    @EnvironmentObject var themeManager: ThemeManager
     var analytics: DashboardAnalytics
     
     var body: some View {
@@ -40,7 +41,7 @@ struct DropDownMenu: View {
                         axis: (x: 1.0, y: 0.0, z: 0.0)
                     )
             }
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(themeManager.theme.colors.textPrimary)
             .onTapGesture {
                 withAnimation(.snappy(duration: 0.2)) {
                     expanded.toggle()
@@ -65,8 +66,8 @@ struct DropDownMenu: View {
                                     Text(option.text)
                                         .font(Theme.Fonts.titleSmall)
                                         .foregroundColor(
-                                            option == selectedOption ? Theme.Colors.primaryButtonTextColor :
-                                                Theme.Colors.textPrimary
+                                            option == selectedOption ? themeManager.theme.colors.primaryButtonTextColor :
+                                                themeManager.theme.colors.textPrimary
                                         )
                                     Spacer()
                                 }
@@ -76,11 +77,11 @@ struct DropDownMenu: View {
                                         RoundedCorners(bl: index == MenuOption.allCases.count-1 ? 8 : 0,
                                                        br: index == MenuOption.allCases.count-1 ? 8 : 0)
                                         .foregroundStyle(option == selectedOption
-                                                         ? Theme.Colors.accentColor
-                                                         : Theme.Colors.cardViewBackground)
+                                                         ? themeManager.theme.colors.accentColor
+                                                         : themeManager.theme.colors.cardViewBackground)
                                         RoundedCorners(bl: index == MenuOption.allCases.count-1 ? 8 : 0,
                                                        br: index == MenuOption.allCases.count-1 ? 8 : 0)
-                                        .stroke(Theme.Colors.cardViewStroke, style: .init(lineWidth: 1))
+                                        .stroke(themeManager.theme.colors.cardViewStroke, style: .init(lineWidth: 1))
                                     }
                                 }
                             }

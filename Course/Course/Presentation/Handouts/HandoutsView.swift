@@ -18,6 +18,7 @@ struct HandoutsView: View {
     
     @StateObject
     private var viewModel: HandoutsViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         courseID: String,
@@ -66,9 +67,10 @@ struct HandoutsView: View {
                                         courseID: courseID
                                     )
                                 })
+                                .environmentObject(themeManager)
                                 Divider()
                                     .frame(height: 1)
-                                    .overlay(Theme.Colors.cardViewStroke)
+                                    .overlay(themeManager.theme.colors.cardViewStroke)
                                     .accessibilityIdentifier("divider")
                                 HandoutsItemCell(type: .announcements, onTapAction: { type in
                                     viewModel.router.showHandoutsUpdatesView(
@@ -84,6 +86,7 @@ struct HandoutsView: View {
                                         courseID: courseID
                                     )
                                 })
+                                .environmentObject(themeManager)
                             }.padding(.horizontal, 32)
                             Spacer(minLength: 84)
                         }
@@ -100,6 +103,7 @@ struct HandoutsView: View {
                         }
                     }
                 )
+                .environmentObject(ThemeManager.shared)
             }
             
             .onFirstAppear {
@@ -109,7 +113,7 @@ struct HandoutsView: View {
                 }
             }
             .background(
-                Theme.Colors.background
+                themeManager.theme.colors.background
                     .ignoresSafeArea()
             )
         }
@@ -172,6 +176,7 @@ public enum HandoutsItemType: String {
 struct HandoutsItemCell: View {
     private let type: HandoutsItemType
     private let onTapAction: (HandoutsItemType) -> Void
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(type: HandoutsItemType, onTapAction: @escaping (HandoutsItemType) -> Void) {
         self.type = type
@@ -184,14 +189,14 @@ struct HandoutsItemCell: View {
         }, label: {
             HStack(spacing: 12) {
                 type.image.renderingMode(.template)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                     .frame(width: 24, height: 24)
                 VStack(alignment: .leading) {
                     Text(type.title)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                         .font(Theme.Fonts.titleSmall)
                     Text(type.description)
-                        .foregroundColor(Theme.Colors.textSecondary)
+                        .foregroundColor(themeManager.theme.colors.textSecondary)
                         .font(Theme.Fonts.labelSmall)
                 }
                 Spacer()
@@ -199,7 +204,7 @@ struct HandoutsItemCell: View {
                     .resizable()
                     .flipsForRightToLeftLayoutDirection(true)
                     .frame(width: 7, height: 12)
-                    .foregroundColor(Theme.Colors.accentColor)
+                    .foregroundColor(themeManager.theme.colors.accentColor)
             }
         }).padding(.vertical, 16)
         

@@ -11,6 +11,7 @@ import Theme
 
 struct CourseDateListView: View {
     @ObservedObject var viewModel: CourseDatesViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     @State private var isExpanded = false
     @Binding var coordinate: CGFloat
     @Binding var collapsed: Bool
@@ -69,7 +70,7 @@ struct CourseDateListView: View {
                                             let block = blocks[0]
                                             Text(block.formattedDate)
                                                 .font(Theme.Fonts.labelMedium)
-                                                .foregroundStyle(Theme.Colors.textPrimary)
+                                                .foregroundStyle(themeManager.theme.colors.textPrimary)
                                             BlockStatusView(
                                                 viewModel: viewModel,
                                                 block: block,

@@ -11,6 +11,7 @@ import Theme
 
 public struct OfflineSnackBarView: View {
     
+    @EnvironmentObject var themeManager: ThemeManager
     public static let height: CGFloat = 50
     
     @State private var dismiss: Bool = false
@@ -53,7 +54,7 @@ public struct OfflineSnackBarView: View {
                 }.padding(.horizontal, 16)
                     .font(Theme.Fonts.titleSmall)
                     .frame(maxWidth: .infinity, maxHeight: OfflineSnackBarView.height)
-                    .background(Theme.Colors.snackbarWarningColor.ignoresSafeArea())
+                    .background(themeManager.theme.colors.snackbarWarningColor.ignoresSafeArea())
             }
         }
         .onAppear {
@@ -80,5 +81,6 @@ public struct OfflineSnackBarView: View {
 struct OfflineSnackBarView_Previews: PreviewProvider {
     static var previews: some View {
         OfflineSnackBarView(connectivity: Connectivity(), reloadAction: {})
+            .environmentObject(ThemeManager.shared)
     }
 }

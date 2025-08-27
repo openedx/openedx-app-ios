@@ -10,6 +10,7 @@ import Theme
 
 struct StarRatingView: View {
     @Binding var rating: Int
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         HStack {
@@ -23,7 +24,7 @@ struct StarRatingView: View {
                         CoreAssets.starOutline.swiftUIImage
                             .resizable()
                             .frame(width: 48, height: 48)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.color.textPrimary)
                     }
                 }
                     .onTapGesture {

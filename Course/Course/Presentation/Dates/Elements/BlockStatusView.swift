@@ -13,13 +13,14 @@ struct BlockStatusView: View {
     let viewModel: CourseDatesViewModel
     let block: CourseDateBlock
     let blocks: [CourseDateBlock]
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(alignment: .leading) {
             ForEach(blocks) { block in
                 HStack(alignment: .top) {
                     block.blockImage?.swiftUIImage
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                     CourseDateStyleBlock(block: block, viewModel: viewModel)
                         .padding(.bottom, 15)
                     Spacer()
@@ -30,7 +31,7 @@ struct BlockStatusView: View {
                             .scaledToFit()
                             .frame(width: 6.55, height: 11.15)
                             .labelStyle(.iconOnly)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                     }
                 }
                 .padding(.trailing, 15)

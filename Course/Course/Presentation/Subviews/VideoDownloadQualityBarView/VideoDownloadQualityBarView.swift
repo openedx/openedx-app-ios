@@ -14,7 +14,8 @@ struct VideoDownloadQualityBarView: View {
 
     private var downloadQuality: DownloadQuality
     private var onTap: (() -> Void)?
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     init(downloadQuality: DownloadQuality, onTap: (() -> Void)? = nil) {
         self.downloadQuality = downloadQuality
         self.onTap = onTap
@@ -53,14 +54,14 @@ struct VideoDownloadQualityBarView: View {
             Text(videoDownloadQualityTitle)
             .lineLimit(1)
             .font(Theme.Fonts.titleMedium)
-            .foregroundColor(Theme.Colors.textPrimary)
+            .foregroundColor(themeManager.theme.colors.textPrimary)
             .accessibilityElement(children: .ignore)
             .accessibilityLabel(videoDownloadQualityTitle)
             .accessibilityIdentifier("video_quality_title_text")
             let settingsDescription = downloadQuality.settingsDescription
             Text(settingsDescription)
                 .font(Theme.Fonts.labelLarge)
-                .foregroundColor(Theme.Colors.textSecondary)
+                .foregroundColor(themeManager.theme.colors.textSecondary)
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(settingsDescription)
                 .accessibilityIdentifier("video_quality_description_text")

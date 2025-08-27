@@ -58,7 +58,8 @@ public final class SignUpViewModel: ObservableObject {
     private let validator: Validator
     var authMethod: AuthMethod = .password
     let storage: CoreStorage
-
+    public var selectedTenant: Tenant?
+    
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
@@ -166,7 +167,7 @@ public final class SignUpViewModel: ObservableObject {
         if let externalToken = externalToken, let backend = backend {
             validateFields["access_token"] = externalToken
             validateFields["provider"] = backend
-            validateFields["client_id"] = config.oAuthClientId
+            validateFields["client_id"] = selectedTenant?.oAuthClientId ?? ""
             if validateFields.contains(where: {$0.key == "password"}) {
                 validateFields.removeValue(forKey: "password")
             }

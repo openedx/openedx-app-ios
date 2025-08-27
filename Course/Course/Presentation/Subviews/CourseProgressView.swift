@@ -11,6 +11,7 @@ import Core
 
 public struct CourseProgressView: View {
     private var progress: CourseProgress
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(progress: CourseProgress) {
         self.progress = progress
@@ -21,13 +22,13 @@ public struct CourseProgressView: View {
             ZStack(alignment: .leading) {
                 GeometryReader { geometry in
                     RoundedRectangle(cornerRadius: 10)
-                        .fill(Theme.Colors.courseProgressBG)
+                        .fill(themeManager.theme.colors.courseProgressBG)
                         .frame(width: geometry.size.width, height: 10)
                     
                     if let total = progress.totalAssignmentsCount,
                        let completed = progress.assignmentsCompleted {
                         RoundedCorners(tl: 5, tr: 0, bl: 5, br: 0)
-                            .fill(Theme.Colors.accentColor)
+                            .fill(themeManager.theme.colors.accentColor)
                             .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total), height: 10)
                     }
                 }
@@ -38,7 +39,7 @@ public struct CourseProgressView: View {
             if let total = progress.totalAssignmentsCount,
                 let completed = progress.assignmentsCompleted {
                 Text(CourseLocalization.Course.progressCompleted(completed, total))
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                     .font(Theme.Fonts.labelSmall)
                     .padding(.top, 4)
             }

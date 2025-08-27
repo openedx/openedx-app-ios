@@ -12,6 +12,7 @@ struct CourseUnitDropDownTitle: View {
     var title: String
     var isAvailable: Bool
     @Binding var showDropdown: Bool
+    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         if isAvailable {
@@ -25,11 +26,11 @@ struct CourseUnitDropDownTitle: View {
                         .opacity(showDropdown ? 0.7 : 1.0)
                         .lineLimit(1)
                         .font(Theme.Fonts.bodyMedium)
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                     if isAvailable {
                         Image(systemName: "chevron.down").renderingMode(.template)
                             .dropdownArrowRotationAnimation(value: showDropdown)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                     }
                 }
             }
