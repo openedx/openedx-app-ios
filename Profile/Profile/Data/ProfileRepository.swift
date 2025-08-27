@@ -75,7 +75,7 @@ public actor ProfileRepository: ProfileRepositoryProtocol {
     public func logOut() async throws {
         guard let refreshToken = storage.refreshToken else { return }
         _ = try await api.request(
-            ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: config.oAuthClientId)
+            ProfileEndpoint.logOut(refreshToken: refreshToken, clientID: tenantProvider().oAuthClientId)
         )
         storage.clear()
     }

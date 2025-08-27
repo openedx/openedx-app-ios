@@ -29,6 +29,7 @@ struct NewCalendarView: View {
     @ObservedObject
     private var viewModel: DatesAndCalendarViewModel
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     private var beginSyncingTapped: (() -> Void) = {}
     private var onCloseTapped: (() -> Void) = {}
     @State private var calendarName: String = ""
@@ -91,12 +92,12 @@ struct NewCalendarView: View {
                 })
                 .font(Theme.Fonts.bodyLarge)
                 .padding()
-                .background(Theme.Colors.background)
+                .background(themeManager.theme.colors.background)
                 .cornerRadius(8)
                 .frame(height: 48)
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Theme.Colors.textInputStroke, lineWidth: 1)
+                        .stroke(themeManager.theme.colors.textInputStroke, lineWidth: 1)
                         .padding(1)
                 )
             
@@ -107,7 +108,7 @@ struct NewCalendarView: View {
             
             Text(ProfileLocalization.Calendar.upcomingAssignments)
                 .font(Theme.Fonts.bodySmall)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(themeManager.theme.colors.textPrimary)
                 .padding(.vertical, 13)
                 .multilineTextAlignment(.center)
                 .frame(
@@ -123,9 +124,9 @@ struct NewCalendarView: View {
                     action: {
                         onCloseTapped()
                     },
-                    color: Theme.Colors.background,
-                    textColor: Theme.Colors.accentColor,
-                    borderColor: Theme.Colors.accentColor
+                    color: themeManager.theme.colors.background,
+                    textColor: themeManager.theme.colors.accentColor,
+                    borderColor: themeManager.theme.colors.accentColor
                 )
                 
                 StyledButton(ProfileLocalization.Calendar.beginSyncing) {
@@ -143,7 +144,7 @@ struct NewCalendarView: View {
         .padding(24)
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .foregroundStyle(Theme.Colors.background)
+                .foregroundStyle(themeManager.theme.colors.background)
         )
         .padding(24)
     }

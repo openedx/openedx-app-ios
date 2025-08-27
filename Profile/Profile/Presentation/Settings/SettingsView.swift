@@ -17,6 +17,7 @@ public struct SettingsView: View {
     private var viewModel: SettingsViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
@@ -38,12 +39,12 @@ public struct SettingsView: View {
                     ZStack {
                         HStack {
                             Text(ProfileLocalization.settings)
-                                .titleSettings(color: Theme.Colors.loginNavigationText)
+                                .titleSettings(color: themeManager.theme.colors.loginNavigationText)
                                 .accessibilityIdentifier("register_text")
                         }
                         VStack {
                             BackNavigationButton(
-                                color: Theme.Colors.loginNavigationText,
+                                color: themeManager.theme.colors.loginNavigationText,
                                 action: {
                                     viewModel.router.back()
                                 }
@@ -70,6 +71,7 @@ public struct SettingsView: View {
                                 settings
                                 datesAndCalendar
                                 ProfileSupportInfoView(viewModel: viewModel)
+                                learningCenter
                                 logOutButton
                             }
                         }
@@ -82,7 +84,7 @@ public struct SettingsView: View {
                         .padding(.top, 24)
                         .padding(.horizontal, isHorizontal ? 24 : 0)
                     }
-                    .roundedBackground(Theme.Colors.background)
+                    .roundedBackground(themeManager.theme.colors.background)
                 }
                 .navigationBarHidden(true)
                 .navigationBarBackButtonHidden(true)
@@ -104,7 +106,7 @@ public struct SettingsView: View {
             }
         }
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
         .ignoresSafeArea(.all, edges: .horizontal)
@@ -133,7 +135,7 @@ public struct SettingsView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProfileLocalization.datesAndCalendar)
         .cardStyle(
-            bgColor: Theme.Colors.textInputUnfocusedBackground,
+            bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
             strokeColor: .clear
         )
     }
@@ -159,7 +161,7 @@ public struct SettingsView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProfileLocalization.manageAccount)
         .cardStyle(
-            bgColor: Theme.Colors.textInputUnfocusedBackground,
+            bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
             strokeColor: .clear
         )
     }
@@ -171,7 +173,7 @@ public struct SettingsView: View {
         Text(ProfileLocalization.settings)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
-            .foregroundColor(Theme.Colors.textSecondary)
+            .foregroundColor(themeManager.theme.colors.textSecondary)
             .accessibilityIdentifier("settings_text")
             .padding(.top, 12)
         
@@ -194,10 +196,60 @@ public struct SettingsView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProfileLocalization.settingsVideo)
         .cardStyle(
-            bgColor: Theme.Colors.textInputUnfocusedBackground,
+            bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
             strokeColor: .clear
         )
     }
+    
+    // MARK: - Learning Center
+    @ViewBuilder
+    private var learningCenter: some View {
+        Text(ProfileLocalization.learningCenter)
+            .padding(.horizontal, 24)
+            .font(Theme.Fonts.labelLarge)
+            .foregroundColor(themeManager.theme.colors.textSecondary)
+            .accessibilityIdentifier("settings_text")
+            .padding(.top, 12)
+        VStack(alignment: .leading, spacing: 27) {
+            Button(action: {
+                viewModel.trackProfileVideoSettingsClicked()
+                viewModel.router.showLearningCenter()
+            }, label: {
+                HStack {
+                    getLogo(name: themeManager.theme.name)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(maxWidth: 40, maxHeight: 40)
+                        .accessibilityIdentifier("logo_image")
+                    
+                    Text(themeManager.theme.name)
+                        .font(Theme.Fonts.titleMedium)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                    .flipsForRightToLeftLayoutDirection(true)
+                }
+            })
+            .accessibilityIdentifier("video_settings_button")
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ProfileLocalization.settingsVideo)
+        .cardStyle(
+            bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
+            strokeColor: .clear
+        )
+    }
+    
+    func getLogo(name: String) -> Image {
+        switch name.lowercased() {
+        case "tenantA":
+            return ThemeAssets.appLogo.swiftUIImage
+        case "tenantB":
+            return ThemeAssets.appLogo.swiftUIImage
+        default:
+            return ThemeAssets.appLogo.swiftUIImage
+        }
+    }
+    
     
     // MARK: - Log out
     
@@ -236,8 +288,8 @@ public struct SettingsView: View {
             .accessibilityLabel(ProfileLocalization.logout)
             .accessibilityIdentifier("logout_button")
         }
-        .foregroundColor(Theme.Colors.alert)
-        .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
+        .foregroundColor(themeManager.theme.colors.alert)
+        .cardStyle(bgColor: themeManager.theme.colors.textInputUnfocusedBackground, strokeColor: .clear)
         .padding(.top, 24)
         .padding(.bottom, 60)
     }
@@ -266,6 +318,7 @@ public struct SettingsCell: View {
     
     private var title: String
     private var description: String?
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(title: String, description: String?) {
         self.title = title
@@ -280,10 +333,10 @@ public struct SettingsCell: View {
             if let description {
                 Text(description)
                     .font(Theme.Fonts.bodySmall)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(themeManager.theme.colors.textSecondary)
                     .accessibilityIdentifier("video_settings_sub_text")
             }
-        }.foregroundColor(Theme.Colors.textPrimary)
+        }.foregroundColor(themeManager.theme.colors.textPrimary)
             .frame(maxWidth: .infinity, alignment: .leading)
     }
 }

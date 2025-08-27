@@ -21,12 +21,13 @@ struct ProfileSupportInfoView: View {
     }
 
     @ObservedObject var viewModel: SettingsViewModel
-
+    @EnvironmentObject var themeManager: ThemeManager
+    
     var body: some View {
         Text(ProfileLocalization.supportInfo)
             .padding(.horizontal, 24)
             .font(Theme.Fonts.labelLarge)
-            .foregroundColor(Theme.Colors.textSecondary)
+            .foregroundColor(themeManager.theme.colors.textSecondary)
             .accessibilityIdentifier("support_info_text")
             .padding(.top, 12)
         
@@ -41,7 +42,7 @@ struct ProfileSupportInfoView: View {
                 .accessibilityIdentifier("version_info")
         }
         .cardStyle(
-            bgColor: Theme.Colors.textInputUnfocusedBackground,
+            bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
             strokeColor: .clear
         )
     }
@@ -128,7 +129,7 @@ struct ProfileSupportInfoView: View {
                 Text(viewModel.title)
                     .multilineTextAlignment(.leading)
                     .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .flipsForRightToLeftLayoutDirection(true)
@@ -154,7 +155,7 @@ struct ProfileSupportInfoView: View {
         .accessibilityLabel(viewModel.title)
         Rectangle()
             .frame(height: 1)
-            .foregroundColor(Theme.Colors.textSecondary)
+            .foregroundColor(themeManager.theme.colors.textSecondary)
     }
 
     @ViewBuilder
@@ -185,7 +186,7 @@ struct ProfileSupportInfoView: View {
         } label: {
             HStack {
                 Text(linkViewModel.title)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                     .font(Theme.Fonts.titleMedium)
                 Spacer()
                 Image(systemName: "chevron.right")
@@ -198,7 +199,7 @@ struct ProfileSupportInfoView: View {
         .accessibilityIdentifier(identifier)
         Rectangle()
             .frame(height: 1)
-            .foregroundColor(Theme.Colors.textSecondary)
+            .foregroundColor(themeManager.theme.colors.textSecondary)
     }
 
     @ViewBuilder
@@ -222,19 +223,19 @@ struct ProfileSupportInfoView: View {
                         HStack {
                             CoreAssets.checkmark.swiftUIImage
                                 .renderingMode(.template)
-                                .foregroundColor(Theme.Colors.success)
+                                .foregroundColor(themeManager.theme.colors.success)
                             Text(ProfileLocalization.Settings.upToDate)
                                 .font(Theme.Fonts.labelMedium)
-                                .foregroundStyle(Theme.Colors.textSecondary)
+                                .foregroundStyle(themeManager.theme.colors.textSecondary)
                         }
                     case .updateNeeded:
                         Text("\(ProfileLocalization.Settings.tapToUpdate) \(viewModel.latestVersion)")
                             .font(Theme.Fonts.labelMedium)
-                            .foregroundStyle(Theme.Colors.accentColor)
+                            .foregroundStyle(themeManager.theme.colors.accentColor)
                     case .updateRequired:
                         Text(ProfileLocalization.Settings.tapToInstall)
                             .font(Theme.Fonts.labelMedium)
-                            .foregroundStyle(Theme.Colors.accentColor)
+                            .foregroundStyle(themeManager.theme.colors.accentColor)
                     }
                 }
                 Spacer()
@@ -242,7 +243,7 @@ struct ProfileSupportInfoView: View {
                     Image(systemName: "arrow.up.circle")
                         .resizable()
                         .frame(width: 24, height: 24)
-                        .foregroundStyle(Theme.Colors.accentColor)
+                        .foregroundStyle(themeManager.theme.colors.accentColor)
                 }
             }
         })

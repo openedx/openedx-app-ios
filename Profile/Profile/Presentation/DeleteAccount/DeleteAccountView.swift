@@ -14,6 +14,7 @@ public struct DeleteAccountView: View {
     
     @ObservedObject
     private var viewModel: DeleteAccountViewModel
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: DeleteAccountViewModel) {
         self.viewModel = viewModel
@@ -28,11 +29,11 @@ public struct DeleteAccountView: View {
                         Group {
                             ZStack {
                                 Circle()
-                                    .foregroundColor(Theme.Colors.deleteAccountBG)
+                                    .foregroundColor(themeManager.theme.colors.deleteAccountBG)
                                     .frame(width: 104, height: 104)
                                 CoreAssets.deleteChar.swiftUIImage.renderingMode(.template)
                                     .resizable()
-                                    .foregroundColor(Theme.Colors.white)
+                                    .foregroundColor(themeManager.theme.colors.white)
                                     .frame(width: 60, height: 60)
                                     .offset(y: -5)
                                     .accessibilityIdentifier("delete_account_image")
@@ -40,9 +41,9 @@ public struct DeleteAccountView: View {
                             
                             HStack {
                                 Text(ProfileLocalization.DeleteAccount.areYouSure)
-                                    .foregroundColor(Theme.Colors.navigationBarTintColor)
+                                    .foregroundColor(themeManager.theme.colors.navigationBarTintColor)
                                 + Text(ProfileLocalization.DeleteAccount.wantToDelete)
-                                    .foregroundColor(Theme.Colors.irreversibleAlert)
+                                    .foregroundColor(themeManager.theme.colors.irreversibleAlert)
                             }
                             .accessibilityIdentifier("are_you_sure_text")
                             
@@ -50,7 +51,7 @@ public struct DeleteAccountView: View {
                             .font(Theme.Fonts.headlineSmall)
                         
                         Text(ProfileLocalization.DeleteAccount.description)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(themeManager.theme.colors.textSecondary)
                             .font(Theme.Fonts.labelLarge)
                             .multilineTextAlignment(.center)
                             .padding(.top, 16)
@@ -59,7 +60,7 @@ public struct DeleteAccountView: View {
                         // MARK: Password
                         Group {
                             Text(ProfileLocalization.DeleteAccount.password)
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(themeManager.theme.colors.textSecondary)
                                 .font(Theme.Fonts.labelLarge)
                                 .multilineTextAlignment(.leading)
                                 .padding(.top, 16)
@@ -69,7 +70,7 @@ public struct DeleteAccountView: View {
                                 SecureField("",
                                             text: $viewModel.password)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.textInputTextColor)
+                                .foregroundColor(themeManager.theme.colors.textInputTextColor)
                                 .accessibilityIdentifier("password_textfield")
                             }
                             .padding(.horizontal, 14)
@@ -85,12 +86,12 @@ public struct DeleteAccountView: View {
                             .overlay(
                                 Theme.Shapes.textInputShape
                                     .stroke(lineWidth: 1)
-                                    .fill(Theme.Colors.textInputUnfocusedStroke)
+                                    .fill(themeManager.theme.colors.textInputUnfocusedStroke)
                             )
                             Text(viewModel.incorrectPassword
                                  ? ProfileLocalization.DeleteAccount.incorrectPassword
                                  : " ")
-                            .foregroundColor(Theme.Colors.irreversibleAlert)
+                            .foregroundColor(themeManager.theme.colors.irreversibleAlert)
                             .font(Theme.Fonts.labelLarge)
                             .multilineTextAlignment(.leading)
                             .padding(.top, 0)
@@ -117,8 +118,8 @@ public struct DeleteAccountView: View {
                                     }
                                 },
                                 color: .clear,
-                                textColor: Theme.Colors.irreversibleAlert,
-                                borderColor: Theme.Colors.irreversibleAlert,
+                                textColor: themeManager.theme.colors.irreversibleAlert,
+                                borderColor: themeManager.theme.colors.irreversibleAlert,
                                 isActive: viewModel.password.count >= 2
                             )
                             .padding(.top, 18)
@@ -131,8 +132,8 @@ public struct DeleteAccountView: View {
                             action: {
                                 viewModel.router.back()
                             },
-                            color: Theme.Colors.accentColor,
-                            textColor: Theme.Colors.primaryButtonTextColor,
+                            color: themeManager.theme.colors.accentColor,
+                            textColor: themeManager.theme.colors.primaryButtonTextColor,
                             iconImage: CoreAssets.arrowLeft.swiftUIImage,
                             iconPosition: .left
                         )
@@ -146,12 +147,18 @@ public struct DeleteAccountView: View {
                        maxHeight: .infinity,
                        alignment: .top)
                 .padding(.top, 8)
+                .onAppear {
+                    NavigationAppearanceManager.shared.updateAppearance(
+                        backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                        titleColor: .white
+                    )
+                }
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(true)
                 .navigationTitle(ProfileLocalization.DeleteAccount.title)
                 .toolbar {
                     ToolbarItem(placement: .navigationBarLeading) {
-                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                        BackNavigationButton(color: themeManager.theme.colors.accentColor) {
                             viewModel.router.back()
                         }
                         .offset(x: -8, y: -1.5)
@@ -174,7 +181,7 @@ public struct DeleteAccountView: View {
                 }
             }
             .background(
-                Theme.Colors.background
+                themeManager.theme.colors.background
                     .ignoresSafeArea()
             )
         }

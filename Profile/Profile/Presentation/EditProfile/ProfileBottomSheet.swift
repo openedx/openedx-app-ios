@@ -13,6 +13,7 @@ struct ProfileBottomSheet: View {
     
     @State private var yPosition: CGFloat = 0
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @EnvironmentObject var themeManager: ThemeManager
     private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { value in
@@ -86,7 +87,7 @@ struct ProfileBottomSheet: View {
                 VStack(alignment: .center, spacing: 4) {
                     HStack(alignment: .center) {
                         RoundedRectangle(cornerRadius: 2, style: .circular)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(themeManager.theme.colors.textSecondary)
                             .frame(width: 31, height: 4)
                             .padding(.top, 4)
                     }
@@ -128,7 +129,7 @@ struct ProfileBottomSheet: View {
             .frame(minWidth: 0,
                    maxWidth: maxWidth,
                    maxHeight: 290, alignment: .topLeading)
-            .background(Theme.Colors.cardViewBackground)
+            .background(themeManager.theme.colors.cardViewBackground)
             .cornerRadius(8)
             .padding(.horizontal, 22)
         }
@@ -140,14 +141,14 @@ struct ProfileBottomSheet: View {
                 switch type {
                 case .gallery:
                     CoreAssets.gallery.swiftUIImage.renderingMode(.template)
-                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                        .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                 case .remove:
                     CoreAssets.removePhoto.swiftUIImage
                 case .cancel:
                     EmptyView()
                 }
                 Text(title)
-                    .foregroundColor(type.textColor())
+                    .foregroundColor(type.textColor(using: themeManager))
                     .font(Theme.Fonts.labelLarge)
             }
             .frame(maxWidth: .infinity)
@@ -156,7 +157,7 @@ struct ProfileBottomSheet: View {
         .frame(maxWidth: .infinity, minHeight: 48)
         .background(
             Theme.Shapes.buttonShape
-                .fill(type.bgColor())
+                .fill(type.bgColor(using: themeManager))
         )
         .overlay(
             Theme.Shapes.buttonShape
@@ -167,7 +168,7 @@ struct ProfileBottomSheet: View {
                     miterLimit: 1)
                 )
                 .foregroundColor(
-                    type.frameColor()
+                    type.frameColor(using: themeManager)
                 )
         )
     }
@@ -191,10 +192,10 @@ extension ProfileBottomSheet {
         case remove
         case cancel
         
-        func bgColor() -> Color {
+        func bgColor(using themeManager: ThemeManager) -> Color {
             switch self {
             case .gallery:
-                return Theme.Colors.accentColor
+                return themeManager.theme.colors.accentColor
             case .remove:
                 return .clear
             case .cancel:
@@ -202,25 +203,25 @@ extension ProfileBottomSheet {
             }
         }
         
-        func frameColor() -> Color {
+        func frameColor(using themeManager: ThemeManager) -> Color {
             switch self {
             case .gallery:
-                return Theme.Colors.accentColor
+                return themeManager.theme.colors.accentColor
             case .remove:
-                return Theme.Colors.alert
+                return themeManager.theme.colors.alert
             case .cancel:
-                return Theme.Colors.textInputStroke
+                return themeManager.theme.colors.textInputStroke
             }
         }
         
-        func textColor() -> Color {
+        func textColor(using themeManager: ThemeManager) -> Color {
             switch self {
             case .gallery:
-                return Theme.Colors.primaryButtonTextColor
+                return themeManager.theme.colors.primaryButtonTextColor
             case .remove:
-                return Theme.Colors.alert
+                return themeManager.theme.colors.alert
             case .cancel:
-                return Theme.Colors.textPrimary
+                return themeManager.theme.colors.textPrimary
             }
         }
     }

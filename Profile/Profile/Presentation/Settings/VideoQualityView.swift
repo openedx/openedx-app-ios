@@ -16,6 +16,7 @@ public struct VideoQualityView: View {
     @ObservedObject
     private var viewModel: SettingsViewModel
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
@@ -37,12 +38,12 @@ public struct VideoQualityView: View {
                     ZStack {
                         HStack {
                             Text(ProfileLocalization.Settings.videoQualityTitle)
-                                .titleSettings(color: Theme.Colors.loginNavigationText)
+                                .titleSettings(color: themeManager.theme.colors.loginNavigationText)
                                 .accessibilityIdentifier("manage_account_text")
                         }
                         VStack {
                             BackNavigationButton(
-                                color: Theme.Colors.loginNavigationText,
+                                color: themeManager.theme.colors.loginNavigationText,
                                 action: {
                                     viewModel.router.back()
                                 }
@@ -82,9 +83,9 @@ public struct VideoQualityView: View {
                                             Spacer()
                                             CoreAssets.checkmark.swiftUIImage
                                                 .renderingMode(.template)
-                                                .foregroundColor(Theme.Colors.accentXColor)
+                                                .foregroundColor(themeManager.theme.colors.accentXColor)
                                                 .opacity(quality == viewModel.selectedQuality ? 1 : 0)
-                                        }.foregroundColor(Theme.Colors.textPrimary)
+                                        }.foregroundColor(themeManager.theme.colors.textPrimary)
                                     })
                                     .accessibilityIdentifier("select_quality_button")
                                     Divider()
@@ -94,7 +95,7 @@ public struct VideoQualityView: View {
                             .padding(.horizontal, 24)
                             .padding(.top, 24)
                     }
-                    .roundedBackground(Theme.Colors.background)
+                    .roundedBackground(themeManager.theme.colors.background)
                     
                     // MARK: - Error Alert
                     if viewModel.showError {
@@ -117,7 +118,7 @@ public struct VideoQualityView: View {
         .navigationTitle(ProfileLocalization.Settings.videoQualityTitle)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
     }

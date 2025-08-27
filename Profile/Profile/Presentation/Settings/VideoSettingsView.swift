@@ -14,6 +14,7 @@ public struct VideoSettingsView: View {
     @ObservedObject
     private var viewModel: SettingsViewModel
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
@@ -35,12 +36,12 @@ public struct VideoSettingsView: View {
                     ZStack {
                         HStack {
                             Text(ProfileLocalization.Settings.videoSettingsTitle)
-                                .titleSettings(color: Theme.Colors.loginNavigationText)
+                                .titleSettings(color: themeManager.theme.colors.loginNavigationText)
                                 .accessibilityIdentifier("manage_account_text")
                         }
                         VStack {
                             BackNavigationButton(
-                                color: Theme.Colors.loginNavigationText,
+                                color: themeManager.theme.colors.loginNavigationText,
                                 action: {
                                     viewModel.router.back()
                                 }
@@ -63,10 +64,10 @@ public struct VideoSettingsView: View {
                                     description: ProfileLocalization.Settings.wifiDescription
                                 )
                                 Toggle(isOn: $viewModel.wifiOnly, label: {})
-                                    .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
+                                    .toggleStyle(SwitchToggleStyle(tint: themeManager.theme.colors.toggleSwitchColor))
                                     .frame(width: 50)
                                     .accessibilityIdentifier("download_agreement_switch")
-                            }.foregroundColor(Theme.Colors.textPrimary)
+                            }.foregroundColor(themeManager.theme.colors.textPrimary)
                             Divider()
                             
                             // MARK: Streaming Quality
@@ -115,7 +116,7 @@ public struct VideoSettingsView: View {
                         .padding(.horizontal, 24)
                         .padding(.top, 24)
                     }
-                    .roundedBackground(Theme.Colors.background)
+                    .roundedBackground(themeManager.theme.colors.background)
                 }
             }
         }
@@ -124,7 +125,7 @@ public struct VideoSettingsView: View {
         .navigationTitle(ProfileLocalization.Settings.videoSettingsTitle)
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
     }

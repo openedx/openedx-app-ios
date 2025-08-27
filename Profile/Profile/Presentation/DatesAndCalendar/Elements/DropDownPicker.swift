@@ -96,6 +96,7 @@ struct DropDownPicker: View {
     }
     
     @Binding var selection: DownPickerOption?
+    @EnvironmentObject var themeManager: ThemeManager
     var state: DropDownPickerState = .bottom
     var options: [DownPickerOption]
     
@@ -128,11 +129,11 @@ struct DropDownPicker: View {
                         ? ProfileLocalization.DropDownPicker.select
                         : selection!.title
                     )
-                        .foregroundStyle(Theme.Colors.textPrimary)
+                        .foregroundStyle(themeManager.theme.colors.textPrimary)
                         .font(Theme.Fonts.bodyMedium)
                     Spacer(minLength: 0)
                     Image(systemName: state == .top ? "chevron.up" : "chevron.down")
-                        .foregroundColor(Theme.Colors.textPrimary)
+                        .foregroundColor(themeManager.theme.colors.textPrimary)
                         .rotationEffect(.degrees((showDropdown ? -180 : 0)))
                 }
                 .padding(.horizontal, 15)
@@ -146,10 +147,10 @@ struct DropDownPicker: View {
                 }
                 .zIndex(10)
                 .frame(height: 48)
-                .background(Theme.Colors.background)
+                .background(themeManager.theme.colors.background)
                 .overlay {
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Theme.Colors.textInputStroke, lineWidth: 1)
+                        .stroke(themeManager.theme.colors.textInputStroke, lineWidth: 1)
                         .padding(1)
                 }
 
@@ -157,14 +158,14 @@ struct DropDownPicker: View {
                     optionsView()
                         .overlay {
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(Theme.Colors.textInputStroke, lineWidth: 1)
+                                .stroke(themeManager.theme.colors.textInputStroke, lineWidth: 1)
                                 .padding(1)
                         }
                         .padding(.top, 4)
                 }
             }
             .clipped()
-            .background(Theme.Colors.background)
+            .background(themeManager.theme.colors.background)
             .cornerRadius(8)
             .frame(height: size.height, alignment: state == .top ? .bottom : .top)
             .onTapBackground(enabled: showDropdown, { showDropdown = false })
@@ -195,13 +196,13 @@ struct DropDownPicker: View {
                             }
                             Text(option.title)
                                 .font(Theme.Fonts.bodyMedium)
-                                .foregroundStyle(Theme.Colors.textPrimary)
+                                .foregroundStyle(themeManager.theme.colors.textPrimary)
                             Spacer()
                         }
                         VStack {
                             Spacer()
                             if option != options.last {
-                                Theme.Colors.textInputStroke
+                                themeManager.theme.colors.textInputStroke
                                     .frame(height: 1)
                                     .padding(.top, 8)
                                     .frame(alignment: .bottom)

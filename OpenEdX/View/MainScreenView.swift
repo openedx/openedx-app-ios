@@ -21,20 +21,11 @@ struct MainScreenView: View {
     
     @State private var disableAllTabs: Bool = false
     @State private var updateAvailable: Bool = false
-    
+    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject private(set) var viewModel: MainScreenViewModel
     
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
-        UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().barTintColor = Theme.UIColors.tabbarActiveColor
-        UITabBar.appearance().backgroundColor = Theme.UIColors.tabbarBGColor
-        UITabBar.appearance().unselectedItemTintColor = Theme.UIColors.tabbarInactiveColor
-        
-        UITabBarItem.appearance().setTitleTextAttributes(
-            [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
-            for: .normal
-        )
     }
     
     var body: some View {
@@ -46,7 +37,7 @@ struct MainScreenView: View {
                         ListDashboardView(
                             viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
                             router: Container.shared.resolve(DashboardRouter.self)!
-                        )
+                        ).environmentObject(themeManager)
 
                         registerBanner
                     }
@@ -158,6 +149,21 @@ struct MainScreenView: View {
                 .tag(MainTab.profile)
                 .accessibilityIdentifier("profile_tabitem")
             }
+            .onAppear {
+                UITabBar.appearance().isTranslucent = false
+                UITabBar.appearance().barTintColor = UIColor(themeManager.theme.colors.tabbarColor)
+                UITabBar.appearance().backgroundColor = UIColor(themeManager.theme.colors.tabbarColor)
+                UITabBar.appearance().unselectedItemTintColor = UIColor(themeManager.theme.colors.textSecondaryLight)
+                
+                UITabBarItem.appearance().setTitleTextAttributes(
+                    [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
+                    for: .normal
+                )
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
+            }
             .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
             .navigationBarBackButtonHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
             .navigationTitle(titleBar())
@@ -169,7 +175,7 @@ struct MainScreenView: View {
                             router.showSettings()
                         }, label: {
                             CoreAssets.settings.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.accentColor)
+                                .foregroundColor(themeManager.theme.colors.accentColor)
                         })
                         .accessibilityIdentifier("edit_profile_button")
                     }
@@ -219,7 +225,7 @@ struct MainScreenView: View {
                     viewModel.checkIfNeedToShowRegisterBanner()
                 }
             }
-            .accentColor(Theme.Colors.accentXColor)
+            .accentColor(themeManager.theme.colors.accentXColor)
             if updateAvailable {
                 UpdateNotificationView(config: viewModel.config)
             }

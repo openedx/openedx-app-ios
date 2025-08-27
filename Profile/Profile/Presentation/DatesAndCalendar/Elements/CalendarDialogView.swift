@@ -35,6 +35,7 @@ struct CalendarDialogView: View {
     }
     
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     private var onCloseTapped: (() -> Void) = {}
     private var action: (() -> Void) = {}
     private let type: CalendarDialogType
@@ -66,7 +67,7 @@ struct CalendarDialogView: View {
                         .padding(24)
                         .background(
                             RoundedRectangle(cornerRadius: 8)
-                                .foregroundStyle(Theme.Colors.background)
+                                .foregroundStyle(themeManager.theme.colors.background)
                         )
                         .padding(24)
                 }
@@ -76,7 +77,7 @@ struct CalendarDialogView: View {
                     .padding(24)
                     .background(
                         RoundedRectangle(cornerRadius: 8)
-                            .foregroundStyle(Theme.Colors.background)
+                            .foregroundStyle(themeManager.theme.colors.background)
                     )
                     .padding(24)
             }
@@ -110,20 +111,20 @@ struct CalendarDialogView: View {
                     Text(calendarName)
                         .strikethrough()
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundStyle(Theme.Colors.textPrimary)
+                        .foregroundStyle(themeManager.theme.colors.textPrimary)
                         .multilineTextAlignment(.leading)
                     Spacer()
                 }
                 .padding(16)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .foregroundStyle(Theme.Colors.textInputUnfocusedBackground)
+                        .foregroundStyle(themeManager.theme.colors.textInputUnfocusedBackground)
                 )
             }
             
             Text(type.description)
                 .font(Theme.Fonts.bodySmall)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(themeManager.theme.colors.textPrimary)
                 .multilineTextAlignment(.leading)
             
             VStack(spacing: 16) {
@@ -142,9 +143,9 @@ struct CalendarDialogView: View {
                         action: {
                             onCloseTapped()
                         },
-                        color: Theme.Colors.background,
-                        textColor: Theme.Colors.accentColor,
-                        borderColor: Theme.Colors.accentColor
+                        color: themeManager.theme.colors.background,
+                        textColor: themeManager.theme.colors.accentColor,
+                        borderColor: themeManager.theme.colors.accentColor
                     )
                 case .disableCalendarSync:
                     StyledButton(
@@ -152,9 +153,9 @@ struct CalendarDialogView: View {
                         action: {
                             action()
                         },
-                        color: Theme.Colors.background,
-                        textColor: Theme.Colors.accentColor,
-                        borderColor: Theme.Colors.accentColor
+                        color: themeManager.theme.colors.background,
+                        textColor: themeManager.theme.colors.accentColor,
+                        borderColor: themeManager.theme.colors.accentColor
                     )
                     
                     StyledButton(ProfileLocalization.CalendarDialog.cancel) {

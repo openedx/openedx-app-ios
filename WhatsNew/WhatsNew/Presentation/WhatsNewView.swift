@@ -20,6 +20,7 @@ public struct WhatsNewView: View {
     private var isHorizontal
     
     @State var index = 0
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(router: WhatsNewRouter, viewModel: WhatsNewViewModel) {
         self.router = router
@@ -29,7 +30,7 @@ public struct WhatsNewView: View {
     public var body: some View {
         GeometryReader { reader in
             ZStack(alignment: isHorizontal ? .center : .bottom) {
-                Theme.Colors.background
+                themeManager.theme.colors.background
                     .ignoresSafeArea()
                 adaptiveStack(isHorizontal: isHorizontal) {
                     TabView(selection: $index) {
@@ -53,7 +54,7 @@ public struct WhatsNewView: View {
                         Spacer()
                         
                         Rectangle()
-                            .foregroundColor(Theme.Colors.background)
+                            .foregroundColor(themeManager.theme.colors.background)
                             .frame(width: reader.size.width / 1.9)
                             .ignoresSafeArea()
                             .mask(
@@ -160,7 +161,7 @@ public struct WhatsNewView: View {
                             },
                             label: {
                         Image(systemName: "xmark")
-                            .foregroundColor(Theme.Colors.accentXColor)
+                            .foregroundColor(themeManager.theme.colors.accentXColor)
                     })
                     .accessibilityIdentifier("close_button")
                 })

@@ -27,31 +27,31 @@ public struct ThemeDefinition {
         colors: .default,
         fonts: .default,
         appLogo: ThemeAssets.appLogo.swiftUIImage,
-        bgColor: ThemeAssets.mtAuthBackground.swiftUIImage,
+        bgColor: ThemeAssets.headerBackground.swiftUIImage,
         name: "default"
     )
 
     public static let saudiRealEstateInstitute = ThemeDefinition(
         colors: .saudiRealEstateInstitute,
         fonts: .default,
-        appLogo: ThemeAssets.sreiloginLogoWhite.swiftUIImage,
-        bgColor: ThemeAssets.riyadahAuthBackground.swiftUIImage,
+        appLogo: ThemeAssets.appLogo.swiftUIImage,
+        bgColor: ThemeAssets.headerBackground.swiftUIImage,
         name: "Saudi Real Estate Institute"
     )
 
     public static let NIEPD = ThemeDefinition(
         colors: .NIEPD,
         fonts: .tenantB,
-        appLogo: ThemeAssets.niepdAppLogo.swiftUIImage,
-        bgColor: ThemeAssets.niepdAuthBackground.swiftUIImage,
+        appLogo: ThemeAssets.appLogo.swiftUIImage,
+        bgColor: ThemeAssets.headerBackground.swiftUIImage,
         name: "NIEPD"
     )
     
     public static let mt = ThemeDefinition(
         colors: .mt,
         fonts: .default,
-        appLogo: ThemeAssets.mtAppLogo.swiftUIImage,
-        bgColor: ThemeAssets.mtAuthBackground.swiftUIImage,
+        appLogo: ThemeAssets.appLogo.swiftUIImage,
+        bgColor: ThemeAssets.headerBackground.swiftUIImage,
         name: "Ministry Of Tourism"
     )
 }

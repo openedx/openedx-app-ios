@@ -15,6 +15,7 @@ public struct EditProfileView: View {
     @ObservedObject public var viewModel: EditProfileViewModel
     @State private var showingImagePicker = false
     @State private var showingBottomSheet = false
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         viewModel: EditProfileViewModel,
@@ -36,7 +37,7 @@ public struct EditProfileView: View {
                     VStack {
                         Text(viewModel.profileChanges.profileType.localizedValue.capitalized)
                             .font(Theme.Fonts.titleSmall)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(themeManager.theme.colors.textSecondary)
                             .accessibilityIdentifier("profile_type_text")
                         Button(
                             action: {
@@ -57,9 +58,9 @@ public struct EditProfileView: View {
                                 .overlay(
                                     ZStack {
                                         Circle().frame(width: 36, height: 36)
-                                            .foregroundColor(Theme.Colors.accentXColor)
+                                            .foregroundColor(themeManager.theme.colors.accentXColor)
                                         CoreAssets.addPhoto.swiftUIImage.renderingMode(.template)
-                                            .foregroundColor(Theme.Colors.primaryButtonTextColor)
+                                            .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
                                     }
                                         .offset(x: 36, y: 50)
                                         .saturation(viewModel.canEditAvatar ? 1.0 : 0)
@@ -99,20 +100,20 @@ public struct EditProfileView: View {
                                         .accessibilityIdentifier("about_text")
                                     TextEditor(text: $viewModel.profileChanges.shortBiography)
                                         .font(Theme.Fonts.bodyMedium)
-                                        .foregroundColor(Theme.Colors.textInputTextColor)
+                                        .foregroundColor(themeManager.theme.colors.textInputTextColor)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 4)
                                         .frame(height: 200)
                                         .scrollContentBackground(.hidden)
                                         .background(
                                             Theme.Shapes.textInputShape
-                                                .fill(Theme.Colors.textInputBackground)
+                                                .fill(themeManager.theme.colors.textInputBackground)
                                         )
                                         .overlay(
                                             Theme.Shapes.textInputShape
                                                 .stroke(lineWidth: 1)
                                                 .fill(
-                                                    Theme.Colors.textInputStroke
+                                                    themeManager.theme.colors.textInputStroke
                                                 )
                                         )
                                         .accessibilityIdentifier("short_bio_textarea")
@@ -180,7 +181,7 @@ public struct EditProfileView: View {
                             CoreAssets.alarm.swiftUIImage.renderingMode(.template)
                             Text(viewModel.alertMessage ?? "")
                                 .font(Theme.Fonts.labelLarge)
-                        }.shadowCardStyle(bgColor: Theme.Colors.warning,
+                        }.shadowCardStyle(bgColor: themeManager.theme.colors.warning,
                                           textColor: .black)
                         .transition(.move(edge: .bottom))
                         .onAppear {
@@ -218,7 +219,7 @@ public struct EditProfileView: View {
                 ToolbarItem(
                     placement: .navigationBarLeading,
                     content: {
-                        BackNavigationButton(color: Theme.Colors.accentColor) {
+                        BackNavigationButton(color: themeManager.theme.colors.accentColor) {
                             viewModel.backButtonTapped()
                         }
                         .offset(x: -8, y: -1.5)
@@ -235,10 +236,10 @@ public struct EditProfileView: View {
                     }, label: {
                         HStack(spacing: 2) {
                             CoreAssets.done.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(Theme.Colors.accentXColor)
+                                .foregroundColor(themeManager.theme.colors.accentXColor)
                             Text(CoreLocalization.done)
                                 .font(Theme.Fonts.labelLarge)
-                                .foregroundColor(Theme.Colors.accentXColor)
+                                .foregroundColor(themeManager.theme.colors.accentXColor)
                         }
                     })
                     .opacity(viewModel.isChanged ? 1 : 0.3)
@@ -246,12 +247,18 @@ public struct EditProfileView: View {
                 })
             }
             .background(
-                Theme.Colors.background
+                themeManager.theme.colors.background
                     .ignoresSafeArea()
             )
             .onFirstAppear {
                 viewModel.trackScreenEvent()
             }
+        }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
         }
     }
 }

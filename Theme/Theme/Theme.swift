@@ -90,6 +90,7 @@ public struct Theme: Sendable {
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
             accentXColor: Color = ThemeAssets.accentXColor.swiftUIColor,
+            accentButtonColor: Color = ThemeAssets.accentButtonColor.swiftUIColor,
             alert: Color = ThemeAssets.alert.swiftUIColor,
             avatarStroke: Color = ThemeAssets.avatarStroke.swiftUIColor,
             background: Color = ThemeAssets.background.swiftUIColor,
@@ -123,6 +124,7 @@ public struct Theme: Sendable {
             datesSectionBackground: Color = ThemeAssets.datesSectionBackground.swiftUIColor,
             datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor,
             navigationBarTintColor: Color = ThemeAssets.navigationBarTintColor.swiftUIColor,
+            loginNavigationText: Color = ThemeAssets.loginNavigationText.swiftUIColor,
             secondaryButtonBorderColor: Color = ThemeAssets.secondaryButtonBorderColor.swiftUIColor,
             secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor,
             success: Color = ThemeAssets.success.swiftUIColor,
@@ -135,6 +137,7 @@ public struct Theme: Sendable {
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
+            self.accentButtonColor = accentButtonColor
             self.alert = alert
             self.avatarStroke = avatarStroke
             self.background = background
@@ -168,6 +171,7 @@ public struct Theme: Sendable {
             self.datesSectionBackground = datesSectionBackground
             self.datesSectionStroke = datesSectionStroke
             self.navigationBarTintColor = navigationBarTintColor
+            self.loginNavigationText = loginNavigationText
             self.secondaryButtonBorderColor = secondaryButtonBorderColor
             self.secondaryButtonTextColor = secondaryButtonTextColor
             self.success = success
@@ -186,6 +190,7 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var textPrimary = ThemeAssets.textPrimary.color
         nonisolated(unsafe) public private(set) static var accentColor = ThemeAssets.accentColor.color
         nonisolated(unsafe) public private(set) static var accentXColor = ThemeAssets.accentXColor.color
+        nonisolated(unsafe) public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.color
         nonisolated(unsafe) public private(set) static var navigationBarTintColor =
         ThemeAssets.navigationBarTintColor.color
         nonisolated(unsafe) public private(set) static var tabbarActiveColor = ThemeAssets.tabbarActiveColor.color
@@ -196,12 +201,14 @@ public struct Theme: Sendable {
             textPrimary: UIColor = ThemeAssets.textPrimary.color,
             accentColor: UIColor = ThemeAssets.accentColor.color,
             accentXColor: UIColor = ThemeAssets.accentXColor.color,
-            navigationBarTintColor: UIColor = ThemeAssets.navigationBarTintColor.color
+            navigationBarTintColor: UIColor = ThemeAssets.navigationBarTintColor.color,
+            loginNavigationText: UIColor = ThemeAssets.loginNavigationText.color
         ) {
             self.textPrimary = textPrimary
             self.accentColor = accentColor
             self.accentXColor = accentXColor
             self.navigationBarTintColor = navigationBarTintColor
+            self.loginNavigationText = loginNavigationText
         }
     }
 

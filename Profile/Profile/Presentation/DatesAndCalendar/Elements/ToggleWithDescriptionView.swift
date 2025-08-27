@@ -15,6 +15,7 @@ struct ToggleWithDescriptionView: View {
     let description: String
     @Binding var toggle: Bool
     @Binding var showAlertIcon: Bool
+    @EnvironmentObject var themeManager: ThemeManager
     
     init(
         text: String,
@@ -35,7 +36,7 @@ struct ToggleWithDescriptionView: View {
                     HStack {
                         Text(text)
                             .font(Theme.Fonts.bodyLarge)
-                            .foregroundColor(Theme.Colors.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                         if showAlertIcon {
                             CoreAssets.warningFilled.swiftUIImage
                                 .resizable()
@@ -43,12 +44,12 @@ struct ToggleWithDescriptionView: View {
                         }
                     }
                 })
-                .tint(Theme.Colors.accentColor)
+                .tint(themeManager.theme.colors.accentColor)
 //                CustomToggle(isOn: $toggle)
 //                    .padding(.leading, 10)
 //                Text(text)
 //                    .font(Theme.Fonts.bodyLarge)
-//                    .foregroundColor(Theme.Colors.textPrimary)
+//                    .foregroundColor(themeManager.theme.colors.textPrimary)
 //                if showAlertIcon {
 //                    CoreAssets.warningFilled.swiftUIImage
 //                        .resizable()
@@ -57,7 +58,7 @@ struct ToggleWithDescriptionView: View {
 //            }
             Text(description)
                 .font(Theme.Fonts.labelMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
+                .foregroundColor(themeManager.theme.colors.textPrimary)
         }
         .frame(minWidth: 0,
                maxWidth: .infinity,
@@ -78,13 +79,13 @@ struct ToggleWithDescriptionView: View {
 
 struct CustomToggle: View {
     @Binding var isOn: Bool
-
+    @EnvironmentObject var themeManager: ThemeManager
     var body: some View {
         Button(action: {
             isOn.toggle()
         }) {
             RoundedRectangle(cornerRadius: 10)
-                .fill(isOn ? Theme.Colors.accentColor : Color.gray)
+                .fill(isOn ? themeManager.theme.colors.accentColor : Color.gray)
                 .frame(width: 37, height: 20)
                 .overlay(
                     Circle()
