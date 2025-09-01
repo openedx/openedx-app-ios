@@ -42,6 +42,8 @@ struct CourseProgressScreenView: View {
         GeometryReader { proxy in
             ZStack(alignment: .center) {
                 VStack(alignment: .center) {
+                    
+                    // MARK: - Page Body
                     if viewModel.isLoading {
                         HStack(alignment: .center) {
                             ProgressBar(size: 40, lineWidth: 8)
@@ -71,7 +73,7 @@ struct CourseProgressScreenView: View {
                         }
                     }
                 }
-                .accessibilityAction {}
+                .accessibilityElement(children: .contain)
                 .frameLimit(width: proxy.size.width)
                 
                 // MARK: - Offline mode SnackBar
@@ -132,6 +134,7 @@ struct CourseProgressScreenView: View {
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .lineLimit(nil)
                         }
+                        .accessibilityElement(children: .combine)
                         
                         Spacer()
                         
@@ -145,6 +148,7 @@ struct CourseProgressScreenView: View {
                                 "\(Int(ceil(viewModel.overallProgressPercentage * 100)))"
                             )
                         )
+                        .accessibilityAddTraits(.updatesFrequently)
                     }
                 }
                 .padding(.top, 16)
@@ -156,13 +160,20 @@ struct CourseProgressScreenView: View {
                         currentGrade: viewModel.gradePercentage,
                         requiredGrade: viewModel.requiredGradePercentage,
                         assignmentPolicies: viewModel.assignmentPolicies,
-                        assignmentProgressData: viewModel.getAllAssignmentProgressData(),
-                        assignmentColors: viewModel.courseProgress?.assignmentColors ?? []
+                        assignmentProgressData: $viewModel.assignmentProgressData,
+                        assignmentColors: viewModel.courseProgress?.gradingPolicy.assignmentColors ?? []
                     )
+                    .accessibilityElement(children: .contain)
                     .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
                     
                     // Grade Details Section
-                    GradeDetailsView(viewModel: viewModel)
+                    GradeDetailsView(
+                        assignmentPolicies: viewModel.assignmentPolicies,
+                        assignmentProgressData: $viewModel.assignmentProgressData,
+                        currentGrade: viewModel.gradePercentage,
+                        getAssignmentColor: viewModel.getAssignmentColor
+                    )
+                        .accessibilityElement(children: .contain)
                         .accessibilityLabel(CourseLocalization.Accessibility.gradeDetailsSection)
                 } else {
                     // No graded assignments message
@@ -179,6 +190,8 @@ struct CourseProgressScreenView: View {
                     .padding(32)
                     .frame(maxWidth: .infinity)
                     .accessibilityElement(children: .combine)
+                    .accessibilityLabel(CourseLocalization.CourseContainer.Progress.noGradedAssignments)
+                    .accessibilityHint(CourseLocalization.Accessibility.noGradedAssignmentsHint)
                 }
                 
             } else if viewModel.isProgressEmpty {
@@ -201,28 +214,9 @@ struct CourseProgressScreenView: View {
                 .padding(32)
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
+                .accessibilityLabel(CourseLocalization.CourseContainer.Progress.noProgressAvailable)
+                .accessibilityHint(CourseLocalization.Accessibility.noProgressHint)
             }
         }
     }
 }
-
-#if DEBUG
-#Preview {
-    let vm = CourseProgressViewModel(
-        interactor: CourseInteractor.mock,
-        router: CourseRouterMock(),
-        analytics: CourseAnalyticsMock(),
-        connectivity: Connectivity()
-    )
-    
-    CourseProgressScreenView(
-        courseID: "test",
-        coordinate: .constant(0),
-        collapsed: .constant(false),
-        viewHeight: .constant(0),
-        viewModel: vm,
-        connectivity: Connectivity()
-    )
-    .loadFonts()
-}
-#endif

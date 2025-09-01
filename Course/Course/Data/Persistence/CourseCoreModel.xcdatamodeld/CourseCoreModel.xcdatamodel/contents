@@ -14,9 +14,11 @@
         <attribute name="graded" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="id" optional="YES" attributeType="String"/>
         <attribute name="lastModified" optional="YES" attributeType="String"/>
+        <attribute name="localVideoProgress" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="multiDevice" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="numPointsEarned" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="numPointsPossible" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="shortLabel" optional="YES" attributeType="String"/>
         <attribute name="studentUrl" optional="YES" attributeType="String"/>
         <attribute name="transcripts" optional="YES" attributeType="String"/>
         <attribute name="type" optional="YES" attributeType="String"/>
@@ -178,7 +180,7 @@
     <entity name="CDProblemScore" representedClassName="CDProblemScore" syncable="YES" codeGenerationType="class">
         <attribute name="earned" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
         <attribute name="possible" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
-        <relationship name="subsection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSubsection" inverseName="problemScores" inverseEntity="CDSubsection"/>
+        <relationship name="subsection" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDSubsection" inverseName="problemScores" inverseEntity="CDProblemScore"/>
     </entity>
     <entity name="CDVerificationData" representedClassName="CDVerificationData" syncable="YES" codeGenerationType="class">
         <attribute name="link" optional="YES" attributeType="String"/>

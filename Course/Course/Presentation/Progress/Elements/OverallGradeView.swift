@@ -14,7 +14,7 @@ struct OverallGradeView: View {
     let currentGrade: Double
     let requiredGrade: Double
     let assignmentPolicies: [CourseProgressAssignmentPolicy]
-    let assignmentProgressData: [String: AssignmentProgressData]
+    @Binding var assignmentProgressData: [String: AssignmentProgressData]
     let assignmentColors: [String]
     
     var isCarousel: Bool = false
@@ -42,6 +42,9 @@ struct OverallGradeView: View {
                         .foregroundColor(Theme.Colors.textPrimary)
                         .lineLimit(nil)
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(CourseLocalization.CourseContainer.Progress.overallGrade)
+                .accessibilityValue(CourseLocalization.CourseContainer.Progress.overallGradeDescription)
             }
             
             // Current Grade Label
@@ -54,11 +57,14 @@ struct OverallGradeView: View {
                     .font(Theme.Fonts.bodyMedium)
                     .foregroundColor(Theme.Colors.accentColor)
             }
+            .accessibilityElement(children: .combine)
+            .accessibilityLabel(CourseLocalization.Accessibility.currentGrade("\(currentGradePercent)"))
+            .accessibilityAddTraits(.updatesFrequently)
             
             // Segmented Progress Bar
             SegmentedProgressView(
                 assignmentPolicies: assignmentPolicies,
-                assignmentProgressData: assignmentProgressData,
+                assignmentProgressData: $assignmentProgressData,
                 assignmentColors: assignmentColors,
                 requiredGrade: requiredGrade
             )
@@ -81,6 +87,9 @@ struct OverallGradeView: View {
                         .stroke(Theme.Colors.warning, lineWidth: 1)
                 )
                 .cornerRadius(8)
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(CourseLocalization.Accessibility.gradeRequirementWarning("\(requiredGradePercent)"))
+                .accessibilityAddTraits(.isStaticText)
             }
         }
     }
@@ -107,7 +116,7 @@ struct OverallGradeView: View {
                 weight: 0.7
             )
         ],
-        assignmentProgressData: [
+        assignmentProgressData: .constant([
             "Homework": AssignmentProgressData(
                 completed: 3,
                 total: 5,
@@ -122,7 +131,7 @@ struct OverallGradeView: View {
                 possiblePoints: 100.0,
                 percentGraded: 0.75
             )
-        ],
+        ]),
         assignmentColors: ["#D24242", "#7B9645"]
     )
     .padding()

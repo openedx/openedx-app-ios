@@ -157,6 +157,7 @@
 		CE57127C2CD109DB00D4AB17 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE57127B2CD109DB00D4AB17 /* OEXFoundation */; };
 		CE5BBFF42E24236500D51C92 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5BBFF32E24236500D51C92 /* ColorExtension.swift */; };
 		CE7CAF392CC1561E00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF382CC1561E00E0AC9D /* OEXFoundation */; };
+		CE84CE242E38F57A0095C9C3 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE84CE232E38F57A0095C9C3 /* ColorExtension.swift */; };
 		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
 		CEC873BE2D75D55600A2626C /* CourseStructureManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */; };
 		CEC875392D7845DB00A2626C /* DeviceStorageFullAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875372D7845DB00A2626C /* DeviceStorageFullAlertView.swift */; };

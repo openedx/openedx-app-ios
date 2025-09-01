@@ -5,8 +5,8 @@ import Core
 struct CourseGradeCarouselSlideView: View {
     
     // MARK: - Variables
-    let viewModelProgress: CourseProgressViewModel
-    let viewModelContainer: CourseContainerViewModel
+    @ObservedObject var viewModelProgress: CourseProgressViewModel
+    @ObservedObject var viewModelContainer: CourseContainerViewModel
 
     // MARK: - Body
     var body: some View {
@@ -53,7 +53,6 @@ struct CourseGradeCarouselSlideView: View {
             .padding(.bottom, 12)
             .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
             .padding(.horizontal, 16)
-
     }
 
     // MARK: - Grade View
@@ -63,8 +62,8 @@ struct CourseGradeCarouselSlideView: View {
                 currentGrade: viewModelProgress.gradePercentage,
                 requiredGrade: viewModelProgress.requiredGradePercentage,
                 assignmentPolicies: viewModelProgress.assignmentPolicies,
-                assignmentProgressData: viewModelProgress.getAllAssignmentProgressData(),
-                assignmentColors: viewModelProgress.courseProgress?.assignmentColors ?? [],
+                assignmentProgressData: $viewModelProgress.assignmentProgressData,
+                assignmentColors: viewModelProgress.courseProgress?.gradingPolicy.assignmentColors ?? [],
                 isCarousel: true
             )
             .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
@@ -117,30 +116,32 @@ struct CourseGradeCarouselSlideView: View {
 // MARK: - Preview
 #if DEBUG
 #Preview {
-    CourseGradeCarouselSlideView(viewModelProgress: CourseProgressViewModel(
-        interactor: CourseInteractor.mock,
-        router: CourseRouterMock(),
-        analytics: CourseAnalyticsMock(),
-        connectivity: Connectivity(),
-    ),
-    viewModelContainer: CourseContainerViewModel(
-        interactor: CourseInteractor.mock,
-        authInteractor: AuthInteractor.mock,
-        router: CourseRouterMock(),
-        analytics: CourseAnalyticsMock(),
-        config: ConfigMock(),
-        connectivity: Connectivity(),
-        manager: DownloadManagerMock(),
-        storage: CourseStorageMock(),
-        isActive: true,
-        courseStart: Date(),
-        courseEnd: nil,
-        enrollmentStart: Date(),
-        enrollmentEnd: nil,
-        lastVisitedBlockID: nil,
-        coreAnalytics: CoreAnalyticsMock(),
-        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
-    ))
+    CourseGradeCarouselSlideView(
+        viewModelProgress: CourseProgressViewModel(
+            interactor: CourseInteractor.mock,
+            router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
+            connectivity: Connectivity()
+        ),
+        viewModelContainer: CourseContainerViewModel(
+            interactor: CourseInteractor.mock,
+            authInteractor: AuthInteractor.mock,
+            router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
+            config: ConfigMock(),
+            connectivity: Connectivity(),
+            manager: DownloadManagerMock(),
+            storage: CourseStorageMock(),
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: Date(),
+            enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+        )
+    )
     .padding(16)
     .frame(height: 408)
     .loadFonts()

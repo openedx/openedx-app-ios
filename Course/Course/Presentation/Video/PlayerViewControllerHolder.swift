@@ -230,7 +230,12 @@ extension AVPlayerViewController: PlayerControllerProtocol, @retroactive Sendabl
     }
     
     public func seekTo(to date: Date) {
-        player?.seek(to: date)
+        player?.seek(
+                to: CMTime(
+                    seconds: date.secondsSinceMidnight(),
+                    preferredTimescale: CMTimeScale(NSEC_PER_SEC)
+                )
+            )
     }
     
     public func stop() {
