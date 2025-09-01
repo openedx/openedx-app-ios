@@ -294,6 +294,7 @@ public extension DataLayer {
     }
 }
 
+// MARK: - Domain Conversion
 public extension DataLayer.CourseProgressResponse {
     func domain() -> CourseProgressDetails {
         CourseProgressDetails(
@@ -347,8 +348,7 @@ public extension DataLayer.CourseGrade {
 public extension DataLayer.GradingPolicy {
     var domain: CourseProgressGradingPolicy {
         CourseProgressGradingPolicy(
-            assignmentPolicies: assignmentPolicies.map { $0.domain
-            },
+            assignmentPolicies: assignmentPolicies.map { $0.domain },
             gradeRange: gradeRange,
             assignmentColors: assignmentColors ?? [
                 "#D24242",
@@ -401,7 +401,8 @@ public extension DataLayer.Subsection {
             problemScores: problemScores.map { $0.domain },
             showCorrectness: showCorrectness,
             showGrades: showGrades,
-            url: url
+            url: url,
+            shortLabel: nil
         )
     }
 }

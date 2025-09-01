@@ -88,7 +88,7 @@ enum CourseEndpoint: EndPointType {
                 "username": userName,
                 "course_id": courseID,
                 "depth": "all",
-                "student_view_data": "video,discussion,html,problem",
+                "student_view_data": "video,discussion,html,problem,due",
                 "nav_depth": "4",
                 "requested_fields": """
                 contains_gated_content,show_gated_sections,special_exam_info,graded,

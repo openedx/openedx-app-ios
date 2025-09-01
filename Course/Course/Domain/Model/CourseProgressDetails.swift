@@ -2,10 +2,11 @@
 //  CourseProgressDetails.swift
 //  Course
 //
-//  Created by Ivan Stepanok on 19.06.2025.
+//  Created by Ivan Stepanok on 08.07.2025.
 //
 
 import Foundation
+import Core
 
 // MARK: - CourseProgressDetails
 public struct CourseProgressDetails: Sendable {
@@ -49,7 +50,7 @@ public struct CourseProgressDetails: Sendable {
         self.sectionScores = sectionScores
         self.verificationData = verificationData
     }
-    
+
     public func getAssignmentProgress(for assignmentType: String) -> AssignmentProgressData {
         guard let policy = self.gradingPolicy.assignmentPolicies
             .first(where: { $0.type == assignmentType }) else {
@@ -234,7 +235,14 @@ public struct CourseProgressSectionScore: Sendable {
     }
 }
 
-public struct CourseProgressSubsection: Sendable {
+public struct CourseProgressSubsection: Sendable, Equatable {
+    public static func == (lhs: CourseProgressSubsection, rhs: CourseProgressSubsection) -> Bool {
+        lhs.assignmentType == rhs.assignmentType &&
+        lhs.blockKey == rhs.blockKey &&
+        lhs.displayName == rhs.displayName &&
+        lhs.url == rhs.url
+    }
+
     public let assignmentType: String?
     public let blockKey: String
     public let displayName: String
@@ -248,6 +256,7 @@ public struct CourseProgressSubsection: Sendable {
     public let showCorrectness: String
     public let showGrades: Bool
     public let url: String
+    public let shortLabel: String?
     
     public var progress: Double {
         guard numPointsPossible > 0 else { return 0.0 }
@@ -267,7 +276,8 @@ public struct CourseProgressSubsection: Sendable {
         problemScores: [CourseProgressProblemScore],
         showCorrectness: String,
         showGrades: Bool,
-        url: String
+        url: String,
+        shortLabel: String? = nil
     ) {
         self.assignmentType = assignmentType
         self.blockKey = blockKey
@@ -282,6 +292,7 @@ public struct CourseProgressSubsection: Sendable {
         self.showCorrectness = showCorrectness
         self.showGrades = showGrades
         self.url = url
+        self.shortLabel = shortLabel
     }
 }
 
