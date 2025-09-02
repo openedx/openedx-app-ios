@@ -307,8 +307,17 @@ public enum CourseLocalization {
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
   public enum CourseCarousel {
+    /// You’re all caught up on assignments. Take a breather and relax.
+    public static let allAssignmentsCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_ASSIGNMENTS_COMPLETED", fallback: "You’re all caught up on assignments. Take a breather and relax.")
     /// All Content
     public static let allContent = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_CONTENT", fallback: "All Content")
+    /// You’re all caught up. Take a breather and relax.
+    public static let allVideosCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_VIDEOS_COMPLETED", fallback: "You’re all caught up. Take a breather and relax.")
+    /// Assignments
+    /// completed
+    public static let assigmentsCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ASSIGMENTS_COMPLETED", fallback: "Assignments\ncompleted")
+    /// Continue Watching
+    public static let continueWatching = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.CONTINUE_WATCHING", fallback: "Continue Watching")
     /// Grades
     public static let grades = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES", fallback: "Grades")
     /// This represents your weighted grade against the grade needed to pass this course.
@@ -321,6 +330,13 @@ public enum CourseLocalization {
     public static let upgradeNowBody = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BODY", fallback: "You’re auditing this course now and have limited access to course material.")
     /// Upgrade now
     public static let upgradeNowButton = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BUTTON", fallback: "Upgrade now")
+    /// Videos
+    /// completed
+    public static let videosCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.VIDEOS_COMPLETED", fallback: "Videos\ncompleted")
+    /// All Assignments
+    public static let viewAllAssignments = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.VIEW_ALL_ASSIGNMENTS", fallback: "All Assignments")
+    /// All Videos
+    public static let viewAllVideos = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.VIEW_ALL_VIDEOS", fallback: "All Videos")
   }
   public enum CourseContainer {
     /// Content

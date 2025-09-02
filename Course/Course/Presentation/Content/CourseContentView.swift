@@ -18,7 +18,6 @@ public struct CourseContentView: View {
     private let title: String
     private let courseID: String
     
-    @State private var selectedTab: ContentTab = .all
     private var videoContentData: VideoContentData {
         VideoContentData(
             courseVideosStructure: viewModel.courseVideosStructure,
@@ -50,6 +49,7 @@ public struct CourseContentView: View {
             errorMessage: viewModel.errorMessage
         )
     }
+
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
@@ -90,7 +90,7 @@ public struct CourseContentView: View {
                             VStack(alignment: .leading) {
                                 // MARK: - Segmented Control
                                 ContentSegmentedControl(
-                                    selectedTab: $selectedTab,
+                                    selectedTab: $viewModel.selectedTab,
                                     courseId: courseID,
                                     courseName: title,
                                     analytics: viewModel.analytics
@@ -116,7 +116,7 @@ public struct CourseContentView: View {
                 .accessibilityAction {}
                 
                 // MARK: Review Course Grading Policy
-                if selectedTab == .assignments {
+                if viewModel.selectedTab == .assignments {
                     VStack(spacing: 18) {
                         Divider()
                         Button(action: {
@@ -179,7 +179,7 @@ public struct CourseContentView: View {
     
     @ViewBuilder
     private func contentForSelectedTab(proxy: GeometryProxy) -> some View {
-        switch selectedTab {
+        switch viewModel.selectedTab {
         case .all:
             AllContentView(
                 viewModel: viewModel,

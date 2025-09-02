@@ -129,6 +129,8 @@ public enum CoreAssets {
   public static let favorite = ImageAsset(name: "favorite")
   public static let finishedSequence = ImageAsset(name: "finished_sequence")
   public static let goodWork = ImageAsset(name: "goodWork")
+  public static let icAssignmentPastDue = ImageAsset(name: "ic-assignment-pastDue")
+  public static let icAssignment = ImageAsset(name: "ic-assignment")
   public static let information = ImageAsset(name: "information")
   public static let learnEmpty = ImageAsset(name: "learn_empty")
   public static let airmail = ImageAsset(name: "airmail")

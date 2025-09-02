@@ -74,6 +74,7 @@ extension CourseTab {
 public final class CourseContainerViewModel: BaseCourseViewModel {
     
     @Published public var selection: Int
+    @Published var selectedTab: ContentTab = .all
     @Published var isShowProgress = false
     @Published var isShowRefresh = false
     @Published var courseStructure: CourseStructure?
@@ -1317,11 +1318,17 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             let shortLabel = getSequentialShortLabel(for: subsection.blockKey) ?? ""
             let status = getSequentialAssignmentStatus(for: subsection.blockKey) ?? getAssignmentStatus(for: subsection)
             let statusText = computeStatusText(for: subsection, status: status, shortLabel: shortLabel)
+            let statusTextForCarousel = computeStatusTextForCarousel(
+                for: subsection,
+                status: status,
+                shortLabel: shortLabel
+            )
             let sequenceName = getAssignmentSequenceName(for: subsection)
                         
             return CourseProgressSubsectionUI(
                 subsection: subsection,
                 statusText: statusText,
+                statusTextForCarousel: statusTextForCarousel,
                 sequenceName: sequenceName,
                 status: status,
                 shortLabel: shortLabel
@@ -1494,7 +1501,30 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-    
+
+    private func computeStatusTextForCarousel(
+        for subsection: CourseProgressSubsection,
+        status: AssignmentCardStatus,
+        shortLabel: String?
+    ) -> String {
+        let cleanShortLabel = clearShortLabel(shortLabel ?? "")
+
+        if let dueDate = getAssignmentDueDate(for: subsection) {
+            switch status {
+            case .pastDue:
+                return "\(cleanShortLabel) \(dueDate.formattedDueStatus())"
+            case .incomplete:
+                return "\(cleanShortLabel) \(dueDate.formattedDueStatus())"
+            default:
+                break
+            }
+        } else {
+            return ""
+        }
+
+        return ""
+    }
+
     func getAssignmentStatusText(for subsection: CourseProgressSubsection) -> String {
         let status = getAssignmentStatus(for: subsection)
         
