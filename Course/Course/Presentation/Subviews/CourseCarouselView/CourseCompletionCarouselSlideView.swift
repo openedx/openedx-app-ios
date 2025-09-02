@@ -20,7 +20,8 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
             sectionView
 
             ViewAllButton(section: CourseLocalization.CourseCarousel.allContent) {
-                print("All Content")
+                viewModelContainer.selection = 1
+                viewModelContainer.selectedTab = .all
             }
             .frame(maxWidth: .infinity)
             .padding(.top, 16)

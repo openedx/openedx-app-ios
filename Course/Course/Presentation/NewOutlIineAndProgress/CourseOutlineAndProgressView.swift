@@ -17,23 +17,53 @@ public struct CourseOutlineAndProgressView: View {
     private let dateTabIndex: Int
     private let connectivity: ConnectivityProtocol
 
-    private var carouselSections: [AnyView] { [
-        AnyView(CourseCompletionCarouselSlideView(
-            viewModelProgress: viewModelProgress,
-            viewModelContainer: viewModelContainer,
-            isVideo: isVideo,
-            idiom: UIDevice.current.userInterfaceIdiom
-        ) { proxy in
-            downloadQualityBars(proxy: proxy)
+    private var carouselSections: [AnyView] {
+        var sections: [AnyView] = []
+
+        if viewModelProgress.courseProgress != nil {
+            sections.append(
+                AnyView(
+                    CourseCompletionCarouselSlideView(
+                        viewModelProgress: viewModelProgress,
+                        viewModelContainer: viewModelContainer,
+                        isVideo: isVideo,
+                        idiom: UIDevice.current.userInterfaceIdiom
+                    ) { proxy in
+                        downloadQualityBars(proxy: proxy)
+                    }
+                )
+            )
+
+            sections.append(
+                AnyView(
+                    CourseVideoCarouselSlideView(
+                        viewModelProgress: viewModelProgress,
+                        viewModelContainer: viewModelContainer
+                    )
+                )
+            )
         }
-        ),
-        AnyView(
-            CourseGradeCarouselSlideView(
-                viewModelProgress: viewModelProgress,
-                viewModelContainer: viewModelContainer
+
+        sections.append(
+            AnyView(
+                CourseAssignmentsCarouselSlideView(
+                    viewModelProgress: viewModelProgress,
+                    viewModelContainer: viewModelContainer
+                )
             )
         )
-    ]}
+
+        sections.append(
+            AnyView(
+                CourseGradeCarouselSlideView(
+                    viewModelProgress: viewModelProgress,
+                    viewModelContainer: viewModelContainer
+                )
+            )
+        )
+
+        return sections
+    }
     
     @State private var openCertificateView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }

@@ -110,7 +110,8 @@ struct VideoSectionView: View {
                                         chapter: chapter,
                                         courseStructure: nil,
                                         onVideoTap: onVideoTap
-                                    )
+                                    ),
+                                    fixedSize: false
                                 )
                                 .padding(.leading, index == 0 ? 24 : 8)
                                 .id(video.id)

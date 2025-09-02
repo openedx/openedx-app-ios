@@ -10,27 +10,31 @@ struct CourseGradeCarouselSlideView: View {
 
     // MARK: - Body
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack {
+            VStack(alignment: .leading) {
 
-            headerView
-            descriptionView
-            if viewModelProgress.hasGradedAssignments {
-                gradeView
-            } else {
-                noGradeAssignmentView
-            }
+                headerView
+                descriptionView
+                if viewModelProgress.hasGradedAssignments {
+                    gradeView
+                } else {
+                    noGradeAssignmentView
+                }
 
-            ViewAllButton(section: CourseLocalization.CourseContainer.progress) {
-                viewModelContainer.selection = 1
+                ViewAllButton(section: CourseLocalization.CourseContainer.progress) {
+                    viewModelContainer.selection = 2
+                }
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .overlay(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                    .foregroundColor(Theme.Colors.cardViewStroke)
+            )
+
+            Spacer()
         }
-        .padding(.vertical, 16)
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                .foregroundColor(Theme.Colors.cardViewStroke)
-        )
     }
     
     // MARK: - Header View
