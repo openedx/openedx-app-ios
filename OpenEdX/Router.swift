@@ -611,7 +611,9 @@ public class Router: AuthorizationRouter,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
-        animated: Bool
+        animated: Bool,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     ) {
 
         let controllerUnit = getUnitController(
@@ -621,7 +623,9 @@ public class Router: AuthorizationRouter,
             verticalIndex: verticalIndex,
             chapters: chapters,
             chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
+            sequentialIndex: sequentialIndex,
+            showVideoNavigation: showVideoNavigation,
+            courseVideoStructure: courseVideoStructure
         )
         
         var controllers = navigationController.viewControllers

@@ -129,7 +129,9 @@ struct CourseNavigationView: View {
                             chapters: viewModel.chapters,
                             chapterIndex: data.chapterIndex,
                             sequentialIndex: data.sequentialIndex,
-                            animated: true
+                            animated: true,
+                            showVideoNavigation: false,
+                            courseVideoStructure: nil
                         )
                     }
                 )

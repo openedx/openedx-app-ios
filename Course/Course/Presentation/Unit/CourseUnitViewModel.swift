@@ -390,7 +390,9 @@ public final class CourseUnitViewModel: ObservableObject {
                 chapters: chapters,
                 chapterIndex: data.chapterIndex,
                 sequentialIndex: data.sequentialIndex,
-                animated: animated
+                animated: animated,
+                showVideoNavigation: false,
+                courseVideoStructure: nil
             )
         }
     }
@@ -489,15 +491,15 @@ public final class CourseUnitViewModel: ObservableObject {
             blockId: video.id,
             blockName: video.displayName
         )
-
-        router.showCourseUnit(
-            courseName: courseStructure.displayName,
-            blockId: video.id,
-            courseID: courseStructure.id,
+        router.replaceCourseUnit(
+            courseName: courseName,
+            blockId: video.blockId,
+            courseID: courseID,
             verticalIndex: verticalIndex,
             chapters: courseStructure.childs,
             chapterIndex: chapterIndex,
             sequentialIndex: sequentialIndex,
+            animated: false,
             showVideoNavigation: true,
             courseVideoStructure: courseStructure
         )

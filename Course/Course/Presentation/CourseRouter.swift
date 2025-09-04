@@ -33,7 +33,9 @@ public protocol CourseRouter: BaseRouter {
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
-        animated: Bool
+        animated: Bool,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     )
     
     func showCourseVerticalView(
@@ -92,7 +94,9 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
-        animated: Bool
+        animated: Bool,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     ) {}
     
     public func showCourseVerticalView(
