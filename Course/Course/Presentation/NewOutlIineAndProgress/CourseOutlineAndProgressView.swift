@@ -315,6 +315,7 @@ public struct CourseOutlineAndProgressView: View {
                 CoreAssets.chevronRight.swiftUIImage
                     .foregroundColor(infoPath == 0 ? .gray : Theme.Colors.textPrimary)
                     .scaleEffect(x: -1, y: 1)
+                    .flipsForRightToLeftLayoutDirection(true)
             }
             .disabled(infoPath == 0)
 
@@ -336,6 +337,7 @@ public struct CourseOutlineAndProgressView: View {
                 CoreAssets.chevronRight.swiftUIImage
                     .foregroundColor(infoPath == carouselSections.count - 1 ? .gray : Theme.Colors.textPrimary)
             }
+            .flipsForRightToLeftLayoutDirection(true)
             .disabled(infoPath == carouselSections.count - 1)
             .frame(width: 24, height: 24)
         }

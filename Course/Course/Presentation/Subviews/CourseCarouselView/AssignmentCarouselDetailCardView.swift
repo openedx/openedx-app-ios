@@ -28,40 +28,45 @@ struct AssignmentCarouselDetailCardView: View {
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    HStack {
-                        CoreAssets.icAssignmentPastDue.swiftUIImage
-
-                        Text(detailData.subsectionUI.status == .pastDue ? "Past Due" : "Due Soon")
-                            .font(Theme.Fonts.titleMedium)
-                            .foregroundStyle(Theme.Colors.textPrimary)
+                    if detailData.subsectionUI.status != .incomplete {
+                        HStack {
+                            CoreAssets.icAssignmentPastDue.swiftUIImage
+                            Text(detailData.subsectionUI.status == .pastDue ? "Past Due" : "Due Soon")
+                                .font(Theme.Fonts.titleMedium)
+                                .foregroundStyle(Theme.Colors.textPrimary)
+                        }
                     }
-
+                    
                     HStack {
                         VStack(alignment: .leading) {
-                            Text(statusText)
-                                .font(Theme.Fonts.labelSmall)
-                                .foregroundColor(Theme.Colors.accentColor)
-                                .padding(.leading, -3)
+                            if detailData.subsectionUI.date == nil {
+                                Text(statusText)
+                                    .font(Theme.Fonts.labelSmall)
+                                    .foregroundColor(Theme.Colors.accentColor)
+                                    .padding(.leading, -3)
+                            }
 
-                            Text(subsectionUI.subsection.assignmentType ?? "")
+                            Text(subsectionUI.subsection.displayName)
                                 .font(Theme.Fonts.titleSmall)
                                 .foregroundColor(Theme.Colors.textPrimary)
 
-                            Text(subsectionUI.subsection.displayName)
+                            Text(sectionName)
                                 .font(Theme.Fonts.labelSmall)
                                 .foregroundColor(Theme.Colors.textSecondary)
                         }
 
                         Spacer()
 
-                        Image(systemName: "arrow.right")
-                            .foregroundColor(Theme.Colors.accentColor)
-                            .font(.title2)
+                        CoreAssets.chevronRight.swiftUIImage
+                            .resizable()
+                            .renderingMode(.template)
+                            .frame(width: 24, height: 24)
+                            .foregroundStyle(Theme.Colors.textPrimary)
                             .flipsForRightToLeftLayoutDirection(true)
                     }
                 }
             }
-            .padding(.all, 16)
+            .padding(.all, 8)
             .background(ThemeAssets.tabbarBGColor.swiftUIColor)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
