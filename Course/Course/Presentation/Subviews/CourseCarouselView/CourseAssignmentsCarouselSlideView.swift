@@ -56,9 +56,6 @@ struct CourseAssignmentsCarouselSlideView: View {
 
     private var showedAssignmentSection: AssignmentSectionUI? {
         let allSubsections = assignmentSections.flatMap { $0.subsections }
-        if allSubsections.allSatisfy({ $0.status == .completed }) {
-            print("✅ Все пройдено")
-        }
 
         if let pastDueSection = assignmentSections.first(where: {
             $0.subsections.contains(where: { $0.status == .pastDue })
@@ -66,10 +63,15 @@ struct CourseAssignmentsCarouselSlideView: View {
             return pastDueSection
         }
 
-        if let notAvailableSection = assignmentSections.first(where: {
-            $0.subsections.contains(where: { $0.status == .notAvailable })
-        }) {
-            return notAvailableSection
+        let dueSoonSubsection = allSubsections
+            .filter { $0.status == .incomplete || $0.status == .notAvailable }
+            .compactMap { $0.date }
+            .first
+
+        if let dueSoonDate = dueSoonSubsection {
+            return assignmentSections.first(where: {
+                $0.subsections.contains(where: { $0.date == dueSoonDate })
+            })
         }
 
         return nil

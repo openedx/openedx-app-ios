@@ -1324,14 +1324,17 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                 shortLabel: shortLabel
             )
             let sequenceName = getAssignmentSequenceName(for: subsection)
-                        
+
+            let date = getAssignmentDueDate(for: subsection)
+
             return CourseProgressSubsectionUI(
                 subsection: subsection,
                 statusText: statusText,
                 statusTextForCarousel: statusTextForCarousel,
                 sequenceName: sequenceName,
                 status: status,
-                shortLabel: shortLabel
+                shortLabel: shortLabel,
+                date: date
             )
         }
     }
