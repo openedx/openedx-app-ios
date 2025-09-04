@@ -7,7 +7,7 @@ struct CourseVideoCarouselSlideView: View {
     // MARK: - Variables
     @ObservedObject var viewModelProgress: CourseProgressViewModel
     @ObservedObject var viewModelContainer: CourseContainerViewModel
-    @State private var isHidingCompletedSections = false
+    @State private var isHidingCompletedSections = true
 
     private var videoContentData: VideoContentData {
         VideoContentData(
@@ -24,7 +24,7 @@ struct CourseVideoCarouselSlideView: View {
         let visible = getVisibleChapters()
 
         let allVideos = visible.flatMap { getAllVideos(from: $0) }
-        if allVideos.allSatisfy({ $0.localVideoProgress >= 0.9 }) {
+        if allVideos.allSatisfy({ $0.completion >= 1.0 }) {
             return true
         }
 

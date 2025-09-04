@@ -27,4 +27,5 @@ struct CourseProgressSubsectionUI {
     let sequenceName: String
     let status: AssignmentCardStatus
     let shortLabel: String
+    var date: Date?
 }

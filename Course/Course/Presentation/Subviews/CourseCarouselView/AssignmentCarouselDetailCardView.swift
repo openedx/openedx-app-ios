@@ -43,11 +43,11 @@ struct AssignmentCarouselDetailCardView: View {
                                 .foregroundColor(Theme.Colors.accentColor)
                                 .padding(.leading, -3)
 
-                            Text(subsectionUI.sequenceName)
+                            Text(subsectionUI.subsection.assignmentType ?? "")
                                 .font(Theme.Fonts.titleSmall)
                                 .foregroundColor(Theme.Colors.textPrimary)
 
-                            Text(detailData.sectionName)
+                            Text(subsectionUI.subsection.displayName)
                                 .font(Theme.Fonts.labelSmall)
                                 .foregroundColor(Theme.Colors.textSecondary)
                         }
