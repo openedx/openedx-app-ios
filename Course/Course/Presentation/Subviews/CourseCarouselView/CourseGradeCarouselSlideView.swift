@@ -7,24 +7,23 @@ struct CourseGradeCarouselSlideView: View {
     // MARK: - Variables
     @ObservedObject var viewModelProgress: CourseProgressViewModel
     @ObservedObject var viewModelContainer: CourseContainerViewModel
-
+    
     // MARK: - Body
     var body: some View {
         VStack {
             VStack(alignment: .leading) {
-
-                headerView
-                descriptionView
                 if viewModelProgress.hasGradedAssignments {
+                    headerView
+                    descriptionView
                     gradeView
+                    
+                    ViewAllButton(section: CourseLocalization.CourseContainer.progress) {
+                        viewModelContainer.selection = 2
+                    }
+                    .frame(maxWidth: .infinity)
                 } else {
                     noGradeAssignmentView
                 }
-
-                ViewAllButton(section: CourseLocalization.CourseContainer.progress) {
-                    viewModelContainer.selection = 2
-                }
-                .frame(maxWidth: .infinity)
             }
             .padding(.vertical, 16)
             .overlay(
@@ -32,7 +31,7 @@ struct CourseGradeCarouselSlideView: View {
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                     .foregroundColor(Theme.Colors.cardViewStroke)
             )
-
+            
             Spacer()
         }
     }
@@ -103,17 +102,19 @@ struct CourseGradeCarouselSlideView: View {
     // MARK: - No Grade Assignment View
     private var noGradeAssignmentView: some View {
         VStack(spacing: 16) {
-            Image(systemName: "doc.text")
-                .font(.system(size: 48))
-                .foregroundColor(Theme.Colors.textSecondary)
+            Spacer()
+            CoreAssets.iconWarning.swiftUIImage
 
             Text(CourseLocalization.CourseContainer.Progress.noGradedAssignments)
                 .font(Theme.Fonts.titleMedium)
                 .foregroundColor(Theme.Colors.textPrimary)
                 .multilineTextAlignment(.center)
+            Spacer()
         }
         .frame(maxWidth: .infinity)
+        .padding(.horizontal, 16)
         .accessibilityElement(children: .combine)
+        .accessibilityLabel(CourseLocalization.CourseContainer.Progress.noGradedAssignments)
     }
 }
 

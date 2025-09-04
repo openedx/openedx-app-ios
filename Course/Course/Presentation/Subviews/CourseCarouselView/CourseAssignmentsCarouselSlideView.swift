@@ -74,6 +74,12 @@ struct CourseAssignmentsCarouselSlideView: View {
             })
         }
 
+        if let incompleteSection = assignmentSections.first(where: {
+              $0.subsections.contains(where: { $0.status == .incomplete })
+          }) {
+              return incompleteSection
+          }
+
         return nil
     }
 

@@ -144,6 +144,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
 
                                     CoreAssets.chevronRight.swiftUIImage
                                         .foregroundColor(Theme.Colors.textPrimary)
+                                        .flipsForRightToLeftLayoutDirection(true)
                                 }
                                 .onTapGesture {
                                     viewModelContainer.router.showCourseVerticalView(
