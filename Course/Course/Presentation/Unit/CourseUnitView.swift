@@ -37,7 +37,9 @@ public struct CourseUnitView: View {
     
     @State private var videoURLs: [String: URL?] = [:]
     @State private var webURLs: [String: URL?] = [:]
-    
+
+    @State private var uiScrollView: UIScrollView?
+
     let isDropdownActive: Bool
     
     var sequenceTitle: String {
@@ -69,6 +71,12 @@ public struct CourseUnitView: View {
         self.isDropdownActive = isDropdownActive
         viewModel.loadIndex()
         viewModel.nextTitles()
+
+        if viewModel.showVideoNavigation {
+            Task {
+               await viewModel.getCourseVideoBlocks()
+            }
+        }
     }
                 
     public var body: some View {
@@ -165,13 +173,36 @@ public struct CourseUnitView: View {
     private func content(reader: GeometryProxy) -> some View {
         let alignment = UnitAlignment(horizontalAlignment: .top, verticalAlignment: .leading)
         let offset = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
+
         UnitStack(isVerticalNavigation: !isHorizontalNavigation, alignment: alignment, spacing: 0) {
             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
             ForEach(data, id: \.offset) { index, block in
                 VStack(spacing: 0) {
+
+                    if viewModel.showVideoNavigation {
+                        if !isHorizontal {
+                            videoNavigationView(block: block)
+                                .padding(.bottom, 17)
+                            
+                            Divider()
+                                .padding(.bottom, 16)
+                            
+                            VStack(alignment: .leading) {
+                                Text(viewModel.createBreadCrumpsForVideoNavigation(video: block))
+                                    .font(Theme.Fonts.bodySmall)
+                                    .foregroundStyle(Theme.Colors.textPrimary)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(2)
+                                    .padding(.bottom, 8)
+                                    .padding(.horizontal, 16)
+                            }
+                        }
+                    }
+
                     if isDropdownActive {
                         videoTitle(block: block, width: reader.size.width)
                     }
+
                     contentView(for: block, index: index, reader: reader)
                 }
                 .frame(
@@ -205,6 +236,8 @@ public struct CourseUnitView: View {
         }
     }
 
+    @State var currentBlock: CourseBlock?
+
     @ViewBuilder
     private func contentView(for block: CourseBlock, index: Int, reader: GeometryProxy) -> some View {
         switch LessonType.from(block, streamingQuality: viewModel.streamingQuality) {
@@ -217,6 +250,10 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            .onAppear {
+                self.currentBlock = block
+            }
+
         // MARK: Encoded Video
         case let .video(encodedUrl, blockID):
             videoView(
@@ -226,6 +263,9 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            .onAppear {
+                self.currentBlock = block
+            }
         // MARK: Web
         case let .web(url, injections, blockId, isDownloadable):
             webView(
@@ -255,6 +295,64 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+        }
+    }
+
+    @ViewBuilder
+    private func videoNavigationView(block: CourseBlock) -> some View {
+        ScrollViewReader { scrollProxy in
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: 0) {
+                    ForEach(Array(viewModel.allVideosForNavigation.enumerated()), id: \.element.id) { index, video in
+                        VideoThumbnailView(
+                            thumbnailData: VideoThumbnailData(
+                                video: video,
+                                chapter: nil,
+                                courseStructure: nil,
+                                onVideoTap: { video, _ in
+                                    viewModel.handleVideoTap(video: video)
+                                }
+                            ),
+                            thumbnailWidth: 122,
+                            thumbnailHeight: 67,
+                            isCurrentVideo: video == currentBlock
+                        )
+                        .padding(.leading, index == 0 ? 24 : 8)
+                        .id(video.id)
+
+                        if index == viewModel.allVideosForNavigation.count - 1 {
+                            Spacer(minLength: 100)
+                        }
+                    }
+                }
+            }
+            .introspect(.scrollView, on: .iOS(.v16, .v17, .v18)) { scroll in
+                DispatchQueue.main.async {
+                    uiScrollView = scroll
+                }
+            }
+            .onChange(of: viewModel.allVideosForNavigation) { _ in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    scrollToCurrentVide(block: block) { id in
+                        scrollProxy.scrollTo(id, anchor: .leading)
+                    }
+                }
+            }
+            .frame(height: 72)
+        }
+    }
+
+    private func scrollToCurrentVide(block: CourseBlock, scrollTo: @escaping (String) -> Void) {
+        guard let currentVideo = viewModel.allVideosForNavigation.first(where: { $0 == block }) else {
+            return
+        }
+
+        scrollTo(currentVideo.id)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            guard let scroll = uiScrollView else { return }
+            let newX = max(scroll.contentOffset.x - 20, 0)
+            scroll.setContentOffset(CGPoint(x: newX, y: 0), animated: true)
         }
     }
 

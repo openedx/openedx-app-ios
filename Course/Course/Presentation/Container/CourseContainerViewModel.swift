@@ -206,7 +206,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             verticalIndex: continueWith.verticalIndex,
             chapters: courseStructure.childs,
             chapterIndex: continueWith.chapterIndex,
-            sequentialIndex: continueWith.sequentialIndex
+            sequentialIndex: continueWith.sequentialIndex,
+            showVideoNavigation: false,
+            courseVideoStructure: nil
         )
     }
     
@@ -1080,7 +1082,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         NotificationCenter.default.removeObserver(self)
     }
     
-    func handleVideoTap(video: CourseBlock, chapter: CourseChapter) {
+    func handleVideoTap(video: CourseBlock, chapter: CourseChapter?) {
         // Find indices for navigation using full course structure
         guard let chapterIndex = findChapterIndexInFullStructure(video: video),
               let sequentialIndex = findSequentialIndexInFullStructure(video: video),
@@ -1104,7 +1106,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             verticalIndex: verticalIndex,
             chapters: courseStructure.childs,
             chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
+            sequentialIndex: sequentialIndex,
+            showVideoNavigation: true,
+            courseVideoStructure: courseStructure
         )
     }
     
@@ -1551,7 +1555,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
                         verticalIndex: 0,
                         chapters: courseStructure.childs,
                         chapterIndex: chapterIndex,
-                        sequentialIndex: sequentialIndex
+                        sequentialIndex: sequentialIndex,
+                        showVideoNavigation: false,
+                        courseVideoStructure: nil
                     )
                 } else {
                     router.showCourseVerticalView(

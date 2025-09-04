@@ -42,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         initDI()
         initPlugins()
-        
+        loadRocketSimConnect()
         // Reset the value to false to get the actual status from the API
         if var storage = Container.shared.resolve(CoreStorage.self) {
             storage.updateAppRequired = false
@@ -269,5 +269,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             debugLog("Could not schedule app refresh: \(error)")
         }
+    }
+
+    private func loadRocketSimConnect() {
+#if DEBUG
+        let bundle = "/Applications/RocketSim.app/Contents/Frameworks/RocketSimConnectLinker.nocache.framework"
+        guard Bundle(path: bundle)?.load() == true else {
+            print("Failed to load linker framework")
+            return
+        }
+        print("RocketSim Connect successfully linked")
+#endif
     }
 }

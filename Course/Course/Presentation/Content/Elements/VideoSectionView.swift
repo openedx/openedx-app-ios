@@ -14,7 +14,7 @@ struct VideoSectionView: View {
     let sectionData: VideoSectionData
     let proxy: GeometryProxy
     @Binding var isShowingCompletedVideos: Bool
-    let onVideoTap: (CourseBlock, CourseChapter) -> Void
+    let onVideoTap: (CourseBlock, CourseChapter?) -> Void
     let onDownloadSectionTap: (CourseChapter, DownloadViewState) async -> Void
     
     private var chapter: CourseChapter {

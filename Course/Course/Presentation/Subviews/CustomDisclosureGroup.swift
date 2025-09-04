@@ -100,7 +100,9 @@ struct CustomDisclosureGroup: View {
                                                         verticalIndex: 0,
                                                         chapters: course.childs,
                                                         chapterIndex: chapterIndex,
-                                                        sequentialIndex: sequentialIndex
+                                                        sequentialIndex: sequentialIndex,
+                                                        showVideoNavigation: false,
+                                                        courseVideoStructure: nil
                                                     )
                                                 } else {
                                                     viewModel.router.showCourseVerticalView(

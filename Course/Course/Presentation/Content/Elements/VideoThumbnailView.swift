@@ -20,13 +20,14 @@ struct VideoThumbnailView: View {
         thumbnailData.video
     }
     
-    private var chapter: CourseChapter {
+    private var chapter: CourseChapter? {
         thumbnailData.chapter
     }
     
-    private let thumbnailWidth: CGFloat = 192
-    private let thumbnailHeight: CGFloat = 108
-    
+    var thumbnailWidth: CGFloat = 192
+    var thumbnailHeight: CGFloat = 108
+    var isCurrentVideo = false
+
     @State private var thumbnailImage: UIImage?
     @State private var isGeneratingThumbnail = false
     
@@ -96,8 +97,8 @@ struct VideoThumbnailView: View {
             }
             .overlay {
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(lineWidth: video.completion >= 1.0 ? 2 : 0)
-                    .foregroundStyle(Theme.Colors.success)
+                    .stroke(lineWidth: isCurrentVideo ? 3 : (video.completion >= 1.0 ? 2 : 0))
+                    .foregroundStyle(isCurrentVideo ? Theme.Colors.accentColor : Theme.Colors.success)
             }
             .frame(width: thumbnailWidth, height: thumbnailHeight)
         }
