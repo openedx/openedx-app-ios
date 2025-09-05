@@ -144,6 +144,7 @@ public final class CourseUnitViewModel: ObservableObject {
 
     @Published public var allVideosForNavigation: [CourseBlock] = []
     @Published public var allVideosFetched = false
+    @Published public var isVideosForNavigationLoading: Bool = false
 
     var lessonID: String
     var courseID: String
@@ -417,11 +418,17 @@ public final class CourseUnitViewModel: ObservableObject {
 
     @MainActor
     func getCourseVideoBlocks() async {
+        isVideosForNavigationLoading = true
+        defer { isVideosForNavigationLoading = false }
         if let courseVideosStructure {
             do {
+                async let videosTask = interactor.getCourseVideoBlocks(fullStructure: courseVideosStructure)
+                let videoFromCourse = await videosTask
+
                 allVideosForNavigation = try await interactor.getAllVideosForNavigation(
-                    structure: courseVideosStructure
+                    structure: videoFromCourse
                 )
+
                 return
 
             } catch {
@@ -460,20 +467,44 @@ public final class CourseUnitViewModel: ObservableObject {
             return ""
         }
 
-        for chapter in courseStructure.childs {
-            for sequential in chapter.childs {
-                for vertical in sequential.childs {
-                    return [
-                        chapter.displayName,
-                        sequential.displayName,
-                        vertical.displayName
-                    ].joined(separator: " > ")
+        let breadcrumb = courseStructure.childs
+            .flatMap { chapter in
+                chapter.childs.flatMap { sequential in
+                    sequential.childs.compactMap { vertical -> String? in
+                        if vertical.childs.contains(where: { $0.id == video.id }) {
+                            return [chapter.displayName, sequential.displayName, vertical.displayName]
+                                .joined(separator: " > ")
+                        }
+                        return nil
+                    }
                 }
             }
-        }
+            .first
 
-        return ""
+        return breadcrumb ?? ""
     }
+
+//    func createBreadCrumpsForVideoNavigation(video: CourseBlock) -> String {
+//        guard let courseStructure = courseVideosStructure else {
+//            return ""
+//        }
+//
+//
+//
+//        for chapter in courseStructure.childs {
+//            for sequential in chapter.childs {
+//                for vertical in sequential.childs {
+//                    return [
+//                        chapter.displayName,
+//                        sequential.displayName,
+//                        vertical.displayName
+//                    ].joined(separator: " > ")
+//                }
+//            }
+//        }
+//
+//        return ""
+//    }
 
     func handleVideoTap(video: CourseBlock) {
         // Find indices for navigation using full course structure
@@ -491,6 +522,7 @@ public final class CourseUnitViewModel: ObservableObject {
             blockId: video.id,
             blockName: video.displayName
         )
+
         router.replaceCourseUnit(
             courseName: courseName,
             blockId: video.blockId,

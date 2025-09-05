@@ -30,7 +30,7 @@ struct VideoThumbnailView: View {
 
     @State private var thumbnailImage: UIImage?
     @State private var isGeneratingThumbnail = false
-    
+
     private var thumbnailService: VideoThumbnailServiceProtocol {
         Container.shared.resolve(VideoThumbnailServiceProtocol.self)!
     }
@@ -69,7 +69,9 @@ struct VideoThumbnailView: View {
     
     var body: some View {
         Button(action: {
-            openVideo()
+            if !isCurrentVideo {
+                openVideo()
+            }
         }) {
             ZStack {
                 // MARK: - Thumbnail Image
@@ -88,8 +90,10 @@ struct VideoThumbnailView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
                 
                 // MARK: - Play Button Overlay
-                CoreAssets.videoPlayButton.swiftUIImage
-                
+                if !isCurrentVideo {
+                    CoreAssets.videoPlayButton.swiftUIImage
+                }
+
                 // MARK: - Progress Indicator
                 progressIndicatorView()
                     .padding(.horizontal, 2)

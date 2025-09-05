@@ -632,7 +632,9 @@ public class Router: AuthorizationRouter,
         let config = Container.shared.resolve(ConfigProtocol.self)!
         let courseDropDownNavigationEnabled = config.uiComponents.courseDropDownNavigationEnabled
 
-        if courseDropDownNavigationEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
+        if courseDropDownNavigationEnabled
+            || currentCourseTabSelection == CourseTab.dates.rawValue
+            || showVideoNavigation {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {

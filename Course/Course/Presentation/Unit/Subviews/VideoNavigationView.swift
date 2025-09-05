@@ -8,34 +8,33 @@ struct VideoNavigationView: View {
     @ObservedObject var viewModel: CourseUnitViewModel
     @Binding var currentBlock: CourseBlock?
     @State private var uiScrollView: UIScrollView?
-    @State private var isShowRefresh = true
     let block: CourseBlock
 
     var body: some View {
-        if isShowRefresh {
-            RefreshProgressView(isShowRefresh: $isShowRefresh)
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        isShowRefresh = false
-                    }
-                }
+        if viewModel.isVideosForNavigationLoading {
+            RefreshProgressView(isShowRefresh: $viewModel.isVideosForNavigationLoading)
         } else {
             videoNavigationView(block: block)
                 .padding(.bottom, 17)
 
             Divider()
-                .padding(.bottom, 16)
 
             HStack {
-                Text(viewModel.createBreadCrumpsForVideoNavigation(video: block))
-                    .font(Theme.Fonts.bodySmall)
-                    .foregroundStyle(Theme.Colors.textPrimary)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-                    .padding(.bottom, 8)
-                    .padding(.horizontal, 16)
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(viewModel.createBreadCrumpsForVideoNavigation(video: block))
+                        .font(Theme.Fonts.bodySmall)
+                        .foregroundStyle(Theme.Colors.textPrimary)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+
+                    Text("\(currentBlock?.displayName ?? "")")
+                        .font(Theme.Fonts.bodyMedium).bold()
+                        .foregroundStyle(Theme.Colors.textPrimary)
+                }
                 Spacer()
             }
+            .padding(.bottom, 8)
+            .padding(.horizontal, 16)
         }
     }
 
@@ -72,11 +71,14 @@ struct VideoNavigationView: View {
                     uiScrollView = scroll
                 }
             }
+            .onAppear(perform: {
+                scrollToCurrentVideo(block: block) { id in
+                    scrollProxy.scrollTo(id, anchor: .leading)
+                }
+            })
             .onChange(of: viewModel.allVideosForNavigation) { _ in
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    scrollToCurrentVideo(block: block) { id in
-                        scrollProxy.scrollTo(id, anchor: .leading)
-                    }
+                scrollToCurrentVideo(block: block) { id in
+                    scrollProxy.scrollTo(id, anchor: .leading)
                 }
             }
             .frame(height: 72)

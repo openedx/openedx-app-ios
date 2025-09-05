@@ -178,7 +178,11 @@ public struct CourseUnitView: View {
             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
             ForEach(data, id: \.offset) {index, block in
                 VStack(spacing: 0) {
-                    
+
+                    if isDropdownActive {
+                        videoTitle(block: block, width: reader.size.width)
+                    }
+
                     if viewModel.showVideoNavigation {
                         if !isHorizontal {
                             VideoNavigationView(
@@ -187,10 +191,6 @@ public struct CourseUnitView: View {
                                 block: block
                             )
                         }
-                    }
-
-                    if isDropdownActive {
-                        videoTitle(block: block, width: reader.size.width)
                     }
 
                     contentView(for: block, index: index, reader: reader)
@@ -547,8 +547,9 @@ public struct CourseUnitView: View {
     private var navigationBar: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottom) {
+                let title =  viewModel.showVideoNavigation ? currentBlock?.displayName ?? "" : sequenceTitle
                 NavigationBar(
-                    title: isDropdownActive ? sequenceTitle : "",
+                    title: isDropdownActive || viewModel.showVideoNavigation ? title : "",
                     leftButtonAction: {
                         viewModel.router.back()
                         playerStateSubject.send(VideoPlayerState.kill)
