@@ -11,7 +11,7 @@ struct AssignmentCarouselDetailCardView: View {
     }
 
     private var sectionName: String {
-        detailData.sectionName
+        subsectionUI.sectionName
     }
 
     private var status: AssignmentCardStatus {

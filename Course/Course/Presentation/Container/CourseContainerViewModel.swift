@@ -1325,12 +1325,15 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             )
             let sequenceName = getAssignmentSequenceName(for: subsection)
 
+            let sectionName = getAssignmentSectionName(for: subsection.blockKey)
+
             let date = getAssignmentDueDate(for: subsection)
 
             return CourseProgressSubsectionUI(
                 subsection: subsection,
                 statusText: statusText,
                 statusTextForCarousel: statusTextForCarousel,
+                sectionName: sectionName,
                 sequenceName: sequenceName,
                 status: status,
                 shortLabel: shortLabel,
@@ -1338,7 +1341,20 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             )
         }
     }
-        
+
+    func getAssignmentSectionName(for blockKey: String) -> String {
+        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return "" }
+
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == blockKey || sequential.id == blockKey {
+                    return chapter.displayName
+                }
+            }
+        }
+        return ""
+    }
+
     private func updateAssignmentSections() {
         guard let progressDetails = courseProgressDetails else {
             assignmentSectionsData = []
