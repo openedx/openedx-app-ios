@@ -165,6 +165,7 @@ struct ProgressAssignmentTypeSection: View {
                     ),
                     statusText: "Complete - 100%",
                     statusTextForCarousel: "",
+                    sectionName: "",
                     sequenceName: "Test Assignment 1",
                     status: .completed,
                     shortLabel: "HW1 01"
@@ -188,6 +189,7 @@ struct ProgressAssignmentTypeSection: View {
                     ),
                     statusText: "Not Started",
                     statusTextForCarousel: "",
+                    sectionName: "",
                     sequenceName: "Test Assignment 2",
                     status: .incomplete,
                     shortLabel: "HW1 02"
@@ -211,6 +213,7 @@ struct ProgressAssignmentTypeSection: View {
                     ),
                     statusText: "Not Available",
                     statusTextForCarousel: "",
+                    sectionName: "",
                     sequenceName: "Test Assignment 3",
                     status: .notAvailable,
                     shortLabel: "HW1 03"
