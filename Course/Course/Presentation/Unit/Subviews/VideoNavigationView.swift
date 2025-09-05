@@ -26,10 +26,13 @@ struct VideoNavigationView: View {
                         .foregroundStyle(Theme.Colors.textPrimary)
                         .multilineTextAlignment(.leading)
                         .lineLimit(2)
+                        .accessibilityAddTraits(.isHeader)
+                        .accessibilityValue(viewModel.createBreadCrumpsForVideoNavigation(video: block))
 
                     Text("\(currentBlock?.displayName ?? "")")
                         .font(Theme.Fonts.bodyMedium).bold()
                         .foregroundStyle(Theme.Colors.textPrimary)
+                        .accessibilityValue(currentBlock?.displayName ?? "No Video Title")
                 }
                 Spacer()
             }
@@ -82,7 +85,19 @@ struct VideoNavigationView: View {
                 }
             }
             .frame(height: 72)
+            .accessibilityLabel(CourseLocalization.Accessibility.videoNavigation)
+            .accessibilityValue({
+                 let all = viewModel.allVideosForNavigation
+                 let count = all.count
+                 let idx = indexOfCurrent(in: all, current: currentBlock) ?? 0
+                 return "Video \(idx + 1) from \(count)"
+             }())
         }
+    }
+
+    private func indexOfCurrent(in all: [CourseBlock], current: CourseBlock?) -> Int? {
+        guard let current else { return nil }
+        return all.firstIndex(of: current)
     }
 
     private func scrollToCurrentVideo(block: CourseBlock, scrollTo: @escaping (String) -> Void) {

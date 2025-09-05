@@ -1,9 +1,9 @@
-API_HOST_URL: 'https://axim-mobile-dev.raccoongang.net'
+API_HOST_URL: 'https://axim-ccpv-dev.raccoongang.net'
 SSO_URL: 'http://localhost:8000'
-SSO_FINISHED_URL: 'http://localhost:8000'
-ENVIRONMENT_DISPLAY_NAME: 'lms-axim-stage'
+SSO_FINISHED_URL:  'http://localhost:8000'
+ENVIRONMENT_DISPLAY_NAME: 'axim-ccpv-dev'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
-OAUTH_CLIENT_ID: 'bHvM10KwHSrM5Gk6uoRBaS3KFRhjSFHfGGfYP4SP'
+OAUTH_CLIENT_ID: 'SxDFlH1rb8Xw3nT6lOPwUejLb9vgXzOfkgqx1sY2'
 
 SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"

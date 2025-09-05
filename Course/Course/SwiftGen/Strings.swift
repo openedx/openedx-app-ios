@@ -109,6 +109,8 @@ public enum CourseLocalization {
     }
     /// Tap to show completed sections
     public static let showCompletedSections = CourseLocalization.tr("Localizable", "ACCESSIBILITY.SHOW_COMPLETED_SECTIONS", fallback: "Tap to show completed sections")
+    /// Video Navigation
+    public static let videoNavigation = CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_NAVIGATION", fallback: "Video Navigation")
     /// Video progress %@ of %@ Completed.
     public static func videoProgressSection(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PROGRESS_SECTION", String(describing: p1), String(describing: p2), fallback: "Video progress %@ of %@ Completed.")
