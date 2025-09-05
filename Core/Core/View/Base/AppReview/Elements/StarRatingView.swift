@@ -24,7 +24,7 @@ struct StarRatingView: View {
                         CoreAssets.starOutline.swiftUIImage
                             .resizable()
                             .frame(width: 48, height: 48)
-                            .foregroundColor(themeManager.theme.color.textPrimary)
+                            .foregroundColor(themeManager.theme.colors.textPrimary)
                     }
                 }
                     .onTapGesture {

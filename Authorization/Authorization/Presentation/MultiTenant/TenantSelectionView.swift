@@ -24,13 +24,13 @@ public struct TenantTheme {
 public struct TenantContentView: View {
     @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject var viewModel: TenantViewModel
-    var tenants: [Tenant] = []
+//    var tenants: [Tenant] = []
     @Environment(\.isHorizontal) private var isHorizontal
     var isSwitchTenant: Bool
     public init(viewModel: TenantViewModel, isSwitchTenant: Bool = false) {
         self.viewModel = viewModel
         self.isSwitchTenant = isSwitchTenant
-        tenants = self.viewModel.config.tenantsConfig.tenants
+//        tenants = self.viewModel.config.tenantsConfig.tenants
     }
     
     public var body: some View {
@@ -44,7 +44,9 @@ public struct TenantContentView: View {
                                 if viewModel.selectedTenant?.isSwitchTenantLoginEnabled ?? false {
                                     viewModel.router.showLoginScreen(sourceScreen: .startup)
                                 } else {
-                                    viewModel.router.showMainOrWhatsNewScreen(sourceScreen: .discovery)
+                                    viewModel.router.showMainOrWhatsNewScreen(
+                                        sourceScreen: .discovery,
+                                        postLoginData: nil)
                                 }
                                 
                             }
@@ -155,12 +157,12 @@ public struct TenantSelectionView: View {
     
     func getLogo(name: String) -> Image {
         switch name.lowercased() {
-        case "saudi real estate institute":
-            return ThemeAssets.sreiAppLogo.swiftUIImage
-        case "niepd":
-            return ThemeAssets.niepdAppLogo.swiftUIImage
+        case "tenanta":
+            return ThemeAssets.appLogo.swiftUIImage
+        case "tenantb":
+            return ThemeAssets.appLogo.swiftUIImage
         default:
-            return ThemeAssets.mtAppLogo.swiftUIImage
+            return ThemeAssets.appLogo.swiftUIImage
         }
     }
 }

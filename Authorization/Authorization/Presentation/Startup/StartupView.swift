@@ -27,17 +27,7 @@ public struct StartupView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading) {
-                #if RIYADAH
-                ThemeAssets.riyadahloginLogoWhite.swiftUIImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 189, maxHeight: 89)
-                    .padding(.top, isHorizontal ? 20 : 40)
-                    .padding(.bottom, isHorizontal ? 0 : 20)
-                    .padding(.horizontal, isHorizontal ? 10 : 24)
-                    .colorMultiply(themeManager.theme.colors.accentColor)
-                    .accessibilityIdentifier("logo_image")
-#elseif NELC
+                #if TENANTS
                 ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)

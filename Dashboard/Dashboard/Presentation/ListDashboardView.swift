@@ -14,11 +14,11 @@ public struct ListDashboardView: View {
     private let dashboardCourses: some View = VStack(alignment: .leading) {
         Text(DashboardLocalization.Header.courses)
             .font(Theme.Fonts.displaySmall)
-            .foregroundColor(themeManager.theme.colors.textPrimary)
+            .foregroundColor(Theme.Colors.textPrimary)
             .accessibilityIdentifier("courses_header_text")
         Text(DashboardLocalization.Header.welcomeBack)
             .font(Theme.Fonts.titleSmall)
-            .foregroundColor(themeManager.theme.colors.textPrimary)
+            .foregroundColor(Theme.Colors.textPrimary)
             .accessibilityIdentifier("courses_welcomeback_text")
     }.listRowBackground(Color.clear)
         .padding(.top, 24)

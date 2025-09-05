@@ -15,6 +15,7 @@ public enum DownloadViewState: Sendable {
 }
 
 public struct DownloadAvailableView: View {
+    @EnvironmentObject var themeManager: ThemeManager
     public init () {
     }
     

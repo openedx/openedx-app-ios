@@ -66,8 +66,9 @@ struct DropDownMenu: View {
                                     Text(option.text)
                                         .font(Theme.Fonts.titleSmall)
                                         .foregroundColor(
-                                            option == selectedOption ? themeManager.theme.colors.primaryButtonTextColor :
-                                                themeManager.theme.colors.textPrimary
+                                            option == selectedOption ?
+                                            themeManager.theme.colors.primaryButtonTextColor
+                                            : themeManager.theme.colors.textPrimary
                                         )
                                     Spacer()
                                 }

@@ -27,11 +27,11 @@ public struct DiscoveryView: View {
     private let discoveryNew: some View = VStack(alignment: .leading) {
         Text(DiscoveryLocalization.Header.title1)
             .font(Theme.Fonts.displaySmall)
-            .foregroundColor(themeManager.theme.colors.textPrimary)
+            .foregroundColor(Theme.Colors.textPrimary)
             .accessibilityIdentifier("title_text")
         Text(DiscoveryLocalization.Header.title2)
             .font(Theme.Fonts.titleSmall)
-            .foregroundColor(themeManager.theme.colors.textPrimary)
+            .foregroundColor(Theme.Colors.textPrimary)
             .accessibilityIdentifier("subtitle_text")
     }.listRowBackground(Color.clear)
         .accessibilityElement(children: .ignore)

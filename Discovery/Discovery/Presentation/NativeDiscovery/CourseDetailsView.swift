@@ -298,7 +298,10 @@ private struct CourseStateView: View {
                             .multilineTextAlignment(.leading)
                             .font(Theme.Fonts.titleSmall)
                         Spacer()
-                    }.cardStyle(paddingAll: 12, bgColor: themeManager.theme.colors.textInputUnfocusedBackground, strokeColor: .clear)
+                    }.cardStyle(
+                        paddingAll: 12,
+                        bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
+                        strokeColor: .clear)
                 }
             }
             .accessibilityIdentifier("enroll_button")
@@ -388,7 +391,6 @@ private struct CourseBannerView: View {
     private let idiom: UIUserInterfaceIdiom
     private let proxy: GeometryProxy
     private let onPlayButtonTap: () -> Void
-    
     
     init(courseDetails: CourseDetails,
          proxy: GeometryProxy,

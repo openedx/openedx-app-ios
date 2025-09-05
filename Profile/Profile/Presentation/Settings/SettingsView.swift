@@ -250,7 +250,6 @@ public struct SettingsView: View {
         }
     }
     
-    
     // MARK: - Log out
     
     private var logOutButton: some View {

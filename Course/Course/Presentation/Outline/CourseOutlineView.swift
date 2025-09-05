@@ -311,7 +311,7 @@ public struct CourseOutlineView: View {
             // MARK: - Course Banner
             if let banner = viewModel.courseStructure?.media.image.raw
                 .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) {
-                KFImage(URL(string: viewModel.config.baseURL.absoluteString + banner))
+                KFImage(URL(string: viewModel.tenantProvider().baseURL.absoluteString + banner))
                     .onFailureImage(CoreAssets.noCourseImage.image)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
@@ -346,7 +346,10 @@ struct CourseOutlineView_Previews: PreviewProvider {
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock(),
-            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock()),
+            tenantProvider: {
+                TenantProviderMock()
+            }
         )
         Task {
             await withTaskGroup(of: Void.self) { group in

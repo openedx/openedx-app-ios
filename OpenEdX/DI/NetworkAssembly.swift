@@ -9,12 +9,14 @@ import Foundation
 import Core
 import OEXFoundation
 import Alamofire
-import Swinject
+@preconcurrency import Swinject
 
 class NetworkAssembly: Assembly {
     func assemble(container: Container) {
         container.register(RequestInterceptor.self) { r in
-            RequestInterceptor(config: r.resolve(ConfigProtocol.self)!, storage: r.resolve(CoreStorage.self)!)
+            RequestInterceptor(config: r.resolve(ConfigProtocol.self)!,
+                               storage: r.resolve(CoreStorage.self)!,
+                               tenantProvider: { r.resolve(TenantProvider.self)! })
         }.inObjectScope(.container)
         
         container.register(Alamofire.Session.self) { r in
@@ -40,9 +42,9 @@ class NetworkAssembly: Assembly {
         
         container.register(API.self) { r in
             let tenantProviderResolver = { r.resolve(TenantProvider.self)! }
-            return API(session: r.resolve(Alamofire.Session.self)!, baseURL: tenantProviderResolver.baseURL,
-                config: r.resolve(ConfigProtocol.self)!,
-                tenantProvider: tenantProviderResolver)
+            return API(
+                session: r.resolve(Alamofire.Session.self)!,
+                baseURL: tenantProviderResolver().baseURL)
         }.inObjectScope(.container)
     }
 }

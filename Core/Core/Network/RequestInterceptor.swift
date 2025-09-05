@@ -17,10 +17,14 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
     private let config: ConfigProtocol
     private let storage: CoreStorage
+    private let tenantProvider: @Sendable () -> TenantProvider
     
-    public init(config: ConfigProtocol, storage: CoreStorage) {
+    public init(config: ConfigProtocol,
+                storage: CoreStorage,
+                tenantProvider: @escaping @Sendable () -> TenantProvider) {
         self.config = config
         self.storage = storage
+        self.tenantProvider = tenantProvider
     }
     
     private let lock = NSLock()
@@ -119,11 +123,11 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
         
         mutableState.isRefreshing = true
         
-        let url = config.baseURL.appendingPathComponent("/oauth2/access_token")
+        let url = tenantProvider().baseURL.appendingPathComponent("/oauth2/access_token")
         
         let parameters: [String: Encodable & Sendable] = [
             "grant_type": AuthConstants.GrantTypeRefreshToken,
-            "client_id": config.oAuthClientId,
+            "client_id": tenantProvider().oAuthClientId,
             "refresh_token": refreshToken,
             "token_type": config.tokenType.rawValue,
             "asymmetric_jwt": true

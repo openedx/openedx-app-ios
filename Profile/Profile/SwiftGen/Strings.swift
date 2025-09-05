@@ -30,6 +30,8 @@ public enum ProfileLocalization {
   public static let fullProfile = ProfileLocalization.tr("Localizable", "FULL_PROFILE", fallback: "full profile")
   /// Profile info
   public static let info = ProfileLocalization.tr("Localizable", "INFO", fallback: "Profile info")
+  /// Current Learning Center
+  public static let learningCenter = ProfileLocalization.tr("Localizable", "LEARNING_CENTER", fallback: "Current Learning Center")
   /// limited profile
   public static let limitedProfile = ProfileLocalization.tr("Localizable", "LIMITED_PROFILE", fallback: "limited profile")
   /// Log out

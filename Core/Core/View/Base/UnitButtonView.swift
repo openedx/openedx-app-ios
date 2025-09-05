@@ -141,9 +141,12 @@ public struct UnitButtonView: View {
                     case .reload, .custom:
                         VStack(alignment: .center) {
                             Text(type.stringValue())
-                                .foregroundColor(bgColor == nil ? .white : themeManager.theme.colors.secondaryButtonTextColor)
+                                .foregroundColor(bgColor == nil
+                                                 ? .white
+                                                 : themeManager.theme.colors.secondaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
-                        }.padding(.horizontal, 16)
+                        }
+                        .padding(.horizontal, 16)
                     case .continueLesson, .nextSection:
                         HStack {
                             Text(type.stringValue())

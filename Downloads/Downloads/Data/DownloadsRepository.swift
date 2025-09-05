@@ -21,17 +21,20 @@ public actor DownloadsRepository: DownloadsRepositoryProtocol {
     private let coreStorage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: DownloadsPersistenceProtocol
+    private let tenantProvider: @Sendable () -> any TenantProvider
     
     public init(
         api: API,
         coreStorage: CoreStorage,
         config: ConfigProtocol,
-        persistence: DownloadsPersistenceProtocol
+        persistence: DownloadsPersistenceProtocol,
+        tenantProvider: @escaping @Sendable () -> any TenantProvider
     ) {
         self.api = api
         self.coreStorage = coreStorage
         self.config = config
         self.persistence = persistence
+        self.tenantProvider = tenantProvider
     }
     
     public func getDownloadCourses() async throws -> [DownloadCoursePreview] {
@@ -41,7 +44,7 @@ public actor DownloadsRepository: DownloadsRepositoryProtocol {
         
         let response = try await api.requestData(DownloadsEndpoint.getDownloadCourses(username: username))
             .mapResponse([DataLayer.DownloadCoursePreviewResponse].self)
-            .map { $0.domain(baseURL: config.baseURL.absoluteString) }
+            .map { $0.domain(baseURL: tenantProvider().baseURL.absoluteString) }
         
         await persistence.saveDownloadCourses(courses: response)
         return response

@@ -5,10 +5,9 @@
 //  Created by Rawan Matar on 12/05/2025.
 //
 
-
 import SwiftUI
 
-public struct ThemeDefinition {
+public struct ThemeDefinition: Sendable {
     public var name: String
     public var appLogo: Image
     public var bgColor: Image
@@ -31,27 +30,19 @@ public struct ThemeDefinition {
         name: "default"
     )
 
-    public static let saudiRealEstateInstitute = ThemeDefinition(
-        colors: .saudiRealEstateInstitute,
-        fonts: .default,
+    public static let tenantA = ThemeDefinition(
+        colors: .tenantA,
+        fonts: .tenantA,
         appLogo: ThemeAssets.appLogo.swiftUIImage,
         bgColor: ThemeAssets.headerBackground.swiftUIImage,
-        name: "Saudi Real Estate Institute"
+        name: "TenantA"
     )
 
-    public static let NIEPD = ThemeDefinition(
-        colors: .NIEPD,
+    public static let tenantB = ThemeDefinition(
+        colors: .tenantB,
         fonts: .tenantB,
         appLogo: ThemeAssets.appLogo.swiftUIImage,
         bgColor: ThemeAssets.headerBackground.swiftUIImage,
-        name: "NIEPD"
-    )
-    
-    public static let mt = ThemeDefinition(
-        colors: .mt,
-        fonts: .default,
-        appLogo: ThemeAssets.appLogo.swiftUIImage,
-        bgColor: ThemeAssets.headerBackground.swiftUIImage,
-        name: "Ministry Of Tourism"
+        name: "TenantB"
     )
 }

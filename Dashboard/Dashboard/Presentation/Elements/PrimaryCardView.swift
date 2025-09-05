@@ -135,7 +135,7 @@ public struct PrimaryCardView: View {
                     title: pastAssignment.title,
                     description: DashboardLocalization.Learn.PrimaryCard.onePastAssignment,
                     icon: CoreAssets.warning.swiftUIImage,
-                    selected: false, bgColor: <#Color#>,
+                    selected: false, bgColor: themeManager.theme.colors.secondaryButtonBGColor,
                     action: { assignmentAction(pastAssignments.first?.firstComponentBlockId) }
                 )
             } else if pastAssignments.count > 1 {
@@ -159,7 +159,7 @@ public struct PrimaryCardView: View {
                             dueIn: true
                         ),
                         icon: CoreAssets.chapter.swiftUIImage,
-                        selected: false,
+                        selected: false, bgColor: themeManager.theme.colors.secondaryButtonBGColor,
                         action: {
                             assignmentAction(futureAssignments.first?.firstComponentBlockId)
                         }
@@ -173,7 +173,7 @@ public struct PrimaryCardView: View {
                             ),
                             description: nil,
                             icon: CoreAssets.chapter.swiftUIImage,
-                            selected: false,
+                            selected: false, bgColor: themeManager.theme.colors.secondaryButtonBGColor,
                             action: {
                                 assignmentAction(nil)
                             }

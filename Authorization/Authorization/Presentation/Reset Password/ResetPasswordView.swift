@@ -30,11 +30,7 @@ public struct ResetPasswordView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    #if RIYADAH
-                    ThemeAssets.headerBackground.swiftUIImage
-                        .resizable()
-                        .edgesIgnoringSafeArea(.top)
-#elseif NELC
+                    #if TENANTS
                     ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)

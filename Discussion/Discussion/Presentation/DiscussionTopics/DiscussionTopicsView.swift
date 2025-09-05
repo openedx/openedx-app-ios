@@ -117,7 +117,9 @@ public struct DiscussionTopicsView: View {
                                                             Spacer(minLength: 0)
                                                         }
                                                         .frame(maxWidth: .infinity)
-                                                    }).cardStyle(bgColor: themeManager.theme.colors.textInputUnfocusedBackground)
+                                                    })
+                                                    .cardStyle(
+                                                        bgColor: themeManager.theme.colors.textInputUnfocusedBackground)
                                                         .padding(.trailing, -20)
                                                 }
                                                 if let followed = topics.first(where: {
@@ -135,7 +137,9 @@ public struct DiscussionTopicsView: View {
                                                             Spacer(minLength: 0)
                                                         }
                                                         .frame(maxWidth: .infinity)
-                                                    }).cardStyle(bgColor: themeManager.theme.colors.textInputUnfocusedBackground)
+                                                    })
+                                                    .cardStyle(
+                                                        bgColor: themeManager.theme.colors.textInputUnfocusedBackground)
                                                         .padding(.leading, -20)
                                                     
                                                 }
@@ -148,7 +152,8 @@ public struct DiscussionTopicsView: View {
                                                         HStack {
                                                             Text("\(topic.name):")
                                                                 .font(Theme.Fonts.titleMedium)
-                                                                .foregroundColor(themeManager.theme.colors.textSecondary)
+                                                                .foregroundColor(
+                                                                    themeManager.theme.colors.textSecondary)
                                                             Spacer()
                                                         }.padding(.top, 12)
                                                             .padding(.bottom, 8)

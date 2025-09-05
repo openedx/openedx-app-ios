@@ -44,7 +44,8 @@ public class SignInViewModel: ObservableObject {
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
     let storage: CoreStorage
-
+    let tenantProvider: @Sendable () -> any TenantProvider
+    
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
@@ -52,7 +53,8 @@ public class SignInViewModel: ObservableObject {
         analytics: AuthorizationAnalytics,
         validator: Validator,
         storage: CoreStorage,
-        sourceScreen: LogistrationSourceScreen
+        sourceScreen: LogistrationSourceScreen,
+        tenantProvider: @escaping @Sendable () -> any TenantProvider
     ) {
         self.interactor = interactor
         self.router = router
@@ -61,6 +63,7 @@ public class SignInViewModel: ObservableObject {
         self.validator = validator
         self.storage = storage
         self.sourceScreen = sourceScreen
+        self.tenantProvider = tenantProvider
     }
 
     var socialAuthEnabled: Bool {

@@ -5,17 +5,16 @@
 //  Created by Rawan Matar on 28/05/2025.
 //
 
-
 import UIKit
 
 public class NavigationAppearanceManager {
-    public static let shared = NavigationAppearanceManager()
+    @MainActor public static let shared = NavigationAppearanceManager()
     
     private init() {}
 
     public var navigationController: UINavigationController?
 
-    public func updateAppearance(backgroundColor: UIColor, titleColor: UIColor = .white) {
+    @MainActor public func updateAppearance(backgroundColor: UIColor, titleColor: UIColor = .white) {
         guard let nav = navigationController else {
             return
         }

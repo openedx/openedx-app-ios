@@ -129,11 +129,8 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     public func showTenantScreen(sourceScreen: LogistrationSourceScreen) {
-        guard let viewModel = Container.shared.resolve(
-            TenantViewModel.self
-        ), let authAnalytics = Container.shared.resolve(
-            AuthorizationAnalytics.self
-        ) else { return }
+        guard let viewModel = Container.shared.resolve(TenantViewModel.self)
+        else { return }
         
         let view = TenantSelectionView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
@@ -152,7 +149,10 @@ public class Router: AuthorizationRouter,
         ) else { return }
         
         let view = SignInView(viewModel: viewModel, tenantViewModel: tenantViewModel)
-        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared).environmentObject(ThemeManager.shared))
+        let controller = UIHostingController(rootView:
+                                                view
+            .environmentObject(ThemeManager.shared)
+            .environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
         
         authAnalytics.signInClicked()
@@ -196,7 +196,10 @@ public class Router: AuthorizationRouter,
               let analytics = Container.shared.resolve(CoreAnalytics.self),
               connectivity.isInternetAvaliable
         else { return }
-        let vm = AppReviewViewModel(config: config, storage: storage, analytics: analytics)
+        let vm = AppReviewViewModel(config: config,
+                                    storage: storage,
+                                    analytics: analytics,
+                                    tenantProvider: { Container.shared.resolve(TenantProvider.self)! })
         if vm.shouldShowRatingView() {
             presentView(
                 transitionStyle: .crossDissolve,
@@ -567,10 +570,14 @@ public class Router: AuthorizationRouter,
             verticalIndex
         )!
         
-        let config = Container.shared.resolve(ConfigProtocol.self)
+        let config = Container.shared.resolve(
+            ConfigProtocol.self)
         let isDropdownActive = config?.uiComponents.courseDropDownNavigationEnabled ?? false
 
-        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive, themeManager: ThemeManager.shared)
+        let view = CourseUnitView(
+            viewModel: viewModel,
+            isDropdownActive: isDropdownActive,
+            themeManager: ThemeManager.shared)
         return UIHostingController(rootView: view)
     }
     
@@ -924,9 +931,8 @@ public class Router: AuthorizationRouter,
             TenantViewModel.self
         ), let selectedTenant = viewModel.selectedTenant {
             let webBrowser = ContainerWebView(
-                selectedTenant.baseSSOURL?.absoluteString ?? "http://localhost:8000" ,
-                title: title
-            )
+                selectedTenant.baseSSOURL?.absoluteString
+                ?? "http://localhost:8000", title: title)
             let controller = UIHostingController(rootView: webBrowser.environmentObject(ThemeManager.shared))
             navigationController.pushViewController(controller, animated: true)
         }

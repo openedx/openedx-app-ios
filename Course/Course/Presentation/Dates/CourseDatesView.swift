@@ -145,8 +145,7 @@ public struct CourseDatesView: View {
                 title: title,
                 message: message,
                 selectedTab: .dates
-            )
-            {
+            ) {
                 viewModel.resetEventState()
             }
             .environmentObject(themeManager)

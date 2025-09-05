@@ -23,6 +23,20 @@ import Discussion
 class ScreenAssembly: Assembly {
     func assemble(container: Container) {
         
+        // MARK: Multi-Tenant
+        container.register(TenantProvider.self) { r in
+            r.resolve(TenantViewModel.self)!
+        }.inObjectScope(.container)
+        
+        container.register(TenantViewModel.self) { r in
+            TenantViewModel(
+                router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
+            )
+        }.inObjectScope(.container)
+        
         // MARK: OfflineSync
         container.register(OfflineSyncRepositoryProtocol.self) { r in
             OfflineSyncRepository(
@@ -39,24 +53,10 @@ class ScreenAssembly: Assembly {
             OfflineSyncManager(
                 persistence: r.resolve(CorePersistenceProtocol.self)!,
                 interactor: r.resolve(OfflineSyncInteractorProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
-        
-        // MARK: Multi-Tenant
-        container.register(TenantProvider.self) { r in
-            r.resolve(TenantViewModel.self)!
-        }.inObjectScope(.container)
-        
-        container.register(TenantViewModel.self) { r in
-            TenantViewModel(
-                interactor: r.resolve(AuthInteractorProtocol.self)!,
-                router: r.resolve(AuthorizationRouter.self)!,
-                config: r.resolve(ConfigProtocol.self)!,
-                analytics: r.resolve(AuthorizationAnalytics.self)!,
-                storage: r.resolve(CoreStorage.self)!
-            )
-        }.inObjectScope(.container)
         
         // MARK: Auth
         container.register(AuthRepositoryProtocol.self) { r in
@@ -107,7 +107,8 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                sourceScreen: sourceScreen
+                sourceScreen: sourceScreen,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(SSOWebViewModel.self) { @MainActor r in
@@ -116,7 +117,8 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(AuthorizationRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
-                ssoHelper: r.resolve(SSOHelper.self)!
+                ssoHelper: r.resolve(SSOHelper.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(SignUpViewModel.self) { @MainActor r, sourceScreen in
@@ -150,7 +152,8 @@ class ScreenAssembly: Assembly {
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(DiscoveryPersistenceProtocol.self)!
+                persistence: r.resolve(DiscoveryPersistenceProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(DiscoveryInteractorProtocol.self) { r in
@@ -213,7 +216,8 @@ class ScreenAssembly: Assembly {
                 api: r.resolve(API.self)!,
                 storage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(DashboardPersistenceProtocol.self)!
+                persistence: r.resolve(DashboardPersistenceProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(DashboardInteractorProtocol.self) { r in
@@ -301,7 +305,8 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 corePersistence: r.resolve(CorePersistenceProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                coreStorage: r.resolve(AppStorage.self)!
+                coreStorage: r.resolve(AppStorage.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         
@@ -374,7 +379,8 @@ class ScreenAssembly: Assembly {
                 lastVisitedBlockID: lastVisitedBlockID,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
                 selection: selection,
-                courseHelper: r.resolve(CourseDownloadHelperProtocol.self)!
+                courseHelper: r.resolve(CourseDownloadHelperProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(
@@ -418,7 +424,8 @@ class ScreenAssembly: Assembly {
             WebUnitViewModel(
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!
+                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(
@@ -658,7 +665,8 @@ class ScreenAssembly: Assembly {
                 api: r.resolve(API.self)!,
                 coreStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(CoursePersistenceProtocol.self)!
+                persistence: r.resolve(CoursePersistenceProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(CourseInteractorProtocol.self) { r in
@@ -682,7 +690,8 @@ class ScreenAssembly: Assembly {
                 api: r.resolve(API.self)!,
                 coreStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(DownloadsPersistenceProtocol.self)!
+                persistence: r.resolve(DownloadsPersistenceProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         

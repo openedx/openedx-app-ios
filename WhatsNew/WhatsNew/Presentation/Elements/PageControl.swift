@@ -19,7 +19,9 @@ struct PageControl: View {
             ForEach(0 ..< numberOfPages) { page in
                 RoundedRectangle(cornerRadius: 4)
                     .frame(width: page == currentPage ? 24 : 8, height: 8)
-                    .foregroundColor(page == currentPage ? themeManager.theme.colors.accentXColor : themeManager.theme.colors.textSecondaryLight)
+                    .foregroundColor(page == currentPage ?
+                                     themeManager.theme.colors.accentXColor
+                                     : themeManager.theme.colors.textSecondaryLight)
             }
         }
     }

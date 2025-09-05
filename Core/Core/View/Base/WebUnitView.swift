@@ -82,7 +82,7 @@ public struct WebUnitView: View {
                             WebView(
                                 viewModel: .init(
                                     url: url,
-                                    baseURL: viewModel.config.baseURL.absoluteString,
+                                    baseURL: viewModel.baseURLString,
                                     openFile: { file in
                                         self.fileUrl = file
                                     },

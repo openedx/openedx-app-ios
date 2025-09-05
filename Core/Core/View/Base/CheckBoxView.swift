@@ -34,7 +34,7 @@ public struct CheckBoxView: View {
                 systemName: checked ? "checkmark.square.fill" : "square"
             )
             .foregroundColor(
-                checked ? themeManager.theme.color.accentXColor : color
+                checked ? themeManager.theme.colors.accentXColor : color
             )
             Text(text)
                 .font(font)

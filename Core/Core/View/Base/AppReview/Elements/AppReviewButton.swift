@@ -35,7 +35,9 @@ struct AppReviewButton: View {
                                 : CoreLocalization.Review.Button.rateUs
                             )
                         )
-                        .foregroundColor(isActive ? themeManager.theme.color.primaryButtonTextColor : Color.black.opacity(0.6))
+                        .foregroundColor(isActive ?
+                                         themeManager.theme.colors.primaryButtonTextColor
+                                         : Color.black.opacity(0.6))
                         .font(Theme.Fonts.labelLarge)
                         .padding(3)
                         
@@ -45,8 +47,8 @@ struct AppReviewButton: View {
                     .background(
                         Theme.Shapes.buttonShape
                             .fill(
-                                isActive ? themeManager.theme.color.accentColor
-                                : themeManager.theme.color.cardViewStroke
+                                isActive ? themeManager.theme.colors.accentColor
+                                : themeManager.theme.colors.cardViewStroke
                             )
                     )
                     .accessibilityElement(children: .ignore)

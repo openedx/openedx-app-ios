@@ -32,14 +32,10 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-            #if RIYADAH
+            #if TENANTS
             ThemeAssets.headerBackground.swiftUIImage
                 .resizable()
                 .edgesIgnoringSafeArea(.top)
-#elseif NELC
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
-                    .edgesIgnoringSafeArea(.top)
             #else
                 ThemeAssets.headerBackground.swiftUIImage
                 .resizable()
@@ -206,7 +202,7 @@ public struct SignUpView: View {
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(themeManager.theme.colors.background.ignoresSafeArea(.all))
         .navigationBarHidden(true)
-        .onFirstAppear{
+        .onFirstAppear {
             viewModel.trackScreenEvent()
         }
     }

@@ -29,7 +29,9 @@ struct WhatsNewNavigationButton: View {
                 
                 Text(type == .previous ? WhatsNewLocalization.buttonPrevious
                      : (type == .next ? WhatsNewLocalization.buttonNext : WhatsNewLocalization.buttonDone ))
-                .foregroundColor(type == .previous ? themeManager.theme.colors.secondaryButtonTextColor : themeManager.theme.colors.white)
+                .foregroundColor(type == .previous ?
+                                 themeManager.theme.colors.secondaryButtonTextColor
+                                 : themeManager.theme.colors.white)
                 .font(Theme.Fonts.labelLarge)
                 
                 if type == .next {

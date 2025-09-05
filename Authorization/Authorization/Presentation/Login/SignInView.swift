@@ -37,18 +37,14 @@ public struct SignInView: View {
         if tenantViewModel.selectedTenant != nil {
             ZStack(alignment: .top) {
                 VStack {
-                    #if RIYADAH
-                    ThemeAssets.riyadahAuthBackground.swiftUIImage
+                    #if TENANTS
+                    ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
                         .accessibilityIdentifier("auth_bg_image")
-#elseif NELC
-                    themeManager.theme.bgColor
-                        .resizable()
-                        .edgesIgnoringSafeArea(.top)
-                        .accessibilityIdentifier("auth_bg_image")
+
                     #else
-                    ThemeAssets.riyadahAuthBackground.swiftUIImage
+                    ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
                         .accessibilityIdentifier("auth_bg_image")
@@ -76,19 +72,8 @@ public struct SignInView: View {
                 
                 VStack(alignment: .center) {
 
-#if RIYADAH
-                    ThemeAssets.riyadahloginLogoWhite.swiftUIImage
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(maxWidth: 189, maxHeight: 89)
-                        .padding(.top, isHorizontal ? 20 : 40)
-                        .padding(.bottom, isHorizontal ? 10 : 40)
-                        .accessibilityIdentifier("logo_image")
-                        .onTapGesture(count: 10, perform: {
-                            showSuperUserLoginView()
-                        })
-#elseif NELC
-                    themeManager.theme.appLogo
+#if TENANTS
+                    ThemeAssets.appLogo.swiftUIImage
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(maxWidth: 189, maxHeight: 89)
@@ -115,8 +100,9 @@ public struct SignInView: View {
                         ScrollView {
                             VStack {
                                 VStack(alignment: .center) {
-                                    if self.tenantViewModel.selectedTenant?.uiComponents?.loginRegistrationEnabled ?? false
-                                        || isSuperUser{
+                                    if self.tenantViewModel.selectedTenant?
+                                        .uiComponents?.loginRegistrationEnabled ?? false
+                                        || isSuperUser {
                                         VStack(alignment: .leading) {
                                             Text(AuthLocalization.SignIn.logInTitle)
                                                 .font(Theme.Fonts.displaySmall)
@@ -174,8 +160,9 @@ public struct SignInView: View {
                                             if !isSuperUser {
                                                 HStack {
                                                     if !viewModel.config.features.startupScreenEnabled {
-                                                        Button(CoreLocalization.register) {
-                                                            viewModel.router.showRegisterScreen(sourceScreen: viewModel.sourceScreen)
+                                                        Button(CoreLocalization.SignIn.registerBtn) {
+                                                            viewModel.router.showRegisterScreen(
+                                                                sourceScreen: viewModel.sourceScreen)
                                                         }
                                                         .foregroundColor(themeManager.theme.colors.accentColor)
                                                         .accessibilityIdentifier("register_button")
@@ -214,8 +201,10 @@ public struct SignInView: View {
                                         }
                                     }
                                     
-                                    if self.tenantViewModel.selectedTenant?.uiComponents?.SAMLSSOLoginEnabled ?? false{
-                                        if self.tenantViewModel.selectedTenant?.uiComponents?.loginRegistrationEnabled ?? false{
+                                    if self.tenantViewModel.selectedTenant?.uiComponents?.samlSSOLoginEnabled ?? false {
+                                        if self.tenantViewModel.selectedTenant?
+                                            .uiComponents?.loginRegistrationEnabled
+                                            ?? false {
                                             VStack(alignment: .center) {
                                                 Text(AuthLocalization.SignIn.ssoHeading)
                                                     .font(Theme.Fonts.headlineSmall)
@@ -229,7 +218,7 @@ public struct SignInView: View {
                                             Divider()
                                             
                                             VStack(alignment: .center) {
-                                                ThemeAssets.ssoHeader.swiftUIImage
+                                                ThemeAssets.headerBackground.swiftUIImage
                                                     .resizable()
                                                     .aspectRatio(contentMode: .fit)
                                                     .frame(maxWidth: 88, maxHeight: 38)
@@ -264,8 +253,12 @@ public struct SignInView: View {
                                                         .accessibilityIdentifier("progressbar")
                                                 }.frame(maxWidth: .infinity)
                                             } else {
-                                                let languageCode = Locale.current.languageCode ?? "en"
-                                                if self.tenantViewModel.selectedTenant?.uiComponents?.SAMLSSODefaultLoginButton ?? false {
+                                                let languageCode =
+                                                Locale.current.language.languageCode?.identifier
+                                                ?? "en"
+                                                if self.tenantViewModel.selectedTenant?
+                                                    .uiComponents?.samlSSODefaultLoginButton
+                                                    ?? false {
                                                     Text(AuthLocalization.SignIn.logInTitle)
                                                         .font(Theme.Fonts.displaySmall)
                                                         .foregroundColor(themeManager.theme.colors.accentColor)
@@ -274,17 +267,24 @@ public struct SignInView: View {
                                                     
                                                     Divider()
                                                     
-                                                    StyledButton(viewModel.config.ssoButtonTitle[languageCode] as! String,
+                                                    StyledButton(viewModel.tenantProvider()
+                                                        .ssoButtonTitle,
                                                                  action: {
-                                                        viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
+                                                        viewModel.router
+                                                            .showSSOWebBrowser(
+                                                                title: CoreLocalization.SignIn.logInBtn)
                                                     },
                                                                  color: themeManager.theme.colors.accentColor)
                                                     .frame(maxWidth: .infinity)
                                                     .padding(.top, 20)
                                                     .accessibilityIdentifier("signin_SSO_button")
                                                 } else {
-                                                    StyledButton(viewModel.config.ssoButtonTitle[languageCode] as! String, action: {
-                                                        viewModel.router.showSSOWebBrowser(title: CoreLocalization.SignIn.logInBtn)
+                                                    StyledButton(viewModel.tenantProvider()
+                                                        .ssoButtonTitle,
+                                                                 action: {
+                                                        viewModel.router
+                                                            .showSSOWebBrowser(
+                                                                title: CoreLocalization.SignIn.logInBtn)
                                                     },
                                                                  color: .white,
                                                                  textColor: themeManager.theme.colors.accentColor,
@@ -301,7 +301,7 @@ public struct SignInView: View {
                                 if viewModel.socialAuthEnabled {
                                     SocialAuthView(
                                         viewModel: .init(
-                                            config: viewModel.config
+                                            config: viewModel.config, lastUsedOption: ""
                                         ) { result in
                                             Task { await viewModel.login(with: result) }
                                         }
@@ -354,7 +354,7 @@ public struct SignInView: View {
             .onFirstAppear {
                 viewModel.trackScreenEvent()
             }
-            .onAppear() {
+            .onAppear {
                 tenantViewModel.loadFromUserDefaults()
                 NavigationAppearanceManager.shared.updateAppearance(
                     backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
@@ -404,13 +404,15 @@ struct SignInView_Previews: PreviewProvider {
             config: ConfigMock(),
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator(),
-            sourceScreen: .default
+            storage: CoreStorageMock(),
+            sourceScreen: .default,
+            tenantProvider: { TenantProviderMock()}
         )
         let tenantVM = TenantViewModel(
-            interactor: AuthInteractor.mock,
             router: AuthorizationRouterMock(),
             config: ConfigMock(),
-            analytics: AuthorizationAnalyticsMock()
+            analytics: AuthorizationAnalyticsMock(),
+            storage: CoreStorageMock(),
         )
         SignInView(viewModel: vm, tenantViewModel: tenantVM)
             .preferredColorScheme(.light)

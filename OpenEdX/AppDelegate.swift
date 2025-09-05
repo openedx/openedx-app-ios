@@ -162,9 +162,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private func initDI() {
         let navigation = UINavigationController()
         navigation.modalPresentationStyle = .fullScreen
-
         navigation.navigationBar.standardAppearance.configureWithOpaqueBackground()
-        navigation.navigationBar.standardAppearance.backgroundColor = UIColor(ThemeManager.shared.theme.colors.navigationBarColor)
+        navigation.navigationBar.standardAppearance.backgroundColor =
+        UIColor(ThemeManager.shared.theme.colors.navigationBarColor)
         navigation.navigationBar.standardAppearance
             .titleTextAttributes =
         [.foregroundColor: UIColor(ThemeManager.shared.theme.colors.navigationBarTintColor)]

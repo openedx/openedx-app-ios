@@ -57,10 +57,14 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var datesSectionBackground = ThemeAssets.datesSectionBackground.swiftUIColor
         nonisolated(unsafe) public private(set) static var datesSectionStroke = ThemeAssets.datesSectionStroke.swiftUIColor
         nonisolated(unsafe) public private(set) static var navigationBarTintColor = ThemeAssets.navigationBarTintColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var navigationBarColor = ThemeAssets.navigationBarColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var navigationBarColorDark = ThemeAssets.navigationBarColorDark.swiftUIColor
         nonisolated(unsafe) public private(set) static var secondaryButtonBorderColor = ThemeAssets.secondaryButtonBorderColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var secondaryButtonTextColor = ThemeAssets.secondaryButtonTextColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var secondaryButtonBGColor = ThemeAssets.secondaryButtonBGColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var success = ThemeAssets.success.swiftUIColor
+        nonisolated(unsafe) public private(set) static var tabbarColor = ThemeAssets.tabbarColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var tabbarTintColor = ThemeAssets.tabbarTintColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var textInputTextColor = ThemeAssets.textInputTextColor.swiftUIColor
@@ -124,16 +128,24 @@ public struct Theme: Sendable {
             datesSectionBackground: Color = ThemeAssets.datesSectionBackground.swiftUIColor,
             datesSectionStroke: Color = ThemeAssets.datesSectionStroke.swiftUIColor,
             navigationBarTintColor: Color = ThemeAssets.navigationBarTintColor.swiftUIColor,
+            navigationBarColor: Color = ThemeAssets.navigationBarColor.swiftUIColor,
+            navigationBarColorDark: Color = ThemeAssets.navigationBarColorDark.swiftUIColor,
             loginNavigationText: Color = ThemeAssets.loginNavigationText.swiftUIColor,
             secondaryButtonBorderColor: Color = ThemeAssets.secondaryButtonBorderColor.swiftUIColor,
             secondaryButtonTextColor: Color = ThemeAssets.secondaryButtonTextColor.swiftUIColor,
             success: Color = ThemeAssets.success.swiftUIColor,
+            tabbarColor: Color = ThemeAssets.tabbarColor.swiftUIColor,
+            tabbarTintColor: Color = ThemeAssets.tabbarTintColor.swiftUIColor,
             primaryButtonTextColor: Color = ThemeAssets.primaryButtonTextColor.swiftUIColor,
             toggleSwitchColor: Color = ThemeAssets.toggleSwitchColor.swiftUIColor,
             textInputTextColor: Color = ThemeAssets.textInputTextColor.swiftUIColor,
             textInputPlaceholderColor: Color = ThemeAssets.textInputPlaceholderColor.swiftUIColor,
             infoColor: Color = ThemeAssets.infoColor.swiftUIColor,
-            irreversibleAlert: Color = ThemeAssets.irreversibleAlert.swiftUIColor
+            irreversibleAlert: Color = ThemeAssets.irreversibleAlert.swiftUIColor,
+            resumeButtonBG: Color = ThemeAssets.resumeButtonBG.swiftUIColor,
+            resumeButtonText: Color = ThemeAssets.resumeButtonText.swiftUIColor,
+            primaryCardCautionBG: Color = ThemeAssets.primaryCardCautionBG.swiftUIColor,
+            primaryCardProgressBG: Color = ThemeAssets.primaryCardProgressBG.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
@@ -171,16 +183,24 @@ public struct Theme: Sendable {
             self.datesSectionBackground = datesSectionBackground
             self.datesSectionStroke = datesSectionStroke
             self.navigationBarTintColor = navigationBarTintColor
+            self.navigationBarColor = navigationBarColor
+            self.navigationBarColorDark = navigationBarColorDark
             self.loginNavigationText = loginNavigationText
             self.secondaryButtonBorderColor = secondaryButtonBorderColor
             self.secondaryButtonTextColor = secondaryButtonTextColor
             self.success = success
+            self.tabbarColor = tabbarColor
+            self.tabbarTintColor = tabbarTintColor
             self.primaryButtonTextColor = primaryButtonTextColor
             self.toggleSwitchColor = toggleSwitchColor
             self.textInputTextColor = textInputTextColor
             self.textInputPlaceholderColor = textInputPlaceholderColor
             self.infoColor = infoColor
             self.irreversibleAlert = irreversibleAlert
+            self.resumeButtonBG = resumeButtonBG
+            self.resumeButtonText = resumeButtonText
+            self.primaryCardCautionBG = primaryCardCautionBG
+            self.primaryCardProgressBG = primaryCardProgressBG
         }
     }
     // swiftlint:enable line_length
@@ -193,6 +213,9 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var loginNavigationText = ThemeAssets.loginNavigationText.color
         nonisolated(unsafe) public private(set) static var navigationBarTintColor =
         ThemeAssets.navigationBarTintColor.color
+        nonisolated(unsafe) public private(set) static var navigationBarColor = ThemeAssets.navigationBarColor.color
+        nonisolated(unsafe) public private(set) static var navigationBarColorDark =
+        ThemeAssets.navigationBarColorDark.color
         nonisolated(unsafe) public private(set) static var tabbarActiveColor = ThemeAssets.tabbarActiveColor.color
         nonisolated(unsafe) public private(set) static var tabbarBGColor = ThemeAssets.tabbarBGColor.color
         nonisolated(unsafe) public private(set) static var tabbarInactiveColor = ThemeAssets.tabbarInactiveColor.color
@@ -202,12 +225,16 @@ public struct Theme: Sendable {
             accentColor: UIColor = ThemeAssets.accentColor.color,
             accentXColor: UIColor = ThemeAssets.accentXColor.color,
             navigationBarTintColor: UIColor = ThemeAssets.navigationBarTintColor.color,
+            navigationBarColor: UIColor = ThemeAssets.navigationBarColor.color,
+            navigationBarColorDark: UIColor = ThemeAssets.navigationBarColorDark.color,
             loginNavigationText: UIColor = ThemeAssets.loginNavigationText.color
         ) {
             self.textPrimary = textPrimary
             self.accentColor = accentColor
             self.accentXColor = accentXColor
             self.navigationBarTintColor = navigationBarTintColor
+            self.navigationBarColor = navigationBarColor
+            self.navigationBarColorDark = navigationBarColorDark
             self.loginNavigationText = loginNavigationText
         }
     }

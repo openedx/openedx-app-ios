@@ -16,8 +16,15 @@ import MSAL
 import Theme
 
 public class TenantViewModel: TenantProvider, ObservableObject {
+    public var ssoButtonTitle: String {
+        selectedTenant?.ssoButtonTitle ?? "SSO Sign in"
+    }
     
-    public var oAuthClientId: String{
+    public var feedbackEmail: String {
+        selectedTenant?.feedbackEmail ?? "support@example.com"
+    }
+    
+    public var oAuthClientId: String {
         selectedTenant?.oAuthClientId ?? ""
     }
     
@@ -29,17 +36,16 @@ public class TenantViewModel: TenantProvider, ObservableObject {
         selectedTenant?.tenantName ??  "Unknown"
     }
     
-    
     public var color: String {
         selectedTenant?.color ?? "#007aff"
     }
     
     public var baseURL: URL {
-        selectedTenant?.baseURL ?? URL(string: "test.com")!
+        selectedTenant?.baseURL ?? URL(string: "http://localhost:8000")!
     }
     
     public var baseURLHiddenLogin: URL {
-        selectedTenant?.baseURLHiddenLogin ?? URL(string: "test.com")!
+        selectedTenant?.baseURLHiddenLogin ?? URL(string: "http://localhost:8000")!
     }
     
     public var baseSSOURL: URL {
@@ -61,16 +67,26 @@ public class TenantViewModel: TenantProvider, ObservableObject {
     @Published public var selectedTenant: Tenant? {
         didSet {
             saveToUserDefaults()
-            ThemeManager.shared.applyTheme(for: selectedTenant?.name ?? "", localizedName: selectedTenant?.tenantName ?? "-")
+            let name = selectedTenant?.name ?? ""
+            let localized = selectedTenant?.tenantName ?? "-"
+            Task {
+                @MainActor in
+                print("selectedTenant: \(name), \(localized)")
+                ThemeManager.shared.applyTheme(
+                    for: name,
+                    localizedName: localized
+                )
+            }
         }
     }
     @Published public var isSwitchedTenant: Bool = false
     @Published var shouldNavigateBack = false
 
-    
     private func saveToUserDefaults() {
         UserDefaults.standard.removeObject(forKey: "selectedTenant")
-        if let tenant = selectedTenant{
+        print("saveToUserDefaults")
+        if let tenant = selectedTenant {
+            print("tenant: \(tenant)")
             do {
                 let data = try JSONEncoder().encode(tenant)
                 UserDefaults.standard.set(data, forKey: "selectedTenant")
@@ -95,18 +111,15 @@ public class TenantViewModel: TenantProvider, ObservableObject {
     let sourceScreen: LogistrationSourceScreen = .default
     let router: AuthorizationRouter
     public let config: ConfigProtocol
-    private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     let storage: CoreStorage
 
     public init(
-        interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
         config: ConfigProtocol,
         analytics: AuthorizationAnalytics,
         storage: CoreStorage
     ) {
-        self.interactor = interactor
         self.router = router
         self.config = config
         self.analytics = analytics

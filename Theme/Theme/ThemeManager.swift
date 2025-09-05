@@ -8,6 +8,7 @@ import Foundation
 import Combine
 import SwiftUI
 
+@MainActor
 public final class ThemeManager: ObservableObject {
     public static let shared = ThemeManager()
 
@@ -20,12 +21,10 @@ public final class ThemeManager: ObservableObject {
     public func applyTheme(for tenantName: String, localizedName: String) {
         let selectedTheme: ThemeDefinition
         switch tenantName.lowercased() {
-        case "saudi real estate institute":
-            selectedTheme = .saudiRealEstateInstitute
-        case "ministry of tourism":
-            selectedTheme = .mt
-        case "niepd":
-            selectedTheme = .NIEPD
+        case "tenanta":
+            selectedTheme = .tenantA
+        case "tenantb":
+            selectedTheme = .tenantB
         default:
             selectedTheme = .default
         }
@@ -85,6 +84,8 @@ public final class ThemeManager: ObservableObject {
                 textInputPlaceholderColor: theme.colors.textInputPlaceholderColor,
                 infoColor: theme.colors.infoColor,
                 irreversibleAlert: theme.colors.irreversibleAlert,
+                resumeButtonBG: theme.colors.resumeButtonBG,
+                resumeButtonText: theme.colors.resumeButtonText
             )
             
             Theme.UIColors.update(

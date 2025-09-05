@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OEXFoundation
 
 public protocol TenantProvider {
     var name: String { get }
@@ -15,8 +16,10 @@ public protocol TenantProvider {
     var baseURL: URL { get }
     var baseURLHiddenLogin: URL { get }
     var baseSSOURL: URL { get }
+    var ssoButtonTitle: String { get }
     var successfulSSOLoginURL: URL { get }
     var environmentDisplayName: String { get }
+    var feedbackEmail: String { get }
     var uiComponents: UIComponentsConfig { get }
 }
 
@@ -29,6 +32,8 @@ private enum TenantKeys: String, RawStringExtractable {
     case baseURLHiddenLogin = "API_HOST_URL_HIDDEN_LOGIN"
     case baseSSOURL = "SSO_URL"
     case SuccessfulSSOLoginURL = "SSO_URL_SUCCESSFUL_LOGIN"
+    case ssoButtonTitle = "SSO_BUTTON_TITLE"
+    case feedbackEmailAddress = "FEEDBACK_EMAIL_ADDRESS"
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
     case isSwitchTenantLoginEnabled = "IS_SWITCH_TENANT_LOGIN_ENABLED"
     case uiComponents = "UI_COMPONENTS"
@@ -40,9 +45,11 @@ public class Tenant: Codable, Identifiable {
     public var tenantName: String
     public let color: String
     public var oAuthClientId: String
+    public var feedbackEmail: String?
     public var baseURL: URL?
     public var baseURLHiddenLogin: URL?
     public var baseSSOURL: URL?
+    public var ssoButtonTitle: String
     public var successfulSSOLoginURL: URL?
     public var environmentDisplayName: String?
     public var isSwitchTenantLoginEnabled: Bool
@@ -54,7 +61,7 @@ public class Tenant: Codable, Identifiable {
         if let langCode = Locale.preferredLanguages.first?.prefix(2) {
             languageCode = String(langCode)
         }
-        if let tenantNameDict = dictionary[TenantKeys.tenantName] as? [String: Any]{
+        if let tenantNameDict = dictionary[TenantKeys.tenantName] as? [String: Any] {
             self.tenantName = tenantNameDict[languageCode] as? String ?? ""
         } else {
             self.tenantName = "unknown"
@@ -80,6 +87,15 @@ public class Tenant: Codable, Identifiable {
         , let url = URL(string: urlString) {
             self.successfulSSOLoginURL = url
         }
+        
+        if let tenantSSOButtonNameDict = dictionary[TenantKeys.ssoButtonTitle] as? [String: Any] {
+            self.ssoButtonTitle = tenantSSOButtonNameDict[languageCode] as? String ?? ""
+        } else {
+            self.ssoButtonTitle = "unknown"
+        }
+        
+        self.feedbackEmail = dictionary[TenantKeys.feedbackEmailAddress] as? String ?? ""
+        
         self.environmentDisplayName = dictionary[TenantKeys.environmentDisplayName] as? String
         if let uiDict = dictionary[TenantKeys.uiComponents] as? [String: Any] {
             self.uiComponents = UIComponentsConfig(dictionary: uiDict)
@@ -102,11 +118,15 @@ public class TenantsConfig {
 }
 #if DEBUG
 public class TenantProviderMock: TenantProvider {
+    public var ssoButtonTitle: String
+    
     public var name: String
     
     public var tenantName: String
     
     public var color: String
+    
+    public var feedbackEmail: String
     
     public var oAuthClientId: String
     
@@ -122,15 +142,18 @@ public class TenantProviderMock: TenantProvider {
     
     public var uiComponents: UIComponentsConfig
 
-    public init( oAuthClientId: String = "mockClientId",
+    public init(
+        oAuthClientId: String = "mockClientId",
         baseURL: URL = URL(string: "https://mock.base.url")!,
-                name: String = "Test",
-                 tenantName: String = "Test",
-                color: String = "#fff",
-                baseSSOURL: URL = URL(string: "https://mock.base.url")!,
-                successfulSSOLoginURL: URL = URL(string: "https://mock.base.url")!,
-                environmentDisplayName: String = "Test",
-                uiComponents: UIComponentsConfig) {
+        name: String = "Test",
+        tenantName: String = "Test",
+        color: String = "#fff",
+        feedbackEmail: String = "support@example.com",
+        baseSSOURL: URL = URL(string: "https://mock.base.url")!,
+        successfulSSOLoginURL: URL = URL(string: "https://mock.base.url")!,
+        environmentDisplayName: String = "Test",
+        uiComponents: UIComponentsConfig? = nil,
+        ssoButtonTitle: String = "") {
         self.oAuthClientId = oAuthClientId
         self.baseURL = baseURL
         self.name = name
@@ -141,7 +164,8 @@ public class TenantProviderMock: TenantProvider {
         self.environmentDisplayName = environmentDisplayName
         self.uiComponents = UIComponentsConfig(dictionary: [:])
         self.baseURLHiddenLogin = baseURL
-        
+        self.feedbackEmail = feedbackEmail
+        self.ssoButtonTitle = ssoButtonTitle
     }
 }
 #endif
