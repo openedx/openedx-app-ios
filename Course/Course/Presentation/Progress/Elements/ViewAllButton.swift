@@ -24,12 +24,8 @@ struct ViewAllButton: View {
     }
 }
 
-struct ViewAllButton_Previews: PreviewProvider {
-    static var previews: some View {
-        ViewAllButton(section: "Assignments") {
-            print("View All tapped")
-        }
-        .previewLayout(.sizeThatFits)
-        .padding()
+#Preview {
+    ViewAllButton(section: "Assignments") {
+        print("View All tapped")
     }
 }

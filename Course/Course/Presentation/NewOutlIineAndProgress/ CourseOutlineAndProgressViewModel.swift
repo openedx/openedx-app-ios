@@ -10,26 +10,11 @@ public class CourseOutlineAndProgressViewModel: ObservableObject {
     
     // MARK: - Variables
     @Published public var courseProgress: CourseProgressDetails?
-    @Published public var isLoading: Bool = false
     @Published public var showError: Bool = false
     @Published public var selection: Int
-    @Published var isShowRefresh = false
-    @Published var courseStructure: CourseStructure?
-    @Published var courseDeadlineInfo: CourseDateBanner?
-    @Published var courseVideosStructure: CourseStructure?
-    @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
-    @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
-    @Published var continueWith: ContinueWith?
     @Published var userSettings: UserSettings?
     @Published var isInternetAvaliable: Bool = true
-    @Published var dueDatesShifted: Bool = false
-    @Published var updateCourseProgress: Bool = false
-    @Published var totalFilesSize: Int = 1
-    @Published var downloadedFilesSize: Int = 0
-    @Published var realDownloadedFilesSize: Int = 0
-    @Published var largestDownloadBlocks: [CourseBlock] = []
-    @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
-    
+
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
@@ -95,17 +80,13 @@ public class CourseOutlineAndProgressViewModel: ObservableObject {
         self.userSettings = storage.userSettings
         self.isInternetAvaliable = connectivity.isInternetAvaliable
         self.lastVisitedBlockID = lastVisitedBlockID
-//        self.coreAnalytics = coreAnalytics
         self.selection = selection.rawValue
         self.courseHelper = courseHelper
         self.courseHelper.videoQuality = storage.userSettings?.downloadQuality ?? .auto
-//        super.init(manager: manager)
-//        addObservers()
     }
     
     @MainActor
     public func getCourseProgress(courseID: String, withProgress: Bool = true) async {
-        isLoading = true
         do {
             if connectivity.isInternetAvaliable {
                 courseProgress = try await interactor.getCourseProgress(courseID: courseID)
@@ -119,7 +100,6 @@ public class CourseOutlineAndProgressViewModel: ObservableObject {
                 errorMessage = CoreLocalization.Error.unknownError
             }
         }
-        isLoading = false
     }
     
     public func trackProgressTabClicked(courseId: String, courseName: String) {
@@ -241,23 +221,7 @@ public class CourseOutlineAndProgressViewModel: ObservableObject {
             percentGraded: averagePercentGraded
         )
     }
-    
-    public func getAssignmentColor(for index: Int) -> Color {
-//        guard let courseProgress = courseProgress else {
-//            return Theme.Colors.textSecondary
-//        }
-//
-//        if courseProgress.assignmentColors.isEmpty {
-//            return Theme.Colors.textSecondary
-//        }
-//        
-//        let colorIndex = index % courseProgress.assignmentColors.count
-//        let hexColor = courseProgress.assignmentColors[colorIndex]
-//        
-//        return Color(hex: hexColor) ??
-        Theme.Colors.textSecondary
-    }
-    
+
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {
         guard let courseProgress = courseProgress else { return [:] }
         

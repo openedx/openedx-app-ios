@@ -194,7 +194,6 @@ public struct CourseContainerView: View {
             ForEach(CourseTab.allCases) { tab in
                 switch tab {
                 case .course:
-                    
                     VStack {
                         CourseOutlineAndProgressView(
                             viewModelContainer: viewModel,
@@ -209,17 +208,6 @@ public struct CourseContainerView: View {
                             dateTabIndex: CourseTab.dates.rawValue,
                             connectivity: viewModel.connectivity
                         )
-//                        CourseOutlineView(
-//                            viewModel: viewModel,
-//                            title: title,
-//                            courseID: courseID,
-//                            isVideo: false,
-//                            selection: $viewModel.selection,
-//                            coordinate: $coordinate,
-//                            collapsed: $collapsed,
-//                            viewHeight: $viewHeight,
-//                            dateTabIndex: CourseTab.dates.rawValue
-//                        )
                     }
                     .tabItem {
                         tab.image
@@ -316,8 +304,6 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
-                case .videos:
-                   EmptyView()
                 }
             }
         }

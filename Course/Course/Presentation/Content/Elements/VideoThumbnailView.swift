@@ -97,10 +97,10 @@ struct VideoThumbnailView: View {
     }
 
     private var thumbnailURL: URL? {
-        if let yt = video.encodedVideo?.youtube,
-           let u = yt.url,
-           let id = u.youtubeVideoID() {
-            return URL(string: "https://img.youtube.com/vi/\(id)/hqdefault.jpg")
+        if let youtubeVideo = video.encodedVideo?.youtube,
+             let youtubeURL = youtubeVideo.url,
+             let videoID = youtubeURL.youtubeVideoID() {
+            return URL(string: "https://img.youtube.com/vi/\(videoID)/hqdefault.jpg")
         }
         return nil
     }
@@ -143,59 +143,63 @@ struct VideoThumbnailView: View {
     
     @ViewBuilder
     private func progressIndicatorView() -> some View {
-        let p = getEffectiveProgress()
-        let done = video.completion >= 0.9
-        let greenBar = done && (video.localVideoProgress == 0 || video.localVideoProgress >= 0.9)
-        
-        if done {
-            ZStack(alignment: .trailing) {
-                if greenBar {
-                    Rectangle()
-                        .fill(Theme.Colors.success)
-                        .frame(height: 4)
-                        .cornerRadius(2)
-                        .padding(.horizontal, 4)
-                        .padding(.bottom, 4)
-                } else if p > 0 {
-                    ZStack(alignment: .leading) {
+        GeometryReader { geometry in
+            let progress = getEffectiveProgress()
+            let done = video.completion >= 0.9
+            let greenBar = done && (video.localVideoProgress == 0 || video.localVideoProgress >= 0.9)
+            let availableWidth = fixedSize ? thumbnailWidth : geometry.size.width
+
+            if done {
+                ZStack(alignment: .trailing) {
+                    if greenBar {
                         Rectangle()
-                            .fill(Color.gray.opacity(0.3))
+                            .fill(Theme.Colors.success)
                             .frame(height: 4)
                             .cornerRadius(2)
                             .padding(.horizontal, 4)
                             .padding(.bottom, 4)
-                        
-                        Rectangle()
-                            .fill(Theme.Colors.accentColor)
-                            .frame(width: max(8, (fixedSize ? thumbnailWidth : UIScreen.main.bounds.width) * p - 8),
-                                   height: 4)
-                            .cornerRadius(2)
-                            .padding(.horizontal, 4)
-                            .padding(.bottom, 4)
+                    } else if progress > 0 {
+                        ZStack(alignment: .leading) {
+                            Rectangle()
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(height: 4)
+                                .cornerRadius(2)
+                                .padding(.horizontal, 4)
+                                .padding(.bottom, 4)
+                            
+                            Rectangle()
+                                .fill(Theme.Colors.accentColor)
+                                .frame(width: max(8, availableWidth * progress - 8),
+                                       height: 4)
+                                .cornerRadius(2)
+                                .padding(.horizontal, 4)
+                                .padding(.bottom, 4)
+                        }
                     }
+                    
+                    Image(systemName: "checkmark.circle.fill")
+                        .font(.system(size: 20))
+                        .foregroundColor(Theme.Colors.success)
+                        .background(Circle().fill(Color.white).frame(width: 14, height: 14))
+                        .offset(y: -3)
                 }
-                
-                Image(systemName: "checkmark.circle.fill")
-                    .font(.system(size: 20))
-                    .foregroundColor(Theme.Colors.success)
-                    .background(Circle().fill(Color.white).frame(width: 14, height: 14))
-                    .offset(y: -3)
-            }
-        } else if p > 0 {
-            ZStack(alignment: .leading) {
-                Rectangle()
-                    .fill(Color.gray.opacity(0.3))
-                    .frame(height: 4)
-                    .cornerRadius(2)
-                    .padding(.horizontal, 4)
-                    .padding(.bottom, 4)
-                
-                Rectangle()
-                    .fill(Theme.Colors.accentColor)
-                    .frame(width: max(8, (fixedSize ? thumbnailWidth : UIScreen.main.bounds.width) * p - 8), height: 4)
-                    .cornerRadius(2)
-                    .padding(.horizontal, 4)
-                    .padding(.bottom, 4)
+            } else if progress > 0 {
+                ZStack(alignment: .leading) {
+                    Rectangle()
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(height: 4)
+                        .cornerRadius(2)
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 4)
+                    
+                    Rectangle()
+                        .fill(Theme.Colors.accentColor)
+                        .frame(width: max(8, availableWidth * progress - 8),
+                               height: 4)
+                        .cornerRadius(2)
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 4)
+                }
             }
         }
     }

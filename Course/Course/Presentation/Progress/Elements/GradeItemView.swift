@@ -138,4 +138,5 @@ struct GradeItemView: View {
     )
     .padding()
     .loadFonts()
-}#endif
+}
+#endif

@@ -36,10 +36,6 @@ struct CourseAssignmentsCarouselSlideView: View {
         horizontalSizeClass == .regular && verticalSizeClass == .compact
     }
 
-    private var isTablet: Bool {
-        horizontalSizeClass == .regular && verticalSizeClass == .regular
-    }
-
     private var assignmentSections: [AssignmentSectionUI] {
         assignmentContentData.assignmentSections
     }

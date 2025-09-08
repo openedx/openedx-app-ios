@@ -1,29 +1,17 @@
-API_HOST_URL: 'https://axim-ccpv-dev.raccoongang.net'
+API_HOST_URL: 'http://localhost:8000'
 SSO_URL: 'http://localhost:8000'
 SSO_FINISHED_URL:  'http://localhost:8000'
-ENVIRONMENT_DISPLAY_NAME: 'axim-ccpv-dev'
+ENVIRONMENT_DISPLAY_NAME: 'Localhost'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
-OAUTH_CLIENT_ID: 'SxDFlH1rb8Xw3nT6lOPwUejLb9vgXzOfkgqx1sY2'
+OAUTH_CLIENT_ID: ''
 
 SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
 
-DISCOVERY:
-    TYPE: "native"
-    
-FIREBASE:
-    ENABLED: true
-    ANALYTICS_SOURCE: "firebase"
-    CLOUD_MESSAGING_ENABLED: false
-    API_KEY: "AIzaSyCKAIXDLM7pnX43P_viTsfgbxrLBOaJwGo"
-    BUNDLE_ID: "com.raccoongang.NewEdX.stage"
-    CLIENT_ID: "156114692773-r5pgdcdjqq7sup75fdla4lk3q3kjc6m8.apps.googleusercontent.com"
-    GCM_SENDER_ID: "156114692773"
-    GOOGLE_APP_ID: "1:156114692773:ios:8058bca851a8bc7c187b4c"
-    PROJECT_ID: "openedxmobile-stage"
-    REVERSED_CLIENT_ID: "com.googleusercontent.apps.156114692773-r5pgdcdjqq7sup75fdla4lk3q3kjc6m8"
-    STORAGE_BUCKET: "openedxmobile-stage.appspot.com"
+EXPERIMENTAL_FEATURES:
+    APP_LEVEL_DOWNLOADS:
+        ENABLED: false
 
 UI_COMPONENTS:
     COURSE_UNIT_PROGRESS_ENABLED: false
