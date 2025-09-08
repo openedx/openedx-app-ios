@@ -5328,21 +5328,6 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
-    open func getCourseProgress(courseID: String) throws -> CourseProgressDetails {
-        addInvocation(.m_getCourseProgress__courseID_courseID(Parameter<String>.value(`courseID`)))
-		let perform = methodPerformValue(.m_getCourseProgress__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
-		perform?(`courseID`)
-		var __value: CourseProgressDetails
-		do {
-		    __value = try methodReturnValue(.m_getCourseProgress__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
-		} catch MockError.notStubed {
-			onFatalFailure("Stub return value not specified for getCourseProgress(courseID: String). Use given")
-			Failure("Stub return value not specified for getCourseProgress(courseID: String). Use given")
-		} catch {
-		    throw error
-		}
-		return __value
-    }
     fileprivate enum MethodType {
         case m_getCourseBlocks__courseID_courseID(Parameter<String>)
         case m_getCourseVideoBlocks__fullStructure_fullStructure(Parameter<CourseStructure>)
