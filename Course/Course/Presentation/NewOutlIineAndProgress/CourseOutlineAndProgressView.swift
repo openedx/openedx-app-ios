@@ -65,18 +65,15 @@ public struct CourseOutlineAndProgressView: View {
         return sections
     }
     
-    @State private var openCertificateView: Bool = false
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
-    @State private var showingNoWifiMessage: Bool = false
-    @State private var runOnce: Bool = false
     @Binding private var selection: Int
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
     @Binding private var viewHeight: CGFloat
-    
+
     @State private var infoPath: Int = 0
     
     @State private var expandedChapters: [String: Bool] = [:]
@@ -453,40 +450,37 @@ public struct CourseOutlineAndProgressView: View {
 
 // MARK: - Preview
 #if DEBUG
-struct CourseOutlineAndProgressView_Previews: PreviewProvider {
-    static var previews: some View {
-        let vmProgress = CourseProgressViewModel(
-            interactor: CourseInteractor.mock,
-            router: CourseRouterMock(),
-            analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity()
-        )
-        let vmOutline = CourseContainerViewModel(
-            interactor: CourseInteractor.mock,
-            authInteractor: AuthInteractor.mock,
-            router: CourseRouterMock(),
-            analytics: CourseAnalyticsMock(),
-            config: ConfigMock(),
-            connectivity: Connectivity(),
-            manager: DownloadManagerMock(),
-            storage: CourseStorageMock(),
-            isActive: true,
-            courseStart: Date(),
-            courseEnd: nil,
-            enrollmentStart: Date(),
-            enrollmentEnd: nil,
-            lastVisitedBlockID: nil,
-            coreAnalytics: CoreAnalyticsMock(),
-            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
-        )
-        
-        return PreviewContainer(
-            viewModelContainer: vmOutline,
-            viewModelProgress: vmProgress
-        )
-        .previewLayout(.sizeThatFits)
-        .padding()
-    }
+
+#Preview {
+    let vmProgress = CourseProgressViewModel(
+        interactor: CourseInteractor.mock,
+        router: CourseRouterMock(),
+        analytics: CourseAnalyticsMock(),
+        connectivity: Connectivity()
+    )
+    let vmOutline = CourseContainerViewModel(
+        interactor: CourseInteractor.mock,
+        authInteractor: AuthInteractor.mock,
+        router: CourseRouterMock(),
+        analytics: CourseAnalyticsMock(),
+        config: ConfigMock(),
+        connectivity: Connectivity(),
+        manager: DownloadManagerMock(),
+        storage: CourseStorageMock(),
+        isActive: true,
+        courseStart: Date(),
+        courseEnd: nil,
+        enrollmentStart: Date(),
+        enrollmentEnd: nil,
+        lastVisitedBlockID: nil,
+        coreAnalytics: CoreAnalyticsMock(),
+        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+    )
+
+    return PreviewContainer(
+        viewModelContainer: vmOutline,
+        viewModelProgress: vmProgress
+    )
 }
 
 private struct PreviewContainer: View {
