@@ -419,7 +419,13 @@ public final class CourseUnitViewModel: ObservableObject {
     @MainActor
     func getCourseVideoBlocks() async {
         isVideosForNavigationLoading = true
-        defer { isVideosForNavigationLoading = false }
+        
+        defer {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+                self.isVideosForNavigationLoading = false
+            })
+        }
+
         if let courseVideosStructure {
             do {
                 async let videosTask = interactor.getCourseVideoBlocks(fullStructure: courseVideosStructure)
