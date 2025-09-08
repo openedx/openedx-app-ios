@@ -5331,6 +5331,22 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 		return __value
     }
 
+    open func getAllVideosForNavigation(structure course: CourseStructure) throws -> [CourseBlock] {
+        addInvocation(.m_getAllVideosForNavigation__structure_course(Parameter<CourseStructure>.value(`course`)))
+		let perform = methodPerformValue(.m_getAllVideosForNavigation__structure_course(Parameter<CourseStructure>.value(`course`))) as? (CourseStructure) -> Void
+		perform?(`course`)
+		var __value: [CourseBlock]
+		do {
+		    __value = try methodReturnValue(.m_getAllVideosForNavigation__structure_course(Parameter<CourseStructure>.value(`course`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getAllVideosForNavigation(structure course: CourseStructure). Use given")
+			Failure("Stub return value not specified for getAllVideosForNavigation(structure course: CourseStructure). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_getCourseBlocks__courseID_courseID(Parameter<String>)
@@ -5351,6 +5367,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         case m_enrichCourseStructureWithLocalProgress__structure(Parameter<CourseStructure>)
         case m_getCourseProgress__courseID_courseID(Parameter<String>)
         case m_getCourseProgressOffline__courseID_courseID(Parameter<String>)
+        case m_getAllVideosForNavigation__structure_course(Parameter<CourseStructure>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -5447,6 +5464,11 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_getAllVideosForNavigation__structure_course(let lhsCourse), .m_getAllVideosForNavigation__structure_course(let rhsCourse)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourse, rhs: rhsCourse, with: matcher), lhsCourse, rhsCourse, "structure course"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -5471,6 +5493,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case let .m_enrichCourseStructureWithLocalProgress__structure(p0): return p0.intValue
             case let .m_getCourseProgress__courseID_courseID(p0): return p0.intValue
             case let .m_getCourseProgressOffline__courseID_courseID(p0): return p0.intValue
+            case let .m_getAllVideosForNavigation__structure_course(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
@@ -5493,6 +5516,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
             case .m_enrichCourseStructureWithLocalProgress__structure: return ".enrichCourseStructureWithLocalProgress(_:)"
             case .m_getCourseProgress__courseID_courseID: return ".getCourseProgress(courseID:)"
             case .m_getCourseProgressOffline__courseID_courseID: return ".getCourseProgressOffline(courseID:)"
+            case .m_getAllVideosForNavigation__structure_course: return ".getAllVideosForNavigation(structure:)"
             }
         }
     }
@@ -5550,6 +5574,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func getCourseProgressOffline(courseID: Parameter<String>, willReturn: CourseProgressDetails...) -> MethodStub {
             return Given(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getAllVideosForNavigation(structure course: Parameter<CourseStructure>, willReturn: [CourseBlock]...) -> MethodStub {
+            return Given(method: .m_getAllVideosForNavigation__structure_course(`course`), products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCourseVideoBlocks(fullStructure: Parameter<CourseStructure>, willProduce: (Stubber<CourseStructure>) -> Void) -> MethodStub {
             let willReturn: [CourseStructure] = []
@@ -5709,6 +5736,16 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
 			willProduce(stubber)
 			return given
         }
+        public static func getAllVideosForNavigation(structure course: Parameter<CourseStructure>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getAllVideosForNavigation__structure_course(`course`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getAllVideosForNavigation(structure course: Parameter<CourseStructure>, willProduce: (StubberThrows<[CourseBlock]>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getAllVideosForNavigation__structure_course(`course`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: ([CourseBlock]).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -5732,6 +5769,7 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         public static func enrichCourseStructureWithLocalProgress(_ structure: Parameter<CourseStructure>) -> Verify { return Verify(method: .m_enrichCourseStructureWithLocalProgress__structure(`structure`))}
         public static func getCourseProgress(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseProgress__courseID_courseID(`courseID`))}
         public static func getCourseProgressOffline(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`))}
+        public static func getAllVideosForNavigation(structure course: Parameter<CourseStructure>) -> Verify { return Verify(method: .m_getAllVideosForNavigation__structure_course(`course`))}
     }
 
     public struct Perform {
@@ -5791,6 +5829,9 @@ open class CourseInteractorProtocolMock: CourseInteractorProtocol, Mock {
         }
         public static func getCourseProgressOffline(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getCourseProgressOffline__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func getAllVideosForNavigation(structure course: Parameter<CourseStructure>, perform: @escaping (CourseStructure) -> Void) -> Perform {
+            return Perform(method: .m_getAllVideosForNavigation__structure_course(`course`), performs: perform)
         }
     }
 
