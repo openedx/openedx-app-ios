@@ -61,6 +61,7 @@ struct VideoNavigationView: View {
                             isCurrentVideo: video == currentBlock
                         )
                         .padding(.leading, index == 0 ? 24 : 8)
+                        .padding(.top, 2)
                         .id(video.id)
 
                         if index == viewModel.allVideosForNavigation.count - 1 {
