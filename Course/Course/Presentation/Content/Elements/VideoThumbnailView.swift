@@ -202,6 +202,7 @@ struct VideoThumbnailView: View {
                 }
             }
         }
+        .frame(height: 25)
     }
     
     private func getEffectiveProgress() -> Double {
