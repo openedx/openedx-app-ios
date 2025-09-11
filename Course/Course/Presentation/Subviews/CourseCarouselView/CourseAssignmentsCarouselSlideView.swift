@@ -124,23 +124,35 @@ struct CourseAssignmentsCarouselSlideView: View {
                     assignmentCompletedView
 
                     if let section = showedAssignmentSection, let subSectionUI = showedAssignmentSubsection {
-                        AssignmentCarouselDetailCardView(detailData: AssignmentDetailData(
-                            subsectionUI: subSectionUI,
-                            sectionName: section.key,
-                            onAssignmentTap: { subSectionUI in
-                                viewModelContainer.navigateToAssignment(for: subSectionUI.subsection) }
-                        ))
+                        AssignmentCarouselDetailCardView(
+                            detailData: AssignmentDetailData(
+                                subsectionUI: subSectionUI,
+                                sectionName: section.key,
+                                onAssignmentTap: { subSectionUI in
+                                    viewModelContainer.navigateToAssignment(for: subSectionUI.subsection)
+                                    viewModelContainer.trackCourseHomeAssignmentClicked(
+                                        blockId: subSectionUI.subsection.blockKey,
+                                        blockName: subSectionUI.subsection.displayName
+                                    )
+                                }
+                            )
+                        )
                     }
 
                     ViewAllButton(section: CourseLocalization.CourseCarousel.viewAllAssignments) {
                         viewModelContainer.selection = 1
                         viewModelContainer.selectedTab = .assignments
+                        viewModelContainer.trackCourseHomeViewAllAssignmentsClicked()
                     }
                     .frame(maxWidth: .infinity)
                 }
 
             }
             .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(Theme.Colors.datesSectionBackground)
+            )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))

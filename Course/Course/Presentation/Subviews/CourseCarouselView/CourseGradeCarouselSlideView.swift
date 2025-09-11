@@ -19,6 +19,7 @@ struct CourseGradeCarouselSlideView: View {
                     
                     ViewAllButton(section: CourseLocalization.CourseContainer.progress) {
                         viewModelContainer.selection = 2
+                        viewModelContainer.trackCourseHomeGradesViewProgressClicked()
                     }
                     .frame(maxWidth: .infinity)
                 } else {
@@ -26,6 +27,10 @@ struct CourseGradeCarouselSlideView: View {
                 }
             }
             .padding(.vertical, 16)
+            .background(
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(Theme.Colors.datesSectionBackground)
+            )
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
