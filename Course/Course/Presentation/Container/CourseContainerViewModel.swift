@@ -483,7 +483,67 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             courseName: course.displayName
         )
     }
-    
+
+    func trackCourseHomeSectionClicked(section: String, subsection: String) {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeSectionSubsectionClick(
+            courseId: course.id,
+            courseName: course.displayName,
+            courseSection: section,
+            courseSubsection: subsection
+        )
+    }
+
+    func trackCourseHomeViewAllContentClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeViewAllContentClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeViewAllVideosClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeViewAllVideosClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeViewAllAssignmentsClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeViewAllAssignmentsClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeGradesViewProgressClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeGradesViewProgressClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeVideoClicked(blockId: String, blockName: String) {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeVideoClicked(courseId: course.id,
+                                         courseName: course.displayName,
+                                         blockId: blockId,
+                                         blockName: blockName
+        )
+    }
+
+    func trackCourseHomeAssignmentClicked(blockId: String, blockName: String) {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeAssignmentClicked(courseId: course.id,
+                                         courseName: course.displayName,
+                                         blockId: blockId,
+                                         blockName: blockName
+        )
+    }
+
     func trackAssignmentClicked(_ sequential: CourseSequential) {
         guard let course = courseStructure else { return }
         analytics.courseAssignmentClicked(

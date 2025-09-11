@@ -126,12 +126,17 @@ struct CourseVideoCarouselSlideView: View {
                     ViewAllButton(section: CourseLocalization.CourseCarousel.viewAllVideos) {
                         viewModelContainer.selection = 1
                         viewModelContainer.selectedTab = .videos
+                        viewModelContainer.trackCourseHomeViewAllVideosClicked()
                     }
                     .frame(maxWidth: .infinity)
                 }
             }
         }
         .padding(.vertical, 16)
+        .background(
+            RoundedRectangle(cornerRadius: 6)
+                .fill(Theme.Colors.datesSectionBackground)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
@@ -210,6 +215,8 @@ struct CourseVideoCarouselSlideView: View {
                             courseStructure: videoContentData.courseVideosStructure,
                             onVideoTap: { tappedVideo, tappedChapter in
                                 viewModelContainer.handleVideoTap(video: tappedVideo, chapter: tappedChapter)
+                                viewModelContainer.trackCourseHomeVideoClicked(blockId: video.id,
+                                                                               blockName: video.displayName)
                             }
                         )
                     )

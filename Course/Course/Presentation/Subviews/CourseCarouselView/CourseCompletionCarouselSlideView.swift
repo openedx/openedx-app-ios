@@ -22,12 +22,17 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
             ViewAllButton(section: CourseLocalization.CourseCarousel.allContent) {
                 viewModelContainer.selection = 1
                 viewModelContainer.selectedTab = .all
+                viewModelContainer.trackCourseHomeViewAllContentClicked()
             }
             .frame(maxWidth: .infinity)
             .padding(.top, 16)
 
         }
         .padding(16)
+        .background(
+            RoundedRectangle(cornerRadius: 6)
+                .fill(Theme.Colors.datesSectionBackground)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
@@ -155,10 +160,14 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                         chapterIndex: continueWith.chapterIndex,
                                         sequentialIndex: continueWith.sequentialIndex
                                     )
+
+                                    viewModelContainer.trackCourseHomeSectionClicked(
+                                        section: chapter.displayName,
+                                        subsection: sequential.displayName
+                                    )
                                 }
                             }
                             .padding(.horizontal, 16)
-                        //                }
                             .frame(height: 96)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 8)
