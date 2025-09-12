@@ -322,9 +322,9 @@ public enum CourseLocalization {
     public static let grades = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES", fallback: "Grades")
     /// This represents your weighted grade against the grade needed to pass this course.
     public static let gradesDescription = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES_DESCRIPTION", fallback: "This represents your weighted grade against the grade needed to pass this course.")
-    /// You have completed %@%% of the course progress
+    /// You have completed %@%% of the course content
     public static func progressCompletion(_ p1: Any) -> String {
-      return CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.PROGRESS_COMPLETION", String(describing: p1), fallback: "You have completed %@%% of the course progress")
+      return CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.PROGRESS_COMPLETION", String(describing: p1), fallback: "You have completed %@%% of the course content")
     }
     /// You’re auditing this course now and have limited access to course material.
     public static let upgradeNowBody = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BODY", fallback: "You’re auditing this course now and have limited access to course material.")

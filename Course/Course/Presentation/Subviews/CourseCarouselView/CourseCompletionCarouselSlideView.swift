@@ -63,7 +63,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
 
                 Text(CourseLocalization.CourseCarousel.progressCompletion(progressPercentage))
                     .font(Theme.Fonts.bodyMedium)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(Theme.Colors.textSecondaryLight)
                     .lineLimit(nil)
             }
 
@@ -109,7 +109,16 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                 .frame(height: 6)
                             }
                         }
+                } else {
+                    VStack(spacing: 18) {
+                        GeometryReader { geometry in
+                            RoundedCorners(tl: 8, tr: 8, bl: 0, br: 0)
+                                .fill(Theme.Colors.courseProgressBG)
+                                .frame(width: geometry.size.width, height: 6)
+                                .padding(.horizontal, 1)
+                        }
                     }
+                }
                 if let continueWith = viewModelContainer.continueWith,
                    let courseStructure = viewModelContainer.courseStructure {
                     let chapter = courseStructure.childs[continueWith.chapterIndex]
@@ -151,8 +160,25 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
 
                 Spacer()
 
-                if isVideo, viewModelContainer.isShowProgress == false {
-                    downloadQualityBars(proxy)
+                Spacer()
+
+                if canDownloadAllSections(in: chapter),
+                   let state = downloadAllButtonState(for: chapter) {
+                    Button(
+                        action: {
+                            downloadAllSubsections(in: chapter, state: state)
+                        }, label: {
+                            switch state {
+                            case .available:
+                                DownloadAvailableView()
+                            case .downloading:
+                                DownloadProgressView()
+                            case .finished:
+                                DownloadFinishedView()
+                            }
+
+                        }
+                    )
                 }
             }
 
@@ -174,10 +200,11 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                     )
 
                 Spacer()
-
-                CoreAssets.chevronRight.swiftUIImage
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .flipsForRightToLeftLayoutDirection(true)
+                if sequential.due != nil {
+                    CoreAssets.chevronRight.swiftUIImage
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .flipsForRightToLeftLayoutDirection(true)
+                }
             }
             .onTapGesture {
                 viewModelContainer.router.showCourseVerticalView(
@@ -202,6 +229,58 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                 .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Theme.Colors.cardViewStroke)
         )
+    }
+
+    private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
+        Task {
+            var allBlocks: [CourseBlock] = []
+            var sequentialsToDownload: [CourseSequential] = []
+            for sequential in chapter.childs {
+                let blocks = await viewModelContainer.collectBlocks(
+                    chapter: chapter,
+                    blockId: sequential.id,
+                    state: state
+                )
+                if !blocks.isEmpty {
+                    allBlocks.append(contentsOf: blocks)
+                    sequentialsToDownload.append(sequential)
+                }
+            }
+            await viewModelContainer.download(
+                state: state,
+                blocks: allBlocks,
+                sequentials: sequentialsToDownload
+            )
+        }
+    }
+
+    private func downloadAllButtonState(for chapter: CourseChapter) -> DownloadViewState? {
+        if canDownloadAllSections(in: chapter) {
+            var downloads: [DownloadViewState] = []
+            for sequential in chapter.childs {
+                if let state = sequentialDownloadState(sequential) {
+                    downloads.append(state)
+                }
+            }
+            if downloads.contains(.downloading) {
+                return .downloading
+            } else if downloads.allSatisfy({ $0 == .finished }) {
+                return .finished
+            } else {
+                return .available
+            }
+        }
+        return nil
+    }
+
+    private func canDownloadAllSections(in chapter: CourseChapter) -> Bool {
+        chapter.childs.contains { sequential in
+            sequentialDownloadState(sequential) != nil
+        }
+    }
+
+    private func sequentialDownloadState(_ sequential: CourseSequential) -> DownloadViewState? {
+        return viewModelContainer.sequentialsDownloadState[sequential.id]
     }
 }
 

@@ -50,7 +50,7 @@
 "COURSE_CONTAINER.HANDOUTS" =  "More";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
 
-"COURSE_CAROUSEL.PROGRESS_COMPLETION" = "You have completed %@%% of the course progress";
+"COURSE_CAROUSEL.PROGRESS_COMPLETION" = "You have completed %@%% of the course content";
 "COURSE_CAROUSEL.GRADES" = "Grades";
 "COURSE_CAROUSEL.GRADES_DESCRIPTION" = "This represents your weighted grade against the grade needed to pass this course.";
 "COURSE_CAROUSEL.ALL_CONTENT" = "All Content";
