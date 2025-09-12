@@ -83,12 +83,12 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
     // MARK: - Section View
     private var sectionView: some View {
         VStack {
+            GeometryReader { proxy in
             if let course = isVideo
                 ? viewModelContainer.courseVideosStructure
                 : viewModelContainer.courseStructure {
                 if let progress = course.courseProgress,
                    progress.totalAssignmentsCount != 0 {
-                    GeometryReader { proxy in
                         VStack(spacing: 18) {
                             ZStack {
                                 GeometryReader { geometry in
@@ -109,77 +109,99 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                 .frame(height: 6)
                             }
                         }
-
-                        if let continueWith = viewModelContainer.continueWith,
-                           let courseStructure = viewModelContainer.courseStructure {
-                            let chapter = courseStructure.childs[continueWith.chapterIndex]
-                            let sequential = chapter.childs[continueWith.sequentialIndex]
-                            let continueUnit = sequential.childs[continueWith.verticalIndex]
-                            VStack {
-                                HStack {
-                                    Text("\(chapter.displayName)")
-                                        .font(Theme.Fonts.titleMedium)
-                                        .foregroundColor(Theme.Colors.textPrimary)
-
-                                    Spacer()
-
-                                    if isVideo, viewModelContainer.isShowProgress == false {
-                                        downloadQualityBars(proxy)
-                                    }
-                                }
-
-                                HStack {
-                                    CoreAssets.chapter.swiftUIImage
-                                        .renderingMode(.template)
-                                        .resizable()
-                                        .frame(width: 20, height: 20)
-
-                                    Text(sequential.displayName)
-                                        .font(Theme.Fonts.titleSmall)
-                                        .multilineTextAlignment(.leading)
-                                        .lineLimit(1)
-                                        .frame(
-                                            maxWidth: idiom == .pad
-                                            ? proxy.size.width * 0.5
-                                            : proxy.size.width * 0.6,
-                                            alignment: .leading
-                                        )
-
-                                    Spacer()
-
-                                    CoreAssets.chevronRight.swiftUIImage
-                                        .foregroundColor(Theme.Colors.textPrimary)
-                                        .flipsForRightToLeftLayoutDirection(true)
-                                }
-                                .onTapGesture {
-                                    viewModelContainer.router.showCourseVerticalView(
-                                        courseID: viewModelContainer.courseStructure?.id ?? "",
-                                        courseName: viewModelContainer.courseStructure?.displayName ?? "",
-                                        title: sequential.displayName,
-                                        chapters: courseStructure.childs,
-                                        chapterIndex: continueWith.chapterIndex,
-                                        sequentialIndex: continueWith.sequentialIndex
-                                    )
-
-                                    viewModelContainer.trackCourseHomeSectionClicked(
-                                        section: chapter.displayName,
-                                        subsection: sequential.displayName
-                                    )
-                                }
-                            }
-                            .padding(.horizontal, 16)
-                            .frame(height: 96)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
-                                    .foregroundColor(Theme.Colors.cardViewStroke)
-                            )
-                        }
                     }
-                    .frame(height: 96)
+                if let continueWith = viewModelContainer.continueWith,
+                   let courseStructure = viewModelContainer.courseStructure {
+                    let chapter = courseStructure.childs[continueWith.chapterIndex]
+                    let sequential = chapter.childs[continueWith.sequentialIndex]
+                    nextSectionView(
+                        courseStructure: courseStructure,
+                        chapter: chapter,
+                        sequential: sequential,
+                        proxy: proxy
+                    )
+                } else {
+                    if let courseStructure = viewModelContainer.courseStructure,
+                        let chapter = courseStructure.childs.first,
+                        let sequential = chapter.childs.first {
+                        nextSectionView(
+                            courseStructure: courseStructure,
+                            chapter: chapter,
+                            sequential: sequential,
+                            proxy: proxy
+                        )
+                    }
+                }
                 }
             }
+            .frame(height: 96)
         }
+    }
+
+    // MARK: - Next Section View
+    private func nextSectionView(courseStructure: CourseStructure,
+                                 chapter: CourseChapter,
+                                 sequential: CourseSequential,
+                                 proxy: GeometryProxy) -> some View {
+        VStack {
+            HStack {
+                Text("\(chapter.displayName)")
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundColor(Theme.Colors.textPrimary)
+
+                Spacer()
+
+                if isVideo, viewModelContainer.isShowProgress == false {
+                    downloadQualityBars(proxy)
+                }
+            }
+
+            HStack {
+                CoreAssets.chapter.swiftUIImage
+                    .renderingMode(.template)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+
+                Text(sequential.displayName)
+                    .font(Theme.Fonts.titleSmall)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(1)
+                    .frame(
+                        maxWidth: idiom == .pad
+                        ? proxy.size.width * 0.5
+                        : proxy.size.width * 0.6,
+                        alignment: .leading
+                    )
+
+                Spacer()
+
+                CoreAssets.chevronRight.swiftUIImage
+                    .foregroundColor(Theme.Colors.textPrimary)
+                    .flipsForRightToLeftLayoutDirection(true)
+            }
+            .onTapGesture {
+                viewModelContainer.router.showCourseVerticalView(
+                    courseID: courseStructure.id,
+                    courseName: courseStructure.displayName,
+                    title: sequential.displayName,
+                    chapters: courseStructure.childs,
+                    chapterIndex: 0,
+                    sequentialIndex: 0
+                )
+
+                viewModelContainer.trackCourseHomeSectionClicked(
+                    section: chapter.displayName,
+                    subsection: sequential.displayName
+                )
+            }
+        }
+        .padding(.horizontal, 16)
+        .frame(height: 96)
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
+                .foregroundColor(Theme.Colors.cardViewStroke)
+        )
     }
 }
 
