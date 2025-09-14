@@ -35,6 +35,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     private var assembler: Assembler?
     
     private var lastForceLogoutTime: TimeInterval = 0
+    let dbProvider = DatabaseManagerProvider()
     
     func application(
         _ application: UIApplication,
@@ -95,6 +96,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
 
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleTenantChange(_:)),
+            name: .tenantDidChange,
+            object: nil
+        )
         return true
     }
 
@@ -281,5 +288,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         } catch {
             debugLog("Could not schedule app refresh: \(error)")
         }
+    }
+    
+    @objc func handleTenantChange(_ notification: Notification) {
+        guard let tenant = notification.userInfo?["tenant"] as? Tenant else { return }
+        dbProvider.resetContainer(for: tenant.name)
     }
 }

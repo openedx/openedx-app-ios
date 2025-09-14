@@ -69,9 +69,15 @@ public class TenantViewModel: TenantProvider, ObservableObject {
             saveToUserDefaults()
             let name = selectedTenant?.name ?? ""
             let localized = selectedTenant?.tenantName ?? "-"
+            //switch local DB
+            NotificationCenter.default.post(
+                        name: .tenantDidChange,
+                        object: nil,
+                        userInfo: ["tenant": selectedTenant as Any]
+                    )
+            //switch theme
             Task {
                 @MainActor in
-                print("selectedTenant: \(name), \(localized)")
                 ThemeManager.shared.applyTheme(
                     for: name,
                     localizedName: localized
