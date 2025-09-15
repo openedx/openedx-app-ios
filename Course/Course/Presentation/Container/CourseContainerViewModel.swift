@@ -1584,9 +1584,9 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         if let dueDate = getAssignmentDueDate(for: subsection) {
             switch status {
             case .pastDue:
-                return "\(cleanShortLabel) \(dueDate.formattedDueStatus())"
+                return "\(dueDate.formattedDueStatus())"
             case .incomplete:
-                return "\(cleanShortLabel) \(dueDate.formattedDueStatus())"
+                return "\(dueDate.formattedDueStatus())"
             default:
                 break
             }

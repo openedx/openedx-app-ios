@@ -11,6 +11,27 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
     let idiom: UIUserInterfaceIdiom
     let downloadQualityBars: (GeometryProxy) -> DownloadBarsView
 
+    private var assignmentContentData: AssignmentContentData {
+        AssignmentContentData(
+            courseAssignmentsStructure: viewModelContainer.courseAssignmentsStructure,
+            assignmentSections: viewModelContainer.assignmentSectionsData.map { section in
+                AssignmentSectionUI(
+                    key: section.label,
+                    subsections: section.subsections,
+                    weight: section.weight
+                )
+            },
+            assignmentTypeColors: Dictionary(uniqueKeysWithValues:
+                                                viewModelContainer.assignmentSectionsData.map { section in
+                    (section.label, viewModelContainer.assignmentTypeColor(for: section.label) ?? "#666666")
+                }
+            ),
+            isShowProgress: viewModelContainer.isShowProgress,
+            showError: viewModelContainer.showError,
+            errorMessage: viewModelContainer.errorMessage
+        )
+    }
+
     // MARK: - Body
     var body: some View {
         VStack(alignment: .leading) {
@@ -119,10 +140,11 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                         }
                     }
                 }
-                if let continueWith = viewModelContainer.continueWith,
-                   let courseStructure = viewModelContainer.courseStructure {
-                    let chapter = courseStructure.childs[continueWith.chapterIndex]
-                    let sequential = chapter.childs[continueWith.sequentialIndex]
+                if let courseStructure = viewModelContainer.courseStructure,
+                    let chapter = courseStructure.childs.first(where: {
+                    $0.childs.contains(where: { $0.completion != 1 })
+                }),
+                let sequential = chapter.childs.first(where: { $0.completion != 1 }) {
                     nextSectionView(
                         courseStructure: courseStructure,
                         chapter: chapter,
@@ -207,19 +229,26 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                 }
             }
             .onTapGesture {
-                viewModelContainer.router.showCourseVerticalView(
-                    courseID: courseStructure.id,
-                    courseName: courseStructure.displayName,
-                    title: sequential.displayName,
-                    chapters: courseStructure.childs,
-                    chapterIndex: 0,
-                    sequentialIndex: 0
-                )
+                if let chapterIndex = courseStructure.childs.firstIndex(where: {
+                    $0.childs.contains(where: { $0.completion != 1 })
+                }),
+                let sequentialIndex = courseStructure.childs[chapterIndex].childs.firstIndex(where: {
+                    $0.completion != 1
+                }) {
+                    viewModelContainer.router.showCourseVerticalView(
+                        courseID: courseStructure.id,
+                        courseName: courseStructure.displayName,
+                        title: sequential.displayName,
+                        chapters: courseStructure.childs,
+                        chapterIndex: chapterIndex,
+                        sequentialIndex: sequentialIndex
+                    )
 
-                viewModelContainer.trackCourseHomeSectionClicked(
-                    section: chapter.displayName,
-                    subsection: sequential.displayName
-                )
+                    viewModelContainer.trackCourseHomeSectionClicked(
+                        section: chapter.displayName,
+                        subsection: sequential.displayName
+                    )
+                }
             }
         }
         .padding(.horizontal, 16)

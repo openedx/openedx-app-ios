@@ -106,37 +106,37 @@ struct CourseAssignmentsCarouselSlideView: View {
                     .accessibilityIdentifier("no_assignments_available")
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel(CourseLocalization.Accessibility.noContentSection)
-                } else if allAssignmentsCompleted {
-                    VStack(spacing: 16) {
-                        Spacer()
-                        Text(CourseLocalization.CourseCarousel.allVideosCompleted)
-                            .font(Theme.Fonts.titleMedium)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                            .multilineTextAlignment(.center)
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 16)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(CourseLocalization.CourseCarousel.allAssignmentsCompleted)
                 } else {
                     headerView
                     assignmentCompletedView
 
-                    if let section = showedAssignmentSection, let subSectionUI = showedAssignmentSubsection {
-                        AssignmentCarouselDetailCardView(
-                            detailData: AssignmentDetailData(
-                                subsectionUI: subSectionUI,
-                                sectionName: section.key,
-                                onAssignmentTap: { subSectionUI in
-                                    viewModelContainer.navigateToAssignment(for: subSectionUI.subsection)
-                                    viewModelContainer.trackCourseHomeAssignmentClicked(
-                                        blockId: subSectionUI.subsection.blockKey,
-                                        blockName: subSectionUI.subsection.displayName
-                                    )
-                                }
+                    if allAssignmentsCompleted {
+                        VStack(spacing: 16) {
+                            Text(CourseLocalization.CourseCarousel.allVideosCompleted)
+                                .font(Theme.Fonts.titleMedium)
+                                .foregroundColor(Theme.Colors.textPrimary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 16)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(CourseLocalization.CourseCarousel.allAssignmentsCompleted)
+                    } else {
+                        if let section = showedAssignmentSection, let subSectionUI = showedAssignmentSubsection {
+                            AssignmentCarouselDetailCardView(
+                                detailData: AssignmentDetailData(
+                                    subsectionUI: subSectionUI,
+                                    sectionName: section.key,
+                                    onAssignmentTap: { subSectionUI in
+                                        viewModelContainer.navigateToAssignment(for: subSectionUI.subsection)
+                                        viewModelContainer.trackCourseHomeAssignmentClicked(
+                                            blockId: subSectionUI.subsection.blockKey,
+                                            blockName: subSectionUI.subsection.displayName
+                                        )
+                                    }
+                                )
                             )
-                        )
+                        }
                     }
 
                     ViewAllButton(section: CourseLocalization.CourseCarousel.viewAllAssignments) {

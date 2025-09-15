@@ -105,23 +105,23 @@ struct CourseVideoCarouselSlideView: View {
                     )
                     .accessibilityElement(children: .combine)
                     .accessibilityLabel(CourseLocalization.Accessibility.noContentSection)
-                } else if allVideosCompleted {
-                    VStack(spacing: 16) {
-                        Spacer()
-                        Text(CourseLocalization.CourseCarousel.allVideosCompleted)
-                            .font(Theme.Fonts.titleMedium)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                            .multilineTextAlignment(.center)
-                        Spacer()
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, 16)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(CourseLocalization.CourseCarousel.allVideosCompleted)
                 } else {
                     headerView
                     videosCompletedView
-                    continueWatchingView
+
+                    if allVideosCompleted {
+                        VStack(spacing: 16) {
+                            Text(CourseLocalization.CourseCarousel.allVideosCompleted)
+                                .font(Theme.Fonts.titleMedium)
+                                .foregroundColor(Theme.Colors.textPrimary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(CourseLocalization.CourseCarousel.allVideosCompleted)
+                    } else {
+                        continueWatchingView
+                    }
 
                     ViewAllButton(section: CourseLocalization.CourseCarousel.viewAllVideos) {
                         viewModelContainer.selection = 1

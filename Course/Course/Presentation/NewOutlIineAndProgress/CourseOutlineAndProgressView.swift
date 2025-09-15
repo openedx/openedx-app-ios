@@ -293,16 +293,14 @@ public struct CourseOutlineAndProgressView: View {
         ForEach(carouselSections.indices, id: \.self) { idx in
             VStack {
                 carouselSections[idx]
-                if idx == 0 {
-                    Spacer()
-                }
+                Spacer()
             }
             .tag(idx)
             .padding(.horizontal, 24)
             .padding(.top, 16)
         }
     }
-    
+
     // MARK: - Page Control View
     private var pageControlView: some View {
         HStack(alignment: .center) {
