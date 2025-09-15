@@ -104,7 +104,7 @@ struct CourseVideoCarouselSlideView: View {
                         showButton: false
                     )
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel(CourseLocalization.Accessibility.noContentSection)
+                    .accessibilityLabel(CourseLocalization.Error.videosUnavailable)
                 } else {
                     headerView
                     videosCompletedView
@@ -179,7 +179,13 @@ struct CourseVideoCarouselSlideView: View {
                         .font(Theme.Fonts.labelLarge)
                         .foregroundStyle(Theme.Colors.textSecondary)
                 }
-
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(
+                    CourseLocalization.Accessibility.videoProgressSection(
+                        progress.assignmentsCompleted ?? 0,
+                        progress.totalAssignmentsCount ?? 0
+                    )
+                )
                 if progress.totalAssignmentsCount != 0 {
                     CourseProgressView(
                         progress: progress,

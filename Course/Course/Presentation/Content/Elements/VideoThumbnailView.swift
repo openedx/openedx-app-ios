@@ -147,7 +147,6 @@ struct VideoThumbnailView: View {
             let progress = getEffectiveProgress()
             let done = video.completion >= 0.9
             let greenBar = done && (video.localVideoProgress == 0 || video.localVideoProgress >= 0.9)
-            let availableWidth = fixedSize ? thumbnailWidth : geometry.size.width
 
             if done {
                 ZStack(alignment: .trailing) {
@@ -169,7 +168,7 @@ struct VideoThumbnailView: View {
                             
                             Rectangle()
                                 .fill(Theme.Colors.accentColor)
-                                .frame(width: max(8, availableWidth * progress - 8),
+                                .frame(width: max(8, geometry.size.width * progress - 8),
                                        height: 4)
                                 .cornerRadius(2)
                                 .padding(.horizontal, 4)
@@ -194,7 +193,7 @@ struct VideoThumbnailView: View {
                     
                     Rectangle()
                         .fill(Theme.Colors.accentColor)
-                        .frame(width: max(8, availableWidth * progress - 8),
+                        .frame(width: max(8, geometry.size.width * progress - 8),
                                height: 4)
                         .cornerRadius(2)
                         .padding(.horizontal, 4)

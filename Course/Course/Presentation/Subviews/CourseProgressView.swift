@@ -16,6 +16,7 @@ public struct CourseProgressView: View {
     private var onToggleCompleted: (() -> Void)?
     private var onShowCompletedAnalytics: (() -> Void)?
     private var showCompletedText = true
+    private var progressPercentageCount = 0
 
     public init(
         progress: CourseProgress,
@@ -46,14 +47,14 @@ public struct CourseProgressView: View {
                         RoundedCorners(tl: 2, tr: 0, bl: 2, br: 0)
                             .fill(Theme.Colors.success)
                             .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total), height: 4)
+                            .accessibilityLabel("\(Int(Double(completed)/Double(total)))% done")
                     }
                 }
                 .frame(height: 4)
             }
             .cornerRadius(2)
             .accessibilityElement(children: .ignore)
-            .accessibilityLabel(CourseLocalization.Accessibility.courseProgressSection)
-            
+
             HStack {
                 if showCompletedText {
                     if let total = progress.totalAssignmentsCount,

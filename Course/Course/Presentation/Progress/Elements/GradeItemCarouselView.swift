@@ -9,7 +9,11 @@ struct GradeItemCarouselView: View {
     let color: Color
 
     private var earnedPercent: Int {
-        return Int(assignmentPolicy.weight * progressData.percentGraded * 100)
+        if progressData.completed == 0 {
+            return 0
+        } else {
+            return Int(Double(progressData.completed) / Double(progressData.total) * 100)
+        }
     }
 
     private var maxPercent: Int {
@@ -18,7 +22,7 @@ struct GradeItemCarouselView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(assignmentPolicy.shortLabel)
+            Text(assignmentPolicy.type)
                 .font(Theme.Fonts.labelLarge)
                 .foregroundColor(Theme.Colors.textPrimary)
 

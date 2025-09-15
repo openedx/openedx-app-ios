@@ -133,10 +133,12 @@ public struct CourseOutlineAndProgressView: View {
                                     if let continueWith = viewModelContainer.continueWith,
                                        let courseStructure = viewModelContainer.courseStructure {
                                         let chapter = courseStructure.childs[continueWith.chapterIndex]
+                                        let sequential = chapter.childs[continueWith.sequentialIndex]
+                                        let continueUnit = sequential.childs[continueWith.verticalIndex]
 
                                         UnitButtonView(
                                             type: .continueLessonCustom(
-                                                chapter.displayName
+                                                continueUnit.displayName
                                             ),
                                             action: {
                                                 viewModelContainer.openLastVisitedBlock()
@@ -311,6 +313,7 @@ public struct CourseOutlineAndProgressView: View {
                     .foregroundColor(infoPath == 0 ? .gray : Theme.Colors.textPrimary)
                     .scaleEffect(x: -1, y: 1)
                     .flipsForRightToLeftLayoutDirection(true)
+                    .accessibilityLabel("Previous Slide")
             }
             .disabled(infoPath == 0)
 
@@ -331,6 +334,8 @@ public struct CourseOutlineAndProgressView: View {
             } label: {
                 CoreAssets.chevronRight.swiftUIImage
                     .foregroundColor(infoPath == carouselSections.count - 1 ? .gray : Theme.Colors.textPrimary)
+                    .accessibilityLabel("Next Slide")
+
             }
             .flipsForRightToLeftLayoutDirection(true)
             .disabled(infoPath == carouselSections.count - 1)
