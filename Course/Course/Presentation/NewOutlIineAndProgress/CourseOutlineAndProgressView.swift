@@ -313,7 +313,11 @@ public struct CourseOutlineAndProgressView: View {
                     .foregroundColor(infoPath == 0 ? .gray : Theme.Colors.textPrimary)
                     .scaleEffect(x: -1, y: 1)
                     .flipsForRightToLeftLayoutDirection(true)
-                    .accessibilityLabel(CourseLocalization.Accessibility.Carousel.previousSlideButton)
+                    .accessibilityLabel(
+                        infoPath == 0 ?
+                        CourseLocalization.Accessibility.Carousel.lastSlideButton :
+                            CourseLocalization.Accessibility.Carousel.previousSlideButton
+                    )
             }
             .disabled(infoPath == 0)
 
