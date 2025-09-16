@@ -109,6 +109,10 @@ public enum CourseLocalization {
     }
     /// Tap to show completed sections
     public static let showCompletedSections = CourseLocalization.tr("Localizable", "ACCESSIBILITY.SHOW_COMPLETED_SECTIONS", fallback: "Tap to show completed sections")
+    /// %@ percent completed
+    public static func videoPercentageCompleted(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PERCENTAGE_COMPLETED", String(describing: p1), fallback: "%@ percent completed")
+    }
     /// Video progress %@ of %@ Completed.
     public static func videoProgressSection(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PROGRESS_SECTION", String(describing: p1), String(describing: p2), fallback: "Video progress %@ of %@ Completed.")
@@ -140,6 +144,18 @@ public enum CourseLocalization {
     /// Weight: %@ percent of grade
     public static func weightContribution(_ p1: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.WEIGHT_CONTRIBUTION", String(describing: p1), fallback: "Weight: %@ percent of grade")
+    }
+    public enum Carousel {
+      /// %@ of %@ assignments completed
+      public static func assignmentsCompleted(_ p1: Any, _ p2: Any) -> String {
+        return CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.ASSIGNMENTS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@ of %@ assignments completed")
+      }
+      /// Last Page
+      public static let lastSlideButton = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.LAST_SLIDE_BUTTON", fallback: "Last Page")
+      /// Next Page
+      public static let nextSlideButton = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.NEXT_SLIDE_BUTTON", fallback: "Next Page")
+      /// Previous Page
+      public static let previousSlideButton = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.PREVIOUS_SLIDE_BUTTON", fallback: "Previous Page")
     }
   }
   public enum Alert {

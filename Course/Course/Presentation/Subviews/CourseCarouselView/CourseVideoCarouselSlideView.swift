@@ -178,6 +178,7 @@ struct CourseVideoCarouselSlideView: View {
                     Text(CourseLocalization.CourseCarousel.videosCompleted)
                         .font(Theme.Fonts.labelLarge)
                         .foregroundStyle(Theme.Colors.textSecondary)
+                        .frame(height: 44)
                 }
                 .accessibilityElement(children: .combine)
                 .accessibilityLabel(

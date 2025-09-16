@@ -28,7 +28,7 @@ struct AssignmentCarouselDetailCardView: View {
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    if detailData.subsectionUI.status != .completed {
+                    if detailData.subsectionUI.status != .completed && detailData.subsectionUI.date != nil {
                         HStack {
                             CoreAssets.icAssignmentPastDue.swiftUIImage
                             Text(detailData.subsectionUI.status == .pastDue ? "Past Due" : "Due Soon")

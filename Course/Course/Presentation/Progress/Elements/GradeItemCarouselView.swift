@@ -9,11 +9,12 @@ struct GradeItemCarouselView: View {
     let color: Color
 
     private var earnedPercent: Int {
-        if progressData.completed == 0 {
-            return 0
-        } else {
-            return Int(Double(progressData.completed) / Double(progressData.total) * 100)
-        }
+        return Int(assignmentPolicy.weight * progressData.percentGraded * 100)
+//        if progressData.completed == 0 {
+//            return 0
+//        } else {
+//            return Int(Double(progressData.completed) / Double(progressData.total) * 100)
+//        }
     }
 
     private var maxPercent: Int {
@@ -64,7 +65,7 @@ struct GradeItemCarouselView: View {
         .accessibilityElement(children: .combine)
         .accessibilityLabel(CourseLocalization.Accessibility.assignmentItem)
         .accessibilityValue(CourseLocalization.Accessibility.assignmentProgressDetails(
-            assignmentPolicy.shortLabel,
+            assignmentPolicy.type,
             "\(progressData.completed)",
             "\(progressData.total)",
             "\(earnedPercent)",

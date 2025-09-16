@@ -105,46 +105,18 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
     private var sectionView: some View {
         VStack {
             GeometryReader { proxy in
-            if let course = isVideo
-                ? viewModelContainer.courseVideosStructure
-                : viewModelContainer.courseStructure {
-                if let progress = course.courseProgress,
-                   progress.totalAssignmentsCount != 0 {
-                        VStack(spacing: 18) {
-                            ZStack {
-                                GeometryReader { geometry in
-                                    RoundedCorners(tl: 8, tr: 8, bl: 0, br: 0)
-                                        .fill(Theme.Colors.courseProgressBG)
-                                        .frame(width: geometry.size.width, height: 6)
-                                        .padding(.horizontal, 1)
-
-                                    if let total = progress.totalAssignmentsCount,
-                                       let completed = progress.assignmentsCompleted {
-                                        RoundedCorners(tl: 4, tr: completed == total ? 4 : 0, bl: 0, br: 0)
-                                            .fill(Theme.Colors.success)
-                                            .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total),
-                                                   height: 6)
-                                            .padding(.horizontal, 2)
-                                    }
-                                }
-                                .frame(height: 6)
-                            }
-                        }
-                } else {
-                    VStack(spacing: 18) {
-                        GeometryReader { geometry in
-                            RoundedCorners(tl: 8, tr: 8, bl: 0, br: 0)
-                                .fill(Theme.Colors.courseProgressBG)
-                                .frame(width: geometry.size.width, height: 6)
-                                .padding(.horizontal, 1)
-                        }
-                    }
-                }
                 if let courseStructure = viewModelContainer.courseStructure,
                     let chapter = courseStructure.childs.first(where: {
                     $0.childs.contains(where: { $0.completion != 1 })
-                }),
-                let sequential = chapter.childs.first(where: { $0.completion != 1 }) {
+                    }) {
+                    SectionProgressView(progress: viewModelContainer.chapterProgress(for: chapter))
+                }
+
+                if let courseStructure = viewModelContainer.courseStructure,
+                   let chapter = courseStructure.childs.first(where: {
+                       $0.childs.contains(where: { $0.completion != 1 })
+                   }),
+                   let sequential = chapter.childs.first(where: { $0.completion != 1 }) {
                     nextSectionView(
                         courseStructure: courseStructure,
                         chapter: chapter,
@@ -153,8 +125,8 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                     )
                 } else {
                     if let courseStructure = viewModelContainer.courseStructure,
-                        let chapter = courseStructure.childs.first,
-                        let sequential = chapter.childs.first {
+                       let chapter = courseStructure.childs.first,
+                       let sequential = chapter.childs.first {
                         nextSectionView(
                             courseStructure: courseStructure,
                             chapter: chapter,
@@ -162,7 +134,6 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                             proxy: proxy
                         )
                     }
-                }
                 }
             }
             .frame(height: 96)

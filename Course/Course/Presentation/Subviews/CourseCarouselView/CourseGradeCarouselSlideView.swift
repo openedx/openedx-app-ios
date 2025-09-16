@@ -59,7 +59,7 @@ struct CourseGradeCarouselSlideView: View {
             .font(Theme.Fonts.bodyMedium)
             .lineLimit(2)
             .padding(.bottom, 12)
-            .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
+            .accessibilityLabel(CourseLocalization.CourseCarousel.gradesDescription)
             .padding(.horizontal, 16)
     }
 
@@ -74,7 +74,6 @@ struct CourseGradeCarouselSlideView: View {
                 assignmentColors: viewModelProgress.courseProgress?.gradingPolicy.assignmentColors ?? [],
                 isCarousel: true
             )
-            .accessibilityLabel(CourseLocalization.Accessibility.overallGradeSection)
             .padding(.horizontal, 16)
 
             gradeDetailsItems
@@ -88,7 +87,7 @@ struct CourseGradeCarouselSlideView: View {
 
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(
-                Array(viewModelProgress.assignmentPolicies.prefix(4).enumerated()),
+                Array(viewModelProgress.assignmentPolicies.enumerated()),
                 id: \.element.type
             ) { index, policy in
                 let progressData = viewModelProgress.getAssignmentProgress(for: policy.type)

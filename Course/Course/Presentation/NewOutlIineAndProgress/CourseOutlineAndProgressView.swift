@@ -313,7 +313,7 @@ public struct CourseOutlineAndProgressView: View {
                     .foregroundColor(infoPath == 0 ? .gray : Theme.Colors.textPrimary)
                     .scaleEffect(x: -1, y: 1)
                     .flipsForRightToLeftLayoutDirection(true)
-                    .accessibilityLabel("Previous Slide")
+                    .accessibilityLabel(CourseLocalization.Accessibility.Carousel.previousSlideButton)
             }
             .disabled(infoPath == 0)
 
@@ -325,8 +325,7 @@ public struct CourseOutlineAndProgressView: View {
             )
             .frame(height: 8)
             .allowsHitTesting(false)
-            .accessibilityIdentifier("whatsnew_pagecontrol")
-            
+
             Spacer()
             
             Button {
@@ -334,8 +333,11 @@ public struct CourseOutlineAndProgressView: View {
             } label: {
                 CoreAssets.chevronRight.swiftUIImage
                     .foregroundColor(infoPath == carouselSections.count - 1 ? .gray : Theme.Colors.textPrimary)
-                    .accessibilityLabel("Next Slide")
-
+                    .accessibilityLabel(
+                        infoPath == carouselSections.count - 1 ?
+                        CourseLocalization.Accessibility.Carousel.lastSlideButton :
+                            CourseLocalization.Accessibility.Carousel.nextSlideButton
+                    )
             }
             .flipsForRightToLeftLayoutDirection(true)
             .disabled(infoPath == carouselSections.count - 1)

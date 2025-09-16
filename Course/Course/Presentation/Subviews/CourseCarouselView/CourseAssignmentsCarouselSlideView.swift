@@ -105,7 +105,7 @@ struct CourseAssignmentsCarouselSlideView: View {
                     )
                     .accessibilityIdentifier("no_assignments_available")
                     .accessibilityElement(children: .combine)
-                    .accessibilityLabel(CourseLocalization.Accessibility.noContentSection)
+                    .accessibilityLabel(CourseLocalization.Error.assignmentsUnavailable)
                 } else {
                     headerView
                     assignmentCompletedView
@@ -198,7 +198,12 @@ struct CourseAssignmentsCarouselSlideView: View {
                         Text(CourseLocalization.CourseCarousel.assigmentsCompleted)
                             .font(Theme.Fonts.labelLarge)
                             .foregroundStyle(Theme.Colors.textSecondary)
+                            .frame(height: 44)
+
                     }
+                    .accessibilityElement(children: .combine)
+                    .accessibilityLabel(CourseLocalization.Accessibility.Carousel
+                        .assignmentsCompleted(completedAssignments, totalAssignments))
 
                     CourseProgressView(
                         progress: CourseProgress(
@@ -207,9 +212,6 @@ struct CourseAssignmentsCarouselSlideView: View {
                         ),
                         showCompletedText: false
                     )
-                    .accessibilityIdentifier("assignments_overall_progress")
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(CourseLocalization.Accessibility.assignmentProgressSection)
                 }
         }
         .padding(.horizontal, 16)

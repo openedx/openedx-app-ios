@@ -47,13 +47,13 @@ public struct CourseProgressView: View {
                         RoundedCorners(tl: 2, tr: 0, bl: 2, br: 0)
                             .fill(Theme.Colors.success)
                             .frame(width: geometry.size.width * CGFloat(completed) / CGFloat(total), height: 4)
-                            .accessibilityLabel("\(Int(Double(completed)/Double(total)))% done")
+                            .accessibilityLabel(CourseLocalization.Accessibility
+                                .videoPercentageCompleted(String(Int(Double(completed)/Double(total) * 100))))
                     }
                 }
                 .frame(height: 4)
             }
             .cornerRadius(2)
-            .accessibilityElement(children: .ignore)
 
             HStack {
                 if showCompletedText {
