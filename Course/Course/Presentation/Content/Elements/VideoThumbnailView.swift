@@ -101,9 +101,16 @@ struct VideoThumbnailView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
         .overlay {
-            RoundedRectangle(cornerRadius: 12)
-                .stroke(lineWidth: video.completion >= 1.0 ? 2 : 0)
-                .foregroundStyle(Theme.Colors.success)
+            if cornerOnlyTop {
+                Rectangle()
+                    .stroke(lineWidth: video.completion >= 1.0 ? 2 : 0)
+                    .foregroundStyle(Theme.Colors.success)
+                    .clipShape(RoundedCorners(tl: 10, tr: 10))
+            } else {
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(lineWidth: video.completion >= 1.0 ? 2 : 0)
+                    .foregroundStyle(Theme.Colors.success)
+            }
         }
     }
 
@@ -164,24 +171,24 @@ struct VideoThumbnailView: View {
                     if greenBar {
                         Rectangle()
                             .fill(Theme.Colors.success)
-                            .frame(height: 4)
-                            .cornerRadius(2)
+                            .frame(height: cornerOnlyTop ? 8 : 4)
+                            .cornerRadius(cornerOnlyTop ? 4 : 2)
                             .padding(.horizontal, 4)
                             .padding(.bottom, 4)
                     } else if progress > 0 {
                         ZStack(alignment: .leading) {
                             Rectangle()
                                 .fill(Color.gray.opacity(0.3))
-                                .frame(height: 4)
-                                .cornerRadius(2)
+                                .frame(height: cornerOnlyTop ? 8 : 4)
+                                .cornerRadius(cornerOnlyTop ? 4 : 2)
                                 .padding(.horizontal, 4)
                                 .padding(.bottom, 4)
                             
                             Rectangle()
                                 .fill(Theme.Colors.accentColor)
                                 .frame(width: max(8, geometry.size.width * progress - 8),
-                                       height: 4)
-                                .cornerRadius(2)
+                                       height: cornerOnlyTop ? 8 : 4)
+                                .cornerRadius(cornerOnlyTop ? 4 : 2)
                                 .padding(.horizontal, 4)
                                 .padding(.bottom, 4)
                         }
@@ -197,16 +204,16 @@ struct VideoThumbnailView: View {
                 ZStack(alignment: .leading) {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(height: 4)
-                        .cornerRadius(2)
+                        .frame(height: cornerOnlyTop ? 8 : 4)
+                        .cornerRadius(cornerOnlyTop ? 4 : 2)
                         .padding(.horizontal, 4)
                         .padding(.bottom, 4)
                     
                     Rectangle()
                         .fill(Theme.Colors.accentColor)
                         .frame(width: max(8, geometry.size.width * progress - 8),
-                               height: 4)
-                        .cornerRadius(2)
+                               height: cornerOnlyTop ? 8 : 4)
+                        .cornerRadius(cornerOnlyTop ? 4 : 2)
                         .padding(.horizontal, 4)
                         .padding(.bottom, 4)
                 }

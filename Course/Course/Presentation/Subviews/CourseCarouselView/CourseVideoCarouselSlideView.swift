@@ -240,10 +240,14 @@ struct CourseVideoCarouselSlideView: View {
                     .padding(.bottom, 8)
                 }
             }
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                    .foregroundColor(Theme.Colors.cardViewStroke)
+            .background(
+                ZStack {
+                    RoundedRectangle(cornerRadius: 11)
+                        .foregroundColor(Theme.Colors.background)
+                    RoundedRectangle(cornerRadius: 11)
+                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                        .foregroundColor(Theme.Colors.cardViewStroke)
+                }
             )
         }
         .padding(.horizontal, 16)
