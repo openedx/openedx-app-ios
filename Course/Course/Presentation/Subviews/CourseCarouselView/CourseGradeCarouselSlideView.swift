@@ -55,7 +55,7 @@ struct CourseGradeCarouselSlideView: View {
     // MARK: - Description View
     private var descriptionView: some View {
         Text(CourseLocalization.CourseCarousel.gradesDescription)
-            .foregroundStyle(Theme.Colors.textSecondary)
+            .foregroundStyle(Theme.Colors.textSecondaryDark)
             .font(Theme.Fonts.bodyMedium)
             .lineLimit(2)
             .padding(.bottom, 12)

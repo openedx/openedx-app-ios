@@ -177,7 +177,7 @@ struct CourseVideoCarouselSlideView: View {
 
                     Text(CourseLocalization.CourseCarousel.videosCompleted)
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundStyle(Theme.Colors.textSecondary)
+                        .foregroundStyle(Theme.Colors.textSecondaryDark)
                         .frame(height: 44)
                 }
                 .accessibilityElement(children: .combine)
@@ -225,7 +225,8 @@ struct CourseVideoCarouselSlideView: View {
                                 viewModelContainer.trackCourseHomeVideoClicked(blockId: video.id,
                                                                                blockName: video.displayName)
                             }
-                        )
+                        ),
+                        cornerOnlyTop: true
                     )
 
                     HStack {
@@ -240,7 +241,7 @@ struct CourseVideoCarouselSlideView: View {
                 }
             }
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 12)
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                     .foregroundColor(Theme.Colors.cardViewStroke)
             )

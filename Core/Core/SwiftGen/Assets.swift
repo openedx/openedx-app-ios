@@ -133,6 +133,7 @@ public enum CoreAssets {
   public static let icAssignment = ImageAsset(name: "ic-assignment")
   public static let information = ImageAsset(name: "information")
   public static let learnEmpty = ImageAsset(name: "learn_empty")
+  public static let listViewIcon = ImageAsset(name: "listViewIcon")
   public static let airmail = ImageAsset(name: "airmail")
   public static let defaultMail = ImageAsset(name: "defaultMail")
   public static let fastmail = ImageAsset(name: "fastmail")

@@ -51,7 +51,7 @@ struct AssignmentCarouselDetailCardView: View {
 
                             Text(sectionName)
                                 .font(Theme.Fonts.labelSmall)
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textSecondaryDark)
                         }
 
                         Spacer()
@@ -66,13 +66,14 @@ struct AssignmentCarouselDetailCardView: View {
                 }
             }
             .padding(.all, 8)
-            .background(ThemeAssets.tabbarBGColor.swiftUIColor)
+            .background(content: {
+                Theme.Colors.cardViewBackground
+            })
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                     .foregroundColor(Theme.Colors.cardViewStroke)
             )
-            .cornerRadius(4)
         }
         .buttonStyle(PlainButtonStyle())
         .padding(.horizontal, 16)

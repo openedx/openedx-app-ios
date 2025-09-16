@@ -9,9 +9,7 @@ struct ViewAllButton: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 4) {
-                Image(systemName: "list.bullet")
-                    .renderingMode(.template)
-                    .foregroundStyle(Theme.Colors.accentColor)
+                CoreAssets.listViewIcon.swiftUIImage
                 Text("\(CoreLocalization.view) \(section)")
                     .foregroundColor(Theme.Colors.accentColor)
                     .font(Theme.Fonts.labelLarge)

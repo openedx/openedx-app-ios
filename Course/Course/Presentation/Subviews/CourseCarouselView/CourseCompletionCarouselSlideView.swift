@@ -84,7 +84,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
 
                 Text(CourseLocalization.CourseCarousel.progressCompletion(progressPercentage))
                     .font(Theme.Fonts.bodyMedium)
-                    .foregroundColor(Theme.Colors.textSecondaryLight)
+                    .foregroundColor(Theme.Colors.textSecondaryDark)
                     .lineLimit(nil)
             }
 
@@ -105,13 +105,6 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
     private var sectionView: some View {
         VStack {
             GeometryReader { proxy in
-                if let courseStructure = viewModelContainer.courseStructure,
-                    let chapter = courseStructure.childs.first(where: {
-                    $0.childs.contains(where: { $0.completion != 1 })
-                    }) {
-                    SectionProgressView(progress: viewModelContainer.chapterProgress(for: chapter))
-                }
-
                 if let courseStructure = viewModelContainer.courseStructure,
                    let chapter = courseStructure.childs.first(where: {
                        $0.childs.contains(where: { $0.completion != 1 })
@@ -146,89 +139,104 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                  sequential: CourseSequential,
                                  proxy: GeometryProxy) -> some View {
         VStack {
-            HStack {
-                Text("\(chapter.displayName)")
-                    .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(Theme.Colors.textPrimary)
-
-                Spacer()
-
-                Spacer()
-
-                if canDownloadAllSections(in: chapter),
-                   let state = downloadAllButtonState(for: chapter) {
-                    Button(
-                        action: {
-                            downloadAllSubsections(in: chapter, state: state)
-                        }, label: {
-                            switch state {
-                            case .available:
-                                DownloadAvailableView()
-                            case .downloading:
-                                DownloadProgressView()
-                            case .finished:
-                                DownloadFinishedView()
-                            }
-
-                        }
-                    )
-                }
-            }
-
-            HStack {
-                CoreAssets.chapter.swiftUIImage
-                    .renderingMode(.template)
-                    .resizable()
-                    .frame(width: 20, height: 20)
-
-                Text(sequential.displayName)
-                    .font(Theme.Fonts.titleSmall)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(1)
-                    .frame(
-                        maxWidth: idiom == .pad
-                        ? proxy.size.width * 0.5
-                        : proxy.size.width * 0.6,
-                        alignment: .leading
-                    )
-
-                Spacer()
-                if sequential.due != nil {
-                    CoreAssets.chevronRight.swiftUIImage
-                        .foregroundColor(Theme.Colors.textPrimary)
-                        .flipsForRightToLeftLayoutDirection(true)
-                }
-            }
-            .onTapGesture {
-                if let chapterIndex = courseStructure.childs.firstIndex(where: {
-                    $0.childs.contains(where: { $0.completion != 1 })
-                }),
-                let sequentialIndex = courseStructure.childs[chapterIndex].childs.firstIndex(where: {
-                    $0.completion != 1
+            if let courseStructure = viewModelContainer.courseStructure,
+                let chapter = courseStructure.childs.first(where: {
+                $0.childs.contains(where: { $0.completion != 1 })
                 }) {
-                    viewModelContainer.router.showCourseVerticalView(
-                        courseID: courseStructure.id,
-                        courseName: courseStructure.displayName,
-                        title: sequential.displayName,
-                        chapters: courseStructure.childs,
-                        chapterIndex: chapterIndex,
-                        sequentialIndex: sequentialIndex
-                    )
+                SectionProgressView(progress: viewModelContainer.chapterProgress(for: chapter))
+            }
 
-                    viewModelContainer.trackCourseHomeSectionClicked(
-                        section: chapter.displayName,
-                        subsection: sequential.displayName
-                    )
+            Spacer()
+
+            VStack {
+                HStack {
+                    Text("\(chapter.displayName)")
+                        .font(Theme.Fonts.titleMedium)
+                        .foregroundColor(Theme.Colors.textPrimary)
+
+                    Spacer()
+
+                    Spacer()
+
+                    if canDownloadAllSections(in: chapter),
+                       let state = downloadAllButtonState(for: chapter) {
+                        Button(
+                            action: {
+                                downloadAllSubsections(in: chapter, state: state)
+                            }, label: {
+                                switch state {
+                                case .available:
+                                    DownloadAvailableView()
+                                case .downloading:
+                                    DownloadProgressView()
+                                case .finished:
+                                    DownloadFinishedView()
+                                }
+
+                            }
+                        )
+                    }
+                }
+
+                HStack {
+                    CoreAssets.chapter.swiftUIImage
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+
+                    Text(sequential.displayName)
+                        .font(Theme.Fonts.titleSmall)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(1)
+                        .frame(
+                            maxWidth: idiom == .pad
+                            ? proxy.size.width * 0.5
+                            : proxy.size.width * 0.6,
+                            alignment: .leading
+                        )
+
+                    Spacer()
+                    if sequential.due != nil {
+                        CoreAssets.chevronRight.swiftUIImage
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .flipsForRightToLeftLayoutDirection(true)
+                    }
                 }
             }
+            .padding(.horizontal, 16)
+            .padding(.bottom, 16)
         }
-        .padding(.horizontal, 16)
         .frame(height: 96)
+        .background(content: {
+            Theme.Colors.cardViewBackground
+        })
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(style: StrokeStyle(lineWidth: 1, lineCap: .round, lineJoin: .round))
                 .foregroundColor(Theme.Colors.cardViewStroke)
         )
+        .onTapGesture {
+            if let chapterIndex = courseStructure.childs.firstIndex(where: {
+                $0.childs.contains(where: { $0.completion != 1 })
+            }),
+            let sequentialIndex = courseStructure.childs[chapterIndex].childs.firstIndex(where: {
+                $0.completion != 1
+            }) {
+                viewModelContainer.router.showCourseVerticalView(
+                    courseID: courseStructure.id,
+                    courseName: courseStructure.displayName,
+                    title: sequential.displayName,
+                    chapters: courseStructure.childs,
+                    chapterIndex: chapterIndex,
+                    sequentialIndex: sequentialIndex
+                )
+
+                viewModelContainer.trackCourseHomeSectionClicked(
+                    section: chapter.displayName,
+                    subsection: sequential.displayName
+                )
+            }
+        }
     }
 
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {

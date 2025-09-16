@@ -150,9 +150,10 @@ struct CourseAssignmentsCarouselSlideView: View {
             }
             .padding(.vertical, 16)
             .background(
-                RoundedRectangle(cornerRadius: 6)
+                RoundedRectangle(cornerRadius: 8)
                     .fill(Theme.Colors.datesSectionBackground)
             )
+
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
@@ -197,7 +198,7 @@ struct CourseAssignmentsCarouselSlideView: View {
 
                         Text(CourseLocalization.CourseCarousel.assigmentsCompleted)
                             .font(Theme.Fonts.labelLarge)
-                            .foregroundStyle(Theme.Colors.textSecondary)
+                            .foregroundStyle(Theme.Colors.textSecondaryDark)
                             .frame(height: 44)
 
                     }

@@ -30,17 +30,20 @@ struct VideoThumbnailView: View {
     }
     
     private var fixedSize: Bool
+    private var cornerOnlyTop: Bool
 
     init(
         thumbnailData: VideoThumbnailData,
         thumbnailImage: UIImage? = nil,
         isGeneratingThumbnail: Bool = false,
-        fixedSize: Bool = true
+        fixedSize: Bool = true,
+        cornerOnlyTop: Bool = false
     ) {
         self.thumbnailData = thumbnailData
         self.thumbnailImage = thumbnailImage
         self.isGeneratingThumbnail = isGeneratingThumbnail
         self.fixedSize = fixedSize
+        self.cornerOnlyTop = cornerOnlyTop
     }
 
     var body: some View {
@@ -69,12 +72,20 @@ struct VideoThumbnailView: View {
     
     private var content: some View {
         ZStack {
-            thumbnailImageView()
-                .aspectRatio(16/9, contentMode: .fill)
-                .scaleEffect(y: 1.35, anchor: .center)
-                .clipped()
-                .cornerRadius(10)
-            
+            if !cornerOnlyTop {
+                thumbnailImageView()
+                    .aspectRatio(16/9, contentMode: .fill)
+                    .scaleEffect(y: 1.35, anchor: .center)
+                    .clipped()
+                    .cornerRadius(10)
+            } else {
+                thumbnailImageView()
+                    .aspectRatio(16/9, contentMode: .fill)
+                    .scaleEffect(y: 1.35, anchor: .center)
+                    .clipped()
+                    .clipShape(RoundedCorners(tl: 10, tr: 10))
+            }
+
             Text(video.displayName)
                 .lineLimit(2)
                 .font(Theme.Fonts.bodySmall)
@@ -132,12 +143,12 @@ struct VideoThumbnailView: View {
             Image(uiImage: img).resizable()
         } else if isGeneratingThumbnail {
             ZStack {
-                Theme.Colors.commentCellBackground
+                CoreAssets.noCourseImage.swiftUIImage.resizable()
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: Theme.Colors.accentColor))
             }
         } else {
-            Theme.Colors.commentCellBackground
+            CoreAssets.noCourseImage.swiftUIImage
         }
     }
     
