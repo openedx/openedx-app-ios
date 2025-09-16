@@ -142,8 +142,6 @@ extension Router: DeepLinkRouter {
             switch link.type {
             case .courseDashboard:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.course.rawValue
-            case .courseVideos:
-                self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.videos.rawValue
             case .courseDates, .courseComponent:
                 self.hostCourseContainerView?.rootView.viewModel.selection = CourseTab.dates.rawValue
             case .discussions, .discussionTopic, .discussionPost, .discussionComment:

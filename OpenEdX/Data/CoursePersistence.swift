@@ -129,7 +129,8 @@ public final class CoursePersistence: CoursePersistenceProtocol {
                     assignmentProgress: DataLayer.AssignmentProgress(
                         assignmentType: $0.assignmentType,
                         numPointsEarned: $0.numPointsEarned,
-                        numPointsPossible: $0.numPointsPossible
+                        numPointsPossible: $0.numPointsPossible,
+                        shortLabel: $0.shortLabel
                     ),
                     offlineDownload: DataLayer.OfflineDownload(
                         fileUrl: $0.fileUrl,
@@ -164,7 +165,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
             )
         }
     }
-        
+//swiftlint: disable function_body_length
     public func saveCourseStructure(structure: DataLayer.CourseStructure) async {
         await container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -179,7 +180,19 @@ public final class CoursePersistence: CoursePersistenceProtocol {
             newStructure.totalAssignmentsCount = Int32(structure.courseProgress?.totalAssignmentsCount ?? 0)
             newStructure.assignmentsCompleted = Int32(structure.courseProgress?.assignmentsCompleted ?? 0)
             for block in Array(structure.dict.values) {
-                let courseDetail = CDCourseBlock(context: context)
+                // Try to find existing block to preserve localVideoProgress
+                let request = CDCourseBlock.fetchRequest()
+                request.predicate = NSPredicate(format: "id = %@", block.id)
+                
+                let courseDetail: CDCourseBlock
+                let existingBlocks = (try? context.fetch(request)) ?? []
+                
+                if let existingBlock = existingBlocks.first {
+                    courseDetail = existingBlock
+                } else {
+                    courseDetail = CDCourseBlock(context: context)
+                }
+                
                 courseDetail.allSources = block.allSources
                 courseDetail.descendants = block.descendants
                 courseDetail.graded = block.graded
@@ -199,6 +212,9 @@ public final class CoursePersistence: CoursePersistenceProtocol {
                 }
                 if let assignmentType = block.assignmentProgress?.assignmentType {
                     courseDetail.assignmentType = assignmentType
+                }
+                if let shortLabel = block.assignmentProgress?.shortLabel {
+                    courseDetail.shortLabel = shortLabel
                 }
                 if let due = block.due {
                     courseDetail.due = due
@@ -264,6 +280,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
             }
         }
     }
+//swiftlint: enable function_body_length
     
     public func saveSubtitles(url: String, subtitlesString: String) async {
         await container.performBackgroundTask { context in
@@ -301,6 +318,60 @@ public final class CoursePersistence: CoursePersistenceProtocol {
         throw NoCachedDataError()
     }
     
+    public func updateLocalVideoProgress(blockID: String, progress: Double) async {
+        await container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
+            let request = CDCourseBlock.fetchRequest()
+            request.predicate = NSPredicate(format: "id = %@", blockID)
+            
+            do {
+                let blocks = try context.fetch(request)
+                if let block = blocks.first {
+                    block.localVideoProgress = progress
+                    
+                    // Force save immediately
+                    try context.save()
+                    
+                    // Verify the save by reading it back
+                    let verifyRequest = CDCourseBlock.fetchRequest()
+                    verifyRequest.predicate = NSPredicate(format: "id = %@", blockID)
+                    if let verifyBlock = try context.fetch(verifyRequest).first {
+                    }
+                } else {
+                    debugLog("No block found for blockID: \(blockID)")
+                }
+            } catch {
+                debugLog("Error updating local video progress: \(error)")
+            }
+        }
+    }
+    
+    public func loadLocalVideoProgress(blockID: String) async -> Double? {
+        let result: Double? = await container.performBackgroundTask { context in
+            let request = CDCourseBlock.fetchRequest()
+            request.predicate = NSPredicate(format: "id = %@", blockID)
+            
+            do {
+                let blocks = try context.fetch(request)
+                if let block = blocks.first {
+                    let progress = block.localVideoProgress
+                    
+                    // Also try to fetch all blocks to see what's in the database
+                    let allBlocksRequest = CDCourseBlock.fetchRequest()
+                    let allBlocks = try context.fetch(allBlocksRequest)
+                    
+                    return progress as Double?
+                } else {
+                    return nil as Double?
+                }
+            } catch {
+                debugLog("Error loading local video progress: \(error)")
+                return nil as Double?
+            }
+        }
+        return result
+    }
+
     public func saveCourseProgress(courseID: String, courseProgress: CourseProgressDetails) async {
         await container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
@@ -322,7 +393,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
             newProgress.end = courseProgress.end
             newProgress.enrollmentMode = courseProgress.enrollmentMode
             newProgress.hasScheduledContent = courseProgress.hasScheduledContent
-            newProgress.assignmentColors = courseProgress.assignmentColors
+            newProgress.assignmentColors = courseProgress.gradingPolicy.assignmentColors
             
             let certificateData = CDCertificateData(context: context)
             certificateData.certStatus = courseProgress.certificateData.certStatus
@@ -442,7 +513,8 @@ public final class CoursePersistence: CoursePersistenceProtocol {
             
             let gradingPolicy = CourseProgressGradingPolicy(
                 assignmentPolicies: assignmentPolicies,
-                gradeRange: progress.gradingPolicy?.gradeRangeData ?? [:]
+                gradeRange: progress.gradingPolicy?.gradeRangeData ?? [:],
+                assignmentColors: progress.assignmentColors ?? []
             )
             
             let sectionScores = (progress.sectionScores as? Set<CDSectionScore> ?? [])
@@ -498,8 +570,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
                 gradingPolicy: gradingPolicy,
                 hasScheduledContent: progress.hasScheduledContent,
                 sectionScores: sectionScores,
-                verificationData: verificationData,
-                assignmentColors: progress.assignmentColors ?? []
+                verificationData: verificationData
             )
         }
     }

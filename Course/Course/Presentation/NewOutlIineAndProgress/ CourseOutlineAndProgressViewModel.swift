@@ -243,18 +243,19 @@ public class CourseOutlineAndProgressViewModel: ObservableObject {
     }
     
     public func getAssignmentColor(for index: Int) -> Color {
-        guard let courseProgress = courseProgress else {
-            return Theme.Colors.textSecondary
-        }
-        
-        if courseProgress.assignmentColors.isEmpty {
-            return Theme.Colors.textSecondary
-        }
-        
-        let colorIndex = index % courseProgress.assignmentColors.count
-        let hexColor = courseProgress.assignmentColors[colorIndex]
-        
-        return Color(hex: hexColor) ?? Theme.Colors.textSecondary
+//        guard let courseProgress = courseProgress else {
+//            return Theme.Colors.textSecondary
+//        }
+//
+//        if courseProgress.assignmentColors.isEmpty {
+//            return Theme.Colors.textSecondary
+//        }
+//        
+//        let colorIndex = index % courseProgress.assignmentColors.count
+//        let hexColor = courseProgress.assignmentColors[colorIndex]
+//        
+//        return Color(hex: hexColor) ??
+        Theme.Colors.textSecondary
     }
     
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {

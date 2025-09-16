@@ -14,6 +14,7 @@ import Theme
 public class CourseProgressViewModel: ObservableObject {
     
     @Published var courseProgress: CourseProgressDetails?
+    @Published var assignmentProgressData: [String: AssignmentProgressData] = [:]
     @Published var isLoading: Bool = false
     @Published var isShowRefresh = false
     @Published var showError: Bool = false
@@ -52,6 +53,10 @@ public class CourseProgressViewModel: ObservableObject {
             } else {
                 courseProgress = try await interactor.getCourseProgressOffline(courseID: courseID)
             }
+            
+            // Update assignment progress data
+            assignmentProgressData = getAllAssignmentProgressData()
+            
             isLoading = false
             isShowRefresh = false
         } catch let error {
@@ -141,14 +146,14 @@ public class CourseProgressViewModel: ObservableObject {
             return Theme.Colors.textSecondary
         }
         
-        if courseProgress.assignmentColors.isEmpty {
-            return Theme.Colors.textSecondary
+        if courseProgress.gradingPolicy.assignmentColors.isEmpty {
+            return Theme.Colors.accentColor
         }
         
-        let colorIndex = index % courseProgress.assignmentColors.count
-        let hexColor = courseProgress.assignmentColors[colorIndex]
+        let colorIndex = index % courseProgress.gradingPolicy.assignmentColors.count
+        let hexColor = courseProgress.gradingPolicy.assignmentColors[colorIndex]
         
-        return Color(hex: hexColor) ?? Theme.Colors.textSecondary
+        return Color(hex: hexColor) ?? Theme.Colors.accentColor
     }
     
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {

@@ -32,11 +32,11 @@ struct CourseProgressCircleView: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Theme.Colors.courseProgressBG, lineWidth: 1)
+                .stroke(Theme.Colors.circleProgressBG, lineWidth: 1)
                 .frame(width: size + lineWidth + 4, height: size + lineWidth + 4)
             
             Circle()
-                .stroke(Theme.Colors.courseProgressBG, lineWidth: lineWidth)
+                .stroke(Theme.Colors.circleProgressBG, lineWidth: lineWidth)
                 .frame(width: size, height: size)
             
             // Progress circle
@@ -54,7 +54,7 @@ struct CourseProgressCircleView: View {
             VStack(spacing: 2) {
                 Text("\(Int(ceil(progressPercentage * 100)))%")
                     .font(Theme.Fonts.headlineSmall)
-                    .foregroundColor(Theme.Colors.accentColor)
+                    .foregroundColor(Theme.Colors.progressPercentage)
                 
                 Text(CourseLocalization.CourseContainer.Progress.completed)
                     .font(Theme.Fonts.labelSmall)

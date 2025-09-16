@@ -54,7 +54,8 @@ final class CourseProgressViewModelTests: XCTestCase {
                     weight: 0.5
                 )
             ],
-            gradeRange: ["Pass": 0.6, "Fail": 0.0]
+            gradeRange: ["Pass": 0.6, "Fail": 0.0],
+            assignmentColors: ["#FF5733", "#33C1FF"]
         ),
         hasScheduledContent: false,
         sectionScores: [
@@ -81,8 +82,7 @@ final class CourseProgressViewModelTests: XCTestCase {
                 ]
             )
         ],
-        verificationData: nil,
-        assignmentColors: []
+        verificationData: nil
     )
     
     static let mockEmptyProgress = CourseProgressDetails(
@@ -109,12 +109,12 @@ final class CourseProgressViewModelTests: XCTestCase {
         enrollmentMode: "honor",
         gradingPolicy: CourseProgressGradingPolicy(
             assignmentPolicies: [],
-            gradeRange: [:]
+            gradeRange: [:],
+            assignmentColors: []
         ),
         hasScheduledContent: false,
         sectionScores: [],
-        verificationData: nil,
-        assignmentColors: []
+        verificationData: nil
     )
 
     func testGetCourseProgressSuccess() async throws {
