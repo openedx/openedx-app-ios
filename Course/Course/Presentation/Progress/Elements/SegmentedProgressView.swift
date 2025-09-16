@@ -99,7 +99,7 @@ struct RequiredGradeIndicator: View {
             let indicatorWidth: CGFloat = 50 // Approximate width of the indicator
             
             Spacer()
-                .frame(width: max(0, indicatorPosition - indicatorWidth/2))
+                .frame(width: max(0, indicatorPosition - indicatorWidth / 2))
             
             VStack(spacing: 0) {
                 // Triangle pointing up

@@ -50,14 +50,14 @@ struct CourseProgressScreenView: View {
                         }
                     } else {
                         ScrollView {
-                            VStack(alignment: .leading, spacing: 20) {
+                            VStack(alignment: .center, spacing: 20) {
                                 DynamicOffsetView(
                                     coordinate: $coordinate,
                                     collapsed: $collapsed,
                                     viewHeight: $viewHeight
                                 )
+                                RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
                                 
-                                // Course Progress Content
                                 courseProgressContent
                                 
                                 Spacer(minLength: 84)
@@ -66,11 +66,12 @@ struct CourseProgressScreenView: View {
                         }
                         .refreshable {
                             Task {
-                                await viewModel.refreshProgress(courseID: courseID)
+                                await viewModel.getCourseProgress(courseID: courseID, withProgress: false)
                             }
                         }
                     }
                 }
+                .accessibilityAction {}
                 .frameLimit(width: proxy.size.width)
                 
                 // MARK: - Offline mode SnackBar
@@ -105,15 +106,18 @@ struct CourseProgressScreenView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
+            .onFirstAppear {
+                Task {
+                    await viewModel.getCourseProgress(courseID: courseID)
+                }
+            }
         }
     }
     
     @ViewBuilder
     private var courseProgressContent: some View {
         VStack(alignment: .leading, spacing: 32) {
-            
             if viewModel.courseProgress != nil {
-                
                 // Course Completion Header Section
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(alignment: .top, spacing: 16) {
@@ -197,13 +201,6 @@ struct CourseProgressScreenView: View {
                 .padding(32)
                 .frame(maxWidth: .infinity)
                 .accessibilityElement(children: .combine)
-            }
-        }
-        .onAppear {
-            if viewModel.courseProgress == nil {
-                Task {
-                    await viewModel.getCourseProgress(courseID: courseID)
-                }
             }
         }
     }
