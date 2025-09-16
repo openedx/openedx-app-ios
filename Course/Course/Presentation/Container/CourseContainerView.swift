@@ -18,6 +18,8 @@ public struct CourseContainerView: View {
     public var viewModel: CourseContainerViewModel
     @ObservedObject
     public var courseDatesViewModel: CourseDatesViewModel
+    @ObservedObject
+    public var courseProgressViewModel: CourseProgressViewModel
     @State private var isAnimatingForTap: Bool = false
     public var courseID: String
     private var title: String
@@ -53,11 +55,14 @@ public struct CourseContainerView: View {
     public init(
         viewModel: CourseContainerViewModel,
         courseDatesViewModel: CourseDatesViewModel,
+        courseProgressViewModel: CourseProgressViewModel,
         courseID: String,
         title: String,
         courseRawImage: String?
     ) {
         self.viewModel = viewModel
+        self.courseDatesViewModel = courseDatesViewModel
+        self.courseProgressViewModel = courseProgressViewModel
         Task {
             await withTaskGroup(of: Void.self) { group in
                 group.addTask {
@@ -70,7 +75,6 @@ public struct CourseContainerView: View {
         }
         self.courseID = courseID
         self.title = title
-        self.courseDatesViewModel = courseDatesViewModel
         self.courseRawImage = courseRawImage
     }
     
@@ -207,17 +211,30 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
-                case .videos:
-                    CourseOutlineView(
+                case .content:
+                    CourseContentView(
                         viewModel: viewModel,
                         title: title,
                         courseID: courseID,
-                        isVideo: true,
                         selection: $viewModel.selection,
                         coordinate: $coordinate,
                         collapsed: $collapsed,
+                        viewHeight: $viewHeight
+                    )
+                    .tabItem {
+                        tab.image
+                        Text(tab.title)
+                    }
+                    .tag(tab)
+                    .accentColor(Theme.Colors.accentColor)
+                case .progress:
+                    CourseProgressScreenView(
+                        courseID: courseID,
+                        coordinate: $coordinate,
+                        collapsed: $collapsed,
                         viewHeight: $viewHeight,
-                        dateTabIndex: CourseTab.dates.rawValue
+                        viewModel: courseProgressViewModel,
+                        connectivity: viewModel.connectivity
                     )
                     .tabItem {
                         tab.image
@@ -357,42 +374,47 @@ public struct CourseContainerView: View {
 }
 
 #if DEBUG
-struct CourseScreensView_Previews: PreviewProvider {
-    static var previews: some View {
-        CourseContainerView(
-            viewModel: CourseContainerViewModel(
-                interactor: CourseInteractor.mock,
-                authInteractor: AuthInteractor.mock,
-                router: CourseRouterMock(),
-                analytics: CourseAnalyticsMock(),
-                config: ConfigMock(),
-                connectivity: Connectivity(config: ConfigMock()),
-                manager: DownloadManagerMock(),
-                storage: CourseStorageMock(),
-                isActive: true,
-                courseStart: nil,
-                courseEnd: nil,
-                enrollmentStart: nil,
-                enrollmentEnd: nil,
-                lastVisitedBlockID: nil,
-                coreAnalytics: CoreAnalyticsMock(),
-                courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
-            ),
-            courseDatesViewModel: CourseDatesViewModel(
-                interactor: CourseInteractor.mock,
-                router: CourseRouterMock(),
-                cssInjector: CSSInjectorMock(),
-                connectivity: Connectivity(config: ConfigMock()),
-                config: ConfigMock(),
-                courseID: "1",
-                courseName: "a",
-                analytics: CourseAnalyticsMock(),
-                calendarManager: CalendarManagerMock()
-            ),
-            courseID: "",
-            title: "Title of Course",
-            courseRawImage: nil
-        )
-    }
+#Preview {
+    CourseContainerView(
+        viewModel: CourseContainerViewModel(
+            interactor: CourseInteractor.mock,
+            authInteractor: AuthInteractor.mock,
+            router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
+            config: ConfigMock(),
+            connectivity: Connectivity(),
+            manager: DownloadManagerMock(),
+            storage: CourseStorageMock(),
+            isActive: true,
+            courseStart: nil,
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+        ),
+        courseDatesViewModel: CourseDatesViewModel(
+            interactor: CourseInteractor.mock,
+            router: CourseRouterMock(),
+            cssInjector: CSSInjectorMock(),
+            connectivity: Connectivity(),
+            config: ConfigMock(),
+            courseID: "1",
+            courseName: "a",
+            analytics: CourseAnalyticsMock(),
+            calendarManager: CalendarManagerMock()
+        ),
+        courseProgressViewModel: CourseProgressViewModel(
+            interactor: CourseInteractor.mock,
+            router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
+            connectivity: Connectivity()
+        ),
+        courseID: "",
+        title: "Title of Course",
+        courseRawImage: nil
+    )
+    .loadFonts()
 }
 #endif
