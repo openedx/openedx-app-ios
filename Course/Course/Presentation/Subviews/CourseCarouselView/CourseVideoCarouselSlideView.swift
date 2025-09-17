@@ -110,7 +110,8 @@ struct CourseVideoCarouselSlideView: View {
                     videosCompletedView
 
                     if allVideosCompleted {
-                        VStack(spacing: 16) {
+                        VStack(spacing: 8) {
+                            CoreAssets.checkCircleCarousel.swiftUIImage
                             Text(CourseLocalization.CourseCarousel.allVideosCompleted)
                                 .font(Theme.Fonts.titleMedium)
                                 .foregroundColor(Theme.Colors.textPrimary)
@@ -226,7 +227,7 @@ struct CourseVideoCarouselSlideView: View {
                                                                                blockName: video.displayName)
                             }
                         ),
-                        cornerOnlyTop: true
+                        type: .continueWith
                     )
 
                     HStack {

@@ -33,8 +33,6 @@ struct NoContentAvailable: View {
     var body: some View {
         
         VStack(spacing: 16) {
-            Spacer()
-
             CoreAssets.iconWarning.swiftUIImage
 
             Text(type == .video
@@ -53,8 +51,6 @@ struct NoContentAvailable: View {
                     iconPosition: .left
                 )
             }
-
-            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 24)

@@ -51,43 +51,58 @@ struct CourseAssignmentsCarouselSlideView: View {
     }
 
     private var showedAssignmentSection: AssignmentSectionUI? {
-        let allSubsections = assignmentSections.flatMap { $0.subsections }
+        let pairs: [(sub: CourseProgressSubsectionUI, section: AssignmentSectionUI)] =
+            assignmentSections.flatMap { section in
+                section.subsections.map { (sub: $0, section: section) }
+            }
 
-        if let pastDueSection = assignmentSections.first(where: {
-            $0.subsections.contains(where: { $0.status == .pastDue })
-        }) {
-            return pastDueSection
+        let sorted = pairs.sorted { lhs, rhs in
+            switch (lhs.sub.date, rhs.sub.date) {
+            case let (l?, r?):
+                return l < r
+            case (nil, _?):
+                return false
+            case (_?, nil):
+                return true
+            default:
+                return false
+            }
         }
 
-        let dueSoonSubsection = allSubsections
-            .filter { $0.status == .incomplete || $0.status == .notAvailable }
-            .compactMap { $0.date }
-            .first
-
-        if let dueSoonDate = dueSoonSubsection {
-            return assignmentSections.first(where: {
-                $0.subsections.contains(where: { $0.date == dueSoonDate })
-            })
-        }
-
-        if let incompleteSection = assignmentSections.first(where: {
-              $0.subsections.contains(where: { $0.status == .incomplete })
-          }) {
-              return incompleteSection
-          }
-
-        return nil
+        return sorted.first?.section
     }
 
     private var showedAssignmentSubsection: CourseProgressSubsectionUI? {
         let allSubsections = assignmentSections.flatMap { $0.subsections }
 
-        if let pastDue = allSubsections.first(where: { $0.status == .pastDue }) {
+        let sortedPastDue = allSubsections
+            .filter { $0.status == .pastDue }
+            .sorted { lhs, rhs in
+                switch (lhs.date, rhs.date) {
+                case let (l?, r?): return l < r
+                case (_?, nil): return true
+                case (nil, _?): return false
+                default: return false
+                }
+            }
+
+        if let pastDue = sortedPastDue.first {
             return pastDue
         }
 
-        if let notAvailable = allSubsections.first(where: { $0.status == .incomplete }) {
-            return notAvailable
+        let sortedIncomplete = allSubsections
+            .filter { $0.status == .incomplete }
+            .sorted { lhs, rhs in
+                switch (lhs.date, rhs.date) {
+                case let (l?, r?): return l < r
+                case (_?, nil): return true
+                case (nil, _?): return false
+                default: return false
+                }
+            }
+
+        if let upcoming = sortedIncomplete.first {
+            return upcoming
         }
 
         return nil
@@ -111,8 +126,9 @@ struct CourseAssignmentsCarouselSlideView: View {
                     assignmentCompletedView
 
                     if allAssignmentsCompleted {
-                        VStack(spacing: 16) {
-                            Text(CourseLocalization.CourseCarousel.allVideosCompleted)
+                        VStack(spacing: 8) {
+                            CoreAssets.checkCircleCarousel.swiftUIImage
+                            Text(CourseLocalization.CourseCarousel.allAssignmentsCompleted)
                                 .font(Theme.Fonts.titleMedium)
                                 .foregroundColor(Theme.Colors.textPrimary)
                                 .multilineTextAlignment(.center)

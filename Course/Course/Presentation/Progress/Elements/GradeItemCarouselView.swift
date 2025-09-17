@@ -9,7 +9,10 @@ struct GradeItemCarouselView: View {
     let color: Color
 
     private var earnedPercent: Int {
-        return Int(assignmentPolicy.weight * progressData.percentGraded * 100)
+        if progressData.completed == 0 {
+            return 0
+        }
+        return Int(Double(progressData.completed)/Double(progressData.total) * 100)
     }
 
     private var maxPercent: Int {

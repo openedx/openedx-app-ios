@@ -323,12 +323,12 @@ public enum CourseLocalization {
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
   }
   public enum CourseCarousel {
-    /// You’re all caught up on assignments. Take a breather and relax.
-    public static let allAssignmentsCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_ASSIGNMENTS_COMPLETED", fallback: "You’re all caught up on assignments. Take a breather and relax.")
+    /// You’re all caught up on assignments!
+    public static let allAssignmentsCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_ASSIGNMENTS_COMPLETED", fallback: "You’re all caught up on assignments!")
     /// All Content
     public static let allContent = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_CONTENT", fallback: "All Content")
-    /// You’re all caught up. Take a breather and relax.
-    public static let allVideosCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_VIDEOS_COMPLETED", fallback: "You’re all caught up. Take a breather and relax.")
+    /// You’re all caught up on videos!
+    public static let allVideosCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_VIDEOS_COMPLETED", fallback: "You’re all caught up on videos!")
     /// Assignments
     /// completed
     public static let assigmentsCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ASSIGMENTS_COMPLETED", fallback: "Assignments\ncompleted")
@@ -338,9 +338,9 @@ public enum CourseLocalization {
     public static let grades = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES", fallback: "Grades")
     /// This represents your weighted grade against the grade needed to pass this course.
     public static let gradesDescription = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES_DESCRIPTION", fallback: "This represents your weighted grade against the grade needed to pass this course.")
-    /// You have completed %@%% of the course content
+    /// You have completed %@%% of the course progress
     public static func progressCompletion(_ p1: Any) -> String {
-      return CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.PROGRESS_COMPLETION", String(describing: p1), fallback: "You have completed %@%% of the course content")
+      return CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.PROGRESS_COMPLETION", String(describing: p1), fallback: "You have completed %@%% of the course progress")
     }
     /// You’re auditing this course now and have limited access to course material.
     public static let upgradeNowBody = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BODY", fallback: "You’re auditing this course now and have limited access to course material.")

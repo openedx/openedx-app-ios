@@ -122,6 +122,7 @@ public enum CoreAssets {
   public static let check = ImageAsset(name: "check")
   public static let checkEmail = ImageAsset(name: "checkEmail")
   public static let checkCircle = ImageAsset(name: "check_circle")
+  public static let checkCircleCarousel = ImageAsset(name: "check_circle_carousel")
   public static let chevronRight = ImageAsset(name: "chevron_right")
   public static let clearInput = ImageAsset(name: "clearInput")
   public static let download = ImageAsset(name: "download")

@@ -12,6 +12,11 @@ import Kingfisher
 import AVFoundation
 import Swinject
 
+enum VideoThumbnailType {
+    case continueWith
+    case contentVideo
+}
+
 struct VideoThumbnailView: View {
     
     let thumbnailData: VideoThumbnailData
@@ -30,20 +35,20 @@ struct VideoThumbnailView: View {
     }
     
     private var fixedSize: Bool
-    private var cornerOnlyTop: Bool
+    private var type: VideoThumbnailType
 
     init(
         thumbnailData: VideoThumbnailData,
         thumbnailImage: UIImage? = nil,
         isGeneratingThumbnail: Bool = false,
         fixedSize: Bool = true,
-        cornerOnlyTop: Bool = false
+        type: VideoThumbnailType = .contentVideo
     ) {
         self.thumbnailData = thumbnailData
         self.thumbnailImage = thumbnailImage
         self.isGeneratingThumbnail = isGeneratingThumbnail
         self.fixedSize = fixedSize
-        self.cornerOnlyTop = cornerOnlyTop
+        self.type = type
     }
 
     var body: some View {
@@ -72,41 +77,46 @@ struct VideoThumbnailView: View {
     
     private var content: some View {
         ZStack {
-            if !cornerOnlyTop {
-                thumbnailImageView()
-                    .aspectRatio(16/9, contentMode: .fill)
-                    .scaleEffect(y: 1.35, anchor: .center)
-                    .clipped()
-                    .cornerRadius(10)
-            } else {
+            switch type {
+            case .continueWith:
                 thumbnailImageView()
                     .aspectRatio(16/9, contentMode: .fill)
                     .scaleEffect(y: 1.35, anchor: .center)
                     .clipped()
                     .clipShape(RoundedCorners(tl: 10, tr: 10))
+            case .contentVideo:
+                thumbnailImageView()
+                    .aspectRatio(16/9, contentMode: .fill)
+                    .scaleEffect(y: 1.35, anchor: .center)
+                    .clipped()
+                    .cornerRadius(10)
             }
 
             Text(video.displayName)
                 .lineLimit(2)
-                .font(Theme.Fonts.bodySmall)
+                .font(type == .contentVideo ? Theme.Fonts.bodySmall : Theme.Fonts.titleMedium)
                 .foregroundStyle(.white)
                 .padding(.horizontal, 11)
                 .padding(.top, 11)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             
             CoreAssets.videoPlayButton.swiftUIImage
-            
+                .resizable()
+                .frame(width: type == .contentVideo ? 28 : 43,
+                       height: type == .contentVideo ? 28 : 43)
+
             progressIndicatorView()
                 .padding(.horizontal, 2)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
         }
         .overlay {
-            if cornerOnlyTop {
+            switch type {
+            case .continueWith:
                 Rectangle()
                     .stroke(lineWidth: video.completion >= 1.0 ? 2 : 0)
                     .foregroundStyle(Theme.Colors.success)
                     .clipShape(RoundedCorners(tl: 10, tr: 10))
-            } else {
+            case .contentVideo:
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(lineWidth: video.completion >= 1.0 ? 2 : 0)
                     .foregroundStyle(Theme.Colors.success)
@@ -171,24 +181,24 @@ struct VideoThumbnailView: View {
                     if greenBar {
                         Rectangle()
                             .fill(Theme.Colors.success)
-                            .frame(height: cornerOnlyTop ? 8 : 4)
-                            .cornerRadius(cornerOnlyTop ? 4 : 2)
+                            .frame(height: type == .continueWith ? 8 : 4)
+                            .cornerRadius(type == .continueWith ? 4 : 2)
                             .padding(.horizontal, 4)
                             .padding(.bottom, 4)
                     } else if progress > 0 {
                         ZStack(alignment: .leading) {
                             Rectangle()
                                 .fill(Color.gray.opacity(0.3))
-                                .frame(height: cornerOnlyTop ? 8 : 4)
-                                .cornerRadius(cornerOnlyTop ? 4 : 2)
+                                .frame(height: type == .continueWith ? 8 : 4)
+                                .cornerRadius(type == .continueWith ? 4 : 2)
                                 .padding(.horizontal, 4)
                                 .padding(.bottom, 4)
                             
                             Rectangle()
                                 .fill(Theme.Colors.accentColor)
                                 .frame(width: max(8, geometry.size.width * progress - 8),
-                                       height: cornerOnlyTop ? 8 : 4)
-                                .cornerRadius(cornerOnlyTop ? 4 : 2)
+                                       height: type == .continueWith ? 8 : 4)
+                                .cornerRadius(type == .continueWith ? 4 : 2)
                                 .padding(.horizontal, 4)
                                 .padding(.bottom, 4)
                         }
@@ -204,16 +214,16 @@ struct VideoThumbnailView: View {
                 ZStack(alignment: .leading) {
                     Rectangle()
                         .fill(Color.gray.opacity(0.3))
-                        .frame(height: cornerOnlyTop ? 8 : 4)
-                        .cornerRadius(cornerOnlyTop ? 4 : 2)
+                        .frame(height: type == .continueWith ? 8 : 4)
+                        .cornerRadius(type == .continueWith ? 4 : 2)
                         .padding(.horizontal, 4)
                         .padding(.bottom, 4)
                     
                     Rectangle()
                         .fill(Theme.Colors.accentColor)
                         .frame(width: max(8, geometry.size.width * progress - 8),
-                               height: cornerOnlyTop ? 8 : 4)
-                        .cornerRadius(cornerOnlyTop ? 4 : 2)
+                               height: type == .continueWith ? 8 : 4)
+                        .cornerRadius(type == .continueWith ? 4 : 2)
                         .padding(.horizontal, 4)
                         .padding(.bottom, 4)
                 }

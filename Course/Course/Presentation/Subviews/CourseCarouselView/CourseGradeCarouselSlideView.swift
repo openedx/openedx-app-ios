@@ -87,7 +87,7 @@ struct CourseGradeCarouselSlideView: View {
 
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(
-                Array(viewModelProgress.assignmentPolicies.enumerated()),
+                Array(viewModelProgress.assignmentPolicies.prefix(4).enumerated()),
                 id: \.element.type
             ) { index, policy in
                 let progressData = viewModelProgress.getAssignmentProgress(for: policy.type)
@@ -106,14 +106,12 @@ struct CourseGradeCarouselSlideView: View {
     // MARK: - No Grade Assignment View
     private var noGradeAssignmentView: some View {
         VStack(spacing: 16) {
-            Spacer()
             CoreAssets.iconWarning.swiftUIImage
 
             Text(CourseLocalization.CourseContainer.Progress.noGradedAssignments)
                 .font(Theme.Fonts.titleMedium)
                 .foregroundColor(Theme.Colors.textPrimary)
                 .multilineTextAlignment(.center)
-            Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 16)

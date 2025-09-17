@@ -139,13 +139,14 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                  sequential: CourseSequential,
                                  proxy: GeometryProxy) -> some View {
         VStack {
-            if let courseStructure = viewModelContainer.courseStructure,
-                let chapter = courseStructure.childs.first(where: {
-                $0.childs.contains(where: { $0.completion != 1 })
-                }) {
-                SectionProgressView(progress: viewModelContainer.chapterProgress(for: chapter))
-            }
-
+            SectionProgressView(progress: viewModelContainer.subsectionProgress(for: sequential))
+                .accessibilityLabel(
+                    CourseLocalization.Accessibility.progressPercentageCompleted(
+                        viewModelContainer.subsectionProgressPercents(
+                            for: sequential
+                        )
+                    )
+                )
             Spacer()
 
             VStack {

@@ -57,8 +57,8 @@
 
 "COURSE_CAROUSEL.UPGRADE_NOW_BODY" = "You’re auditing this course now and have limited access to course material.";
 "COURSE_CAROUSEL.UPGRADE_NOW_BUTTON" = "Upgrade now";
-"COURSE_CAROUSEL.ALL_VIDEOS_COMPLETED" = "You’re all caught up. Take a breather and relax.";
-"COURSE_CAROUSEL.ALL_ASSIGNMENTS_COMPLETED" = "You’re all caught up on assignments. Take a breather and relax.";
+"COURSE_CAROUSEL.ALL_VIDEOS_COMPLETED" = "You’re all caught up on videos!";
+"COURSE_CAROUSEL.ALL_ASSIGNMENTS_COMPLETED" = "You’re all caught up on assignments!";
 "COURSE_CAROUSEL.VIDEOS_COMPLETED" = "Videos\ncompleted";
 "COURSE_CAROUSEL.ASSIGMENTS_COMPLETED" = "Assignments\ncompleted";
 "COURSE_CAROUSEL.CONTINUE_WATCHING" = "Continue Watching";

@@ -1104,6 +1104,20 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         return max(0.0, min(1.0, averageProgress))
     }
 
+    func subsectionProgress(for subsection: CourseSequential) -> Double {
+        guard !subsection.childs.isEmpty else { return 0.0 }
+        let totalProgress = subsection.childs.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = totalProgress / Double(subsection.childs.count)
+        return max(0.0, min(1.0, averageProgress))
+    }
+
+    func subsectionProgressPercents(for subsection: CourseSequential) -> Int {
+        guard !subsection.childs.isEmpty else { return 0 }
+        let totalProgress = subsection.childs.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = Int(totalProgress / Double(subsection.childs.count) * 100)
+        return averageProgress
+    }
+
     private func addObservers() {
         courseHelper
             .publisher()
