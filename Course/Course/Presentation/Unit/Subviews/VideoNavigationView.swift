@@ -12,33 +12,48 @@ struct VideoNavigationView: View {
 
     var body: some View {
         if viewModel.isVideosForNavigationLoading {
-            RefreshProgressView(isShowRefresh: $viewModel.isVideosForNavigationLoading)
+            HStack {
+                Spacer()
+                RefreshProgressView(isShowRefresh: $viewModel.isVideosForNavigationLoading)
+                Spacer()
+            }
+            .frame(height: 72)
+            .padding(.bottom, 17)
+            .background(content: {
+                Theme.Colors.courseCardBackground
+            })
         } else {
             videoNavigationView(block: block)
                 .padding(.bottom, 17)
-
-            Divider()
-
-            HStack {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(viewModel.createBreadCrumpsForVideoNavigation(video: block))
-                        .font(Theme.Fonts.bodySmall)
-                        .foregroundStyle(Theme.Colors.textPrimary)
-                        .multilineTextAlignment(.leading)
-                        .lineLimit(2)
-                        .accessibilityAddTraits(.isHeader)
-                        .accessibilityValue(viewModel.createBreadCrumpsForVideoNavigation(video: block))
-
-                    Text("\(currentBlock?.displayName ?? "")")
-                        .font(Theme.Fonts.bodyMedium).bold()
-                        .foregroundStyle(Theme.Colors.textPrimary)
-                        .accessibilityValue(currentBlock?.displayName ?? "No Video Title")
-                }
-                Spacer()
-            }
-            .padding(.bottom, 8)
-            .padding(.horizontal, 16)
+                .background(content: {
+                    Theme.Colors.courseCardBackground
+                })
         }
+
+        Rectangle()
+            .frame(height: 1)
+            .foregroundStyle(Theme.Colors.avatarStroke.opacity(0.3))
+            .padding(.bottom, 16)
+
+        HStack {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(viewModel.createBreadCrumpsForVideoNavigation(video: block))
+                    .font(Theme.Fonts.bodySmall)
+                    .foregroundStyle(Theme.Colors.textPrimary)
+                    .multilineTextAlignment(.leading)
+                    .lineLimit(2)
+                    .accessibilityAddTraits(.isHeader)
+                    .accessibilityValue(viewModel.createBreadCrumpsForVideoNavigation(video: block))
+
+                Text("\(currentBlock?.displayName ?? "")")
+                    .font(Theme.Fonts.bodyMedium).bold()
+                    .foregroundStyle(Theme.Colors.textPrimary)
+                    .accessibilityValue(currentBlock?.displayName ?? "No Video Title")
+            }
+            Spacer()
+        }
+        .padding(.bottom, 16)
+        .padding(.horizontal, 16)
     }
 
     @ViewBuilder
@@ -56,9 +71,11 @@ struct VideoNavigationView: View {
                                     viewModel.handleVideoTap(video: video)
                                 }
                             ),
+                            type: .navigationVideo,
                             thumbnailWidth: 122,
                             thumbnailHeight: 67,
-                            isCurrentVideo: video == currentBlock
+                            isCurrentVideo: video == currentBlock,
+
                         )
                         .padding(.leading, index == 0 ? 24 : 8)
                         .padding(.top, 2)
@@ -85,14 +102,17 @@ struct VideoNavigationView: View {
                     scrollProxy.scrollTo(id, anchor: .leading)
                 }
             }
+            .background(content: {
+                Theme.Colors.courseCardBackground
+            })
             .frame(height: 72)
             .accessibilityLabel(CourseLocalization.Accessibility.videoNavigation)
             .accessibilityValue({
-                 let all = viewModel.allVideosForNavigation
-                 let count = all.count
-                 let idx = indexOfCurrent(in: all, current: currentBlock) ?? 0
-                 return "Video \(idx + 1) from \(count)"
-             }())
+                let all = viewModel.allVideosForNavigation
+                let count = all.count
+                let idx = indexOfCurrent(in: all, current: currentBlock) ?? 0
+                return "Video \(idx + 1) from \(count)"
+            }())
         }
     }
 

@@ -574,7 +574,7 @@ public struct CourseUnitView: View {
                     .padding(.horizontal, 48)
                 }
             }
-            .background(Theme.Colors.background)
+            .background(!viewModel.showVideoNavigation ? Theme.Colors.background : Theme.Colors.courseCardBackground)
             .padding(.trailing, isHorizontal ? 215 : 0)
 
             if viewModel.courseUnitProgressEnabled {
