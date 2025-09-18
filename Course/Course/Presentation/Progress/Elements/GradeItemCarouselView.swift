@@ -16,7 +16,7 @@ struct GradeItemCarouselView: View {
     }
 
     private var maxPercent: Int {
-        Int(assignmentPolicy.weight * 100)
+        100
     }
 
     var body: some View {
