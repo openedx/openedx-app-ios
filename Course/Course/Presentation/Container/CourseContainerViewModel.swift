@@ -1094,7 +1094,31 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             expandedSections[chapter.id] = isNotCompleted
         }
     }
-    
+
+    func chapterProgressDeep(for chapter: CourseChapter) -> Double {
+        let allBlocks: [CourseBlock] = chapter.childs
+            .flatMap { $0.childs }
+            .flatMap { $0.childs }
+
+        guard !allBlocks.isEmpty else { return 0.0 }
+
+        let total = allBlocks.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = total / Double(allBlocks.count)
+        return max(0.0, min(1.0, averageProgress))
+    }
+
+    func chapterProgressDeepPercents(for chapter: CourseChapter) -> Int {
+        let allBlocks: [CourseBlock] = chapter.childs
+            .flatMap { $0.childs }
+            .flatMap { $0.childs }
+
+        guard !allBlocks.isEmpty else { return 0 }
+
+        let total = allBlocks.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = Int(total / Double(allBlocks.count) * 100)
+        return averageProgress
+    }
+
     func chapterProgress(for chapter: CourseChapter) -> Double {
         guard !chapter.childs.isEmpty else { return 0.0 }
         

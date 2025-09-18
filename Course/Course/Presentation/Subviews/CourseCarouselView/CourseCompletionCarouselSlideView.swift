@@ -139,11 +139,11 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                                  sequential: CourseSequential,
                                  proxy: GeometryProxy) -> some View {
         VStack {
-            SectionProgressView(progress: viewModelContainer.subsectionProgress(for: sequential))
+            SectionProgressView(progress: viewModelContainer.chapterProgressDeep(for: chapter))
                 .accessibilityLabel(
                     CourseLocalization.Accessibility.progressPercentageCompleted(
-                        viewModelContainer.subsectionProgressPercents(
-                            for: sequential
+                        viewModelContainer.chapterProgressDeepPercents(
+                            for: chapter
                         )
                     )
                 )
