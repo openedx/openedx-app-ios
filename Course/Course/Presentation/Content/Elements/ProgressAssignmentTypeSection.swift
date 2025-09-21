@@ -103,10 +103,11 @@ struct ProgressAssignmentTypeSection: View {
 
             // MARK: – Detail Card
             if selectedIndex < filteredSubsections.count {
+                let ui = filteredSubsections[selectedIndex]
                 AssignmentDetailCardView(
                     detailData: AssignmentDetailData(
-                        subsectionUI: filteredSubsections[selectedIndex],
-                        sectionName: sectionName,
+                        subsectionUI: ui,
+                        sectionName: parentSectionName(for: ui),
                         onAssignmentTap: onAssignmentTap
                     )
                 )
@@ -137,6 +138,19 @@ struct ProgressAssignmentTypeSection: View {
             selectedIndex = 0
             uiScrollView?.setContentOffset(.zero, animated: animated)
         }
+    }
+
+    private func parentSectionName(for ui: CourseProgressSubsectionUI) -> String {
+        guard let structure = sectionData.courseStructure else { return sectionName }
+        let blockKey = ui.subsection.blockKey
+        for chapter in structure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == blockKey || sequential.id == blockKey {
+                    return chapter.displayName
+                }
+            }
+        }
+        return sectionName
     }
 }
 
@@ -214,7 +228,8 @@ struct ProgressAssignmentTypeSection: View {
                 )
                 ],
                 sectionName: "Labs",
-                assignmentTypeColors: [:]
+                assignmentTypeColors: [:],
+                courseStructure: nil
             ),
             proxy: proxy,
             onAssignmentTap: { _ in },

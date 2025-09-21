@@ -116,7 +116,7 @@ struct VideoSectionView: View {
                                 .id(video.id)
                                 
                                 if index == visibleVideos.count - 1 {
-                                    Spacer(minLength: 100)
+                                    Spacer(minLength: 500)
                                 }
                             }
                         }
@@ -162,7 +162,7 @@ struct VideoSectionView: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             guard let scroll = uiScrollView else { return }
-            let newX = max(scroll.contentOffset.x - 20, 0)
+            let newX = max(scroll.contentOffset.x - 16, 0)
             scroll.setContentOffset(CGPoint(x: newX, y: 0), animated: true)
         }
     }

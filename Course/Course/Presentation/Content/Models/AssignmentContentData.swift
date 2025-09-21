@@ -32,6 +32,7 @@ struct AssignmentSectionData {
     let subsectionsUI: [CourseProgressSubsectionUI]
     let sectionName: String
     let assignmentTypeColors: [String: String]
+    let courseStructure: CourseStructure?
 }
 
 struct AssignmentDetailData {
