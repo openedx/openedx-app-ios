@@ -171,14 +171,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigation.modalPresentationStyle = .fullScreen
         navigation.navigationBar.standardAppearance.configureWithOpaqueBackground()
         navigation.navigationBar.standardAppearance.backgroundColor =
-        UIColor(ThemeManager.shared.theme.colors.navigationBarColor)
+        UIColor(Theme.Colors.navigationBarColor)
         navigation.navigationBar.standardAppearance
             .titleTextAttributes =
-        [.foregroundColor: UIColor(ThemeManager.shared.theme.colors.navigationBarTintColor)]
+        [.foregroundColor: UIColor(Theme.Colors.navigationBarTintColor)]
         
         navigation.navigationBar.standardAppearance
             .largeTitleTextAttributes =
-        [.foregroundColor: UIColor(ThemeManager.shared.theme.colors.navigationBarTintColor)]
+        [.foregroundColor: UIColor(Theme.Colors.navigationBarTintColor)]
         
         NavigationAppearanceManager.shared.navigationController = navigation
         

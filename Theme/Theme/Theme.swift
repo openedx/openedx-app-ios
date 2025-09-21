@@ -12,6 +12,22 @@ private let fontsParser = FontParser()
 
 public struct Theme: Sendable {
     
+    public struct ThemeConfig: Sendable {
+        public var name: String
+        public var appLogo: Image
+        public var bgColor: Image
+        
+        public init(
+            name: String = "Default",
+            appLogo: Image = Image(systemName: "app.fill"),
+            bgColor: Image = Image(systemName: "photo")
+        ) {
+            self.name = name
+            self.appLogo = appLogo
+            self.bgColor = bgColor
+        }
+    }
+    
     // swiftlint:disable line_length
     public struct Colors: Sendable {
         nonisolated(unsafe) public private(set) static var accentColor = ThemeAssets.accentColor.swiftUIColor
@@ -368,6 +384,15 @@ public extension Theme.Fonts {
         CTFontManagerRegisterFontsForURL(url as CFURL, .process, nil)
     }
     // swiftlint:enable type_name
+}
+
+public extension Theme {
+    @MainActor
+    static var config: ThemeConfig = .init()
+    @MainActor
+    static func updateConfig(_ config: ThemeConfig) {
+        self.config = config
+    }
 }
 
 extension View {
