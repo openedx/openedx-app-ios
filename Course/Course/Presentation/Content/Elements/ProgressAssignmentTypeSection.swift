@@ -85,7 +85,7 @@ struct ProgressAssignmentTypeSection: View {
                 }
                 .accessibilityIdentifier("assignment_cards_horizontal_scroll_\(sectionName)")
 
-                .introspect(.scrollView, on: .iOS(.v16, .v17, .v18)) { scroll in
+                .introspect(.scrollView, on: .iOS(.v16, .v17, .v18, .v26)) { scroll in
                     DispatchQueue.main.async { uiScrollView = scroll }
                 }
 
