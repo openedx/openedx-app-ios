@@ -419,8 +419,7 @@ public class Router: AuthorizationRouter,
             title: title,
             courseName: courseName,
             courseID: courseID,
-            viewModel: viewModel,
-            themeManager: ThemeManager.shared
+            viewModel: viewModel
         )
         return UIHostingController(rootView: view)
     }
@@ -498,7 +497,7 @@ public class Router: AuthorizationRouter,
             courseProgressViewModel: progressVm,
             courseID: courseID,
             title: title,
-            courseRawImage: courseRawImage, themeManager: ThemeManager.shared
+            courseRawImage: courseRawImage
         )
         
         return UIHostingController(rootView: screensView)
@@ -576,8 +575,7 @@ public class Router: AuthorizationRouter,
 
         let view = CourseUnitView(
             viewModel: viewModel,
-            isDropdownActive: isDropdownActive,
-            themeManager: ThemeManager.shared)
+            isDropdownActive: isDropdownActive)
         return UIHostingController(rootView: view)
     }
     

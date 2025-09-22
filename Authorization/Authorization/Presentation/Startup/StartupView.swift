@@ -15,7 +15,6 @@ public struct StartupView: View {
     @State private var searchQuery: String = ""
     
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     @ObservedObject
     private var viewModel: StartupViewModel
@@ -35,7 +34,7 @@ public struct StartupView: View {
                     .padding(.top, isHorizontal ? 20 : 40)
                     .padding(.bottom, isHorizontal ? 0 : 20)
                     .padding(.horizontal, isHorizontal ? 10 : 24)
-                    .colorMultiply(themeManager.theme.colors.accentColor)
+                    .colorMultiply(Theme.Colors.accentColor)
                     .accessibilityIdentifier("logo_image")
                 #else
                 ThemeAssets.appLogo.swiftUIImage
@@ -45,7 +44,7 @@ public struct StartupView: View {
                     .padding(.top, isHorizontal ? 20 : 40)
                     .padding(.bottom, isHorizontal ? 0 : 20)
                     .padding(.horizontal, isHorizontal ? 10 : 24)
-                    .colorMultiply(themeManager.theme.colors.accentColor)
+                    .colorMultiply(Theme.Colors.accentColor)
                     .accessibilityIdentifier("logo_image")
                 #endif
                 
@@ -53,14 +52,14 @@ public struct StartupView: View {
                     VStack(alignment: .leading) {
                         Text(AuthLocalization.Startup.infoMessage)
                             .font(Theme.Fonts.titleLarge)
-                            .foregroundColor(themeManager.theme.colors.textPrimary)
+                            .foregroundColor(Theme.Colors.textPrimary)
                             .padding(.bottom, isHorizontal ? 10 : 20 )
                             .accessibilityIdentifier("heading_text")
                         
                         Text(AuthLocalization.Startup.searchTitle)
                             .font(Theme.Fonts.bodyLarge)
                             .bold()
-                            .foregroundColor(themeManager.theme.colors.textPrimary)
+                            .foregroundColor(Theme.Colors.textPrimary)
                             .padding(.top, isHorizontal ? 0 : 24)
                             .accessibilityIdentifier("search_title_text")
                         
@@ -68,7 +67,7 @@ public struct StartupView: View {
                             Image(systemName: "magnifyingglass")
                                 .padding(.leading, 16)
                                 .padding(.top, 1)
-                                .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                .foregroundColor(Theme.Colors.textInputTextColor)
                             TextField("", text: $searchQuery, onCommit: {
                                 if searchQuery.isEmpty { return }
                                 viewModel.router.showDiscoveryScreen(
@@ -81,13 +80,13 @@ public struct StartupView: View {
                             .frame(minHeight: 50)
                             .submitLabel(.search)
                             .font(Theme.Fonts.bodyLarge)
-                            .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .accessibilityIdentifier("explore_courses_textfield")
                             
                         }.overlay(
                             Theme.Shapes.textInputShape
                                 .stroke(lineWidth: 1)
-                                .fill(themeManager.theme.colors.textInputStroke)
+                                .fill(Theme.Colors.textInputStroke)
                         )
                         .background(
                             Theme.InputFieldBackground(
@@ -105,7 +104,7 @@ public struct StartupView: View {
                         } label: {
                             Text(AuthLocalization.Startup.exploreAllCourses)
                                 .underline()
-                                .foregroundColor(themeManager.theme.colors.infoColor)
+                                .foregroundColor(Theme.Colors.infoColor)
                                 .font(Theme.Fonts.bodyLarge)
                         }
                         .padding(.top, isHorizontal ? 0 : 5)
@@ -138,7 +137,7 @@ public struct StartupView: View {
         .navigationTitle(AuthLocalization.Startup.title)
         .navigationBarHidden(true)
         .padding(.all, isHorizontal ? 1 : 0)
-        .background(themeManager.theme.colors.background.ignoresSafeArea(.all))
+        .background(Theme.Colors.background.ignoresSafeArea(.all))
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .onTapGesture {
             UIApplication.shared.endEditing()

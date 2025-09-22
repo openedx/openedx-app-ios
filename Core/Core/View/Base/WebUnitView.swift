@@ -13,7 +13,6 @@ public struct WebUnitView: View {
     
     @StateObject private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
-    @EnvironmentObject var themeManager: ThemeManager
     
     private var url: String
     private var injections: [WebviewInjection]?
@@ -54,9 +53,9 @@ public struct WebUnitView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 64)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Text(viewModel.errorMessage ?? "")
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
                 Button(action: {
@@ -69,7 +68,7 @@ public struct WebUnitView: View {
                         .background(Theme.Shapes.buttonShape.fill(.clear))
                         .overlay(RoundedRectangle(cornerRadius: 8)
                             .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                            .foregroundColor(themeManager.theme.colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentColor)
                         )
                 })
                 .frame(width: 100)
@@ -105,7 +104,7 @@ public struct WebUnitView: View {
                                 width: reader.size.width,
                                 height: reader.size.height
                             )
-                            .environmentObject(themeManager)
+                            
                         }
                     }
                     .scrollDisabled(true)

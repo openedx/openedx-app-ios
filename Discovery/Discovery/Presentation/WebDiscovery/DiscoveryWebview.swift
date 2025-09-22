@@ -32,7 +32,6 @@ public struct DiscoveryWebview: View {
     @State private var searchQuery: String = ""
     @State private var isLoading: Bool = true
     
-    @EnvironmentObject var themeManager: ThemeManager
     @StateObject private var viewModel: DiscoveryWebviewViewModel
     private var router: DiscoveryRouter
     private var discoveryType: DiscoveryWebviewType
@@ -107,7 +106,6 @@ public struct DiscoveryWebview: View {
                         webViewType: discoveryType.rawValue
                     )
                     .accessibilityIdentifier("discovery_webview")
-                    .environmentObject(themeManager)
                     
                     if isLoading || viewModel.showProgress {
                         HStack(alignment: .center) {
@@ -173,13 +171,13 @@ public struct DiscoveryWebview: View {
         }
         .onAppear {
             NavigationAppearanceManager.shared.updateAppearance(
-                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                 titleColor: .white
                             )
         }
         .navigationBarHidden(viewModel.sourceScreen == .default && discoveryType == .discovery)
         .navigationTitle(CoreLocalization.Mainscreen.discovery)
-        .background(themeManager.theme.colors.background.ignoresSafeArea())
+        .background(Theme.Colors.background.ignoresSafeArea())
         .onFirstAppear {
             if case let .courseDetail(pathID, _) = viewModel.sourceScreen {
                 viewModel.router.showWebDiscoveryDetails(

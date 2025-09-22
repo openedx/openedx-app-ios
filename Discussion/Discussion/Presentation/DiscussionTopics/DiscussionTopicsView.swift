@@ -19,7 +19,6 @@ public struct DiscussionTopicsView: View {
     @Binding private var collapsed: Bool
     @Binding private var viewHeight: CGFloat
     @State private var runOnce: Bool = false
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         courseID: String,
@@ -57,23 +56,23 @@ public struct DiscussionTopicsView: View {
                             if let topics = viewModel.discussionTopics, topics.count > 0 {
                                 HStack(spacing: 11) {
                                     Image(systemName: "magnifyingglass")
-                                        .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .padding(.leading, 16)
                                         .padding(.top, 1)
                                     Text(DiscussionLocalization.Topics.search)
-                                        .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .font(Theme.Fonts.bodyMedium)
                                     Spacer()
                                 }
                                 .frame(minHeight: 48)
                                 .background(
                                     Theme.Shapes.textInputShape
-                                        .fill(themeManager.theme.colors.textInputBackground)
+                                        .fill(Theme.Colors.textInputBackground)
                                 )
                                 .overlay(
                                     Theme.Shapes.textInputShape
                                         .stroke(lineWidth: 1)
-                                        .fill(themeManager.theme.colors.textInputUnfocusedStroke)
+                                        .fill(Theme.Colors.textInputUnfocusedStroke)
                                 )
                                 .onTapGesture {
                                     viewModel.router.showDiscussionsSearch(
@@ -96,7 +95,7 @@ public struct DiscussionTopicsView: View {
                                             HStack {
                                                 Text(DiscussionLocalization.Topics.mainCategories)
                                                     .font(Theme.Fonts.titleMedium)
-                                                    .foregroundColor(themeManager.theme.colors.textSecondary)
+                                                    .foregroundColor(Theme.Colors.textSecondary)
                                                     .padding(.horizontal, 24)
                                                     .padding(.top, 10)
                                                 Spacer()
@@ -110,16 +109,16 @@ public struct DiscussionTopicsView: View {
                                                         VStack {
                                                             Spacer(minLength: 0)
                                                             CoreAssets.allPosts.swiftUIImage.renderingMode(.template)
-                                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                                .foregroundColor(Theme.Colors.textPrimary)
                                                             Text(allTopics.name)
                                                                 .font(Theme.Fonts.titleSmall)
-                                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                                .foregroundColor(Theme.Colors.textPrimary)
                                                             Spacer(minLength: 0)
                                                         }
                                                         .frame(maxWidth: .infinity)
                                                     })
                                                     .cardStyle(
-                                                        bgColor: themeManager.theme.colors.textInputUnfocusedBackground)
+                                                        bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                         .padding(.trailing, -20)
                                                 }
                                                 if let followed = topics.first(where: {
@@ -130,16 +129,16 @@ public struct DiscussionTopicsView: View {
                                                         VStack(alignment: .center) {
                                                             Spacer(minLength: 0)
                                                             CoreAssets.followed.swiftUIImage.renderingMode(.template)
-                                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                                .foregroundColor(Theme.Colors.textPrimary)
                                                             Text(followed.name)
                                                                 .font(Theme.Fonts.titleSmall)
-                                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                                .foregroundColor(Theme.Colors.textPrimary)
                                                             Spacer(minLength: 0)
                                                         }
                                                         .frame(maxWidth: .infinity)
                                                     })
                                                     .cardStyle(
-                                                        bgColor: themeManager.theme.colors.textInputUnfocusedBackground)
+                                                        bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                         .padding(.leading, -20)
                                                     
                                                 }
@@ -153,7 +152,7 @@ public struct DiscussionTopicsView: View {
                                                             Text("\(topic.name):")
                                                                 .font(Theme.Fonts.titleMedium)
                                                                 .foregroundColor(
-                                                                    themeManager.theme.colors.textSecondary)
+                                                                    Theme.Colors.textSecondary)
                                                             Spacer()
                                                         }.padding(.top, 12)
                                                             .padding(.bottom, 8)
@@ -208,7 +207,7 @@ public struct DiscussionTopicsView: View {
             }
             .onAppear {
                 NavigationAppearanceManager.shared.updateAppearance(
-                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                     titleColor: .white
                                 )
             }
@@ -216,7 +215,7 @@ public struct DiscussionTopicsView: View {
             .navigationBarBackButtonHidden(false)
             .navigationTitle(viewModel.title)
             .background(
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
         }
@@ -232,7 +231,7 @@ public struct DiscussionTopicsView: View {
                 .padding(.vertical, 10)
             Spacer()
         }
-        .background(themeManager.theme.colors.warning)
+        .background(Theme.Colors.warning)
         .padding(.bottom, 10)
     }
 }
@@ -281,7 +280,6 @@ struct DiscussionView_Previews: PreviewProvider {
 public struct TopicCell: View {
     
     private let topic: DiscussionTopic
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(topic: DiscussionTopic) {
         self.topic = topic
@@ -294,12 +292,12 @@ public struct TopicCell: View {
             HStack {
                 Text(topic.name)
                     .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.leading)
                 Spacer()
                 Image(systemName: "chevron.right")
                     .flipsForRightToLeftLayoutDirection(true)
-                    .foregroundColor(themeManager.theme.colors.accentColor)
+                    .foregroundColor(Theme.Colors.accentColor)
             }
         })
         

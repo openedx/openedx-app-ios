@@ -27,7 +27,6 @@ public struct StyledButton: View {
     private let iconImage: Image?
     private let iconPosition: IconImagePosition
     private let maxWidthIpad: CGFloat?
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(_ title: String,
                 action: @escaping () -> Void,
@@ -88,7 +87,7 @@ public struct StyledButton: View {
         .overlay(
             Theme.Shapes.buttonShape
                 .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                .foregroundColor(isTransparent ? themeManager.theme.colors.white : borderColor)
+                .foregroundColor(isTransparent ? Theme.Colors.white : borderColor)
                 .opacity(isActive ? 1.0 : 0.6)
         
         )

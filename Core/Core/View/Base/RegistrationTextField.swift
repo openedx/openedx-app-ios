@@ -19,7 +19,6 @@ public struct RegistrationTextField: View {
     
     @ObservedObject
     private var config: FieldConfiguration
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(config: FieldConfiguration,
                 isTextArea: Bool = false,
@@ -37,22 +36,22 @@ public struct RegistrationTextField: View {
             if config.field.label != "" {
                 Text(config.field.label)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.top, 18)
                     .accessibilityIdentifier("\(config.field.name)_text")
             }
             if isTextArea {
                 TextEditor(text: $config.text)
                     .font(Theme.Fonts.bodyMedium)
-                    .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                    .foregroundColor(Theme.Colors.textInputTextColor)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 4)
-                    .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                    .foregroundColor(Theme.Colors.textInputTextColor)
                     .frame(height: 100)
                     .scrollContentBackground(.hidden)
                     .background(
                         Theme.Shapes.textInputShape
-                            .fill(themeManager.theme.colors.textInputBackground)
+                            .fill(Theme.Colors.textInputBackground)
                     )
                 
                     .overlay(
@@ -60,8 +59,8 @@ public struct RegistrationTextField: View {
                             .stroke(lineWidth: 1)
                             .fill(
                                 config.error == "" ?
-                                themeManager.theme.colors.textInputStroke
-                                : themeManager.theme.colors.irreversibleAlert
+                                Theme.Colors.textInputStroke
+                                : Theme.Colors.irreversibleAlert
                             )
                     )
                     .shake($config.shake)
@@ -76,15 +75,15 @@ public struct RegistrationTextField: View {
                         .padding(.all, 14)
                         .background(
                             Theme.Shapes.textInputShape
-                                .fill(themeManager.theme.colors.textInputBackground)
+                                .fill(Theme.Colors.textInputBackground)
                         )
                         .overlay(
                             Theme.Shapes.textInputShape
                                 .stroke(lineWidth: 1)
                                 .fill(
                                     config.error == "" ?
-                                    themeManager.theme.colors.textInputStroke
-                                    : themeManager.theme.colors.irreversibleAlert
+                                    Theme.Colors.textInputStroke
+                                    : Theme.Colors.irreversibleAlert
                                 )
                         )
                         .shake($config.shake)
@@ -92,7 +91,7 @@ public struct RegistrationTextField: View {
                 } else {
                     TextField(placeholder, text: $config.text)
                         .font(Theme.Fonts.bodyLarge)
-                        .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                        .foregroundColor(Theme.Colors.textInputTextColor)
                         .keyboardType(keyboardType)
                         .textContentType(textContentType)
                         .autocapitalization(.none)
@@ -100,15 +99,15 @@ public struct RegistrationTextField: View {
                         .padding(.all, 14)
                         .background(
                             Theme.Shapes.textInputShape
-                                .fill(themeManager.theme.colors.textInputBackground)
+                                .fill(Theme.Colors.textInputBackground)
                         )
                         .overlay(
                             Theme.Shapes.textInputShape
                                 .stroke(lineWidth: 1)
                                 .fill(
                                     config.error == "" ?
-                                    themeManager.theme.colors.textInputStroke
-                                    : themeManager.theme.colors.irreversibleAlert
+                                    Theme.Colors.textInputStroke
+                                    : Theme.Colors.irreversibleAlert
                                 )
                         )
                         .shake($config.shake)
@@ -119,8 +118,8 @@ public struct RegistrationTextField: View {
             Text(config.error == "" ? config.field.instructions : config.error)
                 .font(Theme.Fonts.bodySmall)
                 .foregroundColor(config.error == ""
-                                 ? themeManager.theme.colors.textSecondaryLight
-                                 : themeManager.theme.colors.irreversibleAlert)
+                                 ? Theme.Colors.textSecondaryLight
+                                 : Theme.Colors.irreversibleAlert)
                 .accessibilityIdentifier("\(config.field.name)_instructions_text")
         }
     }

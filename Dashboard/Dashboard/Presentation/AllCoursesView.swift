@@ -17,7 +17,6 @@ public struct AllCoursesView: View {
     private var viewModel: AllCoursesViewModel
     private let router: DashboardRouter
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(viewModel: AllCoursesViewModel, router: DashboardRouter) {
@@ -30,7 +29,7 @@ public struct AllCoursesView: View {
             ZStack(alignment: .top) {
                 VStack {
                     BackNavigationButton(
-                        color: themeManager.theme.colors.textPrimary,
+                        color: Theme.Colors.textPrimary,
                         action: {
                             router.back()
                         }
@@ -164,7 +163,7 @@ public struct AllCoursesView: View {
                 }
             }
             .background(
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
             .navigationBarBackButtonHidden(true)
@@ -190,7 +189,7 @@ public struct AllCoursesView: View {
         HStack(alignment: .center) {
             Text(DashboardLocalization.Learn.allCourses)
                 .font(Theme.Fonts.displaySmall)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .accessibilityIdentifier("all_courses_header_text")
             Spacer()
         }

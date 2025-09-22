@@ -21,7 +21,6 @@ struct MainScreenView: View {
     
     @State private var disableAllTabs: Bool = false
     @State private var updateAvailable: Bool = false
-    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject private(set) var viewModel: MainScreenViewModel
     
     init(viewModel: MainScreenViewModel) {
@@ -37,7 +36,7 @@ struct MainScreenView: View {
                         ListDashboardView(
                             viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
                             router: Container.shared.resolve(DashboardRouter.self)!
-                        ).environmentObject(themeManager)
+                        )
 
                         registerBanner
                     }
@@ -151,16 +150,16 @@ struct MainScreenView: View {
             }
             .onAppear {
                 UITabBar.appearance().isTranslucent = false
-                UITabBar.appearance().barTintColor = UIColor(themeManager.theme.colors.tabbarColor)
-                UITabBar.appearance().backgroundColor = UIColor(themeManager.theme.colors.tabbarColor)
-                UITabBar.appearance().unselectedItemTintColor = UIColor(themeManager.theme.colors.textSecondaryLight)
+                UITabBar.appearance().barTintColor = UIColor(Theme.Colors.tabbarColor)
+                UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.tabbarColor)
+                UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondaryLight)
                 
                 UITabBarItem.appearance().setTitleTextAttributes(
                     [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
                     for: .normal
                 )
                 NavigationAppearanceManager.shared.updateAppearance(
-                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                     titleColor: .white
                                 )
             }
@@ -175,7 +174,7 @@ struct MainScreenView: View {
                             router.showSettings()
                         }, label: {
                             CoreAssets.settings.swiftUIImage.renderingMode(.template)
-                                .foregroundColor(themeManager.theme.colors.accentColor)
+                                .foregroundColor(Theme.Colors.accentColor)
                         })
                         .accessibilityIdentifier("edit_profile_button")
                     }
@@ -225,7 +224,7 @@ struct MainScreenView: View {
                     viewModel.checkIfNeedToShowRegisterBanner()
                 }
             }
-            .accentColor(themeManager.theme.colors.accentXColor)
+            .accentColor(Theme.Colors.accentXColor)
             if updateAvailable {
                 UpdateNotificationView(config: viewModel.config)
             }

@@ -16,7 +16,6 @@ public struct CourseButton: View {
     private let displayName: String
     private let index: Double
     @State private var animate: Bool = false
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(isCompleted: Bool, image: Image, displayName: String, index: Double) {
         self.isCompleted = isCompleted
@@ -30,20 +29,20 @@ public struct CourseButton: View {
             if isCompleted {
                 CoreAssets.finished.swiftUIImage
                     .renderingMode(.template)
-                    .foregroundColor(themeManager.theme.colors.accentXColor)
+                    .foregroundColor(Theme.Colors.accentXColor)
             } else {
                 image
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
             }
             Text(displayName)
                 .font(Theme.Fonts.titleMedium)
                 .multilineTextAlignment(.leading)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
             Spacer()
             Image(systemName: "chevron.right")
                 .flipsForRightToLeftLayoutDirection(true)
                 .padding(.vertical, 8)
-                .foregroundColor(themeManager.theme.colors.accentXColor)
+                .foregroundColor(Theme.Colors.accentXColor)
         }
         .padding(.horizontal, 36)
         .padding(.vertical, 14)

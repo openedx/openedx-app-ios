@@ -29,7 +29,6 @@ public struct ListDashboardView: View {
     private var viewModel: ListDashboardViewModel
     private let router: DashboardRouter
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: ListDashboardViewModel, router: DashboardRouter) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
@@ -118,7 +117,7 @@ public struct ListDashboardView: View {
                         router.showSettings()
                     }, label: {
                         CoreAssets.settings.swiftUIImage.renderingMode(.template)
-                            .foregroundColor(themeManager.theme.colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentColor)
                     })
                 }
                 .padding(.top, idiom == .pad ? 13 : 5)
@@ -153,7 +152,7 @@ public struct ListDashboardView: View {
                 }
             }
             .background(
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
         }
@@ -183,7 +182,6 @@ struct ListDashboardView_Previews: PreviewProvider {
 #endif
 
 struct EmptyPageIcon: View {
-    @EnvironmentObject var themeManager: ThemeManager
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             CoreAssets.dashboardEmptyPage.swiftUIImage
@@ -191,7 +189,7 @@ struct EmptyPageIcon: View {
                 .accessibilityIdentifier("empty_page_image")
             Text(DashboardLocalization.Empty.subtitle)
                 .font(Theme.Fonts.bodySmall)
-                .foregroundColor(themeManager.theme.colors.textSecondary)
+                .foregroundColor(Theme.Colors.textSecondary)
                 .accessibilityIdentifier("empty_page_subtitle_text")
         }
         .padding(.top, 200)

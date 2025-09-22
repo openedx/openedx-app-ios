@@ -13,7 +13,6 @@ struct LessonProgressView: View {
     @ObservedObject var viewModel: CourseUnitViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     init(viewModel: CourseUnitViewModel) {
         self.viewModel = viewModel
@@ -35,7 +34,7 @@ struct LessonProgressView: View {
                         .foregroundColor(
                             selected == viewModel.selectedLesson()
                             ? .accentColor
-                            : themeManager.theme.colors.textSecondary
+                            : Theme.Colors.textSecondary
                         )
                 }
                 Spacer()

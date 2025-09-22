@@ -11,7 +11,6 @@ import Theme
 public struct FullScreenProgressView: View {
 
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init() {}
 
@@ -29,7 +28,7 @@ public struct FullScreenProgressView: View {
             .frame(maxWidth: 140)
             .background(
                 Theme.Shapes.cardShape
-                    .fill(themeManager.theme.colors.cardViewBackground)
+                    .fill(Theme.Colors.cardViewBackground)
                     .shadow(radius: 24)
                     .fixedSize(horizontal: false, vertical: false)
             )
@@ -43,7 +42,7 @@ public struct FullScreenProgressView: View {
                             miterLimit: 1
                         )
                     )
-                    .foregroundColor(themeManager.theme.colors.backgroundStroke)
+                    .foregroundColor(Theme.Colors.backgroundStroke)
                     .fixedSize(horizontal: false, vertical: false)
             )
         }

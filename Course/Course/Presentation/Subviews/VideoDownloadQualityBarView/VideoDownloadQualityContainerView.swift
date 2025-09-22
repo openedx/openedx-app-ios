@@ -12,7 +12,6 @@ import Theme
 struct VideoDownloadQualityContainerView: View {
 
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var themeManager: ThemeManager
     
     private var downloadQuality: DownloadQuality
     private var didSelect: ((DownloadQuality) -> Void)?
@@ -50,7 +49,7 @@ struct VideoDownloadQualityContainerView: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
-                            .foregroundColor(themeManager.theme.colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentColor)
                     }
                     .accessibilityIdentifier("close_button")
                 }

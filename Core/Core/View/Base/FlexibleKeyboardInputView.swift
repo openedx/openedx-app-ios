@@ -13,7 +13,6 @@ public struct FlexibleKeyboardInputView: View {
     @State private var commentText: String = ""
     @State private var commentSize: CGFloat = .init(64)
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     public var sendText: ((String) -> Void)
     private let hint: String
     
@@ -56,7 +55,7 @@ public struct FlexibleKeyboardInputView: View {
                                 .overlay(
                                     TextEditor(text: $commentText)
                                         .padding(.horizontal, 8)
-                                        .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .scrollContentBackground(.hidden)
                                         .frame(maxHeight: commentSize)
                                         .background(
@@ -70,7 +69,7 @@ public struct FlexibleKeyboardInputView: View {
                                             Theme.Shapes.textInputShape
                                                 .stroke(lineWidth: 1)
                                                 .fill(
-                                                    themeManager.theme.colors.textInputStroke
+                                                    Theme.Colors.textInputStroke
                                                 )
                                         )
                                 ).padding(8)
@@ -83,11 +82,11 @@ public struct FlexibleKeyboardInputView: View {
                                 VStack {
                                     CoreAssets.send.swiftUIImage
                                         .renderingMode(.template)
-                                        .foregroundStyle(themeManager.theme.colors.accentXColor)
+                                        .foregroundStyle(Theme.Colors.accentXColor)
                                         .opacity(canSend ? 1 : 0.5)
                                 }
                                 .frame(width: 36, height: 36)
-                                .foregroundColor(themeManager.theme.colors.white)
+                                .foregroundColor(Theme.Colors.white)
                             })
                             .padding(.top, 8)
                             .disabled(!canSend)
@@ -100,13 +99,13 @@ public struct FlexibleKeyboardInputView: View {
                     .frameLimit()
                 }.frame(maxWidth: .infinity, maxHeight: commentSize + 16)
                     .background(
-                        themeManager.theme.colors.commentCellBackground
+                        Theme.Colors.commentCellBackground
                     )
                     .overlay(
                         GeometryReader { proxy in
                             Rectangle()
                                 .size(width: proxy.size.width, height: 1)
-                                .foregroundColor(themeManager.theme.colors.cardViewStroke)
+                                .foregroundColor(Theme.Colors.cardViewStroke)
                         }
                     )
             }

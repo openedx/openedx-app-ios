@@ -259,7 +259,10 @@ struct OfflineView: View {
         enrollmentEnd: nil,
         lastVisitedBlockID: nil,
         coreAnalytics: CoreAnalyticsMock(),
-        courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+        courseHelper: CourseDownloadHelper(
+            courseStructure: nil,
+            manager: DownloadManagerMock()),
+        tenantProvider: { TenantProviderMock() }
     )
     
     OfflineView(

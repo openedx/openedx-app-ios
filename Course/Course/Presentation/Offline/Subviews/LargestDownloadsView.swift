@@ -103,7 +103,10 @@ struct LargestDownloadsView_Previews: PreviewProvider {
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock(),
-            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+            courseHelper: CourseDownloadHelper(
+                courseStructure: nil,
+                manager: DownloadManagerMock()),
+            tenantProvider: { TenantProviderMock() }
         )
         
         LargestDownloadsView(viewModel: vm)

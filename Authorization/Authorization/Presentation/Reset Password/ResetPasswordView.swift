@@ -17,7 +17,6 @@ public struct ResetPasswordView: View {
     @State private var isRecovered: Bool = false
     
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     @ObservedObject
     private var viewModel: ResetPasswordViewModel
@@ -45,8 +44,8 @@ public struct ResetPasswordView: View {
 
                 VStack(alignment: .center) {
                     NavigationBar(title: AuthLocalization.Forgot.title,
-                                  titleColor: themeManager.theme.colors.loginNavigationText,
-                                  leftButtonColor: themeManager.theme.colors.loginNavigationText,
+                                  titleColor: Theme.Colors.loginNavigationText,
+                                  leftButtonColor: Theme.Colors.loginNavigationText,
                                   leftButtonAction: {
                         viewModel.router.back()
                     }).padding(.leading, isHorizontal ? 48 : 0)
@@ -66,13 +65,13 @@ public struct ResetPasswordView: View {
                                         Text(AuthLocalization.Forgot.checkTitle)
                                             .font(Theme.Fonts.titleLarge)
                                             .multilineTextAlignment(.center)
-                                            .foregroundColor(themeManager.theme.colors.textPrimary)
+                                            .foregroundColor(Theme.Colors.textPrimary)
                                             .padding(.bottom, 4)
                                             .accessibilityIdentifier("recover_title_text")
                                         Text(AuthLocalization.Forgot.checkDescription + email)
                                             .font(Theme.Fonts.bodyMedium)
                                             .multilineTextAlignment(.center)
-                                            .foregroundColor(themeManager.theme.colors.textPrimary)
+                                            .foregroundColor(Theme.Colors.textPrimary)
                                             .padding(.bottom, 20)
                                             .accessibilityIdentifier("recover_description_text")
                                         StyledButton(CoreLocalization.SignIn.logInBtn) {
@@ -88,21 +87,21 @@ public struct ResetPasswordView: View {
                                 VStack(alignment: .leading) {
                                     Text(AuthLocalization.Forgot.title)
                                         .font(Theme.Fonts.displaySmall)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 4)
                                         .accessibilityIdentifier("forgot_title_text")
                                     Text(AuthLocalization.Forgot.description)
                                         .font(Theme.Fonts.titleSmall)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("forgot_description_text")
                                     Text(AuthLocalization.SignIn.email)
                                         .font(Theme.Fonts.labelLarge)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textPrimary)
                                         .accessibilityIdentifier("email_text")
                                     TextField("", text: $email)
                                         .font(Theme.Fonts.bodyLarge)
-                                        .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                        .foregroundColor(Theme.Colors.textInputTextColor)
                                         .keyboardType(.emailAddress)
                                         .textContentType(.emailAddress)
                                         .autocapitalization(.none)
@@ -118,7 +117,7 @@ public struct ResetPasswordView: View {
                                         .overlay(
                                             Theme.Shapes.textInputShape
                                                 .stroke(lineWidth: 1)
-                                                .fill(themeManager.theme.colors.textInputStroke)
+                                                .fill(Theme.Colors.textInputStroke)
                                         )
                                         .accessibilityIdentifier("email_textfield")
                                     if viewModel.isShowProgress {
@@ -143,7 +142,7 @@ public struct ResetPasswordView: View {
                         .padding(.horizontal, 24)
                         .padding(.top, 50)
                         .frameLimit(width: proxy.size.width)
-                    }.roundedBackground(themeManager.theme.colors.background)
+                    }.roundedBackground(Theme.Colors.background)
                         .scrollAvoidKeyboard(dismissKeyboardByTap: true)
 
                 }
@@ -152,8 +151,8 @@ public struct ResetPasswordView: View {
                 if viewModel.showAlert {
                     VStack {
                         Text(viewModel.alertMessage ?? "")
-                            .shadowCardStyle(bgColor: themeManager.theme.colors.accentColor,
-                                             textColor: themeManager.theme.colors.white)
+                            .shadowCardStyle(bgColor: Theme.Colors.accentColor,
+                                             textColor: Theme.Colors.white)
                             .padding(.top, 80)
                             .accessibilityIdentifier("show_alert_text")
                         Spacer()
@@ -182,7 +181,7 @@ public struct ResetPasswordView: View {
             }
             .ignoresSafeArea(.all, edges: .horizontal)
 
-            .background(themeManager.theme.colors.background.ignoresSafeArea(.all))
+            .background(Theme.Colors.background.ignoresSafeArea(.all))
 
             .navigationBarHidden(true)
         }

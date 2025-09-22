@@ -18,7 +18,6 @@ struct HandoutsView: View {
     
     @StateObject
     private var viewModel: HandoutsViewModel
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         courseID: String,
@@ -67,10 +66,10 @@ struct HandoutsView: View {
                                         courseID: courseID
                                     )
                                 })
-                                .environmentObject(themeManager)
+                                
                                 Divider()
                                     .frame(height: 1)
-                                    .overlay(themeManager.theme.colors.cardViewStroke)
+                                    .overlay(Theme.Colors.cardViewStroke)
                                     .accessibilityIdentifier("divider")
                                 HandoutsItemCell(type: .announcements, onTapAction: { type in
                                     viewModel.router.showHandoutsUpdatesView(
@@ -86,7 +85,7 @@ struct HandoutsView: View {
                                         courseID: courseID
                                     )
                                 })
-                                .environmentObject(themeManager)
+                                
                             }.padding(.horizontal, 32)
                             Spacer(minLength: 84)
                         }
@@ -113,7 +112,7 @@ struct HandoutsView: View {
                 }
             }
             .background(
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
         }
@@ -176,7 +175,6 @@ public enum HandoutsItemType: String {
 struct HandoutsItemCell: View {
     private let type: HandoutsItemType
     private let onTapAction: (HandoutsItemType) -> Void
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(type: HandoutsItemType, onTapAction: @escaping (HandoutsItemType) -> Void) {
         self.type = type
@@ -189,14 +187,14 @@ struct HandoutsItemCell: View {
         }, label: {
             HStack(spacing: 12) {
                 type.image.renderingMode(.template)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .frame(width: 24, height: 24)
                 VStack(alignment: .leading) {
                     Text(type.title)
-                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .font(Theme.Fonts.titleSmall)
                     Text(type.description)
-                        .foregroundColor(themeManager.theme.colors.textSecondary)
+                        .foregroundColor(Theme.Colors.textSecondary)
                         .font(Theme.Fonts.labelSmall)
                 }
                 Spacer()
@@ -204,7 +202,7 @@ struct HandoutsItemCell: View {
                     .resizable()
                     .flipsForRightToLeftLayoutDirection(true)
                     .frame(width: 7, height: 12)
-                    .foregroundColor(themeManager.theme.colors.accentColor)
+                    .foregroundColor(Theme.Colors.accentColor)
             }
         }).padding(.vertical, 16)
         

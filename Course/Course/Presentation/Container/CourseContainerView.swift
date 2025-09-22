@@ -20,7 +20,6 @@ public struct CourseContainerView: View {
     public var courseDatesViewModel: CourseDatesViewModel
     @ObservedObject
     public var courseProgressViewModel: CourseProgressViewModel
-    var themeManager: ThemeManager
     @State private var isAnimatingForTap: Bool = false
     public var courseID: String
     private var title: String
@@ -59,13 +58,11 @@ public struct CourseContainerView: View {
         courseProgressViewModel: CourseProgressViewModel,
         courseID: String,
         title: String,
-        courseRawImage: String?,
-        themeManager: ThemeManager
+        courseRawImage: String?
     ) {
         self.viewModel = viewModel
         self.courseDatesViewModel = courseDatesViewModel
         self.courseProgressViewModel = courseProgressViewModel
-        self.themeManager = themeManager
         Task {
             await withTaskGroup(of: Void.self) { group in
                 group.addTask {
@@ -90,7 +87,7 @@ public struct CourseContainerView: View {
         .navigationTitle(title)
         .onChange(of: viewModel.selection, perform: didSelect)
         .onChange(of: coordinate, perform: collapseHeader)
-        .background(themeManager.theme.colors.background)
+        .background(Theme.Colors.background)
     }
     
     @ViewBuilder
@@ -107,7 +104,7 @@ public struct CourseContainerView: View {
                     collapsed: $collapsed,
                     viewHeight: $viewHeight,
                     dateTabIndex: CourseTab.dates.rawValue
-                ).environmentObject(themeManager)
+                )
             } else {
                 ZStack(alignment: .top) {
                     tabs
@@ -121,7 +118,7 @@ public struct CourseContainerView: View {
                                 animationNamespace: animationNamespace,
                                 isAnimatingForTap: $isAnimatingForTap,
                                 courseRawImage: courseRawImage
-                            ).environmentObject(themeManager)
+                            )
                         }
                         .offset(
                             y: ignoreOffset
@@ -173,7 +170,7 @@ public struct CourseContainerView: View {
                         VisualEffectView(effect: UIBlurEffect(style: .regular))
                             .clipShape(Circle())
                         BackNavigationButton(
-                            color: themeManager.theme.colors.textPrimary,
+                            color: Theme.Colors.textPrimary,
                             action: {
                                 viewModel.router.back()
                             }
@@ -213,8 +210,8 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
-                    .accentColor(themeManager.theme.colors.accentColor)
-                    .environmentObject(themeManager)
+                    .accentColor(Theme.Colors.accentColor)
+                    
                 case .progress:
                     CourseProgressScreenView(
                         courseID: courseID,
@@ -229,7 +226,7 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
-                    .accentColor(themeManager.theme.colors.accentColor)
+                    .accentColor(Theme.Colors.accentColor)
                 case .videos:
                     CourseOutlineView(
                         viewModel: viewModel,
@@ -247,8 +244,8 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
-                    .accentColor(themeManager.theme.colors.accentColor)
-                    .environmentObject(themeManager)
+                    .accentColor(Theme.Colors.accentColor)
+                    
                 case .dates:
                     CourseDatesView(
                         courseID: courseID,
@@ -262,8 +259,8 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
-                    .accentColor(themeManager.theme.colors.accentColor)
-                    .environmentObject(themeManager)
+                    .accentColor(Theme.Colors.accentColor)
+                    
                 case .offline:
                     OfflineView(
                         courseID: courseID,
@@ -277,8 +274,8 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
-                    .accentColor(themeManager.theme.colors.accentColor)
-                    .environmentObject(themeManager)
+                    .accentColor(Theme.Colors.accentColor)
+                    
                 case .discussion:
                     DiscussionTopicsView(
                         courseID: courseID,
@@ -294,8 +291,8 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
-                    .accentColor(themeManager.theme.colors.accentColor)
-                    .environmentObject(themeManager)
+                    .accentColor(Theme.Colors.accentColor)
+                    
                 case .handounds:
                     HandoutsView(
                         courseID: courseID,
@@ -309,8 +306,8 @@ public struct CourseContainerView: View {
                         Text(tab.title)
                     }
                     .tag(tab)
-                    .accentColor(themeManager.theme.colors.accentColor)
-                    .environmentObject(themeManager)
+                    .accentColor(Theme.Colors.accentColor)
+                    
                 }
             }
         }
@@ -403,7 +400,10 @@ public struct CourseContainerView: View {
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock(),
-            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+            courseHelper: CourseDownloadHelper(
+                courseStructure: nil,
+                manager: DownloadManagerMock()),
+            tenantProvider: { TenantProviderMock() }
         ),
         courseDatesViewModel: CourseDatesViewModel(
             interactor: CourseInteractor.mock,
@@ -424,8 +424,7 @@ public struct CourseContainerView: View {
         ),
         courseID: "",
         title: "Title of Course",
-        courseRawImage: nil,
-        themeManager: ThemeManager.shared
+        courseRawImage: nil
     )
     .loadFonts()
 }

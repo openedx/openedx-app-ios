@@ -16,7 +16,6 @@ struct WebView: View {
     let injections: [WebviewInjection]
     let blockID: String
     var roundedBackgroundEnabled: Bool = true
-    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(spacing: 0) {
@@ -34,7 +33,7 @@ struct WebView: View {
         }
         .if(roundedBackgroundEnabled) { view in
             view.roundedBackgroundWeb(
-                strokeColor: themeManager.theme.colors.textInputUnfocusedStroke,
+                strokeColor: Theme.Colors.textInputUnfocusedStroke,
                 maxIpadWidth: .infinity
             )
         }

@@ -15,7 +15,6 @@ struct CourseVideoDownloadBarView: View {
     // MARK: - Properties
 
     @StateObject var viewModel: CourseVideoDownloadBarViewModel
-    @EnvironmentObject var themeManager: ThemeManager
     private var onTap: (() -> Void)?
     private var onNotInternetAvaliable: (() -> Void)?
 
@@ -50,7 +49,7 @@ struct CourseVideoDownloadBarView: View {
             .padding(.vertical, 10)
             if viewModel.isOn, !viewModel.isAllVideosDownloaded {
                 ProgressView(value: viewModel.progress, total: 1)
-                    .tint(themeManager.theme.colors.accentColor)
+                    .tint(Theme.Colors.accentColor)
                     .accessibilityIdentifier("progress_line_view")
             }
             Divider()
@@ -95,7 +94,7 @@ struct CourseVideoDownloadBarView: View {
                 Text(title)
                     .lineLimit(1)
                     .font(Theme.Fonts.titleMedium)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityElement(children: .ignore)
                     .accessibilityLabel(title)
                     .accessibilityIdentifier("bar_title_text")
@@ -123,7 +122,7 @@ struct CourseVideoDownloadBarView: View {
                         }
                     }
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textSecondary)
+                    .foregroundColor(Theme.Colors.textSecondary)
                 }
             }
             Spacer()
@@ -134,7 +133,7 @@ struct CourseVideoDownloadBarView: View {
 
     private var toggle: some View {
         Toggle("", isOn: .constant(viewModel.isOn))
-            .toggleStyle(SwitchToggleStyle(tint: themeManager.theme.colors.toggleSwitchColor))
+            .toggleStyle(SwitchToggleStyle(tint: Theme.Colors.toggleSwitchColor))
             .padding(.trailing, 15)
             .simultaneousGesture(
                 DragGesture(minimumDistance: 20, coordinateSpace: .local).onEnded { _ in

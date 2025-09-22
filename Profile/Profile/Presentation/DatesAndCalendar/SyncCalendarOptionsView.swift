@@ -15,7 +15,6 @@ public struct SyncCalendarOptionsView: View {
     private var viewModel: DatesAndCalendarViewModel
     
     @State private var screenDimmed: Bool = false
-    @EnvironmentObject var themeManager: ThemeManager
     @Environment(\.isHorizontal) private var isHorizontal
     
     public init(viewModel: DatesAndCalendarViewModel) {
@@ -79,14 +78,14 @@ public struct SyncCalendarOptionsView: View {
                                     }
                                 },
                                 color: viewModel.reconnectRequired
-                                ? themeManager.theme.colors.accentColor
-                                : themeManager.theme.colors.background,
+                                ? Theme.Colors.accentColor
+                                : Theme.Colors.background,
                                 textColor: viewModel.reconnectRequired
-                                ? themeManager.theme.colors.styledButtonText
-                                : themeManager.theme.colors.accentColor,
+                                ? Theme.Colors.styledButtonText
+                                : Theme.Colors.accentColor,
                                 borderColor: viewModel.reconnectRequired
                                 ? .clear
-                                : themeManager.theme.colors.accentColor
+                                : Theme.Colors.accentColor
                             )
                             .padding(.horizontal, 24)
                             if !viewModel.reconnectRequired {
@@ -96,12 +95,12 @@ public struct SyncCalendarOptionsView: View {
                                     .padding(.bottom, 24)
                             }
                             RelativeDatesToggleView(useRelativeDates: $viewModel.profileStorage.useRelativeDates)
-                                .environmentObject(themeManager)
+                                
                         }
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                         .frameLimit(width: proxy.size.width)
                     }
-                    .roundedBackground(themeManager.theme.colors.background)
+                    .roundedBackground(Theme.Colors.background)
                     .ignoresSafeArea(.all, edges: .bottom)
                 }
                 .navigationBarHidden(true)
@@ -218,7 +217,7 @@ public struct SyncCalendarOptionsView: View {
         Text(text)
             .multilineTextAlignment(.leading)
             .font(Theme.Fonts.labelLarge)
-            .foregroundStyle(themeManager.theme.colors.textPrimary)
+            .foregroundStyle(Theme.Colors.textPrimary)
             .padding(.horizontal, 24)
             .frame(
                 minWidth: 0,
@@ -257,7 +256,7 @@ public struct SyncCalendarOptionsView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(ProfileLocalization.settingsVideo)
         .cardStyle(
-            bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
+            bgColor: Theme.Colors.textInputUnfocusedBackground,
             strokeColor: .clear
         )
     }

@@ -20,7 +20,6 @@ public struct CreateNewThreadView: View {
     private var courseID: String
     
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var themeManager: ThemeManager
     
     @ObservedObject
     private var viewModel: CreateNewThreadViewModel
@@ -54,7 +53,7 @@ public struct CreateNewThreadView: View {
                                 HStack {
                                     Text(DiscussionLocalization.CreateThread.selectPostType)
                                         .font(Theme.Fonts.titleMedium)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.top, 32)
                                     Spacer()
                                 }
@@ -70,7 +69,7 @@ public struct CreateNewThreadView: View {
                                 // MARK: Topic picker
                                 Group {
                                     Text(DiscussionLocalization.CreateThread.topic)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textPrimary)
                                         .font(Theme.Fonts.titleSmall)
                                         .padding(.top, 16)
                                     
@@ -87,21 +86,21 @@ public struct CreateNewThreadView: View {
                                             Text(viewModel.allTopics.first(where: {
                                                 $0.id == viewModel.selectedTopic })?.name ?? "")
                                             .font(Theme.Fonts.labelLarge)
-                                            .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                            .foregroundColor(Theme.Colors.textInputTextColor)
                                             .frame(height: 40, alignment: .leading)
                                             Spacer()
                                             Image(systemName: "chevron.down")
                                                 .renderingMode(.template)
-                                                .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                                .foregroundColor(Theme.Colors.textInputTextColor)
                                         }.padding(.horizontal, 14)
-                                            .accentColor(themeManager.theme.colors.textPrimary)
+                                            .accentColor(Theme.Colors.textPrimary)
                                             .background(Theme.Shapes.textInputShape
-                                                .fill(themeManager.theme.colors.textInputBackground)
+                                                .fill(Theme.Colors.textInputBackground)
                                             )
                                             .overlay(
                                                 Theme.Shapes.textInputShape
                                                     .stroke(lineWidth: 1)
-                                                    .fill(themeManager.theme.colors.textInputStroke)
+                                                    .fill(Theme.Colors.textInputStroke)
                                             )
                                     }
                                 }
@@ -110,48 +109,48 @@ public struct CreateNewThreadView: View {
                                 Group {
                                     Text(DiscussionLocalization.CreateThread.title)
                                         .font(Theme.Fonts.titleSmall)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
-                                    + Text(" *").foregroundColor(themeManager.theme.colors.alert)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                    + Text(" *").foregroundColor(Theme.Colors.alert)
                                 }.padding(.top, 16)
                                 TextField("", text: $postTitle)
                                     .font(Theme.Fonts.bodyLarge)
-                                    .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
                                     .padding(14)
                                     .frame(height: 40)
                                     .background(
                                         Theme.Shapes.textInputShape
-                                            .fill(themeManager.theme.colors.textInputBackground)
+                                            .fill(Theme.Colors.textInputBackground)
                                     )
                                     .overlay(
                                         Theme.Shapes.textInputShape
                                             .stroke(lineWidth: 1)
                                             .fill(
-                                                themeManager.theme.colors.textInputStroke
+                                                Theme.Colors.textInputStroke
                                             )
                                     )
                                 
                                 Group {
                                     Text("\(postType.localizedValue.capitalized)")
                                         .font(Theme.Fonts.titleSmall)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
-                                    + Text(" *").foregroundColor(themeManager.theme.colors.alert)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                    + Text(" *").foregroundColor(Theme.Colors.alert)
                                 }.padding(.top, 16)
                                 TextEditor(text: $postBody)
                                     .font(Theme.Fonts.bodyMedium)
-                                    .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                                    .foregroundColor(Theme.Colors.textInputTextColor)
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 10)
                                     .frame(height: 200)
                                     .scrollContentBackground(.hidden)
                                     .background(
                                         Theme.Shapes.textInputShape
-                                            .fill(themeManager.theme.colors.textInputBackground)
+                                            .fill(Theme.Colors.textInputBackground)
                                     )
                                     .overlay(
                                         Theme.Shapes.textInputShape
                                             .stroke(lineWidth: 1)
                                             .fill(
-                                                themeManager.theme.colors.textInputStroke
+                                                Theme.Colors.textInputStroke
                                             )
                                     )
                                 
@@ -199,7 +198,7 @@ public struct CreateNewThreadView: View {
             }
             .onAppear {
                 NavigationAppearanceManager.shared.updateAppearance(
-                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                     titleColor: .white
                                 )
             }
@@ -207,7 +206,7 @@ public struct CreateNewThreadView: View {
             .navigationBarBackButtonHidden(false)
             .navigationTitle(DiscussionLocalization.CreateThread.newPost)
             .background(
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
             .task {

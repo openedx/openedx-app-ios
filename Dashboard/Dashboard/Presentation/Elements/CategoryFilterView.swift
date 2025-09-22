@@ -45,7 +45,6 @@ enum CategoryOption: String, CaseIterable {
 struct CategoryFilterView: View {
     @Binding var selectedOption: CategoryOption
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         ScrollView(.horizontal) {
@@ -59,8 +58,8 @@ struct CategoryFilterView: View {
                             Text(option.text)
                                 .font(Theme.Fonts.titleSmall)
                                 .foregroundColor(
-                                    option == selectedOption ? themeManager.theme.colors.slidingSelectedTextColor : (
-                                        colorScheme == .light ? themeManager.theme.colors.accentColor : .white
+                                    option == selectedOption ? Theme.Colors.slidingSelectedTextColor : (
+                                        colorScheme == .light ? Theme.Colors.accentColor : .white
                                     )
                                 )
                         }
@@ -71,12 +70,12 @@ struct CategoryFilterView: View {
                                 RoundedRectangle(cornerRadius: 20)
                                     .foregroundStyle(
                                         option == selectedOption
-                                        ? themeManager.theme.colors.accentColor
-                                        : themeManager.theme.colors.cardViewBackground
+                                        ? Theme.Colors.accentColor
+                                        : Theme.Colors.cardViewBackground
                                     )
                                 RoundedRectangle(cornerRadius: 20)
                                     .stroke(
-                                        colorScheme == .light ? themeManager.theme.colors.accentColor : .clear,
+                                        colorScheme == .light ? Theme.Colors.accentColor : .clear,
                                         style: .init(lineWidth: 1)
                                     )
                             }

@@ -27,7 +27,6 @@ public struct SubtitlesView: View {
     @State var id = 0
     @State var pause: Bool = false
     @State var languages: [SubtitleUrl]
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(languages: [SubtitleUrl],
                 currentTime: Binding<Double>,
@@ -53,7 +52,7 @@ public struct SubtitlesView: View {
                             Group {
                                 CoreAssets.sub.swiftUIImage.renderingMode(.template)
                                 Text(viewModel.generateLanguageName(code: viewModel.selectedLanguage ?? ""))
-                            }.foregroundColor(themeManager.theme.colors.accentColor)
+                            }.foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)
                         })
                     }
@@ -74,8 +73,8 @@ public struct SubtitlesView: View {
                                             .font(Theme.Fonts.bodyMedium)
                                             .multilineTextAlignment(.leading)
                                             .foregroundColor(subtitle.fromTo.contains(Date(milliseconds: currentTime))
-                                                             ? themeManager.theme.colors.textPrimary
-                                                             : themeManager.theme.colors.textSecondary)
+                                                             ? Theme.Colors.textPrimary
+                                                             : Theme.Colors.textSecondary)
                                             
                                             .onChange(of: currentTime, perform: { _ in
                                                 if subtitle.fromTo.contains(Date(milliseconds: currentTime)) {

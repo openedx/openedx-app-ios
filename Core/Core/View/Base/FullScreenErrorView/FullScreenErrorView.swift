@@ -16,7 +16,6 @@ public struct FullScreenErrorView: View {
         case generic
         case noContent(_ message: String, image: SwiftUI.Image)
     }
-    @EnvironmentObject var themeManager: ThemeManager
     private let errorType: ErrorType
     private var action: () -> Void = {}
     
@@ -42,44 +41,44 @@ public struct FullScreenErrorView: View {
                 image
                     .resizable()
                     .renderingMode(.template)
-                    .foregroundStyle(themeManager.theme.colors.textSecondary)
+                    .foregroundStyle(Theme.Colors.textSecondary)
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 72, maxHeight: 80)
                 
                 Text(message)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 50)
             case .noInternet,
                     .noInternetWithReload:
                 CoreAssets.noWifi.swiftUIImage
                     .renderingMode(.template)
-                    .foregroundStyle(themeManager.theme.colors.textSecondary)
+                    .foregroundStyle(Theme.Colors.textSecondary)
                     .scaledToFit()
                 
                 Text(CoreLocalization.Error.Internet.noInternetTitle)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 
                 Text(CoreLocalization.Error.Internet.noInternetDescription)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 50)
             case .generic:
                 CoreAssets.notAvaliable.swiftUIImage
                     .renderingMode(.template)
-                    .foregroundStyle(themeManager.theme.colors.textSecondary)
+                    .foregroundStyle(Theme.Colors.textSecondary)
                     .scaledToFit()
                 
                 Text(CoreLocalization.View.Snackbar.tryAgainBtn)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 
                 Text(CoreLocalization.Error.unknownError)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 50)
                 
@@ -91,13 +90,13 @@ public struct FullScreenErrorView: View {
                         self.action()
                     }
                 )
-                .environmentObject(themeManager)
+                
             }
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(
-            themeManager.theme.colors.background
+            Theme.Colors.background
         )
     }
 }

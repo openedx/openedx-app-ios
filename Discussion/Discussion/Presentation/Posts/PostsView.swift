@@ -15,7 +15,6 @@ public struct PostsView: View {
     @ObservedObject private var viewModel: PostsViewModel
     @State private var showFilterSheet = false
     @State private var showSortSheet = false
-    @EnvironmentObject var themeManager: ThemeManager
     private let router: DiscussionRouter
     private let title: String
     private let currentBlockID: String
@@ -89,15 +88,15 @@ public struct PostsView: View {
                                             filterButton
                                             Spacer()
                                             sortButton
-                                        }.foregroundColor(themeManager.theme.colors.accentColor)
+                                        }.foregroundColor(Theme.Colors.accentColor)
                                     }
                                     .font(Theme.Fonts.labelMedium)
                                     .padding(.horizontal, 24)
                                     .padding(.vertical, 12)
-                                    .shadow(color: themeManager.theme.colors.shadowColor,
+                                    .shadow(color: Theme.Colors.shadowColor,
                                             radius: 12, y: 4)
                                     .background(
-                                        themeManager.theme.colors.background
+                                        Theme.Colors.background
                                     )
                                     .frameLimit(width: proxy.size.width)
                                     Divider().offset(y: -8)
@@ -112,7 +111,7 @@ public struct PostsView: View {
                                             HStack(alignment: .center) {
                                                 Text(title)
                                                     .font(Theme.Fonts.titleLarge)
-                                                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                    .foregroundColor(Theme.Colors.textPrimary)
                                                 Spacer()
                                                 if !(viewModel.isBlackedOut ?? false) {
                                                     Button(action: {
@@ -132,11 +131,11 @@ public struct PostsView: View {
                                                                 .font(Theme.Fonts.labelLarge)
                                                                 .padding(6)
                                                         }
-                                                        .foregroundColor(themeManager.theme.colors.white)
+                                                        .foregroundColor(Theme.Colors.white)
                                                         .background(
                                                             Circle()
                                                                 .foregroundColor(
-                                                                    themeManager.theme.colors.accentButtonColor)
+                                                                    Theme.Colors.accentButtonColor)
                                                         )
                                                     })
                                                 }
@@ -167,7 +166,7 @@ public struct PostsView: View {
                                             VStack(spacing: 0) {
                                                 CoreAssets.discussionIcon.swiftUIImage
                                                     .renderingMode(.template)
-                                                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                    .foregroundColor(Theme.Colors.textPrimary)
                                                 Text(DiscussionLocalization.Posts.NoDiscussion.title)
                                                     .font(Theme.Fonts.titleLarge)
                                                     .multilineTextAlignment(.center)
@@ -195,7 +194,7 @@ public struct PostsView: View {
                                                         isTransparent: true)
                                                     .frame(width: 215)
                                                     .padding(.top, 40)
-                                                    .colorMultiply(themeManager.theme.colors.accentColor)
+                                                    .colorMultiply(Theme.Colors.accentColor)
                                                     .disabled(viewModel.isBlackedOut ?? false)
                                                 }
                                             }
@@ -241,7 +240,7 @@ public struct PostsView: View {
             }
             .onAppear {
                 NavigationAppearanceManager.shared.updateAppearance(
-                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                     titleColor: .white
                                 )
             }
@@ -249,7 +248,7 @@ public struct PostsView: View {
             .navigationBarBackButtonHidden(!showTopMenu)
             .navigationTitle(title)
             .background(
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
         }
@@ -263,7 +262,7 @@ public struct PostsView: View {
             label: {
                 CoreAssets.filter.swiftUIImage
                     .renderingMode(.template)
-                    .foregroundColor(themeManager.theme.colors.accentXColor)
+                    .foregroundColor(Theme.Colors.accentXColor)
                 Text(viewModel.filterTitle.localizedValue)
             }
         )
@@ -293,7 +292,7 @@ public struct PostsView: View {
             },
             label: {
                 CoreAssets.sort.swiftUIImage.renderingMode(.template)
-                    .foregroundColor(themeManager.theme.colors.accentXColor)
+                    .foregroundColor(Theme.Colors.accentXColor)
                 Text(viewModel.sortTitle.localizedValue)
             }
         )
@@ -368,7 +367,6 @@ public struct PostsView: View {
 //#endif
 
 public struct PostCell: View {
-    @EnvironmentObject var themeManager: ThemeManager
     private var post: DiscussionPost
     
     public init(post: DiscussionPost) {
@@ -382,7 +380,7 @@ public struct PostCell: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
                     post.type.getImage()
-                        .foregroundColor(themeManager.theme.colors.accentColor)
+                        .foregroundColor(Theme.Colors.accentColor)
                     Text(post.type.localizedValue.capitalized)
                     Spacer()
                     if post.unreadCommentCount - 1 > 0 {
@@ -391,22 +389,22 @@ public struct PostCell: View {
                         Text(DiscussionLocalization.missedPostsCount(post.unreadCommentCount - 1))
                     }
                 }.font(Theme.Fonts.labelSmall)
-                    .foregroundColor(themeManager.theme.colors.textSecondary)
+                    .foregroundColor(Theme.Colors.textSecondary)
                 Text(post.title)
                     .multilineTextAlignment(.leading)
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Text("\(DiscussionLocalization.Post.lastPost) \(post.lastPostDateFormatted)")
                     .font(Theme.Fonts.labelSmall)
-                    .foregroundColor(themeManager.theme.colors.textSecondary)
+                    .foregroundColor(Theme.Colors.textSecondary)
                 HStack {
                     CoreAssets.responses.swiftUIImage.renderingMode(.template)
-                        .foregroundColor(themeManager.theme.colors.accentXColor)
+                        .foregroundColor(Theme.Colors.accentXColor)
                     Text("\(post.replies - 1)")
                     Text(DiscussionLocalization.responsesCount(post.replies - 1))
                         .font(Theme.Fonts.labelLarge)
                 }
-                .foregroundColor(themeManager.theme.colors.accentColor)
+                .foregroundColor(Theme.Colors.accentColor)
             }
         })
     }

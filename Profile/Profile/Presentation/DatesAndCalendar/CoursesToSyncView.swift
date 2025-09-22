@@ -15,7 +15,6 @@ public struct CoursesToSyncView: View {
     private var viewModel: DatesAndCalendarViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: DatesAndCalendarViewModel) {
         self.viewModel = viewModel
@@ -44,7 +43,7 @@ public struct CoursesToSyncView: View {
                         Group {
                             Text(ProfileLocalization.CoursesToSync.description)
                                 .font(Theme.Fonts.labelMedium)
-                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .padding(.top, 24)
                                 .padding(.horizontal, 24)
                                 .frame(
@@ -69,7 +68,7 @@ public struct CoursesToSyncView: View {
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                     }
                     .frameLimit(width: proxy.size.width)
-                    .roundedBackground(themeManager.theme.colors.background)
+                    .roundedBackground(Theme.Colors.background)
                     .ignoresSafeArea(.all, edges: .bottom)
                 }
                 .navigationBarHidden(true)
@@ -109,13 +108,13 @@ public struct CoursesToSyncView: View {
                                 set: { _ in viewModel.toggleSync(for: course) }
                             ),
                             text: course.name,
-                            color: themeManager.theme.colors.textPrimary.opacity(course.recentlyActive ? 1 : 0.8)
+                            color: Theme.Colors.textPrimary.opacity(course.recentlyActive ? 1 : 0.8)
                         )
                         
                         if !course.recentlyActive {
                             Text(ProfileLocalization.CoursesToSync.inactive)
                                 .font(Theme.Fonts.labelSmall)
-                                .foregroundStyle(themeManager.theme.colors.textPrimary.opacity(0.8))
+                                .foregroundStyle(Theme.Colors.textPrimary.opacity(0.8))
                         }
                     }
                     .frame(
@@ -137,13 +136,13 @@ public struct CoursesToSyncView: View {
             CoreAssets.learnEmpty.swiftUIImage
                 .resizable()
                 .frame(width: 96, height: 96)
-                .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
             Text(ProfileLocalization.Sync.noSynced)
-                .foregroundStyle(themeManager.theme.colors.textPrimary)
+                .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)
             Text(ProfileLocalization.Sync.noSyncedDescription)
                 .multilineTextAlignment(.center)
-                .foregroundStyle(themeManager.theme.colors.textPrimary)
+                .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.labelMedium)
                 .frame(width: 245)
         }

@@ -17,7 +17,6 @@ struct FieldsView: View {
     let cssInjector: CSSInjector
     let proxy: GeometryProxy
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var themeManager: ThemeManager
     @State private var text: String = ""
     @State private var sendMarketing: Bool = true
 
@@ -95,8 +94,8 @@ struct FieldsView: View {
                 }
             }
             Text(.init(text))
-                .tint(themeManager.theme.colors.infoColor)
-                .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
+                .tint(Theme.Colors.infoColor)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.vertical, 3)
                 .id(UUID())

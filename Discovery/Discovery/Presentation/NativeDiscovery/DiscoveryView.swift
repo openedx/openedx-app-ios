@@ -22,7 +22,6 @@ public struct DiscoveryView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
-    @EnvironmentObject var themeManager: ThemeManager
     
     private let discoveryNew: some View = VStack(alignment: .leading) {
         Text(DiscoveryLocalization.Header.title1)
@@ -59,12 +58,12 @@ public struct DiscoveryView: View {
                     // MARK: - Search fake field
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(themeManager.theme.colors.textSecondary)
+                            .foregroundColor(Theme.Colors.textSecondary)
                             .padding(.leading, 16)
                             .padding(.top, 1)
                             .accessibilityIdentifier("search_image")
                         Text(DiscoveryLocalization.search)
-                            .foregroundColor(themeManager.theme.colors.textSecondary)
+                            .foregroundColor(Theme.Colors.textSecondary)
                             .accessibilityIdentifier("search_text")
                         Spacer()
                     }
@@ -76,12 +75,12 @@ public struct DiscoveryView: View {
                     .frame(maxWidth: .infinity)
                     .background(
                         Theme.Shapes.textInputShape
-                            .fill(themeManager.theme.colors.textInputUnfocusedBackground)
+                            .fill(Theme.Colors.textInputUnfocusedBackground)
                     )
                     .overlay(
                         Theme.Shapes.textInputShape
                             .stroke(lineWidth: 1)
-                            .fill(themeManager.theme.colors.textInputUnfocusedStroke)
+                            .fill(Theme.Colors.textInputUnfocusedStroke)
                     ).onTapGesture {
                         router.showDiscoverySearch(searchQuery: searchQuery)
                         viewModel.discoverySearchBarClicked()
@@ -203,10 +202,10 @@ public struct DiscoveryView: View {
                 }
             }
         }
-        .background(themeManager.theme.colors.background.ignoresSafeArea())
+        .background(Theme.Colors.background.ignoresSafeArea())
         .onAppear {
             NavigationAppearanceManager.shared.updateAppearance(
-                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                 titleColor: .white
                             )
         }

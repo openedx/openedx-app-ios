@@ -13,7 +13,6 @@ public struct UpdateNotificationView: View {
     
     private let config: ConfigProtocol
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(config: ConfigProtocol) {
         self.config = config
@@ -27,17 +26,17 @@ public struct UpdateNotificationView: View {
                         .resizable()
                         .frame(width: 36,
                                height: 36)
-                        .foregroundColor(themeManager.theme.colors.white)
+                        .foregroundColor(Theme.Colors.white)
                     VStack(alignment: .leading) {
                         Text(DiscoveryLocalization.updateNeededTitle)
                             .font(Theme.Fonts.titleMedium)
                         Text(DiscoveryLocalization.updateNewAvaliable)
                             .font(Theme.Fonts.bodySmall)
-                    }.foregroundColor(themeManager.theme.colors.white)
+                    }.foregroundColor(Theme.Colors.white)
                     Spacer()
                 }
                 .padding(16)
-                    .background(themeManager.theme.colors.accentColor)
+                    .background(Theme.Colors.accentColor)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .shadow(color: Color.black.opacity(0.4), radius: 12, x: 0, y: 0)
                     .padding(24)

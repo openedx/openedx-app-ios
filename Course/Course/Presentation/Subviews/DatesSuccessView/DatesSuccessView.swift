@@ -23,7 +23,6 @@ public struct DatesSuccessView: View {
     var courseContainerViewModel: CourseContainerViewModel?
     var action: () -> Void = {}
     var dismissAction: () -> Void = {}
-    @EnvironmentObject var themeManager: ThemeManager
     @State private var dismiss: Bool = false
     
     init (
@@ -71,7 +70,7 @@ public struct DatesSuccessView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     HStack(alignment: .top) {
                         Text(title)
-                            .foregroundStyle(themeManager.theme.colors.textPrimary)
+                            .foregroundStyle(Theme.Colors.textPrimary)
                             .font(Theme.Fonts.titleMedium)
                         Spacer()
                         Button {
@@ -84,11 +83,11 @@ public struct DatesSuccessView: View {
                                 .frame(width: 14.0, height: 14.0)
                         }
                         .padding(.all, 5)
-                        .tint(themeManager.theme.colors.textPrimary)
+                        .tint(Theme.Colors.textPrimary)
                     }
                     
                     Text(message)
-                        .foregroundStyle(themeManager.theme.colors.textPrimary)
+                        .foregroundStyle(Theme.Colors.textPrimary)
                         .font(Theme.Fonts.labelLarge)
                     
                     if selectedTab == .course {
@@ -101,18 +100,18 @@ public struct DatesSuccessView: View {
                         })
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 11)
-                        .background(themeManager.theme.colors.datesSectionBackground)
-                        .foregroundStyle(themeManager.theme.colors.secondaryButtonBorderColor)
+                        .background(Theme.Colors.datesSectionBackground)
+                        .foregroundStyle(Theme.Colors.secondaryButtonBorderColor)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(themeManager.theme.colors.secondaryButtonBorderColor, lineWidth: 1)
+                                .stroke(Theme.Colors.secondaryButtonBorderColor, lineWidth: 1)
                         )
                     }
                 }
                 .font(Theme.Fonts.titleSmall)
                 .padding(.all, 16)
-                .background(themeManager.theme.colors.datesSectionBackground)
+                .background(Theme.Colors.datesSectionBackground)
                 .clipShape(RoundedRectangle(cornerRadius: 8))
             }
             .frame(maxWidth: .infinity)

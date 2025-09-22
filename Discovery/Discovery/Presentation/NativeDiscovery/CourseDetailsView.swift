@@ -18,7 +18,6 @@ public struct CourseDetailsView: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.isHorizontal) var isHorizontal
     @State private var isOverviewRendering = true
-    @EnvironmentObject var themeManager: ThemeManager
     private var title: String
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var courseID: String
@@ -216,12 +215,12 @@ public struct CourseDetailsView: View {
             }
         }
         .background(
-            themeManager.theme.colors.background
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
         .onAppear {
             NavigationAppearanceManager.shared.updateAppearance(
-                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                 titleColor: .white
                             )
         }
@@ -233,7 +232,6 @@ private struct CourseStateView: View {
     let title: String
     let courseDetails: CourseDetails
     let viewModel: CourseDetailsViewModel
-    @EnvironmentObject var themeManager: ThemeManager
     
     init(title: String,
          courseDetails: CourseDetails,
@@ -293,14 +291,14 @@ private struct CourseStateView: View {
                     HStack(alignment: .center, spacing: 10) {
                         CoreAssets.noWifiMini.swiftUIImage
                             .renderingMode(.template)
-                            .foregroundStyle(themeManager.theme.colors.warning)
+                            .foregroundStyle(Theme.Colors.warning)
                         Text(DiscoveryLocalization.Details.enrollmentNoInternet)
                             .multilineTextAlignment(.leading)
                             .font(Theme.Fonts.titleSmall)
                         Spacer()
                     }.cardStyle(
                         paddingAll: 12,
-                        bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
+                        bgColor: Theme.Colors.textInputUnfocusedBackground,
                         strokeColor: .clear)
                 }
             }
@@ -360,7 +358,6 @@ private struct PlayButton: View {
 
 private struct CourseTitleView: View {
     let courseDetails: CourseDetails
-    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
@@ -376,7 +373,7 @@ private struct CourseTitleView: View {
             
             Text(courseDetails.org)
                 .font(Theme.Fonts.labelMedium)
-                .foregroundColor(themeManager.theme.colors.accentColor)
+                .foregroundColor(Theme.Colors.accentColor)
                 .padding(.horizontal, 26)
                 .padding(.top, 10)
                 .accessibilityIdentifier("org_text")

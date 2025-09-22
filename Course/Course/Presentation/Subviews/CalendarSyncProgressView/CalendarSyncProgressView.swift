@@ -12,7 +12,6 @@ import Core
 public struct CalendarSyncProgressView: View {
 
     @Environment(\.dismiss) private var dismiss
-    @EnvironmentObject var themeManager: ThemeManager
     private let title: String
 
     public init(title: String) {
@@ -37,7 +36,7 @@ public struct CalendarSyncProgressView: View {
             .frame(maxWidth: 250)
             .background(
                 Theme.Shapes.cardShape
-                    .fill(themeManager.theme.colors.cardViewBackground)
+                    .fill(Theme.Colors.cardViewBackground)
                     .shadow(radius: 24)
                     .fixedSize(horizontal: false, vertical: false)
             )
@@ -51,7 +50,7 @@ public struct CalendarSyncProgressView: View {
                             miterLimit: 1
                         )
                     )
-                    .foregroundColor(themeManager.theme.colors.backgroundStroke)
+                    .foregroundColor(Theme.Colors.backgroundStroke)
                     .fixedSize(horizontal: false, vertical: false)
             )
         }

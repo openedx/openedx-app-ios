@@ -17,7 +17,6 @@ public struct DatesAndCalendarView: View {
     @State private var screenDimmed: Bool = false
     
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: DatesAndCalendarViewModel) {
         self.viewModel = viewModel
@@ -46,12 +45,12 @@ public struct DatesAndCalendarView: View {
                         Group {
                             calendarSyncCard
                             RelativeDatesToggleView(useRelativeDates: $viewModel.profileStorage.useRelativeDates)
-                                .environmentObject(themeManager)
+                                
                         }
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                     }
                     .frameLimit(width: proxy.size.width)
-                    .roundedBackground(themeManager.theme.colors.background)
+                    .roundedBackground(Theme.Colors.background)
                     .ignoresSafeArea(.all, edges: .bottom)
                 }
                 .navigationBarHidden(true)
@@ -143,18 +142,18 @@ public struct DatesAndCalendarView: View {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .center, spacing: 16) {
                     CoreAssets.calendarSyncIcon.swiftUIImage
-                        .foregroundStyle(themeManager.theme.colors.textPrimary)
+                        .foregroundStyle(Theme.Colors.textPrimary)
                         .padding(.bottom, 16)
                     
                     Text(ProfileLocalization.CalendarSync.title)
                         .font(Theme.Fonts.bodyLarge)
                         .bold()
-                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .accessibilityIdentifier("calendar_sync_title")
                     
                     Text(ProfileLocalization.CalendarSync.description)
                         .font(Theme.Fonts.bodyMedium)
-                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .accessibilityIdentifier("calendar_sync_description")
                     
                     StyledButton(
@@ -176,7 +175,7 @@ public struct DatesAndCalendarView: View {
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
             .padding(.top, 24)
-            .cardStyle(bgColor: themeManager.theme.colors.textInputUnfocusedBackground, strokeColor: .clear)
+            .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
         }
     }
 }

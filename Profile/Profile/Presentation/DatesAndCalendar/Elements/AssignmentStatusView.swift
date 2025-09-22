@@ -47,7 +47,6 @@ struct AssignmentStatusView: View {
     private let title: String
     @Binding private var status: AssignmentStatus
     private let calendarColor: Color
-    @EnvironmentObject var themeManager: ThemeManager
     
     init(title: String, status: Binding<AssignmentStatus>, calendarColor: Color) {
         self.title = title
@@ -64,10 +63,10 @@ struct AssignmentStatusView: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundStyle(themeManager.theme.colors.textPrimary)
+                        .foregroundStyle(Theme.Colors.textPrimary)
                     Text(status.statusText)
                         .font(Theme.Fonts.labelSmall)
-                        .foregroundStyle(themeManager.theme.colors.textSecondary)
+                        .foregroundStyle(Theme.Colors.textSecondary)
                 }
                 .padding(.vertical, 10)
                 .multilineTextAlignment(.leading)
@@ -83,7 +82,7 @@ struct AssignmentStatusView: View {
         }
         .background(
             RoundedRectangle(cornerRadius: 8)
-                .foregroundStyle(themeManager.theme.colors.textInputUnfocusedBackground)
+                .foregroundStyle(Theme.Colors.textInputUnfocusedBackground)
         )
     }
 }

@@ -12,7 +12,6 @@ import Theme
 import Swinject
 
 public struct SignInView: View {
-    @EnvironmentObject var themeManager: ThemeManager
     @State private var email: String = ""
     @State private var password: String = ""
     
@@ -54,14 +53,14 @@ public struct SignInView: View {
                     tenantViewModel.config.tenantsConfig.tenants.count > 1 {
                     VStack {
                         BackNavigationButton(
-                            color: themeManager.theme.colors.loginNavigationText,
+                            color: Theme.Colors.loginNavigationText,
                             action: {
                                 tenantViewModel.config.tenantsConfig.tenants.count > 1 ?
                                 tenantViewModel.resetSelectedTenant() :
                                 viewModel.router.back(animated: true)
                             }
                         )
-                        .environmentObject(themeManager)
+                        
                         .backViewStyle()
                         .padding(.leading, isHorizontal ? 48 : 0)
                         .padding(.top, 11)
@@ -106,22 +105,22 @@ public struct SignInView: View {
                                         VStack(alignment: .leading) {
                                             Text(AuthLocalization.SignIn.logInTitle)
                                                 .font(Theme.Fonts.displaySmall)
-                                                .foregroundColor(themeManager.theme.colors.accentColor)
+                                                .foregroundColor(Theme.Colors.accentColor)
                                                 .padding(.bottom, 4)
                                                 .accessibilityIdentifier("signin_text")
                                             Text(AuthLocalization.SignIn.welcomeBack)
                                                 .font(Theme.Fonts.titleSmall)
-                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                .foregroundColor(Theme.Colors.textPrimary)
                                                 .padding(.bottom, 20)
                                                 .accessibilityIdentifier("welcome_back_text")
                                             
                                             Text(AuthLocalization.SignIn.emailOrUsername)
                                                 .font(Theme.Fonts.labelLarge)
-                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                .foregroundColor(Theme.Colors.textPrimary)
                                                 .accessibilityIdentifier("username_text")
                                             TextField(AuthLocalization.SignIn.emailOrUsername, text: $email)
                                                 .font(Theme.Fonts.bodyLarge)
-                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                .foregroundColor(Theme.Colors.textPrimary)
                                                 .keyboardType(.emailAddress)
                                                 .textContentType(.emailAddress)
                                                 .autocapitalization(.none)
@@ -129,32 +128,32 @@ public struct SignInView: View {
                                                 .padding(.all, 14)
                                                 .background(
                                                     Theme.Shapes.textInputShape
-                                                        .fill(themeManager.theme.colors.textInputBackground)
+                                                        .fill(Theme.Colors.textInputBackground)
                                                 )
                                                 .overlay(
                                                     Theme.Shapes.textInputShape
                                                         .stroke(lineWidth: 1)
-                                                        .fill(themeManager.theme.colors.textInputStroke)
+                                                        .fill(Theme.Colors.textInputStroke)
                                                 )
                                                 .accessibilityIdentifier("username_textfield")
                                             
                                             Text(AuthLocalization.SignIn.password)
                                                 .font(Theme.Fonts.labelLarge)
-                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                .foregroundColor(Theme.Colors.textPrimary)
                                                 .padding(.top, 18)
                                                 .accessibilityIdentifier("password_text")
                                             SecureField(AuthLocalization.SignIn.password, text: $password)
                                                 .font(Theme.Fonts.bodyLarge)
-                                                .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                .foregroundColor(Theme.Colors.textPrimary)
                                                 .padding(.all, 14)
                                                 .background(
                                                     Theme.Shapes.textInputShape
-                                                        .fill(themeManager.theme.colors.textInputBackground)
+                                                        .fill(Theme.Colors.textInputBackground)
                                                 )
                                                 .overlay(
                                                     Theme.Shapes.textInputShape
                                                         .stroke(lineWidth: 1)
-                                                        .fill(themeManager.theme.colors.textInputStroke)
+                                                        .fill(Theme.Colors.textInputStroke)
                                                 )
                                                 .accessibilityIdentifier("password_textfield")
                                             if !isSuperUser {
@@ -164,7 +163,7 @@ public struct SignInView: View {
                                                             viewModel.router.showRegisterScreen(
                                                                 sourceScreen: viewModel.sourceScreen)
                                                         }
-                                                        .foregroundColor(themeManager.theme.colors.accentColor)
+                                                        .foregroundColor(Theme.Colors.accentColor)
                                                         .accessibilityIdentifier("register_button")
                                                         
                                                         Spacer()
@@ -175,7 +174,7 @@ public struct SignInView: View {
                                                         viewModel.router.showForgotPasswordScreen()
                                                     }
                                                     .font(Theme.Fonts.bodyLarge)
-                                                    .foregroundColor(themeManager.theme.colors.accentXColor)
+                                                    .foregroundColor(Theme.Colors.accentXColor)
                                                     .padding(.top, 0)
                                                     .accessibilityIdentifier("forgot_password_button")
                                                 }
@@ -192,7 +191,7 @@ public struct SignInView: View {
                                                     Task {
                                                         await viewModel.login(username: email, password: password)
                                                     }
-                                                }, color: themeManager.theme.colors.accentColor)
+                                                }, color: Theme.Colors.accentColor)
                                                 .frame(maxWidth: .infinity)
                                                 .padding(.top, 40)
                                                 .accessibilityIdentifier("signin_button")
@@ -209,7 +208,7 @@ public struct SignInView: View {
                                                 Text(AuthLocalization.SignIn.ssoHeading)
                                                     .font(Theme.Fonts.headlineSmall)
                                                     .multilineTextAlignment(.center)
-                                                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                    .foregroundColor(Theme.Colors.textPrimary)
                                                     .padding(.bottom, 4)
                                                     .padding(.horizontal, 20)
                                                     .accessibilityIdentifier("signin_sso_heading")
@@ -229,7 +228,7 @@ public struct SignInView: View {
                                                 Text(AuthLocalization.SignIn.ssoLogInTitle)
                                                     .font(Theme.Fonts.headlineSmall)
                                                     .multilineTextAlignment(.center)
-                                                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                                                    .foregroundColor(Theme.Colors.textPrimary)
                                                     .padding(.bottom, 10)
                                                     .padding(.horizontal, 20)
                                                     .accessibilityIdentifier("signin_sso_login_title")
@@ -237,7 +236,7 @@ public struct SignInView: View {
                                                 Text(AuthLocalization.SignIn.ssoLogInSubtitle)
                                                     .font(Theme.Fonts.titleMedium)
                                                     .multilineTextAlignment(.center)
-                                                    .foregroundColor(themeManager.theme.colors.textSecondaryLight)
+                                                    .foregroundColor(Theme.Colors.textSecondaryLight)
                                                     .padding(.bottom, 10)
                                                     .padding(.horizontal, 20)
                                                     .accessibilityIdentifier("signin_sso_login_subtitle")
@@ -261,7 +260,7 @@ public struct SignInView: View {
                                                     ?? false {
                                                     Text(AuthLocalization.SignIn.logInTitle)
                                                         .font(Theme.Fonts.displaySmall)
-                                                        .foregroundColor(themeManager.theme.colors.accentColor)
+                                                        .foregroundColor(Theme.Colors.accentColor)
                                                         .padding(.bottom, 4)
                                                         .accessibilityIdentifier("signin_text")
                                                     
@@ -274,7 +273,7 @@ public struct SignInView: View {
                                                             .showSSOWebBrowser(
                                                                 title: CoreLocalization.SignIn.logInBtn)
                                                     },
-                                                                 color: themeManager.theme.colors.accentColor)
+                                                                 color: Theme.Colors.accentColor)
                                                     .frame(maxWidth: .infinity)
                                                     .padding(.top, 20)
                                                     .accessibilityIdentifier("signin_SSO_button")
@@ -287,8 +286,8 @@ public struct SignInView: View {
                                                                 title: CoreLocalization.SignIn.logInBtn)
                                                     },
                                                                  color: .white,
-                                                                 textColor: themeManager.theme.colors.accentColor,
-                                                                 borderColor: themeManager.theme.colors.accentColor)
+                                                                 textColor: Theme.Colors.accentColor,
+                                                                 borderColor: Theme.Colors.accentColor)
                                                     .frame(maxWidth: .infinity)
                                                     .padding(.top, 20)
                                                     .accessibilityIdentifier("signin_SSO_button")
@@ -312,7 +311,7 @@ public struct SignInView: View {
                             }
                             .padding(.horizontal, 24)
                             .padding(.top, 25)
-                        }.roundedBackground(themeManager.theme.colors.loginBackground)
+                        }.roundedBackground(Theme.Colors.loginBackground)
                             .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                     }
                 }
@@ -321,8 +320,8 @@ public struct SignInView: View {
                 if viewModel.showAlert {
                     VStack {
                         Text(viewModel.alertMessage ?? "")
-                            .shadowCardStyle(bgColor: themeManager.theme.colors.accentColor,
-                                             textColor: themeManager.theme.colors.white)
+                            .shadowCardStyle(bgColor: Theme.Colors.accentColor,
+                                             textColor: Theme.Colors.white)
                             .padding(.top, 80)
                         Spacer()
                         
@@ -350,14 +349,14 @@ public struct SignInView: View {
             }
             .navigationBarHidden(true)
             .ignoresSafeArea(.all, edges: .horizontal)
-            .background(themeManager.theme.colors.background.ignoresSafeArea(.all))
+            .background(Theme.Colors.background.ignoresSafeArea(.all))
             .onFirstAppear {
                 viewModel.trackScreenEvent()
             }
             .onAppear {
                 tenantViewModel.loadFromUserDefaults()
                 NavigationAppearanceManager.shared.updateAppearance(
-                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                     titleColor: Color.red.uiColor()
                                 )
             }
@@ -380,8 +379,8 @@ public struct SignInView: View {
                 policy
             )
             Text(.init(text))
-                .tint(themeManager.theme.colors.infoColor)
-                .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
+                .tint(Theme.Colors.infoColor)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
                 .font(Theme.Fonts.labelSmall)
                 .padding(.top, viewModel.socialAuthEnabled ? 0 : 15)
                 .padding(.bottom, 15)

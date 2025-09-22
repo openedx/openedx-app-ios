@@ -33,7 +33,6 @@ public struct CourseOutlineView: View {
     @Binding private var viewHeight: CGFloat
     
     @State private var expandedChapters: [String: Bool] = [:]
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         viewModel: CourseContainerViewModel,
@@ -198,7 +197,7 @@ public struct CourseOutlineView: View {
             }
         }
         .background(
-            themeManager.theme.colors.background
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
         .sheet(isPresented: $showingDownloads) {

@@ -12,7 +12,6 @@ struct AppReviewButton: View {
     let type: ButtonType
     let action: () -> Void
     @Binding var isActive: Bool
-    @EnvironmentObject var themeManager: ThemeManager
     
     enum ButtonType {
         case submit, shareFeedback, rateUs
@@ -36,7 +35,7 @@ struct AppReviewButton: View {
                             )
                         )
                         .foregroundColor(isActive ?
-                                         themeManager.theme.colors.primaryButtonTextColor
+                                         Theme.Colors.primaryButtonTextColor
                                          : Color.black.opacity(0.6))
                         .font(Theme.Fonts.labelLarge)
                         .padding(3)
@@ -47,8 +46,8 @@ struct AppReviewButton: View {
                     .background(
                         Theme.Shapes.buttonShape
                             .fill(
-                                isActive ? themeManager.theme.colors.accentColor
-                                : themeManager.theme.colors.cardViewStroke
+                                isActive ? Theme.Colors.accentColor
+                                : Theme.Colors.cardViewStroke
                             )
                     )
                     .accessibilityElement(children: .ignore)

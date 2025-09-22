@@ -11,7 +11,6 @@ import Theme
 
 struct NoCoursesView: View {
     
-    @EnvironmentObject var themeManager: ThemeManager
     enum NoCoursesType {
         case primary
         case inProgress
@@ -69,14 +68,14 @@ struct NoCoursesView: View {
             CoreAssets.learnEmpty.swiftUIImage
                 .resizable()
                 .frame(width: 96, height: 96)
-                .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
             Text(type.title)
-                .foregroundStyle(themeManager.theme.colors.textPrimary)
+                .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)
             if let description = type.description {
                 Text(description)
                     .multilineTextAlignment(.center)
-                    .foregroundStyle(themeManager.theme.colors.textPrimary)
+                    .foregroundStyle(Theme.Colors.textPrimary)
                     .font(Theme.Fonts.labelMedium)
                     .frame(width: 245)
             }

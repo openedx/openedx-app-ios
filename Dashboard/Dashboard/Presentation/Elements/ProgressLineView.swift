@@ -12,7 +12,6 @@ struct ProgressLineView: View {
     private let progressEarned: Int
     private let progressPossible: Int
     private let height: CGFloat
-    @EnvironmentObject var themeManager: ThemeManager
     
     var progressValue: CGFloat {
          guard progressPossible != 0 else { return 0 }
@@ -29,9 +28,9 @@ struct ProgressLineView: View {
         ZStack(alignment: .leading) {
                 GeometryReader { geometry in
                     Rectangle()
-                        .foregroundStyle(themeManager.theme.colors.primaryCardProgressBG)
+                        .foregroundStyle(Theme.Colors.primaryCardProgressBG)
                     Rectangle()
-                        .foregroundStyle(themeManager.theme.colors.accentButtonColor)
+                        .foregroundStyle(Theme.Colors.accentButtonColor)
                         .frame(width: geometry.size.width * progressValue)
                 }.frame(height: height)
         }

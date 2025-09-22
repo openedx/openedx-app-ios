@@ -15,7 +15,6 @@ public enum DownloadViewState: Sendable {
 }
 
 public struct DownloadAvailableView: View {
-    @EnvironmentObject var themeManager: ThemeManager
     public init () {
     }
     
@@ -24,7 +23,7 @@ public struct DownloadAvailableView: View {
             CoreAssets.startDownloading.swiftUIImage.renderingMode(.template)
                 .resizable()
                 .scaledToFit()
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .frame(width: 24, height: 24)
         }
         .frame(width: 30, height: 30)
@@ -32,7 +31,6 @@ public struct DownloadAvailableView: View {
 }
 
 public struct DownloadProgressView: View {
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init () {
     }
@@ -44,8 +42,8 @@ public struct DownloadProgressView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
-                .foregroundStyle(themeManager.theme.colors.snackbarErrorColor)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundStyle(Theme.Colors.snackbarErrorColor)
+                .foregroundColor(Theme.Colors.textPrimary)
         }
     }
 }

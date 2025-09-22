@@ -22,7 +22,6 @@ public struct TenantTheme {
 }
 
 public struct TenantContentView: View {
-    @EnvironmentObject var themeManager: ThemeManager
     @ObservedObject var viewModel: TenantViewModel
 //    var tenants: [Tenant] = []
     @Environment(\.isHorizontal) private var isHorizontal
@@ -52,17 +51,17 @@ public struct TenantContentView: View {
                             }
                     } else {
                         BackNavigationButton(
-                            color: themeManager.theme.colors.accentColor,
+                            color: Theme.Colors.accentColor,
                             action: {
                                viewModel.router.back(animated: true)
                             }
                         )
-                        .environmentObject(themeManager)
+                        
                         .backViewStyle()
                         .padding(.leading, isHorizontal ? 48 : 0)
                         .padding(.top, 11)
                         TenantSelectionView(viewModel: viewModel)
-                            .environmentObject(themeManager)
+                            
                     }
                 } else {
                     if viewModel.selectedTenant != nil {
@@ -72,7 +71,7 @@ public struct TenantContentView: View {
                             }
                     } else {
                         TenantSelectionView(viewModel: viewModel)
-                            .environmentObject(themeManager)
+                            
                     }
                 }
             }
@@ -80,7 +79,7 @@ public struct TenantContentView: View {
         .navigationBarHidden(true)
         .onAppear {
             NavigationAppearanceManager.shared.updateAppearance(
-                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                 titleColor: .white
                             )
         }

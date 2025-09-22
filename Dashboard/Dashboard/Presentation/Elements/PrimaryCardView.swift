@@ -28,7 +28,6 @@ public struct PrimaryCardView: View {
     private var openCourseAction: () -> Void
     private var resumeAction: () -> Void
     @Environment(\.isHorizontal) var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         courseName: String,
@@ -72,9 +71,9 @@ public struct PrimaryCardView: View {
                 verticalLayout
             }
         }
-        .background(themeManager.theme.colors.courseCardBackground)
+        .background(Theme.Colors.courseCardBackground)
         .cornerRadius(8)
-        .shadow(color: themeManager.theme.colors.courseCardShadow, radius: 4, x: 0, y: 3)
+        .shadow(color: Theme.Colors.courseCardShadow, radius: 4, x: 0, y: 3)
         .padding(20)
     }
     
@@ -115,7 +114,7 @@ public struct PrimaryCardView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .background(
-                    themeManager.theme.colors.background // need for tap area
+                    Theme.Colors.background // need for tap area
                 )
                 
                 .onTapGesture {
@@ -135,7 +134,7 @@ public struct PrimaryCardView: View {
                     title: pastAssignment.title,
                     description: DashboardLocalization.Learn.PrimaryCard.onePastAssignment,
                     icon: CoreAssets.warning.swiftUIImage,
-                    selected: false, bgColor: themeManager.theme.colors.secondaryButtonBGColor,
+                    selected: false, bgColor: Theme.Colors.secondaryButtonBGColor,
                     action: { assignmentAction(pastAssignments.first?.firstComponentBlockId) }
                 )
             } else if pastAssignments.count > 1 {
@@ -143,7 +142,7 @@ public struct PrimaryCardView: View {
                     title: DashboardLocalization.Learn.PrimaryCard.viewAssignments,
                     description: DashboardLocalization.Learn.PrimaryCard.pastAssignments(pastAssignments.count),
                     icon: CoreAssets.warning.swiftUIImage,
-                    selected: false, bgColor: themeManager.theme.colors.primaryCardCautionBG,
+                    selected: false, bgColor: Theme.Colors.primaryCardCautionBG,
                     action: { assignmentAction(nil) }
                 )
             }
@@ -159,7 +158,7 @@ public struct PrimaryCardView: View {
                             dueIn: true
                         ),
                         icon: CoreAssets.chapter.swiftUIImage,
-                        selected: false, bgColor: themeManager.theme.colors.secondaryButtonBGColor,
+                        selected: false, bgColor: Theme.Colors.secondaryButtonBGColor,
                         action: {
                             assignmentAction(futureAssignments.first?.firstComponentBlockId)
                         }
@@ -173,7 +172,7 @@ public struct PrimaryCardView: View {
                             ),
                             description: nil,
                             icon: CoreAssets.chapter.swiftUIImage,
-                            selected: false, bgColor: themeManager.theme.colors.secondaryButtonBGColor,
+                            selected: false, bgColor: Theme.Colors.secondaryButtonBGColor,
                             action: {
                                 assignmentAction(nil)
                             }
@@ -189,7 +188,7 @@ public struct PrimaryCardView: View {
                     description: DashboardLocalization.Learn.PrimaryCard.resume,
                     icon: CoreAssets.resumeCourse.swiftUIImage,
                     selected: true,
-                    bgColor: themeManager.theme.colors.accentButtonColor,
+                    bgColor: Theme.Colors.accentButtonColor,
                     action: { resumeAction() }
                 )
             } else {
@@ -198,7 +197,7 @@ public struct PrimaryCardView: View {
                     description: nil,
                     icon: CoreAssets.resumeCourse.swiftUIImage,
                     selected: true,
-                    bgColor: themeManager.theme.colors.accentButtonColor,
+                    bgColor: Theme.Colors.accentButtonColor,
                     action: { resumeAction() }
                 )
             }
@@ -218,7 +217,7 @@ public struct PrimaryCardView: View {
         }, label: {
             ZStack(alignment: .top) {
                 Rectangle().frame(height: selected ? 0 : 1)
-                    .foregroundStyle(themeManager.theme.colors.cardViewStroke)
+                    .foregroundStyle(Theme.Colors.cardViewStroke)
                 HStack(alignment: .center) {
                     VStack(alignment: .leading) {
                         HStack(spacing: 0) {
@@ -259,7 +258,7 @@ public struct PrimaryCardView: View {
     }
     
     private func foregroundColor(_ selected: Bool) -> SwiftUI.Color {
-        return selected ? themeManager.theme.colors.white : themeManager.theme.colors.textPrimary
+        return selected ? Theme.Colors.white : Theme.Colors.textPrimary
     }
     
     private var courseBanner: some View {
@@ -275,19 +274,19 @@ public struct PrimaryCardView: View {
         VStack(alignment: .leading, spacing: 3) {
             Text(org)
                 .font(Theme.Fonts.labelMedium)
-                .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.textSecondaryLight)
             Text(courseName)
                 .font(Theme.Fonts.titleLarge)
-                .foregroundStyle(themeManager.theme.colors.textPrimary)
+                .foregroundStyle(Theme.Colors.textPrimary)
                 .lineLimit(3)
             if let courseEndDate {
                 Text(courseEndDate.dateToString(style: .courseEndsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelMedium)
-                    .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
+                    .foregroundStyle(Theme.Colors.textSecondaryLight)
             } else if let courseStartDate {
                 Text(courseStartDate.dateToString(style: .courseStartsMonthDDYear, useRelativeDates: useRelativeDates))
                     .font(Theme.Fonts.labelMedium)
-                    .foregroundStyle(themeManager.theme.colors.textSecondaryLight)
+                    .foregroundStyle(Theme.Colors.textSecondaryLight)
             }
         }
         .padding(.top, 10)

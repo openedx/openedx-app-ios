@@ -19,20 +19,17 @@ public struct CourseVerticalView: View {
     @ObservedObject
     private var viewModel: CourseVerticalViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-    var themeManager: ThemeManager
     
     public init(
         title: String,
         courseName: String,
         courseID: String,
-        viewModel: CourseVerticalViewModel,
-        themeManager: ThemeManager
+        viewModel: CourseVerticalViewModel
     ) {
         self.title = title
         self.courseName = courseName
         self.courseID = courseID
         self.viewModel = viewModel
-        self.themeManager = themeManager
     }
     
     public var body: some View {
@@ -81,7 +78,7 @@ public struct CourseVerticalView: View {
                                                        alignment: .leading)
                                                 .multilineTextAlignment(.leading)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                        }.foregroundColor(themeManager.theme.colors.textPrimary)
+                                        }.foregroundColor(Theme.Colors.textPrimary)
                                     }).accessibilityElement(children: .ignore)
                                         .accessibilityLabel(vertical.displayName)
                                         Spacer()
@@ -94,7 +91,7 @@ public struct CourseVerticalView: View {
                                 if index != viewModel.verticals.count - 1 {
                                     Divider()
                                         .frame(height: 1)
-                                        .overlay(themeManager.theme.colors.cardViewStroke)
+                                        .overlay(Theme.Colors.cardViewStroke)
                                         .padding(.horizontal, 24)
                                 }
                             }
@@ -134,7 +131,7 @@ public struct CourseVerticalView: View {
         .navigationBarBackButtonHidden(false)
         .navigationTitle(title)
         .background(
-            themeManager.theme.colors.background
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
     }

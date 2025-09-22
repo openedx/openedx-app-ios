@@ -14,7 +14,6 @@ public struct NavigationTitle: View {
     private let backAction: () -> Void
     
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(title: String, backAction: @escaping () -> Void) {
         self.title = title
@@ -26,18 +25,18 @@ public struct NavigationTitle: View {
         ZStack {
             HStack {
                 Text(title)
-                    .titleSettings(color: themeManager.theme.colors.loginNavigationText)
+                    .titleSettings(color: Theme.Colors.loginNavigationText)
                     .accessibilityIdentifier("\(title)_text")
             }
             VStack {
                 BackNavigationButton(
-                    color: themeManager.theme.colors.loginNavigationText,
+                    color: Theme.Colors.loginNavigationText,
                     action: {
                         backAction()
                     }
                 )
                 .backViewStyle()
-                .foregroundColor(themeManager.theme.colors.styledButtonText)
+                .foregroundColor(Theme.Colors.styledButtonText)
                 .padding(.leading, isHorizontal ? 48 : 0)
                 .accessibilityIdentifier("back_button")
                 

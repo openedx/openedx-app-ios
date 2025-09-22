@@ -14,7 +14,6 @@ import OEXFoundation
 public struct ProfileView: View {
     
     @StateObject private var viewModel: ProfileViewModel
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: ProfileViewModel) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
@@ -73,7 +72,7 @@ public struct ProfileView: View {
                 }
             }
             .background(
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
             )
             .onReceive(NotificationCenter.default.publisher(for: .profileUpdated)) { _ in
@@ -83,7 +82,7 @@ public struct ProfileView: View {
             }
             .onAppear {
                 NavigationAppearanceManager.shared.updateAppearance(
-                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                     titleColor: .white
                                 )
             }
@@ -115,9 +114,9 @@ public struct ProfileView: View {
                     }
                 )
             },
-            color: themeManager.theme.colors.background,
-            textColor: themeManager.theme.colors.accentColor,
-            borderColor: themeManager.theme.colors.accentColor
+            color: Theme.Colors.background,
+            textColor: Theme.Colors.accentColor,
+            borderColor: Theme.Colors.accentColor
         ).padding(.all, 24)
     }
     
@@ -145,11 +144,11 @@ public struct ProfileView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(viewModel.userModel?.name ?? "")
                             .font(Theme.Fonts.headlineSmall)
-                            .foregroundColor(themeManager.theme.colors.textPrimary)
+                            .foregroundColor(Theme.Colors.textPrimary)
                             .accessibilityIdentifier("user_name_text")
                         Text("@\(viewModel.userModel?.username ?? "")")
                             .font(Theme.Fonts.labelLarge)
-                            .foregroundColor(themeManager.theme.colors.textSecondary)
+                            .foregroundColor(Theme.Colors.textSecondary)
                             .accessibilityIdentifier("user_username_text")
                     }
                     Spacer()
@@ -168,11 +167,11 @@ public struct ProfileView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(ProfileLocalization.about)
                     .font(Theme.Fonts.titleSmall)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityIdentifier("profile_info_text")
                 Text(bio)
                     .font(Theme.Fonts.bodyMedium)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityIdentifier("bio_text")
             }
             .accessibilityElement(children: .ignore)
@@ -185,7 +184,7 @@ public struct ProfileView: View {
                     "")
             )
             .cardStyle(
-                bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
+                bgColor: Theme.Colors.textInputUnfocusedBackground,
                 strokeColor: .clear
             )
         }

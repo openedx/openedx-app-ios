@@ -21,7 +21,6 @@ public struct CourseDatesView: View {
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
     @Binding private var viewHeight: CGFloat
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(
         courseID: String,
@@ -56,7 +55,7 @@ public struct CourseDatesView: View {
                         courseID: courseID
                     )
                     .padding(.top, 10)
-                    .environmentObject(themeManager)
+                    
                 } else {
                     GeometryReader { proxy in
                         VStack {
@@ -126,7 +125,7 @@ public struct CourseDatesView: View {
             }
         }
         .background(
-            themeManager.theme.colors.background
+            Theme.Colors.background
                 .ignoresSafeArea()
         )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -139,7 +138,7 @@ public struct CourseDatesView: View {
                 message: message,
                 selectedTab: .dates,
                 courseDatesViewModel: viewModel
-            ).environmentObject(themeManager)
+            )
         } else {
             return DatesSuccessView(
                 title: title,
@@ -148,7 +147,7 @@ public struct CourseDatesView: View {
             ) {
                 viewModel.resetEventState()
             }
-            .environmentObject(themeManager)
+            
         }
     }
 }

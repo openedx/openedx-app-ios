@@ -15,7 +15,6 @@ public struct UserProfileView: View {
     
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var viewModel: UserProfileViewModel
-    @EnvironmentObject var themeManager: ThemeManager
     
     public var isSheet: Bool
 
@@ -27,7 +26,7 @@ public struct UserProfileView: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                themeManager.theme.colors.background
+                Theme.Colors.background
                     .ignoresSafeArea()
                 // MARK: - Page Body
                 ScrollView {
@@ -46,7 +45,7 @@ public struct UserProfileView: View {
                             Text("@\(viewModel.userModel?.username ?? "")")
                                 .font(Theme.Fonts.labelLarge)
                                 .padding(.top, 4)
-                                .foregroundColor(themeManager.theme.colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textSecondary)
                                 .padding(.bottom, 10)
                             
                             // MARK: - Profile Info
@@ -55,26 +54,26 @@ public struct UserProfileView: View {
                                     Text(ProfileLocalization.info)
                                         .padding(.horizontal, 24)
                                         .font(Theme.Fonts.labelLarge)
-                                        .foregroundColor(themeManager.theme.colors.textSecondary)
+                                        .foregroundColor(Theme.Colors.textSecondary)
                                     
                                     VStack(alignment: .leading, spacing: 16) {
                                         if viewModel.userModel?.yearOfBirth != 0 {
                                             HStack {
                                                 Text(ProfileLocalization.Edit.Fields.yearOfBirth)
-                                                    .foregroundColor(themeManager.theme.colors.textSecondary)
+                                                    .foregroundColor(Theme.Colors.textSecondary)
                                                 Text(String(viewModel.userModel?.yearOfBirth ?? 0))
                                             }
                                         }
                                         if let bio = viewModel.userModel?.shortBiography, bio != "" {
                                             HStack(alignment: .top) {
                                                 Text(ProfileLocalization.bio + " ")
-                                                    .foregroundColor(themeManager.theme.colors.textSecondary)
+                                                    .foregroundColor(Theme.Colors.textSecondary)
                                                 + Text(bio)
                                             }
                                         }
                                     }
                                     .cardStyle(
-                                        bgColor: themeManager.theme.colors.textInputUnfocusedBackground,
+                                        bgColor: Theme.Colors.textInputUnfocusedBackground,
                                         strokeColor: .clear
                                     )
                                 }.padding(.bottom, 16)
@@ -109,7 +108,7 @@ public struct UserProfileView: View {
             }
             .onAppear {
                 NavigationAppearanceManager.shared.updateAppearance(
-                    backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                     titleColor: .white
                                 )
             }
@@ -129,7 +128,6 @@ public struct UserProfileView: View {
 struct ProfileAvatar: View {
     
     private var url: URL?
-    @EnvironmentObject var themeManager: ThemeManager
     
     init(url: String) {
         if let rightUrl = URL(string: url) {
@@ -142,7 +140,7 @@ struct ProfileAvatar: View {
     var body: some View {
         ZStack {
             Circle()
-                .foregroundColor(themeManager.theme.colors.avatarStroke)
+                .foregroundColor(Theme.Colors.avatarStroke)
                 .frame(width: 104, height: 104)
             KFImage(url)
                 .onFailureImage(CoreAssets.noCourseImage.image)

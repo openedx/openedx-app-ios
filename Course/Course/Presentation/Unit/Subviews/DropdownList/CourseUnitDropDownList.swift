@@ -13,7 +13,6 @@ struct CourseUnitDropDownList<Content>: View where Content: View {
     @ViewBuilder var content: () -> Content
     
     @State var height: CGFloat = 0
-    @EnvironmentObject var themeManager: ThemeManager
     
     var scrollViewHeight: CGFloat {
         height > 400 ? 400 : height
@@ -34,10 +33,10 @@ struct CourseUnitDropDownList<Content>: View where Content: View {
                 )
             }
         }
-        .background(themeManager.theme.colors.background)
+        .background(Theme.Colors.background)
         .clipShape(RoundedRectangle(cornerRadius: 10))
         .frame(height: scrollViewHeight)
-        .shadow(color: themeManager.theme.colors.textSecondary, radius: 4)
+        .shadow(color: Theme.Colors.textSecondary, radius: 4)
 
     }
 }

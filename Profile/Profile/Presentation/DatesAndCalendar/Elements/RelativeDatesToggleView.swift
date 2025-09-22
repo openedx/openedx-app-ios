@@ -10,20 +10,19 @@ import Theme
 
 struct RelativeDatesToggleView: View {
     @Binding var useRelativeDates: Bool
-    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(ProfileLocalization.Options.title)
                 .font(Theme.Fonts.labelLarge)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
             HStack(spacing: 16) {
                 Toggle("", isOn: $useRelativeDates)
                     .frame(width: 50)
-                    .tint(themeManager.theme.colors.accentColor)
+                    .tint(Theme.Colors.accentColor)
                 Text(ProfileLocalization.Options.useRelativeDates)
                     .font(Theme.Fonts.bodyLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
             }
             Text(
                 useRelativeDates
@@ -31,7 +30,7 @@ struct RelativeDatesToggleView: View {
                 : ProfileLocalization.Options.showFullDates
             )
                 .font(Theme.Fonts.labelMedium)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
         }
         .padding(.top, 14)
         .padding(.horizontal, 24)

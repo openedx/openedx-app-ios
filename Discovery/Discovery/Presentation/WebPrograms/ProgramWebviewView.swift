@@ -19,7 +19,6 @@ public enum ProgramViewType: String, Equatable {
 public struct ProgramWebviewView: View {
     @State private var isLoading: Bool = true
     
-    @EnvironmentObject var themeManager: ThemeManager
     @StateObject private var viewModel: ProgramWebviewViewModel
     private var router: DiscoveryRouter
     private var viewType: ProgramViewType
@@ -72,7 +71,6 @@ public struct ProgramWebviewView: View {
                         webViewType: viewType.rawValue
                     )
                     .accessibilityIdentifier("program_webview")
-                    .environmentObject(themeManager)
                     
                     let shouldShowProgress = (
                         isLoading ||
@@ -128,11 +126,11 @@ public struct ProgramWebviewView: View {
         }
         .navigationBarHidden(viewType == .program)
         .navigationTitle(CoreLocalization.Mainscreen.programs)
-        .background(themeManager.theme.colors.background.ignoresSafeArea())
+        .background(Theme.Colors.background.ignoresSafeArea())
         .animation(.default, value: viewModel.showError)
         .onAppear {
             NavigationAppearanceManager.shared.updateAppearance(
-                backgroundColor: themeManager.theme.colors.navigationBarColor.uiColor(),
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
                                 titleColor: .white
                             )
         }

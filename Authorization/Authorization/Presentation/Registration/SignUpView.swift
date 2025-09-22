@@ -17,7 +17,6 @@ public struct SignUpView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     @Environment(\.layoutDirection) var layoutDirection
-    @EnvironmentObject var themeManager: ThemeManager
     
     @ObservedObject
     private var viewModel: SignUpViewModel
@@ -50,12 +49,12 @@ public struct SignUpView: View {
                 ZStack {
                     HStack {
                         Text(CoreLocalization.SignIn.registerBtn)
-                            .titleSettings(color: themeManager.theme.colors.loginNavigationText)
+                            .titleSettings(color: Theme.Colors.loginNavigationText)
                             .accessibilityIdentifier("register_text")
                     }
                     VStack {
                         BackNavigationButton(
-                            color: themeManager.theme.colors.loginNavigationText,
+                            color: Theme.Colors.loginNavigationText,
                             action: {
                                 viewModel.router.back()
                             }
@@ -75,23 +74,23 @@ public struct SignUpView: View {
                                 
                                 Text(CoreLocalization.SignIn.registerBtn)
                                     .font(Theme.Fonts.displaySmall)
-                                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 4)
                                     .accessibilityIdentifier("signup_text")
                                 Text(AuthLocalization.SignUp.subtitle)
                                     .font(Theme.Fonts.titleSmall)
-                                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                                    .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
                                     .accessibilityIdentifier("signup_subtitle_text")
 
                                 if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)
-                                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                                        .foregroundColor(Theme.Colors.textPrimary)
                                         .accessibilityIdentifier("social_auth_success_text")
                                     Text(AuthLocalization.SignUp.successSigninSublabel)
                                         .font(Theme.Fonts.titleSmall)
-                                        .foregroundColor(themeManager.theme.colors.textSecondary)
+                                        .foregroundColor(Theme.Colors.textSecondary)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("social_auth_success_subtext_text")
                                 }
@@ -125,7 +124,7 @@ public struct SignUpView: View {
                                     }
                                     .accessibilityLabel("optional_fields_text")
                                     .padding(.top, 10)
-                                    .foregroundColor(themeManager.theme.colors.accentXColor)
+                                    .foregroundColor(Theme.Colors.accentXColor)
                                 }
 
                                 FieldsView(
@@ -163,7 +162,7 @@ public struct SignUpView: View {
                             .padding(.top, 24)
                             .frameLimit(width: proxy.size.width)
                         }
-                        .roundedBackground(themeManager.theme.colors.background)
+                        .roundedBackground(Theme.Colors.background)
                         .onSwipeGesture(
                             onLeftSwipe: {
                                 if layoutDirection == .rightToLeft {
@@ -200,7 +199,7 @@ public struct SignUpView: View {
             }
         }
         .ignoresSafeArea(.all, edges: .horizontal)
-        .background(themeManager.theme.colors.background.ignoresSafeArea(.all))
+        .background(Theme.Colors.background.ignoresSafeArea(.all))
         .navigationBarHidden(true)
         .onFirstAppear {
             viewModel.trackScreenEvent()

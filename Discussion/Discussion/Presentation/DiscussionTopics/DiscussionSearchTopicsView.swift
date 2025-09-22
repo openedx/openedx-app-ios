@@ -17,7 +17,6 @@ public struct DiscussionSearchTopicsView: View {
     
     @ObservedObject private var viewModel: DiscussionSearchTopicsViewModel<RunLoop>
     @State private var animated: Bool = false
-    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: DiscussionSearchTopicsViewModel<RunLoop>) {
         self.viewModel = viewModel
@@ -35,11 +34,11 @@ public struct DiscussionSearchTopicsView: View {
 
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .padding(.leading, 16)
                             .padding(.top, -1)
                             .foregroundColor(
-                                themeManager.theme.colors.textInputTextColor
+                                Theme.Colors.textInputTextColor
                             )
                         
                         TextField("",
@@ -51,7 +50,7 @@ public struct DiscussionSearchTopicsView: View {
                             .onAppear {
                                 self.focused = true
                             }
-                            .foregroundColor(themeManager.theme.colors.textInputTextColor)
+                            .foregroundColor(Theme.Colors.textInputTextColor)
                             .font(Theme.Fonts.bodyMedium)
                         Spacer()
                         if !viewModel.searchText.trimmingCharacters(in: .whitespaces).isEmpty {
@@ -62,7 +61,7 @@ public struct DiscussionSearchTopicsView: View {
                                     .frame(height: 24)
                                     .padding(.horizontal)
                             })
-                            .foregroundColor(themeManager.theme.colors.styledButtonText)
+                            .foregroundColor(Theme.Colors.styledButtonText)
                         }
                     }
                     .frame(minHeight: 48)
@@ -79,8 +78,8 @@ public struct DiscussionSearchTopicsView: View {
                         Theme.Shapes.textInputShape
                             .stroke(lineWidth: 1)
                             .fill(viewModel.isSearchActive
-                                  ? themeManager.theme.colors.textInputTextColor
-                                  : themeManager.theme.colors.textInputUnfocusedStroke)
+                                  ? Theme.Colors.textInputTextColor
+                                  : Theme.Colors.textInputUnfocusedStroke)
                     )
                     .frameLimit(width: proxy.size.width)
                     .padding(.horizontal, 24)
@@ -148,7 +147,7 @@ public struct DiscussionSearchTopicsView: View {
                     }
                 }
             }
-            .background(themeManager.theme.colors.background.ignoresSafeArea())
+            .background(Theme.Colors.background.ignoresSafeArea())
             .avoidKeyboard(dismissKeyboardByTap: true)
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
@@ -167,10 +166,10 @@ public struct DiscussionSearchTopicsView: View {
         return VStack(alignment: .leading) {
             Text(DiscussionLocalization.Search.title)
                 .font(Theme.Fonts.displaySmall)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
             Text(searchDescription(viewModel: viewModel))
                 .font(Theme.Fonts.titleSmall)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
         }.listRowBackground(Color.clear)
     }
     

@@ -11,7 +11,6 @@ import Theme
 
 struct SyncSelector: View {
     @Binding var sync: Bool
-    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         HStack(spacing: 2) {
@@ -22,13 +21,13 @@ struct SyncSelector: View {
                     .font(Theme.Fonts.bodyMedium)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(sync ? themeManager.theme.colors.accentColor : themeManager.theme.colors.background)
-                    .foregroundColor(sync ? themeManager.theme.colors.white : themeManager.theme.colors.accentColor)
+                    .background(sync ? Theme.Colors.accentColor : Theme.Colors.background)
+                    .foregroundColor(sync ? Theme.Colors.white : Theme.Colors.accentColor)
                     .clipShape(RoundedCorners(tl: 8, bl: 8))
             }
             .overlay(
                 RoundedCorners(tl: 8, bl: 8)
-                    .stroke(themeManager.theme.colors.accentColor, lineWidth: 1)
+                    .stroke(Theme.Colors.accentColor, lineWidth: 1)
                     .padding(.vertical, 0.5)
             )
             Button(action: {
@@ -38,13 +37,13 @@ struct SyncSelector: View {
                     .font(Theme.Fonts.bodyMedium)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(sync ? themeManager.theme.colors.background : themeManager.theme.colors.accentColor)
-                    .foregroundColor(sync ? themeManager.theme.colors.accentColor : themeManager.theme.colors.white)
+                    .background(sync ? Theme.Colors.background : Theme.Colors.accentColor)
+                    .foregroundColor(sync ? Theme.Colors.accentColor : Theme.Colors.white)
                     .clipShape(RoundedCorners(tr: 8, br: 8))
             }
             .overlay(
                 RoundedCorners(tr: 8, br: 8)
-                    .stroke(themeManager.theme.colors.accentColor, lineWidth: 1)
+                    .stroke(Theme.Colors.accentColor, lineWidth: 1)
                     .padding(.vertical, 0.5)
             )
         }

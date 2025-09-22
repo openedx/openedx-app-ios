@@ -52,7 +52,6 @@ public struct AlertView: View {
     private let type: AlertViewType
     
     @Environment(\.isHorizontal) private var isHorizontal
-    @EnvironmentObject var themeManager: ThemeManager
     public init(
         alertTitle: String,
         alertMessage: String,
@@ -116,14 +115,14 @@ public struct AlertView: View {
         .frame(maxWidth: type == .logOut ? 390 : nil)
         .background(
             Theme.Shapes.cardShape
-                .fill(themeManager.theme.colors.cardViewBackground)
+                .fill(Theme.Colors.cardViewBackground)
                 .shadow(radius: 24)
                 .fixedSize(horizontal: false, vertical: false)
         )
         .overlay(
             Theme.Shapes.buttonShape
                 .stroke(lineWidth: 1)
-                .foregroundColor(themeManager.theme.colors.backgroundStroke)
+                .foregroundColor(Theme.Colors.backgroundStroke)
                 .fixedSize(horizontal: false, vertical: false)
         )
         .frame(maxWidth: isHorizontal ? nil : 390)
@@ -137,7 +136,7 @@ public struct AlertView: View {
             Image(systemName: "xmark")
                 .padding(.trailing, 40)
                 .padding(.top, 24)
-                .foregroundColor(themeManager.theme.colors.accentColor)
+                .foregroundColor(Theme.Colors.accentColor)
         }
     }
 
@@ -149,12 +148,12 @@ public struct AlertView: View {
                 Spacer(minLength: 100)
                 CoreAssets.logOut.swiftUIImage.renderingMode(.template)
                     .padding(.top, isHorizontal ? 20 : 54)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Spacer(minLength: 100)
             }
             Text(alertMessage)
                 .font(Theme.Fonts.titleLarge)
-                .foregroundColor(themeManager.theme.colors.textPrimary)
+                .foregroundColor(Theme.Colors.textPrimary)
                 .padding(.vertical, isHorizontal ? 6 : 40)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
@@ -165,16 +164,16 @@ public struct AlertView: View {
                 Spacer(minLength: 100)
                 CoreAssets.authorization.swiftUIImage.renderingMode(.template)
                     .padding(.top, 54)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                 Spacer(minLength: 100)
             }
                 Text(alertTitle)
                     .font(Theme.Fonts.titleLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(alertMessage)
                     .font(Theme.Fonts.bodyMedium)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.bottom, 36)
             }
@@ -198,12 +197,12 @@ public struct AlertView: View {
                 }
                 Text(alertTitle)
                     .font(Theme.Fonts.titleLarge)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .padding(.horizontal, 40)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(alertMessage)
                     .font(Theme.Fonts.bodyMedium)
-                    .foregroundColor(themeManager.theme.colors.textPrimary)
+                    .foregroundColor(Theme.Colors.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
 
@@ -220,12 +219,12 @@ public struct AlertView: View {
                     }
                     Text(alertTitle)
                         .font(Theme.Fonts.titleLarge)
-                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .padding(.horizontal, 40)
                         .padding(.top, 10)
                     Text(alertMessage)
                         .font(Theme.Fonts.bodyMedium)
-                        .foregroundColor(themeManager.theme.colors.textPrimary)
+                        .foregroundColor(Theme.Colors.textPrimary)
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 40)
                         .frame(maxWidth: 250)
@@ -236,14 +235,13 @@ public struct AlertView: View {
                             if nextSectionName != nil {
                                 UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
                                     .frame(maxWidth: 215)
-                                    .environmentObject(themeManager)
+                                    
                             }
                             UnitButtonView(type: .custom(action),
                                            bgColor: .clear,
                                            action: { firstButtonTapped() })
                             .frame(maxWidth: 215)
-                            .environmentObject(themeManager)
-
+                            
                             if let nextSectionName {
                                 Group {
                                     Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
@@ -253,7 +251,7 @@ public struct AlertView: View {
                                     .padding(.horizontal, 40)
                                     .multilineTextAlignment(.center)
                                     .font(Theme.Fonts.labelSmall)
-                                    .foregroundColor(themeManager.theme.colors.textSecondary)
+                                    .foregroundColor(Theme.Colors.textSecondary)
                             }
                         }.padding(.top, 70)
                             .padding(.trailing, 20)
@@ -283,14 +281,13 @@ public struct AlertView: View {
                         if nextSectionName != nil {
                             UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
                                 .frame(maxWidth: 215)
-                                .environmentObject(themeManager)
+                                
                         }
                         UnitButtonView(type: .custom(action),
-                                       bgColor: themeManager.theme.colors.secondaryButtonBGColor,
+                                       bgColor: Theme.Colors.secondaryButtonBGColor,
                                        action: { firstButtonTapped() })
                         .frame(maxWidth: 215)
-                        .environmentObject(themeManager)
-
+                        
                         if let nextSectionName {
                             Group {
                                 Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
@@ -300,7 +297,7 @@ public struct AlertView: View {
                                 .padding(.horizontal, 40)
                                 .multilineTextAlignment(.center)
                                 .font(Theme.Fonts.labelSmall)
-                                .foregroundColor(themeManager.theme.colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textSecondary)
                         }
                     }
                 } else {
@@ -312,19 +309,19 @@ public struct AlertView: View {
                 }, label: {
                     ZStack {
                         Text(CoreLocalization.Alert.logout)
-                            .foregroundColor(themeManager.theme.colors.warningText)
+                            .foregroundColor(Theme.Colors.warningText)
                             .font(Theme.Fonts.labelLarge)
                             .frame(maxWidth: .infinity)
                             .padding(.horizontal, 16)
                         Image(systemName: "rectangle.portrait.and.arrow.right")
-                            .foregroundColor(themeManager.theme.colors.warningText)
+                            .foregroundColor(Theme.Colors.warningText)
                             .frame(minWidth: 190, minHeight: 48, alignment: .trailing)
                     }
                     .frame(maxWidth: 215, minHeight: 48)
                 })
                 .background(
                     Theme.Shapes.buttonShape
-                        .fill(themeManager.theme.colors.warning)
+                        .fill(Theme.Colors.warning)
                 )
                 .overlay(
                     Theme.Shapes.buttonShape
@@ -344,7 +341,7 @@ public struct AlertView: View {
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.leave)
-                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)
@@ -353,7 +350,7 @@ public struct AlertView: View {
                     })
                     .background(
                         Theme.Shapes.buttonShape
-                            .fill(themeManager.theme.colors.accentColor)
+                            .fill(Theme.Colors.accentColor)
                     )
                     .overlay(
                         Theme.Shapes.buttonShape
@@ -372,7 +369,7 @@ public struct AlertView: View {
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.keepEditing)
-                                .foregroundColor(themeManager.theme.colors.accentColor)
+                                .foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)
@@ -381,7 +378,7 @@ public struct AlertView: View {
                     })
                     .background(
                         Theme.Shapes.buttonShape
-                            .fill(themeManager.theme.colors.background)
+                            .fill(Theme.Colors.background)
                     )
                     .overlay(
                         Theme.Shapes.buttonShape
@@ -391,7 +388,7 @@ public struct AlertView: View {
                                 lineJoin: .round,
                                 miterLimit: 1
                             ))
-                            .foregroundColor(themeManager.theme.colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentColor)
                     )
                     .frame(maxWidth: 215)
                 }
@@ -406,7 +403,7 @@ public struct AlertView: View {
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.signIn)
-                                .foregroundColor(themeManager.theme.colors.accentColor)
+                                .foregroundColor(Theme.Colors.accentColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)
@@ -425,7 +422,7 @@ public struct AlertView: View {
                                 lineJoin: .round,
                                 miterLimit: 1
                             ))
-                            .foregroundColor(themeManager.theme.colors.accentColor)
+                            .foregroundColor(Theme.Colors.accentColor)
                     )
                     .frame(maxWidth: 215)
                     .padding(.bottom, isHorizontal ? 16 : 0)
@@ -434,7 +431,7 @@ public struct AlertView: View {
                     }, label: {
                         ZStack {
                             Text(CoreLocalization.Alert.register)
-                                .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
+                                .foregroundColor(Theme.Colors.primaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                                 .frame(maxWidth: .infinity)
                                 .padding(.horizontal, 16)
@@ -443,7 +440,7 @@ public struct AlertView: View {
                     })
                     .background(
                         Theme.Shapes.buttonShape
-                            .fill(themeManager.theme.colors.accentColor)
+                            .fill(Theme.Colors.accentColor)
                     )
                     .overlay(
                         Theme.Shapes.buttonShape
@@ -510,7 +507,7 @@ public struct AlertView: View {
             } label: {
                 ZStack {
                     Text(primaryButtonTitle)
-                        .foregroundColor(themeManager.theme.colors.primaryButtonTextColor)
+                        .foregroundColor(Theme.Colors.primaryButtonTextColor)
                         .font(Theme.Fonts.labelLarge)
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 16)
@@ -519,7 +516,7 @@ public struct AlertView: View {
             }
             .background(
                 Theme.Shapes.buttonShape
-                    .fill(themeManager.theme.colors.accentColor)
+                    .fill(Theme.Colors.accentColor)
             )
             .overlay(
                 Theme.Shapes.buttonShape
@@ -538,7 +535,7 @@ public struct AlertView: View {
             }, label: {
                 ZStack {
                     Text(secondaryButtonTitle)
-                        .foregroundColor(themeManager.theme.colors.accentColor)
+                        .foregroundColor(Theme.Colors.accentColor)
                         .font(Theme.Fonts.labelLarge)
                         .frame(maxWidth: .infinity)
                         .padding(.horizontal, 16)
@@ -547,7 +544,7 @@ public struct AlertView: View {
             })
             .background(
                 Theme.Shapes.buttonShape
-                    .fill(themeManager.theme.colors.background)
+                    .fill(Theme.Colors.background)
             )
             .overlay(
                 Theme.Shapes.buttonShape
@@ -557,7 +554,7 @@ public struct AlertView: View {
                         lineJoin: .round,
                         miterLimit: 1
                     ))
-                    .foregroundColor(themeManager.theme.colors.accentColor)
+                    .foregroundColor(Theme.Colors.accentColor)
             )
             .frame(maxWidth: 215)
         }

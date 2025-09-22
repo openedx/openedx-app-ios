@@ -20,7 +20,6 @@ struct SelectMailClientView: View {
     }
     
     @State var isOpen: Bool = false
-    @EnvironmentObject var themeManager: ThemeManager
     
     var body: some View {
         ZStack {
@@ -59,7 +58,7 @@ struct SelectMailClientView: View {
                         }
                     }
                     
-                }.background( themeManager.theme.colors.background)
+                }.background( Theme.Colors.background)
                     .offset(y: isOpen ? 0 : 200)
             }
         }.onAppear {
