@@ -490,28 +490,6 @@ public final class CourseUnitViewModel: ObservableObject {
         return breadcrumb ?? ""
     }
 
-//    func createBreadCrumpsForVideoNavigation(video: CourseBlock) -> String {
-//        guard let courseStructure = courseVideosStructure else {
-//            return ""
-//        }
-//
-//
-//
-//        for chapter in courseStructure.childs {
-//            for sequential in chapter.childs {
-//                for vertical in sequential.childs {
-//                    return [
-//                        chapter.displayName,
-//                        sequential.displayName,
-//                        vertical.displayName
-//                    ].joined(separator: " > ")
-//                }
-//            }
-//        }
-//
-//        return ""
-//    }
-
     func handleVideoTap(video: CourseBlock) {
         // Find indices for navigation using full course structure
         guard let chapterIndex = findChapterIndexInFullStructure(video: video),

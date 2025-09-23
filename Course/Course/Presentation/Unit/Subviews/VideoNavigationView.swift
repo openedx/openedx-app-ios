@@ -36,24 +36,25 @@ struct VideoNavigationView: View {
             .padding(.bottom, 16)
 
         HStack {
-            VStack(alignment: .leading, spacing: 8) {
-                Text(viewModel.createBreadCrumpsForVideoNavigation(video: block))
-                    .font(Theme.Fonts.bodySmall)
-                    .foregroundStyle(Theme.Colors.textPrimary)
-                    .multilineTextAlignment(.leading)
-                    .lineLimit(2)
-                    .accessibilityAddTraits(.isHeader)
-                    .accessibilityValue(viewModel.createBreadCrumpsForVideoNavigation(video: block))
+                 let breadCrumps = viewModel.createBreadCrumpsForVideoNavigation(video: block)
 
-                Text("\(currentBlock?.displayName ?? "")")
-                    .font(Theme.Fonts.bodyMedium).bold()
-                    .foregroundStyle(Theme.Colors.textPrimary)
-                    .accessibilityValue(currentBlock?.displayName ?? "No Video Title")
-            }
-            Spacer()
-        }
-        .padding(.bottom, 16)
-        .padding(.horizontal, 16)
+                 VStack(alignment: .leading, spacing: 8) {
+                     Text(breadCrumps)
+                         .font(Theme.Fonts.bodySmall)
+                         .foregroundStyle(Theme.Colors.textPrimary)
+                         .multilineTextAlignment(.leading)
+                         .lineLimit(2)
+
+                     Text("\(currentBlock?.displayName ?? "")")
+                         .font(Theme.Fonts.bodyMedium).bold()
+                         .foregroundStyle(Theme.Colors.textPrimary)
+                         .accessibilityLabel(currentBlock?.displayName ?? "No Video Title")
+                 }
+                 Spacer()
+             }
+             .padding(.bottom, 16)
+             .padding(.horizontal, 16)
+         }
     }
 
     @ViewBuilder
