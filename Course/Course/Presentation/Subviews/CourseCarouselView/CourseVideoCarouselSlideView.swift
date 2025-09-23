@@ -210,12 +210,17 @@ struct CourseVideoCarouselSlideView: View {
     // MARK: - Continue Watching View
     private var continueWatchingView: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(CourseLocalization.CourseCarousel.continueWatching)
-                .font(Theme.Fonts.titleMedium)
-                .foregroundStyle(Theme.Colors.textPrimary)
+            if let chapter = courseChapter, let video = videoBlock {
 
-            VStack {
-                if let chapter = courseChapter, let video = videoBlock {
+                Text(
+                    video.localVideoProgress == 0 ?
+                    CourseLocalization.CourseCarousel.nextVideo :
+                        CourseLocalization.CourseCarousel.continueWatching
+                )
+                    .font(Theme.Fonts.titleMedium)
+                    .foregroundStyle(Theme.Colors.textPrimary)
+
+                VStack {
                     VideoThumbnailView(
                         thumbnailData: VideoThumbnailData(
                             video: video,
@@ -231,7 +236,7 @@ struct CourseVideoCarouselSlideView: View {
                     )
 
                     HStack {
-                        Text("\(chapter.displayName)")
+                        Text("")
                             .font(Theme.Fonts.labelMedium)
                             .foregroundStyle(Theme.Colors.textPrimary)
 
@@ -240,16 +245,16 @@ struct CourseVideoCarouselSlideView: View {
                     .padding(.horizontal, 16)
                     .padding(.bottom, 8)
                 }
+                .background(
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 11)
+                            .foregroundColor(Theme.Colors.background)
+                        RoundedRectangle(cornerRadius: 11)
+                            .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                            .foregroundColor(Theme.Colors.cardViewStroke)
+                    }
+                )
             }
-            .background(
-                ZStack {
-                    RoundedRectangle(cornerRadius: 11)
-                        .foregroundColor(Theme.Colors.background)
-                    RoundedRectangle(cornerRadius: 11)
-                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(Theme.Colors.cardViewStroke)
-                }
-            )
         }
         .padding(.horizontal, 16)
     }
