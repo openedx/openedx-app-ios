@@ -78,6 +78,19 @@ struct VideoThumbnailView: View {
                     .clipped()
                     .cornerRadius(10)
                 
+                // Gradient overlay to improve title readability
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.5),
+                        Color.black.opacity(0.0),
+                        Color.black.opacity(0.0),
+                        Color.black.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .cornerRadius(10)
+                
                 Text(video.displayName)
                     .lineLimit(2)
                     .font(Theme.Fonts.bodySmall)
@@ -137,7 +150,7 @@ struct VideoThumbnailView: View {
                     // Show local progress bar when rewatching
                     ZStack(alignment: .leading) {
                         Rectangle()
-                            .fill(Color.gray.opacity(0.3))
+                            .fill(Theme.Colors.primaryCardProgressBG)
                             .frame(height: 4)
                             .cornerRadius(2)
                             .padding(.horizontal, 4)
@@ -167,7 +180,7 @@ struct VideoThumbnailView: View {
             // Partially watched - show progress bar
             ZStack(alignment: .leading) {
                 Rectangle()
-                    .fill(Color.gray.opacity(0.3))
+                    .fill(Theme.Colors.primaryCardProgressBG)
                     .frame(height: 4)
                     .cornerRadius(2)
                     .padding(.horizontal, 4)
