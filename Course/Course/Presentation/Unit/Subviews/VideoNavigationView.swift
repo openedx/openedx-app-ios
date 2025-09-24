@@ -54,7 +54,6 @@ struct VideoNavigationView: View {
              }
              .padding(.bottom, 16)
              .padding(.horizontal, 16)
-         }
     }
 
     @ViewBuilder
