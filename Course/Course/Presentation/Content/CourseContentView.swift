@@ -120,7 +120,7 @@ public struct CourseContentView: View {
                     VStack(spacing: 18) {
                         Divider()
                         Button(action: {
-    //                        viewModel.selection = 0
+                            viewModel.selection = 2
                         }, label: {
                         HStack(spacing: 4) {
                             CoreAssets.gallery.swiftUIImage.renderingMode(.template)

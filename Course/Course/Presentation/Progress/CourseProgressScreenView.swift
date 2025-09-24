@@ -52,7 +52,7 @@ struct CourseProgressScreenView: View {
                         }
                     } else {
                         ScrollView {
-                            VStack(alignment: .center, spacing: 20) {
+                            VStack(alignment: .center) {
                                 DynamicOffsetView(
                                     coordinate: $coordinate,
                                     collapsed: $collapsed,
@@ -118,10 +118,10 @@ struct CourseProgressScreenView: View {
     
     @ViewBuilder
     private var courseProgressContent: some View {
-        VStack(alignment: .leading, spacing: 32) {
+        VStack(alignment: .leading, spacing: 16) {
             if viewModel.courseProgress != nil {
                 // Course Completion Header Section
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 0) {
                     HStack(alignment: .top, spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(CourseLocalization.CourseContainer.Progress.title)
@@ -151,7 +151,7 @@ struct CourseProgressScreenView: View {
                         .accessibilityAddTraits(.updatesFrequently)
                     }
                 }
-                .padding(.top, 16)
+//                .padding(.top, 16)
                 
                 // Check if course has graded assignments
                 if viewModel.hasGradedAssignments {
