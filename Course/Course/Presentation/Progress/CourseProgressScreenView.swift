@@ -227,7 +227,7 @@ struct CourseProgressScreenView: View {
         interactor: CourseInteractor.mock,
         router: CourseRouterMock(),
         analytics: CourseAnalyticsMock(),
-        connectivity: Connectivity()
+        connectivity: Connectivity(config: ConfigMock())
     )
     
     CourseProgressScreenView(
@@ -236,7 +236,7 @@ struct CourseProgressScreenView: View {
         collapsed: .constant(false),
         viewHeight: .constant(0),
         viewModel: vm,
-        connectivity: Connectivity()
+        connectivity: Connectivity(config: ConfigMock())
     )
     .loadFonts()
 }

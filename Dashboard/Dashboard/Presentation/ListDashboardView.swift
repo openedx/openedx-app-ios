@@ -163,7 +163,7 @@ struct ListDashboardView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = ListDashboardViewModel(
             interactor: DashboardInteractor.mock,
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             analytics: DashboardAnalyticsMock(),
             storage: CoreStorageMock()
         )

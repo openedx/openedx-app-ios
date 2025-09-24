@@ -142,7 +142,7 @@ struct AllContentView: View {
         router: CourseRouterMock(),
         analytics: CourseAnalyticsMock(),
         config: ConfigMock(),
-        connectivity: Connectivity(),
+        connectivity: Connectivity(config: ConfigMock()),
         manager: DownloadManagerMock(),
         storage: CourseStorageMock(),
         isActive: true,

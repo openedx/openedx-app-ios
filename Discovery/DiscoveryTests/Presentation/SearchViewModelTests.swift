@@ -25,7 +25,7 @@ final class SearchViewModelTests: XCTestCase {
     
     func testSearchSuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
@@ -87,7 +87,7 @@ final class SearchViewModelTests: XCTestCase {
     
     func testSearchEmptyQuerySuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
@@ -111,7 +111,7 @@ final class SearchViewModelTests: XCTestCase {
     
     func testSearchNoInternetError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
@@ -143,7 +143,7 @@ final class SearchViewModelTests: XCTestCase {
 
     func testSearchUnknownError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(

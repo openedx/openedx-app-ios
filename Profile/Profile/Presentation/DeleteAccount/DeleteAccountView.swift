@@ -188,7 +188,7 @@ struct DeleteAccountView_Previews: PreviewProvider {
         let vm = DeleteAccountViewModel(
             interactor: ProfileInteractor.mock,
             router: router,
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             analytics: ProfileAnalyticsMock()
         )
         

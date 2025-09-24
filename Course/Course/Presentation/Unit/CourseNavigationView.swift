@@ -160,7 +160,7 @@ struct CourseNavigationView_Previews: PreviewProvider {
             config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )
