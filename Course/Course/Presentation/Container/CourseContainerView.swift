@@ -238,7 +238,8 @@ public struct CourseContainerView: View {
                         collapsed: $collapsed,
                         viewHeight: $viewHeight,
                         viewModel: courseProgressViewModel,
-                        connectivity: viewModel.connectivity
+                        connectivity: viewModel.connectivity,
+                        courseStructure: viewModel.courseStructure
                     )
                     .tabItem {
                         tab.image
@@ -413,7 +414,7 @@ public struct CourseContainerView: View {
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(),
         ),
         courseID: "",
         title: "Title of Course",

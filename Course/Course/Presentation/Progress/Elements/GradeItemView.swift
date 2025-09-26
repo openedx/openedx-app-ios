@@ -55,7 +55,7 @@ struct GradeItemView: View {
                         // Assignment type name
                         VStack(alignment: .leading, spacing: 4) {
                             HStack(spacing: 4) {
-                                Text("\(Int(progressData.earnedPoints)) / \(Int(progressData.possiblePoints))")
+                                Text("\(Int(progressData.completed)) / \(Int(progressData.total))")
                                     .font(Theme.Fonts.bodySmall)
                                     .foregroundColor(Theme.Colors.textPrimary)
                                 Text(CourseLocalization.CourseContainer.Progress.complete)

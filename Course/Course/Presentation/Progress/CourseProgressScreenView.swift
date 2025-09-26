@@ -28,7 +28,8 @@ struct CourseProgressScreenView: View {
         collapsed: Binding<Bool>,
         viewHeight: Binding<CGFloat>,
         viewModel: CourseProgressViewModel,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        courseStructure: CourseStructure?
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
@@ -36,6 +37,7 @@ struct CourseProgressScreenView: View {
         self._viewHeight = viewHeight
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.connectivity = connectivity
+        self.viewModel.courseStructure = courseStructure
     }
     
     public var body: some View {

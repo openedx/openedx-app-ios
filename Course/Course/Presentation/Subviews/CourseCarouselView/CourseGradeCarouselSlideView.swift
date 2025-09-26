@@ -90,7 +90,10 @@ struct CourseGradeCarouselSlideView: View {
                 Array(viewModelProgress.assignmentPolicies.prefix(4).enumerated()),
                 id: \.element.type
             ) { index, policy in
-                let progressData = viewModelProgress.getAssignmentProgress(for: policy.type)
+                let progressData = viewModelProgress.getAssignmentProgress(
+                    for: policy.type,
+                    courseStructure: viewModelContainer.courseStructure
+                )
 
                 GradeItemCarouselView(
                     assignmentPolicy: policy,
