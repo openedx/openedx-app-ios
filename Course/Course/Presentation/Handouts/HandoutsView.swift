@@ -66,6 +66,7 @@ struct HandoutsView: View {
                                         courseID: courseID
                                     )
                                 })
+                                
                                 Divider()
                                     .frame(height: 1)
                                     .overlay(Theme.Colors.cardViewStroke)
@@ -84,6 +85,7 @@ struct HandoutsView: View {
                                         courseID: courseID
                                     )
                                 })
+                                
                             }.padding(.horizontal, 32)
                             Spacer(minLength: 84)
                         }
@@ -100,6 +102,7 @@ struct HandoutsView: View {
                         }
                     }
                 )
+                .environmentObject(ThemeManager.shared)
             }
             
             .onFirstAppear {

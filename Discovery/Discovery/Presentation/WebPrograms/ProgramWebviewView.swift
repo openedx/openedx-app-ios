@@ -128,6 +128,12 @@ public struct ProgramWebviewView: View {
         .navigationTitle(CoreLocalization.Mainscreen.programs)
         .background(Theme.Colors.background.ignoresSafeArea())
         .animation(.default, value: viewModel.showError)
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
     }
 }
 

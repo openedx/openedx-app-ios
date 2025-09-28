@@ -29,13 +29,19 @@ public struct ResetPasswordView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
+                    #if TENANTS
                     ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
                         .edgesIgnoringSafeArea(.top)
+                    #else
+                    ThemeAssets.headerBackground.swiftUIImage
+                        .resizable()
+                        .edgesIgnoringSafeArea(.top)
+                    #endif
                 }
                 .frame(maxWidth: .infinity, maxHeight: 200)
                 .accessibilityIdentifier("auth_bg_image")
-                
+
                 VStack(alignment: .center) {
                     NavigationBar(title: AuthLocalization.Forgot.title,
                                   titleColor: Theme.Colors.loginNavigationText,
@@ -43,7 +49,7 @@ public struct ResetPasswordView: View {
                                   leftButtonAction: {
                         viewModel.router.back()
                     }).padding(.leading, isHorizontal ? 48 : 0)
-                    
+
                     ScrollView {
                         VStack {
                             if isRecovered {
@@ -55,7 +61,7 @@ public struct ResetPasswordView: View {
                                             .padding(.bottom, 40)
                                             .padding(.top, 100)
                                             .accessibilityIdentifier("check_email_image")
-                                        
+
                                         Text(AuthLocalization.Forgot.checkTitle)
                                             .font(Theme.Fonts.titleLarge)
                                             .multilineTextAlignment(.center)
@@ -76,7 +82,7 @@ public struct ResetPasswordView: View {
                                         .accessibilityIdentifier("signin_button")
                                     }
                                 }
-                                
+
                             } else {
                                 VStack(alignment: .leading) {
                                     Text(AuthLocalization.Forgot.title)
@@ -138,9 +144,9 @@ public struct ResetPasswordView: View {
                         .frameLimit(width: proxy.size.width)
                     }.roundedBackground(Theme.Colors.background)
                         .scrollAvoidKeyboard(dismissKeyboardByTap: true)
-                    
+
                 }
-                
+
                 // MARK: - Alert
                 if viewModel.showAlert {
                     VStack {
@@ -150,7 +156,7 @@ public struct ResetPasswordView: View {
                             .padding(.top, 80)
                             .accessibilityIdentifier("show_alert_text")
                         Spacer()
-                        
+
                     }
                     .transition(.move(edge: .top))
                     .onAppear {
@@ -159,7 +165,7 @@ public struct ResetPasswordView: View {
                         }
                     }
                 }
-                
+
                 // MARK: - Show error
                 if viewModel.showError {
                     VStack {
@@ -174,7 +180,9 @@ public struct ResetPasswordView: View {
                 }
             }
             .ignoresSafeArea(.all, edges: .horizontal)
+
             .background(Theme.Colors.background.ignoresSafeArea(.all))
+
             .navigationBarHidden(true)
         }
     }

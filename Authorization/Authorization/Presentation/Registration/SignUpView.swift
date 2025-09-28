@@ -16,6 +16,7 @@ public struct SignUpView: View {
     private var disclosureGroupOpen: Bool = false
     
     @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.layoutDirection) var layoutDirection
     
     @ObservedObject
     private var viewModel: SignUpViewModel
@@ -30,9 +31,15 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
+            #if TENANTS
+            ThemeAssets.headerBackground.swiftUIImage
+                .resizable()
+                .edgesIgnoringSafeArea(.top)
+            #else
                 ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
-                    .edgesIgnoringSafeArea(.top)
+                .resizable()
+                .edgesIgnoringSafeArea(.top)
+            #endif
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
             .accessibilityIdentifier("auth_bg_image")
@@ -75,7 +82,7 @@ public struct SignUpView: View {
                                     .foregroundColor(Theme.Colors.textPrimary)
                                     .padding(.bottom, 20)
                                     .accessibilityIdentifier("signup_subtitle_text")
-                                
+
                                 if viewModel.thirdPartyAuthSuccess {
                                     Text(AuthLocalization.SignUp.successSigninLabel)
                                         .font(Theme.Fonts.titleMedium)
@@ -90,21 +97,6 @@ public struct SignUpView: View {
 
                                 let requiredFields = viewModel.requiredFields
                                 let optionalFields = viewModel.optionalFields
-                                
-                                if viewModel.socialAuthEnabled,
-                                    !requiredFields.isEmpty {
-                                    SocialAuthView(
-                                        authType: .register,
-                                        viewModel: .init(
-                                            config: viewModel.config,
-                                            lastUsedOption: viewModel.storage.lastUsedSocialAuth
-                                        ) { result in
-                                            Task { await viewModel.register(with: result) }
-                                        }
-                                    )
-                                    .padding(.top, 22)
-                                    .padding(.bottom, -2)
-                                }
 
                                 FieldsView(
                                     fields: requiredFields,
@@ -171,9 +163,18 @@ public struct SignUpView: View {
                             .frameLimit(width: proxy.size.width)
                         }
                         .roundedBackground(Theme.Colors.background)
-                        .onRightSwipeGesture {
-                            viewModel.router.back()
-                        }
+                        .onSwipeGesture(
+                            onLeftSwipe: {
+                                if layoutDirection == .rightToLeft {
+                                    viewModel.router.back()
+                                }
+                            },
+                            onRightSwipe: {
+                                if layoutDirection == .leftToRight {
+                                    viewModel.router.back()
+                                }
+                            }
+                        )
                         .scrollAvoidKeyboard(dismissKeyboardByTap: true)
                         .onChange(of: viewModel.scrollTo, perform: { index in
                             withAnimation {

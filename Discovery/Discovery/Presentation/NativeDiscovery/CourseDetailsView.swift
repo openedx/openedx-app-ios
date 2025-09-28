@@ -195,6 +195,7 @@ public struct CourseDetailsView: View {
                                     reloadAction: {
                     await viewModel.getCourseDetail(courseID: courseID, withProgress: false)
                 })
+                .environmentObject(ThemeManager.shared)
             }
             
             // MARK: - Error Alert
@@ -217,6 +218,12 @@ public struct CourseDetailsView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
     }
 }
 
@@ -289,7 +296,10 @@ private struct CourseStateView: View {
                             .multilineTextAlignment(.leading)
                             .font(Theme.Fonts.titleSmall)
                         Spacer()
-                    }.cardStyle(paddingAll: 12, bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
+                    }.cardStyle(
+                        paddingAll: 12,
+                        bgColor: Theme.Colors.textInputUnfocusedBackground,
+                        strokeColor: .clear)
                 }
             }
             .accessibilityIdentifier("enroll_button")

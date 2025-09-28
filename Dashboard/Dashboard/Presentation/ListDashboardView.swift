@@ -128,6 +128,7 @@ public struct ListDashboardView: View {
                                     reloadAction: {
                     await viewModel.getMyCourses(page: 1, refresh: true)
                 })
+                .environmentObject(ThemeManager.shared)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {

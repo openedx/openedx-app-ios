@@ -16,6 +16,7 @@ public struct ManageAccountView: View {
     private var viewModel: ManageAccountViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
+    @EnvironmentObject var themeManager: ThemeManager
     
     public init(viewModel: ManageAccountViewModel) {
         self.viewModel = viewModel
@@ -37,12 +38,12 @@ public struct ManageAccountView: View {
                     ZStack {
                         HStack {
                             Text(ProfileLocalization.manageAccount)
-                                .titleSettings(color: Theme.Colors.loginNavigationText)
+                                .titleSettings(color: themeManager.theme.colors.loginNavigationText)
                                 .accessibilityIdentifier("manage_account_text")
                         }
                         VStack {
                             BackNavigationButton(
-                                color: Theme.Colors.loginNavigationText,
+                                color: themeManager.theme.colors.loginNavigationText,
                                 action: {
                                     viewModel.router.back()
                                 }
@@ -79,7 +80,7 @@ public struct ManageAccountView: View {
                     .frameLimit(width: proxy.size.width)
                     .padding(.top, 24)
                     .padding(.horizontal, isHorizontal ? 24 : 0)
-                    .roundedBackground(Theme.Colors.background)
+                    .roundedBackground(themeManager.theme.colors.background)
                 }
                 .navigationBarHidden(true)
                 .navigationBarBackButtonHidden(true)
@@ -91,7 +92,7 @@ public struct ManageAccountView: View {
                     reloadAction: {
                         await viewModel.getMyProfile(withProgress: false)
                     }
-                )
+                ).environmentObject(ThemeManager.shared)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -109,7 +110,7 @@ public struct ManageAccountView: View {
             }
         }
         .background(
-            Theme.Colors.background
+            themeManager.theme.colors.background
                 .ignoresSafeArea()
         )
         .ignoresSafeArea(.all, edges: .horizontal)
@@ -127,11 +128,11 @@ public struct ManageAccountView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(viewModel.userModel?.name ?? "")
                     .font(Theme.Fonts.headlineSmall)
-                    .foregroundColor(Theme.Colors.textPrimary)
+                    .foregroundColor(themeManager.theme.colors.textPrimary)
                     .accessibilityIdentifier("user_name_text")
                 Text("\(viewModel.userModel?.email ?? "")")
                     .font(Theme.Fonts.labelLarge)
-                    .foregroundColor(Theme.Colors.textSecondary)
+                    .foregroundColor(themeManager.theme.colors.textSecondary)
                     .accessibilityIdentifier("user_username_text")
             }
             Spacer()
@@ -159,7 +160,7 @@ public struct ManageAccountView: View {
             alignment: .center
         )
         .font(Theme.Fonts.labelLarge)
-        .foregroundColor(Theme.Colors.alert)
+        .foregroundColor(themeManager.theme.colors.alert)
         .padding(.top, 12)
         .accessibilityIdentifier("delete_account_button")
     }
@@ -184,9 +185,9 @@ public struct ManageAccountView: View {
                         }
                     )
                 },
-                color: Theme.Colors.background,
-                textColor: Theme.Colors.accentColor,
-                borderColor: Theme.Colors.accentColor
+                color: themeManager.theme.colors.background,
+                textColor: themeManager.theme.colors.accentColor,
+                borderColor: themeManager.theme.colors.accentColor
             ).padding(.horizontal, 24)
         }
         .frame(

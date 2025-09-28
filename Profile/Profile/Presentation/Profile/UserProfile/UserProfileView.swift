@@ -15,7 +15,7 @@ public struct UserProfileView: View {
     
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var viewModel: UserProfileViewModel
-
+    
     public var isSheet: Bool
 
     public init(viewModel: UserProfileViewModel, isSheet: Bool = false) {
@@ -105,6 +105,12 @@ public struct UserProfileView: View {
                         }
                     }
                 }
+            }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
             }
             .onFirstAppear {
                 Task {

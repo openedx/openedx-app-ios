@@ -146,6 +146,12 @@ public struct DeleteAccountView: View {
                        maxHeight: .infinity,
                        alignment: .top)
                 .padding(.top, 8)
+                .onAppear {
+                    NavigationAppearanceManager.shared.updateAppearance(
+                        backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                        titleColor: .white
+                    )
+                }
                 .navigationBarHidden(false)
                 .navigationBarBackButtonHidden(true)
                 .navigationTitle(ProfileLocalization.DeleteAccount.title)

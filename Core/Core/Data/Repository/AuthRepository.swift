@@ -24,11 +24,17 @@ public actor AuthRepository: AuthRepositoryProtocol {
     private let api: API
     private var appStorage: CoreStorage
     private let config: ConfigProtocol
+    private let tenantProvider: () -> TenantProvider
     
-    public init(api: API, appStorage: CoreStorage, config: ConfigProtocol) {
+    public init(
+        api: API,
+        appStorage: CoreStorage,
+        config: ConfigProtocol,
+        tenantProvider: @escaping () -> TenantProvider) {
         self.api = api
         self.appStorage = appStorage
         self.config = config
+        self.tenantProvider = tenantProvider
     }
     
     public func login(username: String, password: String) async throws -> User {
@@ -36,7 +42,7 @@ public actor AuthRepository: AuthRepositoryProtocol {
         let endPoint = AuthEndpoint.getAccessToken(
             username: username,
             password: password,
-            clientId: config.oAuthClientId,
+            clientId: tenantProvider().oAuthClientId,
             tokenType: config.tokenType.rawValue
         )
         let authResponse = try await api.requestData(endPoint).mapResponse(DataLayer.AuthResponse.self)
@@ -61,7 +67,7 @@ public actor AuthRepository: AuthRepositoryProtocol {
         let endPoint = AuthEndpoint.exchangeAccessToken(
             externalToken: externalToken,
             backend: backend,
-            clientId: config.oAuthClientId,
+            clientId: tenantProvider().oAuthClientId,
             tokenType: config.tokenType.rawValue
         )
         let authResponse = try await api.requestData(endPoint).mapResponse(DataLayer.AuthResponse.self)

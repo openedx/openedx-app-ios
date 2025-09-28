@@ -14,7 +14,7 @@ public struct CheckBoxView: View {
     private var text: String
     private var font: Font
     private let color: Color
-
+    
     public init(
         checked: Binding<Bool>,
         text: String,

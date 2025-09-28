@@ -36,7 +36,7 @@ public struct VideoDownloadQualityView: View {
     private var router: BaseRouter
     private var isModal: Bool
     @Environment(\.isHorizontal) private var isHorizontal
-
+    
     public init(
         downloadQuality: DownloadQuality,
         didSelect: ((DownloadQuality) -> Void)?,
@@ -151,7 +151,7 @@ public struct SettingsCell: View {
 
     private var title: String
     private var description: String?
-
+    
     public init(title: String, description: String?) {
         self.title = title
         self.description = description

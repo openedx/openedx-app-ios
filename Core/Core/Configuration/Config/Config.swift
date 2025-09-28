@@ -9,13 +9,13 @@ import Foundation
 
 //sourcery: AutoMockable
 public protocol ConfigProtocol: Sendable {
-    var baseURL: URL { get }
-    var baseSSOURL: URL { get }
-    var ssoFinishedURL: URL { get }
-    var ssoButtonTitle: [String: Any] { get }
-    var oAuthClientId: String { get }
+//    var baseURL: URL { get }
+//    var baseSSOURL: URL { get }
+//    var ssoFinishedURL: URL { get }
+//    var ssoButtonTitle: [String: Any] { get }
+//    var oAuthClientId: String { get }
     var tokenType: TokenType { get }
-    var feedbackEmail: String { get }
+//    var feedbackEmail: String { get }
     var appStoreLink: String { get }
     var faq: URL? { get }
     var platformName: String { get }
@@ -30,6 +30,7 @@ public protocol ConfigProtocol: Sendable {
     var uiComponents: UIComponentsConfig { get }
     var discovery: DiscoveryConfig { get }
     var dashboard: DashboardConfig { get }
+    var tenantsConfig: TenantsConfig { get }
     var braze: BrazeConfig { get }
     var branch: BranchConfig { get }
     var program: DiscoveryConfig { get }
@@ -56,6 +57,7 @@ private enum ConfigKeys: String, Sendable {
     case appstoreID = "APP_STORE_ID"
     case faq = "FAQ_URL"
     case URIScheme = "URI_SCHEME"
+    case tenantsKey = "TENANTS"
 }
 
 public class Config: @unchecked Sendable {
@@ -118,44 +120,44 @@ public class Config: @unchecked Sendable {
 }
 
 extension Config: ConfigProtocol {
-    public var baseURL: URL {
-        guard let urlString = string(for: ConfigKeys.baseURL.rawValue),
-              let url = URL(string: urlString) else {
-            fatalError("Unable to find base url in config.")
-        }
-        return url
-    }
-    
-    public var baseSSOURL: URL {
-        guard let urlString = string(for: ConfigKeys.ssoBaseURL.rawValue),
-              let url = URL(string: urlString) else {
-            fatalError("Unable to find SSO base url in config.")
-        }
-        return url
-    }
-    
-    public var ssoFinishedURL: URL {
-        guard let urlString = string(for: ConfigKeys.ssoFinishedURL.rawValue),
-              let url = URL(string: urlString) else {
-            fatalError("Unable to find SSO successful login url in config.")
-        }
-        return url
-    }
-    
-    public var ssoButtonTitle: [String: Any] {
-        guard let ssoButtonTitle = dict(for: ConfigKeys.ssoButtonTitle.rawValue) else {
-            return ["en": CoreLocalization.SignIn.logInWithSsoBtn]
-        }
-        return ssoButtonTitle
-    }
-    
-    public var oAuthClientId: String {
-        guard let clientID = string(for: ConfigKeys.oAuthClientID.rawValue) else {
-            fatalError("Unable to find OAuth ClientID in config.")
-        }
-        return clientID
-    }
-    
+//    public var baseURL: URL {
+//        guard let urlString = string(for: ConfigKeys.baseURL.rawValue),
+//              let url = URL(string: urlString) else {
+//            fatalError("Unable to find base url in config.")
+//        }
+//        return url
+//    }
+//    
+//    public var baseSSOURL: URL {
+//        guard let urlString = string(for: ConfigKeys.ssoBaseURL.rawValue),
+//              let url = URL(string: urlString) else {
+//            fatalError("Unable to find SSO base url in config.")
+//        }
+//        return url
+//    }
+//    
+//    public var ssoFinishedURL: URL {
+//        guard let urlString = string(for: ConfigKeys.ssoFinishedURL.rawValue),
+//              let url = URL(string: urlString) else {
+//            fatalError("Unable to find SSO successful login url in config.")
+//        }
+//        return url
+//    }
+//    
+//    public var ssoButtonTitle: [String: Any] {
+//        guard let ssoButtonTitle = dict(for: ConfigKeys.ssoButtonTitle.rawValue) else {
+//            return ["en": CoreLocalization.SignIn.logInWithSsoBtn]
+//        }
+//        return ssoButtonTitle
+//    }
+//    
+//    public var oAuthClientId: String {
+//        guard let clientID = string(for: ConfigKeys.oAuthClientID.rawValue) else {
+//            fatalError("Unable to find OAuth ClientID in config.")
+//        }
+//        return clientID
+//    }
+//    
     public var tokenType: TokenType {
         guard let tokenTypeValue = string(for: ConfigKeys.tokenType.rawValue),
               let tokenType = TokenType(rawValue: tokenTypeValue)
@@ -163,10 +165,10 @@ extension Config: ConfigProtocol {
         return tokenType
     }
     
-    public var feedbackEmail: String {
-        return string(for: ConfigKeys.feedbackEmailAddress.rawValue) ?? ""
-    }
-
+//    public var feedbackEmail: String {
+//        return string(for: ConfigKeys.feedbackEmailAddress.rawValue) ?? ""
+//    }
+//
     public var platformName: String {
         return string(for: ConfigKeys.platformName.rawValue) ?? ""
     }
@@ -189,6 +191,17 @@ extension Config: ConfigProtocol {
     
     public var URIScheme: String {
         return string(for: ConfigKeys.URIScheme.rawValue) ?? ""
+    }
+    
+    public var tenantsConfig: TenantsConfig {
+        let array = properties[ConfigKeys.tenantsKey.rawValue] as? [[String: Any]] ?? []
+        print("tenant config: \(array)")
+        return TenantsConfig(array: array)
+    }
+    
+    public var selectedTenantKey: String {
+        UserDefaults.standard.string(forKey: "selectedTenant")
+        ?? ""
     }
 }
 

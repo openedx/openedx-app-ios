@@ -21,7 +21,7 @@ struct ProfileSupportInfoView: View {
     }
 
     @ObservedObject var viewModel: SettingsViewModel
-
+    
     var body: some View {
         Text(ProfileLocalization.supportInfo)
             .padding(.horizontal, 24)

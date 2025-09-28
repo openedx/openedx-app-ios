@@ -53,11 +53,18 @@ public class AppReviewViewModel: ObservableObject {
     private let config: ConfigProtocol
     var storage: CoreStorage
     private let analytics: CoreAnalytics
+    private let tenantProvider: () -> TenantProvider
     
-    public init(config: ConfigProtocol, storage: CoreStorage, analytics: CoreAnalytics) {
+    public init(
+        config: ConfigProtocol,
+        storage: CoreStorage,
+        analytics: CoreAnalytics,
+        tenantProvider: @escaping () -> TenantProvider
+    ) {
         self.config = config
         self.storage = storage
         self.analytics = analytics
+        self.tenantProvider = tenantProvider
     }
     
     public func shouldShowRatingView() -> Bool {
@@ -121,7 +128,7 @@ public class AppReviewViewModel: ObservableObject {
         let feedbackDetails = "\n\n OS version: \(osVersion)\nApp version: \(appVersion)\nDevice model: \(deviceModel)"
         
         let mailUrl = with.composeURL(
-            to: config.feedbackEmail,
+            to: tenantProvider().feedbackEmail,
             subject: "Feedback",
             body: feedback + feedbackDetails,
             cc: nil,

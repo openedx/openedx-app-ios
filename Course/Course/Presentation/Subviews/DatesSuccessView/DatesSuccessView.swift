@@ -23,7 +23,6 @@ public struct DatesSuccessView: View {
     var courseContainerViewModel: CourseContainerViewModel?
     var action: () -> Void = {}
     var dismissAction: () -> Void = {}
-
     @State private var dismiss: Bool = false
     
     init (

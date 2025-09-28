@@ -134,7 +134,8 @@ public struct PostsView: View {
                                                         .foregroundColor(Theme.Colors.white)
                                                         .background(
                                                             Circle()
-                                                                .foregroundColor(Theme.Colors.accentButtonColor)
+                                                                .foregroundColor(
+                                                                    Theme.Colors.accentButtonColor)
                                                         )
                                                     })
                                                 }
@@ -237,6 +238,12 @@ public struct PostsView: View {
                     )
                 }
             }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
+            }
             .navigationBarHidden(!showTopMenu)
             .navigationBarBackButtonHidden(!showTopMenu)
             .navigationTitle(title)
@@ -321,46 +328,45 @@ public struct PostsView: View {
     }
 }
 
-#if DEBUG
-struct PostsView_Previews: PreviewProvider {
-    static var previews: some View {
-        let topics = Topics(coursewareTopics: [], nonCoursewareTopics: [])
-        let router = DiscussionRouterMock()
-        let vm = PostsViewModel(
-            interactor: DiscussionInteractor.mock,
-            router: router,
-            config: ConfigMock(),
-            storage: CoreStorageMock()
-        )
-        
-        PostsView(courseID: "course_id",
-                  currentBlockID: "123",
-                  topics: topics,
-                  title: "Lesson question",
-                  type: .allPosts,
-                  viewModel: vm,
-                  router: router)
-        .preferredColorScheme(.light)
-        .previewDisplayName("PostsView Light")
-        .loadFonts()
-        
-        PostsView(courseID: "course_id",
-                  currentBlockID: "123",
-                  topics: topics,
-                  title: "Lesson question",
-                  type: .allPosts,
-                  viewModel: vm,
-                  router: router)
-        .preferredColorScheme(.dark)
-        .previewDisplayName("PostsView Dark")
-        .loadFonts()
-        
-    }
-}
-#endif
+//#if DEBUG
+//struct PostsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        let topics = Topics(coursewareTopics: [], nonCoursewareTopics: [])
+//        let router = DiscussionRouterMock()
+//        let vm = PostsViewModel(
+//            interactor: DiscussionInteractor.mock,
+//            router: router,
+//            config: ConfigMock(),
+//            storage: CoreStorageMock()
+//        )
+//        
+//        PostsView(courseID: "course_id",
+//                  currentBlockID: "123",
+//                  topics: topics,
+//                  title: "Lesson question",
+//                  type: .allPosts,
+//                  viewModel: vm,
+//                  router: router)
+//        .preferredColorScheme(.light)
+//        .previewDisplayName("PostsView Light")
+//        .loadFonts()
+//        
+//        PostsView(courseID: "course_id",
+//                  currentBlockID: "123",
+//                  topics: topics,
+//                  title: "Lesson question",
+//                  type: .allPosts,
+//                  viewModel: vm,
+//                  router: router)
+//        .preferredColorScheme(.dark)
+//        .previewDisplayName("PostsView Dark")
+//        .loadFonts()
+//        
+//    }
+//}
+//#endif
 
 public struct PostCell: View {
-    
     private var post: DiscussionPost
     
     public init(post: DiscussionPost) {

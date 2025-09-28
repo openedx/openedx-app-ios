@@ -34,7 +34,9 @@ struct AppReviewButton: View {
                                 : CoreLocalization.Review.Button.rateUs
                             )
                         )
-                        .foregroundColor(isActive ? Theme.Colors.primaryButtonTextColor : Color.black.opacity(0.6))
+                        .foregroundColor(isActive ?
+                                         Theme.Colors.primaryButtonTextColor
+                                         : Color.black.opacity(0.6))
                         .font(Theme.Fonts.labelLarge)
                         .padding(3)
                         

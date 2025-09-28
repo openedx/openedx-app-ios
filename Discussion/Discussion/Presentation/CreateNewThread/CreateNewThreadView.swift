@@ -196,6 +196,12 @@ public struct CreateNewThreadView: View {
                     }
                 }.padding(.top, 8)
             }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
+            }
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(false)
             .navigationTitle(DiscussionLocalization.CreateThread.newPost)

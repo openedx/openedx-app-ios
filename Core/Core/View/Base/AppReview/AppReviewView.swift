@@ -161,7 +161,7 @@ struct AppReviewView_Previews: PreviewProvider {
             viewModel: AppReviewViewModel(
                 config: ConfigMock(),
                 storage: CoreStorageMock(),
-                analytics: CoreAnalyticsMock()
+                analytics: CoreAnalyticsMock(), tenantProvider: { TenantProviderMock() }
             )
         )
     }

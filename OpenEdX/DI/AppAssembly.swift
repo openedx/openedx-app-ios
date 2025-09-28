@@ -39,6 +39,23 @@ class AppAssembly: Assembly {
             self.pluginManager
         }.inObjectScope(.container)
         
+        // Multi-Tenant
+        container.register(TenantViewModel.self) { r in
+            TenantViewModel(
+                router: r.resolve(AuthorizationRouter.self)!,
+                config: r.resolve(ConfigProtocol.self)!,
+                analytics: r.resolve(AuthorizationAnalytics.self)!,
+                storage: r.resolve(CoreStorage.self)!
+            )
+        }
+        .inObjectScope(.container)
+
+        // Make TenantProvider resolve to TenantViewModel
+        container.register(TenantProvider.self) { r in
+            r.resolve(TenantViewModel.self)!
+        }
+        .inObjectScope(.container)
+        
         container.register(Router.self) { @MainActor r in
             Router(navigationController: r.resolve(UINavigationController.self)!, container: container)
         }
@@ -91,16 +108,19 @@ class AppAssembly: Assembly {
             Connectivity()
         }
         
-        container.register(DatabaseManager.self) { _ in
-            DatabaseManager(databaseName: "Database")
+        container.register(DatabaseManagerProvider.self) { _ in
+            DatabaseManagerProvider()
         }.inObjectScope(.container)
         
         container.register(CoreDataHandlerProtocol.self) { r in
-            r.resolve(DatabaseManager.self)!
+            let tenantVM = r.resolve(TenantViewModel.self)!
+            return r.resolve(DatabaseManagerProvider.self)!.manager(for: tenantVM)
         }.inObjectScope(.container)
-        
+
         container.register(CorePersistenceProtocol.self) { r in
-            CorePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+            let tenantVM = r.resolve(TenantViewModel.self)!
+            let container = r.resolve(DatabaseManagerProvider.self)!.manager(for: tenantVM).getPersistentContainer()
+            return CorePersistence(container: container)
         }.inObjectScope(.container)
         
         container.register(DownloadManagerProtocol.self) { @MainActor r in
@@ -148,9 +168,9 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(CSSInjector.self) { r in
-            CSSInjector(
-                config: r.resolve(ConfigProtocol.self)!
-            )
+            CSSInjector(config: r.resolve(ConfigProtocol.self)!,
+                        tenantProvider: r.resolve(TenantProvider.self)!
+                        )
         }.inObjectScope(.container)
         
         container.register(KeychainSwift.self) { _ in
@@ -206,13 +226,13 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(CalendarManagerProtocol.self) { @MainActor r in
-            CalendarManager(
-                persistence: r.resolve(ProfilePersistenceProtocol.self)!,
+            let tenantVM = r.resolve(TenantViewModel.self)!
+            return CalendarManager(
+                persistence: r.resolve(ProfilePersistenceProtocol.self, argument: tenantVM)!,
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 profileStorage: r.resolve(ProfileStorage.self)!
             )
-        }
-        .inObjectScope(.container)
+        }.inObjectScope(.container)
 
         container.register(DeepLinkManager.self) { @MainActor r in
             DeepLinkManager(

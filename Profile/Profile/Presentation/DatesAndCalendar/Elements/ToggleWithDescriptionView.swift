@@ -78,7 +78,6 @@ struct ToggleWithDescriptionView: View {
 
 struct CustomToggle: View {
     @Binding var isOn: Bool
-
     var body: some View {
         Button(action: {
             isOn.toggle()

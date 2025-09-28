@@ -26,17 +26,20 @@ public actor DiscoveryRepository: DiscoveryRepositoryProtocol {
     private let coreStorage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: DiscoveryPersistenceProtocol
+    private let tenantProvider: @Sendable () -> any TenantProvider
     
     public init(
         api: API,
         appStorage: CoreStorage,
         config: ConfigProtocol,
-        persistence: DiscoveryPersistenceProtocol
+        persistence: DiscoveryPersistenceProtocol,
+        tenantProvider: @Sendable @escaping () -> TenantProvider
     ) {
         self.api = api
         self.coreStorage = appStorage
         self.config = config
         self.persistence = persistence
+        self.tenantProvider = tenantProvider
     }
     
     public func getDiscovery(page: Int) async throws -> [CourseItem] {
@@ -63,7 +66,7 @@ public actor DiscoveryRepository: DiscoveryRepositoryProtocol {
         let response = try await api.requestData(
             DiscoveryEndpoint.getCourseDetail(courseID: courseID, username: coreStorage.user?.username ?? "")
         ).mapResponse(DataLayer.CourseDetailsResponse.self)
-            .domain(baseURL: config.baseURL.absoluteString)
+            .domain(baseURL: tenantProvider().baseURL.absoluteString)
         
         await persistence.saveCourseDetails(course: response)
         

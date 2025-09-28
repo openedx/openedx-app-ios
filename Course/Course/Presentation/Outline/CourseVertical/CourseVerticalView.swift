@@ -190,7 +190,8 @@ struct CourseVerticalView_Previews: PreviewProvider {
                 title: "Course title",
                 courseName: "CourseName",
                 courseID: "1",
-                viewModel: viewModel
+                viewModel: viewModel,
+                themeManager: ThemeManager.shared
             )
             .preferredColorScheme(.light)
             .previewDisplayName("CourseVerticalView Light")
@@ -199,7 +200,8 @@ struct CourseVerticalView_Previews: PreviewProvider {
                 title: "Course title",
                 courseName: "CourseName",
                 courseID: "1",
-                viewModel: viewModel
+                viewModel: viewModel,
+                themeManager: ThemeManager.shared
             )
             .preferredColorScheme(.dark)
             .previewDisplayName("CourseVerticalView Dark")

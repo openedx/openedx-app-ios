@@ -33,17 +33,20 @@ public actor CourseRepository: CourseRepositoryProtocol {
     private let coreStorage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: CoursePersistenceProtocol
+    private let tenantProvider: @Sendable () -> any TenantProvider
     
     public init(
         api: API,
         coreStorage: CoreStorage,
         config: ConfigProtocol,
-        persistence: CoursePersistenceProtocol
+        persistence: CoursePersistenceProtocol,
+        tenantProvider: @escaping @Sendable () -> any TenantProvider
     ) {
         self.api = api
         self.coreStorage = coreStorage
         self.config = config
         self.persistence = persistence
+        self.tenantProvider = tenantProvider
     }
     
     public func getCourseBlocks(courseID: String) async throws -> CourseStructure {
@@ -230,7 +233,7 @@ public actor CourseRepository: CourseRepositoryProtocol {
         let block = blocks.first(where: {$0.id == id })!
         let subtitles = block.userViewData?.transcripts?.map {
             let url = $0.value
-                .replacingOccurrences(of: config.baseURL.absoluteString, with: "")
+                .replacingOccurrences(of: tenantProvider().baseURL.absoluteString, with: "")
                 .replacingOccurrences(of: "?lang=\($0.key)", with: "")
             return SubtitleUrl(language: $0.key, url: url)
         }
@@ -241,7 +244,8 @@ public actor CourseRepository: CourseRepositoryProtocol {
            let fileUrl = offlineData.fileUrl,
            let lastModified = offlineData.lastModified,
            let fileSize = offlineData.fileSize {
-            let fullUrl = fileUrl.starts(with: "http") ? fileUrl : config.baseURL.absoluteString + fileUrl
+            let fullUrl = fileUrl.starts(with: "http") ? fileUrl
+            : tenantProvider().baseURL.absoluteString + fileUrl
             offlineDownload = OfflineDownload(
                 fileUrl: fullUrl,
                 lastModified: lastModified,

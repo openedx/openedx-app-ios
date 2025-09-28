@@ -12,7 +12,7 @@ import Theme
 struct VideoDownloadQualityContainerView: View {
 
     @Environment(\.dismiss) private var dismiss
-
+    
     private var downloadQuality: DownloadQuality
     private var didSelect: ((DownloadQuality) -> Void)?
     private let analytics: CoreAnalytics

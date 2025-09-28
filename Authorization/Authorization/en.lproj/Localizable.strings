@@ -5,6 +5,8 @@
   Created by Vladimir Chekyrta on 13.09.2022.
   
 */
+"TENANT_SELECTION.TITLE" = "Select a Platform";
+"TENANT_SELECTION.SEARCH_TITLE" = "Search for a Platform";
 
 "SIGN_IN.LOG_IN_TITLE" = "Sign in";
 "SIGN_IN.WELCOME_BACK" = "Welcome back! Sign in to access your courses.";

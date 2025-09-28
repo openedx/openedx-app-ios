@@ -8,6 +8,7 @@
 import SwiftUI
 import Core
 import Combine
+import Theme
 
 struct CourseNavigationView: View {
     
@@ -55,6 +56,7 @@ struct CourseNavigationView: View {
                 viewModel.select(move: .next)
             }
         )
+        
     }
     
     private var nextButton: some View {
@@ -66,6 +68,7 @@ struct CourseNavigationView: View {
                 viewModel.select(move: .next)
             }
         )
+        
     }
     
     private var prevButton: some View {
@@ -77,6 +80,7 @@ struct CourseNavigationView: View {
                 viewModel.select(move: .previous)
             }
         )
+        
     }
     
     private var lastButton: some View {
@@ -142,6 +146,7 @@ struct CourseNavigationView: View {
                 )
             }
         )
+        
     }
 }
 

@@ -45,7 +45,7 @@ public struct ProfileView: View {
                     reloadAction: {
                         await viewModel.getMyProfile(withProgress: false)
                     }
-                )
+                ).environmentObject(ThemeManager.shared)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -79,6 +79,12 @@ public struct ProfileView: View {
                 Task {
                     await viewModel.getMyProfile()
                 }
+            }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
             }
         }
     }

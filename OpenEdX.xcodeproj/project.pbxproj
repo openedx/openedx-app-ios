@@ -48,6 +48,7 @@
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		149FF39E2B9F1AB50034B33F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 149FF39C2B9F1AB50034B33F /* LaunchScreen.storyboard */; };
 		3ACA3A1E886F3F9B2735B9AF /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D27E034A83DDEBF18D53B04 /* Pods_App_OpenEdX.framework */; };
+		628ABA79268BC03EC141D7E5 /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D27E034A83DDEBF18D53B04 /* Pods_App_OpenEdX.framework */; };
 		A500668B2B613ED10024680B /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668A2B613ED10024680B /* PushNotificationsManager.swift */; };
 		A500668D2B6143000024680B /* FCMProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668C2B6143000024680B /* FCMProvider.swift */; };
 		A50066932B614DCD0024680B /* FCMListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = A50066922B614DCD0024680B /* FCMListener.swift */; };
@@ -56,6 +57,7 @@
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
 		BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7468752B96201D00793145 /* DeepLinkRouter.swift */; };
+		BC6BEB793EF3687D2C5E1D9B /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D27E034A83DDEBF18D53B04 /* Pods_App_OpenEdX.framework */; };
 		CE0BF0BA2CD9203A00D10289 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = CE0BF0B92CD9203A00D10289 /* MSAL */; };
 		CE1D5B7B2CE60E000019CA34 /* ContainerMainActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1D5B7A2CE60E000019CA34 /* ContainerMainActor.swift */; };
 		CE3BD14E2CBEB0DA0026F4E3 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */; };
@@ -95,7 +97,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		005D1F4D92679D24B3BAA8FE /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
 		020CA5D82AA0A25300970AAF /* AppStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorage.swift; sourceTree = "<group>"; };
 		0218196328F734FA00202564 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0219C67628F4347600D64452 /* Course.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Course.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -136,9 +137,12 @@
 		07D5DA3428D075AA00752FD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		07D5DA3D28D075AB00752FD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		149FF39D2B9F1AB50034B33F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2386FD6B3D624DEF6AFB238C /* Pods-App-OpenEdX.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugprod.xcconfig"; sourceTree = "<group>"; };
+		2970FF3233FBA54F18D84830 /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
 		3D27E034A83DDEBF18D53B04 /* Pods_App_OpenEdX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_OpenEdX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		4449C4D4F119C87B452DDFCD /* Pods-App-OpenEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		8A45E2C9AF0CBE70A09FB37B /* Pods-App-OpenEdX.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugstage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugstage.xcconfig"; sourceTree = "<group>"; };
+		7FF58E06BF82C5F521F6AE4B /* Pods-App-OpenEdX.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasedev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasedev.xcconfig"; sourceTree = "<group>"; };
+		83C62BF15B02F75D4E5C4EBA /* Pods-App-OpenEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
+		9972D1D32E60338C0020CFBD /* OpenEdX MultiTenants-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "OpenEdX MultiTenants-Info.plist"; path = "/Users/rawan/Documents/SwiftUI/ZeitLabs/CONTRIB/openedx-app-ios-contrib/OpenEdX MultiTenants-Info.plist"; sourceTree = "<absolute>"; };
 		A500668A2B613ED10024680B /* PushNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationsManager.swift; sourceTree = "<group>"; };
 		A500668C2B6143000024680B /* FCMProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMProvider.swift; sourceTree = "<group>"; };
 		A50066922B614DCD0024680B /* FCMListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FCMListener.swift; sourceTree = "<group>"; };
@@ -147,14 +151,15 @@
 		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
 		BA7468752B96201D00793145 /* DeepLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkRouter.swift; sourceTree = "<group>"; };
-		CCE1E0F850D3E25C0D6C6702 /* Pods-App-OpenEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
 		CE1D5B7A2CE60E000019CA34 /* ContainerMainActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerMainActor.swift; sourceTree = "<group>"; };
 		CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
 		CEB36E512D6A29CE00907A89 /* Downloads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Downloads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEE5EDED2D6E0A290089F67C /* DownloadsPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsPersistence.swift; sourceTree = "<group>"; };
-		D70D30110012B7D52D05E876 /* Pods-App-OpenEdX.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugprod.xcconfig"; sourceTree = "<group>"; };
 		E0D6E6A22B1626B10089F9C9 /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FD0CE8D22B755B4003A113BB /* Pods-App-OpenEdX.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releasestage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releasestage.xcconfig"; sourceTree = "<group>"; };
+		E0DB1212DA83993A05C5D9A1 /* Pods-App-OpenEdX.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugstage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugstage.xcconfig"; sourceTree = "<group>"; };
+		E2811A5681E667E01535CD97 /* Pods-App-OpenEdX.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.releaseprod.xcconfig"; sourceTree = "<group>"; };
+		E4DE2FEECF2520F879B2256F /* Pods-App-OpenEdX.debugprodtenants.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugprodtenants.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugprodtenants.xcconfig"; sourceTree = "<group>"; };
+		ED2771DE2F5BBBC2214103B2 /* Pods-App-OpenEdX.openedxmultitenants.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.openedxmultitenants.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.openedxmultitenants.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -177,6 +182,8 @@
 				CEBA52772CEBB69100619E2B /* OEXFirebaseAnalytics in Frameworks */,
 				027DB33028D8A063002B6862 /* Dashboard.framework in Frameworks */,
 				3ACA3A1E886F3F9B2735B9AF /* Pods_App_OpenEdX.framework in Frameworks */,
+				BC6BEB793EF3687D2C5E1D9B /* Pods_App_OpenEdX.framework in Frameworks */,
+				628ABA79268BC03EC141D7E5 /* Pods_App_OpenEdX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +241,7 @@
 				07D5DA3228D075AA00752FD9 /* Products */,
 				55A895025FB07897BA68E063 /* Pods */,
 				4E6FB43543890E90BB88D64D /* Frameworks */,
+				9972D1D32E60338C0020CFBD /* OpenEdX MultiTenants-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -290,12 +298,14 @@
 		55A895025FB07897BA68E063 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				D70D30110012B7D52D05E876 /* Pods-App-OpenEdX.debugprod.xcconfig */,
-				8A45E2C9AF0CBE70A09FB37B /* Pods-App-OpenEdX.debugstage.xcconfig */,
-				CCE1E0F850D3E25C0D6C6702 /* Pods-App-OpenEdX.debugdev.xcconfig */,
-				4449C4D4F119C87B452DDFCD /* Pods-App-OpenEdX.releaseprod.xcconfig */,
-				FD0CE8D22B755B4003A113BB /* Pods-App-OpenEdX.releasestage.xcconfig */,
-				005D1F4D92679D24B3BAA8FE /* Pods-App-OpenEdX.releasedev.xcconfig */,
+				2386FD6B3D624DEF6AFB238C /* Pods-App-OpenEdX.debugprod.xcconfig */,
+				E0DB1212DA83993A05C5D9A1 /* Pods-App-OpenEdX.debugstage.xcconfig */,
+				83C62BF15B02F75D4E5C4EBA /* Pods-App-OpenEdX.debugdev.xcconfig */,
+				E2811A5681E667E01535CD97 /* Pods-App-OpenEdX.releaseprod.xcconfig */,
+				2970FF3233FBA54F18D84830 /* Pods-App-OpenEdX.releasestage.xcconfig */,
+				7FF58E06BF82C5F521F6AE4B /* Pods-App-OpenEdX.releasedev.xcconfig */,
+				ED2771DE2F5BBBC2214103B2 /* Pods-App-OpenEdX.openedxmultitenants.xcconfig */,
+				E4DE2FEECF2520F879B2256F /* Pods-App-OpenEdX.debugprodtenants.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -550,7 +560,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\n\nVENV_PATH=\"${SRCROOT}/venv\"\n\n/usr/bin/python3 -m venv \"$VENV_PATH\"\n\nsource \"$VENV_PATH/bin/activate\"\n\npip install --upgrade pip\npip install PyYAML\n\nscheme_mapping='{\n  \"prod\": [\"ReleaseProd\", \"DebugProd\"],\n  \"stage\": [\"ReleaseStage\", \"DebugStage\"],\n  \"dev\": [\"ReleaseDev\", \"DebugDev\"]\n}'\n\npython config_script/process_config.py \"$CONFIGURATION\" \"$scheme_mapping\"\n\ndeactivate\n";
+			shellScript = "#!/bin/bash\n\nVENV_PATH=\"${SRCROOT}/venv\"\n\n/usr/bin/python3 -m venv \"$VENV_PATH\"\n\nsource \"$VENV_PATH/bin/activate\"\n\npip install --upgrade pip\npip install PyYAML\n\nscheme_mapping='{\n  \"prod\": [\"ReleaseProd\", \"DebugProd\"],\n  \"stage\": [\"ReleaseStage\", \"DebugStage\"],\n  \"dev\": [\"ReleaseDev\", \"DebugDev\"],\n  \"tenants\": [\"DebugProdTenants\", \"OpenEdXMultiTenants\"]\n}'\n\npython config_script/process_config.py \"$CONFIGURATION\" \"$scheme_mapping\"\n\ndeactivate\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -694,18 +704,19 @@
 		};
 		02DD1C9629E80CC200F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A45E2C9AF0CBE70A09FB37B /* Pods-App-OpenEdX.debugstage.xcconfig */;
+			baseConfigurationReference = E0DB1212DA83993A05C5D9A1 /* Pods-App-OpenEdX.debugstage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
@@ -718,8 +729,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage;
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage.rawan;
 				PRODUCT_NAME = "$(TARGET_NAME) Stage";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -786,18 +797,19 @@
 		};
 		02DD1C9829E80CCB00F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FD0CE8D22B755B4003A113BB /* Pods-App-OpenEdX.releasestage.xcconfig */;
+			baseConfigurationReference = 2970FF3233FBA54F18D84830 /* Pods-App-OpenEdX.releasestage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
@@ -810,8 +822,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage;
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.stage.rawan;
 				PRODUCT_NAME = "$(TARGET_NAME) Stage";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -884,18 +896,19 @@
 		};
 		0727875928D231FD002E9142 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CCE1E0F850D3E25C0D6C6702 /* Pods-App-OpenEdX.debugdev.xcconfig */;
+			baseConfigurationReference = 83C62BF15B02F75D4E5C4EBA /* Pods-App-OpenEdX.debugdev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
@@ -908,8 +921,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev;
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev.rawan;
 				PRODUCT_NAME = "$(TARGET_NAME) Dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -976,18 +989,19 @@
 		};
 		0727875B28D23204002E9142 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 005D1F4D92679D24B3BAA8FE /* Pods-App-OpenEdX.releasedev.xcconfig */;
+			baseConfigurationReference = 7FF58E06BF82C5F521F6AE4B /* Pods-App-OpenEdX.releasedev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
@@ -1000,8 +1014,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev;
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.dev.rawan;
 				PRODUCT_NAME = "$(TARGET_NAME) Dev";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1128,18 +1142,19 @@
 		};
 		07D5DA4628D075AB00752FD9 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D70D30110012B7D52D05E876 /* Pods-App-OpenEdX.debugprod.xcconfig */;
+			baseConfigurationReference = 2386FD6B3D624DEF6AFB238C /* Pods-App-OpenEdX.debugprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
@@ -1152,8 +1167,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app;
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.rawan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1166,18 +1181,19 @@
 		};
 		07D5DA4728D075AB00752FD9 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4449C4D4F119C87B452DDFCD /* Pods-App-OpenEdX.releaseprod.xcconfig */;
+			baseConfigurationReference = E2811A5681E667E01535CD97 /* Pods-App-OpenEdX.releaseprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = WKRCK9V34F;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
@@ -1190,8 +1206,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app;
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.rawan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -1202,6 +1218,200 @@
 			};
 			name = ReleaseProd;
 		};
+		995886972E64453D0065D132 /* DebugProdTenants */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = DebugProdTenants;
+		};
+		995886982E64453D0065D132 /* DebugProdTenants */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E4DE2FEECF2520F879B2256F /* Pods-App-OpenEdX.debugprodtenants.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
+				FULLSTORY_ENABLED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenEdX/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.rawan;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TENANTS;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = DebugProdTenants;
+		};
+		9972D1D42E6033EF0020CFBD /* OpenEdXMultiTenants */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = OpenEdXMultiTenants;
+		};
+		9972D1D52E6033EF0020CFBD /* OpenEdXMultiTenants */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = ED2771DE2F5BBBC2214103B2 /* Pods-App-OpenEdX.openedxmultitenants.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = WKRCK9V34F;
+				FULLSTORY_ENABLED = NO;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = OpenEdX/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
+				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIStatusBarStyle = UIStatusBarStyleLightContent;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2;
+				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.rawan;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = TENANTS;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = OpenEdXMultiTenants;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1209,9 +1419,11 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				07D5DA4328D075AB00752FD9 /* DebugProd */,
+				9972D1D42E6033EF0020CFBD /* OpenEdXMultiTenants */,
 				02DD1C9529E80CC200F35DCE /* DebugStage */,
 				0727875828D231FD002E9142 /* DebugDev */,
 				07D5DA4428D075AB00752FD9 /* ReleaseProd */,
+				995886972E64453D0065D132 /* DebugProdTenants */,
 				02DD1C9729E80CCB00F35DCE /* ReleaseStage */,
 				0727875A28D23204002E9142 /* ReleaseDev */,
 			);
@@ -1222,9 +1434,11 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				07D5DA4628D075AB00752FD9 /* DebugProd */,
+				9972D1D52E6033EF0020CFBD /* OpenEdXMultiTenants */,
 				02DD1C9629E80CC200F35DCE /* DebugStage */,
 				0727875928D231FD002E9142 /* DebugDev */,
 				07D5DA4728D075AB00752FD9 /* ReleaseProd */,
+				995886982E64453D0065D132 /* DebugProdTenants */,
 				02DD1C9829E80CCB00F35DCE /* ReleaseStage */,
 				0727875B28D23204002E9142 /* ReleaseDev */,
 			);

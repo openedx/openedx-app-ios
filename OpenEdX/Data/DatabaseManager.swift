@@ -13,6 +13,26 @@ import Dashboard
 import Course
 import Downloads
 import Profile
+import Authorization
+
+final class DatabaseManagerProvider {
+    private var containers: [String: DatabaseManager] = [:]
+
+    func manager(for tenant: TenantViewModel) -> DatabaseManager {
+        let key = tenant.selectedTenant?.name ?? "default"
+        if let existingManager = containers[key] {
+            return existingManager
+        }
+        let dbName = "openedx_\(key)_db"
+        let newManager = DatabaseManager(databaseName: dbName)
+        containers[key] = newManager
+        return newManager
+    }
+
+    public func resetContainer(for tenantName: String) {
+        containers[tenantName] = nil
+    }
+}
 
 final class DatabaseManager: CoreDataHandlerProtocol {
     

@@ -43,19 +43,22 @@ public class SSOWebViewModel: ObservableObject {
     private let interactor: AuthInteractorProtocol
     private let analytics: AuthorizationAnalytics
     let ssoHelper: SSOHelper
+    let tenantProvider: @Sendable () -> any TenantProvider
     
     public init(
         interactor: AuthInteractorProtocol,
         router: AuthorizationRouter,
         config: ConfigProtocol,
         analytics: AuthorizationAnalytics,
-        ssoHelper: SSOHelper
+        ssoHelper: SSOHelper,
+        tenantProvider: @escaping @Sendable () -> any TenantProvider
     ) {
         self.interactor = interactor
         self.router = router
         self.config = config
         self.analytics = analytics
         self.ssoHelper = ssoHelper
+        self.tenantProvider = tenantProvider
     }
 
     @MainActor

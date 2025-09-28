@@ -242,6 +242,7 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
+
                 case .dates:
                     CourseDatesView(
                         courseID: courseID,
@@ -256,6 +257,7 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
+
                 case .offline:
                     OfflineView(
                         courseID: courseID,
@@ -270,6 +272,7 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
+
                 case .discussion:
                     DiscussionTopicsView(
                         courseID: courseID,
@@ -286,6 +289,7 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
+
                 case .handounds:
                     HandoutsView(
                         courseID: courseID,
@@ -300,6 +304,7 @@ public struct CourseContainerView: View {
                     }
                     .tag(tab)
                     .accentColor(Theme.Colors.accentColor)
+
                 }
             }
         }
@@ -392,7 +397,10 @@ public struct CourseContainerView: View {
             enrollmentEnd: nil,
             lastVisitedBlockID: nil,
             coreAnalytics: CoreAnalyticsMock(),
-            courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
+            courseHelper: CourseDownloadHelper(
+                courseStructure: nil,
+                manager: DownloadManagerMock()),
+            tenantProvider: { TenantProviderMock() }
         ),
         courseDatesViewModel: CourseDatesViewModel(
             interactor: CourseInteractor.mock,

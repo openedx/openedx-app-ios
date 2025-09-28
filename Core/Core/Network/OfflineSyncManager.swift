@@ -23,14 +23,17 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
     let interactor: OfflineSyncInteractorProtocol
     let connectivity: ConnectivityProtocol
     private var cancellables = Set<AnyCancellable>()
+    private let tenantProvider: @Sendable () -> TenantProvider
     
     public init(
         persistence: CorePersistenceProtocol,
         interactor: OfflineSyncInteractorProtocol,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        tenantProvider: @escaping @Sendable () -> TenantProvider
     ) {
         self.persistence = persistence
         self.interactor = interactor
+        self.tenantProvider = tenantProvider
         self.connectivity = connectivity
         
         self.connectivity.internetReachableSubject.sink(receiveValue: { state in
@@ -77,7 +80,7 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
                    await persistence.deleteProgress(for: progress.blockID)
                 }
                 if let config = Container.shared.resolve(ConfigProtocol.self), let cookies {
-                    HTTPCookieStorage.shared.setCookies(cookies, for: config.baseURL, mainDocumentURL: nil)
+                    HTTPCookieStorage.shared.setCookies(cookies, for: tenantProvider().baseURL, mainDocumentURL: nil)
                 }
             } catch {
                 debugLog("Error submitting offline progress: \(error.localizedDescription)")

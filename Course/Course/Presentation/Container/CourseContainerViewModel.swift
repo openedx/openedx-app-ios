@@ -106,6 +106,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     let router: CourseRouter
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
+    let tenantProvider: @Sendable () -> any TenantProvider
     
     let isActive: Bool?
     let courseStart: Date?
@@ -143,7 +144,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         lastVisitedBlockID: String?,
         coreAnalytics: CoreAnalytics,
         selection: CourseTab = CourseTab.course,
-        courseHelper: CourseDownloadHelperProtocol
+        courseHelper: CourseDownloadHelperProtocol,
+        tenantProvider: @escaping @Sendable () -> any TenantProvider
     ) {
         self.interactor = interactor
         self.authInteractor = authInteractor
@@ -164,6 +166,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         self.selection = selection.rawValue
         self.courseHelper = courseHelper
         self.courseHelper.videoQuality = storage.userSettings?.downloadQuality ?? .auto
+        self.tenantProvider = tenantProvider
         super.init(manager: manager)
         addObservers()
     }

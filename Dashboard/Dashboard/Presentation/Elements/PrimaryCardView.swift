@@ -134,7 +134,7 @@ public struct PrimaryCardView: View {
                     title: pastAssignment.title,
                     description: DashboardLocalization.Learn.PrimaryCard.onePastAssignment,
                     icon: CoreAssets.warning.swiftUIImage,
-                    selected: false,
+                    selected: false, bgColor: Theme.Colors.secondaryButtonBGColor,
                     action: { assignmentAction(pastAssignments.first?.firstComponentBlockId) }
                 )
             } else if pastAssignments.count > 1 {
@@ -142,7 +142,7 @@ public struct PrimaryCardView: View {
                     title: DashboardLocalization.Learn.PrimaryCard.viewAssignments,
                     description: DashboardLocalization.Learn.PrimaryCard.pastAssignments(pastAssignments.count),
                     icon: CoreAssets.warning.swiftUIImage,
-                    selected: false,
+                    selected: false, bgColor: Theme.Colors.primaryCardCautionBG,
                     action: { assignmentAction(nil) }
                 )
             }
@@ -158,7 +158,7 @@ public struct PrimaryCardView: View {
                             dueIn: true
                         ),
                         icon: CoreAssets.chapter.swiftUIImage,
-                        selected: false,
+                        selected: false, bgColor: Theme.Colors.secondaryButtonBGColor,
                         action: {
                             assignmentAction(futureAssignments.first?.firstComponentBlockId)
                         }
@@ -172,7 +172,7 @@ public struct PrimaryCardView: View {
                             ),
                             description: nil,
                             icon: CoreAssets.chapter.swiftUIImage,
-                            selected: false,
+                            selected: false, bgColor: Theme.Colors.secondaryButtonBGColor,
                             action: {
                                 assignmentAction(nil)
                             }
@@ -209,7 +209,7 @@ public struct PrimaryCardView: View {
         description: String?,
         icon: Image,
         selected: Bool,
-        bgColor: Color = Theme.Colors.primaryCardCautionBG,
+        bgColor: Color,
         action: @escaping () -> Void
     ) -> some View {
         Button(action: {

@@ -39,6 +39,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     NoCoursesView(openDiscovery: {
                         openDiscoveryPage()
                     }).zIndex(1)
+                        
                 }
                 learnTitleAndSearch(proxy: proxy)
                     .zIndex(1)
@@ -164,7 +165,9 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
                     reloadAction: {
                         await viewModel.getEnrollments(showProgress: false)
                     }
-                ).zIndex(2)
+                )
+                .zIndex(2)
+                .environmentObject(ThemeManager.shared)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {
@@ -201,6 +204,12 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
             .navigationBarBackButtonHidden(true)
             .navigationBarHidden(true)
             .navigationTitle(DashboardLocalization.title)
+        }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
         }
     }
     

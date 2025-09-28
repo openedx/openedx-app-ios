@@ -13,7 +13,7 @@ public struct WebBrowser: View {
 
     @State private var isLoading: Bool = true
     @Environment(\.presentationMode) var presentationMode
-
+    
     private var url: String
     private var pageTitle: String
     private var showProgress: Bool
@@ -73,6 +73,7 @@ public struct WebBrowser: View {
                 connectivity: connectivity
             )
             .accessibilityIdentifier("web_browser")
+            
         }
         .padding(.top, proxy.safeAreaInsets.top)
         .padding(.bottom, proxy.safeAreaInsets.bottom)

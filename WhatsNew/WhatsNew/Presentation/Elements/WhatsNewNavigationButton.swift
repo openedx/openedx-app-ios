@@ -12,6 +12,7 @@ import Theme
 struct WhatsNewNavigationButton: View {
     let type: ButtonType
     let action: () -> Void
+    @EnvironmentObject var themeManager: ThemeManager
     
     enum ButtonType {
         case previous, next, done
@@ -23,25 +24,27 @@ struct WhatsNewNavigationButton: View {
                 if type == .previous {
                     CoreAssets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
-                        .foregroundColor(Theme.Colors.secondaryButtonTextColor)
+                        .foregroundColor(themeManager.theme.colors.secondaryButtonTextColor)
                 }
                 
                 Text(type == .previous ? WhatsNewLocalization.buttonPrevious
                      : (type == .next ? WhatsNewLocalization.buttonNext : WhatsNewLocalization.buttonDone ))
-                .foregroundColor(type == .previous ? Theme.Colors.secondaryButtonTextColor : Theme.Colors.white)
+                .foregroundColor(type == .previous ?
+                                 themeManager.theme.colors.secondaryButtonTextColor
+                                 : themeManager.theme.colors.white)
                 .font(Theme.Fonts.labelLarge)
                 
                 if type == .next {
                     CoreAssets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
                         .rotationEffect(Angle(degrees: 180))
-                        .foregroundColor(Theme.Colors.white)
+                        .foregroundColor(themeManager.theme.colors.white)
                 }
                 
                 if type == .done {
                     CoreAssets.checkmark.swiftUIImage
                         .renderingMode(.template)
-                        .foregroundColor(Theme.Colors.white)
+                        .foregroundColor(themeManager.theme.colors.white)
                 }
             }.padding(.horizontal, 20)
                 .padding(.vertical, 9)
@@ -50,8 +53,8 @@ struct WhatsNewNavigationButton: View {
                 Theme.Shapes.buttonShape
                     .fill(
                         type == .previous
-                        ? Theme.Colors.secondaryButtonBGColor
-                        : Theme.Colors.accentButtonColor
+                        ? themeManager.theme.colors.secondaryButtonBGColor
+                        : themeManager.theme.colors.accentButtonColor
                     )
             )
             .accessibilityElement(children: .ignore)
@@ -60,8 +63,8 @@ struct WhatsNewNavigationButton: View {
             .overlay(
                 Theme.Shapes.buttonShape
                     .stroke(type == .previous
-                            ? Theme.Colors.secondaryButtonBorderColor
-                            : Theme.Colors.background, lineWidth: 1)
+                            ? themeManager.theme.colors.secondaryButtonBorderColor
+                            : themeManager.theme.colors.background, lineWidth: 1)
             )
             .onTapGesture { action() }
     }

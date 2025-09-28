@@ -76,6 +76,7 @@ public final class SettingsViewModel: ObservableObject {
     let corePersistence: CorePersistenceProtocol
     let connectivity: ConnectivityProtocol
     private var coreStorage: CoreStorage
+    private let tenantProvider: @Sendable () -> any TenantProvider
     
     public init(
         interactor: ProfileInteractorProtocol,
@@ -86,7 +87,8 @@ public final class SettingsViewModel: ObservableObject {
         config: ConfigProtocol,
         corePersistence: CorePersistenceProtocol,
         connectivity: ConnectivityProtocol,
-        coreStorage: CoreStorage
+        coreStorage: CoreStorage,
+        tenantProvider: @escaping @Sendable () -> any TenantProvider
     ) {
         self.interactor = interactor
         self.downloadManager = downloadManager
@@ -97,7 +99,7 @@ public final class SettingsViewModel: ObservableObject {
         self.corePersistence = corePersistence
         self.connectivity = connectivity
         self.coreStorage = coreStorage
-        
+        self.tenantProvider = tenantProvider
         let userSettings = interactor.getSettings()
         self.userSettings = userSettings
         self.wifiOnly = userSettings.wifiOnly
@@ -146,7 +148,7 @@ public final class SettingsViewModel: ObservableObject {
         let deviceModel = UIDevice.current.model
         let feedbackDetails = "OS version: \(osVersion)\nApp version: \(appVersion)\nDevice model: \(deviceModel)"
         
-        let recipientAddress = config.feedbackEmail
+        let recipientAddress = tenantProvider().feedbackEmail
         let emailSubject = "Feedback"
         let emailBody = "\n\n\(feedbackDetails)\n".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
         let emailURL = URL(string: "mailto:\(recipientAddress)?subject=\(emailSubject)&body=\(emailBody)")

@@ -112,6 +112,12 @@ public struct HandoutsUpdatesDetailView: View {
             guard UIApplication.shared.applicationState == .active else { return }
             updateColorScheme()
         }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
     }
     
     private var webViewHtml: some View {

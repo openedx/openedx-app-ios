@@ -21,14 +21,18 @@ public struct ProgressBar: View {
             .repeatForever(autoreverses: false)
     }
     
-    private let gradient = AngularGradient(
-        gradient: Gradient(colors: [
-            Theme.Colors.accentColor.opacity(0.7),
-            Theme.Colors.accentColor.opacity(0.35),
-            Theme.Colors.accentColor.opacity(0.01)]),
-        center: .center,
-        startAngle: .degrees(270),
-        endAngle: .degrees(0))
+    private var gradient: AngularGradient {
+            AngularGradient(
+                gradient: Gradient(colors: [
+                    Theme.Colors.accentColor.opacity(0.7),
+                    Theme.Colors.accentColor.opacity(0.35),
+                    Theme.Colors.accentColor.opacity(0.01)
+                ]),
+                center: .center,
+                startAngle: .degrees(270),
+                endAngle: .degrees(0)
+            )
+        }
     
     public init(size: CGFloat = 50, lineWidth: CGFloat = 10) {
         self.size = size

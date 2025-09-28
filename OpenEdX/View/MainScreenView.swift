@@ -21,20 +21,10 @@ struct MainScreenView: View {
     
     @State private var disableAllTabs: Bool = false
     @State private var updateAvailable: Bool = false
-    
     @ObservedObject private(set) var viewModel: MainScreenViewModel
     
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
-        UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().barTintColor = Theme.UIColors.tabbarActiveColor
-        UITabBar.appearance().backgroundColor = Theme.UIColors.tabbarBGColor
-        UITabBar.appearance().unselectedItemTintColor = Theme.UIColors.tabbarInactiveColor
-        
-        UITabBarItem.appearance().setTitleTextAttributes(
-            [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
-            for: .normal
-        )
     }
     
     var body: some View {
@@ -157,6 +147,21 @@ struct MainScreenView: View {
                 }
                 .tag(MainTab.profile)
                 .accessibilityIdentifier("profile_tabitem")
+            }
+            .onAppear {
+                UITabBar.appearance().isTranslucent = false
+                UITabBar.appearance().barTintColor = UIColor(Theme.Colors.tabbarColor)
+                UITabBar.appearance().backgroundColor = UIColor(Theme.Colors.tabbarColor)
+                UITabBar.appearance().unselectedItemTintColor = UIColor(Theme.Colors.textSecondaryLight)
+                
+                UITabBarItem.appearance().setTitleTextAttributes(
+                    [NSAttributedString.Key.font: Theme.UIFonts.labelSmall()],
+                    for: .normal
+                )
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
             }
             .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
             .navigationBarBackButtonHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)

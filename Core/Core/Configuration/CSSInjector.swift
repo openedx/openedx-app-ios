@@ -10,11 +10,12 @@ import SwiftUI
 import Theme
 
 public class CSSInjector {
-    
+    private let tenantProvider: TenantProvider
     public let baseURL: URL
     
-    public init(config: ConfigProtocol) {
-        self.baseURL = config.baseURL
+    public init(config: ConfigProtocol, tenantProvider: TenantProvider) {
+        self.tenantProvider = tenantProvider
+        self.baseURL = tenantProvider.baseURL
     }
     
     public enum CssType {
@@ -157,7 +158,8 @@ public class CSSInjector {
 #if DEBUG
 public class CSSInjectorMock: CSSInjector {
     public convenience init() {
-        self.init(config: ConfigMock())
+        let mockTenantProvider = TenantProviderMock( uiComponents: UIComponentsConfig(dictionary: [:]))
+        self.init(config: ConfigMock(), tenantProvider: mockTenantProvider)
     }
 }
 #endif

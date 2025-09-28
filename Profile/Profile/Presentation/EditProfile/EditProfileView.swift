@@ -253,6 +253,12 @@ public struct EditProfileView: View {
                 viewModel.trackScreenEvent()
             }
         }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
     }
 }
 

@@ -66,10 +66,7 @@ public enum AuthLocalization {
     public static let emailOrUsername = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL_OR_USERNAME", fallback: "Email or username")
     /// Forgot password?
     public static let forgotPassBtn = AuthLocalization.tr("Localizable", "SIGN_IN.FORGOT_PASS_BTN", fallback: "Forgot password?")
-    /// Localizable.strings
-    ///   Authorization
-    /// 
-    ///   Created by Vladimir Chekyrta on 13.09.2022.
+    /// Sign in
     public static let logInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_TITLE", fallback: "Sign in")
     /// Password
     public static let password = AuthLocalization.tr("Localizable", "SIGN_IN.PASSWORD", fallback: "Password")
@@ -117,6 +114,15 @@ public enum AuthLocalization {
     public static let searchTitle = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_TITLE", fallback: "What do you want to learn?")
     /// Start
     public static let title = AuthLocalization.tr("Localizable", "STARTUP.TITLE", fallback: "Start")
+  }
+  public enum TenantSelection {
+    /// Search for a Platform
+    public static let searchTitle = AuthLocalization.tr("Localizable", "TENANT_SELECTION.SEARCH_TITLE", fallback: "Search for a Platform")
+    /// Localizable.strings
+    ///   Authorization
+    /// 
+    ///   Created by Vladimir Chekyrta on 13.09.2022.
+    public static let title = AuthLocalization.tr("Localizable", "TENANT_SELECTION.TITLE", fallback: "Select a Platform")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

@@ -55,6 +55,7 @@ public struct CourseDatesView: View {
                         courseID: courseID
                     )
                     .padding(.top, 10)
+                    
                 } else {
                     GeometryReader { proxy in
                         VStack {
@@ -146,6 +147,7 @@ public struct CourseDatesView: View {
             ) {
                 viewModel.resetEventState()
             }
+            
         }
     }
 }

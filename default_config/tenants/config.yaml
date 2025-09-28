@@ -1,0 +1,52 @@
+TENANTS:
+  -
+    name: "TenantA"
+    TENANT_NAME:
+        ar: "المعهد ب"
+        en: "TenantA"
+    color: "green"
+    ENVIRONMENT_DISPLAY_NAME: "TenantA"
+    OAUTH_CLIENT_ID: ''
+    API_HOST_URL: 'http://localhost:8000'
+    API_HOST_URL_HIDDEN_LOGIN: 'http://localhost:8000'
+    SSO_URL: 'http://localhost:8000'
+    SSO_URL_SUCCESSFUL_LOGIN:  'http://localhost:8000'
+    SSO_BUTTON_TITLE:
+        ar: "تسجيل الدخول"
+        en: "Sign in"
+    IS_SWITCH_TENANT_LOGIN_ENABLED: true
+    
+    UI_COMPONENTS:
+        COURSE_BANNER_ENABLED: true
+        COURSE_TOP_TAB_BAR_ENABLED: false
+        COURSE_UNIT_PROGRESS_ENABLED: false
+        COURSE_NESTED_LIST_ENABLED: false
+        LOGIN_REGISTRATION_ENABLED: false
+        SAML_SSO_LOGIN_ENABLED: true
+        SAML_SSO_DEFAULT_LOGIN_BUTTON: true
+  -
+    name: "TenantB"
+    TENANT_NAME:
+        ar: "المعهد أ"
+        en: "TenantB"
+    color: "blue"
+    OAUTH_CLIENT_ID: ''
+    API_HOST_URL: 'http://localhost:8000'
+    API_HOST_URL_HIDDEN_LOGIN: 'http://localhost:8000'
+    ENVIRONMENT_DISPLAY_NAME: 'TenantB'
+    SSO_URL: 'http://localhost:8000'
+    SSO_URL_SUCCESSFUL_LOGIN:  'http://localhost:8000'
+    SSO_BUTTON_TITLE:
+        ar: "تسجيل الدخول"
+        en: "Sign in"
+    IS_SWITCH_TENANT_LOGIN_ENABLED: false
+    
+    UI_COMPONENTS:
+        COURSE_BANNER_ENABLED: true
+        COURSE_TOP_TAB_BAR_ENABLED: false
+        COURSE_UNIT_PROGRESS_ENABLED: false
+        COURSE_NESTED_LIST_ENABLED: false
+        LOGIN_REGISTRATION_ENABLED: true
+        SAML_SSO_LOGIN_ENABLED: false
+        SAML_SSO_DEFAULT_LOGIN_BUTTON: true
+        

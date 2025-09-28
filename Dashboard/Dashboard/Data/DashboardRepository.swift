@@ -23,12 +23,20 @@ public actor DashboardRepository: DashboardRepositoryProtocol {
     private let storage: CoreStorage
     private let config: ConfigProtocol
     private let persistence: DashboardPersistenceProtocol
+    private let tenantProvider: () -> TenantProvider
     
-    public init(api: API, storage: CoreStorage, config: ConfigProtocol, persistence: DashboardPersistenceProtocol) {
+    public init(
+        api: API,
+        storage: CoreStorage,
+        config: ConfigProtocol,
+        persistence: DashboardPersistenceProtocol,
+        tenantProvider: @escaping () -> TenantProvider
+    ) {
         self.api = api
         self.storage = storage
         self.config = config
         self.persistence = persistence
+        self.tenantProvider = tenantProvider
     }
     
     public func getEnrollments(page: Int) async throws -> [CourseItem] {
@@ -36,7 +44,7 @@ public actor DashboardRepository: DashboardRepositoryProtocol {
             DashboardEndpoint.getEnrollments(username: storage.user?.username ?? "", page: page)
         )
             .mapResponse(DataLayer.CourseEnrollments.self)
-            .domain(baseURL: config.baseURL.absoluteString)
+            .domain(baseURL: tenantProvider().baseURL.absoluteString)
         await persistence.saveEnrollments(items: result)
         return result
         
@@ -54,7 +62,7 @@ public actor DashboardRepository: DashboardRepositoryProtocol {
             )
         )
             .mapResponse(DataLayer.PrimaryEnrollment.self)
-            .domain(baseURL: config.baseURL.absoluteString)
+            .domain(baseURL: tenantProvider().baseURL.absoluteString)
         await persistence.savePrimaryEnrollment(enrollments: result)
         return result
     }
@@ -72,7 +80,7 @@ public actor DashboardRepository: DashboardRepositoryProtocol {
             )
         )
             .mapResponse(DataLayer.PrimaryEnrollment.self)
-            .domain(baseURL: config.baseURL.absoluteString)
+            .domain(baseURL: tenantProvider().baseURL.absoluteString)
         return result
     }
 }

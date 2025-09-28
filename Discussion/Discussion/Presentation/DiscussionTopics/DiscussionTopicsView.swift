@@ -116,7 +116,9 @@ public struct DiscussionTopicsView: View {
                                                             Spacer(minLength: 0)
                                                         }
                                                         .frame(maxWidth: .infinity)
-                                                    }).cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground)
+                                                    })
+                                                    .cardStyle(
+                                                        bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                         .padding(.trailing, -20)
                                                 }
                                                 if let followed = topics.first(where: {
@@ -134,7 +136,9 @@ public struct DiscussionTopicsView: View {
                                                             Spacer(minLength: 0)
                                                         }
                                                         .frame(maxWidth: .infinity)
-                                                    }).cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground)
+                                                    })
+                                                    .cardStyle(
+                                                        bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                         .padding(.leading, -20)
                                                     
                                                 }
@@ -147,7 +151,8 @@ public struct DiscussionTopicsView: View {
                                                         HStack {
                                                             Text("\(topic.name):")
                                                                 .font(Theme.Fonts.titleMedium)
-                                                                .foregroundColor(Theme.Colors.textSecondary)
+                                                                .foregroundColor(
+                                                                    Theme.Colors.textSecondary)
                                                             Spacer()
                                                         }.padding(.top, 12)
                                                             .padding(.bottom, 8)
@@ -199,6 +204,12 @@ public struct DiscussionTopicsView: View {
                 Task {
                     await viewModel.getTopics(courseID: courseID)
                 }
+            }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
             }
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(false)

@@ -19,6 +19,7 @@ import Downloads
 import Profile
 import WhatsNew
 import Combine
+import Theme
 
 // swiftlint:disable type_body_length file_length
 public class Router: AuthorizationRouter,
@@ -95,7 +96,7 @@ public class Router: AuthorizationRouter,
             if let jsonVersion = viewModel.getVersion() {
                 whatsNewStorage.whatsNewVersion = jsonVersion
             }
-            let controller = UIHostingController(rootView: whatsNew)
+            let controller = UIHostingController(rootView: whatsNew.environmentObject(ThemeManager.shared))
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
         } else {
@@ -105,7 +106,10 @@ public class Router: AuthorizationRouter,
                 postLoginData
             )!
             
-            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
+            let controller = UIHostingController(rootView:
+                                                    MainScreenView(viewModel: viewModel)
+                .environmentObject(ThemeManager.shared)
+            )
             navigationController.viewControllers = [controller]
             navigationController.setViewControllers([controller], animated: true)
             if case .courseDetail = sourceScreen {
@@ -114,16 +118,41 @@ public class Router: AuthorizationRouter,
         }
     }
     
+    public func showLearningCenter() {
+        guard let viewModel = Container.shared.resolve(
+            TenantViewModel.self
+        ) else { return }
+        
+        let view = TenantContentView(viewModel: viewModel, isSwitchTenant: true)
+        
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
+        navigationController.pushViewController(controller, animated: true)
+    }
+    public func showTenantScreen(sourceScreen: LogistrationSourceScreen) {
+        guard let viewModel = Container.shared.resolve(TenantViewModel.self)
+        else { return }
+        
+        let view = TenantSelectionView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
+        navigationController.pushViewController(controller, animated: true)
+        
+    }
+    
     public func showLoginScreen(sourceScreen: LogistrationSourceScreen) {
         guard let viewModel = Container.shared.resolve(
             SignInViewModel.self,
             argument: sourceScreen
+        ), let tenantViewModel = Container.shared.resolve(
+            TenantViewModel.self
         ), let authAnalytics = Container.shared.resolve(
             AuthorizationAnalytics.self
         ) else { return }
         
-        let view = SignInView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let view = SignInView(viewModel: viewModel, tenantViewModel: tenantViewModel)
+        let controller = UIHostingController(rootView:
+                                                view
+            .environmentObject(ThemeManager.shared)
+            .environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
         
         authAnalytics.signInClicked()
@@ -132,17 +161,31 @@ public class Router: AuthorizationRouter,
     public func showStartupScreen() {
         if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
             let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
-            let controller = UIHostingController(rootView: view)
+            let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let view = SignInView(
-                viewModel: Container.shared.resolve(
-                    SignInViewModel.self,
-                    argument: LogistrationSourceScreen.default
-                )!
-            )
-            let controller = UIHostingController(rootView: view)
-            navigationController.setViewControllers([controller], animated: false)
+            
+            guard let viewModel = Container.shared.resolve(
+                TenantViewModel.self
+            ) else { return }
+            
+            if viewModel.config.tenantsConfig.tenants.count > 1 {
+                let controller = UIHostingController(
+                    rootView: TenantContentView(viewModel: viewModel)
+                        .environmentObject(ThemeManager.shared)
+                )
+                navigationController.setViewControllers([controller], animated: false)
+            } else {
+                let view = SignInView(
+                    viewModel: Container.shared.resolve(
+                        SignInViewModel.self,
+                        argument: LogistrationSourceScreen.default
+                    )!, tenantViewModel: Container.shared.resolve(TenantViewModel.self)!
+                )
+                    .environmentObject(ThemeManager.shared)
+                let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
+                navigationController.setViewControllers([controller], animated: false)
+            }
         }
     }
     
@@ -153,7 +196,10 @@ public class Router: AuthorizationRouter,
               let analytics = Container.shared.resolve(CoreAnalytics.self),
               connectivity.isInternetAvaliable
         else { return }
-        let vm = AppReviewViewModel(config: config, storage: storage, analytics: analytics)
+        let vm = AppReviewViewModel(config: config,
+                                    storage: storage,
+                                    analytics: analytics,
+                                    tenantProvider: { Container.shared.resolve(TenantProvider.self)! })
         if vm.shouldShowRatingView() {
             presentView(
                 transitionStyle: .crossDissolve,
@@ -229,8 +275,14 @@ public class Router: AuthorizationRouter,
             AuthorizationAnalytics.self
         ) else { return }
         
+        if let tenantViewModel = Container.shared.resolve(
+            TenantViewModel.self
+        ), let selectedTenant = tenantViewModel.selectedTenant {
+            viewModel.selectedTenant = selectedTenant
+        }
+        
         let view = SignUpView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
         
         authAnalytics.registerClicked()
@@ -238,7 +290,7 @@ public class Router: AuthorizationRouter,
 
     public func showForgotPasswordScreen() {
         let view = ResetPasswordView(viewModel: Container.shared.resolve(ResetPasswordViewModel.self)!)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -248,7 +300,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             title: title
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -267,7 +319,7 @@ public class Router: AuthorizationRouter,
         )
         
         DispatchQueue.main.async { [weak self] in
-            let controller = UIHostingController(rootView: view)
+            let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
             self?.navigationController.pushViewController(controller, animated: true)
         }
     }
@@ -282,7 +334,7 @@ public class Router: AuthorizationRouter,
             viewType: viewType,
             pathID: pathID
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -290,7 +342,7 @@ public class Router: AuthorizationRouter,
         let viewModel = Container.shared.resolve(SearchViewModel<RunLoop>.self)!
         let view = SearchView(viewModel: viewModel, searchQuery: searchQuery)
         
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushFade(viewController: controller)
     }
     
@@ -303,7 +355,7 @@ public class Router: AuthorizationRouter,
                 searchQuery: searchQuery,
                 sourceScreen: sourceScreen
             )
-            let controller = UIHostingController(rootView: view)
+            let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
             navigationController.pushViewController(controller, animated: true)
         } else if config?.discovery.type == .webview {
             let view = DiscoveryWebview(
@@ -315,7 +367,7 @@ public class Router: AuthorizationRouter,
                 searchQuery: searchQuery
             )
             
-            let controller = UIHostingController(rootView: view)
+            let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
             navigationController.pushViewController(controller, animated: true)
         }
     }
@@ -325,7 +377,7 @@ public class Router: AuthorizationRouter,
 
         let view = DiscussionSearchTopicsView(viewModel: viewModel)
         
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushFade(viewController: controller)
     }
     
@@ -454,7 +506,7 @@ public class Router: AuthorizationRouter,
     public func showAllCourses(courses: [CourseItem]) {
         let vm = Container.shared.resolve(AllCoursesViewModel.self)!
         let view = AllCoursesView(viewModel: vm, router: self)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -472,7 +524,7 @@ public class Router: AuthorizationRouter,
             cssInjector: cssInjector,
             type: type
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
 
@@ -517,10 +569,13 @@ public class Router: AuthorizationRouter,
             verticalIndex
         )!
         
-        let config = Container.shared.resolve(ConfigProtocol.self)
+        let config = Container.shared.resolve(
+            ConfigProtocol.self)
         let isDropdownActive = config?.uiComponents.courseDropDownNavigationEnabled ?? false
 
-        let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
+        let view = CourseUnitView(
+            viewModel: viewModel,
+            isDropdownActive: isDropdownActive)
         return UIHostingController(rootView: view)
     }
     
@@ -660,7 +715,7 @@ public class Router: AuthorizationRouter,
             router: router,
             isBlackedOut: isBlackedOut
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: animated)
     }
     
@@ -695,7 +750,7 @@ public class Router: AuthorizationRouter,
             parentComment: parentComment,
             isBlackedOut: isBlackedOut
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: animated)
     }
     
@@ -711,7 +766,7 @@ public class Router: AuthorizationRouter,
             courseID: courseID,
             onPostCreated: onPostCreated
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -721,7 +776,7 @@ public class Router: AuthorizationRouter,
         let vm = UserProfileViewModel(interactor: interactor,
                                       username: username)
         let view = UserProfileView(viewModel: vm)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -736,14 +791,14 @@ public class Router: AuthorizationRouter,
             avatar: avatar,
             profileDidEdit: profileDidEdit
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showSettings() {
         let viewModel = Container.shared.resolve(SettingsViewModel.self)!
         let view = SettingsView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -765,34 +820,34 @@ public class Router: AuthorizationRouter,
             view = AnyView(SyncCalendarOptionsView(viewModel: viewModel))
         }
         
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showSyncCalendarOptions() {
         let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
         let view = SyncCalendarOptionsView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showCoursesToSync() {
         let viewModel = Container.shared.resolve(DatesAndCalendarViewModel.self)!
         let view = CoursesToSyncView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showManageAccount() {
         let viewModel = Container.shared.resolve(ManageAccountViewModel.self)!
         let view = ManageAccountView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showVideoQualityView(viewModel: SettingsViewModel) {
         let view = VideoQualityView(viewModel: viewModel)
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
 
@@ -807,7 +862,7 @@ public class Router: AuthorizationRouter,
             analytics: analytics,
             router: self
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
 
@@ -826,7 +881,7 @@ public class Router: AuthorizationRouter,
         let viewModel = Container.shared.resolve(DeleteAccountViewModel.self)!
         let view = DeleteAccountView(viewModel: viewModel)
         
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
@@ -836,7 +891,7 @@ public class Router: AuthorizationRouter,
             config: Container.shared.resolve(ConfigProtocol.self)!,
             showAccountLink: showAccountLink
         )
-        let controller = UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: false)
     }
     
@@ -847,7 +902,7 @@ public class Router: AuthorizationRouter,
     
     private func prepareToPresent <ToPresent: View> (_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)
     -> UIViewController {
-        let hosting = UIHostingController(rootView: toPresent)
+        let hosting = UIHostingController(rootView: toPresent.environmentObject(ThemeManager.shared))
         hosting.view.backgroundColor = .clear
         hosting.modalTransitionStyle = transitionStyle
         hosting.modalPresentationStyle = .overFullScreen
@@ -865,18 +920,21 @@ public class Router: AuthorizationRouter,
             showProgress: true,
             connectivity: Container.shared.resolve(ConnectivityProtocol.self)!
         )
-        let controller = UIHostingController(rootView: webBrowser)
+        let controller = UIHostingController(rootView: webBrowser.environmentObject(ThemeManager.shared))
         navigationController.pushViewController(controller, animated: true)
     }
     
     public func showSSOWebBrowser(title: String) {
-        let config = Container.shared.resolve(ConfigProtocol.self)!
-        let webBrowser = ContainerWebView(
-            config.baseSSOURL.absoluteString,
-            title: title
-        )
-        let controller = UIHostingController(rootView: webBrowser)
-        navigationController.pushViewController(controller, animated: true)
+        if let viewModel = Container.shared.resolve(
+            TenantViewModel.self
+        ), let selectedTenant = viewModel.selectedTenant {
+            let webBrowser = ContainerWebView(
+                selectedTenant.baseSSOURL?.absoluteString
+                ?? "http://localhost:8000", title: title)
+            let controller = UIHostingController(rootView: webBrowser.environmentObject(ThemeManager.shared))
+            navigationController.pushViewController(controller, animated: true)
+        }
+        
     }
 }
 

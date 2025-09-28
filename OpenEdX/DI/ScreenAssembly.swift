@@ -39,7 +39,8 @@ class ScreenAssembly: Assembly {
             OfflineSyncManager(
                 persistence: r.resolve(CorePersistenceProtocol.self)!,
                 interactor: r.resolve(OfflineSyncInteractorProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         
@@ -48,9 +49,11 @@ class ScreenAssembly: Assembly {
             AuthRepository(
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
-        }
+        }.inObjectScope(.container)
+        
         container.register(AuthInteractorProtocol.self) { r in
             AuthInteractor(
                 repository: r.resolve(AuthRepositoryProtocol.self)!
@@ -90,7 +93,8 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!,
                 storage: r.resolve(CoreStorage.self)!,
-                sourceScreen: sourceScreen
+                sourceScreen: sourceScreen,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(SSOWebViewModel.self) { @MainActor r in
@@ -99,7 +103,8 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(AuthorizationRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
-                ssoHelper: r.resolve(SSOHelper.self)!
+                ssoHelper: r.resolve(SSOHelper.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(SignUpViewModel.self) { @MainActor r, sourceScreen in
@@ -124,16 +129,22 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: Discovery
-        container.register(DiscoveryPersistenceProtocol.self) { r in
-            return DiscoveryPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
-        }
-        
+        container.register(DiscoveryPersistenceProtocol.self) { (r: Resolver, tenantViewModel: TenantViewModel) in
+            let provider = r.resolve(DatabaseManagerProvider.self)!
+            let dbManager = provider.manager(for: tenantViewModel)
+            return DiscoveryPersistence(container: dbManager.getPersistentContainer())
+        }.inObjectScope(.transient)
+
         container.register(DiscoveryRepositoryProtocol.self) { r in
-            DiscoveryRepository(
+            let tenantVM = r.resolve(TenantViewModel.self)!
+            let persistence = r.resolve(DiscoveryPersistenceProtocol.self, argument: tenantVM)
+
+            return DiscoveryRepository(
                 api: r.resolve(API.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(DiscoveryPersistenceProtocol.self)!
+                persistence: persistence!,
+                tenantProvider: { r.resolve(TenantViewModel.self)! }
             )
         }
         container.register(DiscoveryInteractorProtocol.self) { r in
@@ -187,16 +198,20 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: Dashboard
-        container.register(DashboardPersistenceProtocol.self) { r in
-            DashboardPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
-        }
+        container.register(DashboardPersistenceProtocol.self) { (r: Resolver, tenantViewModel: TenantViewModel) in
+            let provider = r.resolve(DatabaseManagerProvider.self)!
+            let dbManager = provider.manager(for: tenantViewModel)
+            return DashboardPersistence(container: dbManager.getPersistentContainer())
+        }.inObjectScope(.transient)
         
         container.register(DashboardRepositoryProtocol.self) { r in
             DashboardRepository(
                 api: r.resolve(API.self)!,
                 storage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(DashboardPersistenceProtocol.self)!
+                persistence: r.resolve(DashboardPersistenceProtocol.self,
+                                       argument: r.resolve(TenantViewModel.self)!)!,
+                tenantProvider: { r.resolve(TenantViewModel.self)! }
             )
         }
         container.register(DashboardInteractorProtocol.self) { r in
@@ -235,20 +250,23 @@ class ScreenAssembly: Assembly {
         
         // MARK: Profile
         
-        // MARK: Course
-        container.register(ProfilePersistenceProtocol.self) { r in
-            ProfilePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
-        }
-        
+        container.register(ProfilePersistenceProtocol.self) { (r: Resolver, tenantViewModel: TenantViewModel) in
+            let provider = r.resolve(DatabaseManagerProvider.self)!
+            let dbManager = provider.manager(for: tenantViewModel)
+            return ProfilePersistence(container: dbManager.getPersistentContainer())
+        }.inObjectScope(.transient)
+
         container.register(ProfileRepositoryProtocol.self) { r in
             ProfileRepository(
                 api: r.resolve(API.self)!,
                 storage: r.resolve(AppStorage.self)!,
                 coreDataHandler: r.resolve(CoreDataHandlerProtocol.self)!,
                 downloadManager: r.resolve(DownloadManagerProtocol.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                config: r.resolve(ConfigProtocol.self)!,
+                tenantProvider: { r.resolve(TenantViewModel.self)! }
             )
-        }
+        }.inObjectScope(.container)
+        
         container.register(ProfileInteractorProtocol.self) { r in
             ProfileInteractor(
                 repository: r.resolve(ProfileRepositoryProtocol.self)!
@@ -282,7 +300,8 @@ class ScreenAssembly: Assembly {
                 config: r.resolve(ConfigProtocol.self)!,
                 corePersistence: r.resolve(CorePersistenceProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                coreStorage: r.resolve(AppStorage.self)!
+                coreStorage: r.resolve(AppStorage.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         
@@ -318,10 +337,12 @@ class ScreenAssembly: Assembly {
         }
         
         // MARK: Course
-        container.register(CoursePersistenceProtocol.self) { r in
-            CoursePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
-        }
-        
+        container.register(CoursePersistenceProtocol.self) { (r: Resolver, tenantViewModel: TenantViewModel) in
+            let provider = r.resolve(DatabaseManagerProvider.self)!
+            let dbManager = provider.manager(for: tenantViewModel)
+            return CoursePersistence(container: dbManager.getPersistentContainer())
+        }.inObjectScope(.transient)
+
         container.register(CourseDetailsViewModel.self) { @MainActor r in
             CourseDetailsViewModel(
                 interactor: r.resolve(DiscoveryInteractorProtocol.self)!,
@@ -355,7 +376,8 @@ class ScreenAssembly: Assembly {
                 lastVisitedBlockID: lastVisitedBlockID,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
                 selection: selection,
-                courseHelper: r.resolve(CourseDownloadHelperProtocol.self)!
+                courseHelper: r.resolve(CourseDownloadHelperProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(
@@ -399,7 +421,8 @@ class ScreenAssembly: Assembly {
             WebUnitViewModel(
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!
+                syncManager: r.resolve(OfflineSyncManagerProtocol.self)!,
+                tenantProvider: { r.resolve(TenantProvider.self)! }
             )
         }
         container.register(
@@ -635,11 +658,14 @@ class ScreenAssembly: Assembly {
         }
         
         container.register(CourseRepositoryProtocol.self) { r in
-            CourseRepository(
+            let tenantVM = r.resolve(TenantViewModel.self)!
+            let persistence = r.resolve(CoursePersistenceProtocol.self, argument: tenantVM)!
+            return CourseRepository(
                 api: r.resolve(API.self)!,
                 coreStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(CoursePersistenceProtocol.self)!
+                persistence: persistence,
+                tenantProvider: { r.resolve(TenantViewModel.self)! }
             )
         }
         container.register(CourseInteractorProtocol.self) { r in
@@ -658,16 +684,20 @@ class ScreenAssembly: Assembly {
         
         // MARK: Downloads
         
-        container.register(DownloadsPersistenceProtocol.self) { r in
-            DownloadsPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
-        }
-        
+        container.register(DownloadsPersistenceProtocol.self) { (r: Resolver, tenantViewModel: TenantViewModel) in
+            let provider = r.resolve(DatabaseManagerProvider.self)!
+            let dbManager = provider.manager(for: tenantViewModel)
+            return DownloadsPersistence(container: dbManager.getPersistentContainer())
+        }.inObjectScope(.transient)
+
         container.register(DownloadsRepositoryProtocol.self) { r in
             DownloadsRepository(
                 api: r.resolve(API.self)!,
                 coreStorage: r.resolve(CoreStorage.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
-                persistence: r.resolve(DownloadsPersistenceProtocol.self)!
+                persistence: r.resolve(DownloadsPersistenceProtocol.self,
+                                       argument: r.resolve(TenantViewModel.self)!)!,
+                tenantProvider: { r.resolve(TenantViewModel.self)! }
             )
         }
         

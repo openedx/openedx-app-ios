@@ -13,6 +13,7 @@ public final class WebUnitViewModel: ObservableObject, WebviewCookiesUpdateProto
     public let authInteractor: AuthInteractorProtocol
     let config: ConfigProtocol
     let syncManager: OfflineSyncManagerProtocol
+    private let tenantProvider: () -> TenantProvider
     
     @Published public var updatingCookies: Bool = false
     @Published public var cookiesReady: Bool = false
@@ -30,10 +31,17 @@ public final class WebUnitViewModel: ObservableObject, WebviewCookiesUpdateProto
     public init(
         authInteractor: AuthInteractorProtocol,
         config: ConfigProtocol,
-        syncManager: OfflineSyncManagerProtocol
+        syncManager: OfflineSyncManagerProtocol,
+        tenantProvider: @escaping () -> TenantProvider
     ) {
         self.authInteractor = authInteractor
         self.config = config
         self.syncManager = syncManager
+        self.tenantProvider = tenantProvider
+    }
+    
+    /// Expose current tenant baseURL
+    public var baseURLString: String {
+        tenantProvider().baseURL.absoluteString
     }
 }

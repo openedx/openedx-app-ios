@@ -139,6 +139,12 @@ public struct CourseUnitView: View {
                 showDiscussion = viewModel.selectedLesson().type == .discussion
             }
         }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .navigationTitle("")
@@ -217,6 +223,7 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            
         // MARK: Encoded Video
         case let .video(encodedUrl, blockID):
             videoView(
@@ -237,6 +244,7 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            
         // MARK: Unknown
         case .unknown(let url):
             unknownView(
@@ -563,6 +571,7 @@ public struct CourseUnitView: View {
                     viewModel: viewModel,
                     playerStateSubject: playerStateSubject
                 )
+                
                 if isHorizontal {
                     Spacer()
                 }

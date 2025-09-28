@@ -80,5 +80,6 @@ public struct OfflineSnackBarView: View {
 struct OfflineSnackBarView_Previews: PreviewProvider {
     static var previews: some View {
         OfflineSnackBarView(connectivity: Connectivity(), reloadAction: {})
+            .environmentObject(ThemeManager.shared)
     }
 }

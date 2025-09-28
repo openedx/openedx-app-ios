@@ -26,6 +26,7 @@ public struct StartupView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack(alignment: .leading) {
+                #if TENANTS
                 ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
@@ -35,6 +36,17 @@ public struct StartupView: View {
                     .padding(.horizontal, isHorizontal ? 10 : 24)
                     .colorMultiply(Theme.Colors.accentColor)
                     .accessibilityIdentifier("logo_image")
+                #else
+                ThemeAssets.appLogo.swiftUIImage
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(maxWidth: 189, maxHeight: 89)
+                    .padding(.top, isHorizontal ? 20 : 40)
+                    .padding(.bottom, isHorizontal ? 0 : 20)
+                    .padding(.horizontal, isHorizontal ? 10 : 24)
+                    .colorMultiply(Theme.Colors.accentColor)
+                    .accessibilityIdentifier("logo_image")
+                #endif
                 
                 VStack {
                     VStack(alignment: .leading) {
@@ -62,7 +74,6 @@ public struct StartupView: View {
                                     searchQuery: searchQuery,
                                     sourceScreen: .startup
                                 )
-                                viewModel.logAnalytics(searchQuery: searchQuery)
                             })
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
@@ -90,7 +101,6 @@ public struct StartupView: View {
                                 searchQuery: searchQuery,
                                 sourceScreen: .startup
                             )
-                            viewModel.logAnalytics()
                         } label: {
                             Text(AuthLocalization.Startup.exploreAllCourses)
                                 .underline()

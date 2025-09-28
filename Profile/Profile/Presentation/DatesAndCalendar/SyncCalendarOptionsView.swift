@@ -15,7 +15,6 @@ public struct SyncCalendarOptionsView: View {
     private var viewModel: DatesAndCalendarViewModel
     
     @State private var screenDimmed: Bool = false
-    
     @Environment(\.isHorizontal) private var isHorizontal
     
     public init(viewModel: DatesAndCalendarViewModel) {
@@ -96,6 +95,7 @@ public struct SyncCalendarOptionsView: View {
                                     .padding(.bottom, 24)
                             }
                             RelativeDatesToggleView(useRelativeDates: $viewModel.profileStorage.useRelativeDates)
+                                
                         }
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                         .frameLimit(width: proxy.size.width)

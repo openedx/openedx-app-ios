@@ -14,7 +14,7 @@ struct VideoDownloadQualityBarView: View {
 
     private var downloadQuality: DownloadQuality
     private var onTap: (() -> Void)?
-
+    
     init(downloadQuality: DownloadQuality, onTap: (() -> Void)? = nil) {
         self.downloadQuality = downloadQuality
         self.onTap = onTap

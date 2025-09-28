@@ -52,7 +52,6 @@ public struct AlertView: View {
     private let type: AlertViewType
     
     @Environment(\.isHorizontal) private var isHorizontal
-    
     public init(
         alertTitle: String,
         alertMessage: String,
@@ -236,12 +235,13 @@ public struct AlertView: View {
                             if nextSectionName != nil {
                                 UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
                                     .frame(maxWidth: 215)
+                                    
                             }
                             UnitButtonView(type: .custom(action),
                                            bgColor: .clear,
                                            action: { firstButtonTapped() })
                             .frame(maxWidth: 215)
-
+                            
                             if let nextSectionName {
                                 Group {
                                     Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +
@@ -281,12 +281,13 @@ public struct AlertView: View {
                         if nextSectionName != nil {
                             UnitButtonView(type: .nextSection, action: { nextSectionTapped() })
                                 .frame(maxWidth: 215)
+                                
                         }
                         UnitButtonView(type: .custom(action),
                                        bgColor: Theme.Colors.secondaryButtonBGColor,
                                        action: { firstButtonTapped() })
                         .frame(maxWidth: 215)
-
+                        
                         if let nextSectionName {
                             Group {
                                 Text(CoreLocalization.Courseware.nextSectionDescriptionFirst) +

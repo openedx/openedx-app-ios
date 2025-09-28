@@ -244,6 +244,12 @@ public struct ThreadView: View {
                     }
                 }
             }
+            .onAppear {
+                NavigationAppearanceManager.shared.updateAppearance(
+                    backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                    titleColor: .white
+                                )
+            }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(true)

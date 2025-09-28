@@ -171,6 +171,7 @@ public struct DiscoveryView: View {
                 reloadAction: {
                     await viewModel.discovery(page: 1, withProgress: false)
                 })
+            .environmentObject(ThemeManager.shared)
 
             // MARK: - Error Alert
             if viewModel.showError {
@@ -202,6 +203,12 @@ public struct DiscoveryView: View {
             }
         }
         .background(Theme.Colors.background.ignoresSafeArea())
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
+        }
     }
 }
 

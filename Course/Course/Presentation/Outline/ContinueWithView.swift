@@ -20,7 +20,7 @@ struct ContinueWithView: View {
     private let data: ContinueWith
     private let action: () -> Void
     private let courseContinueUnit: CourseVertical
-    
+
     init(data: ContinueWith, courseContinueUnit: CourseVertical, action: @escaping () -> Void) {
         self.data = data
         self.action = action
@@ -36,14 +36,14 @@ struct ContinueWithView: View {
                     .foregroundColor(.white)
                     .multilineTextAlignment(.leading)
                     .lineLimit(2)
-                
+
                 Spacer()
-                
+
                 HStack(spacing: 8) {
                     Text(CoreLocalization.Courseware.continue)
                         .font(Theme.Fonts.labelLarge)
                         .foregroundColor(.white)
-                    
+
                     CoreAssets.arrowLeft.swiftUIImage
                         .renderingMode(.template)
                         .foregroundColor(.white)
@@ -93,10 +93,10 @@ struct ContinueWithView: View {
             encodedVideo: nil,
             multiDevice: false,
             offlineDownload: nil
-            
+
         )
     ]
-    
+
     ContinueWithView(
         data: ContinueWith(
             chapterIndex: 0,

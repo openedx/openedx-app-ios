@@ -84,7 +84,7 @@ public struct SSOWebView: UIViewRepresentable {
                 return
             }
                 
-            if url.contains(viewModel.config.ssoFinishedURL.absoluteString) {
+            if url.contains(viewModel.tenantProvider().successfulSSOLoginURL.absoluteString) {
                 webView.configuration.websiteDataStore.httpCookieStore.getAllCookies { cookies in
                     Task {
                         await self.viewModel.SSOLogin(cookies: cookies)

@@ -16,7 +16,6 @@ public struct FullScreenErrorView: View {
         case generic
         case noContent(_ message: String, image: SwiftUI.Image)
     }
-    
     private let errorType: ErrorType
     private var action: () -> Void = {}
     
@@ -91,6 +90,7 @@ public struct FullScreenErrorView: View {
                         self.action()
                     }
                 )
+                
             }
             Spacer()
         }

@@ -31,6 +31,7 @@ public struct DownloadAvailableView: View {
 }
 
 public struct DownloadProgressView: View {
+    
     public init () {
     }
     

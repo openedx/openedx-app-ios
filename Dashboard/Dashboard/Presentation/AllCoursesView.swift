@@ -133,6 +133,7 @@ public struct AllCoursesView: View {
                         await viewModel.getCourses(page: 1, refresh: true)
                     }
                 )
+                .environmentObject(ThemeManager.shared)
                 
                 // MARK: - Error Alert
                 if viewModel.showError {

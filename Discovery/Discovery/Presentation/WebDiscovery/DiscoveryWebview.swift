@@ -106,7 +106,7 @@ public struct DiscoveryWebview: View {
                         webViewType: discoveryType.rawValue
                     )
                     .accessibilityIdentifier("discovery_webview")
-
+                    
                     if isLoading || viewModel.showProgress {
                         HStack(alignment: .center) {
                             ProgressBar(
@@ -168,6 +168,12 @@ public struct DiscoveryWebview: View {
                     viewModel.request = URLRequest(url: url)
                 }
             }
+        }
+        .onAppear {
+            NavigationAppearanceManager.shared.updateAppearance(
+                backgroundColor: Theme.Colors.navigationBarColor.uiColor(),
+                                titleColor: .white
+                            )
         }
         .navigationBarHidden(viewModel.sourceScreen == .default && discoveryType == .discovery)
         .navigationTitle(CoreLocalization.Mainscreen.discovery)

@@ -191,6 +191,7 @@ extension ProfileBottomSheet {
         case remove
         case cancel
         
+        @MainActor
         func bgColor() -> Color {
             switch self {
             case .gallery:
@@ -202,6 +203,7 @@ extension ProfileBottomSheet {
             }
         }
         
+        @MainActor
         func frameColor() -> Color {
             switch self {
             case .gallery:
@@ -213,6 +215,7 @@ extension ProfileBottomSheet {
             }
         }
         
+        @MainActor
         func textColor() -> Color {
             switch self {
             case .gallery:

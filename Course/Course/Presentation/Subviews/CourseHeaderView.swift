@@ -166,7 +166,7 @@ struct CourseHeaderView: View {
         if path.contains("http://") || path.contains("https://") {
             return URL(string: path)
         }
-        return URL(string: viewModel.config.baseURL.absoluteString + path)
+        return URL(string: viewModel.tenantProvider().baseURL.absoluteString + path)
     }
     
     private func courseMenuBar(containerWidth: CGFloat) -> some View {

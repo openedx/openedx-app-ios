@@ -11,6 +11,7 @@ import Core
 import Authorization
 import WhatsNew
 import Swinject
+import Theme
 
 class RouteController: UIViewController {
     
@@ -38,6 +39,7 @@ class RouteController: UIViewController {
             DispatchQueue.main.async {
                 self.showMainOrWhatsNewScreen()
             }
+            ThemeManager.shared.applyTheme(for: "", localizedName: "")
         } else {
             DispatchQueue.main.async {
                 self.showStartupScreen()
@@ -55,15 +57,27 @@ class RouteController: UIViewController {
             navigation.viewControllers = [controller]
             present(navigation, animated: false)
         } else {
-            let controller = UIHostingController(
-                rootView: SignInView(
-                    viewModel: diContainer.resolve(
-                        SignInViewModel.self,
-                        argument: LogistrationSourceScreen.default
-                    )!
+            guard let viewModel = Container.shared.resolve(
+                TenantViewModel.self
+            ) else { return }
+            if viewModel.config.tenantsConfig.tenants.count > 1 {
+                let controller = UIHostingController(
+                    rootView: TenantContentView(viewModel: viewModel)
+                        .environmentObject(ThemeManager.shared)
                 )
-            )
-            navigation.viewControllers = [controller]
+                navigation.viewControllers = [controller]
+            } else {
+                let controller = UIHostingController(
+                    rootView: SignInView(
+                        viewModel: diContainer.resolve(
+                            SignInViewModel.self,
+                            argument: LogistrationSourceScreen.default
+                        )!, tenantViewModel: viewModel
+                    )
+                    .environmentObject(ThemeManager.shared)
+                    )
+                navigation.viewControllers = [controller]
+            }
             present(navigation, animated: false)
         }
     }
@@ -88,7 +102,7 @@ class RouteController: UIViewController {
                 router: Container.shared.resolve(WhatsNewRouter.self)!,
                 viewModel: viewModel
             )
-            let controller = UIHostingController(rootView: whatsNewView)
+            let controller = UIHostingController(rootView: whatsNewView.environmentObject(ThemeManager.shared))
             navigation.viewControllers = [controller]
         } else {
             let postLoginDataDefault: PostLoginData? = PostLoginData()
@@ -97,7 +111,9 @@ class RouteController: UIViewController {
                 arguments: LogistrationSourceScreen.default,
                 postLoginDataDefault
             )!
-            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel))
+            let controller = UIHostingController(rootView: MainScreenView(viewModel: viewModel)
+                .environmentObject(ThemeManager.shared)
+            )
             navigation.viewControllers = [controller]
         }
         present(navigation, animated: false)

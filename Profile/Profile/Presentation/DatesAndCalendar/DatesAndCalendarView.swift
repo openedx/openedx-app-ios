@@ -45,6 +45,7 @@ public struct DatesAndCalendarView: View {
                         Group {
                             calendarSyncCard
                             RelativeDatesToggleView(useRelativeDates: $viewModel.profileStorage.useRelativeDates)
+                                
                         }
                         .padding(.horizontal, isHorizontal ? 48 : 0)
                     }
