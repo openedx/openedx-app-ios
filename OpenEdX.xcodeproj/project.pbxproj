@@ -1469,7 +1469,7 @@
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.3;
+				version = 1.0.4;
 			};
 		};
 		CEBA52752CEBB69100619E2B /* XCRemoteSwiftPackageReference "openedx-app-firebase-analytics-ios" */ = {

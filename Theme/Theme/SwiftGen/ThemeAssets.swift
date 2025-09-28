@@ -234,6 +234,7 @@ public enum ThemeAssets {
   public static let tenantBnavigationBarColorDark = ColorAsset(name: "TenantBnavigationBarColorDark")
   public static let tenantBnavigationBarTintColor = ColorAsset(name: "TenantBnavigationBarTintColor")
   public static let appLogo = ImageAsset(name: "appLogo")
+  public static let assignmentStroke = ColorAsset(name: "assignmentStroke")
   public static let headerBackground = ImageAsset(name: "headerBackground")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
