@@ -149,6 +149,7 @@ struct VideoThumbnailView: View {
                 .cornerRadius(10)
 
                 Text(video.displayName)
+                    .frame(maxWidth: thumbnailWidth/2)
                     .lineLimit(2)
                     .font(type.font)
                     .foregroundStyle(.white)
