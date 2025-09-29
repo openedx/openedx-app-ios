@@ -14,7 +14,7 @@ struct CourseNavigationView: View {
     @ObservedObject
     private var viewModel: CourseUnitViewModel
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    
+
     init(
         viewModel: CourseUnitViewModel,
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
@@ -60,7 +60,7 @@ struct CourseNavigationView: View {
     private var nextButton: some View {
         UnitButtonView(
             type: .next,
-            isVerticalNavigation: !viewModel.courseUnitProgressEnabled,
+            isVerticalNavigation: viewModel.showVideoNavigation ? false : !viewModel.courseUnitProgressEnabled,
             action: {
                 playerStateSubject.send(VideoPlayerState.pause)
                 viewModel.select(move: .next)
@@ -71,7 +71,7 @@ struct CourseNavigationView: View {
     private var prevButton: some View {
         UnitButtonView(
             type: .previous,
-            isVerticalNavigation: !viewModel.courseUnitProgressEnabled,
+            isVerticalNavigation: viewModel.showVideoNavigation ? false : !viewModel.courseUnitProgressEnabled,
             action: {
                 playerStateSubject.send(VideoPlayerState.pause)
                 viewModel.select(move: .previous)
