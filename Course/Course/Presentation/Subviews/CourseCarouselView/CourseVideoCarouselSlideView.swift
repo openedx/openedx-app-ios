@@ -245,15 +245,16 @@ struct CourseVideoCarouselSlideView: View {
                     .padding(.horizontal, 16)
                     .padding(.bottom, 8)
                 }
-                .background(
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 11)
-                            .foregroundColor(Theme.Colors.background)
-                        RoundedRectangle(cornerRadius: 11)
-                            .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                            .foregroundColor(Theme.Colors.cardViewStroke)
-                    }
-                )
+                // for future update 
+//                .background(
+//                    ZStack {
+//                        RoundedRectangle(cornerRadius: 11)
+//                            .foregroundColor(Theme.Colors.background)
+//                        RoundedRectangle(cornerRadius: 11)
+//                            .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+//                            .foregroundColor(Theme.Colors.cardViewStroke)
+//                    }
+//                )
             }
         }
         .padding(.horizontal, 16)

@@ -125,7 +125,9 @@ struct VideoThumbnailView: View {
                 if type == .continueWith {
                     thumbnailImageView()
                         .aspectRatio(16/9, contentMode: .fill)
-                        .clipShape(RoundedCorners(tl: 10, tr: 10))
+                        .cornerRadius(10)
+                    // for future update 
+//                        .clipShape(RoundedCorners(tl: 10, tr: 10))
                 } else {
                     thumbnailImageView()
                         .frame(width: thumbnailWidth, height: thumbnailHeight)
