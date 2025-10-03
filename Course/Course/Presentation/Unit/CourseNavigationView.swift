@@ -29,6 +29,16 @@ struct CourseNavigationView: View {
                 && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 {
                 nextBigButton
                     .frame(width: 215)
+            } else if viewModel.showVideoNavigation {
+
+                if let index = viewModel.currentVideoIndex, index != 0 {
+                    previousButtonVideoNavigation
+                }
+
+                if let index = viewModel.currentVideoIndex, index != viewModel.allVideosForNavigation.count - 1 {
+                    nextButtonVideoNavigation
+                }
+
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
@@ -45,7 +55,35 @@ struct CourseNavigationView: View {
             }
         }.padding(.horizontal, 24)
     }
-    
+
+    private var nextButtonVideoNavigation: some View {
+        UnitButtonView(
+            type: .next,
+            isVerticalNavigation: false,
+            action: {
+                if let index = viewModel.currentVideoIndex, index != viewModel.allVideosForNavigation.count - 1 {
+                    playerStateSubject.send(VideoPlayerState.pause)
+                    let video = viewModel.allVideosForNavigation[index + 1]
+                    viewModel.handleVideoTap(video: video)
+                }
+            }
+        )
+    }
+
+    private var previousButtonVideoNavigation: some View {
+        UnitButtonView(
+            type: .previous,
+            isVerticalNavigation: false,
+            action: {
+                if let index = viewModel.currentVideoIndex, index != 0 {
+                    playerStateSubject.send(VideoPlayerState.pause)
+                    let video = viewModel.allVideosForNavigation[index - 1]
+                    viewModel.handleVideoTap(video: video)
+                }
+            }
+        )
+    }
+
     private var nextBigButton: some View {
         UnitButtonView(
             type: .nextBig,

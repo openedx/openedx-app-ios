@@ -28,6 +28,10 @@ struct VideoNavigationView: View {
                 .background(content: {
                     Theme.Colors.courseCardBackground
                 })
+                .onAppear(perform: {
+                    let index = self.viewModel.allVideosForNavigation.firstIndex(of: block)
+                    viewModel.currentVideoIndex = index
+                })
         }
 
         Rectangle()

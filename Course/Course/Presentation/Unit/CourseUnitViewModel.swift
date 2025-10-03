@@ -145,6 +145,7 @@ public final class CourseUnitViewModel: ObservableObject {
     @Published public var allVideosForNavigation: [CourseBlock] = []
     @Published public var allVideosFetched = false
     @Published public var isVideosForNavigationLoading: Bool = false
+    @Published var currentVideoIndex: Int?
 
     var lessonID: String
     var courseID: String
