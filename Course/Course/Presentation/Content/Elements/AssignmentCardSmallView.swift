@@ -115,7 +115,7 @@ struct AssignmentCardSmallView: View {
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(
                         strokeColor,
-                        lineWidth: isSelected ? 2 : 1
+                        lineWidth: isSelected ? 4 : 1
                     )
             )
             .cornerRadius(4)

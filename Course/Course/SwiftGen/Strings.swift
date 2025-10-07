@@ -185,9 +185,9 @@ public enum CourseLocalization {
     public static func dueWithDate(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.DUE_WITH_DATE", String(describing: p1), String(describing: p2), fallback: "%@ %@")
     }
-    /// %@ In Progress - %@/%@ points
+    /// %@ - %@/%@ points
     public static func inProgress(_ p1: Any, _ p2: Any, _ p3: Any) -> String {
-      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.IN_PROGRESS", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ In Progress - %@/%@ points")
+      return CourseLocalization.tr("Localizable", "ASSIGNMENT_STATUS.IN_PROGRESS", String(describing: p1), String(describing: p2), String(describing: p3), fallback: "%@ - %@/%@ points")
     }
     /// %@ Not Yet Available
     public static func notYetAvailable(_ p1: Any) -> String {

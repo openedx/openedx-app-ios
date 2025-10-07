@@ -155,7 +155,6 @@
 		CE38BBD72D9D8294002CD276 /* ExperimentalFeaturesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE38BBD62D9D8294002CD276 /* ExperimentalFeaturesConfig.swift */; };
 		CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */; };
 		CE57127C2CD109DB00D4AB17 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE57127B2CD109DB00D4AB17 /* OEXFoundation */; };
-		CE5BBFF42E24236500D51C92 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5BBFF32E24236500D51C92 /* ColorExtension.swift */; };
 		CE7CAF392CC1561E00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF382CC1561E00E0AC9D /* OEXFoundation */; };
 		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
 		CEC873BE2D75D55600A2626C /* CourseStructureManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */; };
@@ -2375,7 +2374,7 @@
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.3;
+				version = 1.0.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
