@@ -48,7 +48,7 @@ struct MainScreenView: View {
                             viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
                             router: Container.shared.resolve(DashboardRouter.self)!
                         )
-
+                        
                         registerBanner
                     }
                     .tabItem {
@@ -247,10 +247,12 @@ struct MainScreenView: View {
                 }
             }
             .accentColor(Theme.Colors.accentXColor)
+            
             if updateAvailable {
                 UpdateNotificationView(config: viewModel.config)
             }
         }
+    }
     
     @ViewBuilder
     private var registerBanner: some View {
