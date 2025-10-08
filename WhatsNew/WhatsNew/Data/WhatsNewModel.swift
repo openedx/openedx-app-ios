@@ -35,19 +35,8 @@ public typealias WhatsNewModel = [WhatsNewModelElement]
 
 extension WhatsNewModel {
     
-    private func compareVersions(_ version1: String, _ version2: String) -> ComparisonResult {
-        let v1 = version1.split(separator: ".").compactMap { Int($0) }
-        let v2 = version2.split(separator: ".").compactMap { Int($0) }
-
-        for (a, b) in zip(v1, v2) where a != b {
-            return a < b ? .orderedAscending : .orderedDescending
-        }
-
-        return v1.count < v2.count ? .orderedAscending : (v1.count > v2.count ? .orderedDescending : .orderedSame)
-    }
-
     private func findLatestVersion(_ versions: [String]) -> String? {
-        guard let latestVersion = versions.max(by: { compareVersions($0, $1) == .orderedAscending }) else {
+        guard let latestVersion = versions.max(by: { $0.isAppVersionGreater(than: $1) == false }) else {
             return nil
         }
         return latestVersion

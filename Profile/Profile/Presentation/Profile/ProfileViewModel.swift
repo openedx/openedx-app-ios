@@ -62,6 +62,8 @@ public final class ProfileViewModel: ObservableObject {
             isShowProgress = false
             if error.isInternetError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
+            } else if error.isUpdateRequeiredError {
+                return
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }

@@ -80,9 +80,13 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var primaryCardUpgradeBG = ThemeAssets.primaryCardCourseUpgradeBG.swiftUIColor
         nonisolated(unsafe) public private(set) static var primaryCardProgressBG = ThemeAssets.primaryCardProgressBG.swiftUIColor
         nonisolated(unsafe) public private(set) static var courseProgressBG = ThemeAssets.courseProgressBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var circleProgressBG = ThemeAssets.circleProgressBG.swiftUIColor
+        nonisolated(unsafe) public private(set) static var progressPercentage = ThemeAssets.progressPercentage.swiftUIColor
+        nonisolated(unsafe) public private(set) static var progressLineBG = ThemeAssets.progressLineBG.swiftUIColor
         nonisolated(unsafe) public private(set) static var resumeButtonBG = ThemeAssets.resumeButtonBG.swiftUIColor
         nonisolated(unsafe) public private(set) static var resumeButtonText = ThemeAssets.resumeButtonText.swiftUIColor
         nonisolated(unsafe) public private(set) static var socialAuthColor = ThemeAssets.socialAuthColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var assignmentColor = ThemeAssets.assignmentStroke.swiftUIColor
 
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,

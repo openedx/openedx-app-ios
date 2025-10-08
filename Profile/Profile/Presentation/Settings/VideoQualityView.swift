@@ -134,7 +134,8 @@ public struct VideoQualityView: View {
         coreAnalytics: CoreAnalyticsMock(),
         config: ConfigMock(),
         corePersistence: CorePersistenceMock(),
-        connectivity: Connectivity()
+        connectivity: Connectivity(),
+        coreStorage: CoreStorageMock()
     )
 
     VideoQualityView(viewModel: vm)

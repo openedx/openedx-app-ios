@@ -2,7 +2,7 @@
 //  DashboardRouter.swift
 //  Dashboard
 //
-//  Created by  Stepanok Ivan on 16.11.2022.
+//  Created by  Stepanok Ivan on 16.11.2022.
 //
 
 import Foundation
@@ -28,6 +28,9 @@ public protocol DashboardRouter: BaseRouter {
     
     func showSettings()
     
+    func showUpdateRecomendedView()
+    
+    func showUpdateRequiredView(showAccountLink: Bool)
 }
 
 // Mark - For testing and SwiftUI preview
@@ -52,5 +55,10 @@ public class DashboardRouterMock: BaseRouterMock, DashboardRouter {
     public func showDiscoverySearch(searchQuery: String?) {}
     
     public func showSettings() {}
+    
+    public func showUpdateRecomendedView() {}
+    
+    public func showUpdateRequiredView(showAccountLink: Bool) {}
+
 }
 #endif

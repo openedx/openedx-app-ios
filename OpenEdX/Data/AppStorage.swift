@@ -2,7 +2,7 @@
 //  AppStorage.swift
 //  OpenEdX
 //
-//  Created by  Stepanok Ivan on 31.08.2023.
+//  Created by  Stepanok Ivan on 31.08.2023.
 //
 
 import Foundation
@@ -204,6 +204,28 @@ public final class AppStorage: CoreStorage,
         }
     }
 
+    public var latestAvailableAppVersion: String? {
+        get {
+            return userDefaults.string(forKey: KEY_LATEST_AVAILABLE_APP_VERSION)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_LATEST_AVAILABLE_APP_VERSION)
+            } else {
+                userDefaults.removeObject(forKey: KEY_LATEST_AVAILABLE_APP_VERSION)
+            }
+        }
+    }
+
+    public var updateAppRequired: Bool {
+        get {
+            return userDefaults.bool(forKey: KEY_UPDATE_APP_REQUIRED)
+        }
+        set {
+            userDefaults.set(newValue, forKey: KEY_UPDATE_APP_REQUIRED)
+        }
+    }
+
     public var user: DataLayer.User? {
         get {
             guard let userJson = userDefaults.data(forKey: KEY_USER) else {
@@ -401,4 +423,6 @@ public final class AppStorage: CoreStorage,
     private let KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA = "resetAppSupportDirectoryUserData"
     private let KEY_USE_RELATIVE_DATES = "useRelativeDates"
     private let KEY_LAST_USED_SOCIAL_AUTH = "lastUsedSocialAuth"
+    private let KEY_LATEST_AVAILABLE_APP_VERSION = "latestVersion"
+    private let KEY_UPDATE_APP_REQUIRED = "updateAppRequired"
 }

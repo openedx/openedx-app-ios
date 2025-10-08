@@ -18,6 +18,7 @@ opt_in_rules: # some rules are only opt-in
 #  - Source
 excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
+  - DerivedData
   - Pods
   - Core/CoreTests
   - Authorization/AuthorizationTests

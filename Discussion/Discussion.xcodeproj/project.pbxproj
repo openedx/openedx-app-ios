@@ -60,6 +60,15 @@
 		9FC0EF907C0334E383C300C4 /* Pods_App_Discussion_DiscussionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */; };
 		BA3C45672BA9E13000672C96 /* Data_DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */; };
 		BA3C45692BA9E18D00672C96 /* DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */; };
+		CE2691DD2D9D2868002B8B50 /* HTMLContentFixProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */; };
+		CE517F492D9C0AA80012EF71 /* HTMLConversionCallbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */; };
+		CE517F4A2D9C0AA80012EF71 /* HTMLEntities.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */; };
+		CE517F4B2D9C0AA80012EF71 /* AttributedStringConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */; };
+		CE517F4D2D9C0AA80012EF71 /* BlockState.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F432D9C0AA80012EF71 /* BlockState.swift */; };
+		CE517F4E2D9C0AA80012EF71 /* TextConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F472D9C0AA80012EF71 /* TextConverter.swift */; };
+		CE517F4F2D9C0AA80012EF71 /* Tokenizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F482D9C0AA80012EF71 /* Tokenizer.swift */; };
+		CE517F572D9C17D40012EF71 /* HTMLContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F562D9C17D40012EF71 /* HTMLContentView.swift */; };
+		CE517F592D9C17F60012EF71 /* HTMLImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE517F582D9C17F60012EF71 /* HTMLImageView.swift */; };
 		CE7CAF472CC1566D00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF462CC1566D00E0AC9D /* OEXFoundation */; };
 		CEB1E2762CC14ED700921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2752CC14ED700921517 /* OEXFoundation */; };
 /* End PBXBuildFile section */
@@ -166,6 +175,15 @@
 		BBF5EC7249109D6718A229CF /* Pods-App-Discussion.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugdev.xcconfig"; sourceTree = "<group>"; };
 		C214357310D8AC9185B38ABA /* Pods-App-Discussion-DiscussionTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discussion_DiscussionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentFixProcessor.swift; sourceTree = "<group>"; };
+		CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringConverter.swift; sourceTree = "<group>"; };
+		CE517F432D9C0AA80012EF71 /* BlockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockState.swift; sourceTree = "<group>"; };
+		CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLConversionCallbacks.swift; sourceTree = "<group>"; };
+		CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLEntities.swift; sourceTree = "<group>"; };
+		CE517F472D9C0AA80012EF71 /* TextConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextConverter.swift; sourceTree = "<group>"; };
+		CE517F482D9C0AA80012EF71 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
+		CE517F562D9C17D40012EF71 /* HTMLContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentView.swift; sourceTree = "<group>"; };
+		CE517F582D9C17F60012EF71 /* HTMLImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageView.swift; sourceTree = "<group>"; };
 		ED561A5DE961B1E12B42F4E0 /* Pods-App-Discussion.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasedev.xcconfig"; sourceTree = "<group>"; };
 		F57B9404423B3E624DD25D81 /* Pods-App-Discussion.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasestage.xcconfig"; sourceTree = "<group>"; };
 		FE1509B856949D2742A10836 /* Pods-App-Discussion-DiscussionTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; sourceTree = "<group>"; };
@@ -331,6 +349,7 @@
 		026DCB762927C27C0099F7E7 /* Base */ = {
 			isa = PBXGroup;
 			children = (
+				CE517F412D9C0A9D0012EF71 /* HTMLStreamer */,
 				023F14AA291BF30300FD0EFF /* CommentCell.swift */,
 				023F14A8291BC02200FD0EFF /* ParentCommentView.swift */,
 				029B78F6292526D50097ACD8 /* BaseResponsesViewModel.swift */,
@@ -462,6 +481,22 @@
 				02BE57BD298910BD00197812 /* BaseResponsesViewModelTests.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		CE517F412D9C0A9D0012EF71 /* HTMLStreamer */ = {
+			isa = PBXGroup;
+			children = (
+				CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */,
+				CE517F432D9C0AA80012EF71 /* BlockState.swift */,
+				CE517F442D9C0AA80012EF71 /* HTMLConversionCallbacks.swift */,
+				CE517F582D9C17F60012EF71 /* HTMLImageView.swift */,
+				CE517F452D9C0AA80012EF71 /* HTMLEntities.swift */,
+				CE517F472D9C0AA80012EF71 /* TextConverter.swift */,
+				CE517F482D9C0AA80012EF71 /* Tokenizer.swift */,
+				CE517F562D9C17D40012EF71 /* HTMLContentView.swift */,
+				CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */,
+			);
+			path = HTMLStreamer;
 			sourceTree = "<group>";
 		};
 		D70279BE0CF058E150A59B90 /* Pods */ = {
@@ -633,9 +668,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -703,16 +742,19 @@
 				02F28A5E28FF23E700AFDE1B /* ThreadView.swift in Sources */,
 				0218197A28F7369A00202564 /* DiscussionInteractor.swift in Sources */,
 				029A941E2913EF7800DADA5B /* CreateNewThreadViewModel.swift in Sources */,
+				CE517F572D9C17D40012EF71 /* HTMLContentView.swift in Sources */,
 				029A941C2913EF6800DADA5B /* CreateNewThreadView.swift in Sources */,
 				027BD39A2908256200392132 /* ThreadList.swift in Sources */,
 				029B78F3292518FA0097ACD8 /* ResponsesView.swift in Sources */,
 				02D1267428F75BB700C8E689 /* Data_TopicsResponse.swift in Sources */,
 				02D1266E28F73BA700C8E689 /* DiscussionRepository.swift in Sources */,
 				0218197828F7363000202564 /* DiscussionEndpoint.swift in Sources */,
+				CE517F592D9C17F60012EF71 /* HTMLImageView.swift in Sources */,
 				023F14AB291BF30300FD0EFF /* CommentCell.swift in Sources */,
 				0766DFCA299AA3D400EBEF6A /* Data_CreatedComment.swift in Sources */,
 				0218197228F735B300202564 /* Strings.swift in Sources */,
 				075DBBB1292631C600E56134 /* ThreadPostState.swift in Sources */,
+				CE2691DD2D9D2868002B8B50 /* HTMLContentFixProcessor.swift in Sources */,
 				029B78F7292526D60097ACD8 /* BaseResponsesViewModel.swift in Sources */,
 				029B78F5292519910097ACD8 /* ResponsesViewModel.swift in Sources */,
 				0282DA6128F893E9003C3F07 /* PostsViewModel.swift in Sources */,
@@ -730,6 +772,12 @@
 				BA3C45692BA9E18D00672C96 /* DiscussionInfo.swift in Sources */,
 				0282DA5F28F893CA003C3F07 /* PostsView.swift in Sources */,
 				0766DFC0299AA1CD00EBEF6A /* DiscussionNewThread.swift in Sources */,
+				CE517F492D9C0AA80012EF71 /* HTMLConversionCallbacks.swift in Sources */,
+				CE517F4A2D9C0AA80012EF71 /* HTMLEntities.swift in Sources */,
+				CE517F4B2D9C0AA80012EF71 /* AttributedStringConverter.swift in Sources */,
+				CE517F4D2D9C0AA80012EF71 /* BlockState.swift in Sources */,
+				CE517F4E2D9C0AA80012EF71 /* TextConverter.swift in Sources */,
+				CE517F4F2D9C0AA80012EF71 /* Tokenizer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1768,7 +1816,7 @@
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.3;
+				version = 1.0.4;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
