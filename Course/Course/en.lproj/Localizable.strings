@@ -16,6 +16,7 @@
 "COURSEWARE.COURSE_UNITS" = "Course units";
 "COURSEWARE.NEXT" = "Next";
 "COURSEWARE.PREVIOUS" = "Prev";
+"COURSEWARE.PREVIOUS_FULL" = "Previous";
 "COURSEWARE.FINISH" = "Finish";
 "COURSEWARE.GOOD_WORK" = "Good job!";
 "COURSEWARE.BACK_TO_OUTLINE" = "Back to outline";

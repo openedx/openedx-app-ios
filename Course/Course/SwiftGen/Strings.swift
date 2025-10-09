@@ -303,6 +303,8 @@ public enum CourseLocalization {
     public static let next = CourseLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Prev
     public static let previous = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Prev")
+    /// Previous
+    public static let previousFull = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS_FULL", fallback: "Previous")
     /// Resume with:
     public static let resumeWith = CourseLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
     /// You've completed “

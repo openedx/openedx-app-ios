@@ -566,5 +566,4 @@ public final class CourseUnitViewModel: ObservableObject {
         }
         return nil
     }
-
 }

@@ -200,6 +200,12 @@ public struct CourseUnitView: View {
                     }
 
                     contentView(for: block, index: index, reader: reader)
+                        .onChange(of: viewModel.allVideosForNavigation) { _ in
+                            if let currentBlock {
+                                let index = self.viewModel.allVideosForNavigation.firstIndex(of: currentBlock)
+                                viewModel.currentVideoIndex = index
+                            }
+                        }
                 }
                 .frame(
                     width: isHorizontal ? reader.size.width - (isHorizontalNavigation ? 0 : 16) : reader.size.width,

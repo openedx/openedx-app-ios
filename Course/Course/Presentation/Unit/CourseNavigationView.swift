@@ -24,9 +24,9 @@ struct CourseNavigationView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 7) {
+        HStack(alignment: .top, spacing: 16) {
             if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
-                && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 {
+                && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 && !viewModel.showVideoNavigation {
                 nextBigButton
                     .frame(width: 215)
             } else if viewModel.showVideoNavigation {
@@ -62,7 +62,7 @@ struct CourseNavigationView: View {
             isVerticalNavigation: false,
             action: {
                 if let index = viewModel.currentVideoIndex, index != viewModel.allVideosForNavigation.count - 1 {
-                    playerStateSubject.send(VideoPlayerState.pause)
+                    playerStateSubject.send(VideoPlayerState.kill)
                     let video = viewModel.allVideosForNavigation[index + 1]
                     viewModel.handleVideoTap(video: video)
                 }
@@ -76,12 +76,13 @@ struct CourseNavigationView: View {
             isVerticalNavigation: false,
             action: {
                 if let index = viewModel.currentVideoIndex, index != 0 {
-                    playerStateSubject.send(VideoPlayerState.pause)
+                    playerStateSubject.send(VideoPlayerState.kill)
                     let video = viewModel.allVideosForNavigation[index - 1]
                     viewModel.handleVideoTap(video: video)
                 }
             }
         )
+        .accessibilityLabel(Text(CourseLocalization.Courseware.previousFull))
     }
 
     private var nextBigButton: some View {
@@ -98,7 +99,7 @@ struct CourseNavigationView: View {
     private var nextButton: some View {
         UnitButtonView(
             type: .next,
-            isVerticalNavigation: viewModel.showVideoNavigation ? false : !viewModel.courseUnitProgressEnabled,
+            isVerticalNavigation: !viewModel.courseUnitProgressEnabled,
             action: {
                 playerStateSubject.send(VideoPlayerState.pause)
                 viewModel.select(move: .next)
@@ -109,7 +110,7 @@ struct CourseNavigationView: View {
     private var prevButton: some View {
         UnitButtonView(
             type: .previous,
-            isVerticalNavigation: viewModel.showVideoNavigation ? false : !viewModel.courseUnitProgressEnabled,
+            isVerticalNavigation: !viewModel.courseUnitProgressEnabled,
             action: {
                 playerStateSubject.send(VideoPlayerState.pause)
                 viewModel.select(move: .previous)
