@@ -38,6 +38,9 @@
       location = "group:../WhatsNew/WhatsNew.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:../AppDates/AppDates.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:../Downloads/Downloads.xcodeproj">
    </FileRef>
 </Workspace>

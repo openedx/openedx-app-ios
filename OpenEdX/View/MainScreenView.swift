@@ -10,6 +10,7 @@ import Discovery
 import Core
 import Swinject
 import Dashboard
+import AppDates
 import Downloads
 import Profile
 import WhatsNew
@@ -47,7 +48,7 @@ struct MainScreenView: View {
                             viewModel: Container.shared.resolve(ListDashboardViewModel.self)!,
                             router: Container.shared.resolve(DashboardRouter.self)!
                         )
-
+                        
                         registerBanner
                     }
                     .tabItem {
@@ -128,6 +129,22 @@ struct MainScreenView: View {
                     .accessibilityIdentifier("discovery_tabitem")
                 }
                 
+                if viewModel.config.experimentalFeatures.appLevelDatesEnabled {
+                    VStack {
+                        DatesView(viewModel: Container.shared.resolve(DatesViewModel.self)!)
+                    }
+                    .tabItem {
+                        if viewModel.selection == .dates {
+                            CoreAssets.datesActive.swiftUIImage
+                        } else {
+                            CoreAssets.datesInactive.swiftUIImage
+                        }
+                        Text(AppDatesLocalization.Dates.title)
+                    }
+                    .tag(MainTab.dates)
+                    .accessibilityIdentifier("dates_tabitem")
+                }
+                
                 if viewModel.config.experimentalFeatures.appLevelDownloadsEnabled {
                     AppDownloadsView(viewModel: Container.shared.resolve(AppDownloadsViewModel.self)!)
                         .tabItem {
@@ -158,8 +175,16 @@ struct MainScreenView: View {
                 .tag(MainTab.profile)
                 .accessibilityIdentifier("profile_tabitem")
             }
-            .navigationBarHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
-            .navigationBarBackButtonHidden(viewModel.selection == .dashboard || viewModel.selection == .downloads)
+            .navigationBarHidden(
+                viewModel.selection == .dashboard
+                || viewModel.selection == .dates
+                || viewModel.selection == .downloads
+            )
+            .navigationBarBackButtonHidden(
+                viewModel.selection == .dashboard
+                || viewModel.selection == .dates
+                || viewModel.selection == .downloads
+            )
             .navigationTitle(titleBar())
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing, content: {
@@ -202,6 +227,8 @@ struct MainScreenView: View {
                     viewModel.trackMainDashboardLearnTabClicked()
                 case .programs:
                     viewModel.trackMainProgramsTabClicked()
+                case .dates:
+                    viewModel.trackMainDatesScreenClicked()
                 case .profile:
                     viewModel.trackMainProfileTabClicked()
                 case .downloads:
@@ -220,6 +247,7 @@ struct MainScreenView: View {
                 }
             }
             .accentColor(Theme.Colors.accentXColor)
+            
             if updateAvailable {
                 UpdateNotificationView(config: viewModel.config)
             }
@@ -251,6 +279,8 @@ struct MainScreenView: View {
             : DashboardLocalization.Learn.title
         case .programs:
             return CoreLocalization.Mainscreen.programs
+        case .dates:
+            return AppDatesLocalization.Dates.title
         case .downloads:
             return DownloadsLocalization.Downloads.title
         case .profile:

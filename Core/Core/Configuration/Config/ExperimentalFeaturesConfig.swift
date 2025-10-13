@@ -9,6 +9,7 @@ import Foundation
 
 private enum ExperimentalFeaturesKeys: String {
     case appLevelDownloads = "APP_LEVEL_DOWNLOADS"
+    case appLevelDates = "APP_LEVEL_DATES"
 }
 
 private enum FeatureKeys: String {
@@ -17,12 +18,17 @@ private enum FeatureKeys: String {
 
 public final class ExperimentalFeaturesConfig: NSObject {
     public var appLevelDownloadsEnabled: Bool = false
+    public var appLevelDatesEnabled: Bool = false
 
     init(dictionary: [String: AnyObject]) {
         super.init()
         if let downloadsDict = dictionary[ExperimentalFeaturesKeys.appLevelDownloads.rawValue] as? [String: AnyObject],
            let isEnabled = downloadsDict[FeatureKeys.enabled.rawValue] as? Bool {
             appLevelDownloadsEnabled = isEnabled
+        }
+        if let downloadsDict = dictionary[ExperimentalFeaturesKeys.appLevelDates.rawValue] as? [String: AnyObject],
+           let isEnabled = downloadsDict[FeatureKeys.enabled.rawValue] as? Bool {
+            appLevelDatesEnabled = isEnabled
         }
     }
 }

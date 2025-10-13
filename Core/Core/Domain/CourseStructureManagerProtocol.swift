@@ -11,6 +11,7 @@ import Foundation
 public protocol CourseStructureManagerProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure
+    func shiftDueDates(courseID: String) async throws
 }
 
 #if DEBUG
@@ -61,5 +62,7 @@ public actor CourseStructureManagerMock: CourseStructureManagerProtocol {
             courseProgress: nil
         )
     }
+    
+    public func shiftDueDates(courseID: String) async throws {}
 }
 #endif

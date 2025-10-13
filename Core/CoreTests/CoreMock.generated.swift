@@ -3485,10 +3485,24 @@ open class CourseStructureManagerProtocolMock: CourseStructureManagerProtocol, M
 		return __value
     }
 
+    open func shiftDueDates(courseID: String) throws {
+        addInvocation(.m_shiftDueDates__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_shiftDueDates__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		do {
+		    _ = try methodReturnValue(.m_shiftDueDates__courseID_courseID(Parameter<String>.value(`courseID`))).casted() as Void
+		} catch MockError.notStubed {
+			// do nothing
+		} catch {
+		    throw error
+		}
+    }
+
 
     fileprivate enum MethodType {
         case m_getCourseBlocks__courseID_courseID(Parameter<String>)
         case m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>)
+        case m_shiftDueDates__courseID_courseID(Parameter<String>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3501,6 +3515,11 @@ open class CourseStructureManagerProtocolMock: CourseStructureManagerProtocol, M
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_shiftDueDates__courseID_courseID(let lhsCourseid), .m_shiftDueDates__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
             default: return .none
             }
         }
@@ -3509,12 +3528,14 @@ open class CourseStructureManagerProtocolMock: CourseStructureManagerProtocol, M
             switch self {
             case let .m_getCourseBlocks__courseID_courseID(p0): return p0.intValue
             case let .m_getLoadedCourseBlocks__courseID_courseID(p0): return p0.intValue
+            case let .m_shiftDueDates__courseID_courseID(p0): return p0.intValue
             }
         }
         func assertionName() -> String {
             switch self {
             case .m_getCourseBlocks__courseID_courseID: return ".getCourseBlocks(courseID:)"
             case .m_getLoadedCourseBlocks__courseID_courseID: return ".getLoadedCourseBlocks(courseID:)"
+            case .m_shiftDueDates__courseID_courseID: return ".shiftDueDates(courseID:)"
             }
         }
     }
@@ -3554,6 +3575,16 @@ open class CourseStructureManagerProtocolMock: CourseStructureManagerProtocol, M
 			willProduce(stubber)
 			return given
         }
+        public static func shiftDueDates(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_shiftDueDates__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func shiftDueDates(courseID: Parameter<String>, willProduce: (StubberThrows<Void>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_shiftDueDates__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (Void).self)
+			willProduce(stubber)
+			return given
+        }
     }
 
     public struct Verify {
@@ -3561,6 +3592,7 @@ open class CourseStructureManagerProtocolMock: CourseStructureManagerProtocol, M
 
         public static func getCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseBlocks__courseID_courseID(`courseID`))}
         public static func getLoadedCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`))}
+        public static func shiftDueDates(courseID: Parameter<String>) -> Verify { return Verify(method: .m_shiftDueDates__courseID_courseID(`courseID`))}
     }
 
     public struct Perform {
@@ -3572,6 +3604,9 @@ open class CourseStructureManagerProtocolMock: CourseStructureManagerProtocol, M
         }
         public static func getLoadedCourseBlocks(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func shiftDueDates(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_shiftDueDates__courseID_courseID(`courseID`), performs: perform)
         }
     }
 

@@ -60,11 +60,14 @@
 		CE1D5B7B2CE60E000019CA34 /* ContainerMainActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1D5B7A2CE60E000019CA34 /* ContainerMainActor.swift */; };
 		CE3BD14E2CBEB0DA0026F4E3 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */; };
 		CE57127A2CD109A800D4AB17 /* OEXFoundation in Embed Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		CE815A992D60DA9300CB9114 /* AppDates.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE815A982D60DA9300CB9114 /* AppDates.framework */; };
+		CE815A9A2D60DA9300CB9114 /* AppDates.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CE815A982D60DA9300CB9114 /* AppDates.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CE924BE72CD8FAB3000137CA /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = CE924BE62CD8FAB3000137CA /* FirebaseMessaging */; };
 		CE9C07D82CD104E5009C44D1 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE9C07D72CD104E5009C44D1 /* OEXFoundation */; };
 		CEB36E522D6A29CE00907A89 /* Downloads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB36E512D6A29CE00907A89 /* Downloads.framework */; };
 		CEB36E532D6A29CE00907A89 /* Downloads.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = CEB36E512D6A29CE00907A89 /* Downloads.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		CEBA52772CEBB69100619E2B /* OEXFirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = CEBA52762CEBB69100619E2B /* OEXFirebaseAnalytics */; };
+		CED29EAD2D91D88E00836226 /* DatesPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED29EAC2D91D88E00836226 /* DatesPersistence.swift */; };
 		CEE5EDEE2D6E0A290089F67C /* DownloadsPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEE5EDED2D6E0A290089F67C /* DownloadsPersistence.swift */; };
 		E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; };
 		E0D6E6A42B1626D60089F9C9 /* Theme.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = E0D6E6A22B1626B10089F9C9 /* Theme.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -84,6 +87,7 @@
 				07A7D79028F5C9060000BE81 /* Core.framework in Embed Frameworks */,
 				CE57127A2CD109A800D4AB17 /* OEXFoundation in Embed Frameworks */,
 				0770DE4C28D0A462006D8A5D /* Authorization.framework in Embed Frameworks */,
+				CE815A9A2D60DA9300CB9114 /* AppDates.framework in Embed Frameworks */,
 				0219C67828F4347600D64452 /* Course.framework in Embed Frameworks */,
 				025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */,
 				027DB33128D8A063002B6862 /* Dashboard.framework in Embed Frameworks */,
@@ -150,6 +154,8 @@
 		CCE1E0F850D3E25C0D6C6702 /* Pods-App-OpenEdX.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugdev.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugdev.xcconfig"; sourceTree = "<group>"; };
 		CE1D5B7A2CE60E000019CA34 /* ContainerMainActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerMainActor.swift; sourceTree = "<group>"; };
 		CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
+		CE815A982D60DA9300CB9114 /* AppDates.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AppDates.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CED29EAC2D91D88E00836226 /* DatesPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesPersistence.swift; sourceTree = "<group>"; };
 		CEB36E512D6A29CE00907A89 /* Downloads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Downloads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEE5EDED2D6E0A290089F67C /* DownloadsPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsPersistence.swift; sourceTree = "<group>"; };
 		D70D30110012B7D52D05E876 /* Pods-App-OpenEdX.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugprod.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugprod.xcconfig"; sourceTree = "<group>"; };
@@ -162,6 +168,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE815A992D60DA9300CB9114 /* AppDates.framework in Frameworks */,
 				E0D6E6A32B1626B10089F9C9 /* Theme.framework in Frameworks */,
 				07A7D78F28F5C9060000BE81 /* Core.framework in Frameworks */,
 				028A37362ADFF404008CA604 /* WhatsNew.framework in Frameworks */,
@@ -190,6 +197,7 @@
 				025AD4AB2A6FB95C00AB8FA7 /* DatabaseManager.swift */,
 				0293A2022A6FCA590090A336 /* CorePersistence.swift */,
 				0293A2042A6FCD430090A336 /* CoursePersistence.swift */,
+				CED29EAC2D91D88E00836226 /* DatesPersistence.swift */,
 				0293A2062A6FCDA30090A336 /* DiscoveryPersistence.swift */,
 				0293A2082A6FCDE50090A336 /* DashboardPersistence.swift */,
 				CEE5EDED2D6E0A290089F67C /* DownloadsPersistence.swift */,
@@ -269,6 +277,7 @@
 		4E6FB43543890E90BB88D64D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CE815A982D60DA9300CB9114 /* AppDates.framework */,
 				CEB36E512D6A29CE00907A89 /* Downloads.framework */,
 				E0D6E6A22B1626B10089F9C9 /* Theme.framework */,
 				028A37352ADFF404008CA604 /* WhatsNew.framework */,
@@ -565,6 +574,7 @@
 				020CA5D92AA0A25300970AAF /* AppStorage.swift in Sources */,
 				0298DF302A4EF7230023A257 /* AnalyticsManager.swift in Sources */,
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
+				CED29EAD2D91D88E00836226 /* DatesPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
 				02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */,
 				BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */,

@@ -15,6 +15,7 @@ public protocol MainScreenAnalytics: Sendable {
     func mainProfileTabClicked()
     func mainProgramsTabClicked()
     func mainCoursesClicked()
+    func mainDatesScreenViewed()
     func mainProgramsClicked()
     func notificationPermissionStatus(status: String)
 }
@@ -26,6 +27,7 @@ final public class MainScreenAnalyticsMock: MainScreenAnalytics {
     public func mainDownloadsTabClicked() {}
     public func mainProfileTabClicked() {}
     public func mainProgramsTabClicked() {}
+    public func mainDatesScreenViewed() {}
     public func mainProgramsClicked() {}
     public func mainCoursesClicked() {}
     public func notificationPermissionStatus(status: String) {}

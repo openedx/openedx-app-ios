@@ -17,6 +17,7 @@ import WhatsNew
 import Downloads
 import Swinject
 import OEXFoundation
+import AppDates
 
 // swiftlint:disable type_body_length file_length
 class AnalyticsManager: AuthorizationAnalytics,
@@ -28,6 +29,7 @@ class AnalyticsManager: AuthorizationAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
                         WhatsNewAnalytics,
+                        AppDatesAnalytics,
                         DownloadsAnalytics,
                         @unchecked Sendable {
     
@@ -163,6 +165,10 @@ class AnalyticsManager: AuthorizationAnalytics,
     
     public func mainProfileTabClicked() {
         trackScreenEvent(.mainProfileTabClicked, biValue: .mainProfileTabClicked)
+    }
+    
+    public func mainDatesScreenViewed() {
+        trackScreenEvent(.mainDashboardDatesTabClicked, biValue: .mainDashboardDatesTabClicked)
     }
     
     public func mainCoursesClicked() {
@@ -1241,7 +1247,25 @@ class AnalyticsManager: AuthorizationAnalytics,
         logEvent(.whatnewClose, parameters: parameters)
     }
     
-    // MARK: - DownloadsAnalytics
+    // MARK: - AppDates Analytics
+    public func datesCourseClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.datesCourseClicked.rawValue
+        ]
+        logEvent(.datesCourseClicked, parameters: parameters)
+    }
+    
+    public func datesSettingsClicked() {
+        trackEvent(.datesSettingsClicked, biValue: .datesSettingsClicked)
+    }
+    
+    public func datesRefreshPulled() {
+        trackEvent(.datesRefreshPulled, biValue: .datesRefreshPulled)
+    }
+        
+        // MARK: - DownloadsAnalytics
     public func downloadCourseClicked(courseId: String, courseName: String) {
         let parameters: [String: Any] = [
             EventParamKey.courseID: courseId,

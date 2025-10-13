@@ -19,6 +19,7 @@ public enum MainTab {
     case discovery
     case dashboard
     case programs
+    case dates
     case downloads
     case profile
 }
@@ -110,6 +111,9 @@ final class MainScreenViewModel: ObservableObject {
     
     func trackMainProfileTabClicked() {
         analytics.mainProfileTabClicked()
+    }
+    func trackMainDatesScreenClicked() {
+        analytics.mainDatesScreenViewed()
     }
     
     @MainActor
