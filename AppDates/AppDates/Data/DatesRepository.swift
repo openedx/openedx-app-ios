@@ -44,11 +44,22 @@ public actor DatesRepository: DatesRepositoryProtocol {
         }
         
         let startIndex = totalItemsCount
-        totalItemsCount += dates.count
+        let indexedDates = dates.enumerated().map { offset, date in
+            CourseDate(
+                date: date.date,
+                title: date.title,
+                courseName: date.courseName,
+                courseId: date.courseId,
+                blockId: date.blockId,
+                hasAccess: date.hasAccess,
+                order: startIndex + offset
+            )
+        }
+        totalItemsCount += indexedDates.count
         
-        await persistence.saveCourseDates(dates: dates, startIndex: startIndex)
+        await persistence.saveCourseDates(dates: indexedDates, startIndex: startIndex)
         
-        return (dates, response.next)
+        return (indexedDates, response.next)
     }
     
     public func getCourseDatesOffline(limit: Int? = nil, offset: Int? = nil) async throws -> [CourseDate] {

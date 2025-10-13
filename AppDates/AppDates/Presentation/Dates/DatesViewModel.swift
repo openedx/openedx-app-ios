@@ -35,6 +35,7 @@ public final class DatesViewModel: ObservableObject {
     private(set) var fetchInProgress = false
     private var allDates: [CourseDate] = []
     private var datesLoadedFromServer = false
+    private var shouldSkipOfflineLoad = false
     
     // Items per page constant
     private let itemsPerPage = 20
@@ -77,14 +78,16 @@ public final class DatesViewModel: ObservableObject {
         do {
             if connectivity.isInternetAvaliable {
                 
-                let offlineDates = try await interactor.getCourseDatesOffline(limit: itemsPerPage, offset: 0)
-                
-                allDates = offlineDates
-                self.processDates(allDates)
-                
-                if !offlineDates.isEmpty && nextPage == 1 {
-                    isShowProgress = false
-                    fetchInProgress = true
+                if !shouldSkipOfflineLoad {
+                    let offlineDates = try await interactor.getCourseDatesOffline(limit: itemsPerPage, offset: 0)
+                    
+                    allDates = offlineDates
+                    self.processDates(allDates)
+                    
+                    if !offlineDates.isEmpty && nextPage == 1 {
+                        isShowProgress = false
+                        fetchInProgress = true
+                    }
                 }
                 
                 let (dates, nextPageUrl) = try await interactor.getCourseDates(page: nextPage)
@@ -114,8 +117,10 @@ public final class DatesViewModel: ObservableObject {
             self.isShowProgress = false
             self.fetchInProgress = false
             self.processDates(allDates)
+            shouldSkipOfflineLoad = false
         } catch let error {
             isShowProgress = false
+            shouldSkipOfflineLoad = false
             if error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else if error.isUpdateRequeiredError {
@@ -263,20 +268,21 @@ public final class DatesViewModel: ObservableObject {
         do {
             try await interactor.resetAllRelativeCourseDeadlines()
             sendShiftDatesNotifications()
-            isShowProgressForDueDates = false
+            shouldSkipOfflineLoad = true
             await loadDates(isRefresh: true)
         } catch let error {
-            isShowProgressForDueDates = false
             if error.isInternetError || error is NoCachedDataError {
                 errorMessage = CoreLocalization.Error.slowOrNoInternetConnection
             } else {
                 errorMessage = CoreLocalization.Error.unknownError
             }
+            isShowProgressForDueDates = false
+            return
         }
-        isShowProgressForDueDates = false
         withAnimation(.bouncy(duration: 0.15)) {
             showShiftDueDatesView = false
         }
+        isShowProgressForDueDates = false
     }
     
     private func sendShiftDatesNotifications() {

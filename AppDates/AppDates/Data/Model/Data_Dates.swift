@@ -32,6 +32,7 @@ public extension DataLayer {
         public let assignmentTitle: String
         public let learnerHasAccess: Bool
         public let courseName: String
+        public let location: String?
         
         enum CodingKeys: String, CodingKey {
             case courseId = "course_id"
@@ -40,6 +41,7 @@ public extension DataLayer {
             case assignmentTitle = "assignment_title"
             case learnerHasAccess = "learner_has_access"
             case courseName = "course_name"
+            case location
         }
         
         public init(
@@ -48,7 +50,8 @@ public extension DataLayer {
             dueDate: String,
             assignmentTitle: String,
             learnerHasAccess: Bool,
-            courseName: String
+            courseName: String,
+            location: String? = nil
         ) {
             self.courseId = courseId
             self.assignmentBlockId = assignmentBlockId
@@ -56,6 +59,7 @@ public extension DataLayer {
             self.assignmentTitle = assignmentTitle
             self.learnerHasAccess = learnerHasAccess
             self.courseName = courseName
+            self.location = location
         }
     }
 }
@@ -69,7 +73,7 @@ public extension DataLayer.CourseDatesResponse {
                 title: result.assignmentTitle,
                 courseName: result.courseName,
                 courseId: result.courseId,
-                blockId: result.assignmentBlockId,
+                blockId: result.assignmentBlockId ?? result.location,
                 hasAccess: result.learnerHasAccess
             )
         }

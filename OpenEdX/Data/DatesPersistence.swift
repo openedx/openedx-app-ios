@@ -35,14 +35,16 @@ public final class DatesPersistence: DatesPersistenceProtocol {
             }
             
             let cdDates = try context.fetch(fetchRequest)
-            let result = cdDates.map { cd in
-                CourseDate(
+            let result = cdDates.map { cd -> CourseDate in
+                let storedIndex = cd.value(forKey: "index") as? NSNumber
+                return CourseDate(
                     date: cd.date ?? Date(),
                     title: cd.title ?? "",
                     courseName: cd.courseName ?? "",
                     courseId: cd.courseId,
                     blockId: cd.blockId,
-                    hasAccess: cd.hasAccess
+                    hasAccess: cd.hasAccess,
+                    order: storedIndex?.intValue
                 )
             }
             return result
@@ -51,10 +53,11 @@ public final class DatesPersistence: DatesPersistenceProtocol {
     
     public func saveCourseDates(dates: [CourseDate], startIndex: Int) async {
         await container.performBackgroundTask { context in
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             for (index, date) in dates.enumerated() {
                 let newItem = CDDate(context: context)
-                context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
-                newItem.index = Int64(startIndex + index)
+                let resolvedIndex = date.order ?? (startIndex + index)
+                newItem.index = Int64(resolvedIndex)
                 newItem.date = date.date
                 newItem.title = date.title
                 newItem.courseName = date.courseName
