@@ -135,6 +135,7 @@
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A595689A2B6173DF00ED4F90 /* BranchConfig.swift */; };
 		A5D4B3DE2CDD0A9700688951 /* SecureInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D4B3DD2CDD0A9700688951 /* SecureInputView.swift */; };
+		A5D56C222E9F4C44004BE2F6 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5BBFF32E24236500D51C92 /* ColorExtension.swift */; };
 		A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */; };
 		BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */; };
 		BA4AFB442B6A5AF100A21367 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */; };
@@ -1173,7 +1174,6 @@
 				0727877728D23847002E9142 /* DataLayer.swift in Sources */,
 				0241666B28F5A78B00082765 /* HTMLFormattedText.swift in Sources */,
 				02D800CC29348F460099CF16 /* ImagePicker.swift in Sources */,
-				CE5BBFF42E24236500D51C92 /* ColorExtension.swift in Sources */,
 				CE38BBD72D9D8294002CD276 /* ExperimentalFeaturesConfig.swift in Sources */,
 				027BD3B92909476200392132 /* KeyboardAvoidingModifier.swift in Sources */,
 				BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */,
@@ -1244,6 +1244,7 @@
 				071009C428D1C9D000344290 /* StyledButton.swift in Sources */,
 				064987932B4D69FF0071642A /* DragAndDropCssInjection.swift in Sources */,
 				027BD3B42909475900392132 /* KeyboardState.swift in Sources */,
+				A5D56C222E9F4C44004BE2F6 /* ColorExtension.swift in Sources */,
 				027BD3922907D88F00392132 /* Data_RegistrationFields.swift in Sources */,
 				CEC8753F2D786F7B00A2626C /* ArrayExtension.swift in Sources */,
 				07460FE3294B72D700F70538 /* Notification.swift in Sources */,
