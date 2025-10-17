@@ -234,6 +234,7 @@ public struct CourseOutlineAndProgressView: View {
                         }
                     }
                 }
+            .frameLimit()
             }
         }
         .background(

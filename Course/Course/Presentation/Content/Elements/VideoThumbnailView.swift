@@ -59,6 +59,7 @@ struct VideoThumbnailView: View {
 
     @State private var thumbnailImage: UIImage?
     @State private var isGeneratingThumbnail = false
+    @State private var displayedWidth: CGFloat = 0
 
     init(
         thumbnailData: VideoThumbnailData,
@@ -76,6 +77,17 @@ struct VideoThumbnailView: View {
         self.thumbnailHeight = thumbnailHeight
         self.isCurrentVideo = isCurrentVideo
         self.type = type
+    }
+
+    private var effectiveThumbnailWidth: CGFloat {
+        if type == .continueWith, displayedWidth > 0 {
+            return displayedWidth
+        }
+        return thumbnailWidth
+    }
+
+    private var isFullWidthThumbnail: Bool {
+        type == .continueWith
     }
 
     private var thumbnailService: VideoThumbnailServiceProtocol {
@@ -125,6 +137,7 @@ struct VideoThumbnailView: View {
                 if type == .continueWith {
                     thumbnailImageView()
                         .aspectRatio(16/9, contentMode: .fill)
+                        .clipped()
                         .cornerRadius(10)
                     // for future update 
 //                        .clipShape(RoundedCorners(tl: 10, tr: 10))
@@ -151,7 +164,7 @@ struct VideoThumbnailView: View {
                 .cornerRadius(10)
 
                 Text(video.displayName)
-                    .frame(maxWidth: thumbnailWidth/2)
+                    .frame(maxWidth: isFullWidthThumbnail ? .infinity : thumbnailWidth / 2)
                     .lineLimit(2)
                     .font(type.font)
                     .foregroundStyle(.white)
@@ -172,6 +185,22 @@ struct VideoThumbnailView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
 
             }
+            .frame(width: isFullWidthThumbnail ? nil : thumbnailWidth,
+                   height: isFullWidthThumbnail ? nil : thumbnailHeight)
+            .frame(maxWidth: isFullWidthThumbnail ? .infinity : nil)
+            .aspectRatio(16/9, contentMode: isFullWidthThumbnail ? .fit : .fill)
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .onAppear {
+                            displayedWidth = geometry.size.width
+                        }
+                        .onChange(of: geometry.size.width) { newWidth in
+                            displayedWidth = newWidth
+                        }
+                }
+            )
+            .clipped()
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(lineWidth: isCurrentVideo ? 3 : (video.completion >= 1.0 ? 2 : 0))
@@ -222,7 +251,7 @@ struct VideoThumbnailView: View {
 
                         Rectangle()
                             .fill(Theme.Colors.accentColor)
-                            .frame(width: max(8, thumbnailWidth * effectiveProgress - 8), height: 4)
+                            .frame(width: max(8, effectiveThumbnailWidth * effectiveProgress - 8), height: 4)
                             .cornerRadius(2)
                             .padding(.horizontal, 4)
                             .padding(.bottom, 4)
@@ -252,7 +281,7 @@ struct VideoThumbnailView: View {
 
                 Rectangle()
                     .fill(Theme.Colors.accentColor)
-                    .frame(width: max(8, thumbnailWidth * effectiveProgress - 8), height: 4)
+                    .frame(width: max(8, effectiveThumbnailWidth * effectiveProgress - 8), height: 4)
                     .cornerRadius(2)
                     .padding(.horizontal, 4)
                     .padding(.bottom, 4)
