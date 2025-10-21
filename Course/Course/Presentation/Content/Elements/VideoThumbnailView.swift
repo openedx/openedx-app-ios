@@ -16,7 +16,7 @@ enum VideoThumbnailType {
     case contentVideo
     case navigationVideo
     case continueWith
-
+    
     var playIconFrameSize: CGFloat {
         switch self {
         case .contentVideo:
@@ -25,6 +25,28 @@ enum VideoThumbnailType {
             16
         case .continueWith:
             43
+        }
+    }
+    
+    var progressLineHeight: CGFloat {
+        switch self {
+        case .contentVideo:
+            4
+        case .navigationVideo:
+            4
+        case .continueWith:
+            8
+        }
+    }
+    
+    var progressHorizontalPadding: CGFloat {
+        switch self {
+        case .contentVideo:
+            8
+        case .navigationVideo:
+            8
+        case .continueWith:
+            16
         }
     }
 
@@ -153,8 +175,8 @@ struct VideoThumbnailView: View {
                 // Gradient overlay to improve title readability
                 LinearGradient(
                     colors: [
-                        Color.black.opacity(0.5),
-                        Color.black.opacity(0.0),
+                        Color.black.opacity(0.7),
+                        Color.black.opacity(0.3),
                         Color.black.opacity(0.0),
                         Color.black.opacity(0.0)
                     ],
@@ -164,9 +186,11 @@ struct VideoThumbnailView: View {
                 .cornerRadius(10)
 
                 Text(video.displayName)
-                    .frame(maxWidth: isFullWidthThumbnail ? .infinity : thumbnailWidth / 2)
+                // NOT SURE WE NEED THIS
+//                    .frame(maxWidth: isFullWidthThumbnail ? .infinity : thumbnailWidth / 2)
                     .lineLimit(2)
                     .font(type.font)
+                    .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
                     .padding(.horizontal, 11)
                     .padding(.top, 11)
@@ -235,26 +259,29 @@ struct VideoThumbnailView: View {
                     // Show green bar when no local progress OR local progress >= 90%
                     Rectangle()
                         .fill(Theme.Colors.success)
-                        .frame(height: 4)
-                        .cornerRadius(2)
-                        .padding(.horizontal, 4)
-                        .padding(.bottom, 4)
+                        .frame(height: type.progressLineHeight)
+                        .cornerRadius(type.progressLineHeight / 2)
+                        .padding(.horizontal, type.progressHorizontalPadding)
+                        .padding(.bottom, 8)
                 } else if effectiveProgress > 0 {
                     // Show local progress bar when rewatching
                     ZStack(alignment: .leading) {
                         Rectangle()
                             .fill(Theme.Colors.primaryCardProgressBG)
-                            .frame(height: 4)
-                            .cornerRadius(2)
-                            .padding(.horizontal, 4)
-                            .padding(.bottom, 4)
+                            .frame(height: type.progressLineHeight)
+                            .cornerRadius(type.progressLineHeight / 2)
+                            .padding(.horizontal, type.progressHorizontalPadding)
+                            .padding(.bottom, 8)
 
                         Rectangle()
                             .fill(Theme.Colors.accentColor)
-                            .frame(width: max(8, effectiveThumbnailWidth * effectiveProgress - 8), height: 4)
-                            .cornerRadius(2)
-                            .padding(.horizontal, 4)
-                            .padding(.bottom, 4)
+                            .frame(
+                                width: max(8, effectiveThumbnailWidth * effectiveProgress - 8),
+                                height: type.progressLineHeight
+                            )
+                            .cornerRadius(type.progressLineHeight / 2)
+                            .padding(.horizontal, type.progressHorizontalPadding)
+                            .padding(.bottom, 8)
                     }
                 }
 
@@ -274,17 +301,20 @@ struct VideoThumbnailView: View {
             ZStack(alignment: .leading) {
                 Rectangle()
                     .fill(Theme.Colors.primaryCardProgressBG)
-                    .frame(height: 4)
-                    .cornerRadius(2)
-                    .padding(.horizontal, 4)
-                    .padding(.bottom, 4)
+                    .frame(height: type.progressLineHeight)
+                    .cornerRadius(type.progressLineHeight / 2)
+                    .padding(.horizontal, type.progressHorizontalPadding)
+                    .padding(.bottom, 8)
 
                 Rectangle()
                     .fill(Theme.Colors.accentColor)
-                    .frame(width: max(8, effectiveThumbnailWidth * effectiveProgress - 8), height: 4)
-                    .cornerRadius(2)
-                    .padding(.horizontal, 4)
-                    .padding(.bottom, 4)
+                    .frame(
+                        width: max(8, effectiveThumbnailWidth * effectiveProgress - 8),
+                        height: type.progressLineHeight
+                    )
+                    .cornerRadius(type.progressLineHeight / 2)
+                    .padding(.horizontal, type.progressHorizontalPadding)
+                    .padding(.bottom, 8)
             }
         }
     }

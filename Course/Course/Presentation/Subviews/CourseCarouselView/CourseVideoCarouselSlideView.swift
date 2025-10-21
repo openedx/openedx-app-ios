@@ -129,6 +129,7 @@ struct CourseVideoCarouselSlideView: View {
                         viewModelContainer.selectedTab = .videos
                         viewModelContainer.trackCourseHomeViewAllVideosClicked()
                     }
+                    .padding(.top, -20)
                     .frame(maxWidth: .infinity)
                 }
             }
@@ -152,7 +153,7 @@ struct CourseVideoCarouselSlideView: View {
             .font(Theme.Fonts.titleLarge)
             .frame(maxWidth: .infinity, alignment: .leading)
             .clipped()
-            .padding(.bottom, 16)
+            .padding(.bottom, 12)
             .padding(.horizontal, 16)
     }
 

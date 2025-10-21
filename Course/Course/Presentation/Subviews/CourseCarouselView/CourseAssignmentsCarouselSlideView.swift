@@ -187,7 +187,7 @@ struct CourseAssignmentsCarouselSlideView: View {
             .font(Theme.Fonts.titleLarge)
             .frame(maxWidth: .infinity, alignment: .leading)
             .clipped()
-            .padding(.bottom, 16)
+            .padding(.bottom, 12)
             .padding(.horizontal, 16)
     }
 

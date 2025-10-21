@@ -99,6 +99,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
                 CourseLocalization.Accessibility.progressPercentageCompleted("\(progressPercentage)")
             )
         }
+        .padding(.bottom, 12)
     }
 
     // MARK: - Section View
