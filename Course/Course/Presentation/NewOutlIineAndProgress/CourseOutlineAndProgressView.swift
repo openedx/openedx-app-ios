@@ -137,7 +137,7 @@ public struct CourseOutlineAndProgressView: View {
                                         let continueUnit = sequential.childs[continueWith.verticalIndex]
 
                                         UnitButtonView(
-                                            type: .continueLessonCustom(
+                                            type: .customContinueLesson(
                                                 continueUnit.displayName
                                             ),
                                             action: {

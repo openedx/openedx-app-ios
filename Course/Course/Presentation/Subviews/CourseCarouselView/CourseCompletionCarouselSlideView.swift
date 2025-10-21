@@ -142,7 +142,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
             SectionProgressView(progress: viewModelContainer.chapterProgressDeep(for: chapter))
                 .accessibilityLabel(
                     CourseLocalization.Accessibility.progressPercentageCompleted(
-                        viewModelContainer.chapterProgressDeepPercents(
+                        viewModelContainer.chapterCompletionPercentProgress(
                             for: chapter
                         )
                     )

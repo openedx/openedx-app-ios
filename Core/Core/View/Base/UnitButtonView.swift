@@ -19,7 +19,7 @@ public enum UnitButtonType: Equatable {
     case continueLesson
     case nextSection
     case custom(String)
-    case continueLessonCustom(String)
+    case customContinueLesson(String)
     
     func stringValue() -> String {
         switch self {
@@ -41,7 +41,7 @@ public enum UnitButtonType: Equatable {
             return CoreLocalization.Courseware.nextSection
         case let .custom(text):
             return text
-        case let .continueLessonCustom(text):
+        case let .customContinueLesson(text):
             return text
         }
     }
@@ -145,7 +145,7 @@ public struct UnitButtonView: View {
                                 .foregroundColor(bgColor == nil ? .white : Theme.Colors.secondaryButtonTextColor)
                                 .font(Theme.Fonts.labelLarge)
                         }.padding(.horizontal, 16)
-                    case .continueLessonCustom:
+                    case .customContinueLesson:
                         HStack {
                             Text(type.stringValue())
                                 .foregroundColor(Theme.Colors.resumeButtonText)
@@ -207,7 +207,7 @@ public struct UnitButtonView: View {
                                         )
                                 )
                                 
-                        case .continueLesson, .nextSection, .reload, .finish, .custom, .continueLessonCustom:
+                        case .continueLesson, .nextSection, .reload, .finish, .custom, .customContinueLesson:
                             Theme.Shapes.buttonShape
                                 .fill(
                                     type == .continueLesson ? Theme.Colors.resumeButtonBG :

@@ -1107,7 +1107,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         return max(0.0, min(1.0, averageProgress))
     }
 
-    func chapterProgressDeepPercents(for chapter: CourseChapter) -> Int {
+    func chapterCompletionPercentProgress(for chapter: CourseChapter) -> Int {
         let allBlocks: [CourseBlock] = chapter.childs
             .flatMap { $0.childs }
             .flatMap { $0.childs }
