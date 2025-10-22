@@ -12,7 +12,7 @@ import EventKit
 @testable import Profile
 @testable import Core
 import Theme
-import SwiftUICore
+import SwiftUI
 
 @MainActor
 final class CalendarManagerTests: XCTestCase {

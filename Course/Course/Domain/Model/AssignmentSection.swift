@@ -23,7 +23,10 @@ struct AssignmentSectionUI {
 struct CourseProgressSubsectionUI {
     let subsection: CourseProgressSubsection
     let statusText: String
+    let statusTextForCarousel: String
+    let sectionName: String
     let sequenceName: String
     let status: AssignmentCardStatus
     let shortLabel: String
+    var date: Date?
 }

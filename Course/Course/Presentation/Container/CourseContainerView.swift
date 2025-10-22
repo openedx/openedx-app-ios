@@ -194,17 +194,21 @@ public struct CourseContainerView: View {
             ForEach(CourseTab.allCases) { tab in
                 switch tab {
                 case .course:
-                    CourseOutlineView(
-                        viewModel: viewModel,
-                        title: title,
-                        courseID: courseID,
-                        isVideo: false,
-                        selection: $viewModel.selection,
-                        coordinate: $coordinate,
-                        collapsed: $collapsed,
-                        viewHeight: $viewHeight,
-                        dateTabIndex: CourseTab.dates.rawValue
-                    )
+                    VStack {
+                        CourseOutlineAndProgressView(
+                            viewModelContainer: viewModel,
+                            viewModelProgress: courseProgressViewModel,
+                            title: title,
+                            courseID: courseID,
+                            isVideo: false,
+                            selection: $viewModel.selection,
+                            coordinate: $coordinate,
+                            collapsed: $collapsed,
+                            viewHeight: $viewHeight,
+                            dateTabIndex: CourseTab.dates.rawValue,
+                            connectivity: viewModel.connectivity
+                        )
+                    }
                     .tabItem {
                         tab.image
                         Text(tab.title)
@@ -234,7 +238,8 @@ public struct CourseContainerView: View {
                         collapsed: $collapsed,
                         viewHeight: $viewHeight,
                         viewModel: courseProgressViewModel,
-                        connectivity: viewModel.connectivity
+                        connectivity: viewModel.connectivity,
+                        courseStructure: viewModel.courseStructure
                     )
                     .tabItem {
                         tab.image
@@ -409,7 +414,7 @@ public struct CourseContainerView: View {
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(),
         ),
         courseID: "",
         title: "Title of Course",

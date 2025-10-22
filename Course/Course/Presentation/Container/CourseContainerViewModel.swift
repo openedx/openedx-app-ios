@@ -29,6 +29,8 @@ extension CourseTab {
         switch self {
         case .course:
             return CourseLocalization.CourseContainer.home
+        case .content:
+            return CourseLocalization.CourseContainer.content
         case .progress:
             return CourseLocalization.CourseContainer.progress
         case .dates:
@@ -39,8 +41,6 @@ extension CourseTab {
             return CourseLocalization.CourseContainer.discussions
         case .handounds:
             return CourseLocalization.CourseContainer.handouts
-        case .content:
-            return CourseLocalization.CourseContainer.content
         }
     }
     
@@ -48,6 +48,8 @@ extension CourseTab {
         switch self {
         case .course:
             return CoreAssets.home.swiftUIImage.renderingMode(.template)
+        case .content:
+            return CoreAssets.content.swiftUIImage.renderingMode(.template)
         case .progress:
             return CoreAssets.progress.swiftUIImage.renderingMode(.template)
         case .dates:
@@ -58,8 +60,6 @@ extension CourseTab {
             return  CoreAssets.discussions.swiftUIImage.renderingMode(.template)
         case .handounds:
             return CoreAssets.more.swiftUIImage.renderingMode(.template)
-        case .content:
-            return CoreAssets.content.swiftUIImage.renderingMode(.template)
         }
     }
 }
@@ -69,6 +69,7 @@ extension CourseTab {
 public final class CourseContainerViewModel: BaseCourseViewModel {
     
     @Published public var selection: Int
+    @Published var selectedTab: ContentTab = .all
     @Published var isShowProgress = false
     @Published var isShowRefresh = false
     @Published var courseStructure: CourseStructure?
@@ -92,6 +93,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @Published var courseDeadlines: CourseDates?
     @Published private(set) var assignmentSectionsData: [AssignmentSection] = []
     private(set) var realDownloadedFilesSize: Int = 0
+    
+    @Published var tabBarIndex = 0
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
@@ -417,6 +420,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         switch selection {
         case .course:
             analytics.courseOutlineCourseTabClicked(courseId: courseId, courseName: courseName)
+        case .content:
+            analytics.courseOutlineContentTabClicked(courseId: courseId, courseName: courseName)
         case .progress:
             analytics.courseOutlineProgressTabClicked(courseId: courseId, courseName: courseName)
         case .offline:
@@ -427,8 +432,6 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             analytics.courseOutlineDiscussionTabClicked(courseId: courseId, courseName: courseName)
         case .handounds:
             analytics.courseOutlineHandoutsTabClicked(courseId: courseId, courseName: courseName)
-        case .content:
-            analytics.courseOutlineContentTabClicked(courseId: courseId, courseName: courseName)
         }
     }
     
@@ -480,7 +483,67 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             courseName: course.displayName
         )
     }
-    
+
+    func trackCourseHomeSectionClicked(section: String, subsection: String) {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeSectionSubsectionClick(
+            courseId: course.id,
+            courseName: course.displayName,
+            courseSection: section,
+            courseSubsection: subsection
+        )
+    }
+
+    func trackCourseHomeViewAllContentClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeViewAllContentClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeViewAllVideosClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeViewAllVideosClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeViewAllAssignmentsClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeViewAllAssignmentsClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeGradesViewProgressClicked() {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeGradesViewProgressClicked(
+            courseId: course.id,
+            courseName: course.displayName
+        )
+    }
+
+    func trackCourseHomeVideoClicked(blockId: String, blockName: String) {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeVideoClicked(courseId: course.id,
+                                         courseName: course.displayName,
+                                         blockId: blockId,
+                                         blockName: blockName
+        )
+    }
+
+    func trackCourseHomeAssignmentClicked(blockId: String, blockName: String) {
+        guard let course = courseStructure else { return }
+        analytics.courseHomeAssignmentClicked(courseId: course.id,
+                                         courseName: course.displayName,
+                                         blockId: blockId,
+                                         blockName: blockName
+        )
+    }
+
     func trackAssignmentClicked(_ sequential: CourseSequential) {
         guard let course = courseStructure else { return }
         analytics.courseAssignmentClicked(
@@ -1031,7 +1094,31 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             expandedSections[chapter.id] = isNotCompleted
         }
     }
-    
+
+    func chapterProgressDeep(for chapter: CourseChapter) -> Double {
+        let allBlocks: [CourseBlock] = chapter.childs
+            .flatMap { $0.childs }
+            .flatMap { $0.childs }
+
+        guard !allBlocks.isEmpty else { return 0.0 }
+
+        let total = allBlocks.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = total / Double(allBlocks.count)
+        return max(0.0, min(1.0, averageProgress))
+    }
+
+    func chapterCompletionPercentProgress(for chapter: CourseChapter) -> Int {
+        let allBlocks: [CourseBlock] = chapter.childs
+            .flatMap { $0.childs }
+            .flatMap { $0.childs }
+
+        guard !allBlocks.isEmpty else { return 0 }
+
+        let total = allBlocks.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = Int(total / Double(allBlocks.count) * 100)
+        return averageProgress
+    }
+
     func chapterProgress(for chapter: CourseChapter) -> Double {
         guard !chapter.childs.isEmpty else { return 0.0 }
         
@@ -1039,6 +1126,20 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         let averageProgress = totalProgress / Double(chapter.childs.count)
         
         return max(0.0, min(1.0, averageProgress))
+    }
+
+    func subsectionProgress(for subsection: CourseSequential) -> Double {
+        guard !subsection.childs.isEmpty else { return 0.0 }
+        let totalProgress = subsection.childs.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = totalProgress / Double(subsection.childs.count)
+        return max(0.0, min(1.0, averageProgress))
+    }
+
+    func subsectionProgressPercents(for subsection: CourseSequential) -> Int {
+        guard !subsection.childs.isEmpty else { return 0 }
+        let totalProgress = subsection.childs.reduce(0.0) { $0 + $1.completion }
+        let averageProgress = Int(totalProgress / Double(subsection.childs.count) * 100)
+        return averageProgress
     }
 
     private func addObservers() {
@@ -1308,18 +1409,43 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             let shortLabel = getSequentialShortLabel(for: subsection.blockKey) ?? ""
             let status = getSequentialAssignmentStatus(for: subsection.blockKey) ?? getAssignmentStatus(for: subsection)
             let statusText = computeStatusText(for: subsection, status: status, shortLabel: shortLabel)
-            let sequenceName = getAssignmentSequenceName(for: subsection)
-                        
-            return CourseProgressSubsectionUI(
-                subsection: subsection,
-                statusText: statusText,
-                sequenceName: sequenceName,
+            let statusTextForCarousel = computeStatusTextForCarousel(
+                for: subsection,
                 status: status,
                 shortLabel: shortLabel
             )
+            let sequenceName = getAssignmentSequenceName(for: subsection)
+
+            let sectionName = getAssignmentSectionName(for: subsection.blockKey)
+
+            let date = getAssignmentDueDate(for: subsection)
+
+            return CourseProgressSubsectionUI(
+                subsection: subsection,
+                statusText: statusText,
+                statusTextForCarousel: statusTextForCarousel,
+                sectionName: sectionName,
+                sequenceName: sequenceName,
+                status: status,
+                shortLabel: shortLabel,
+                date: date
+            )
         }
     }
-        
+
+    func getAssignmentSectionName(for blockKey: String) -> String {
+        guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return "" }
+
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs {
+                if sequential.blockId == blockKey || sequential.id == blockKey {
+                    return chapter.displayName
+                }
+            }
+        }
+        return ""
+    }
+
     private func updateAssignmentSections() {
         guard let progressDetails = courseProgressDetails else {
             assignmentSectionsData = []
@@ -1485,7 +1611,30 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             }
         }
     }
-    
+
+    private func computeStatusTextForCarousel(
+        for subsection: CourseProgressSubsection,
+        status: AssignmentCardStatus,
+        shortLabel: String?
+    ) -> String {
+        let cleanShortLabel = clearShortLabel(shortLabel ?? "")
+
+        if let dueDate = getAssignmentDueDate(for: subsection) {
+            switch status {
+            case .pastDue:
+                return "\(dueDate.formattedDueStatus())"
+            case .incomplete:
+                return "\(dueDate.formattedDueStatus())"
+            default:
+                break
+            }
+        } else {
+            return ""
+        }
+
+        return ""
+    }
+
     func getAssignmentStatusText(for subsection: CourseProgressSubsection) -> String {
         let status = getAssignmentStatus(for: subsection)
         

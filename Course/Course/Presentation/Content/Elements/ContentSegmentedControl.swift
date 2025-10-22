@@ -36,7 +36,6 @@ struct ContentSegmentedControl: View {
             ForEach(Array(ContentTab.allCases.enumerated()), id: \.element) { index, tab in
                 Button(action: {
                     selectedTab = tab
-                    
                     // Track analytics for tab selection
                     switch tab {
                     case .all:
