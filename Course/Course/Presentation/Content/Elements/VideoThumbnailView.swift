@@ -159,6 +159,7 @@ struct VideoThumbnailView: View {
                 if type == .continueWith {
                     thumbnailImageView()
                         .aspectRatio(16/9, contentMode: .fill)
+                        .scaleEffect(y: 1.35, anchor: .center)
                         .clipped()
                         .cornerRadius(10)
                     // for future update 
