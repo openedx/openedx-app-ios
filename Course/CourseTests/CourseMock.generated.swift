@@ -3641,6 +3641,12 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 		perform?(`courseId`, `courseName`)
     }
 
+    open func courseHomeSectionSubsectionClick(courseId: String, courseName: String, courseSection: String, courseSubsection: String) {
+        addInvocation(.m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`courseSection`), Parameter<String>.value(`courseSubsection`)))
+		let perform = methodPerformValue(.m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(Parameter<String>.value(`courseId`), Parameter<String>.value(`courseName`), Parameter<String>.value(`courseSection`), Parameter<String>.value(`courseSubsection`))) as? (String, String, String, String) -> Void
+		perform?(`courseId`, `courseName`, `courseSection`, `courseSubsection`)
+    }
+
     open func datesComponentTapped(courseId: String, blockId: String, link: String, supported: Bool) {
         addInvocation(.m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(Parameter<String>.value(`courseId`), Parameter<String>.value(`blockId`), Parameter<String>.value(`link`), Parameter<Bool>.value(`supported`)))
 		let perform = methodPerformValue(.m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(Parameter<String>.value(`courseId`), Parameter<String>.value(`blockId`), Parameter<String>.value(`link`), Parameter<Bool>.value(`supported`))) as? (String, String, String, Bool) -> Void
@@ -3782,6 +3788,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         case m_courseHomeAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
         case m_courseHomeViewAllAssignmentsClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
         case m_courseHomeGradesViewProgressClicked__courseId_courseIdcourseName_courseName(Parameter<String>, Parameter<String>)
+        case m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<String>)
         case m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<Bool>)
         case m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(Parameter<EnrollmentMode>, Parameter<CoursePacing>, Parameter<String>, Parameter<CalendarDialogueAction>)
         case m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(Parameter<EnrollmentMode>, Parameter<CoursePacing>, Parameter<String>, Parameter<CalendarDialogueType>, Parameter<CalendarDialogueAction>)
@@ -4012,6 +4019,14 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
 				return Matcher.ComparisonResult(results)
 
+            case (.m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(let lhsCourseid, let lhsCoursename, let lhsCoursesection, let lhsCoursesubsection), .m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(let rhsCourseid, let rhsCoursename, let rhsCoursesection, let rhsCoursesubsection)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursename, rhs: rhsCoursename, with: matcher), lhsCoursename, rhsCoursename, "courseName"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursesection, rhs: rhsCoursesection, with: matcher), lhsCoursesection, rhsCoursesection, "courseSection"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCoursesubsection, rhs: rhsCoursesubsection, with: matcher), lhsCoursesubsection, rhsCoursesubsection, "courseSubsection"))
+				return Matcher.ComparisonResult(results)
+
             case (.m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(let lhsCourseid, let lhsBlockid, let lhsLink, let lhsSupported), .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(let rhsCourseid, let rhsBlockid, let rhsLink, let rhsSupported)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseId"))
@@ -4192,6 +4207,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case let .m_courseHomeAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_courseHomeViewAllAssignmentsClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
             case let .m_courseHomeGradesViewProgressClicked__courseId_courseIdcourseName_courseName(p0, p1): return p0.intValue + p1.intValue
+            case let .m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(p0, p1, p2, p3): return p0.intValue + p1.intValue + p2.intValue + p3.intValue
             case let .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(p0, p1, p2, p3, p4): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue
@@ -4245,6 +4261,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
             case .m_courseHomeAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName: return ".courseHomeAssignmentClicked(courseId:courseName:blockId:blockName:)"
             case .m_courseHomeViewAllAssignmentsClicked__courseId_courseIdcourseName_courseName: return ".courseHomeViewAllAssignmentsClicked(courseId:courseName:)"
             case .m_courseHomeGradesViewProgressClicked__courseId_courseIdcourseName_courseName: return ".courseHomeGradesViewProgressClicked(courseId:courseName:)"
+            case .m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection: return ".courseHomeSectionSubsectionClick(courseId:courseName:courseSection:courseSubsection:)"
             case .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported: return ".datesComponentTapped(courseId:blockId:link:supported:)"
             case .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action: return ".calendarSyncToggle(enrollmentMode:pacing:courseId:action:)"
             case .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action: return ".calendarSyncDialogAction(enrollmentMode:pacing:courseId:dialog:action:)"
@@ -4312,6 +4329,7 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         public static func courseHomeAssignmentClicked(courseId: Parameter<String>, courseName: Parameter<String>, blockId: Parameter<String>, blockName: Parameter<String>) -> Verify { return Verify(method: .m_courseHomeAssignmentClicked__courseId_courseIdcourseName_courseNameblockId_blockIdblockName_blockName(`courseId`, `courseName`, `blockId`, `blockName`))}
         public static func courseHomeViewAllAssignmentsClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseHomeViewAllAssignmentsClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
         public static func courseHomeGradesViewProgressClicked(courseId: Parameter<String>, courseName: Parameter<String>) -> Verify { return Verify(method: .m_courseHomeGradesViewProgressClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`))}
+        public static func courseHomeSectionSubsectionClick(courseId: Parameter<String>, courseName: Parameter<String>, courseSection: Parameter<String>, courseSubsection: Parameter<String>) -> Verify { return Verify(method: .m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(`courseId`, `courseName`, `courseSection`, `courseSubsection`))}
         public static func datesComponentTapped(courseId: Parameter<String>, blockId: Parameter<String>, link: Parameter<String>, supported: Parameter<Bool>) -> Verify { return Verify(method: .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(`courseId`, `blockId`, `link`, `supported`))}
         public static func calendarSyncToggle(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, action: Parameter<CalendarDialogueAction>) -> Verify { return Verify(method: .m_calendarSyncToggle__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIdaction_action(`enrollmentMode`, `pacing`, `courseId`, `action`))}
         public static func calendarSyncDialogAction(enrollmentMode: Parameter<EnrollmentMode>, pacing: Parameter<CoursePacing>, courseId: Parameter<String>, dialog: Parameter<CalendarDialogueType>, action: Parameter<CalendarDialogueAction>) -> Verify { return Verify(method: .m_calendarSyncDialogAction__enrollmentMode_enrollmentModepacing_pacingcourseId_courseIddialog_dialogaction_action(`enrollmentMode`, `pacing`, `courseId`, `dialog`, `action`))}
@@ -4428,6 +4446,9 @@ open class CourseAnalyticsMock: CourseAnalytics, Mock {
         }
         public static func courseHomeGradesViewProgressClicked(courseId: Parameter<String>, courseName: Parameter<String>, perform: @escaping (String, String) -> Void) -> Perform {
             return Perform(method: .m_courseHomeGradesViewProgressClicked__courseId_courseIdcourseName_courseName(`courseId`, `courseName`), performs: perform)
+        }
+        public static func courseHomeSectionSubsectionClick(courseId: Parameter<String>, courseName: Parameter<String>, courseSection: Parameter<String>, courseSubsection: Parameter<String>, perform: @escaping (String, String, String, String) -> Void) -> Perform {
+            return Perform(method: .m_courseHomeSectionSubsectionClick__courseId_courseIdcourseName_courseNamecourseSection_courseSectioncourseSubsection_courseSubsection(`courseId`, `courseName`, `courseSection`, `courseSubsection`), performs: perform)
         }
         public static func datesComponentTapped(courseId: Parameter<String>, blockId: Parameter<String>, link: Parameter<String>, supported: Parameter<Bool>, perform: @escaping (String, String, String, Bool) -> Void) -> Perform {
             return Perform(method: .m_datesComponentTapped__courseId_courseIdblockId_blockIdlink_linksupported_supported(`courseId`, `blockId`, `link`, `supported`), performs: perform)

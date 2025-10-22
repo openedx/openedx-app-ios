@@ -23,7 +23,8 @@ public class CourseProgressViewModel: ObservableObject {
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     let interactor: CourseInteractorProtocol
-    
+    var courseStructure: CourseStructure?
+
     public var errorMessage: String? {
         didSet {
             withAnimation {
@@ -36,7 +37,7 @@ public class CourseProgressViewModel: ObservableObject {
         interactor: CourseInteractorProtocol,
         router: CourseRouter,
         analytics: CourseAnalytics,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
     ) {
         self.interactor = interactor
         self.router = router
@@ -53,7 +54,7 @@ public class CourseProgressViewModel: ObservableObject {
             } else {
                 courseProgress = try await interactor.getCourseProgressOffline(courseID: courseID)
             }
-            
+
             // Update assignment progress data
             assignmentProgressData = getAllAssignmentProgressData()
             
@@ -127,8 +128,12 @@ public class CourseProgressViewModel: ObservableObject {
         courseProgress?.gradingPolicy.assignmentPolicies ?? []
     }
     
-    public func getAssignmentProgress(for assignmentType: String) -> AssignmentProgressData {
-        guard let courseProgress = courseProgress else {
+    public func getAssignmentProgress(
+        for assignmentType: String,
+        courseStructure: CourseStructure?
+    ) -> AssignmentProgressData {
+
+        guard let courseProgress = courseProgress, let courseStructure = courseStructure else {
             return AssignmentProgressData(
                 completed: 0,
                 total: 0,
@@ -137,10 +142,22 @@ public class CourseProgressViewModel: ObservableObject {
                 percentGraded: 0.0
             )
         }
-        
-        return courseProgress.getAssignmentProgress(for: assignmentType)
+
+        var completed = 0
+        var total = 0
+
+        for chapter in courseStructure.childs {
+            for sequential in chapter.childs where sequential.sequentialProgress?.assignmentType == assignmentType {
+                total = chapter.childs.count
+                if sequential.completion == 1 {
+                    completed += 1
+                }
+            }
+        }
+
+        return courseProgress.getAssignmentProgress(for: assignmentType, completedCount: completed, total: total)
     }
-    
+
     public func getAssignmentColor(for index: Int) -> Color {
         guard let courseProgress = courseProgress else {
             return Theme.Colors.textSecondary
@@ -157,12 +174,12 @@ public class CourseProgressViewModel: ObservableObject {
     }
     
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {
-        guard let courseProgress = courseProgress else { return [:] }
+        guard let courseProgress = courseProgress, let courseStructure else { return [:] }
         
         var progressData: [String: AssignmentProgressData] = [:]
         
         for policy in courseProgress.gradingPolicy.assignmentPolicies {
-            let data = getAssignmentProgress(for: policy.type)
+            let data = getAssignmentProgress(for: policy.type, courseStructure: courseStructure)
             progressData[policy.type] = data
         }
         

@@ -582,7 +582,6 @@ class CourseRepositoryMock: CourseRepositoryProtocol {
     func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails {
         throw NoCachedDataError()
     }
-    
     func resumeBlock(courseID: String) async throws -> ResumeBlock {
         ResumeBlock(blockID: "123")
     }

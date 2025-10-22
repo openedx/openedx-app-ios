@@ -42,6 +42,7 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var textPrimary = ThemeAssets.textPrimary.swiftUIColor
         nonisolated(unsafe) public private(set) static var textSecondary = ThemeAssets.textSecondary.swiftUIColor
         nonisolated(unsafe) public private(set) static var textSecondaryLight = ThemeAssets.textSecondaryLight.swiftUIColor
+        nonisolated(unsafe) public private(set) static var textSecondaryDark = ThemeAssets.textSecondaryDark.swiftUIColor
         nonisolated(unsafe) public private(set) static var textInputBackground = ThemeAssets.textInputBackground.swiftUIColor
         nonisolated(unsafe) public private(set) static var textInputStroke = ThemeAssets.textInputStroke.swiftUIColor
         nonisolated(unsafe) public private(set) static var textInputUnfocusedBackground = ThemeAssets.textInputUnfocusedBackground.swiftUIColor

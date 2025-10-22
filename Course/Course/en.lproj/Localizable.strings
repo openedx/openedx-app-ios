@@ -51,6 +51,22 @@
 "COURSE_CONTAINER.HANDOUTS" =  "More";
 "COURSE_CONTAINER.HANDOUTS_IN_DEVELOPING" =  "Handouts In developing";
 
+"COURSE_CAROUSEL.PROGRESS_COMPLETION" = "You have completed %@%% of the course progress";
+"COURSE_CAROUSEL.GRADES" = "Grades";
+"COURSE_CAROUSEL.GRADES_DESCRIPTION" = "This represents your weighted grade against the grade needed to pass this course.";
+"COURSE_CAROUSEL.ALL_CONTENT" = "All Content";
+
+"COURSE_CAROUSEL.UPGRADE_NOW_BODY" = "You’re auditing this course now and have limited access to course material.";
+"COURSE_CAROUSEL.UPGRADE_NOW_BUTTON" = "Upgrade now";
+"COURSE_CAROUSEL.ALL_VIDEOS_COMPLETED" = "You’re all caught up on videos!";
+"COURSE_CAROUSEL.ALL_ASSIGNMENTS_COMPLETED" = "You’re all caught up on assignments!";
+"COURSE_CAROUSEL.VIDEOS_COMPLETED" = "Videos\ncompleted";
+"COURSE_CAROUSEL.ASSIGMENTS_COMPLETED" = "Assignments\ncompleted";
+"COURSE_CAROUSEL.CONTINUE_WATCHING" = "Continue Watching";
+"COURSE_CAROUSEL.NEXT_VIDEO" = "Next Video";
+"COURSE_CAROUSEL.VIEW_ALL_VIDEOS" = "All Videos";
+"COURSE_CAROUSEL.VIEW_ALL_ASSIGNMENTS" = "All Assignments";
+
 // MARK: - Course Content
 "COURSE_CONTENT.ALL" = "All";
 "COURSE_CONTENT.VIDEOS" = "Videos";
@@ -79,7 +95,6 @@
 "COURSE_CONTAINER.PROGRESS.COMPLETE" = "Complete";
 "COURSE_CONTAINER.PROGRESS.OF_GRADE" = "of Grade";
 "COURSE_CONTAINER.PROGRESS.NO_GRADED_ASSIGNMENTS" = "This course does not contain graded assignments.";
-
 "HANDOUTS_CELL_HANDOUTS.TITLE" = "Handouts";
 "HANDOUTS_CELL_ANNOUNCEMENTS.TITLE" = "Announcements";
 "HANDOUTS_CELL_HANDOUTS.DESCRIPTION" = "Find important course information";
@@ -239,6 +254,10 @@
 "ACCESSIBILITY.ASSIGNMENTS_SECTION" = "Assignments section";
 "ACCESSIBILITY.ASSIGNMENT_PROGRESS_SECTION" = "Assignment progress section";
 "ACCESSIBILITY.NO_CONTENT_SECTION" = "No content available section";
+"ACCESSIBILITY.CAROUSEL.NEXT_SLIDE_BUTTON" = "Next Page";
+"ACCESSIBILITY.CAROUSEL.LAST_SLIDE_BUTTON" = "Last Page";
+"ACCESSIBILITY.CAROUSEL.PREVIOUS_SLIDE_BUTTON" = "Previous Page";
+"ACCESSIBILITY.CAROUSEL.ASSIGNMENTS_COMPLETED" = "%@ of %@ assignments completed";
 
 // MARK: - Show/Hide Completed Accessibility
 "ACCESSIBILITY.HIDE_COMPLETED_SECTIONS" = "Tap to hide completed sections";
@@ -254,4 +273,5 @@
 "ACCESSIBILITY.VIDEO_THUMBNAIL_IN_PROGRESS" = "%@, %@%% watched";
 "ACCESSIBILITY.VIDEO_THUMBNAIL_NOT_STARTED" = "%@, not started";
 "ACCESSIBILITY.VIDEO_THUMBNAIL_HINT" = "Tap to play video";
+"ACCESSIBILITY.VIDEO_PERCENTAGE_COMPLETED" = "%@ percent completed";
 "ACCESSIBILITY.VIDEO_NAVIGATION" = "Video Navigation";
