@@ -148,7 +148,7 @@ public class CourseProgressViewModel: ObservableObject {
 
         for chapter in courseStructure.childs {
             for sequential in chapter.childs where sequential.sequentialProgress?.assignmentType == assignmentType {
-                total = chapter.childs.count
+                total += 1
                 if sequential.completion == 1 {
                     completed += 1
                 }
