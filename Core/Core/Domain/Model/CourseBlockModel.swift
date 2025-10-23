@@ -449,10 +449,10 @@ public struct CourseBlockVideo: Equatable, Sendable {
     }
 
     public var isVideoURL: Bool {
-        [".mp4", ".m3u8"].contains(where: { url?.contains($0) == true })
+        [".mp4", ".m3u8", ".MP4"].contains(where: { url?.contains($0) == true })
     }
 
     public var isDownloadable: Bool {
-        [".mp4"].contains(where: { url?.contains($0) == true })
+        [".mp4", ".MP4"].contains(where: { url?.contains($0) == true })
     }
 }
