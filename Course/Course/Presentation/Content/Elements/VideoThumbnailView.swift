@@ -159,6 +159,7 @@ struct VideoThumbnailView: View {
                 if type == .continueWith {
                     thumbnailImageView()
                         .aspectRatio(16/9, contentMode: .fill)
+                        .scaleEffect(y: 1.35, anchor: .center)
                         .clipped()
                         .cornerRadius(10)
                     // for future update 
@@ -193,7 +194,7 @@ struct VideoThumbnailView: View {
                     .multilineTextAlignment(.leading)
                     .foregroundStyle(.white)
                     .padding(.horizontal, 11)
-                    .padding(.top, 11)
+                    .padding(.top, self.type == .navigationVideo ? 4 : 11)
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
 
                 // MARK: - Play Button Overlay
@@ -227,7 +228,7 @@ struct VideoThumbnailView: View {
             .clipped()
             .overlay {
                 RoundedRectangle(cornerRadius: 10)
-                    .stroke(lineWidth: isCurrentVideo ? 3 : (video.completion >= 1.0 ? 2 : 0))
+                    .stroke(lineWidth: isCurrentVideo ? 4 : (video.completion >= 1.0 ? 2 : 0))
                     .foregroundStyle(isCurrentVideo ? Theme.Colors.accentColor : Theme.Colors.success)
             }
         }
@@ -376,8 +377,12 @@ struct VideoThumbnailView: View {
     }
 
     private func openVideo() {
-        if let chapter {
-            thumbnailData.onVideoTap(video, chapter)
+        if self.type == .navigationVideo {
+            thumbnailData.onVideoTap(video, nil)
+        } else {
+            if let chapter {
+                thumbnailData.onVideoTap(video, chapter)
+            }
         }
     }
 

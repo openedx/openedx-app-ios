@@ -28,15 +28,18 @@ struct AssignmentCarouselDetailCardView: View {
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 8) {
-                    if detailData.subsectionUI.status != .completed && detailData.subsectionUI.date != nil {
-                        HStack {
+                    HStack {
+                        
+                        if detailData.subsectionUI.status == .pastDue {
                             CoreAssets.icAssignmentPastDue.swiftUIImage
-                            Text(detailData.subsectionUI.status == .pastDue ? "Past Due" : "Due Soon")
-                                .font(Theme.Fonts.titleMedium)
-                                .foregroundStyle(Theme.Colors.textPrimary)
                         }
+
+                        Text(detailData.subsectionUI.status == .pastDue ? CoreLocalization.CourseDates.pastDue
+                             : CourseLocalization.CourseCarousel.nextAssignments)
+                        .font(Theme.Fonts.titleMedium)
+                        .foregroundStyle(Theme.Colors.textPrimary)
                     }
-                    
+
                     HStack {
                         VStack(alignment: .leading) {
                             if detailData.subsectionUI.date != nil {

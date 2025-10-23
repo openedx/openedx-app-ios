@@ -42,7 +42,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         initDI()
         initPlugins()
-        
         // Reset the value to false to get the actual status from the API
         if var storage = Container.shared.resolve(CoreStorage.self) {
             storage.updateAppRequired = false

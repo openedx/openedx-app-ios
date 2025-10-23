@@ -37,7 +37,9 @@ public struct CourseUnitView: View {
     
     @State private var videoURLs: [String: URL?] = [:]
     @State private var webURLs: [String: URL?] = [:]
-    
+
+    @State var currentBlock: CourseBlock?
+
     let isDropdownActive: Bool
     
     var sequenceTitle: String {
@@ -69,6 +71,12 @@ public struct CourseUnitView: View {
         self.isDropdownActive = isDropdownActive
         viewModel.loadIndex()
         viewModel.nextTitles()
+
+        if viewModel.showVideoNavigation {
+            Task {
+               await viewModel.getCourseVideoBlocks()
+            }
+        }
     }
                 
     public var body: some View {
@@ -165,14 +173,39 @@ public struct CourseUnitView: View {
     private func content(reader: GeometryProxy) -> some View {
         let alignment = UnitAlignment(horizontalAlignment: .top, verticalAlignment: .leading)
         let offset = viewOffset(for: viewModel.index, with: reader.size, insets: reader.safeAreaInsets)
+
         UnitStack(isVerticalNavigation: !isHorizontalNavigation, alignment: alignment, spacing: 0) {
             let data = Array(viewModel.verticals[viewModel.verticalIndex].childs.enumerated())
-            ForEach(data, id: \.offset) { index, block in
+            ForEach(data, id: \.offset) {index, block in
                 VStack(spacing: 0) {
+
                     if isDropdownActive {
                         videoTitle(block: block, width: reader.size.width)
                     }
+
+                    if viewModel.showVideoNavigation {
+                        if !isHorizontal {
+                            VideoNavigationView(
+                                viewModel: viewModel,
+                                currentBlock: $currentBlock,
+                                block: block
+                            )
+                            .onReceive(NotificationCenter.default.publisher(for:
+                                    .onVideoProgressUpdated)) { _ in
+                                Task {
+                                    await viewModel.getCourseVideoBlocks()
+                                }
+                            }
+                        }
+                    }
+
                     contentView(for: block, index: index, reader: reader)
+                        .onChange(of: viewModel.allVideosForNavigation) { _ in
+                            if let currentBlock {
+                                let index = self.viewModel.allVideosForNavigation.firstIndex(of: currentBlock)
+                                viewModel.currentVideoIndex = index
+                            }
+                        }
                 }
                 .frame(
                     width: isHorizontal ? reader.size.width - (isHorizontalNavigation ? 0 : 16) : reader.size.width,
@@ -217,6 +250,10 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            .onAppear {
+                self.currentBlock = block
+            }
+
         // MARK: Encoded Video
         case let .video(encodedUrl, blockID):
             videoView(
@@ -226,6 +263,9 @@ public struct CourseUnitView: View {
                 index: index,
                 reader: reader
             )
+            .onAppear {
+                self.currentBlock = block
+            }
         // MARK: Web
         case let .web(url, injections, blockId, isDownloadable):
             webView(
@@ -519,8 +559,9 @@ public struct CourseUnitView: View {
     private var navigationBar: some View {
         VStack(spacing: 0) {
             ZStack(alignment: .bottom) {
+                let title =  viewModel.showVideoNavigation ? currentBlock?.displayName ?? "" : sequenceTitle
                 NavigationBar(
-                    title: isDropdownActive ? sequenceTitle : "",
+                    title: isDropdownActive || viewModel.showVideoNavigation ? title : "",
                     leftButtonAction: {
                         viewModel.router.back()
                         playerStateSubject.send(VideoPlayerState.kill)
@@ -539,7 +580,7 @@ public struct CourseUnitView: View {
                     .padding(.horizontal, 48)
                 }
             }
-            .background(Theme.Colors.background)
+            .background(!viewModel.showVideoNavigation ? Theme.Colors.background : Theme.Colors.courseCardBackground)
             .padding(.trailing, isHorizontal ? 215 : 0)
 
             if viewModel.courseUnitProgressEnabled {

@@ -319,6 +319,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func updateLocalVideoProgress(blockID: String, progress: Double) async {
+        let start = CFAbsoluteTimeGetCurrent()
         await container.performBackgroundTask { context in
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             let request = CDCourseBlock.fetchRequest()

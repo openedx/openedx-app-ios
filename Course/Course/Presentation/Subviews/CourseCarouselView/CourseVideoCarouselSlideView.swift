@@ -83,14 +83,14 @@ struct CourseVideoCarouselSlideView: View {
     private var videoBlock: CourseBlock? {
         guard let chapter = courseChapter else { return nil }
         let videos = getAllVideos(from: chapter)
-        if let partial = videos.first(
-            where: {
-                $0.localVideoProgress > 0 && $0.localVideoProgress < 1 && $0.completion < 1
-            }) {
+        if let partial = videos.first(where: {
+            $0.localVideoProgress > 0 && $0.localVideoProgress < 1
+        }) {
             return partial
         } else {
-            return videos.first(where: { $0.localVideoProgress == 0 })
+            return videos.first(where: { $0.localVideoProgress == 0 && $0.completion < 1 })
         }
+
     }
 
     // MARK: - Body
@@ -129,7 +129,7 @@ struct CourseVideoCarouselSlideView: View {
                         viewModelContainer.selectedTab = .videos
                         viewModelContainer.trackCourseHomeViewAllVideosClicked()
                     }
-                    .padding(.top, -20)
+                    .padding(.top, allVideosCompleted ? -10 : -20)
                     .frame(maxWidth: .infinity)
                 }
             }

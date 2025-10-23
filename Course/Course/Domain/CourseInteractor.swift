@@ -28,6 +28,7 @@ public protocol CourseInteractorProtocol: Sendable {
     func enrichCourseStructureWithLocalProgress(_ structure: CourseStructure) async -> CourseStructure
     func getCourseProgress(courseID: String) async throws -> CourseProgressDetails
     func getCourseProgressOffline(courseID: String) async throws -> CourseProgressDetails
+    func getAllVideosForNavigation(structure course: CourseStructure) async throws -> [CourseBlock]
 }
 
 public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerProtocol {
@@ -136,7 +137,20 @@ public actor CourseInteractor: CourseInteractorProtocol, CourseStructureManagerP
             }
         }
     }
-    
+
+    public func getAllVideosForNavigation(structure course: CourseStructure) -> [CourseBlock] {
+        var newChilds = [CourseChapter]()
+        for chapter in course.childs {
+            let newChapter = filterChapter(chapter: chapter)
+            if !newChapter.childs.isEmpty {
+                newChilds.append(newChapter)
+            }
+        }
+
+        let allVideos = getAllVideosFromStructure(childs: newChilds)
+        return allVideos
+    }
+
     private func getAllAssignmentsFromStructure(childs: [CourseChapter]) -> [CourseBlock] {
         return childs.flatMap { chapter in
             chapter.childs.flatMap { sequential in

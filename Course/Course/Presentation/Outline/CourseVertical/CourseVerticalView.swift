@@ -57,7 +57,9 @@ public struct CourseVerticalView: View {
                                             verticalIndex: index,
                                             chapters: viewModel.chapters,
                                             chapterIndex: viewModel.chapterIndex,
-                                            sequentialIndex: viewModel.sequentialIndex
+                                            sequentialIndex: viewModel.sequentialIndex,
+                                            showVideoNavigation: false,
+                                            courseVideoStructure: nil
                                         )
                                     }
                                 }, label: {

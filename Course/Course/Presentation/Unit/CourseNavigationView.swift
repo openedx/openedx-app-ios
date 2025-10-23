@@ -14,7 +14,7 @@ struct CourseNavigationView: View {
     @ObservedObject
     private var viewModel: CourseUnitViewModel
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
-    
+
     init(
         viewModel: CourseUnitViewModel,
         playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
@@ -24,11 +24,21 @@ struct CourseNavigationView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 7) {
+        HStack(alignment: .top, spacing: 16) {
             if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.first
-                && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 {
+                && viewModel.verticals[viewModel.verticalIndex].childs.count != 1 && !viewModel.showVideoNavigation {
                 nextBigButton
                     .frame(width: 215)
+            } else if viewModel.showVideoNavigation {
+
+                if let index = viewModel.currentVideoIndex, index != 0 {
+                    previousButtonVideoNavigation
+                }
+
+                if let index = viewModel.currentVideoIndex, index != viewModel.allVideosForNavigation.count - 1 {
+                    nextButtonVideoNavigation
+                }
+
             } else {
                 if viewModel.selectedLesson() == viewModel.verticals[viewModel.verticalIndex].childs.last {
                     if viewModel.selectedLesson() != viewModel.verticals[viewModel.verticalIndex].childs.first {
@@ -45,7 +55,36 @@ struct CourseNavigationView: View {
             }
         }.padding(.horizontal, 24)
     }
-    
+
+    private var nextButtonVideoNavigation: some View {
+        UnitButtonView(
+            type: .next,
+            isVerticalNavigation: false,
+            action: {
+                if let index = viewModel.currentVideoIndex, index != viewModel.allVideosForNavigation.count - 1 {
+                    playerStateSubject.send(VideoPlayerState.kill)
+                    let video = viewModel.allVideosForNavigation[index + 1]
+                    viewModel.handleVideoTap(video: video)
+                }
+            }
+        )
+    }
+
+    private var previousButtonVideoNavigation: some View {
+        UnitButtonView(
+            type: .previous,
+            isVerticalNavigation: false,
+            action: {
+                if let index = viewModel.currentVideoIndex, index != 0 {
+                    playerStateSubject.send(VideoPlayerState.kill)
+                    let video = viewModel.allVideosForNavigation[index - 1]
+                    viewModel.handleVideoTap(video: video)
+                }
+            }
+        )
+        .accessibilityLabel(Text(CourseLocalization.Courseware.previousFull))
+    }
+
     private var nextBigButton: some View {
         UnitButtonView(
             type: .nextBig,
@@ -129,7 +168,9 @@ struct CourseNavigationView: View {
                             chapters: viewModel.chapters,
                             chapterIndex: data.chapterIndex,
                             sequentialIndex: data.sequentialIndex,
-                            animated: true
+                            animated: true,
+                            showVideoNavigation: false,
+                            courseVideoStructure: nil
                         )
                     }
                 )
