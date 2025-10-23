@@ -10,8 +10,6 @@ import Core
 import Theme
 
 struct CustomDisclosureGroup: View {
-    @State private var expandedSections: [String: Bool] = [:]
-    
     private let proxy: GeometryProxy
     private let course: CourseStructure
     private let viewModel: CourseContainerViewModel
@@ -27,16 +25,24 @@ struct CustomDisclosureGroup: View {
         VStack(alignment: .leading, spacing: 8) {
             ForEach(course.childs) { chapter in
                 let chapterIndex = course.childs.firstIndex(where: { $0.id == chapter.id })
-                VStack(alignment: .leading) {
+                VStack(alignment: .leading, spacing: 0) {
+                    // MARK: - Progress Bar
+                    SectionProgressView(progress: chapterProgress(for: chapter))
+                        .padding(.horizontal, -16)
+                        .padding(.top, -12)
+                    
                     Button(
                         action: {
                             withAnimation(.linear(duration: course.childs.count > 1 ? 0.2 : 0.05)) {
-                                expandedSections[chapter.id, default: false].toggle()
+                                viewModel.expandedSections[chapter.id, default: false].toggle()
                             }
+                            viewModel.trackSectionClicked(chapter)
                         }, label: {
                             HStack {
                                 CoreAssets.chevronRight.swiftUIImage
-                                    .rotationEffect(.degrees(expandedSections[chapter.id] ?? false ? -90 : 90))
+                                    .rotationEffect(
+                                        .degrees(viewModel.expandedSections[chapter.id] ?? false ? -90 : 90)
+                                    )
                                     .foregroundColor(Theme.Colors.textPrimary)
                                 if chapter.childs.allSatisfy({ $0.completion == 1 }) {
                                     CoreAssets.finishedSequence.swiftUIImage.renderingMode(.template)
@@ -68,7 +74,8 @@ struct CustomDisclosureGroup: View {
                             }
                         }
                     )
-                    if expandedSections[chapter.id] ?? false {
+                    .padding(.top, 8)
+                    if viewModel.expandedSections[chapter.id] ?? false {
                         VStack(alignment: .leading) {
                             ForEach(chapter.childs) { sequential in
                                 let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == sequential.id })
@@ -93,7 +100,9 @@ struct CustomDisclosureGroup: View {
                                                         verticalIndex: 0,
                                                         chapters: course.childs,
                                                         chapterIndex: chapterIndex,
-                                                        sequentialIndex: sequentialIndex
+                                                        sequentialIndex: sequentialIndex,
+                                                        showVideoNavigation: false,
+                                                        courseVideoStructure: nil
                                                     )
                                                 } else {
                                                     viewModel.router.showCourseVerticalView(
@@ -153,17 +162,17 @@ struct CustomDisclosureGroup: View {
                                 }
                             }
                         }
-                        
+                        .padding(.top, 8)
                     }
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .background(
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 6)
                         .fill(Theme.Colors.datesSectionBackground)
                 )
                 .overlay(
-                    RoundedRectangle(cornerRadius: 8)
+                    RoundedRectangle(cornerRadius: 6)
                         .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
                         .foregroundColor(Theme.Colors.cardViewStroke)
                 )
@@ -171,11 +180,7 @@ struct CustomDisclosureGroup: View {
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 8)
-        .onFirstAppear {
-            for chapter in course.childs {
-                expandedSections[chapter.id] = false
-            }
-        }
+
     }
     
     private func deleteMessage(for chapter: CourseChapter) -> String {
@@ -208,16 +213,28 @@ struct CustomDisclosureGroup: View {
     private func assignmentStatusText(
         sequential: CourseSequential
     ) -> String? {
-        
-        guard let sequentialProgress = sequential.sequentialProgress,
-              let assignmentType = sequentialProgress.assignmentType,
-              let due = sequential.due else {
-            return nil
+        var parts: [String] = []
+
+        // Name
+        if let name = sequential.sequentialProgress?.assignmentType,
+           !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            parts.append(name)
         }
-        
-        let daysRemaining = getAssignmentStatus(for: due)
-        
-        return "\(assignmentType) - \(daysRemaining)"
+
+        // Deadline
+        if let due = sequential.due {
+            parts.append(getAssignmentStatus(for: due))
+        }
+
+        // Progress
+        if let sp = sequential.sequentialProgress,
+           let earned = sp.numPointsEarned,
+           let possible = sp.numPointsPossible,
+           possible != 0 {
+            parts.append("\(earned) / \(possible)")
+        }
+
+        return parts.isEmpty ? nil : parts.joined(separator: " - ")
     }
     
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
@@ -265,6 +282,10 @@ struct CustomDisclosureGroup: View {
     private func sequentialDownloadState(_ sequential: CourseSequential) -> DownloadViewState? {
         return viewModel.sequentialsDownloadState[sequential.id]
     }
+    
+    private func chapterProgress(for chapter: CourseChapter) -> Double {
+        return viewModel.chapterProgress(for: chapter)
+    }
 }
 
 #if DEBUG
@@ -311,7 +332,8 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Advanced Assessment Tools",
                             numPointsEarned: 1,
-                            numPointsPossible: 3
+                            numPointsPossible: 3,
+                            shortLabel: nil
                         ),
                         due: Date()
                     ),
@@ -336,7 +358,8 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Basic Assessment Tools",
                             numPointsEarned: 1,
-                            numPointsPossible: 3
+                            numPointsPossible: 3,
+                            shortLabel: nil
                         ),
                         due: Date()
                     )
@@ -379,7 +402,8 @@ struct CustomDisclosureGroup_Previews: PreviewProvider {
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Advanced Assessment Tools",
                             numPointsEarned: 1,
-                            numPointsPossible: 3
+                            numPointsPossible: 3,
+                            shortLabel: nil
                         ),
                         due: Date()
                     )

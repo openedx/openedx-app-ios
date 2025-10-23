@@ -1,0 +1,456 @@
+//
+//  VideoThumbnailView.swift
+//  Course
+//
+//  Created by Ivan Stepanok on 02.07.2025.
+//
+
+import SwiftUI
+import Core
+import Theme
+import Kingfisher
+import AVFoundation
+import Swinject
+
+enum VideoThumbnailType {
+    case contentVideo
+    case navigationVideo
+    case continueWith
+    
+    var playIconFrameSize: CGFloat {
+        switch self {
+        case .contentVideo:
+            28
+        case .navigationVideo:
+            16
+        case .continueWith:
+            43
+        }
+    }
+    
+    var progressLineHeight: CGFloat {
+        switch self {
+        case .contentVideo:
+            4
+        case .navigationVideo:
+            4
+        case .continueWith:
+            8
+        }
+    }
+    
+    var progressHorizontalPadding: CGFloat {
+        switch self {
+        case .contentVideo:
+            8
+        case .navigationVideo:
+            8
+        case .continueWith:
+            16
+        }
+    }
+
+    var font: Font {
+        switch self {
+        case .contentVideo:
+            Theme.Fonts.bodySmall
+        case .navigationVideo:
+            Theme.Fonts.labelSmall
+        case .continueWith:
+            Theme.Fonts.titleMedium
+        }
+    }
+}
+
+struct VideoThumbnailView: View {
+
+    let thumbnailData: VideoThumbnailData
+
+    private var video: CourseBlock {
+        thumbnailData.video
+    }
+
+    private var chapter: CourseChapter? {
+        thumbnailData.chapter
+    }
+
+    private var thumbnailWidth: CGFloat = 192
+    private var thumbnailHeight: CGFloat = 108
+    private var isCurrentVideo = false
+    private var type: VideoThumbnailType
+
+    @State private var thumbnailImage: UIImage?
+    @State private var isGeneratingThumbnail = false
+    @State private var displayedWidth: CGFloat = 0
+
+    init(
+        thumbnailData: VideoThumbnailData,
+        thumbnailImage: UIImage? = nil,
+        isGeneratingThumbnail: Bool = false,
+        type: VideoThumbnailType = .contentVideo,
+        thumbnailWidth: CGFloat = 192,
+        thumbnailHeight: CGFloat = 108,
+        isCurrentVideo: Bool = false
+    ) {
+        self.thumbnailData = thumbnailData
+        self.thumbnailImage = thumbnailImage
+        self.isGeneratingThumbnail = isGeneratingThumbnail
+        self.thumbnailWidth = thumbnailWidth
+        self.thumbnailHeight = thumbnailHeight
+        self.isCurrentVideo = isCurrentVideo
+        self.type = type
+    }
+
+    private var effectiveThumbnailWidth: CGFloat {
+        if type == .continueWith, displayedWidth > 0 {
+            return displayedWidth
+        }
+        return thumbnailWidth
+    }
+
+    private var isFullWidthThumbnail: Bool {
+        type == .continueWith
+    }
+
+    private var thumbnailService: VideoThumbnailServiceProtocol {
+        Container.shared.resolve(VideoThumbnailServiceProtocol.self)!
+    }
+
+    private var thumbnailURL: URL? {
+        // First priority: YouTube thumbnail
+        if let youtubeVideo = video.encodedVideo?.youtube,
+           let youtubeURL = youtubeVideo.url,
+           let videoID = youtubeURL.youtubeVideoID() {
+            return URL(string: "https://img.youtube.com/vi/\(videoID)/hqdefault.jpg")
+        }
+
+        return nil
+    }
+
+    private func getVideoURL() -> URL? {
+        let encodedVideo = video.encodedVideo
+
+        // Priority order for video sources
+        let videoSources = [
+            encodedVideo?.desktopMP4,
+            encodedVideo?.mobileHigh,
+            encodedVideo?.mobileLow,
+            encodedVideo?.hls,
+            encodedVideo?.fallback
+        ].compactMap { $0 }
+
+        for videoSource in videoSources {
+            if let urlString = videoSource.url, !urlString.isEmpty {
+                return URL(string: urlString)
+            }
+        }
+
+        return nil
+    }
+
+    var body: some View {
+        Button(action: {
+            if !isCurrentVideo {
+                openVideo()
+            }
+        }) {
+            ZStack {
+                // MARK: - Thumbnail Image
+                if type == .continueWith {
+                    thumbnailImageView()
+                        .aspectRatio(16/9, contentMode: .fill)
+                        .scaleEffect(y: 1.35, anchor: .center)
+                        .clipped()
+                        .cornerRadius(10)
+                    // for future update 
+//                        .clipShape(RoundedCorners(tl: 10, tr: 10))
+                } else {
+                    thumbnailImageView()
+                        .frame(width: thumbnailWidth, height: thumbnailHeight)
+                        .aspectRatio(16/9, contentMode: .fill)
+                        .scaleEffect(y: 1.35, anchor: .center)
+                        .clipped()
+                        .cornerRadius(10)
+                }
+
+                // Gradient overlay to improve title readability
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.7),
+                        Color.black.opacity(0.3),
+                        Color.black.opacity(0.0),
+                        Color.black.opacity(0.0)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .cornerRadius(10)
+
+                Text(video.displayName)
+                // NOT SURE WE NEED THIS
+//                    .frame(maxWidth: isFullWidthThumbnail ? .infinity : thumbnailWidth / 2)
+                    .lineLimit(2)
+                    .font(type.font)
+                    .multilineTextAlignment(.leading)
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 11)
+                    .padding(.top, self.type == .navigationVideo ? 4 : 11)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+
+                // MARK: - Play Button Overlay
+                if !isCurrentVideo {
+                    CoreAssets.videoPlayButton.swiftUIImage
+                        .resizable()
+                        .frame(width: type.playIconFrameSize, height: type.playIconFrameSize)
+                }
+
+                // MARK: - Progress Indicator
+                progressIndicatorView()
+                    .padding(.horizontal, 2)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+
+            }
+            .frame(width: isFullWidthThumbnail ? nil : thumbnailWidth,
+                   height: isFullWidthThumbnail ? nil : thumbnailHeight)
+            .frame(maxWidth: isFullWidthThumbnail ? .infinity : nil)
+            .aspectRatio(16/9, contentMode: isFullWidthThumbnail ? .fit : .fill)
+            .background(
+                GeometryReader { geometry in
+                    Color.clear
+                        .onAppear {
+                            displayedWidth = geometry.size.width
+                        }
+                        .onChange(of: geometry.size.width) { newWidth in
+                            displayedWidth = newWidth
+                        }
+                }
+            )
+            .clipped()
+            .overlay {
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(lineWidth: isCurrentVideo ? 4 : (video.completion >= 1.0 ? 2 : 0))
+                    .foregroundStyle(isCurrentVideo ? Theme.Colors.accentColor : Theme.Colors.success)
+            }
+        }
+        .buttonStyle(PlainButtonStyle())
+        .padding(1)
+        .accessibilityLabel(getAccessibilityLabel())
+        .accessibilityHint(CourseLocalization.Accessibility.videoThumbnailHint)
+        .task {
+            // Generate video thumbnail if needed
+            if thumbnailURL == nil, let videoURL = getVideoURL() {
+                await generateVideoThumbnailIfNeeded(from: videoURL)
+            }
+        }
+    }
+
+    // MARK: - Helper Functions
+    @ViewBuilder
+    private func progressIndicatorView() -> some View {
+        let effectiveProgress = getEffectiveProgress()
+        let shouldShowAsCompleted = video.completion >= 0.9
+        let shouldShowGreenBar = shouldShowAsCompleted && (
+            video.localVideoProgress == 0 || video.localVideoProgress >= 0.9
+        )
+
+        if shouldShowAsCompleted {
+            // Video completed on server - show checkmark
+            ZStack(alignment: .trailing) {
+                if shouldShowGreenBar {
+                    // Show green bar when no local progress OR local progress >= 90%
+                    Rectangle()
+                        .fill(Theme.Colors.success)
+                        .frame(height: type.progressLineHeight)
+                        .cornerRadius(type.progressLineHeight / 2)
+                        .padding(.horizontal, type.progressHorizontalPadding)
+                        .padding(.bottom, 8)
+                } else if effectiveProgress > 0 {
+                    // Show local progress bar when rewatching
+                    ZStack(alignment: .leading) {
+                        Rectangle()
+                            .fill(Theme.Colors.primaryCardProgressBG)
+                            .frame(height: type.progressLineHeight)
+                            .cornerRadius(type.progressLineHeight / 2)
+                            .padding(.horizontal, type.progressHorizontalPadding)
+                            .padding(.bottom, 8)
+
+                        Rectangle()
+                            .fill(Theme.Colors.accentColor)
+                            .frame(
+                                width: max(8, effectiveThumbnailWidth * effectiveProgress - 8),
+                                height: type.progressLineHeight
+                            )
+                            .cornerRadius(type.progressLineHeight / 2)
+                            .padding(.horizontal, type.progressHorizontalPadding)
+                            .padding(.bottom, 8)
+                    }
+                }
+
+                // Always show checkmark for completed videos
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 20))
+                    .foregroundColor(Theme.Colors.success)
+                    .background(
+                        Circle()
+                            .fill(Color.white)
+                            .frame(width: 14, height: 14)
+                    )
+                    .offset(y: -3)
+            }
+        } else if effectiveProgress > 0 {
+            // Partially watched - show progress bar
+            ZStack(alignment: .leading) {
+                Rectangle()
+                    .fill(Theme.Colors.primaryCardProgressBG)
+                    .frame(height: type.progressLineHeight)
+                    .cornerRadius(type.progressLineHeight / 2)
+                    .padding(.horizontal, type.progressHorizontalPadding)
+                    .padding(.bottom, 8)
+
+                Rectangle()
+                    .fill(Theme.Colors.accentColor)
+                    .frame(
+                        width: max(8, effectiveThumbnailWidth * effectiveProgress - 8),
+                        height: type.progressLineHeight
+                    )
+                    .cornerRadius(type.progressLineHeight / 2)
+                    .padding(.horizontal, type.progressHorizontalPadding)
+                    .padding(.bottom, 8)
+            }
+        }
+    }
+
+    private func getEffectiveProgress() -> Double {
+        let effectiveProgress: Double
+
+        // Always prioritize local progress if available
+        if video.localVideoProgress > 0 {
+            effectiveProgress = video.localVideoProgress
+        } else if video.completion >= 1.0 {
+            // If no local progress but completed on server, show as 100%
+            effectiveProgress = 1.0
+        } else {
+            // Not completed and no local progress
+            effectiveProgress = 0.0
+        }
+
+        return effectiveProgress
+    }
+
+    @ViewBuilder
+    private func thumbnailImageView() -> some View {
+        if let thumbnailURL = thumbnailURL {
+            // For YouTube thumbnails
+            KFImage(thumbnailURL)
+                .placeholder {
+                    Theme.Colors.commentCellBackground
+                }
+                .resizable()
+        } else if let thumbnailImage = thumbnailImage {
+            // For generated video thumbnails
+            Image(uiImage: thumbnailImage)
+                .resizable()
+        } else if isGeneratingThumbnail {
+            // Loading state
+            ZStack {
+                Theme.Colors.commentCellBackground
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: Theme.Colors.accentColor))
+            }
+        } else {
+            // Default placeholder
+            Theme.Colors.commentCellBackground
+        }
+    }
+
+    private func generateVideoThumbnailIfNeeded(from url: URL) async {
+        await MainActor.run {
+            self.isGeneratingThumbnail = true
+        }
+
+        let image = await thumbnailService.generateVideoThumbnailIfNeeded(from: url)
+
+        await MainActor.run {
+            self.thumbnailImage = image
+            self.isGeneratingThumbnail = false
+        }
+    }
+
+    private func openVideo() {
+        if self.type == .navigationVideo {
+            thumbnailData.onVideoTap(video, nil)
+        } else {
+            if let chapter {
+                thumbnailData.onVideoTap(video, chapter)
+            }
+        }
+    }
+
+    private func getAccessibilityLabel() -> String {
+        let baseLabel = CourseLocalization.Accessibility.videoThumbnail(video.displayName)
+
+        if video.completion >= 1.0 {
+            return CourseLocalization.Accessibility.videoThumbnailCompleted(baseLabel)
+        } else if getEffectiveProgress() > 0 {
+            let progressPercent = Int(getEffectiveProgress() * 100)
+            return CourseLocalization.Accessibility.videoThumbnailInProgress(baseLabel, progressPercent)
+        } else {
+            return CourseLocalization.Accessibility.videoThumbnailNotStarted(baseLabel)
+        }
+    }
+}
+
+#if DEBUG
+#Preview {
+    VideoThumbnailView(
+        thumbnailData: VideoThumbnailData(
+            video: CourseBlock(
+                blockId: "1",
+                id: "1",
+                courseId: "1",
+                graded: true,
+                due: Date(),
+                completion: 1,
+                type: .video,
+                displayName: "Video",
+                studentUrl: "",
+                webUrl: "",
+                encodedVideo: CourseBlockEncodedVideo(
+                    fallback: CourseBlockVideo(
+                        url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4",
+                        fileSize: 1000000,
+                        streamPriority: 2,
+                        type: .fallback
+                    ),
+                    youtube: CourseBlockVideo(
+                        url: "https://www.youtube.com/watch?v=uFdWM1a44C8",
+                        fileSize: 999,
+                        streamPriority: 1,
+                        type: .youtube
+                    ),
+                    desktopMP4: CourseBlockVideo(
+                        url: "https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4",
+                        fileSize: 2000000,
+                        streamPriority: 3,
+                        type: .desktopMP4
+                    ),
+                    mobileHigh: nil,
+                    mobileLow: nil,
+                    hls: nil
+                ),
+                multiDevice: true,
+                offlineDownload: nil
+            ),
+            chapter: CourseChapter(
+                blockId: "1",
+                id: "1",
+                displayName: "Chapter",
+                type: .video,
+                childs: []
+            ),
+            courseStructure: nil,
+            onVideoTap: { _, _ in }
+        )
+    )
+}
+#endif

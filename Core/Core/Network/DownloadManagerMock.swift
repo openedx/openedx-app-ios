@@ -90,5 +90,9 @@ public final class DownloadManagerMock: DownloadManagerProtocol, @unchecked Send
     }
 
     public func removeAppSupportDirectoryUnusedContent() {}
+    
+    public func getFreeDiskSpace() -> Int? {
+        nil
+    }
 }
 #endif

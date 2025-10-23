@@ -629,16 +629,16 @@ open class BaseRouterMock: BaseRouter, Mock {
 		perform?(`title`)
     }
 
-    open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, type: AlertViewType) {
-        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`positiveAction`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<AlertViewType>.value(`type`)))
-		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`positiveAction`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<AlertViewType>.value(`type`))) as? (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void
-		perform?(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`)
+    open func presentAlert(alertTitle: String, alertMessage: String, positiveAction: String, onCloseTapped: @escaping () -> Void, firstButtonTapped: @escaping () -> Void, type: AlertViewType) {
+        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`positiveAction`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`firstButtonTapped`), Parameter<AlertViewType>.value(`type`)))
+		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String>.value(`positiveAction`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`firstButtonTapped`), Parameter<AlertViewType>.value(`type`))) as? (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void
+		perform?(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `firstButtonTapped`, `type`)
     }
 
-    open func presentAlert(alertTitle: String, alertMessage: String, nextSectionName: String?, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, okTapped: @escaping () -> Void, nextSectionTapped: @escaping () -> Void) {
-        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`)))
-		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`okTapped`), Parameter<() -> Void>.value(`nextSectionTapped`))) as? (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
-		perform?(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`)
+    open func presentAlert(alertTitle: String, alertMessage: String, nextSectionName: String?, action: String, image: SwiftUI.Image, onCloseTapped: @escaping () -> Void, firstButtonTapped: @escaping () -> Void, nextSectionTapped: @escaping () -> Void) {
+        addInvocation(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`firstButtonTapped`), Parameter<() -> Void>.value(`nextSectionTapped`)))
+		let perform = methodPerformValue(.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(Parameter<String>.value(`alertTitle`), Parameter<String>.value(`alertMessage`), Parameter<String?>.value(`nextSectionName`), Parameter<String>.value(`action`), Parameter<SwiftUI.Image>.value(`image`), Parameter<() -> Void>.value(`onCloseTapped`), Parameter<() -> Void>.value(`firstButtonTapped`), Parameter<() -> Void>.value(`nextSectionTapped`))) as? (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void
+		perform?(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `firstButtonTapped`, `nextSectionTapped`)
     }
 
     open func presentView(transitionStyle: UIModalTransitionStyle, view: any View, completion: (() -> Void)?) {
@@ -668,8 +668,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         case m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(Parameter<String?>, Parameter<LogistrationSourceScreen>)
         case m_showWebBrowser__title_titleurl_url(Parameter<String>, Parameter<URL>)
         case m_showSSOWebBrowser__title_title(Parameter<String>)
-        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
-        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
+        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(Parameter<String>, Parameter<String>, Parameter<String>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<AlertViewType>)
+        case m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(Parameter<String>, Parameter<String>, Parameter<String?>, Parameter<String>, Parameter<SwiftUI.Image>, Parameter<() -> Void>, Parameter<() -> Void>, Parameter<() -> Void>)
         case m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(Parameter<UIModalTransitionStyle>, Parameter<any View>, Parameter<(() -> Void)?>)
         case m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(Parameter<UIModalTransitionStyle>, Parameter<Bool>, Parameter<() -> any View>)
 
@@ -734,17 +734,17 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsTitle, rhs: rhsTitle, with: matcher), lhsTitle, rhsTitle, "title"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let lhsAlerttitle, let lhsAlertmessage, let lhsPositiveaction, let lhsOnclosetapped, let lhsOktapped, let lhsType), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(let rhsAlerttitle, let rhsAlertmessage, let rhsPositiveaction, let rhsOnclosetapped, let rhsOktapped, let rhsType)):
+            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(let lhsAlerttitle, let lhsAlertmessage, let lhsPositiveaction, let lhsOnclosetapped, let lhsFirstbuttontapped, let lhsType), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(let rhsAlerttitle, let rhsAlertmessage, let rhsPositiveaction, let rhsOnclosetapped, let rhsFirstbuttontapped, let rhsType)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlerttitle, rhs: rhsAlerttitle, with: matcher), lhsAlerttitle, rhsAlerttitle, "alertTitle"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlertmessage, rhs: rhsAlertmessage, with: matcher), lhsAlertmessage, rhsAlertmessage, "alertMessage"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsPositiveaction, rhs: rhsPositiveaction, with: matcher), lhsPositiveaction, rhsPositiveaction, "positiveAction"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOnclosetapped, rhs: rhsOnclosetapped, with: matcher), lhsOnclosetapped, rhsOnclosetapped, "onCloseTapped"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOktapped, rhs: rhsOktapped, with: matcher), lhsOktapped, rhsOktapped, "okTapped"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFirstbuttontapped, rhs: rhsFirstbuttontapped, with: matcher), lhsFirstbuttontapped, rhsFirstbuttontapped, "firstButtonTapped"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsType, rhs: rhsType, with: matcher), lhsType, rhsType, "type"))
 				return Matcher.ComparisonResult(results)
 
-            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsNextsectionname, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsOktapped, let lhsNextsectiontapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsNextsectionname, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsOktapped, let rhsNextsectiontapped)):
+            case (.m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(let lhsAlerttitle, let lhsAlertmessage, let lhsNextsectionname, let lhsAction, let lhsImage, let lhsOnclosetapped, let lhsFirstbuttontapped, let lhsNextsectiontapped), .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(let rhsAlerttitle, let rhsAlertmessage, let rhsNextsectionname, let rhsAction, let rhsImage, let rhsOnclosetapped, let rhsFirstbuttontapped, let rhsNextsectiontapped)):
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlerttitle, rhs: rhsAlerttitle, with: matcher), lhsAlerttitle, rhsAlerttitle, "alertTitle"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAlertmessage, rhs: rhsAlertmessage, with: matcher), lhsAlertmessage, rhsAlertmessage, "alertMessage"))
@@ -752,7 +752,7 @@ open class BaseRouterMock: BaseRouter, Mock {
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsAction, rhs: rhsAction, with: matcher), lhsAction, rhsAction, "action"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsImage, rhs: rhsImage, with: matcher), lhsImage, rhsImage, "image"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOnclosetapped, rhs: rhsOnclosetapped, with: matcher), lhsOnclosetapped, rhsOnclosetapped, "onCloseTapped"))
-				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsOktapped, rhs: rhsOktapped, with: matcher), lhsOktapped, rhsOktapped, "okTapped"))
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsFirstbuttontapped, rhs: rhsFirstbuttontapped, with: matcher), lhsFirstbuttontapped, rhsFirstbuttontapped, "firstButtonTapped"))
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsNextsectiontapped, rhs: rhsNextsectiontapped, with: matcher), lhsNextsectiontapped, rhsNextsectiontapped, "nextSectionTapped"))
 				return Matcher.ComparisonResult(results)
 
@@ -788,8 +788,8 @@ open class BaseRouterMock: BaseRouter, Mock {
             case let .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(p0, p1): return p0.intValue + p1.intValue
             case let .m_showWebBrowser__title_titleurl_url(p0, p1): return p0.intValue + p1.intValue
             case let .m_showSSOWebBrowser__title_title(p0): return p0.intValue
-            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
-            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
+            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(p0, p1, p2, p3, p4, p5): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue
+            case let .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(p0, p1, p2, p3, p4, p5, p6, p7): return p0.intValue + p1.intValue + p2.intValue + p3.intValue + p4.intValue + p5.intValue + p6.intValue + p7.intValue
             case let .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             case let .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(p0, p1, p2): return p0.intValue + p1.intValue + p2.intValue
             }
@@ -809,8 +809,8 @@ open class BaseRouterMock: BaseRouter, Mock {
             case .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen: return ".showDiscoveryScreen(searchQuery:sourceScreen:)"
             case .m_showWebBrowser__title_titleurl_url: return ".showWebBrowser(title:url:)"
             case .m_showSSOWebBrowser__title_title: return ".showSSOWebBrowser(title:)"
-            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:okTapped:type:)"
-            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:okTapped:nextSectionTapped:)"
+            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type: return ".presentAlert(alertTitle:alertMessage:positiveAction:onCloseTapped:firstButtonTapped:type:)"
+            case .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped: return ".presentAlert(alertTitle:alertMessage:nextSectionName:action:image:onCloseTapped:firstButtonTapped:nextSectionTapped:)"
             case .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion: return ".presentView(transitionStyle:view:completion:)"
             case .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content: return ".presentView(transitionStyle:animated:content:)"
             }
@@ -844,8 +844,8 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func showDiscoveryScreen(searchQuery: Parameter<String?>, sourceScreen: Parameter<LogistrationSourceScreen>) -> Verify { return Verify(method: .m_showDiscoveryScreen__searchQuery_searchQuerysourceScreen_sourceScreen(`searchQuery`, `sourceScreen`))}
         public static func showWebBrowser(title: Parameter<String>, url: Parameter<URL>) -> Verify { return Verify(method: .m_showWebBrowser__title_titleurl_url(`title`, `url`))}
         public static func showSSOWebBrowser(title: Parameter<String>) -> Verify { return Verify(method: .m_showSSOWebBrowser__title_title(`title`))}
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`))}
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`))}
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, firstButtonTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `firstButtonTapped`, `type`))}
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, firstButtonTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>) -> Verify { return Verify(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `firstButtonTapped`, `nextSectionTapped`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, completion: Parameter<(() -> Void)?>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(`transitionStyle`, `view`, `completion`))}
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, animated: Parameter<Bool>, content: Parameter<() -> any View>) -> Verify { return Verify(method: .m_presentView__transitionStyle_transitionStyleanimated_animatedcontent_content(`transitionStyle`, `animated`, `content`))}
     }
@@ -893,11 +893,11 @@ open class BaseRouterMock: BaseRouter, Mock {
         public static func showSSOWebBrowser(title: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_showSSOWebBrowser__title_title(`title`), performs: perform)
         }
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
-            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedokTapped_okTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `okTapped`, `type`), performs: perform)
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, positiveAction: Parameter<String>, onCloseTapped: Parameter<() -> Void>, firstButtonTapped: Parameter<() -> Void>, type: Parameter<AlertViewType>, perform: @escaping (String, String, String, @escaping () -> Void, @escaping () -> Void, AlertViewType) -> Void) -> Perform {
+            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagepositiveAction_positiveActiononCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappedtype_type(`alertTitle`, `alertMessage`, `positiveAction`, `onCloseTapped`, `firstButtonTapped`, `type`), performs: perform)
         }
-        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, okTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>, perform: @escaping (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
-            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedokTapped_okTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `okTapped`, `nextSectionTapped`), performs: perform)
+        public static func presentAlert(alertTitle: Parameter<String>, alertMessage: Parameter<String>, nextSectionName: Parameter<String?>, action: Parameter<String>, image: Parameter<SwiftUI.Image>, onCloseTapped: Parameter<() -> Void>, firstButtonTapped: Parameter<() -> Void>, nextSectionTapped: Parameter<() -> Void>, perform: @escaping (String, String, String?, String, SwiftUI.Image, @escaping () -> Void, @escaping () -> Void, @escaping () -> Void) -> Void) -> Perform {
+            return Perform(method: .m_presentAlert__alertTitle_alertTitlealertMessage_alertMessagenextSectionName_nextSectionNameaction_actionimage_imageonCloseTapped_onCloseTappedfirstButtonTapped_firstButtonTappednextSectionTapped_nextSectionTapped(`alertTitle`, `alertMessage`, `nextSectionName`, `action`, `image`, `onCloseTapped`, `firstButtonTapped`, `nextSectionTapped`), performs: perform)
         }
         public static func presentView(transitionStyle: Parameter<UIModalTransitionStyle>, view: Parameter<any View>, completion: Parameter<(() -> Void)?>, perform: @escaping (UIModalTransitionStyle, any View, (() -> Void)?) -> Void) -> Perform {
             return Perform(method: .m_presentView__transitionStyle_transitionStyleview_viewcompletion_completion(`transitionStyle`, `view`, `completion`), performs: perform)
@@ -1525,6 +1525,11 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
 	}
 	private var __p_program: (DiscoveryConfig)?
 
+    public var experimentalFeatures: ExperimentalFeaturesConfig {
+		get {	invocations.append(.p_experimentalFeatures_get); return __p_experimentalFeatures ?? givenGetterValue(.p_experimentalFeatures_get, "ConfigProtocolMock - stub value for experimentalFeatures was not defined") }
+	}
+	private var __p_experimentalFeatures: (ExperimentalFeaturesConfig)?
+
     public var URIScheme: String {
 		get {	invocations.append(.p_URIScheme_get); return __p_URIScheme ?? givenGetterValue(.p_URIScheme_get, "ConfigProtocolMock - stub value for URIScheme was not defined") }
 	}
@@ -1560,6 +1565,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         case p_braze_get
         case p_branch_get
         case p_program_get
+        case p_experimentalFeatures_get
         case p_URIScheme_get
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
@@ -1587,6 +1593,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case (.p_braze_get,.p_braze_get): return Matcher.ComparisonResult.match
             case (.p_branch_get,.p_branch_get): return Matcher.ComparisonResult.match
             case (.p_program_get,.p_program_get): return Matcher.ComparisonResult.match
+            case (.p_experimentalFeatures_get,.p_experimentalFeatures_get): return Matcher.ComparisonResult.match
             case (.p_URIScheme_get,.p_URIScheme_get): return Matcher.ComparisonResult.match
             default: return .none
             }
@@ -1618,6 +1625,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_braze_get: return 0
             case .p_branch_get: return 0
             case .p_program_get: return 0
+            case .p_experimentalFeatures_get: return 0
             case .p_URIScheme_get: return 0
             }
         }
@@ -1647,6 +1655,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
             case .p_braze_get: return "[get] .braze"
             case .p_branch_get: return "[get] .branch"
             case .p_program_get: return "[get] .program"
+            case .p_experimentalFeatures_get: return "[get] .experimentalFeatures"
             case .p_URIScheme_get: return "[get] .URIScheme"
             }
         }
@@ -1732,6 +1741,9 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static func program(getter defaultValue: DiscoveryConfig...) -> PropertyStub {
             return Given(method: .p_program_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
+        public static func experimentalFeatures(getter defaultValue: ExperimentalFeaturesConfig...) -> PropertyStub {
+            return Given(method: .p_experimentalFeatures_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
         public static func URIScheme(getter defaultValue: String...) -> PropertyStub {
             return Given(method: .p_URIScheme_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
@@ -1765,6 +1777,7 @@ open class ConfigProtocolMock: ConfigProtocol, Mock {
         public static var braze: Verify { return Verify(method: .p_braze_get) }
         public static var branch: Verify { return Verify(method: .p_branch_get) }
         public static var program: Verify { return Verify(method: .p_program_get) }
+        public static var experimentalFeatures: Verify { return Verify(method: .p_experimentalFeatures_get) }
         public static var URIScheme: Verify { return Verify(method: .p_URIScheme_get) }
     }
 
@@ -3059,6 +3072,18 @@ open class CoreStorageMock: CoreStorage, Mock {
 	}
 	private var __p_lastUsedSocialAuth: (String)?
 
+    public var latestAvailableAppVersion: String? {
+		get {	invocations.append(.p_latestAvailableAppVersion_get); return __p_latestAvailableAppVersion ?? optionalGivenGetterValue(.p_latestAvailableAppVersion_get, "CoreStorageMock - stub value for latestAvailableAppVersion was not defined") }
+		set {	invocations.append(.p_latestAvailableAppVersion_set(.value(newValue))); __p_latestAvailableAppVersion = newValue }
+	}
+	private var __p_latestAvailableAppVersion: (String)?
+
+    public var updateAppRequired: Bool {
+		get {	invocations.append(.p_updateAppRequired_get); return __p_updateAppRequired ?? givenGetterValue(.p_updateAppRequired_get, "CoreStorageMock - stub value for updateAppRequired was not defined") }
+		set {	invocations.append(.p_updateAppRequired_set(.value(newValue))); __p_updateAppRequired = newValue }
+	}
+	private var __p_updateAppRequired: (Bool)?
+
 
 
 
@@ -3098,6 +3123,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 		case p_useRelativeDates_set(Parameter<Bool>)
         case p_lastUsedSocialAuth_get
 		case p_lastUsedSocialAuth_set(Parameter<String?>)
+        case p_latestAvailableAppVersion_get
+		case p_latestAvailableAppVersion_set(Parameter<String?>)
+        case p_updateAppRequired_get
+		case p_updateAppRequired_set(Parameter<Bool>)
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -3128,6 +3157,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case (.p_useRelativeDates_set(let left),.p_useRelativeDates_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             case (.p_lastUsedSocialAuth_get,.p_lastUsedSocialAuth_get): return Matcher.ComparisonResult.match
 			case (.p_lastUsedSocialAuth_set(let left),.p_lastUsedSocialAuth_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_latestAvailableAppVersion_get,.p_latestAvailableAppVersion_get): return Matcher.ComparisonResult.match
+			case (.p_latestAvailableAppVersion_set(let left),.p_latestAvailableAppVersion_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<String?>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
+            case (.p_updateAppRequired_get,.p_updateAppRequired_get): return Matcher.ComparisonResult.match
+			case (.p_updateAppRequired_set(let left),.p_updateAppRequired_set(let right)): return Matcher.ComparisonResult([Matcher.ParameterComparisonResult(Parameter<Bool>.compare(lhs: left, rhs: right, with: matcher), left, right, "newValue")])
             default: return .none
             }
         }
@@ -3161,6 +3194,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_useRelativeDates_set(let newValue): return newValue.intValue
             case .p_lastUsedSocialAuth_get: return 0
 			case .p_lastUsedSocialAuth_set(let newValue): return newValue.intValue
+            case .p_latestAvailableAppVersion_get: return 0
+			case .p_latestAvailableAppVersion_set(let newValue): return newValue.intValue
+            case .p_updateAppRequired_get: return 0
+			case .p_updateAppRequired_set(let newValue): return newValue.intValue
             }
         }
         func assertionName() -> String {
@@ -3192,6 +3229,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 			case .p_useRelativeDates_set: return "[set] .useRelativeDates"
             case .p_lastUsedSocialAuth_get: return "[get] .lastUsedSocialAuth"
 			case .p_lastUsedSocialAuth_set: return "[set] .lastUsedSocialAuth"
+            case .p_latestAvailableAppVersion_get: return "[get] .latestAvailableAppVersion"
+			case .p_latestAvailableAppVersion_set: return "[set] .latestAvailableAppVersion"
+            case .p_updateAppRequired_get: return "[get] .updateAppRequired"
+			case .p_updateAppRequired_set: return "[set] .updateAppRequired"
             }
         }
     }
@@ -3243,6 +3284,12 @@ open class CoreStorageMock: CoreStorage, Mock {
         public static func lastUsedSocialAuth(getter defaultValue: String?...) -> PropertyStub {
             return Given(method: .p_lastUsedSocialAuth_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
         }
+        public static func latestAvailableAppVersion(getter defaultValue: String?...) -> PropertyStub {
+            return Given(method: .p_latestAvailableAppVersion_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func updateAppRequired(getter defaultValue: Bool...) -> PropertyStub {
+            return Given(method: .p_updateAppRequired_get, products: defaultValue.map({ StubProduct.return($0 as Any) }))
+        }
 
     }
 
@@ -3276,6 +3323,10 @@ open class CoreStorageMock: CoreStorage, Mock {
 		public static func useRelativeDates(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_useRelativeDates_set(newValue)) }
         public static var lastUsedSocialAuth: Verify { return Verify(method: .p_lastUsedSocialAuth_get) }
 		public static func lastUsedSocialAuth(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_lastUsedSocialAuth_set(newValue)) }
+        public static var latestAvailableAppVersion: Verify { return Verify(method: .p_latestAvailableAppVersion_get) }
+		public static func latestAvailableAppVersion(set newValue: Parameter<String?>) -> Verify { return Verify(method: .p_latestAvailableAppVersion_set(newValue)) }
+        public static var updateAppRequired: Verify { return Verify(method: .p_updateAppRequired_get) }
+		public static func updateAppRequired(set newValue: Parameter<Bool>) -> Verify { return Verify(method: .p_updateAppRequired_set(newValue)) }
     }
 
     public struct Perform {
@@ -3284,6 +3335,245 @@ open class CoreStorageMock: CoreStorage, Mock {
 
         public static func clear(perform: @escaping () -> Void) -> Perform {
             return Perform(method: .m_clear, performs: perform)
+        }
+    }
+
+    public func given(_ method: Given) {
+        methodReturnValues.append(method)
+    }
+
+    public func perform(_ method: Perform) {
+        methodPerformValues.append(method)
+        methodPerformValues.sort { $0.method.intValue() < $1.method.intValue() }
+    }
+
+    public func verify(_ method: Verify, count: Count = Count.moreOrEqual(to: 1), file: StaticString = #file, line: UInt = #line) {
+        let fullMatches = matchingCalls(method, file: file, line: line)
+        let success = count.matches(fullMatches)
+        let assertionName = method.method.assertionName()
+        let feedback: String = {
+            guard !success else { return "" }
+            return Utils.closestCallsMessage(
+                for: self.invocations.map { invocation in
+                    matcher.set(file: file, line: line)
+                    defer { matcher.clearFileAndLine() }
+                    return MethodType.compareParameters(lhs: invocation, rhs: method.method, matcher: matcher)
+                },
+                name: assertionName
+            )
+        }()
+        MockyAssert(success, "Expected: \(count) invocations of `\(assertionName)`, but was: \(fullMatches).\(feedback)", file: file, line: line)
+    }
+
+    private func addInvocation(_ call: MethodType) {
+        self.queue.sync { invocations.append(call) }
+    }
+    private func methodReturnValue(_ method: MethodType) throws -> StubProduct {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let candidates = sequencingPolicy.sorted(methodReturnValues, by: { $0.method.intValue() > $1.method.intValue() })
+        let matched = candidates.first(where: { $0.isValid && MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch })
+        guard let product = matched?.getProduct(policy: self.stubbingPolicy) else { throw MockError.notStubed }
+        return product
+    }
+    private func methodPerformValue(_ method: MethodType) -> Any? {
+        matcher.set(file: self.file, line: self.line)
+        defer { matcher.clearFileAndLine() }
+        let matched = methodPerformValues.reversed().first { MethodType.compareParameters(lhs: $0.method, rhs: method, matcher: matcher).isFullMatch }
+        return matched?.performs
+    }
+    private func matchingCalls(_ method: MethodType, file: StaticString?, line: UInt?) -> [MethodType] {
+        matcher.set(file: file ?? self.file, line: line ?? self.line)
+        defer { matcher.clearFileAndLine() }
+        return invocations.filter { MethodType.compareParameters(lhs: $0, rhs: method, matcher: matcher).isFullMatch }
+    }
+    private func matchingCalls(_ method: Verify, file: StaticString?, line: UInt?) -> Int {
+        return matchingCalls(method.method, file: file, line: line).count
+    }
+    private func givenGetterValue<T>(_ method: MethodType, _ message: String) -> T {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            onFatalFailure(message)
+            Failure(message)
+        }
+    }
+    private func optionalGivenGetterValue<T>(_ method: MethodType, _ message: String) -> T? {
+        do {
+            return try methodReturnValue(method).casted()
+        } catch {
+            return nil
+        }
+    }
+    private func onFatalFailure(_ message: String) {
+        guard let file = self.file, let line = self.line else { return } // Let if fail if cannot handle gratefully
+        SwiftyMockyTestObserver.handleFatalError(message: message, file: file, line: line)
+    }
+}
+
+// MARK: - CourseStructureManagerProtocol
+
+open class CourseStructureManagerProtocolMock: CourseStructureManagerProtocol, Mock {
+    public init(sequencing sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst, stubbing stubbingPolicy: StubbingPolicy = .wrap, file: StaticString = #file, line: UInt = #line) {
+        SwiftyMockyTestObserver.setup()
+        self.sequencingPolicy = sequencingPolicy
+        self.stubbingPolicy = stubbingPolicy
+        self.file = file
+        self.line = line
+    }
+
+    var matcher: Matcher = Matcher.default
+    var stubbingPolicy: StubbingPolicy = .wrap
+    var sequencingPolicy: SequencingPolicy = .lastWrittenResolvedFirst
+
+    private var queue = DispatchQueue(label: "com.swiftymocky.invocations", qos: .userInteractive)
+    private var invocations: [MethodType] = []
+    private var methodReturnValues: [Given] = []
+    private var methodPerformValues: [Perform] = []
+    private var file: StaticString?
+    private var line: UInt?
+
+    public typealias PropertyStub = Given
+    public typealias MethodStub = Given
+    public typealias SubscriptStub = Given
+
+    /// Convenience method - call setupMock() to extend debug information when failure occurs
+    public func setupMock(file: StaticString = #file, line: UInt = #line) {
+        self.file = file
+        self.line = line
+    }
+
+    /// Clear mock internals. You can specify what to reset (invocations aka verify, givens or performs) or leave it empty to clear all mock internals
+    public func resetMock(_ scopes: MockScope...) {
+        let scopes: [MockScope] = scopes.isEmpty ? [.invocation, .given, .perform] : scopes
+        if scopes.contains(.invocation) { invocations = [] }
+        if scopes.contains(.given) { methodReturnValues = [] }
+        if scopes.contains(.perform) { methodPerformValues = [] }
+    }
+
+
+
+
+
+    open func getCourseBlocks(courseID: String) throws -> CourseStructure {
+        addInvocation(.m_getCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseStructure
+		do {
+		    __value = try methodReturnValue(.m_getCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getCourseBlocks(courseID: String). Use given")
+			Failure("Stub return value not specified for getCourseBlocks(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+    open func getLoadedCourseBlocks(courseID: String) throws -> CourseStructure {
+        addInvocation(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`)))
+		let perform = methodPerformValue(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))) as? (String) -> Void
+		perform?(`courseID`)
+		var __value: CourseStructure
+		do {
+		    __value = try methodReturnValue(.m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>.value(`courseID`))).casted()
+		} catch MockError.notStubed {
+			onFatalFailure("Stub return value not specified for getLoadedCourseBlocks(courseID: String). Use given")
+			Failure("Stub return value not specified for getLoadedCourseBlocks(courseID: String). Use given")
+		} catch {
+		    throw error
+		}
+		return __value
+    }
+
+
+    fileprivate enum MethodType {
+        case m_getCourseBlocks__courseID_courseID(Parameter<String>)
+        case m_getLoadedCourseBlocks__courseID_courseID(Parameter<String>)
+
+        static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
+            switch (lhs, rhs) {
+            case (.m_getCourseBlocks__courseID_courseID(let lhsCourseid), .m_getCourseBlocks__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+
+            case (.m_getLoadedCourseBlocks__courseID_courseID(let lhsCourseid), .m_getLoadedCourseBlocks__courseID_courseID(let rhsCourseid)):
+				var results: [Matcher.ParameterComparisonResult] = []
+				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsCourseid, rhs: rhsCourseid, with: matcher), lhsCourseid, rhsCourseid, "courseID"))
+				return Matcher.ComparisonResult(results)
+            default: return .none
+            }
+        }
+
+        func intValue() -> Int {
+            switch self {
+            case let .m_getCourseBlocks__courseID_courseID(p0): return p0.intValue
+            case let .m_getLoadedCourseBlocks__courseID_courseID(p0): return p0.intValue
+            }
+        }
+        func assertionName() -> String {
+            switch self {
+            case .m_getCourseBlocks__courseID_courseID: return ".getCourseBlocks(courseID:)"
+            case .m_getLoadedCourseBlocks__courseID_courseID: return ".getLoadedCourseBlocks(courseID:)"
+            }
+        }
+    }
+
+    open class Given: StubbedMethod {
+        fileprivate var method: MethodType
+
+        private init(method: MethodType, products: [StubProduct]) {
+            self.method = method
+            super.init(products)
+        }
+
+
+        public static func getCourseBlocks(courseID: Parameter<String>, willReturn: CourseStructure...) -> MethodStub {
+            return Given(method: .m_getCourseBlocks__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, willReturn: CourseStructure...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getCourseBlocks(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getCourseBlocks(courseID: Parameter<String>, willProduce: (StubberThrows<CourseStructure>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (CourseStructure).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, willThrow: Error...) -> MethodStub {
+            return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) }))
+        }
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, willProduce: (StubberThrows<CourseStructure>) -> Void) -> MethodStub {
+            let willThrow: [Error] = []
+			let given: Given = { return Given(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), products: willThrow.map({ StubProduct.throw($0) })) }()
+			let stubber = given.stubThrows(for: (CourseStructure).self)
+			willProduce(stubber)
+			return given
+        }
+    }
+
+    public struct Verify {
+        fileprivate var method: MethodType
+
+        public static func getCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getCourseBlocks__courseID_courseID(`courseID`))}
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>) -> Verify { return Verify(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`))}
+    }
+
+    public struct Perform {
+        fileprivate var method: MethodType
+        var performs: Any
+
+        public static func getCourseBlocks(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getCourseBlocks__courseID_courseID(`courseID`), performs: perform)
+        }
+        public static func getLoadedCourseBlocks(courseID: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
+            return Perform(method: .m_getLoadedCourseBlocks__courseID_courseID(`courseID`), performs: perform)
         }
     }
 
@@ -4321,6 +4611,19 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 		return __value
     }
 
+    open func getFreeDiskSpace() -> Int? {
+        addInvocation(.m_getFreeDiskSpace)
+		let perform = methodPerformValue(.m_getFreeDiskSpace) as? () -> Void
+		perform?()
+		var __value: Int? = nil
+		do {
+		    __value = try methodReturnValue(.m_getFreeDiskSpace).casted()
+		} catch {
+			// do nothing
+		}
+		return __value
+    }
+
 
     fileprivate enum MethodType {
         case m_getCurrentDownloadTask
@@ -4339,6 +4642,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         case m_removeAppSupportDirectoryUnusedContent
         case m_delete__blocks_blockscourseId_courseId(Parameter<[CourseBlock]>, Parameter<String>)
         case m_downloadTask__for_blockId(Parameter<String>)
+        case m_getFreeDiskSpace
 
         static func compareParameters(lhs: MethodType, rhs: MethodType, matcher: Matcher) -> Matcher.ComparisonResult {
             switch (lhs, rhs) {
@@ -4402,6 +4706,8 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
 				var results: [Matcher.ParameterComparisonResult] = []
 				results.append(Matcher.ParameterComparisonResult(Parameter.compare(lhs: lhsBlockid, rhs: rhsBlockid, with: matcher), lhsBlockid, rhsBlockid, "for blockId"))
 				return Matcher.ComparisonResult(results)
+
+            case (.m_getFreeDiskSpace, .m_getFreeDiskSpace): return .match
             default: return .none
             }
         }
@@ -4424,6 +4730,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_removeAppSupportDirectoryUnusedContent: return 0
             case let .m_delete__blocks_blockscourseId_courseId(p0, p1): return p0.intValue + p1.intValue
             case let .m_downloadTask__for_blockId(p0): return p0.intValue
+            case .m_getFreeDiskSpace: return 0
             }
         }
         func assertionName() -> String {
@@ -4444,6 +4751,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             case .m_removeAppSupportDirectoryUnusedContent: return ".removeAppSupportDirectoryUnusedContent()"
             case .m_delete__blocks_blockscourseId_courseId: return ".delete(blocks:courseId:)"
             case .m_downloadTask__for_blockId: return ".downloadTask(for:)"
+            case .m_getFreeDiskSpace: return ".getFreeDiskSpace()"
             }
         }
     }
@@ -4477,6 +4785,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func downloadTask(for blockId: Parameter<String>, willReturn: DownloadDataTask?...) -> MethodStub {
             return Given(method: .m_downloadTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) }))
+        }
+        public static func getFreeDiskSpace(willReturn: Int?...) -> MethodStub {
+            return Given(method: .m_getFreeDiskSpace, products: willReturn.map({ StubProduct.return($0 as Any) }))
         }
         public static func getCurrentDownloadTask(willProduce: (Stubber<DownloadDataTask?>) -> Void) -> MethodStub {
             let willReturn: [DownloadDataTask?] = []
@@ -4524,6 +4835,13 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
             let willReturn: [DownloadDataTask?] = []
 			let given: Given = { return Given(method: .m_downloadTask__for_blockId(`blockId`), products: willReturn.map({ StubProduct.return($0 as Any) })) }()
 			let stubber = given.stub(for: (DownloadDataTask?).self)
+			willProduce(stubber)
+			return given
+        }
+        public static func getFreeDiskSpace(willProduce: (Stubber<Int?>) -> Void) -> MethodStub {
+            let willReturn: [Int?] = []
+			let given: Given = { return Given(method: .m_getFreeDiskSpace, products: willReturn.map({ StubProduct.return($0 as Any) })) }()
+			let stubber = given.stub(for: (Int?).self)
 			willProduce(stubber)
 			return given
         }
@@ -4608,6 +4926,7 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         public static func removeAppSupportDirectoryUnusedContent() -> Verify { return Verify(method: .m_removeAppSupportDirectoryUnusedContent)}
         public static func delete(blocks: Parameter<[CourseBlock]>, courseId: Parameter<String>) -> Verify { return Verify(method: .m_delete__blocks_blockscourseId_courseId(`blocks`, `courseId`))}
         public static func downloadTask(for blockId: Parameter<String>) -> Verify { return Verify(method: .m_downloadTask__for_blockId(`blockId`))}
+        public static func getFreeDiskSpace() -> Verify { return Verify(method: .m_getFreeDiskSpace)}
     }
 
     public struct Perform {
@@ -4661,6 +4980,9 @@ open class DownloadManagerProtocolMock: DownloadManagerProtocol, Mock {
         }
         public static func downloadTask(for blockId: Parameter<String>, perform: @escaping (String) -> Void) -> Perform {
             return Perform(method: .m_downloadTask__for_blockId(`blockId`), performs: perform)
+        }
+        public static func getFreeDiskSpace(perform: @escaping () -> Void) -> Perform {
+            return Perform(method: .m_getFreeDiskSpace, performs: perform)
         }
     }
 

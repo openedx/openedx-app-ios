@@ -18,7 +18,7 @@ enum ProfileEndpoint: EndPointType {
     case logOut(refreshToken: String, clientID: String)
     case deleteAccount(password: String)
     case enrollmentsStatus(username: String)
-    case getCourseDates(courseID: String)
+    case getCourseDates(courseID: String, allowNotStartedCourses: Bool = true)
 
     var path: String {
         switch self {
@@ -36,7 +36,7 @@ enum ProfileEndpoint: EndPointType {
             return "/api/user/v1/accounts/deactivate_logout/"
         case let .enrollmentsStatus(username):
             return "/api/mobile/v1/users/\(username)/enrollments_status/"
-        case let .getCourseDates(courseID):
+        case let .getCourseDates(courseID, _):
             return "/api/course_home/v1/dates/\(courseID)"
         }
     }
@@ -96,8 +96,11 @@ enum ProfileEndpoint: EndPointType {
             return .requestParameters(parameters: params, encoding: URLEncoding.httpBody)
         case .enrollmentsStatus:
             return .requestParameters(parameters: nil, encoding: JSONEncoding.default)
-        case .getCourseDates:
-            return .requestParameters(encoding: JSONEncoding.default)
+        case let .getCourseDates(_, allowNotStartedCourses):
+            let params: [String: any Any & Sendable] = [
+                "allow_not_started_courses": allowNotStartedCourses
+            ]
+            return .requestParameters(parameters: params, encoding: URLEncoding.default)
         }
     }
 }

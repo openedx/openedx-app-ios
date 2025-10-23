@@ -101,7 +101,7 @@ final class SignUpViewModelTests: XCTestCase {
             sourceScreen: .default
         )
         
-        Given(interactor, .getRegistrationFields(willThrow: NSError()))
+        Given(interactor, .getRegistrationFields(willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.getRegistrationFields()
         
@@ -230,7 +230,7 @@ final class SignUpViewModelTests: XCTestCase {
         )
         
         Given(interactor, .validateRegistrationFields(fields: .any, willReturn: [:]))
-        Given(interactor, .registerUser(fields: .any, isSocial: .any, willThrow: NSError()))
+        Given(interactor, .registerUser(fields: .any, isSocial: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
 
         await viewModel.registerUser()
         

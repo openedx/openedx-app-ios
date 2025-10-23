@@ -2,7 +2,7 @@
 //  MainCommentView.swift
 //  Discussion
 //
-//  Created by  Stepanok Ivan on 09.11.2022.
+//  Created by  Stepanok Ivan on 09.11.2022.
 //
 
 import SwiftUI
@@ -85,31 +85,14 @@ public struct ParentCommentView: View {
             Text(comments.postTitle)
                 .font(Theme.Fonts.titleLarge)
                 .foregroundColor(Theme.Colors.textPrimary)
-            Text(comments.postBodyHtml.hideHtmlTagsAndUrls())
-                .font(Theme.Fonts.bodyMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.bottom, 8)
-            ForEach(Array(comments.postBody.extractURLs().enumerated()), id: \.offset) { _, url in
-                if url.isImage() {
-                    if isImageVisible {
-                        KFAnimatedImage(url)
-                            .onFailure { _ in
-                                isImageVisible = false
-                            }
-                            .scaledToFit()
-                    }
-                } else {
-                    HStack {
-                        Image(systemName: "globe").renderingMode(.template)
-                        Link(destination: url) {
-                            Text(url.absoluteString)
-                            .multilineTextAlignment(.leading)
-                        }
-                    }.foregroundColor(Theme.Colors.accentXColor)
-                        .font(Theme.Fonts.bodyMedium)
-                }
+            ZStack(alignment: .topLeading) {
+                HTMLContentView(
+                    html: comments.postBodyHtml,
+                    textColor: Theme.Colors.textPrimary
+                )
+                .id(comments.commentID)
             }
+            .padding(.bottom, 8)
             HStack {
                 Button(action: {
                     onLikeTap()

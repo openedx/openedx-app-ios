@@ -76,7 +76,7 @@ final class ProfileViewModelTests: XCTestCase {
             username: "Steve"
         )
         
-        Given(interactor, .getUserProfile(username: .value("Steve"), willThrow: NSError()))
+        Given(interactor, .getUserProfile(username: .value("Steve"), willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.getUserProfile()
         
@@ -218,7 +218,7 @@ final class ProfileViewModelTests: XCTestCase {
         )
         
         Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getMyProfile(willThrow: NSError()))
+        Given(interactor, .getMyProfile(willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.getMyProfile()
         

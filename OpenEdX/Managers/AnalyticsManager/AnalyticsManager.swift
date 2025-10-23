@@ -14,6 +14,7 @@ import Profile
 import Course
 import Discussion
 import WhatsNew
+import Downloads
 import Swinject
 import OEXFoundation
 
@@ -27,6 +28,7 @@ class AnalyticsManager: AuthorizationAnalytics,
                         DiscussionAnalytics,
                         CoreAnalytics,
                         WhatsNewAnalytics,
+                        DownloadsAnalytics,
                         @unchecked Sendable {
     
     private var services: [AnalyticsService]
@@ -153,6 +155,10 @@ class AnalyticsManager: AuthorizationAnalytics,
     
     public func mainProgramsTabClicked() {
         trackScreenEvent(.mainProgramsTabClicked, biValue: .mainProgramsTabClicked)
+    }
+    
+    public func mainDownloadsTabClicked() {
+        trackScreenEvent(.mainDownloadsTabClicked, biValue: .mainDownloadsTabClicked)
     }
     
     public func mainProfileTabClicked() {
@@ -532,6 +538,24 @@ class AnalyticsManager: AuthorizationAnalytics,
         logScreenEvent(.courseOutlineCourseTabClicked, parameters: parameters)
     }
     
+    public func courseOutlineContentTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineContentTabClicked.rawValue
+        ]
+        logScreenEvent(.courseOutlineContentTabClicked, parameters: parameters)
+    }
+    
+        public func courseOutlineProgressTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineProgressTabClicked.rawValue
+        ]
+        logScreenEvent(.courseOutlineProgressTabClicked, parameters: parameters)
+    }
+    
     public func courseOutlineVideosTabClicked(courseId: String, courseName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,
@@ -575,6 +599,167 @@ class AnalyticsManager: AuthorizationAnalytics,
             EventParamKey.name: EventBIValue.courseOutlineHandoutsTabClicked.rawValue
         ]
         logScreenEvent(.courseOutlineHandoutsTabClicked, parameters: parameters)
+    }
+    
+    public func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseOutlineAssignmentsTabClicked.rawValue
+        ]
+        logScreenEvent(.courseOutlineAssignmentsTabClicked, parameters: parameters)
+    }
+    
+    public func courseContentAllTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseContentAllTabClicked.rawValue
+        ]
+        logScreenEvent(.courseContentAllTabClicked, parameters: parameters)
+    }
+    
+    public func courseContentVideosTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseContentVideosTabClicked.rawValue
+        ]
+        logScreenEvent(.courseContentVideosTabClicked, parameters: parameters)
+    }
+    
+    public func courseContentAssignmentsTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseContentAssignmentsTabClicked.rawValue
+        ]
+        logScreenEvent(.courseContentAssignmentsTabClicked, parameters: parameters)
+    }
+    
+    public func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.courseVideoClicked.rawValue
+        ]
+        logEvent(.courseVideoClicked, parameters: parameters)
+    }
+    
+    public func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.courseAssignmentClicked.rawValue
+        ]
+        logEvent(.courseAssignmentClicked, parameters: parameters)
+    }
+    
+    public func contentPageSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.contentPageSectionClicked.rawValue
+        ]
+        logEvent(.contentPageSectionClicked, parameters: parameters)
+    }
+    
+    public func contentPageShowCompletedSubsectionClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.contentPageShowCompletedSubsectionClicked.rawValue
+        ]
+        logEvent(.contentPageShowCompletedSubsectionClicked, parameters: parameters)
+    }
+    
+    public func progressTabClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.progressTabClicked.rawValue
+        ]
+        logEvent(.progressTabClicked, parameters: parameters)
+    }
+    
+    public func courseHomeViewAllContentClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseHomeViewAllContentClicked.rawValue
+        ]
+        logEvent(.courseHomeViewAllContentClicked, parameters: parameters)
+    }
+    
+    public func courseHomeVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.courseHomeVideoClicked.rawValue
+        ]
+        logEvent(.courseHomeVideoClicked, parameters: parameters)
+    }
+    
+    public func courseHomeViewAllVideosClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseHomeViewAllVideosClicked.rawValue
+        ]
+        logEvent(.courseHomeViewAllVideosClicked, parameters: parameters)
+    }
+
+    public func courseHomeSectionSubsectionClick(
+        courseId: String,
+        courseName: String,
+        courseSection: String,
+        courseSubsection: String
+    ) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.courseSection: courseSection,
+            EventParamKey.courseSubsection: courseSubsection,
+            EventParamKey.name: EventBIValue.courseHomeSectionSubsectionClick.rawValue
+        ]
+        logEvent(.courseHomeSectionSubsectionClicked, parameters: parameters)
+    }
+
+    public func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.blockID: blockId,
+            EventParamKey.blockName: blockName,
+            EventParamKey.name: EventBIValue.courseHomeAssignmentClicked.rawValue
+        ]
+        logEvent(.courseHomeAssignmentClicked, parameters: parameters)
+    }
+    
+    public func courseHomeViewAllAssignmentsClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseHomeViewAllAssignmentsClicked.rawValue
+        ]
+        logEvent(.courseHomeViewAllAssignmentsClicked, parameters: parameters)
+    }
+    
+    public func courseHomeGradesViewProgressClicked(courseId: String, courseName: String) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.name: EventBIValue.courseHomeGradesViewProgressClicked.rawValue
+        ]
+        logEvent(.courseHomeGradesViewProgressClicked, parameters: parameters)
     }
     
     func datesComponentTapped(
@@ -958,7 +1143,7 @@ class AnalyticsManager: AuthorizationAnalytics,
         author: String,
         follow: Bool
     ) {
-        var parameters: [String: Any] = [
+        let parameters: [String: Any] = [
             EventParamKey.courseID: courseID,
             EventParamKey.threadID: threadID,
             EventParamKey.author: author,
@@ -1070,6 +1255,91 @@ class AnalyticsManager: AuthorizationAnalytics,
         ]
         
         logEvent(.whatnewClose, parameters: parameters)
+    }
+    
+    // MARK: - DownloadsAnalytics
+    public func downloadCourseClicked(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName
+        ]
+        trackEvent(.downloadCourseClicked, biValue: .downloadCourseClicked, parameters: parameters)
+    }
+    
+    public func cancelDownloadClicked(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.action: "cancel"
+        ]
+        trackEvent(.cancelDownloadClicked, biValue: .cancelDownloadClicked, parameters: parameters)
+    }
+    
+    public func removeDownloadClicked(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.action: "remove"
+        ]
+        trackEvent(.removeDownloadClicked, biValue: .removeDownloadClicked, parameters: parameters)
+    }
+    
+    public func downloadConfirmed(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.downloadConfirmed, biValue: .downloadConfirmed, parameters: parameters)
+    }
+    
+    public func downloadCancelled(courseId: String, courseName: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.action: "cancelled"
+        ]
+        trackEvent(.downloadCancelled, biValue: .downloadCancelled, parameters: parameters)
+    }
+    
+    public func downloadRemoved(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.downloadRemoved, biValue: .downloadRemoved, parameters: parameters)
+    }
+    
+    public func downloadError(courseId: String, courseName: String, errorType: String) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.error: errorType
+        ]
+        trackEvent(.downloadError, biValue: .downloadError, parameters: parameters)
+    }
+    
+    public func downloadCompleted(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.downloadCompleted, biValue: .downloadCompleted, parameters: parameters)
+    }
+    
+    public func downloadStarted(courseId: String, courseName: String, downloadSize: Int64) {
+        let parameters: [String: Any] = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.noOfVideos: downloadSize
+        ]
+        trackEvent(.downloadStarted, biValue: .downloadStarted, parameters: parameters)
+    }
+    
+    public func downloadsScreenViewed() {
+        trackScreenEvent(.downloadsScreenViewed, biValue: .downloadsScreenViewed)
     }
 }
 // swiftlint:enable type_body_length file_length

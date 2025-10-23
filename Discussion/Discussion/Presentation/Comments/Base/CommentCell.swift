@@ -87,31 +87,14 @@ public struct CommentCell: View {
                                    ? Theme.Colors.irreversibleAlert
                                       : Theme.Colors.textSecondaryLight)
             }
-            Text(comment.postBodyHtml.hideHtmlTagsAndUrls())
-                .font(Theme.Fonts.bodyMedium)
-                .padding(.bottom, 8)
-                    
-            ForEach(Array(comment.postBody.extractURLs().enumerated()), id: \.offset) { _, url in
-                if url.isImage() {
-                    if isImageVisible {
-                        KFAnimatedImage(url)
-                            .onFailure { _ in
-                                isImageVisible = false
-                            }
-                            .scaledToFit()
-                    }
-                } else {
-                    HStack(alignment: .top) {
-                        Image(systemName: "globe")
-                        Link(destination: url) {
-                            Text(url.absoluteString)
-                            .multilineTextAlignment(.leading)
-                        }
-                    }
-                    .foregroundColor(Theme.Colors.accentColor)
-                    .font(Theme.Fonts.bodyMedium)
-                }
+            ZStack(alignment: .topLeading) {
+                HTMLContentView(
+                    html: comment.postBodyHtml,
+                    textColor: Theme.Colors.textPrimary
+                )
+                .id(comment.commentID)
             }
+            .padding(.bottom, 18)
             
             LazyVStack {
                 VStack {}

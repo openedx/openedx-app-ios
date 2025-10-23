@@ -131,6 +131,41 @@ final class CourseContainerViewModelTests: XCTestCase {
                                        willReturn: resumeBlock))
         Given(interactor, .getCourseVideoBlocks(fullStructure: .any,
                                                 willReturn: courseStructure))
+        Given(interactor, .getCourseAssignmentBlocks(fullStructure: .any,
+                                                    willReturn: courseStructure))
+        
+        let mockCourseProgress = CourseProgressDetails(
+            verifiedMode: nil,
+            accessExpiration: nil,
+            certificateData: CourseProgressCertificateData(
+                certStatus: nil,
+                certWebViewUrl: nil,
+                downloadUrl: nil,
+                certificateAvailableDate: nil
+            ),
+            completionSummary: CourseProgressCompletionSummary(
+                completeCount: 0,
+                incompleteCount: 0,
+                lockedCount: 0
+            ),
+            courseGrade: CourseProgressGrade(
+                letterGrade: nil,
+                percent: 0.0,
+                isPassing: false
+            ),
+            creditCourseRequirements: nil,
+            end: nil,
+            enrollmentMode: "audit",
+            gradingPolicy: CourseProgressGradingPolicy(
+                assignmentPolicies: [],
+                gradeRange: [:],
+                assignmentColors: []
+            ),
+            hasScheduledContent: false,
+            sectionScores: [],
+            verificationData: nil
+        )
+        Given(interactor, .getCourseProgress(courseID: "123", willReturn: mockCourseProgress))
         
         await viewModel.getCourseBlocks(courseID: "123")
         
@@ -199,6 +234,41 @@ final class CourseContainerViewModelTests: XCTestCase {
         Given(interactor, .getLoadedCourseBlocks(courseID: .any, willReturn: courseStructure))
         Given(interactor, .getCourseVideoBlocks(fullStructure: .any,
                                                 willReturn: courseStructure))
+        Given(interactor, .getCourseAssignmentBlocks(fullStructure: .any,
+                                                    willReturn: courseStructure))
+        
+        let mockCourseProgress = CourseProgressDetails(
+            verifiedMode: nil,
+            accessExpiration: nil,
+            certificateData: CourseProgressCertificateData(
+                certStatus: nil,
+                certWebViewUrl: nil,
+                downloadUrl: nil,
+                certificateAvailableDate: nil
+            ),
+            completionSummary: CourseProgressCompletionSummary(
+                completeCount: 0,
+                incompleteCount: 0,
+                lockedCount: 0
+            ),
+            courseGrade: CourseProgressGrade(
+                letterGrade: nil,
+                percent: 0.0,
+                isPassing: false
+            ),
+            creditCourseRequirements: nil,
+            end: nil,
+            enrollmentMode: "audit",
+            gradingPolicy: CourseProgressGradingPolicy(
+                assignmentPolicies: [],
+                gradeRange: [:],
+                assignmentColors: []
+            ),
+            hasScheduledContent: false,
+            sectionScores: [],
+            verificationData: nil
+        )
+        Given(interactor, .getCourseProgressOffline(courseID: "123", willReturn: mockCourseProgress))
         
         await viewModel.getCourseBlocks(courseID: "123")
         
@@ -243,9 +313,65 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
         
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: [],
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
+            certificate: nil,
+            org: "",
+            isSelfPaced: true,
+            courseProgress: nil
+        )
         
         Given(interactor, .getCourseBlocks(courseID: "123",
                                            willThrow: noInternetError))
+        Given(interactor, .getCourseAssignmentBlocks(fullStructure: .any,
+                                                    willReturn: courseStructure))
+        
+        let mockCourseProgress = CourseProgressDetails(
+            verifiedMode: nil,
+            accessExpiration: nil,
+            certificateData: CourseProgressCertificateData(
+                certStatus: nil,
+                certWebViewUrl: nil,
+                downloadUrl: nil,
+                certificateAvailableDate: nil
+            ),
+            completionSummary: CourseProgressCompletionSummary(
+                completeCount: 0,
+                incompleteCount: 0,
+                lockedCount: 0
+            ),
+            courseGrade: CourseProgressGrade(
+                letterGrade: nil,
+                percent: 0.0,
+                isPassing: false
+            ),
+            creditCourseRequirements: nil,
+            end: nil,
+            enrollmentMode: "audit",
+            gradingPolicy: CourseProgressGradingPolicy(
+                assignmentPolicies: [],
+                gradeRange: [:],
+                assignmentColors: []
+            ),
+            hasScheduledContent: false,
+            sectionScores: [],
+            verificationData: nil
+        )
+        Given(interactor, .getCourseProgress(courseID: "123", willReturn: mockCourseProgress))
         
         await viewModel.getCourseBlocks(courseID: "123")
         
@@ -286,8 +412,65 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseHelper: courseHelperMock
         )
         
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: [],
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
+            certificate: nil,
+            org: "",
+            isSelfPaced: true,
+            courseProgress: nil
+        )
+        
         Given(interactor, .getCourseBlocks(courseID: "123",
                                            willThrow: NoCachedDataError()))
+        Given(interactor, .getCourseAssignmentBlocks(fullStructure: .any,
+                                                    willReturn: courseStructure))
+        
+        let mockCourseProgress = CourseProgressDetails(
+            verifiedMode: nil,
+            accessExpiration: nil,
+            certificateData: CourseProgressCertificateData(
+                certStatus: nil,
+                certWebViewUrl: nil,
+                downloadUrl: nil,
+                certificateAvailableDate: nil
+            ),
+            completionSummary: CourseProgressCompletionSummary(
+                completeCount: 0,
+                incompleteCount: 0,
+                lockedCount: 0
+            ),
+            courseGrade: CourseProgressGrade(
+                letterGrade: nil,
+                percent: 0.0,
+                isPassing: false
+            ),
+            creditCourseRequirements: nil,
+            end: nil,
+            enrollmentMode: "audit",
+            gradingPolicy: CourseProgressGradingPolicy(
+                assignmentPolicies: [],
+                gradeRange: [:],
+                assignmentColors: []
+            ),
+            hasScheduledContent: false,
+            sectionScores: [],
+            verificationData: nil
+        )
+        Given(interactor, .getCourseProgress(courseID: "123", willReturn: mockCourseProgress))
         
         await viewModel.getCourseBlocks(courseID: "123")
         
@@ -328,8 +511,65 @@ final class CourseContainerViewModelTests: XCTestCase {
             courseHelper: courseHelperMock
         )
         
+        let courseStructure = CourseStructure(
+            id: "123",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "",
+            topicID: nil,
+            childs: [],
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "",
+                    small: "",
+                    large: ""
+                )
+            ),
+            certificate: nil,
+            org: "",
+            isSelfPaced: true,
+            courseProgress: nil
+        )
+        
         Given(interactor, .getCourseBlocks(courseID: "123",
-                                           willThrow: NSError()))
+                                           willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
+        Given(interactor, .getCourseAssignmentBlocks(fullStructure: .any,
+                                                    willReturn: courseStructure))
+        
+        let mockCourseProgress = CourseProgressDetails(
+            verifiedMode: nil,
+            accessExpiration: nil,
+            certificateData: CourseProgressCertificateData(
+                certStatus: nil,
+                certWebViewUrl: nil,
+                downloadUrl: nil,
+                certificateAvailableDate: nil
+            ),
+            completionSummary: CourseProgressCompletionSummary(
+                completeCount: 0,
+                incompleteCount: 0,
+                lockedCount: 0
+            ),
+            courseGrade: CourseProgressGrade(
+                letterGrade: nil,
+                percent: 0.0,
+                isPassing: false
+            ),
+            creditCourseRequirements: nil,
+            end: nil,
+            enrollmentMode: "audit",
+            gradingPolicy: CourseProgressGradingPolicy(
+                assignmentPolicies: [],
+                gradeRange: [:],
+                assignmentColors: []
+            ),
+            hasScheduledContent: false,
+            sectionScores: [],
+            verificationData: nil
+        )
+        Given(interactor, .getCourseProgress(courseID: "123", willReturn: mockCourseProgress))
         
         await viewModel.getCourseBlocks(courseID: "123")
         
@@ -372,9 +612,6 @@ final class CourseContainerViewModelTests: XCTestCase {
         
         viewModel.trackSelectedTab(selection: .course, courseId: "1", courseName: "name")
         Verify(analytics, .courseOutlineCourseTabClicked(courseId: .value("1"), courseName: .value("name")))
-        
-        viewModel.trackSelectedTab(selection: .videos, courseId: "1", courseName: "name")
-        Verify(analytics, .courseOutlineVideosTabClicked(courseId: .value("1"), courseName: .value("name")))
         
         viewModel.trackSelectedTab(selection: .discussion, courseId: "1", courseName: "name")
         Verify(analytics, .courseOutlineDiscussionTabClicked(courseId: .value("1"), courseName: .value("name")))

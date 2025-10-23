@@ -161,6 +161,7 @@ public struct DiscoveryView: View {
                             viewModel.router.showLoginScreen(sourceScreen: .discovery)
                         }
                     }
+                    .frame(maxHeight: .infinity, alignment: .bottom)
                 }
             }.padding(.top, 8)
 
@@ -199,7 +200,6 @@ public struct DiscoveryView: View {
                     viewModel.router.showCourseDetais(courseID: courseID, title: courseTitle)
                 }
             }
-            viewModel.setupNotifications()
         }
         .background(Theme.Colors.background.ignoresSafeArea())
     }

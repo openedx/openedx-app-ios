@@ -15,6 +15,7 @@ import Dashboard
 import Course
 import Discussion
 import Authorization
+import Downloads
 import Profile
 import WhatsNew
 
@@ -82,6 +83,10 @@ class AppAssembly: Assembly {
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
+        container.register(DownloadsAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConnectivityProtocol.self) { @MainActor _ in
             Connectivity()
         }
@@ -134,6 +139,10 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
+        container.register(DownloadsRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
         container.register(ConfigProtocol.self) { _ in
             Config()
         }.inObjectScope(.container)
@@ -170,6 +179,10 @@ class AppAssembly: Assembly {
         container.register(CourseStorage.self) { r in
             r.resolve(AppStorage.self)!
         }.inObjectScope(.container)
+        
+        container.register(DownloadsStorage.self) { r in
+            r.resolve(AppStorage.self)!
+        }.inObjectScope(.container)
 
         container.register(ProfileStorage.self) { r in
             r.resolve(AppStorage.self)!
@@ -187,10 +200,8 @@ class AppAssembly: Assembly {
         
         container.register(PushNotificationsManager.self) { @MainActor r in
             PushNotificationsManager(
-                deepLinkManager: r.resolve(DeepLinkManager.self)!,
-                storage: r.resolve(CoreStorage.self)!,
-                api: r.resolve(API.self)!,
-                config: r.resolve(ConfigProtocol.self)!
+                providers: r.resolve(PluginManager.self)!.pushNotificationsProviders,
+                listeners: r.resolve(PluginManager.self)!.pushNotificationsListeners
             )
         }.inObjectScope(.container)
         

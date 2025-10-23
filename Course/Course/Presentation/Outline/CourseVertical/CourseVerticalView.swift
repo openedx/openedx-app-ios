@@ -57,7 +57,9 @@ public struct CourseVerticalView: View {
                                             verticalIndex: index,
                                             chapters: viewModel.chapters,
                                             chapterIndex: viewModel.chapterIndex,
-                                            sequentialIndex: viewModel.sequentialIndex
+                                            sequentialIndex: viewModel.sequentialIndex,
+                                            showVideoNavigation: false,
+                                            courseVideoStructure: nil
                                         )
                                     }
                                 }, label: {
@@ -168,7 +170,8 @@ struct CourseVerticalView_Previews: PreviewProvider {
                         sequentialProgress: SequentialProgress(
                             assignmentType: "Advanced Assessment Tools",
                             numPointsEarned: 1,
-                            numPointsPossible: 3
+                            numPointsPossible: 3,
+                            shortLabel: nil
                         ),
                         due: Date()
                     )

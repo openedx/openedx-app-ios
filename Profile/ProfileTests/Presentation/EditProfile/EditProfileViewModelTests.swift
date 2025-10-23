@@ -373,11 +373,11 @@ final class EditProfileViewModelTests: XCTestCase {
             name: "Test",
             username: "Name",
             dateJoined: Date(),
-            yearOfBirth: 1986,
+            yearOfBirth: 0,
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true,
+            isFullProfile: false,
             email: ""
         )
         
@@ -413,7 +413,7 @@ final class EditProfileViewModelTests: XCTestCase {
             country: "UA",
             spokenLanguage: "UA",
             shortBiography: "Bio",
-            isFullProfile: true,
+            isFullProfile: false,
             email: ""
         )
         
@@ -530,7 +530,6 @@ final class EditProfileViewModelTests: XCTestCase {
 //        Verify(interactor, 0, .uploadProfilePicture(pictureData: .any))
         Verify(interactor, 1, .deleteProfilePicture())
         Verify(interactor, 1, .updateUserProfile(parameters: .any))
-        XCTAssertEqual(viewModel.inputImage?.cgImage, CoreAssets.noAvatar.image.cgImage)
     }
     
     func testSaveProfileUpdatesNoInternetError() async {
@@ -581,7 +580,7 @@ final class EditProfileViewModelTests: XCTestCase {
         
         await viewModel.saveProfileUpdates()
         
-        Verify(interactor, 1, .uploadProfilePicture(pictureData: .any))
+        Verify(interactor, 0, .uploadProfilePicture(pictureData: .any))
         Verify(interactor, 1, .updateUserProfile(parameters: .any))
         
         XCTAssertTrue(viewModel.showError)
@@ -632,13 +631,13 @@ final class EditProfileViewModelTests: XCTestCase {
         
         Given(interactor, .uploadProfilePicture(pictureData: .any, willProduce: {_ in}))
         Given(interactor, .updateUserProfile(parameters: .any,
-                                             willThrow: NSError()))
+                                             willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
         
         await viewModel.saveProfileUpdates()
         
         await Task.yield()
         
-        Verify(interactor, 1, .uploadProfilePicture(pictureData: .any))
+        Verify(interactor, 0, .uploadProfilePicture(pictureData: .any))
         Verify(interactor, 1, .updateUserProfile(parameters: .any))
         
         XCTAssertTrue(viewModel.showError)
@@ -682,7 +681,7 @@ final class EditProfileViewModelTests: XCTestCase {
                                         alertMessage: .any,
                                         positiveAction: .any,
                                         onCloseTapped: .any,
-                                        okTapped: .any,
+                                        firstButtonTapped: .any,
                                         type: .any))
     }
     

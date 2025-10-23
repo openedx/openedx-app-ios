@@ -71,12 +71,13 @@ public enum AccountPrivacy: String, Codable, Sendable {
     case privateAccess = "private"
     case allUsers = "all_users"
     case allUsersBig = "ALL_USERS"
+    case custom = "custom"
     
     public var boolValue: Bool {
         switch self {
         case .privateAccess:
             return false
-        case .allUsers, .allUsersBig:
+        case .allUsers, .allUsersBig, .custom:
             return true
         }
     }

@@ -13,25 +13,8 @@ import UserNotifications
 import FirebaseCore
 import FirebaseMessaging
 
-public protocol PushNotificationsProvider: Sendable {
-    func didRegisterWithDeviceToken(deviceToken: Data)
-    func didFailToRegisterForRemoteNotificationsWithError(error: Error)
-    func synchronizeToken()
-    func refreshToken()
-}
-
-@MainActor
-protocol PushNotificationsListener: Sendable {
-    func shouldListenNotification(userinfo: [AnyHashable: Any]) -> Bool
-    func didReceiveRemoteNotification(userInfo: [AnyHashable: Any])
-}
-
 @MainActor
 class PushNotificationsManager: NSObject {
-    
-    private let deepLinkManager: DeepLinkManager
-    private let storage: CoreStorage
-    private let api: API
     
     private var providers: [PushNotificationsProvider] = []
     private var listeners: [PushNotificationsListener] = []
@@ -42,40 +25,13 @@ class PushNotificationsManager: NSObject {
     
     // Init manager
     public init(
-        deepLinkManager: DeepLinkManager,
-        storage: CoreStorage,
-        api: API,
-        config: ConfigProtocol
+        providers: [PushNotificationsProvider],
+        listeners: [PushNotificationsListener]
     ) {
-        self.deepLinkManager = deepLinkManager
-        self.storage = storage
-        self.api = api
+        self.providers = providers
+        self.listeners = listeners
         
         super.init()
-        providers = providersFor(config: config)
-        listeners = listenersFor(config: config)
-    }
-    
-    private func providersFor(config: ConfigProtocol) -> [PushNotificationsProvider] {
-        var pushProviders: [PushNotificationsProvider] = []
-        if config.braze.pushNotificationsEnabled {
-            pushProviders.append(BrazeProvider())
-        }
-        if config.firebase.cloudMessagingEnabled {
-            pushProviders.append(FCMProvider(storage: storage, api: api))
-        }
-        return pushProviders
-    }
-    
-    private func listenersFor(config: ConfigProtocol) -> [PushNotificationsListener] {
-        var pushListeners: [PushNotificationsListener] = []
-        if config.braze.pushNotificationsEnabled {
-            pushListeners.append(BrazeListener(deepLinkManager: deepLinkManager))
-        }
-        if config.firebase.cloudMessagingEnabled {
-            pushListeners.append(FCMListener(deepLinkManager: deepLinkManager))
-        }
-        return pushListeners
     }
     
     // Register for push notifications

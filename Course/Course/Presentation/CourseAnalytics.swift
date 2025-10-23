@@ -58,11 +58,34 @@ public protocol CourseAnalytics {
     func finishVerticalNextSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func finishVerticalBackToOutlineClicked(courseId: String, courseName: String)
     func courseOutlineCourseTabClicked(courseId: String, courseName: String)
+    func courseOutlineContentTabClicked(courseId: String, courseName: String)
+    func courseOutlineProgressTabClicked(courseId: String, courseName: String)
     func courseOutlineVideosTabClicked(courseId: String, courseName: String)
     func courseOutlineOfflineTabClicked(courseId: String, courseName: String)
     func courseOutlineDatesTabClicked(courseId: String, courseName: String)
     func courseOutlineDiscussionTabClicked(courseId: String, courseName: String)
     func courseOutlineHandoutsTabClicked(courseId: String, courseName: String)
+    func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String)
+    func courseContentAllTabClicked(courseId: String, courseName: String)
+    func courseContentVideosTabClicked(courseId: String, courseName: String)
+    func courseContentAssignmentsTabClicked(courseId: String, courseName: String)
+    func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func contentPageSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func contentPageShowCompletedSubsectionClicked(courseId: String, courseName: String)
+    func progressTabClicked(courseId: String, courseName: String)
+    func courseHomeViewAllContentClicked(courseId: String, courseName: String)
+    func courseHomeVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func courseHomeViewAllVideosClicked(courseId: String, courseName: String)
+    func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String)
+    func courseHomeViewAllAssignmentsClicked(courseId: String, courseName: String)
+    func courseHomeGradesViewProgressClicked(courseId: String, courseName: String)
+    func courseHomeSectionSubsectionClick(
+        courseId: String,
+        courseName: String,
+        courseSection: String,
+        courseSubsection: String
+    )
     func datesComponentTapped(
         courseId: String,
         blockId: String,
@@ -179,11 +202,34 @@ class CourseAnalyticsMock: CourseAnalytics {
     ) {}
     public func finishVerticalBackToOutlineClicked(courseId: String, courseName: String) {}
     public func courseOutlineCourseTabClicked(courseId: String, courseName: String) {}
+    public func courseOutlineContentTabClicked(courseId: String, courseName: String) {}
+    public func courseOutlineProgressTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineVideosTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineOfflineTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineDatesTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineDiscussionTabClicked(courseId: String, courseName: String) {}
     public func courseOutlineHandoutsTabClicked(courseId: String, courseName: String) {}
+    public func courseOutlineAssignmentsTabClicked(courseId: String, courseName: String) {}
+    public func courseContentAllTabClicked(courseId: String, courseName: String) {}
+    public func courseContentVideosTabClicked(courseId: String, courseName: String) {}
+    public func courseContentAssignmentsTabClicked(courseId: String, courseName: String) {}
+    public func courseVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func courseAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func contentPageSectionClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func contentPageShowCompletedSubsectionClicked(courseId: String, courseName: String) {}
+    public func progressTabClicked(courseId: String, courseName: String) {}
+    public func courseHomeViewAllContentClicked(courseId: String, courseName: String) {}
+    public func courseHomeVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func courseHomeViewAllVideosClicked(courseId: String, courseName: String) {}
+    public func courseHomeSectionSubsectionClick(
+        courseId: String,
+        courseName: String,
+        courseSection: String,
+        courseSubsection: String
+    ) {}
+    public func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
+    public func courseHomeViewAllAssignmentsClicked(courseId: String, courseName: String) {}
+    public func courseHomeGradesViewProgressClicked(courseId: String, courseName: String) {}
     public func datesComponentTapped(
         courseId: String,
         blockId: String,

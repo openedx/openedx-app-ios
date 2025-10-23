@@ -38,7 +38,6 @@
 		0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0270210128E736E700F54332 /* CourseOutlineView.swift */; };
 		0276D75B29DDA3890004CDF8 /* Data_ResumeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0276D75A29DDA3890004CDF8 /* Data_ResumeBlock.swift */; };
 		0276D75D29DDA3F80004CDF8 /* ResumeBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0276D75C29DDA3F80004CDF8 /* ResumeBlock.swift */; };
-		02868AE52C19FE0B0003E339 /* DownloadActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02868AE42C19FE0B0003E339 /* DownloadActionView.swift */; };
 		0289F90228E1C3E10064F8F3 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0289F90128E1C3E00064F8F3 /* swiftgen.yml */; };
 		0295B1D9297E6DF8003B0C65 /* CourseUnitViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295B1D8297E6DF8003B0C65 /* CourseUnitViewModelTests.swift */; };
 		0295C889299BBE8200ABE571 /* CourseNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0295C888299BBE8200ABE571 /* CourseNavigationView.swift */; };
@@ -53,11 +52,7 @@
 		02C7B1D82C271A7000D2A7BB /* OfflineContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02C7B1D72C271A7000D2A7BB /* OfflineContentView.swift */; };
 		02D4FC2E2BBD7C9C00C47748 /* MessageSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D4FC2D2BBD7C9C00C47748 /* MessageSectionView.swift */; };
 		02E3803E2BFF9F0A00815AFA /* CourseProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E3803D2BFF9F0A00815AFA /* CourseProgressView.swift */; };
-		02F0144F28F46474002E513D /* CourseContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0144E28F46474002E513D /* CourseContainerView.swift */; };
-		02F0145728F4A2FF002E513D /* CourseContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */; };
 		02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFDC29252E900051930C /* CourseRouter.swift */; };
-		02F71B4A2C1B163B00FF936A /* DownloadErrorAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F71B492C1B163A00FF936A /* DownloadErrorAlertView.swift */; };
-		02F71B4C2C1B200900FF936A /* DeviceStorageFullAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F71B4B2C1B200900FF936A /* DeviceStorageFullAlertView.swift */; };
 		02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */; };
 		02F98A8128F8224200DE94C0 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F98A8028F8224200DE94C0 /* Discussion.framework */; };
 		02FCB2B32BBEB36600373180 /* CourseHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FCB2B22BBEB36600373180 /* CourseHeaderView.swift */; };
@@ -92,6 +87,17 @@
 		97C99C362B9A08FE004EEDE2 /* CalendarSyncProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C99C352B9A08FE004EEDE2 /* CalendarSyncProgressView.swift */; };
 		97CA95252B875EE200A9EDEA /* DatesSuccessView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97CA95242B875EE200A9EDEA /* DatesSuccessView.swift */; };
 		97E7DF0F2B7C852A00A2A09B /* DatesStatusInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E7DF0E2B7C852A00A2A09B /* DatesStatusInfoView.swift */; };
+		A52897D12E24F5C1009C7044 /* CourseCompletionCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897D02E24F5C1009C7044 /* CourseCompletionCarouselSlideView.swift */; };
+		A52897D42E24FA9F009C7044 /* CourseOutlineAndProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897D32E24FA9F009C7044 /* CourseOutlineAndProgressView.swift */; };
+		A52897D62E2500E5009C7044 /* WhatsNew.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A52897D52E2500E5009C7044 /* WhatsNew.framework */; };
+		A52897D82E252357009C7044 /*  CourseOutlineAndProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897D72E252349009C7044 /*  CourseOutlineAndProgressViewModel.swift */; };
+		A52897DC2E276B12009C7044 /* CourseGradeCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897DB2E276B02009C7044 /* CourseGradeCarouselSlideView.swift */; };
+		A52897DE2E277A7C009C7044 /* GradeItemCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897DD2E277A7C009C7044 /* GradeItemCarouselView.swift */; };
+		A52897E02E278D7D009C7044 /* ViewAllButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897DF2E278D7D009C7044 /* ViewAllButton.swift */; };
+		A5A510A22E66E8D600553607 /* CourseVideoCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A12E66E8D600553607 /* CourseVideoCarouselSlideView.swift */; };
+		A5A510A42E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */; };
+		A5A510A62E672E4A00553607 /* AssignmentCarouselDetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */; };
+		A59016D52E69B2E900076220 /* VideoNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59016D42E69B2E900076220 /* VideoNavigationView.swift */; };
 		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 		BA58CF5D2B3D804D005B102E /* CourseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF5C2B3D804D005B102E /* CourseStorage.swift */; };
 		BA58CF612B471041005B102E /* VideoDownloadQualityBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */; };
@@ -101,6 +107,25 @@
 		BAC0E0DE2B32F0F3006B68A9 /* DownloadsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC0E0DD2B32F0F3006B68A9 /* DownloadsViewModel.swift */; };
 		BAD9CA2D2B2736BB00DE790A /* LessonLineProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA2C2B2736BB00DE790A /* LessonLineProgressView.swift */; };
 		BAD9CA4A2B2C88E000DE790A /* CourseVideoDownloadBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */; };
+		CE02086C2E0EC88C005999E2 /* VideosContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE02086B2E0EC88C005999E2 /* VideosContentView.swift */; };
+		CE1AC4012E055CCD00618645 /* CourseProgressScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC3FF2E055CCD00618645 /* CourseProgressScreenView.swift */; };
+		CE1AC4032E05A33D00618645 /* Data_CourseProgressResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC4022E05A33D00618645 /* Data_CourseProgressResponse.swift */; };
+		CE1AC4052E05A35000618645 /* CourseProgressDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC4042E05A35000618645 /* CourseProgressDetails.swift */; };
+		CE1AC4072E05A36C00618645 /* CourseProgressViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC4062E05A36C00618645 /* CourseProgressViewModel.swift */; };
+		CE1AC40C2E06DCC900618645 /* OverallGradeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC40A2E06DCC900618645 /* OverallGradeView.swift */; };
+		CE1AC40D2E06DCC900618645 /* GradeItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC4092E06DCC900618645 /* GradeItemView.swift */; };
+		CE1AC40E2E06DCC900618645 /* GradeDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC4082E06DCC900618645 /* GradeDetailsView.swift */; };
+		CE1AC41BFAF7140618645 /* CourseProgressCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC41AFAF7140618645 /* CourseProgressCircleView.swift */; };
+		CE1AC45F0EDBBF0618645 /* SegmentedProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1AC45E0EDBBF0618645 /* SegmentedProgressView.swift */; };
+		CE4BA8832E0806380050F2C7 /* CourseProgressViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BA8822E0806380050F2C7 /* CourseProgressViewModelTests.swift */; };
+		CE4BA9162E0AC3790050F2C7 /* CourseContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BA9142E0AC3790050F2C7 /* CourseContentView.swift */; };
+		CE4BA9192E0AC99A0050F2C7 /* ContentSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BA9172E0AC99A0050F2C7 /* ContentSegmentedControl.swift */; };
+		CE4BA91C2E0AE2960050F2C7 /* AllContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BA91A2E0AE2960050F2C7 /* AllContentView.swift */; };
+		CE4BA91E2E0AED930050F2C7 /* CustomProgressShape.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BA91D2E0AED930050F2C7 /* CustomProgressShape.swift */; };
+		CE4BA9202E0AF22A0050F2C7 /* SectionProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4BA91F2E0AF22A0050F2C7 /* SectionProgressView.swift */; };
+		CE5BBFEC2E22A88900D51C92 /* AssignmentDetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5BBFEB2E22A88900D51C92 /* AssignmentDetailCardView.swift */; };
+		CE5BBFEE2E22A8AF00D51C92 /* AssignmentCardSmallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5BBFED2E22A8AF00D51C92 /* AssignmentCardSmallView.swift */; };
+		CE5BBFF22E22C91000D51C92 /* AssignmentSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE5BBFF12E22C91000D51C92 /* AssignmentSection.swift */; };
 		CE6386642D07215E00C01D69 /* Line.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386632D07215E00C01D69 /* Line.swift */; };
 		CE6386662D07217300C01D69 /* TimeLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386652D07217300C01D69 /* TimeLineView.swift */; };
 		CE6386682D07219B00C01D69 /* CourseDateListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE6386672D07219B00C01D69 /* CourseDateListView.swift */; };
@@ -108,8 +133,20 @@
 		CE63866C2D0721D600C01D69 /* BlockStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866B2D0721D600C01D69 /* BlockStatusView.swift */; };
 		CE63866E2D07220600C01D69 /* CourseDateStyleBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */; };
 		CE7CAF412CC1563500E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF402CC1563500E0AC9D /* OEXFoundation */; };
+		CE812FAB2E15157600EDCC63 /* VideoSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE812FAA2E15157600EDCC63 /* VideoSectionView.swift */; };
+		CE812FAD2E15168C00EDCC63 /* VideoThumbnailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE812FAC2E15168C00EDCC63 /* VideoThumbnailView.swift */; };
+		CE83F79E2E5DD4AD004E0F7B /* CourseContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE83F79D2E5DD4AD004E0F7B /* CourseContainerView.swift */; };
+		CE83F7A02E5DD516004E0F7B /* CourseContainerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE83F79F2E5DD516004E0F7B /* CourseContainerViewModel.swift */; };
+		CEAB6BDC2E19695D00E8E898 /* NoContentAvailable.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB6BDB2E19695D00E8E898 /* NoContentAvailable.swift */; };
+		CEAB6C2F2E1D242100E8E898 /* CourseProgressDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB6C2E2E1D242100E8E898 /* CourseProgressDetails.swift */; };
+		CEAB6C312E1D3B2700E8E898 /* AssignmentsContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB6C302E1D3B2700E8E898 /* AssignmentsContentView.swift */; };
+		CEAB6C3A2E1D3B3900E8E899 /* ProgressAssignmentTypeSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB6C3B2E1D3B3900E8E899 /* ProgressAssignmentTypeSection.swift */; };
+		CEAB6C3C2E1D3B3900E8E800 /* AssignmentCardStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB6C3D2E1D3B3900E8E800 /* AssignmentCardStatus.swift */; };
 		CEB1E2732CC14EC400921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2722CC14EC400921517 /* OEXFoundation */; };
 		CEBCA4342CC13CDE00076589 /* YouTubePlayerKit in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA4332CC13CDE00076589 /* YouTubePlayerKit */; };
+		CECF38342E3A4BB100184EC4 /* VideoContentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF38322E3A4BB100184EC4 /* VideoContentData.swift */; };
+		CECF38362E3A545B00184EC4 /* AssignmentContentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF38352E3A545B00184EC4 /* AssignmentContentData.swift */; };
+		CECF38382E3A73C200184EC4 /* VideoThumbnailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CECF38372E3A73C200184EC4 /* VideoThumbnailService.swift */; };
 		DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */; };
 		DB7D6EAC2ADFCAC50036BB13 /* CourseDatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */; };
 		DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */; };
@@ -169,7 +206,6 @@
 		0270210128E736E700F54332 /* CourseOutlineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOutlineView.swift; sourceTree = "<group>"; };
 		0276D75A29DDA3890004CDF8 /* Data_ResumeBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_ResumeBlock.swift; sourceTree = "<group>"; };
 		0276D75C29DDA3F80004CDF8 /* ResumeBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResumeBlock.swift; sourceTree = "<group>"; };
-		02868AE42C19FE0B0003E339 /* DownloadActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadActionView.swift; sourceTree = "<group>"; };
 		0289F8EE28E1C3510064F8F3 /* Course.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Course.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0289F90128E1C3E00064F8F3 /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		0295B1D8297E6DF8003B0C65 /* CourseUnitViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUnitViewModelTests.swift; sourceTree = "<group>"; };
@@ -188,11 +224,7 @@
 		02D4FC2D2BBD7C9C00C47748 /* MessageSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageSectionView.swift; sourceTree = "<group>"; };
 		02E3803D2BFF9F0A00815AFA /* CourseProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressView.swift; sourceTree = "<group>"; };
 		02EBC7542C19CFCF00BE182C /* CalendarSyncStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSyncStatusView.swift; sourceTree = "<group>"; };
-		02F0144E28F46474002E513D /* CourseContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerView.swift; sourceTree = "<group>"; };
-		02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerViewModel.swift; sourceTree = "<group>"; };
 		02F3BFDC29252E900051930C /* CourseRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRouter.swift; sourceTree = "<group>"; };
-		02F71B492C1B163A00FF936A /* DownloadErrorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadErrorAlertView.swift; sourceTree = "<group>"; };
-		02F71B4B2C1B200900FF936A /* DeviceStorageFullAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceStorageFullAlertView.swift; sourceTree = "<group>"; };
 		02F78AEA29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = VideoPlayerViewModelTests.swift; path = CourseTests/Presentation/Unit/VideoPlayerViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		02F98A8028F8224200DE94C0 /* Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02FCB2B22BBEB36600373180 /* CourseHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseHeaderView.swift; sourceTree = "<group>"; };
@@ -240,6 +272,17 @@
 		99AEF08FD75F1509863D3302 /* Pods-App-CourseDetails.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debugprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debugprod.xcconfig"; sourceTree = "<group>"; };
 		9B5D3D31A9CFA08B6C4347BD /* Pods-App-CourseDetails.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releasedev.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releasedev.xcconfig"; sourceTree = "<group>"; };
 		A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.releasestage.xcconfig"; sourceTree = "<group>"; };
+		A52897D02E24F5C1009C7044 /* CourseCompletionCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCompletionCarouselSlideView.swift; sourceTree = "<group>"; };
+		A52897D32E24FA9F009C7044 /* CourseOutlineAndProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOutlineAndProgressView.swift; sourceTree = "<group>"; };
+		A52897D52E2500E5009C7044 /* WhatsNew.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WhatsNew.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A52897D72E252349009C7044 /*  CourseOutlineAndProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = " CourseOutlineAndProgressViewModel.swift"; sourceTree = "<group>"; };
+		A52897DB2E276B02009C7044 /* CourseGradeCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeCarouselSlideView.swift; sourceTree = "<group>"; };
+		A52897DD2E277A7C009C7044 /* GradeItemCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeItemCarouselView.swift; sourceTree = "<group>"; };
+		A52897DF2E278D7D009C7044 /* ViewAllButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllButton.swift; sourceTree = "<group>"; };
+		A5A510A12E66E8D600553607 /* CourseVideoCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoCarouselSlideView.swift; sourceTree = "<group>"; };
+		A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentsCarouselSlideView.swift; sourceTree = "<group>"; };
+		A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCarouselDetailCardView.swift; sourceTree = "<group>"; };
+		A59016D42E69B2E900076220 /* VideoNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoNavigationView.swift; sourceTree = "<group>"; };
 		ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debug.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debug.xcconfig"; sourceTree = "<group>"; };
 		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BA58CF5C2B3D804D005B102E /* CourseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStorage.swift; sourceTree = "<group>"; };
@@ -250,12 +293,44 @@
 		BAC0E0DD2B32F0F3006B68A9 /* DownloadsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsViewModel.swift; sourceTree = "<group>"; };
 		BAD9CA2C2B2736BB00DE790A /* LessonLineProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LessonLineProgressView.swift; sourceTree = "<group>"; };
 		BAD9CA492B2C88E000DE790A /* CourseVideoDownloadBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoDownloadBarView.swift; sourceTree = "<group>"; };
+		CE02086B2E0EC88C005999E2 /* VideosContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideosContentView.swift; sourceTree = "<group>"; };
+		CE1AC3FF2E055CCD00618645 /* CourseProgressScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressScreenView.swift; sourceTree = "<group>"; };
+		CE1AC4022E05A33D00618645 /* Data_CourseProgressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CourseProgressResponse.swift; sourceTree = "<group>"; };
+		CE1AC4042E05A35000618645 /* CourseProgressDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressDetails.swift; sourceTree = "<group>"; };
+		CE1AC4062E05A36C00618645 /* CourseProgressViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressViewModel.swift; sourceTree = "<group>"; };
+		CE1AC4082E06DCC900618645 /* GradeDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeDetailsView.swift; sourceTree = "<group>"; };
+		CE1AC4092E06DCC900618645 /* GradeItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeItemView.swift; sourceTree = "<group>"; };
+		CE1AC40A2E06DCC900618645 /* OverallGradeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverallGradeView.swift; sourceTree = "<group>"; };
+		CE1AC41AFAF7140618645 /* CourseProgressCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressCircleView.swift; sourceTree = "<group>"; };
+		CE1AC45E0EDBBF0618645 /* SegmentedProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedProgressView.swift; sourceTree = "<group>"; };
+		CE4BA8822E0806380050F2C7 /* CourseProgressViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressViewModelTests.swift; sourceTree = "<group>"; };
+		CE4BA9142E0AC3790050F2C7 /* CourseContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContentView.swift; sourceTree = "<group>"; };
+		CE4BA9172E0AC99A0050F2C7 /* ContentSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentSegmentedControl.swift; sourceTree = "<group>"; };
+		CE4BA91A2E0AE2960050F2C7 /* AllContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllContentView.swift; sourceTree = "<group>"; };
+		CE4BA91D2E0AED930050F2C7 /* CustomProgressShape.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomProgressShape.swift; sourceTree = "<group>"; };
+		CE4BA91F2E0AF22A0050F2C7 /* SectionProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionProgressView.swift; sourceTree = "<group>"; };
+		CE5BBFEB2E22A88900D51C92 /* AssignmentDetailCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentDetailCardView.swift; sourceTree = "<group>"; };
+		CE5BBFED2E22A8AF00D51C92 /* AssignmentCardSmallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCardSmallView.swift; sourceTree = "<group>"; };
+		CE5BBFF12E22C91000D51C92 /* AssignmentSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentSection.swift; sourceTree = "<group>"; };
 		CE6386632D07215E00C01D69 /* Line.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Line.swift; sourceTree = "<group>"; };
 		CE6386652D07217300C01D69 /* TimeLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeLineView.swift; sourceTree = "<group>"; };
 		CE6386672D07219B00C01D69 /* CourseDateListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateListView.swift; sourceTree = "<group>"; };
 		CE6386692D0721B600C01D69 /* CompletedBlocks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompletedBlocks.swift; sourceTree = "<group>"; };
 		CE63866B2D0721D600C01D69 /* BlockStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockStatusView.swift; sourceTree = "<group>"; };
 		CE63866D2D07220600C01D69 /* CourseDateStyleBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateStyleBlock.swift; sourceTree = "<group>"; };
+		CE812FAA2E15157600EDCC63 /* VideoSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoSectionView.swift; sourceTree = "<group>"; };
+		CE812FAC2E15168C00EDCC63 /* VideoThumbnailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailView.swift; sourceTree = "<group>"; };
+		CE83F79D2E5DD4AD004E0F7B /* CourseContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerView.swift; sourceTree = "<group>"; };
+		CE83F79F2E5DD516004E0F7B /* CourseContainerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseContainerViewModel.swift; sourceTree = "<group>"; };
+		CEAB6BDB2E19695D00E8E898 /* NoContentAvailable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoContentAvailable.swift; sourceTree = "<group>"; };
+		CEAB6C2C2E1D240300E8E898 /* Data_CourseProgressResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CourseProgressResponse.swift; sourceTree = "<group>"; };
+		CEAB6C2E2E1D242100E8E898 /* CourseProgressDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseProgressDetails.swift; sourceTree = "<group>"; };
+		CEAB6C302E1D3B2700E8E898 /* AssignmentsContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentsContentView.swift; sourceTree = "<group>"; };
+		CEAB6C3B2E1D3B3900E8E899 /* ProgressAssignmentTypeSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressAssignmentTypeSection.swift; sourceTree = "<group>"; };
+		CEAB6C3D2E1D3B3900E8E800 /* AssignmentCardStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCardStatus.swift; sourceTree = "<group>"; };
+		CECF38322E3A4BB100184EC4 /* VideoContentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoContentData.swift; sourceTree = "<group>"; };
+		CECF38352E3A545B00184EC4 /* AssignmentContentData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentContentData.swift; sourceTree = "<group>"; };
+		CECF38372E3A73C200184EC4 /* VideoThumbnailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoThumbnailService.swift; sourceTree = "<group>"; };
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
 		DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDatesView.swift; sourceTree = "<group>"; };
 		DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesViewModel.swift; sourceTree = "<group>"; };
@@ -284,6 +359,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A52897D62E2500E5009C7044 /* WhatsNew.framework in Frameworks */,
 				02B6B3C928E1E68100232911 /* Core.framework in Frameworks */,
 				197FB8EA8F92F00A8F383D82 /* Pods_App_Course.framework in Frameworks */,
 				CEBCA4342CC13CDE00076589 /* YouTubePlayerKit in Frameworks */,
@@ -316,6 +392,7 @@
 		02454C9E2A2618D40043052A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				A59016D42E69B2E900076220 /* VideoNavigationView.swift */,
 				068DDA5A2B1E198700FF8CCB /* DropdownList */,
 				02454C9F2A2618E70043052A /* YouTubeView.swift */,
 				02454CA12A26190A0043052A /* EncodedVideoView.swift */,
@@ -328,16 +405,6 @@
 				02C7B1D72C271A7000D2A7BB /* OfflineContentView.swift */,
 			);
 			path = Subviews;
-			sourceTree = "<group>";
-		};
-		02868AE32C19FDF10003E339 /* ActionViews */ = {
-			isa = PBXGroup;
-			children = (
-				02868AE42C19FE0B0003E339 /* DownloadActionView.swift */,
-				02F71B492C1B163A00FF936A /* DownloadErrorAlertView.swift */,
-				02F71B4B2C1B200900FF936A /* DeviceStorageFullAlertView.swift */,
-			);
-			path = ActionViews;
 			sourceTree = "<group>";
 		};
 		0289F8E428E1C3510064F8F3 = {
@@ -387,6 +454,7 @@
 			children = (
 				070019A328F6EFC100D5FC78 /* Model */,
 				02B6B3B628E1D11E00232911 /* CourseInteractor.swift */,
+				CECF38372E3A73C200184EC4 /* VideoThumbnailService.swift */,
 			);
 			path = Domain;
 			sourceTree = "<group>";
@@ -415,10 +483,12 @@
 		02B6B3BF28E1DB8800232911 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEAB6C2C2E1D240300E8E898 /* Data_CourseProgressResponse.swift */,
 				0276D75A29DDA3890004CDF8 /* Data_ResumeBlock.swift */,
 				027020FB28E7362100F54332 /* Data_CourseOutlineResponse.swift */,
 				022C64DB29ACFDEE000F532B /* Data_HandoutsResponse.swift */,
 				022C64DF29ADEA9B000F532B /* Data_UpdatesResponse.swift */,
+				CE1AC4022E05A33D00618645 /* Data_CourseProgressResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -426,6 +496,7 @@
 		02B6B3C728E1E68100232911 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A52897D52E2500E5009C7044 /* WhatsNew.framework */,
 				02F98A8028F8224200DE94C0 /* Discussion.framework */,
 				02B6B3C828E1E68100232911 /* Core.framework */,
 				E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */,
@@ -455,6 +526,7 @@
 		02EAE2CA28E1F0A700529644 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				A52897D22E24FA8C009C7044 /* NewOutlIineAndProgress */,
 				02FF6FA52C20BFE100E44DD8 /* Offline */,
 				DB7D6EAA2ADFCAA00036BB13 /* Dates */,
 				070019A828F6F33600D5FC78 /* Container */,
@@ -466,6 +538,8 @@
 				BAD9CA482B2C88D500DE790A /* Subviews */,
 				02F3BFDC29252E900051930C /* CourseRouter.swift */,
 				07DE59852BECB868001CBFBC /* CourseAnalytics.swift */,
+				CE4BA9152E0AC3790050F2C7 /* Content */,
+				CE1AC4002E055CCD00618645 /* Progress */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -503,9 +577,13 @@
 		070019A328F6EFC100D5FC78 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				CEAB6C3D2E1D3B3900E8E800 /* AssignmentCardStatus.swift */,
+				CEAB6C2E2E1D242100E8E898 /* CourseProgressDetails.swift */,
 				02B6B3C228E1DCD100232911 /* CourseDetails.swift */,
 				0276D75C29DDA3F80004CDF8 /* ResumeBlock.swift */,
 				022C64E129ADEB83000F532B /* CourseUpdate.swift */,
+				CE1AC4042E05A35000618645 /* CourseProgressDetails.swift */,
+				CE5BBFF12E22C91000D51C92 /* AssignmentSection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -523,9 +601,9 @@
 		070019A828F6F33600D5FC78 /* Container */ = {
 			isa = PBXGroup;
 			children = (
+				CE83F79F2E5DD516004E0F7B /* CourseContainerViewModel.swift */,
+				CE83F79D2E5DD4AD004E0F7B /* CourseContainerView.swift */,
 				0631FF972D2BE674007CA011 /* CourseDownloadHelper.swift */,
-				02F0144E28F46474002E513D /* CourseContainerView.swift */,
-				02F0145628F4A2FF002E513D /* CourseContainerViewModel.swift */,
 				073512E129C0E400005CFA41 /* BaseCourseViewModel.swift */,
 			);
 			path = Container;
@@ -588,6 +666,7 @@
 				0262148E29AE17C4008BD75A /* HandoutsViewModelTests.swift */,
 				0295B1D8297E6DF8003B0C65 /* CourseUnitViewModelTests.swift */,
 				DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */,
+				CE4BA8822E0806380050F2C7 /* CourseProgressViewModelTests.swift */,
 			);
 			path = Unit;
 			sourceTree = "<group>";
@@ -615,6 +694,27 @@
 				97CA95242B875EE200A9EDEA /* DatesSuccessView.swift */,
 			);
 			path = DatesSuccessView;
+			sourceTree = "<group>";
+		};
+		A52897CF2E24F571009C7044 /* CourseCarouselView */ = {
+			isa = PBXGroup;
+			children = (
+				A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */,
+				A52897D02E24F5C1009C7044 /* CourseCompletionCarouselSlideView.swift */,
+				A52897DB2E276B02009C7044 /* CourseGradeCarouselSlideView.swift */,
+				A5A510A12E66E8D600553607 /* CourseVideoCarouselSlideView.swift */,
+				A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */,
+			);
+			path = CourseCarouselView;
+			sourceTree = "<group>";
+		};
+		A52897D22E24FA8C009C7044 /* NewOutlIineAndProgress */ = {
+			isa = PBXGroup;
+			children = (
+				A52897D32E24FA9F009C7044 /* CourseOutlineAndProgressView.swift */,
+				A52897D72E252349009C7044 /*  CourseOutlineAndProgressViewModel.swift */,
+			);
+			path = NewOutlIineAndProgress;
 			sourceTree = "<group>";
 		};
 		BA58CF622B471047005B102E /* VideoDownloadQualityBarView */ = {
@@ -657,7 +757,7 @@
 		BAD9CA482B2C88D500DE790A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
-				02868AE32C19FDF10003E339 /* ActionViews */,
+				A52897CF2E24F571009C7044 /* CourseCarouselView */,
 				9784D4762BF39EFD00AFEFFF /* DatesSuccessView */,
 				9784D4752BF39EEF00AFEFFF /* CalendarSyncProgressView */,
 				02D4FC2C2BBD7C7500C47748 /* MessageSectionView */,
@@ -667,6 +767,67 @@
 				02BB20172BFCE7B200364948 /* CustomDisclosureGroup.swift */,
 				02E3803D2BFF9F0A00815AFA /* CourseProgressView.swift */,
 				02EBC7542C19CFCF00BE182C /* CalendarSyncStatusView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
+		CE1AC4002E055CCD00618645 /* Progress */ = {
+			isa = PBXGroup;
+			children = (
+				CE1AC3FF2E055CCD00618645 /* CourseProgressScreenView.swift */,
+				CE1AC4062E05A36C00618645 /* CourseProgressViewModel.swift */,
+				CE1AC40B2E06DCC900618645 /* Elements */,
+			);
+			path = Progress;
+			sourceTree = "<group>";
+		};
+		CE1AC40B2E06DCC900618645 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				A52897DF2E278D7D009C7044 /* ViewAllButton.swift */,
+				CE1AC41AFAF7140618645 /* CourseProgressCircleView.swift */,
+				CE1AC4082E06DCC900618645 /* GradeDetailsView.swift */,
+				CE1AC4092E06DCC900618645 /* GradeItemView.swift */,
+				A52897DD2E277A7C009C7044 /* GradeItemCarouselView.swift */,
+				CE1AC40A2E06DCC900618645 /* OverallGradeView.swift */,
+				CE1AC45E0EDBBF0618645 /* SegmentedProgressView.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		CE4BA9152E0AC3790050F2C7 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				CE4BA91B2E0AE2960050F2C7 /* Subviews */,
+				CE4BA9182E0AC99A0050F2C7 /* Elements */,
+				CE4BA9142E0AC3790050F2C7 /* CourseContentView.swift */,
+				CECF38332E3A4BB100184EC4 /* Models */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		CE4BA9182E0AC99A0050F2C7 /* Elements */ = {
+			isa = PBXGroup;
+			children = (
+				CE5BBFED2E22A8AF00D51C92 /* AssignmentCardSmallView.swift */,
+				CE5BBFEB2E22A88900D51C92 /* AssignmentDetailCardView.swift */,
+				CE812FAC2E15168C00EDCC63 /* VideoThumbnailView.swift */,
+				CE812FAA2E15157600EDCC63 /* VideoSectionView.swift */,
+				CE4BA9172E0AC99A0050F2C7 /* ContentSegmentedControl.swift */,
+				CE4BA91D2E0AED930050F2C7 /* CustomProgressShape.swift */,
+				CE4BA91F2E0AF22A0050F2C7 /* SectionProgressView.swift */,
+				CEAB6BDB2E19695D00E8E898 /* NoContentAvailable.swift */,
+				CEAB6C3B2E1D3B3900E8E899 /* ProgressAssignmentTypeSection.swift */,
+			);
+			path = Elements;
+			sourceTree = "<group>";
+		};
+		CE4BA91B2E0AE2960050F2C7 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				CE4BA91A2E0AE2960050F2C7 /* AllContentView.swift */,
+				CE02086B2E0EC88C005999E2 /* VideosContentView.swift */,
+				CEAB6C302E1D3B2700E8E898 /* AssignmentsContentView.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -682,6 +843,15 @@
 				CE6386652D07217300C01D69 /* TimeLineView.swift */,
 			);
 			path = Elements;
+			sourceTree = "<group>";
+		};
+		CECF38332E3A4BB100184EC4 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CECF38352E3A545B00184EC4 /* AssignmentContentData.swift */,
+				CECF38322E3A4BB100184EC4 /* VideoContentData.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		D52670044E8768425E23C627 /* Pods */ = {
@@ -931,6 +1101,7 @@
 			files = (
 				0295B1D9297E6DF8003B0C65 /* CourseUnitViewModelTests.swift in Sources */,
 				065D575D2D4442D700350351 /* CourseDownloadHelperTests.swift in Sources */,
+				CE4BA8832E0806380050F2C7 /* CourseProgressViewModelTests.swift in Sources */,
 				02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */,
 				023812F3297AC9ED0087098F /* CourseMock.generated.swift in Sources */,
 				DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */,
@@ -953,6 +1124,7 @@
 				BAD9CA4A2B2C88E000DE790A /* CourseVideoDownloadBarView.swift in Sources */,
 				022C64DE29AD167A000F532B /* HandoutsUpdatesDetailView.swift in Sources */,
 				BA58CF612B471041005B102E /* VideoDownloadQualityBarView.swift in Sources */,
+				CE5BBFEC2E22A88900D51C92 /* AssignmentDetailCardView.swift in Sources */,
 				02FF6FA72C20BFF800E44DD8 /* OfflineView.swift in Sources */,
 				0270210328E736E700F54332 /* CourseOutlineView.swift in Sources */,
 				068DDA602B1E198700FF8CCB /* CourseUnitVerticalsDropdownView.swift in Sources */,
@@ -969,68 +1141,102 @@
 				BAC0E0DE2B32F0F3006B68A9 /* DownloadsViewModel.swift in Sources */,
 				02B6B3BC28E1D14F00232911 /* CourseRepository.swift in Sources */,
 				02280F60294B50030032823A /* CoursePersistenceProtocol.swift in Sources */,
+				A5A510A22E66E8D600553607 /* CourseVideoCarouselSlideView.swift in Sources */,
+				CE1AC4032E05A33D00618645 /* Data_CourseProgressResponse.swift in Sources */,
 				02454CAA2A2619B40043052A /* LessonProgressView.swift in Sources */,
 				975F475E2B6151FD00E5B031 /* CourseDatesMock.swift in Sources */,
 				02FF6FAA2C20D56A00E44DD8 /* TotalDownloadedProgressView.swift in Sources */,
 				975F47602B615DA700E5B031 /* CourseStructureMock.swift in Sources */,
+				A59016D52E69B2E900076220 /* VideoNavigationView.swift in Sources */,
 				02280F5E294B4FDA0032823A /* CourseCoreModel.xcdatamodeld in Sources */,
 				0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */,
+				A5A510A42E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift in Sources */,
 				02C7B1D82C271A7000D2A7BB /* OfflineContentView.swift in Sources */,
 				0276D75B29DDA3890004CDF8 /* Data_ResumeBlock.swift in Sources */,
 				0276D75D29DDA3F80004CDF8 /* ResumeBlock.swift in Sources */,
+				CECF38362E3A545B00184EC4 /* AssignmentContentData.swift in Sources */,
 				02F3BFDD29252E900051930C /* CourseRouter.swift in Sources */,
 				068DDA5F2B1E198700FF8CCB /* CourseUnitDropDownList.swift in Sources */,
+				CEAB6C312E1D3B2700E8E898 /* AssignmentsContentView.swift in Sources */,
+				CE1AC4072E05A36C00618645 /* CourseProgressViewModel.swift in Sources */,
 				022F8E182A1E2642008EFAB9 /* EncodedVideoPlayerViewModel.swift in Sources */,
 				0248C92729C097EB00DC8402 /* CourseVerticalViewModel.swift in Sources */,
-				02F0145728F4A2FF002E513D /* CourseContainerViewModel.swift in Sources */,
+				CE812FAD2E15168C00EDCC63 /* VideoThumbnailView.swift in Sources */,
 				02B6B3B728E1D11E00232911 /* CourseInteractor.swift in Sources */,
 				073512E229C0E400005CFA41 /* BaseCourseViewModel.swift in Sources */,
+				CEAB6C3A2E1D3B3900E8E899 /* ProgressAssignmentTypeSection.swift in Sources */,
+				CEAB6C3C2E1D3B3900E8E800 /* AssignmentCardStatus.swift in Sources */,
 				0231124F28EDA811002588FB /* CourseUnitViewModel.swift in Sources */,
-				02F0144F28F46474002E513D /* CourseContainerView.swift in Sources */,
 				CE6386642D07215E00C01D69 /* Line.swift in Sources */,
+				CECF38382E3A73C200184EC4 /* VideoThumbnailService.swift in Sources */,
+				CE02086C2E0EC88C005999E2 /* VideosContentView.swift in Sources */,
 				02A8076829474831007F53AB /* CourseVerticalView.swift in Sources */,
 				97E7DF0F2B7C852A00A2A09B /* DatesStatusInfoView.swift in Sources */,
 				067B7B4F2BED339200D1768F /* PlayerDelegateProtocol.swift in Sources */,
 				0231124D28EDA804002588FB /* CourseUnitView.swift in Sources */,
 				027020FC28E7362100F54332 /* Data_CourseOutlineResponse.swift in Sources */,
-				02F71B4A2C1B163B00FF936A /* DownloadErrorAlertView.swift in Sources */,
 				067B7B532BED339200D1768F /* PlayerServiceProtocol.swift in Sources */,
+				A52897D42E24FA9F009C7044 /* CourseOutlineAndProgressView.swift in Sources */,
+				A52897DE2E277A7C009C7044 /* GradeItemCarouselView.swift in Sources */,
 				BAD9CA2D2B2736BB00DE790A /* LessonLineProgressView.swift in Sources */,
 				02197DC52C1AFC0600CC8FF2 /* CalendarSyncStatusView.swift in Sources */,
 				060E8BCA2B5FD68C0080C952 /* UnitStack.swift in Sources */,
+				A5A510A62E672E4A00553607 /* AssignmentCarouselDetailCardView.swift in Sources */,
+				CE4BA91C2E0AE2960050F2C7 /* AllContentView.swift in Sources */,
+				CE812FAB2E15157600EDCC63 /* VideoSectionView.swift in Sources */,
 				02228B2F2C221412009A5F28 /* LargestDownloadsView.swift in Sources */,
 				0295C889299BBE8200ABE571 /* CourseNavigationView.swift in Sources */,
+				CE83F7A02E5DD516004E0F7B /* CourseContainerViewModel.swift in Sources */,
+				CE83F79E2E5DD4AD004E0F7B /* CourseContainerView.swift in Sources */,
+				CE1AC4012E055CCD00618645 /* CourseProgressScreenView.swift in Sources */,
 				06FD7EDF2B1F29F3008D632B /* CourseVerticalImageView.swift in Sources */,
 				BAC0E0DB2B32F0AE006B68A9 /* CourseVideoDownloadBarViewModel.swift in Sources */,
 				DB7D6EAE2ADFCB4A0036BB13 /* CourseDatesViewModel.swift in Sources */,
 				067B7B522BED339200D1768F /* SubtitlesView.swift in Sources */,
 				CE63866E2D07220600C01D69 /* CourseDateStyleBlock.swift in Sources */,
 				CE63866C2D0721D600C01D69 /* BlockStatusView.swift in Sources */,
-				02868AE52C19FE0B0003E339 /* DownloadActionView.swift in Sources */,
+				CEAB6C2F2E1D242100E8E898 /* CourseProgressDetails.swift in Sources */,
+				CE4BA9202E0AF22A0050F2C7 /* SectionProgressView.swift in Sources */,
 				07DE59862BECB868001CBFBC /* CourseAnalytics.swift in Sources */,
 				02BB20182BFCE7B200364948 /* CustomDisclosureGroup.swift in Sources */,
+				CEAB6BDC2E19695D00E8E898 /* NoContentAvailable.swift in Sources */,
+				CE4BA91E2E0AED930050F2C7 /* CustomProgressShape.swift in Sources */,
 				022C64E229ADEB83000F532B /* CourseUpdate.swift in Sources */,
+				A52897DC2E276B12009C7044 /* CourseGradeCarouselSlideView.swift in Sources */,
+				CE4BA9192E0AC99A0050F2C7 /* ContentSegmentedControl.swift in Sources */,
+				CE5BBFF22E22C91000D51C92 /* AssignmentSection.swift in Sources */,
 				BA58CF642B471363005B102E /* VideoDownloadQualityContainerView.swift in Sources */,
 				BA58CF5D2B3D804D005B102E /* CourseStorage.swift in Sources */,
+				A52897D82E252357009C7044 /*  CourseOutlineAndProgressViewModel.swift in Sources */,
 				067B7B502BED339200D1768F /* PlayerControllerProtocol.swift in Sources */,
 				067B7B4E2BED339200D1768F /* PlayerTrackerProtocol.swift in Sources */,
+				CE4BA9162E0AC3790050F2C7 /* CourseContentView.swift in Sources */,
 				02454CA62A26196C0043052A /* NotAvailableOnMobileView.swift in Sources */,
 				0766DFD0299AB29000EBEF6A /* PlayerViewController.swift in Sources */,
+				CE5BBFEE2E22A8AF00D51C92 /* AssignmentCardSmallView.swift in Sources */,
 				022C64DC29ACFDEE000F532B /* Data_HandoutsResponse.swift in Sources */,
 				022C64D829ACEC48000F532B /* HandoutsView.swift in Sources */,
+				CE1AC40C2E06DCC900618645 /* OverallGradeView.swift in Sources */,
+				CE1AC40D2E06DCC900618645 /* GradeItemView.swift in Sources */,
+				CE1AC40E2E06DCC900618645 /* GradeDetailsView.swift in Sources */,
+				CE1AC41BFAF7140618645 /* CourseProgressCircleView.swift in Sources */,
+				CE1AC45F0EDBBF0618645 /* SegmentedProgressView.swift in Sources */,
 				02454CA82A2619890043052A /* DiscussionView.swift in Sources */,
 				0265B4B728E2141D00E6EAFD /* Strings.swift in Sources */,
 				97C99C362B9A08FE004EEDE2 /* CalendarSyncProgressView.swift in Sources */,
 				BAC0E0D82B32EF03006B68A9 /* DownloadsView.swift in Sources */,
 				97CA95252B875EE200A9EDEA /* DatesSuccessView.swift in Sources */,
+				A52897E02E278D7D009C7044 /* ViewAllButton.swift in Sources */,
+				CECF38342E3A4BB100184EC4 /* VideoContentData.swift in Sources */,
 				02FCB2B32BBEB36600373180 /* CourseHeaderView.swift in Sources */,
 				DB7D6EAC2ADFCAC50036BB13 /* CourseDatesView.swift in Sources */,
+				CE1AC4052E05A35000618645 /* CourseProgressDetails.swift in Sources */,
 				0766DFCC299AA7A600EBEF6A /* YouTubeVideoPlayer.swift in Sources */,
 				02E3803E2BFF9F0A00815AFA /* CourseProgressView.swift in Sources */,
 				022F8E162A1DFBC6008EFAB9 /* YouTubeVideoPlayerViewModel.swift in Sources */,
 				02B6B3BE28E1D15C00232911 /* CourseEndpoint.swift in Sources */,
 				CE63866A2D0721B600C01D69 /* CompletedBlocks.swift in Sources */,
-				02F71B4C2C1B200900FF936A /* DeviceStorageFullAlertView.swift in Sources */,
+				A52897D12E24F5C1009C7044 /* CourseCompletionCarouselSlideView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2094,7 +2300,7 @@
 			repositoryURL = "https://github.com/openedx/openedx-app-foundation-ios/";
 			requirement = {
 				kind = exactVersion;
-				version = 1.0.2;
+				version = 1.0.4;
 			};
 		};
 		CEBCA4322CC13CDE00076589 /* XCRemoteSwiftPackageReference "YouTubePlayerKit" */ = {

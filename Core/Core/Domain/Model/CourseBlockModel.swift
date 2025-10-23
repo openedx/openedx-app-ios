@@ -24,7 +24,7 @@ public struct CourseStructure: Equatable, Sendable {
     public let certificate: Certificate?
     public let org: String
     public let isSelfPaced: Bool
-    public let courseProgress: CourseProgress?
+    public var courseProgress: CourseProgress?
     
     public init(
         id: String,
@@ -235,11 +235,13 @@ public struct SequentialProgress: Sendable {
     public let assignmentType: String?
     public let numPointsEarned: Int?
     public let numPointsPossible: Int?
+    public let shortLabel: String?
     
-    public init(assignmentType: String?, numPointsEarned: Int?, numPointsPossible: Int?) {
+    public init(assignmentType: String?, numPointsEarned: Int?, numPointsPossible: Int?, shortLabel: String?) {
         self.assignmentType = assignmentType
         self.numPointsEarned = numPointsEarned
         self.numPointsPossible = numPointsPossible
+        self.shortLabel = shortLabel
     }
 }
 
@@ -261,6 +263,7 @@ public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
     public let graded: Bool
     public let due: Date?
     public var completion: Double
+    public var localVideoProgress: Double
     public let type: BlockType
     public let displayName: String
     public let studentUrl: String
@@ -300,6 +303,7 @@ public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
         graded: Bool,
         due: Date?,
         completion: Double,
+        localVideoProgress: Double = 0.0,
         type: BlockType,
         displayName: String,
         studentUrl: String,
@@ -316,6 +320,7 @@ public struct CourseBlock: Hashable, Identifiable, Sendable, Equatable {
         self.graded = graded
         self.due = due
         self.completion = completion
+        self.localVideoProgress = localVideoProgress
         self.type = type
         self.displayName = displayName
         self.studentUrl = studentUrl
@@ -444,10 +449,10 @@ public struct CourseBlockVideo: Equatable, Sendable {
     }
 
     public var isVideoURL: Bool {
-        [".mp4", ".m3u8"].contains(where: { url?.contains($0) == true })
+        [".mp4", ".m3u8", ".MP4"].contains(where: { url?.contains($0) == true })
     }
 
     public var isDownloadable: Bool {
-        [".mp4"].contains(where: { url?.contains($0) == true })
+        [".mp4", ".MP4"].contains(where: { url?.contains($0) == true })
     }
 }

@@ -42,6 +42,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     ) -> Bool {
         initDI()
         initPlugins()
+        // Reset the value to false to get the actual status from the API
+        if var storage = Container.shared.resolve(CoreStorage.self) {
+            storage.updateAppRequired = false
+        }
         
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
@@ -141,6 +145,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             pluginManager.addPlugin(analyticsService: FirebaseAnalyticsService())
         }
         
+        // - FCM
+        if config.firebase.cloudMessagingEnabled,
+            let storage = Container.shared.resolve(CoreStorage.self),
+            let api = Container.shared.resolve(API.self),
+            let deepLinkManager = Container.shared.resolve(DeepLinkManager.self) {
+            pluginManager.addPlugin(
+                pushNotificationsProvider: FCMProvider(storage: storage, api: api),
+                pushNotificationsListener: FCMListener(deepLinkManager: deepLinkManager)
+            )
+        }
         // Initialize your plugins here
     }
 
