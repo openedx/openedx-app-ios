@@ -111,6 +111,10 @@ public enum CourseLocalization {
     public static let showCompletedSections = CourseLocalization.tr("Localizable", "ACCESSIBILITY.SHOW_COMPLETED_SECTIONS", fallback: "Tap to show completed sections")
     /// Video Navigation
     public static let videoNavigation = CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_NAVIGATION", fallback: "Video Navigation")
+    /// Video %@ from %@
+    public static func videoNavigationCount(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_NAVIGATION_COUNT", String(describing: p1), String(describing: p2), fallback: "Video %@ from %@")
+    }
     /// %@ percent completed
     public static func videoPercentageCompleted(_ p1: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PERCENTAGE_COMPLETED", String(describing: p1), fallback: "%@ percent completed")
@@ -342,6 +346,8 @@ public enum CourseLocalization {
     public static let grades = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES", fallback: "Grades")
     /// This represents your weighted grade against the grade needed to pass this course.
     public static let gradesDescription = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES_DESCRIPTION", fallback: "This represents your weighted grade against the grade needed to pass this course.")
+    /// Next Assignment
+    public static let nextAssignments = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.NEXT_ASSIGNMENTS", fallback: "Next Assignment")
     /// Next Video
     public static let nextVideo = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.NEXT_VIDEO", fallback: "Next Video")
     /// You have completed %@%% of the course progress
@@ -616,6 +622,10 @@ public enum CourseLocalization {
   public enum Subtitles {
     /// Subtitles
     public static let title = CourseLocalization.tr("Localizable", "SUBTITLES.TITLE", fallback: "Subtitles")
+  }
+  public enum VideoNavigation {
+    /// No Video Title
+    public static let noVideoTitle = CourseLocalization.tr("Localizable", "VIDEO_NAVIGATION.NO_VIDEO_TITLE", fallback: "No Video Title")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

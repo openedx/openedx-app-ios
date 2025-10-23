@@ -48,7 +48,8 @@ struct VideoNavigationView: View {
                      Text("\(currentBlock?.displayName ?? "")")
                          .font(Theme.Fonts.bodyMedium).bold()
                          .foregroundStyle(Theme.Colors.textPrimary)
-                         .accessibilityLabel(currentBlock?.displayName ?? "No Video Title")
+                         .accessibilityLabel(currentBlock?.displayName ??
+                                             CourseLocalization.VideoNavigation.noVideoTitle)
                  }
                  Spacer()
              }
@@ -111,7 +112,7 @@ struct VideoNavigationView: View {
                 let all = viewModel.allVideosForNavigation
                 let count = all.count
                 let idx = indexOfCurrent(in: all, current: currentBlock) ?? 0
-                return "Video \(idx + 1) from \(count)"
+                return CourseLocalization.Accessibility.videoNavigationCount(idx+1, count)
             }())
         }
     }

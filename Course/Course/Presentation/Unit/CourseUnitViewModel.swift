@@ -422,15 +422,15 @@ public final class CourseUnitViewModel: ObservableObject {
         isVideosForNavigationLoading = true
         
         defer {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: {
+            Task { @MainActor in
+                try? await Task.sleep(for: .seconds(0.2))
                 self.isVideosForNavigationLoading = false
-            })
+            }
         }
 
         if let courseVideosStructure {
             do {
-                async let videosTask = interactor.getCourseVideoBlocks(fullStructure: courseVideosStructure)
-                let videoFromCourse = await videosTask
+                let videoFromCourse = await interactor.getCourseVideoBlocks(fullStructure: courseVideosStructure)
 
                 allVideosForNavigation = try await interactor.getAllVideosForNavigation(
                     structure: videoFromCourse

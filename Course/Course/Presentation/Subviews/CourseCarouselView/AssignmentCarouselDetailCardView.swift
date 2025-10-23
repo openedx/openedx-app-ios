@@ -3,25 +3,25 @@ import Theme
 import Core
 
 struct AssignmentCarouselDetailCardView: View {
-
+    
     let detailData: AssignmentDetailData
-
+    
     private var subsectionUI: CourseProgressSubsectionUI {
         detailData.subsectionUI
     }
-
+    
     private var sectionName: String {
         subsectionUI.sectionName
     }
-
+    
     private var status: AssignmentCardStatus {
         return subsectionUI.status
     }
-
+    
     private var statusText: String {
         return subsectionUI.statusTextForCarousel
     }
-
+    
     var body: some View {
         Button(action: {
             detailData.onAssignmentTap(subsectionUI)
@@ -30,8 +30,7 @@ struct AssignmentCarouselDetailCardView: View {
                 VStack(alignment: .leading, spacing: 8) {
                     if detailData.subsectionUI.status != .completed && detailData.subsectionUI.date != nil {
                         HStack {
-                            CoreAssets.icAssignmentPastDue.swiftUIImage
-                            Text(detailData.subsectionUI.status == .pastDue ? "Past Due" : "Due Soon")
+                            Text(CourseLocalization.CourseCarousel.nextAssignments)
                                 .font(Theme.Fonts.titleMedium)
                                 .foregroundStyle(Theme.Colors.textPrimary)
                         }
@@ -44,18 +43,18 @@ struct AssignmentCarouselDetailCardView: View {
                                     .font(Theme.Fonts.labelSmall)
                                     .foregroundColor(Theme.Colors.accentColor)
                             }
-
+                            
                             Text(subsectionUI.subsection.displayName)
                                 .font(Theme.Fonts.titleSmall)
                                 .foregroundColor(Theme.Colors.textPrimary)
-
+                            
                             Text(sectionName)
                                 .font(Theme.Fonts.labelSmall)
                                 .foregroundColor(Theme.Colors.textSecondaryDark)
                         }
-
+                        
                         Spacer()
-
+                        
                         CoreAssets.chevronRight.swiftUIImage
                             .resizable()
                             .renderingMode(.template)
