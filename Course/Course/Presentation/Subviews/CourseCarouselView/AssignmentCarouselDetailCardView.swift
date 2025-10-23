@@ -34,7 +34,7 @@ struct AssignmentCarouselDetailCardView: View {
                             CoreAssets.icAssignmentPastDue.swiftUIImage
                         }
 
-                        Text(detailData.subsectionUI.status == .pastDue ? "Past Due"
+                        Text(detailData.subsectionUI.status == .pastDue ? CoreLocalization.CourseDates.pastDue
                              : CourseLocalization.CourseCarousel.nextAssignments)
                         .font(Theme.Fonts.titleMedium)
                         .foregroundStyle(Theme.Colors.textPrimary)
