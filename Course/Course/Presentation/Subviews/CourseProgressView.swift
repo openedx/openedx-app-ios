@@ -15,19 +15,23 @@ public struct CourseProgressView: View {
     private var isShowingCompleted: Bool
     private var onToggleCompleted: (() -> Void)?
     private var onShowCompletedAnalytics: (() -> Void)?
-    
+    private var showCompletedText = true
+    private var progressPercentageCount = 0
+
     public init(
         progress: CourseProgress,
         showCompletedToggle: Bool = false,
         isShowingCompleted: Bool = true,
         onToggleCompleted: (() -> Void)? = nil,
-        onShowCompletedAnalytics: (() -> Void)? = nil
+        onShowCompletedAnalytics: (() -> Void)? = nil,
+        showCompletedText: Bool = true
     ) {
         self.progress = progress
         self.showCompletedToggle = showCompletedToggle
         self.isShowingCompleted = isShowingCompleted
         self.onToggleCompleted = onToggleCompleted
         self.onShowCompletedAnalytics = onShowCompletedAnalytics
+        self.showCompletedText = showCompletedText
     }
     
     public var body: some View {
@@ -48,28 +52,42 @@ public struct CourseProgressView: View {
                 .frame(height: 4)
             }
             .cornerRadius(2)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(CourseLocalization.Accessibility.courseProgressSection)
-            
-            HStack {
-                if let total = progress.totalAssignmentsCount,
-                   let completed = progress.assignmentsCompleted {
-                    Text(showCompletedToggle
-                         ? CourseLocalization.Course.progressVideosCompleted(completed, total)
-                         : CourseLocalization.Course.progressCompleted(completed, total)
-                    )
-                    .foregroundColor(Theme.Colors.textPrimary)
-                    .font(Theme.Fonts.labelMedium)
-                    .padding(.top, 5)
-                    .accessibilityElement(children: .combine)
-                    .accessibilityLabel(
-                        CourseLocalization.Accessibility.videoProgressSection(
-                            completed,
-                            total
+            .accessibilityLabel(
+                CourseLocalization.Accessibility
+                    .videoPercentageCompleted(
+                        String(
+                            Int(
+                                Double(
+                                    progress.assignmentsCompleted ?? 0
+                                )/Double(
+                                    progress.totalAssignmentsCount ?? 0
+                                ) * 100
+                            )
                         )
                     )
+            )
+
+            HStack {
+                if showCompletedText {
+                    if let total = progress.totalAssignmentsCount,
+                       let completed = progress.assignmentsCompleted {
+                        Text(showCompletedToggle
+                             ? CourseLocalization.Course.progressVideosCompleted(completed, total)
+                             : CourseLocalization.Course.progressCompleted(completed, total)
+                        )
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .font(Theme.Fonts.labelMedium)
+                        .padding(.top, 5)
+                        .accessibilityElement(children: .combine)
+                        .accessibilityLabel(
+                            CourseLocalization.Accessibility.videoProgressSection(
+                                completed,
+                                total
+                            )
+                        )
+                    }
                 }
-                
+
                 Spacer()
                 
                 if showCompletedToggle {

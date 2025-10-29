@@ -51,6 +51,34 @@ public struct CourseProgressDetails: Sendable {
         self.verificationData = verificationData
     }
 
+    public func getAssignmentProgress(
+        for assignmentType: String,
+        completedCount: Int,
+        total: Int
+    ) -> AssignmentProgressData {
+
+        let assignments = self.sectionScores.flatMap { $0.subsections }
+            .filter { $0.assignmentType == assignmentType && $0.hasGradedAssignment }
+
+        let completedProblems = completedCount
+        let totalProblems = total
+
+        let earnedPoints = assignments.reduce(0.0) { $0 + $1.numPointsEarned }
+        let possiblePoints = assignments.reduce(0.0) { $0 + $1.numPointsPossible }
+
+        // Calculate average percent_graded for this assignment type (from server data)
+        let totalPercentGraded = assignments.reduce(0.0) { $0 + $1.percentGraded }
+        let averagePercentGraded = assignments.isEmpty ? 0.0 : totalPercentGraded / Double(assignments.count)
+
+        return AssignmentProgressData(
+            completed: completedProblems,
+            total: totalProblems,
+            earnedPoints: earnedPoints,
+            possiblePoints: possiblePoints,
+            percentGraded: averagePercentGraded
+        )
+    }
+
     public func getAssignmentProgress(for assignmentType: String) -> AssignmentProgressData {
         guard let policy = self.gradingPolicy.assignmentPolicies
             .first(where: { $0.type == assignmentType }) else {
@@ -68,11 +96,11 @@ public struct CourseProgressDetails: Sendable {
         
         // Calculate completed and total based on problem scores
         var completedProblems = 0
-        var totalProblems = 0
-        
+        var totalProblems = assignments.count
+
         for assignment in assignments {
             // Count problems in this assignment
-            totalProblems += assignment.problemScores.count
+//            totalProblems += assignment.count
             
             // Count completed problems (where earned > 0)
             completedProblems += assignment.problemScores.filter { $0.earned > 0 }.count

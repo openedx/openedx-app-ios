@@ -14,7 +14,7 @@ struct VideoSectionView: View {
     let sectionData: VideoSectionData
     let proxy: GeometryProxy
     @Binding var isShowingCompletedVideos: Bool
-    let onVideoTap: (CourseBlock, CourseChapter) -> Void
+    let onVideoTap: (CourseBlock, CourseChapter?) -> Void
     let onDownloadSectionTap: (CourseChapter, DownloadViewState) async -> Void
     
     private var chapter: CourseChapter {
@@ -104,24 +104,24 @@ struct VideoSectionView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHStack(spacing: 0) {
                             ForEach(Array(visibleVideos.enumerated()), id: \.element.id) { index, video in
-                                VideoThumbnailView(
-                                    thumbnailData: VideoThumbnailData(
-                                        video: video,
-                                        chapter: chapter,
-                                        courseStructure: nil,
-                                        onVideoTap: onVideoTap
-                                    )
-                                )
+                                VideoThumbnailView(thumbnailData: VideoThumbnailData(
+                                    video: video,
+                                    chapter: chapter,
+                                    courseStructure: nil,
+                                    onVideoTap: onVideoTap
+                                ),
+                                type: .contentVideo)
+
                                 .padding(.leading, index == 0 ? 24 : 8)
                                 .id(video.id)
                                 
                                 if index == visibleVideos.count - 1 {
-                                    Spacer(minLength: 100)
+                                    Spacer(minLength: 500)
                                 }
                             }
                         }
                     }
-                    .introspect(.scrollView, on: .iOS(.v16, .v17, .v18)) { scroll in
+                    .introspect(.scrollView, on: .iOS(.v16, .v17, .v18, .v26)) { scroll in
                         DispatchQueue.main.async {
                             uiScrollView = scroll
                         }
@@ -162,7 +162,7 @@ struct VideoSectionView: View {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             guard let scroll = uiScrollView else { return }
-            let newX = max(scroll.contentOffset.x - 20, 0)
+            let newX = max(scroll.contentOffset.x - 16, 0)
             scroll.setContentOffset(CGPoint(x: newX, y: 0), animated: true)
         }
     }

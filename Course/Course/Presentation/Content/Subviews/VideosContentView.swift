@@ -15,7 +15,7 @@ struct VideosContentView: View {
     
     let videoContentData: VideoContentData
     private let proxy: GeometryProxy
-    private let onVideoTap: (CourseBlock, CourseChapter) -> Void
+    private let onVideoTap: (CourseBlock, CourseChapter?) -> Void
     private let onDownloadSectionTap: (CourseChapter, DownloadViewState) async -> Void
     private let onTabSelection: (Int) -> Void
     private let onErrorDismiss: () -> Void
@@ -26,7 +26,7 @@ struct VideosContentView: View {
     init(
         videoContentData: VideoContentData,
         proxy: GeometryProxy,
-        onVideoTap: @escaping (CourseBlock, CourseChapter) -> Void,
+        onVideoTap: @escaping (CourseBlock, CourseChapter?) -> Void,
         onDownloadSectionTap: @escaping (CourseChapter, DownloadViewState) async -> Void,
         onTabSelection: @escaping (Int) -> Void,
         onErrorDismiss: @escaping () -> Void,

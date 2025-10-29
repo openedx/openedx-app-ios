@@ -716,7 +716,23 @@ class AnalyticsManager: AuthorizationAnalytics,
         ]
         logEvent(.courseHomeViewAllVideosClicked, parameters: parameters)
     }
-    
+
+    public func courseHomeSectionSubsectionClick(
+        courseId: String,
+        courseName: String,
+        courseSection: String,
+        courseSubsection: String
+    ) {
+        let parameters = [
+            EventParamKey.courseID: courseId,
+            EventParamKey.courseName: courseName,
+            EventParamKey.courseSection: courseSection,
+            EventParamKey.courseSubsection: courseSubsection,
+            EventParamKey.name: EventBIValue.courseHomeSectionSubsectionClick.rawValue
+        ]
+        logEvent(.courseHomeSectionSubsectionClicked, parameters: parameters)
+    }
+
     public func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {
         let parameters = [
             EventParamKey.courseID: courseId,

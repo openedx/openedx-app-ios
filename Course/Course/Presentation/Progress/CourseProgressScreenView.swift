@@ -28,7 +28,8 @@ struct CourseProgressScreenView: View {
         collapsed: Binding<Bool>,
         viewHeight: Binding<CGFloat>,
         viewModel: CourseProgressViewModel,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        courseStructure: CourseStructure?
     ) {
         self.courseID = courseID
         self._coordinate = coordinate
@@ -36,6 +37,7 @@ struct CourseProgressScreenView: View {
         self._viewHeight = viewHeight
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.connectivity = connectivity
+        self.viewModel.courseStructure = courseStructure
     }
     
     public var body: some View {
@@ -52,7 +54,7 @@ struct CourseProgressScreenView: View {
                         }
                     } else {
                         ScrollView {
-                            VStack(alignment: .center, spacing: 20) {
+                            VStack(alignment: .center) {
                                 DynamicOffsetView(
                                     coordinate: $coordinate,
                                     collapsed: $collapsed,
@@ -118,10 +120,10 @@ struct CourseProgressScreenView: View {
     
     @ViewBuilder
     private var courseProgressContent: some View {
-        VStack(alignment: .leading, spacing: 32) {
+        VStack(alignment: .leading, spacing: 16) {
             if viewModel.courseProgress != nil {
                 // Course Completion Header Section
-                VStack(alignment: .leading, spacing: 16) {
+                VStack(alignment: .leading, spacing: 0) {
                     HStack(alignment: .top, spacing: 16) {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(CourseLocalization.CourseContainer.Progress.title)
@@ -151,7 +153,7 @@ struct CourseProgressScreenView: View {
                         .accessibilityAddTraits(.updatesFrequently)
                     }
                 }
-                .padding(.top, 16)
+//                .padding(.top, 16)
                 
                 // Check if course has graded assignments
                 if viewModel.hasGradedAssignments {
@@ -236,7 +238,8 @@ struct CourseProgressScreenView: View {
         collapsed: .constant(false),
         viewHeight: .constant(0),
         viewModel: vm,
-        connectivity: Connectivity(config: ConfigMock())
+        connectivity: Connectivity(config: ConfigMock()),
+        courseStructure: nil
     )
     .loadFonts()
 }

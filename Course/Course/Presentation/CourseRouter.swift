@@ -20,7 +20,9 @@ public protocol CourseRouter: BaseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     )
     
     func replaceCourseUnit(
@@ -31,7 +33,9 @@ public protocol CourseRouter: BaseRouter {
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
-        animated: Bool
+        animated: Bool,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     )
     
     func showCourseVerticalView(
@@ -77,7 +81,9 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     ) {}
     
     public func replaceCourseUnit(
@@ -88,7 +94,9 @@ public class CourseRouterMock: BaseRouterMock, CourseRouter {
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
-        animated: Bool
+        animated: Bool,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     ) {}
     
     public func showCourseVerticalView(

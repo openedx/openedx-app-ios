@@ -164,7 +164,10 @@ struct AssignmentsContentView: View {
                                                     sectionData: AssignmentSectionData(
                                                         subsectionsUI: section.subsections,
                                                         sectionName: section.key,
-                                                        assignmentTypeColors: assignmentContentData.assignmentTypeColors
+                                                        assignmentTypeColors: assignmentContentData
+                                                            .assignmentTypeColors,
+                                                        courseStructure: assignmentContentData
+                                                            .courseAssignmentsStructure
                                                     ),
                                                     proxy: proxy,
                                                     onAssignmentTap: onAssignmentTap,
@@ -172,11 +175,11 @@ struct AssignmentsContentView: View {
                                                 )
                                                 Divider()
                                             }
-                                        .accessibilityElement(children: .contain)
-                                        .accessibilityLabel(
-                                            "\(section.key) \(CourseLocalization.Accessibility.assignmentsSection)"
-                                        )
-                                    }
+                                            .accessibilityElement(children: .contain)
+                                            .accessibilityLabel(
+                                                "\(section.key) \(CourseLocalization.Accessibility.assignmentsSection)"
+                                            )
+                                        }
                                 }
                             }
                         }

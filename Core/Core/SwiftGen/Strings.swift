@@ -207,11 +207,23 @@ public enum CoreLocalization {
     }
     /// Due 
     public static let due = CoreLocalization.tr("Localizable", "DATE.DUE", fallback: "Due ")
+    /// %@ Days Past Due: %@
+    public static func dueDatePast(_ p1: Any, _ p2: Any) -> String {
+      return CoreLocalization.tr("Localizable", "DATE.DUE_DATE_PAST", String(describing: p1), String(describing: p2), fallback: "%@ Days Past Due: %@")
+    }
     /// Due in 
     public static let dueIn = CoreLocalization.tr("Localizable", "DATE.DUE_IN", fallback: "Due in ")
     /// Due in %@ Days
     public static func dueInDays(_ p1: Any) -> String {
       return CoreLocalization.tr("Localizable", "DATE.DUE_IN_DAYS", String(describing: p1), fallback: "Due in %@ Days")
+    }
+    /// Due in %@ Days: %@
+    public static func dueInLeft(_ p1: Any, _ p2: Any) -> String {
+      return CoreLocalization.tr("Localizable", "DATE.DUE_IN_LEFT", String(describing: p1), String(describing: p2), fallback: "Due in %@ Days: %@")
+    }
+    /// Due Today: %@
+    public static func dueToday(_ p1: Any) -> String {
+      return CoreLocalization.tr("Localizable", "DATE.DUE_TODAY", String(describing: p1), fallback: "Due Today: %@")
     }
     /// Ended
     public static let ended = CoreLocalization.tr("Localizable", "DATE.ENDED", fallback: "Ended")

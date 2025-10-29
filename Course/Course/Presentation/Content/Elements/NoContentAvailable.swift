@@ -18,35 +18,39 @@ struct NoContentAvailable: View {
     
     private let type: NoContentType
     private let action: () -> Void
-    
-    init(type: NoContentType, action: @escaping () -> Void) {
+    private var showButton: Bool = true
+
+    init(
+        type: NoContentType,
+        action: @escaping () -> Void,
+        showButton: Bool = true
+    ) {
         self.type = type
         self.action = action
+        self.showButton = showButton
     }
     
     var body: some View {
         
         VStack(spacing: 16) {
-            Spacer()
-            
             CoreAssets.iconWarning.swiftUIImage
-            
+
             Text(type == .video
                  ? CourseLocalization.Error.videosUnavailable
                  :CourseLocalization.Error.assignmentsUnavailable
             )
-                .font(Theme.Fonts.titleMedium)
-                .foregroundColor(Theme.Colors.textPrimary)
-                .multilineTextAlignment(.center)
-            
-            StyledButton(
-                CourseLocalization.Course.returnToHome,
-                action: action,
-                iconImage: CoreAssets.arrowLeft.swiftUIImage,
-                iconPosition: .left
-            )
-            
-            Spacer()
+            .font(Theme.Fonts.titleMedium)
+            .foregroundColor(Theme.Colors.textPrimary)
+            .multilineTextAlignment(.center)
+
+            if showButton {
+                StyledButton(
+                    CourseLocalization.Course.returnToHome,
+                    action: action,
+                    iconImage: CoreAssets.arrowLeft.swiftUIImage,
+                    iconPosition: .left
+                )
+            }
         }
         .frame(maxWidth: .infinity)
         .padding(.horizontal, 24)

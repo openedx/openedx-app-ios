@@ -130,12 +130,13 @@ public enum AnalyticsEvent: String {
     case contentPageSectionClicked = "Content Page:Section Clicked"
     case contentPageShowCompletedSubsectionClicked = "Content Page:Show Completed Subsection Click"
     case progressTabClicked = "Progress Tab:Click"
+    case courseHomeSectionSubsectionClicked = "Course Home:Section/Subsection Click"
     case courseHomeViewAllContentClicked = "Course Home:View All Content"
-    case courseHomeVideoClicked = "Course Home:Video Clicked"
+    case courseHomeVideoClicked = "Course Home:Video Click"
     case courseHomeViewAllVideosClicked = "Course Home:View All Videos"
-    case courseHomeAssignmentClicked = "Course Home:Assignment Clicked"
+    case courseHomeAssignmentClicked = "Course Home:Assignment Click"
     case courseHomeViewAllAssignmentsClicked = "Course Home:View All Assignments"
-    case courseHomeGradesViewProgressClicked = "Course Home:Grades View Progress"
+    case courseHomeGradesViewProgressClicked = "Course Home:View Progress"
     case datesComponentClicked = "Dates:Course Component Clicked"
     case datesCalendarSyncToggle = "Dates:CalendarSync Toggle"
     case datesCalendarSyncDialogAction = "Dates:CalendarSync Dialog Action"
@@ -315,6 +316,7 @@ public enum EventBIValue: String {
     case downloadError = "edx.bi.app.downloads.download_error"
     case downloadCompleted = "edx.bi.app.downloads.download_completed"
     case downloadStarted = "edx.bi.app.downloads.download_started"
+    case courseHomeSectionSubsectionClick = "edx.bi.app.course.home.section_subsection.clicked"
 }
 
 public struct EventParamKey {

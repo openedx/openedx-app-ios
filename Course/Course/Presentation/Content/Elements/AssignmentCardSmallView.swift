@@ -115,7 +115,7 @@ struct AssignmentCardSmallView: View {
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(
                         strokeColor,
-                        lineWidth: isSelected ? 2 : 1
+                        lineWidth: isSelected ? 4 : 1
                     )
             )
             .cornerRadius(4)
@@ -166,6 +166,8 @@ struct AssignmentCardSmallView: View {
                     shortLabel: "HW1 01"
                 ),
                 statusText: "Not Started",
+                statusTextForCarousel: "",
+                sectionName: "",
                 sequenceName: "Test Assignment",
                 status: .incomplete,
                 shortLabel: "HW1 01"
@@ -196,6 +198,8 @@ struct AssignmentCardSmallView: View {
                     shortLabel: "HW1 02"
                 ),
                 statusText: "Not Started",
+                statusTextForCarousel: "",
+                sectionName: "",
                 sequenceName: "Test Assignment 2",
                 status: .incomplete,
                 shortLabel: "HW1 02"
