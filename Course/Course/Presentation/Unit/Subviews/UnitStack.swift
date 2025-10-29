@@ -35,17 +35,15 @@ public struct UnitStack<Content>: View where Content: View {
 
     public var body: some View {
         if isVerticalNavigation {
-            LazyVStack(
+            VStack(
                 alignment: alignment.verticalAlignment,
                 spacing: spacing,
-                pinnedViews: pinnedViews,
                 content: content
             )
         } else {
-            LazyHStack(
+            HStack(
                 alignment: alignment.horizontalAlignment,
                 spacing: spacing,
-                pinnedViews: pinnedViews,
                 content: content
             )
         }
