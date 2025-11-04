@@ -74,7 +74,10 @@ struct AllContentView: View {
                                 // MARK: Course Progress
                                 if let progress = viewModel.courseProgress(),
                                    let total = progress.totalAssignmentsCount, total > 0 {
-                                    CourseProgressView(progress: progress)
+                                    CourseProgressView(
+                                        progress: progress,
+                                        isSections: true
+                                    )
                                         .padding(.horizontal, 24)
                                         .accessibilityElement(children: .combine)
                                         .accessibilityLabel(CourseLocalization.Accessibility.courseProgressSection)
