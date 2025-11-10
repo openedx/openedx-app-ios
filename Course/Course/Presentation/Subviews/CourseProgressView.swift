@@ -17,7 +17,7 @@ public struct CourseProgressView: View {
     private var onShowCompletedAnalytics: (() -> Void)?
     private var showCompletedText = true
     private var progressPercentageCount = 0
-    private var isSections = false
+    private var fromAllContentTab = false
 
     public init(
         progress: CourseProgress,
@@ -26,7 +26,7 @@ public struct CourseProgressView: View {
         onToggleCompleted: (() -> Void)? = nil,
         onShowCompletedAnalytics: (() -> Void)? = nil,
         showCompletedText: Bool = true,
-        isSections: Bool = false
+        fromAllContentTab: Bool = false
     ) {
         self.progress = progress
         self.showCompletedToggle = showCompletedToggle
@@ -34,7 +34,7 @@ public struct CourseProgressView: View {
         self.onToggleCompleted = onToggleCompleted
         self.onShowCompletedAnalytics = onShowCompletedAnalytics
         self.showCompletedText = showCompletedText
-        self.isSections = isSections
+        self.fromAllContentTab = fromAllContentTab
     }
     
     public var body: some View {
@@ -82,7 +82,7 @@ public struct CourseProgressView: View {
                                     total
                                 )
                             : (
-                                !isSections ? CourseLocalization.Course.progressCompleted(
+                                !fromAllContentTab ? CourseLocalization.Course.progressCompleted(
                                     completed,
                                     total
                                 ) : CourseLocalization.Course.progressSectionsCompleted(

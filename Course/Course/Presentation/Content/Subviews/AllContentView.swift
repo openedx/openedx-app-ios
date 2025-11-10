@@ -76,7 +76,7 @@ struct AllContentView: View {
                                    let total = progress.totalAssignmentsCount, total > 0 {
                                     CourseProgressView(
                                         progress: progress,
-                                        isSections: true
+                                        fromAllContentTab: true
                                     )
                                         .padding(.horizontal, 24)
                                         .accessibilityElement(children: .combine)
