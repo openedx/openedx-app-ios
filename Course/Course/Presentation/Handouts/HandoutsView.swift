@@ -123,7 +123,7 @@ struct HandoutsView_Previews: PreviewProvider {
         let viewModel = HandoutsViewModel(interactor: CourseInteractor.mock,
                                           router: CourseRouterMock(),
                                           cssInjector: CSSInjectorMock(),
-                                          connectivity: Connectivity(),
+                                          connectivity: Connectivity(config: ConfigMock()),
                                           courseID: "",
                                           analytics: CourseAnalyticsMock())
         HandoutsView(

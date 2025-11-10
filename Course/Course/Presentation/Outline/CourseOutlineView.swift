@@ -67,7 +67,9 @@ public struct CourseOutlineView: View {
                                 collapsed: $collapsed,
                                 viewHeight: $viewHeight
                             )
+
                             RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+
                             VStack(alignment: .leading) {
                                 
                                 if isVideo,
@@ -334,7 +336,7 @@ struct CourseOutlineView_Previews: PreviewProvider {
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             manager: DownloadManagerMock(),
             storage: CourseStorageMock(),
             isActive: true,

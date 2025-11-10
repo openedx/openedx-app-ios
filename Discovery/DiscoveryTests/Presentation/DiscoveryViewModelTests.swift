@@ -25,7 +25,7 @@ final class DiscoveryViewModelTests: XCTestCase {
     
     func testGetDiscoveryCourses() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
                                            config: ConfigMock(),
@@ -81,7 +81,7 @@ final class DiscoveryViewModelTests: XCTestCase {
     
     func testDiscoverySuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
                                            config: ConfigMock(),
@@ -191,7 +191,7 @@ final class DiscoveryViewModelTests: XCTestCase {
     
     func testDiscoveryNoInternetError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
                                            config: ConfigMock(),
@@ -215,7 +215,7 @@ final class DiscoveryViewModelTests: XCTestCase {
     
     func testDiscoveryUnknownError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
                                            config: ConfigMock(),

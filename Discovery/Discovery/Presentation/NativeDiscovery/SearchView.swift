@@ -222,7 +222,7 @@ struct SearchView_Previews: PreviewProvider {
         let router = DiscoveryRouterMock()
         let vm = SearchViewModel(
             interactor: DiscoveryInteractor.mock,
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             router: router,
             analytics: DiscoveryAnalyticsMock(),
             storage: CoreStorageMock(),

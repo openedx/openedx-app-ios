@@ -271,7 +271,7 @@ struct SyncCalendarOptionsView_Previews: PreviewProvider {
             profileStorage: ProfileStorageMock(),
             persistence: ProfilePersistenceMock(),
             calendarManager: CalendarManagerMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock())
         )
         SyncCalendarOptionsView(viewModel: vm)
             .loadFonts()

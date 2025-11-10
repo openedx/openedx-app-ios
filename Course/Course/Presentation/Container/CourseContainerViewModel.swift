@@ -122,6 +122,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     
     private let interactor: CourseInteractorProtocol
     private let authInteractor: AuthInteractorProtocol
+
     let analytics: CourseAnalytics
     let coreAnalytics: CoreAnalytics
     private(set) var storage: CourseStorage
@@ -214,7 +215,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             courseVideoStructure: nil
         )
     }
-    
+
     @MainActor
     func getCourseStructure(courseID: String) async throws -> CourseStructure? {
         if isInternetAvaliable {
@@ -1766,7 +1767,7 @@ extension CourseContainerViewModel {
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             manager: DownloadManagerMock(),
             storage: CourseStorageMock(),
             isActive: true,
