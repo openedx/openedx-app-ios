@@ -17,6 +17,7 @@ public struct CourseProgressView: View {
     private var onShowCompletedAnalytics: (() -> Void)?
     private var showCompletedText = true
     private var progressPercentageCount = 0
+    private var fromAllContentTab = false
 
     public init(
         progress: CourseProgress,
@@ -24,7 +25,8 @@ public struct CourseProgressView: View {
         isShowingCompleted: Bool = true,
         onToggleCompleted: (() -> Void)? = nil,
         onShowCompletedAnalytics: (() -> Void)? = nil,
-        showCompletedText: Bool = true
+        showCompletedText: Bool = true,
+        fromAllContentTab: Bool = false
     ) {
         self.progress = progress
         self.showCompletedToggle = showCompletedToggle
@@ -32,6 +34,7 @@ public struct CourseProgressView: View {
         self.onToggleCompleted = onToggleCompleted
         self.onShowCompletedAnalytics = onShowCompletedAnalytics
         self.showCompletedText = showCompletedText
+        self.fromAllContentTab = fromAllContentTab
     }
     
     public var body: some View {
@@ -71,9 +74,22 @@ public struct CourseProgressView: View {
                 if showCompletedText {
                     if let total = progress.totalAssignmentsCount,
                        let completed = progress.assignmentsCompleted {
-                        Text(showCompletedToggle
-                             ? CourseLocalization.Course.progressVideosCompleted(completed, total)
-                             : CourseLocalization.Course.progressCompleted(completed, total)
+                        Text(
+                            showCompletedToggle
+                            ? CourseLocalization.Course
+                                .progressVideosCompleted(
+                                    completed,
+                                    total
+                                )
+                            : (
+                                !fromAllContentTab ? CourseLocalization.Course.progressCompleted(
+                                    completed,
+                                    total
+                                ) : CourseLocalization.Course.progressSectionsCompleted(
+                                    completed,
+                                    total
+                                )
+                            )
                         )
                         .foregroundColor(Theme.Colors.textPrimary)
                         .font(Theme.Fonts.labelMedium)
