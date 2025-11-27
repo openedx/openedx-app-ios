@@ -66,35 +66,35 @@ extension CourseTab {
 
 //swiftlint:disable type_body_length file_length
 @MainActor
-public final class CourseContainerViewModel: BaseCourseViewModel {
+@Observable public final class CourseContainerViewModel: BaseCourseViewModel {
     
-    @Published public var selection: Int
-    @Published var selectedTab: ContentTab = .all
-    @Published var isShowProgress = false
-    @Published var isShowRefresh = false
-    @Published var courseStructure: CourseStructure?
-    @Published var courseDeadlineInfo: CourseDateBanner?
-    @Published var courseVideosStructure: CourseStructure?
-    @Published var courseAssignmentsStructure: CourseStructure?
-    @Published var courseProgressDetails: CourseProgressDetails?
-    @Published var showError: Bool = false
-    @Published var sequentialsDownloadState: [String: DownloadViewState] = [:]
-    @Published private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
-    @Published var continueWith: ContinueWith?
-    @Published var userSettings: UserSettings?
-    @Published var isInternetAvaliable = true
-    @Published var dueDatesShifted: Bool = false
-    @Published var updateCourseProgress: Bool = false
-    @Published var totalFilesSize: Int = 1
-    @Published var downloadedFilesSize: Int = 0
-    @Published var largestDownloadBlocks: [CourseBlock] = []
-    @Published var downloadAllButtonState: OfflineView.DownloadAllState = .start
-    @Published var expandedSections: [String: Bool] = [:]
-    @Published var courseDeadlines: CourseDates?
-    @Published private(set) var assignmentSectionsData: [AssignmentSection] = []
+    public var selection: Int
+    var selectedTab: ContentTab = .all
+    var isShowProgress = false
+    var isShowRefresh = false
+    var courseStructure: CourseStructure?
+    var courseDeadlineInfo: CourseDateBanner?
+    var courseVideosStructure: CourseStructure?
+    var courseAssignmentsStructure: CourseStructure?
+    var courseProgressDetails: CourseProgressDetails?
+    var showError: Bool = false
+    var sequentialsDownloadState: [String: DownloadViewState] = [:]
+    private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
+    var continueWith: ContinueWith?
+    var userSettings: UserSettings?
+    var isInternetAvaliable = true
+    var dueDatesShifted: Bool = false
+    var updateCourseProgress: Bool = false
+    var totalFilesSize: Int = 1
+    var downloadedFilesSize: Int = 0
+    var largestDownloadBlocks: [CourseBlock] = []
+    var downloadAllButtonState: OfflineView.DownloadAllState = .start
+    var expandedSections: [String: Bool] = [:]
+    var courseDeadlines: CourseDates?
+    private(set) var assignmentSectionsData: [AssignmentSection] = []
     private(set) var realDownloadedFilesSize: Int = 0
     
-    @Published var tabBarIndex = 0
+    var tabBarIndex = 0
     
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
     
@@ -149,6 +149,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         selection: CourseTab = CourseTab.course,
         courseHelper: CourseDownloadHelperProtocol
     ) {
+
         self.interactor = interactor
         self.authInteractor = authInteractor
         self.router = router
@@ -167,8 +168,8 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
         self.coreAnalytics = coreAnalytics
         self.selection = selection.rawValue
         self.courseHelper = courseHelper
-        self.courseHelper.videoQuality = storage.userSettings?.downloadQuality ?? .auto
         super.init(manager: manager)
+        self.courseHelper.videoQuality = storage.userSettings?.downloadQuality ?? .auto
         addObservers()
     }
     
@@ -1273,7 +1274,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             updateAssignmentSections()
         }
         
-        objectWillChange.send()
+//        objectWillChange.send()
     }
     
     @MainActor
@@ -1290,7 +1291,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             updateAssignmentSections()
         }
         
-        objectWillChange.send()
+//        objectWillChange.send()
     }
     
     private func updateBlockProgress(

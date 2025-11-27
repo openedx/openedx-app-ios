@@ -12,7 +12,7 @@ import Theme
 
 struct CourseHeaderView: View {
     
-    @ObservedObject var viewModel: CourseContainerViewModel
+    @Bindable var viewModel: CourseContainerViewModel
     private var title: String
     private var containerWidth: CGFloat
     private var animationNamespace: Namespace.ID

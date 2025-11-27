@@ -6,7 +6,7 @@ struct CourseGradeCarouselSlideView: View {
     
     // MARK: - Variables
     @ObservedObject var viewModelProgress: CourseProgressViewModel
-    @ObservedObject var viewModelContainer: CourseContainerViewModel
+     var viewModelContainer: CourseContainerViewModel
     
     // MARK: - Body
     var body: some View {

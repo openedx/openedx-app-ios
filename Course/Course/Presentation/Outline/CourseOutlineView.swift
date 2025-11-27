@@ -14,7 +14,7 @@ import SwiftUIIntrospect
 
 public struct CourseOutlineView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @Bindable private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -46,7 +46,7 @@ public struct CourseOutlineView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection

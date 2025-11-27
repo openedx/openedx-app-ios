@@ -12,8 +12,8 @@ import Theme
 public struct LargestDownloadsView: View {
     
     @State private var isEditing = false
-    @ObservedObject
-    private var viewModel: CourseContainerViewModel
+    
+   @Bindable private var viewModel: CourseContainerViewModel
     
     init(viewModel: CourseContainerViewModel) {
         self.viewModel = viewModel

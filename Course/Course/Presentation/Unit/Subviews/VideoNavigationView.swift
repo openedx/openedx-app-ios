@@ -5,10 +5,14 @@ import OEXFoundation
 import Theme
 
 struct VideoNavigationView: View {
-    @ObservedObject var viewModel: CourseUnitViewModel
+    @Bindable var viewModel: CourseUnitViewModel
     @Binding var currentBlock: CourseBlock?
     @State private var uiScrollView: UIScrollView?
     let block: CourseBlock
+
+    private var breadCrumps: String {
+        viewModel.createBreadCrumpsForVideoNavigation(video: block)
+    }
 
     var body: some View {
         if viewModel.isVideosForNavigationLoading {
@@ -36,8 +40,6 @@ struct VideoNavigationView: View {
             .padding(.bottom, 16)
 
         HStack {
-                 let breadCrumps = viewModel.createBreadCrumpsForVideoNavigation(video: block)
-
                  VStack(alignment: .leading, spacing: 8) {
                      Text(breadCrumps)
                          .font(Theme.Fonts.bodySmall)

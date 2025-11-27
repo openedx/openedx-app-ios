@@ -120,8 +120,8 @@ public struct VerticalData: Equatable {
 }
 
 @MainActor
-public final class CourseUnitViewModel: ObservableObject {
-    
+@Observable public final class CourseUnitViewModel {
+
     enum LessonAction: Sendable {
         case next
         case previous
@@ -131,21 +131,21 @@ public final class CourseUnitViewModel: ObservableObject {
     var verticalIndex: Int
     var courseName: String
 
-    @Published var courseVideosStructure: CourseStructure?
-    @Published var index: Int = 0
+     var courseVideosStructure: CourseStructure?
+     var index: Int = 0
     var previousLesson: String = ""
     var nextLesson: String = ""
-    @Published var showError: Bool = false
+     var showError: Bool = false
     var errorMessage: String? {
         didSet {
             showError = errorMessage != nil
         }
     }
 
-    @Published public var allVideosForNavigation: [CourseBlock] = []
-    @Published public var allVideosFetched = false
-    @Published public var isVideosForNavigationLoading: Bool = false
-    @Published var currentVideoIndex: Int?
+     public var allVideosForNavigation: [CourseBlock] = []
+     public var allVideosFetched = false
+     public var isVideosForNavigationLoading: Bool = false
+     var currentVideoIndex: Int?
 
     var lessonID: String
     var courseID: String

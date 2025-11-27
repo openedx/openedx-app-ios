@@ -14,8 +14,7 @@ import Theme
 
 public struct CourseContainerView: View {
     
-    @ObservedObject
-    public var viewModel: CourseContainerViewModel
+    @Bindable public var viewModel: CourseContainerViewModel
     @ObservedObject
     public var courseDatesViewModel: CourseDatesViewModel
     @ObservedObject
