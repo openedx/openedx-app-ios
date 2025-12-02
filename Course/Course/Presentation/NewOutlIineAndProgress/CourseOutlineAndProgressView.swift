@@ -109,13 +109,13 @@ public struct CourseOutlineAndProgressView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             // MARK: - RETURN THIS!
-//            if viewModelProgress.isLoading || viewModelContainer.isShowRefresh {
-//                HStack(alignment: .center) {
-//                    ProgressBar(size: 40, lineWidth: 8)
-//                        .padding(.top, 200)
-//                        .padding(.horizontal)
-//                }
-//            } else {
+            if viewModelProgress.isLoading || viewModelContainer.isShowRefresh {
+                HStack(alignment: .center) {
+                    ProgressBar(size: 40, lineWidth: 8)
+                        .padding(.top, 200)
+                        .padding(.horizontal)
+                }
+            } else {
             // MARK: - RETURN THIS!
             GeometryReader { _ in
                 VStack(alignment: .center) {
@@ -237,7 +237,7 @@ public struct CourseOutlineAndProgressView: View {
                     }
                 }
             .frameLimit()
-//            }
+            }
         }
         .background(
             Theme.Colors.background
