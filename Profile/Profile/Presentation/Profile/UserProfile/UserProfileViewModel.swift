@@ -8,11 +8,12 @@
 import Core
 import SwiftUI
 
-public class UserProfileViewModel: ObservableObject {
+@Observable
+public class UserProfileViewModel {
     
-    @Published public var userModel: UserProfile?
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
+    public var userModel: UserProfile?
+    private(set) var isShowProgress = false
+    var showError: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {

@@ -11,16 +11,17 @@ import SwiftUI
 import Combine
 
 @MainActor
-public class AllCoursesViewModel: ObservableObject {
+@Observable
+public class AllCoursesViewModel {
     
     var nextPage = 1
     var totalPages = 1
-    @Published private(set) var fetchInProgress = false
-    @Published private(set) var refresh = false
-    @Published var selectedMenu: CategoryOption = .all
+    private(set) var fetchInProgress = false
+    private(set) var refresh = false
+    var selectedMenu: CategoryOption = .all
     
-    @Published var myEnrollments: PrimaryEnrollment?
-    @Published var showError: Bool = false
+    var myEnrollments: PrimaryEnrollment?
+    var showError: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {

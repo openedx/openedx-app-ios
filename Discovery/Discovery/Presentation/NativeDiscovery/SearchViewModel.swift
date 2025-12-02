@@ -11,18 +11,28 @@ import SwiftUI
 import Combine
 
 @MainActor
-public final class SearchViewModel<S: Scheduler>: ObservableObject {
+@Observable public final class SearchViewModel<S: Scheduler> {
     var nextPage = 1
     var totalPages = 1
-    @Published private(set) var fetchInProgress = false
-    @Published var isSearchActive = false
-    @Published var searchResults: [CourseItem] = []
-    @Published var showError: Bool = false
-    @Published var searchText: String = ""
+
+    private(set) var fetchInProgress = false
+    var isSearchActive = false
+    var animated: Bool = false
+    var searchResults: [CourseItem] = []
+    var showError: Bool = false
+
+    var searchText: String = "" {
+          didSet {
+              handleSearchTextChange(oldValue: oldValue, newValue: searchText)
+          }
+      }
+
     private var prevQuery: String = ""
     private var subscription = Set<AnyCancellable>()
     private let debounce: Debounce<S>
-    
+
+    @ObservationIgnored private var searchTask: Task<Void, Never>?
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -50,31 +60,31 @@ public final class SearchViewModel<S: Scheduler>: ObservableObject {
         self.analytics = analytics
         self.storage = storage
         self.debounce = debounce
-        
-        $searchText
-            .debounce(for: debounce.dueTime, scheduler: debounce.scheduler)
-            .removeDuplicates()
-            .sink { str in
-                let term = str
-                    .trimmingCharacters(in: .whitespaces)
-                Task.detached(priority: .high) {
-                    if !term.isEmpty {
-                        if await term == self.prevQuery { return }
-                        await MainActor.run {
-                            self.nextPage = 1
-                        }
-                        await self.search(page: self.nextPage, searchTerm: str)
-                    } else {
-                        await MainActor.run {
-                            self.prevQuery = ""
-                            self.searchResults.removeAll()
-                        }
-                    }
-                }
-            }
-            .store(in: &subscription)
     }
-    
+
+    private func handleSearchTextChange(oldValue: String, newValue: String) {
+        searchTask?.cancel()
+
+        searchTask = Task { @MainActor in
+            try? await Task.sleep(for: .milliseconds(500))
+
+            guard !Task.isCancelled else { return }
+
+            let term = newValue.trimmingCharacters(in: .whitespaces)
+
+            if !term.isEmpty {
+                if term == prevQuery { return }
+
+                nextPage = 1
+
+                await search(page: nextPage, searchTerm: newValue)
+            } else {
+                prevQuery = ""
+                searchResults.removeAll()
+            }
+        }
+    }
+
     @MainActor
     public func searchCourses(index: Int, searchTerm: String) async {
         if !fetchInProgress {

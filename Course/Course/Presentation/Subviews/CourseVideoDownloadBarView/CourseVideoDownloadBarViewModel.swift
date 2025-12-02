@@ -11,7 +11,8 @@ import OEXFoundation
 import Combine
 
 @MainActor
-final class CourseVideoDownloadBarViewModel: ObservableObject {
+@Observable
+final class CourseVideoDownloadBarViewModel {
 
     // MARK: - Properties
 
@@ -19,8 +20,8 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private let courseViewModel: CourseContainerViewModel
     private let analytics: CourseAnalytics
 
-    @Published private(set) var currentDownloadTask: DownloadDataTask?
-    @Published private(set) var isOn: Bool = false
+    private(set) var currentDownloadTask: DownloadDataTask?
+    private(set) var isOn: Bool = false
 
     private var cancellables = Set<AnyCancellable>()
 

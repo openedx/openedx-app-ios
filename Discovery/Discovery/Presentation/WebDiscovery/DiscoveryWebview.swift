@@ -29,10 +29,9 @@ public enum DiscoveryWebviewType: Equatable {
 }
 
 public struct DiscoveryWebview: View {
-    @State private var searchQuery: String = ""
-    @State private var isLoading: Bool = true
-    
-    @StateObject private var viewModel: DiscoveryWebviewViewModel
+
+    @Bindable private var viewModel: DiscoveryWebviewViewModel
+
     private var router: DiscoveryRouter
     private var discoveryType: DiscoveryWebviewType
     public var pathID: String
@@ -40,9 +39,9 @@ public struct DiscoveryWebview: View {
     private var URLString: String {
         switch discoveryType {
         case .discovery:
-            if !searchQuery.isEmpty {
+            if !viewModel.searchQuery.isEmpty {
                 let baseURL = viewModel.config.discovery.webview.baseURL ?? ""
-                return buildQuery(baseURL: baseURL, params: ["q": searchQuery])
+                return buildQuery(baseURL: baseURL, params: ["q": viewModel.searchQuery])
             }
             
             return viewModel.config.discovery.webview.baseURL ?? ""
@@ -82,9 +81,9 @@ public struct DiscoveryWebview: View {
         discoveryType: DiscoveryWebviewType = .discovery,
         pathID: String = ""
     ) {
-        self._viewModel = .init(wrappedValue: viewModel)
+        self.viewModel = viewModel
         self.router = router
-        self._searchQuery = State<String>(initialValue: searchQuery ?? "")
+        viewModel.searchQuery = searchQuery ?? ""
         self.discoveryType = discoveryType
         self.pathID = pathID
     }
@@ -99,7 +98,7 @@ public struct DiscoveryWebview: View {
                             baseURL: "",
                             openFile: {_ in}
                         ),
-                        isLoading: $isLoading,
+                        isLoading: $viewModel.isLoading,
                         refreshCookies: {},
                         navigationDelegate: viewModel,
                         connectivity: viewModel.connectivity,
@@ -107,7 +106,7 @@ public struct DiscoveryWebview: View {
                     )
                     .accessibilityIdentifier("discovery_webview")
 
-                    if isLoading || viewModel.showProgress {
+                    if viewModel.isLoading || viewModel.showProgress {
                         HStack(alignment: .center) {
                             ProgressBar(
                                 size: 40,
@@ -133,7 +132,7 @@ public struct DiscoveryWebview: View {
                         }
                     }
 
-                    if !viewModel.userloggedIn, !isLoading {
+                    if !viewModel.userloggedIn, !viewModel.isLoading {
                         LogistrationBottomView(
                             ssoEnabled: viewModel.config.uiComponents.samlSSOLoginEnabled
                         ) { buttonAction in

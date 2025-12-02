@@ -11,11 +11,12 @@ import OEXFoundation
 @preconcurrency import Combine
 
 @MainActor
-final class DownloadsViewModel: ObservableObject {
+@Observable
+final class DownloadsViewModel {
 
     // MARK: - Properties
 
-    @Published private(set) var downloads: [DownloadDataTask] = []
+    private(set) var downloads: [DownloadDataTask] = []
     
     let router: CourseRouter
 

@@ -15,11 +15,11 @@ import Theme
 public struct CourseContainerView: View {
     
     @Bindable public var viewModel: CourseContainerViewModel
-    @ObservedObject
     public var courseDatesViewModel: CourseDatesViewModel
-    @ObservedObject
     public var courseProgressViewModel: CourseProgressViewModel
+    
     @State private var isAnimatingForTap: Bool = false
+    @State private var discussionTopicsViewModel: DiscussionTopicsViewModel
     public var courseID: String
     private var title: String
     @State private var ignoreOffset: Bool = false
@@ -30,6 +30,7 @@ public struct CourseContainerView: View {
     @Environment(\.isHorizontal) private var isHorizontal
     @Namespace private var animationNamespace
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    private let discussionRouter: DiscussionRouter
     
     private let coordinateBoundaryLower: CGFloat = -115
     private let courseRawImage: String?
@@ -59,6 +60,12 @@ public struct CourseContainerView: View {
         title: String,
         courseRawImage: String?
     ) {
+        let resolvedDiscussionTopicsViewModel = Container.shared.resolve(
+            DiscussionTopicsViewModel.self,
+            argument: title
+        )!
+        let resolvedDiscussionRouter = Container.shared.resolve(DiscussionRouter.self)!
+        self._discussionTopicsViewModel = State(initialValue: resolvedDiscussionTopicsViewModel)
         self.viewModel = viewModel
         self.courseDatesViewModel = courseDatesViewModel
         self.courseProgressViewModel = courseProgressViewModel
@@ -75,6 +82,7 @@ public struct CourseContainerView: View {
         self.courseID = courseID
         self.title = title
         self.courseRawImage = courseRawImage
+        self.discussionRouter = resolvedDiscussionRouter
     }
     
     public var body: some View {
@@ -280,9 +288,8 @@ public struct CourseContainerView: View {
                         coordinate: $coordinate,
                         collapsed: $collapsed,
                         viewHeight: $viewHeight,
-                        viewModel: Container.shared.resolve(DiscussionTopicsViewModel.self,
-                                                            argument: title)!,
-                        router: Container.shared.resolve(DiscussionRouter.self)!
+                        viewModel: discussionTopicsViewModel,
+                        router: discussionRouter
                     )
                     .tabItem {
                         tab.image

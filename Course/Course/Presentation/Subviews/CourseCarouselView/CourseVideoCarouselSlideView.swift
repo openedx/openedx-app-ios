@@ -5,7 +5,7 @@ import Core
 struct CourseVideoCarouselSlideView: View {
 
     // MARK: - Variables
-    @ObservedObject var viewModelProgress: CourseProgressViewModel
+    var viewModelProgress: CourseProgressViewModel
     var viewModelContainer: CourseContainerViewModel
     @State private var isHidingCompletedSections = true
 

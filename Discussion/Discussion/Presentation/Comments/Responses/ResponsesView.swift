@@ -18,7 +18,7 @@ public struct ResponsesView: View {
     private let commentID: String
     private let parentComment: Post
     
-    @ObservedObject private var viewModel: ResponsesViewModel
+    private var viewModel: ResponsesViewModel
     @State private var isShowProgress: Bool = true
     
     public init(

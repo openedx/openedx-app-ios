@@ -12,21 +12,22 @@ import _AVKit_SwiftUI
 import Combine
 
 @MainActor
-public class VideoPlayerViewModel: ObservableObject {
-    @Published var pause: Bool = false
-    @Published var currentTime: Double = 0
-    @Published var isLoading: Bool = true
-    @Published var isLocalProgressApplied: Bool = false
+@Observable
+public class VideoPlayerViewModel {
+    var pause: Bool = false
+    var currentTime: Double = 0
+    var isLoading: Bool = true
+    var isLocalProgressApplied: Bool = false
 
     public let connectivity: ConnectivityProtocol
 
     private var subtitlesDownloaded: Bool = false
-    @Published var subtitles: [Subtitle] = []
+    var subtitles: [Subtitle] = []
     var languages: [SubtitleUrl]
-    @Published var items: [PickerItem] = []
-    @Published var selectedLanguage: String?
+    var items: [PickerItem] = []
+    var selectedLanguage: String?
     
-    @Published var showError: Bool = false
+    var showError: Bool = false
     var errorMessage: String? {
         didSet {
             showError = errorMessage != nil

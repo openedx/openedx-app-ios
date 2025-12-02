@@ -6,14 +6,15 @@ import OEXFoundation
 import Combine
 
 @MainActor
-public class CourseOutlineAndProgressViewModel: ObservableObject {
+@Observable
+public class CourseOutlineAndProgressViewModel {
     
     // MARK: - Variables
-    @Published public var courseProgress: CourseProgressDetails?
-    @Published public var showError: Bool = false
-    @Published public var selection: Int
-    @Published var userSettings: UserSettings?
-    @Published var isInternetAvaliable: Bool = true
+    public var courseProgress: CourseProgressDetails?
+    public var showError: Bool = false
+    public var selection: Int
+    var userSettings: UserSettings?
+    var isInternetAvaliable: Bool = true
 
     let router: CourseRouter
     let analytics: CourseAnalytics

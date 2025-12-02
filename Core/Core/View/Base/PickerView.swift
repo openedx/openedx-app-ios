@@ -9,9 +9,8 @@ import SwiftUI
 import Theme
 
 public struct PickerView: View {
-    
-    @ObservedObject
-    private var config: FieldConfiguration
+
+    @Bindable private var config: FieldConfiguration
     private var router: BaseRouter
     
     public init(config: FieldConfiguration, router: BaseRouter) {

@@ -1,13 +1,14 @@
 //
 
-import Combine
 import SwiftUI
 
-public class KeyboardScrollInvocator: ObservableObject {
-    var triggerSubject = PassthroughSubject<Bool, Never>()
-    
+@MainActor
+@Observable
+public class KeyboardScrollInvocator {
+    var onTrigger: (() -> Void)?
+
     public func scrollToActiveInput() {
-        triggerSubject.send(true)
+        onTrigger?()
     }
 }
 
@@ -16,9 +17,9 @@ private struct KeyboardAvoidingModifier: ViewModifier {
     private let partialAvoidingPadding: CGFloat
     private let dismissKeyboardByTap: Bool
     private let onProvideScrollInvocator: ((KeyboardScrollInvocator) -> Void)?
-    
-    @StateObject private var keyboardObserver = KeyboardStateObserver()
-    @StateObject private var scrollInvocator = KeyboardScrollInvocator()
+
+    private var keyboardObserver = KeyboardStateObserver()
+    @State private var scrollInvocator = KeyboardScrollInvocator()
     
     init(
         scrollerOptions: KeyboardScrollerOptions?,
@@ -38,19 +39,19 @@ private struct KeyboardAvoidingModifier: ViewModifier {
                 .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
-        
+
         // for fields
-        .onReceive(keyboardObserver.$keyboardState.receive(on: DispatchQueue.main)) { state in
+        .onChange(of: keyboardObserver.keyboardState) { _, state in
             if state.height == 0 {
                 DismissKeyboardTapHandler.shared.isEnabled = false
                 return
             }
-            
+
             // Applied to the whole UIWindow. Use addTapToEndEditing() modifier to apply locally.
             if dismissKeyboardByTap {
                 DismissKeyboardTapHandler.shared.isEnabled = true
             }
-            
+
             if let options = scrollerOptions {
                 KeyboardScroller.scroll(
                     keyboardState: state,
@@ -59,19 +60,20 @@ private struct KeyboardAvoidingModifier: ViewModifier {
                 )
             }
         }
-        .onReceive(scrollInvocator.triggerSubject) { _ in
-            guard !keyboardObserver.keyboardState.height.isZero,
-                  let options = scrollerOptions else {
-                return
-            }
-            
-            KeyboardScroller.scroll(
-                keyboardState: keyboardObserver.keyboardState,
-                options: options,
-                partialAvoidingPadding: partialAvoidingPadding
-            )
-        }
         .onAppear {
+            // Setup callback for manual scroll triggering
+            scrollInvocator.onTrigger = { [keyboardObserver, scrollerOptions, partialAvoidingPadding] in
+                guard !keyboardObserver.keyboardState.height.isZero,
+                      let options = scrollerOptions else {
+                    return
+                }
+
+                KeyboardScroller.scroll(
+                    keyboardState: keyboardObserver.keyboardState,
+                    options: options,
+                    partialAvoidingPadding: partialAvoidingPadding
+                )
+            }
             onProvideScrollInvocator?(scrollInvocator)
         }
     }

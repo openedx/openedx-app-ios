@@ -94,10 +94,10 @@
 		A52897DC2E276B12009C7044 /* CourseGradeCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897DB2E276B02009C7044 /* CourseGradeCarouselSlideView.swift */; };
 		A52897DE2E277A7C009C7044 /* GradeItemCarouselView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897DD2E277A7C009C7044 /* GradeItemCarouselView.swift */; };
 		A52897E02E278D7D009C7044 /* ViewAllButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A52897DF2E278D7D009C7044 /* ViewAllButton.swift */; };
+		A59016D52E69B2E900076220 /* VideoNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59016D42E69B2E900076220 /* VideoNavigationView.swift */; };
 		A5A510A22E66E8D600553607 /* CourseVideoCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A12E66E8D600553607 /* CourseVideoCarouselSlideView.swift */; };
 		A5A510A42E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */; };
 		A5A510A62E672E4A00553607 /* AssignmentCarouselDetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */; };
-		A59016D52E69B2E900076220 /* VideoNavigationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59016D42E69B2E900076220 /* VideoNavigationView.swift */; };
 		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 		BA58CF5D2B3D804D005B102E /* CourseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF5C2B3D804D005B102E /* CourseStorage.swift */; };
 		BA58CF612B471041005B102E /* VideoDownloadQualityBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */; };
@@ -279,10 +279,10 @@
 		A52897DB2E276B02009C7044 /* CourseGradeCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseGradeCarouselSlideView.swift; sourceTree = "<group>"; };
 		A52897DD2E277A7C009C7044 /* GradeItemCarouselView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradeItemCarouselView.swift; sourceTree = "<group>"; };
 		A52897DF2E278D7D009C7044 /* ViewAllButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllButton.swift; sourceTree = "<group>"; };
+		A59016D42E69B2E900076220 /* VideoNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoNavigationView.swift; sourceTree = "<group>"; };
 		A5A510A12E66E8D600553607 /* CourseVideoCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoCarouselSlideView.swift; sourceTree = "<group>"; };
 		A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentsCarouselSlideView.swift; sourceTree = "<group>"; };
 		A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCarouselDetailCardView.swift; sourceTree = "<group>"; };
-		A59016D42E69B2E900076220 /* VideoNavigationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoNavigationView.swift; sourceTree = "<group>"; };
 		ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debug.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debug.xcconfig"; sourceTree = "<group>"; };
 		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BA58CF5C2B3D804D005B102E /* CourseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStorage.swift; sourceTree = "<group>"; };
@@ -1039,9 +1039,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1544,7 +1548,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1583,7 +1587,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1685,7 +1689,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1788,7 +1792,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1885,7 +1889,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1981,7 +1985,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2083,7 +2087,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2202,7 +2206,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

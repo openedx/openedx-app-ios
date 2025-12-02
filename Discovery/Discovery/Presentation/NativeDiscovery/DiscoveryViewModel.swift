@@ -10,14 +10,17 @@ import Core
 import SwiftUI
 
 @MainActor
-public final class DiscoveryViewModel: ObservableObject {
-    
+@Observable
+public final class DiscoveryViewModel {
+
+    var searchQuery = ""
     var nextPage = 1
     var totalPages = 1
+    var isRefreshing = false
     private(set) var fetchInProgress = false
     
-    @Published var courses: [CourseItem] = []
-    @Published var showError: Bool = false
+    var courses: [CourseItem] = []
+    var showError: Bool = false
     
     var userloggedIn: Bool {
         return !(storage.user?.username?.isEmpty ?? true)

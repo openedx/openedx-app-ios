@@ -19,7 +19,6 @@ public struct SubtitlesView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     
-    @ObservedObject
     private var viewModel: VideoPlayerViewModel
     private var scrollTo: ((Date) -> Void) = { _ in }
     

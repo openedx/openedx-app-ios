@@ -18,12 +18,9 @@ import Theme
 import OEXFoundation
 
 struct MainScreenView: View {
-    
-    @State private var disableAllTabs: Bool = false
-    @State private var updateAvailable: Bool = false
-    
-    @ObservedObject private(set) var viewModel: MainScreenViewModel
-    
+
+    @Bindable private(set) var viewModel: MainScreenViewModel
+
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
         UITabBar.appearance().isTranslucent = false
@@ -177,10 +174,10 @@ struct MainScreenView: View {
             }
             .onReceive(NotificationCenter.default.publisher(for: .onAppUpgradeAccountSettingsTapped)) { _ in
                 viewModel.selection = .profile
-                disableAllTabs = true
+                viewModel.disableAllTabs = true
             }
             .onReceive(NotificationCenter.default.publisher(for: .onNewVersionAvaliable)) { _ in
-                updateAvailable = true
+                    viewModel.updateAvailable = true
             }
             .onReceive(NotificationCenter.default.publisher(for: .showDownloadFailed)) { downloads in
                 if let downloads = downloads.object as? [DownloadDataTask] {
@@ -190,7 +187,7 @@ struct MainScreenView: View {
                 }
             }
             .onChange(of: viewModel.selection) { _ in
-                if disableAllTabs {
+                if viewModel.disableAllTabs {
                     viewModel.selection = .profile
                 }
             }
@@ -220,7 +217,7 @@ struct MainScreenView: View {
                 }
             }
             .accentColor(Theme.Colors.accentXColor)
-            if updateAvailable {
+            if viewModel.updateAvailable {
                 UpdateNotificationView(config: viewModel.config)
             }
         }

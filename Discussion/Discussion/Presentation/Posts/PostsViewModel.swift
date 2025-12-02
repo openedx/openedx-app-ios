@@ -11,21 +11,22 @@ import Combine
 import Core
 
 @MainActor
-public final class PostsViewModel: ObservableObject {
+@Observable
+public final class PostsViewModel {
     
     public var nextPage = 1
     public var totalPages = 1
-    @Published public private(set) var fetchInProgress = false
+    public private(set) var fetchInProgress = false
     
     public enum ButtonType {
         case sort
         case filter
     }
     
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
-    @Published var filteredPosts: [DiscussionPost] = []
-    @Published var filterTitle: ThreadsFilter = .allThreads {
+    private(set) var isShowProgress = false
+    var showError: Bool = false
+    var filteredPosts: [DiscussionPost] = []
+    var filterTitle: ThreadsFilter = .allThreads {
         willSet {
             if courseID != nil {
                 resetPosts()
@@ -35,7 +36,8 @@ public final class PostsViewModel: ObservableObject {
             }
         }
     }
-    @Published var sortTitle: SortType = .recentActivity {
+
+    var sortTitle: SortType = .recentActivity {
         willSet {
             if courseID != nil {
                 resetPosts()
@@ -63,7 +65,7 @@ public final class PostsViewModel: ObservableObject {
     }
     
     public var courseID: String?
-    @Published var isBlackedOut: Bool?
+    var isBlackedOut: Bool?
 
     var errorMessage: String? {
         didSet {

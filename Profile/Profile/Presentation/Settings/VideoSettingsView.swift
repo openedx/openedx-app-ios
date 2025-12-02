@@ -11,8 +11,7 @@ import Theme
 
 public struct VideoSettingsView: View {
     
-    @ObservedObject
-    private var viewModel: SettingsViewModel
+    @Bindable private var viewModel: SettingsViewModel
     @Environment(\.isHorizontal) private var isHorizontal
     
     public init(viewModel: SettingsViewModel) {

@@ -8,27 +8,32 @@
 import Foundation
 import SwiftUI
 import Core
-@preconcurrency import Combine
+import Combine
 
 @MainActor
-public final class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObject {
-    
-    @Published private(set) var fetchInProgress = false
-    @Published var isSearchActive = false
-    @Published var searchResults: [DiscussionPost] = []
-    @Published var showError: Bool = false
-    @Published var searchText: String = ""
-    
+@Observable
+public final class DiscussionSearchTopicsViewModel {
+
+    private(set) var fetchInProgress = false
+    var isSearchActive = false
+    var searchResults: [DiscussionPost] = []
+    var showError: Bool = false
+    var searchText: String = "" {
+        didSet {
+            handleSearchTextChange(searchText)
+        }
+    }
+
     private var prevQuery: String = ""
     private var courseID: String
-    private var subscription = Set<AnyCancellable>()
-    @Published private var threads: [UserThread] = []
-    
+    private var threads: [UserThread] = []
+
     private var nextPage = 1
     private var totalPages = 1
-    
-    internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
-    private var cancellable: AnyCancellable?
+
+    @ObservationIgnored private var searchTask: Task<Void, Never>?
+    // Keep CurrentValueSubject for now since it's passed to router
+    @ObservationIgnored internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     
     var errorMessage: String? {
         didSet {
@@ -41,25 +46,25 @@ public final class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObje
     let router: DiscussionRouter
     private let interactor: DiscussionInteractorProtocol
     private let storage: CoreStorage
-    private let debounce: Debounce<S>
-    
+    private let debounceInterval: TimeInterval
+
     public init(
         courseID: String,
         interactor: DiscussionInteractorProtocol,
         storage: CoreStorage,
         router: DiscussionRouter,
-        debounce: Debounce<S>
+        debounceInterval: TimeInterval = 0.8
     ) {
         self.courseID = courseID
         self.interactor = interactor
         self.storage = storage
         self.router = router
-        self.debounce = debounce
+        self.debounceInterval = debounceInterval
 
-        cancellable = postStateSubject
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] state in
-                guard let self, let state else { return }
+        // Setup observer for postStateSubject
+        Task {
+            for await state in postStateSubject.values {
+                guard let state = state else { continue }
                 switch state {
                 case let .followed(id, followed):
                     self.updatePostFollowedState(id: id, followed: followed)
@@ -72,33 +77,37 @@ public final class DiscussionSearchTopicsViewModel<S: Scheduler>: ObservableObje
                 case let .reported(id, reported):
                     self.updatePostReportedState(id: id, reported: reported)
                 }
-            })
-        
-        $searchText
-            .debounce(for: debounce.dueTime, scheduler: debounce.scheduler)
-            .removeDuplicates()
-            .sink { [weak self] str in
-                guard let self else { return }
-                let term = str
-                    .trimmingCharacters(in: .whitespaces)
-                Task.detached(priority: .high) {
-                    if !term.isEmpty {
-                        if await term == self.prevQuery {
-                            return
-                        }
-                        await MainActor.run {
-                            self.nextPage = 1
-                        }
-                        await self.search(page: self.nextPage, searchTerm: str)
-                    } else {
-                        await MainActor.run {
-                            self.prevQuery = ""
-                            self.searchResults.removeAll()
-                        }
-                    }
-                }
             }
-            .store(in: &subscription)
+        }
+    }
+
+    deinit {
+        searchTask?.cancel()
+    }
+
+    private func handleSearchTextChange(_ text: String) {
+        // Cancel previous search task
+        searchTask?.cancel()
+
+        // Start new debounced search
+        searchTask = Task {
+            try? await Task.sleep(nanoseconds: UInt64(debounceInterval * 1_000_000_000))
+
+            guard !Task.isCancelled else { return }
+
+            let term = text.trimmingCharacters(in: .whitespaces)
+
+            if !term.isEmpty {
+                if term == prevQuery {
+                    return
+                }
+                nextPage = 1
+                await search(page: nextPage, searchTerm: text)
+            } else {
+                prevQuery = ""
+                searchResults.removeAll()
+            }
+        }
     }
     
     func searchCourses(index: Int, searchTerm: String) async {

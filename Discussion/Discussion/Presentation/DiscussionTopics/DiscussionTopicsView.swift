@@ -12,7 +12,7 @@ import Theme
 
 public struct DiscussionTopicsView: View {
     
-    @StateObject private var viewModel: DiscussionTopicsViewModel
+    @Bindable private var viewModel: DiscussionTopicsViewModel
     private let router: DiscussionRouter
     private let courseID: String
     @Binding private var coordinate: CGFloat
@@ -28,7 +28,7 @@ public struct DiscussionTopicsView: View {
         viewModel: DiscussionTopicsViewModel,
         router: DiscussionRouter
     ) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.courseID = courseID
         self._coordinate = coordinate
         self._collapsed = collapsed
@@ -48,12 +48,13 @@ public struct DiscussionTopicsView: View {
                                 viewHeight: $viewHeight
                             )
                             RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+
                             // MARK: - Search fake field
                             if viewModel.isBlackedOut {
                                 bannerDiscussionsDisabled
                             }
                             
-                            if let topics = viewModel.discussionTopics, topics.count > 0 {
+                            if !viewModel.discussionTopics.isEmpty {
                                 HStack(spacing: 11) {
                                     Image(systemName: "magnifyingglass")
                                         .foregroundColor(Theme.Colors.textInputTextColor)
@@ -91,7 +92,7 @@ public struct DiscussionTopicsView: View {
                             VStack {
                                 ZStack(alignment: .top) {
                                     VStack {
-                                        if let topics = viewModel.discussionTopics {
+                                        if !viewModel.discussionTopics.isEmpty {
                                             HStack {
                                                 Text(DiscussionLocalization.Topics.mainCategories)
                                                     .font(Theme.Fonts.titleMedium)
@@ -101,7 +102,7 @@ public struct DiscussionTopicsView: View {
                                                 Spacer()
                                             }
                                             HStack(spacing: 8) {
-                                                if let allTopics = topics.first(where: {
+                                                if let allTopics = viewModel.discussionTopics.first(where: {
                                                     $0.name == DiscussionLocalization.Topics.allPosts }) {
                                                     Button(action: {
                                                         allTopics.action()
@@ -119,7 +120,7 @@ public struct DiscussionTopicsView: View {
                                                     }).cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground)
                                                         .padding(.trailing, -20)
                                                 }
-                                                if let followed = topics.first(where: {
+                                                if let followed = viewModel.discussionTopics.first(where: {
                                                     $0.name == DiscussionLocalization.Topics.postImFollowing}) {
                                                     Button(action: {
                                                         followed.action()
@@ -139,7 +140,8 @@ public struct DiscussionTopicsView: View {
                                                     
                                                 }
                                             }.padding(.bottom, 16)
-                                            ForEach(Array(topics.enumerated()), id: \.offset) { _, topic in
+                                            ForEach(Array(viewModel.discussionTopics.enumerated()),
+                                                    id: \.offset) { _, topic in
                                                 if topic.name != DiscussionLocalization.Topics.allPosts
                                                     && topic.name != DiscussionLocalization.Topics.postImFollowing {
                                                     

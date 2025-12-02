@@ -11,7 +11,8 @@ import SwiftUI
 import OEXFoundation
 
 @MainActor
-public class CourseDatesViewModel: ObservableObject {
+@Observable
+public class CourseDatesViewModel {
     
     enum EventState: Sendable {
         case addedCalendar
@@ -21,11 +22,11 @@ public class CourseDatesViewModel: ObservableObject {
         case none
     }
     
-    @Published var isShowProgress = true
-    @Published var showError: Bool = false
-    @Published var courseDates: CourseDates?
-    @Published var isOn: Bool = false
-    @Published var eventState: EventState?
+    var isShowProgress = true
+    var showError: Bool = false
+    var courseDates: CourseDates?
+    var isOn: Bool = false
+    var eventState: EventState?
 
     var errorMessage: String? {
         didSet {

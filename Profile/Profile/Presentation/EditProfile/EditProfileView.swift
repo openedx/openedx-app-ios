@@ -12,7 +12,7 @@ import Theme
 
 public struct EditProfileView: View {
     
-    @ObservedObject public var viewModel: EditProfileViewModel
+    @Bindable public var viewModel: EditProfileViewModel
     @State private var showingImagePicker = false
     @State private var showingBottomSheet = false
     
@@ -119,14 +119,19 @@ public struct EditProfileView: View {
                                 }
                             }
                         }
-                        .onReceive(viewModel.yearsConfiguration.$text
-                            .combineLatest(viewModel.countriesConfiguration.$text,
-                                           viewModel.spokenLanguageConfiguration.$text),
-                                   perform: { _ in
+                        .onChange(of: viewModel.yearsConfiguration.text) { _, _ in
                             viewModel.checkChanges()
                             viewModel.checkProfileType()
-                        })
-                        .onChange(of: viewModel.profileChanges) { _ in
+                        }
+                        .onChange(of: viewModel.countriesConfiguration.text) { _, _ in
+                            viewModel.checkChanges()
+                            viewModel.checkProfileType()
+                        }
+                        .onChange(of: viewModel.spokenLanguageConfiguration.text) { _, _ in
+                            viewModel.checkChanges()
+                            viewModel.checkProfileType()
+                        }
+                        .onChange(of: viewModel.profileChanges) { _, _ in
                             viewModel.checkChanges()
                             viewModel.checkProfileType()
                         }

@@ -11,8 +11,8 @@ import OEXFoundation
 import Theme
 
 public struct DeleteAccountView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DeleteAccountViewModel
     
     public init(viewModel: DeleteAccountViewModel) {

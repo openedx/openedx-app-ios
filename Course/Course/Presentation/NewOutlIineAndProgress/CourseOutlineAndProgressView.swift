@@ -10,7 +10,7 @@ public struct CourseOutlineAndProgressView: View {
     
     // MARK: - Variables
     @Bindable private var viewModelContainer: CourseContainerViewModel
-    @StateObject private var viewModelProgress: CourseProgressViewModel
+    private var viewModelProgress: CourseProgressViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -94,7 +94,7 @@ public struct CourseOutlineAndProgressView: View {
     ) {
         self.title = title
         self.viewModelContainer = viewModelContainer
-        self._viewModelProgress = StateObject(wrappedValue: { viewModelProgress}())
+        self.viewModelProgress = viewModelProgress
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection

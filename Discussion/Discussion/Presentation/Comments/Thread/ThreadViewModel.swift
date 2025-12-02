@@ -9,9 +9,10 @@ import Foundation
 import Combine
 import Core
 
-public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
+@Observable
+public final class ThreadViewModel: BaseResponsesViewModel {
     
-    @Published var scrollTrigger: Bool = false
+    var scrollTrigger: Bool = false
     
     internal let threadStateSubject = CurrentValueSubject<ThreadPostState?, Never>(nil)
     private var cancellable: AnyCancellable?

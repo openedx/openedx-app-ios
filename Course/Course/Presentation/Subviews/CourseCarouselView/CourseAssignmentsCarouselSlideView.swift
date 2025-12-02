@@ -5,7 +5,7 @@ import Core
 struct CourseAssignmentsCarouselSlideView: View {
 
     // MARK: - Variables
-    @ObservedObject var viewModelProgress: CourseProgressViewModel
+    var viewModelProgress: CourseProgressViewModel
     var viewModelContainer: CourseContainerViewModel
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass

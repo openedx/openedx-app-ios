@@ -9,12 +9,13 @@ import SwiftUI
 import Core
 import OEXFoundation
 
-public final class CourseVerticalViewModel: ObservableObject, @unchecked Sendable {
+@Observable
+public final class CourseVerticalViewModel: @unchecked Sendable {
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
-    @Published var verticals: [CourseVertical]
-    @Published var showError: Bool = false
+    var verticals: [CourseVertical]
+    var showError: Bool = false
     let chapters: [CourseChapter]
     let chapterIndex: Int
     let sequentialIndex: Int

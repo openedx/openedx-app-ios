@@ -12,15 +12,10 @@ import Theme
 
 public struct ResetPasswordView: View {
     
-    @State private var email: String = ""
-    
-    @State private var isRecovered: Bool = false
-    
     @Environment(\.isHorizontal) private var isHorizontal
-    
-    @ObservedObject
-    private var viewModel: ResetPasswordViewModel
-    
+
+    @Bindable private var viewModel: ResetPasswordViewModel
+
     public init(viewModel: ResetPasswordViewModel) {
         self.viewModel = viewModel
     }
@@ -46,7 +41,7 @@ public struct ResetPasswordView: View {
                     
                     ScrollView {
                         VStack {
-                            if isRecovered {
+                            if viewModel.isRecovered {
                                 ZStack {
                                     VStack {
                                         CoreAssets.checkEmail.swiftUIImage
@@ -62,7 +57,7 @@ public struct ResetPasswordView: View {
                                             .foregroundColor(Theme.Colors.textPrimary)
                                             .padding(.bottom, 4)
                                             .accessibilityIdentifier("recover_title_text")
-                                        Text(AuthLocalization.Forgot.checkDescription + email)
+                                        Text(AuthLocalization.Forgot.checkDescription + viewModel.email)
                                             .font(Theme.Fonts.bodyMedium)
                                             .multilineTextAlignment(.center)
                                             .foregroundColor(Theme.Colors.textPrimary)
@@ -93,7 +88,7 @@ public struct ResetPasswordView: View {
                                         .font(Theme.Fonts.labelLarge)
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .accessibilityIdentifier("email_text")
-                                    TextField("", text: $email)
+                                    TextField("", text: $viewModel.email)
                                         .font(Theme.Fonts.bodyLarge)
                                         .foregroundColor(Theme.Colors.textInputTextColor)
                                         .keyboardType(.emailAddress)
@@ -104,7 +99,7 @@ public struct ResetPasswordView: View {
                                         .background(
                                             Theme.InputFieldBackground(
                                                 placeHolder: AuthLocalization.SignIn.email,
-                                                text: email,
+                                                text: viewModel.email,
                                                 padding: 15
                                             )
                                         )
@@ -123,7 +118,8 @@ public struct ResetPasswordView: View {
                                     } else {
                                         StyledButton(AuthLocalization.Forgot.request) {
                                             Task {
-                                                await viewModel.resetPassword(email: email, isRecovered: $isRecovered)
+                                                await viewModel.resetPassword(email: viewModel.email,
+                                                                              isRecovered: $viewModel.isRecovered)
                                             }
                                         }
                                         .padding(.top, 30)

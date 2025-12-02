@@ -12,13 +12,13 @@ import Theme
 struct SocialAuthView: View {
     
     // MARK: - Properties
-    @StateObject var viewModel: SocialAuthViewModel
+    var viewModel: SocialAuthViewModel
     
     init(
         authType: SocialAuthType = .signIn,
         viewModel: SocialAuthViewModel
     ) {
-        self._viewModel = .init(wrappedValue: viewModel)
+        self.viewModel = viewModel
         self.authType = authType
     }
     

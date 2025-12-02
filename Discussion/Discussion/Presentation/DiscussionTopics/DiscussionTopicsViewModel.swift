@@ -11,15 +11,16 @@ import Core
 
 // swiftlint:disable function_body_length
 @MainActor
-public final class DiscussionTopicsViewModel: ObservableObject {
+@Observable
+public final class DiscussionTopicsViewModel {
     
-    @Published var topics: Topics?
-    @Published var isShowProgress = true
-    @Published var isShowRefresh = false
-    @Published var showError: Bool = false
-    @Published var discussionTopics: [DiscussionTopic]?
-    @Published var courseID: String = ""
-    @Published  private(set) var isBlackedOut: Bool = false
+    var topics: Topics?
+    var isShowProgress = true
+    var isShowRefresh = false
+    var showError: Bool = false
+    var discussionTopics: [DiscussionTopic] = []
+    var courseID: String = ""
+    private(set) var isBlackedOut: Bool = false
     let title: String
     
     var errorMessage: String? {
@@ -179,12 +180,13 @@ public final class DiscussionTopicsViewModel: ObservableObject {
              
             topics = try await interactor.getTopics(courseID: courseID)
             discussionTopics = generateTopics(topics: topics)
+            
             isShowProgress = false
             isShowRefresh = false
         } catch {
             isShowProgress = false
             isShowRefresh = false
-            discussionTopics = nil
+            discussionTopics = []
         }
     }
 }

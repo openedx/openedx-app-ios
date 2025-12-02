@@ -13,8 +13,7 @@ import Theme
 @MainActor
 public struct AllCoursesView: View {
     
-    @ObservedObject
-    private var viewModel: AllCoursesViewModel
+    @Bindable private var viewModel: AllCoursesViewModel
     private let router: DashboardRouter
     @Environment(\.isHorizontal) private var isHorizontal
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }

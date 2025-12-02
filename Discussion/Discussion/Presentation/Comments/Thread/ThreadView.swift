@@ -16,7 +16,7 @@ public struct ThreadView: View {
     public let thread: UserThread
     private var onBackTapped: (() -> Void) = {}
     
-    @ObservedObject private var viewModel: ThreadViewModel
+    private var viewModel: ThreadViewModel
     @Environment(\.colorScheme) var colorScheme
     @State private var isShowProgress: Bool = true
     @State private var commentText: String = ""

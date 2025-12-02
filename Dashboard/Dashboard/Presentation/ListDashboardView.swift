@@ -25,13 +25,12 @@ public struct ListDashboardView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(DashboardLocalization.Header.courses + DashboardLocalization.Header.welcomeBack)
     
-    @StateObject
-    private var viewModel: ListDashboardViewModel
+    @Bindable private var viewModel: ListDashboardViewModel
     private let router: DashboardRouter
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(viewModel: ListDashboardViewModel, router: DashboardRouter) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.router = router
     }
     

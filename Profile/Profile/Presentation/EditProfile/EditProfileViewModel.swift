@@ -18,16 +18,17 @@ public struct Changes: Equatable, Sendable {
 }
 
 @MainActor
-public class EditProfileViewModel: ObservableObject {
+@Observable
+public class EditProfileViewModel {
     
-    @Published private(set) var userModel: UserProfile
-    @Published private(set) var selectedCountry: PickerItem?
-    @Published private(set) var selectedSpokeLanguage: PickerItem?
-    @Published private(set) var selectedYearOfBirth: PickerItem?
-
+    private(set) var userModel: UserProfile
+    private(set) var selectedCountry: PickerItem?
+    private(set) var selectedSpokeLanguage: PickerItem?
+    private(set) var selectedYearOfBirth: PickerItem?
+    
     var profileDidEdit: (((UserProfile?, UIImage?)) -> Void)?
     var oldAvatar: UIImage?
-
+    
     private let minimumFullAccountAge = 13
     private let currentYear = Calendar.current.component(.year, from: Date())
     public let profileTypes: [ProfileType] = [.full, .limited]
@@ -46,7 +47,6 @@ public class EditProfileViewModel: ObservableObject {
         ProfileLocalization.Edit.Fields.spokenLangugae
     )
     
-    @Published
     public var profileChanges: Changes = .init(
         shortBiography: "",
         profileType: .limited,
@@ -55,14 +55,14 @@ public class EditProfileViewModel: ObservableObject {
         isAvatarSaved: false
     )
     
-    @Published public var inputImage: UIImage?
+    public var inputImage: UIImage?
     private(set) var isYongUser: Bool = false
     private(set) var isEditable: Bool = true
     
-    @Published var isChanged = false
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
-    @Published var showAlert: Bool = false
+     var isChanged = false
+     private(set) var isShowProgress = false
+     var showError: Bool = false
+     var showAlert: Bool = false
     
     var errorMessage: String? {
         didSet {
@@ -252,7 +252,7 @@ public class EditProfileViewModel: ObservableObject {
                 profileChanges.isAvatarSaved = true
             }
             checkChanges()
-
+            
             if isChanged {
                 if !parameters.isEmpty {
                     isShowProgress = true

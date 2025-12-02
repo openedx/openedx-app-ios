@@ -11,13 +11,14 @@ import Foundation
 import Theme
 
 @MainActor
-public class CourseProgressViewModel: ObservableObject {
+@Observable
+public class CourseProgressViewModel {
     
-    @Published var courseProgress: CourseProgressDetails?
-    @Published var assignmentProgressData: [String: AssignmentProgressData] = [:]
-    @Published var isLoading: Bool = false
-    @Published var isShowRefresh = false
-    @Published var showError: Bool = false
+    var courseProgress: CourseProgressDetails?
+    var assignmentProgressData: [String: AssignmentProgressData] = [:]
+    var isLoading: Bool = false
+    var isShowRefresh = false
+    var showError: Bool = false
     
     let router: CourseRouter
     let analytics: CourseAnalytics

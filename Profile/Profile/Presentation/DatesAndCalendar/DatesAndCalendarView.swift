@@ -10,8 +10,8 @@ import Theme
 import Core
 
 public struct DatesAndCalendarView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     
     @State private var screenDimmed: Bool = false

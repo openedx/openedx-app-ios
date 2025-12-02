@@ -600,7 +600,7 @@ class ScreenAssembly: Assembly {
                 interactor: r.resolve(DiscussionInteractorProtocol.self)!,
                 storage: r.resolve(CoreStorage.self)!,
                 router: r.resolve(DiscussionRouter.self)!,
-                debounce: .searchDebounce
+                debounceInterval: 0.8
             )
         }
         

@@ -16,7 +16,7 @@ public struct DownloadsView: View {
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.isHorizontal) private var isHorizontal
-    @StateObject private var viewModel: DownloadsViewModel
+    private var viewModel: DownloadsViewModel
 
     var isSheet: Bool = true
 
@@ -26,12 +26,11 @@ public struct DownloadsView: View {
         courseHelper: CourseDownloadHelperProtocol
     ) {
         self.isSheet = isSheet
-        self._viewModel = .init(
-            wrappedValue: .init(
-                router: router,
-                helper: courseHelper
-            )
+        self.viewModel = DownloadsViewModel(
+            router: router,
+            helper: courseHelper
         )
+        
     }
 
     // MARK: - Body
