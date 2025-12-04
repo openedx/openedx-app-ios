@@ -212,10 +212,10 @@ public final class DatesViewModel: ObservableObject {
         var nextWeek: [CourseDate] = []
         var upcoming: [CourseDate] = []
         
-        let startOfToday = calendar.startOfDay(for: now)
+        let todayDate = Date()
 
         for date in dates {
-            if date.date < startOfToday {
+            if date.date < todayDate {
                 pastDue.append(date)
             } else if calendar.isDateInToday(date.date) {
                 today.append(date)
