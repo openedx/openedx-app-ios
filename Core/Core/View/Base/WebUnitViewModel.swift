@@ -8,18 +8,19 @@
 import Foundation
 import SwiftUI
 
+@MainActor
 @Observable
 public final class WebUnitViewModel: WebviewCookiesUpdateProtocol {
-    
+
     public let authInteractor: AuthInteractorProtocol
     let config: ConfigProtocol
     let syncManager: OfflineSyncManagerProtocol
-    
+
     public var updatingCookies: Bool = false
     public var cookiesReady: Bool = false
     public var showError: Bool = false
     private var retryCount = 1
-    
+
     public var errorMessage: String? {
         didSet {
             withAnimation {
@@ -27,7 +28,7 @@ public final class WebUnitViewModel: WebviewCookiesUpdateProtocol {
             }
         }
     }
-    
+
     public init(
         authInteractor: AuthInteractorProtocol,
         config: ConfigProtocol,

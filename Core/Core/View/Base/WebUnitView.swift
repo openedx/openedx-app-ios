@@ -11,7 +11,7 @@ import Theme
 
 public struct WebUnitView: View {
     
-    private var viewModel: WebUnitViewModel
+    @Bindable private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
     
     private var url: String
