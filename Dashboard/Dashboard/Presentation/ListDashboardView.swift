@@ -144,7 +144,7 @@ public struct ListDashboardView: View {
                     }
                 }
             }
-            .onFirstAppear {
+            .onAppear {
                 Task {
                     await viewModel.getMyCourses(page: 1)
                 }

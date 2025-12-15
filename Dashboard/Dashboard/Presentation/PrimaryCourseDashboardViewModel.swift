@@ -115,7 +115,7 @@ public class PrimaryCourseDashboardViewModel {
         observers.append(versionObserver)
     }
     
-    private func updateEnrollmentsIfNeeded() {
+    func updateEnrollmentsIfNeeded() {
         guard updateNeeded else { return }
         Task {
             await getEnrollments()

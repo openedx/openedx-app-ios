@@ -193,6 +193,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
             }
             .onAppear {
                 viewModel.updateNeeded = true
+                viewModel.updateEnrollmentsIfNeeded()
             }
             .background(
                 Theme.Colors.background

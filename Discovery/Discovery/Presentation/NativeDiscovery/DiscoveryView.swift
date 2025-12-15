@@ -186,7 +186,7 @@ public struct DiscoveryView: View {
             }
         }
         .navigationBarHidden(sourceScreen != .startup)
-        .onFirstAppear {
+        .onAppear {
             if !(viewModel.searchQuery.isEmpty) {
                 router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
                 viewModel.searchQuery = ""
