@@ -173,8 +173,7 @@ public struct DatesView: View {
             }
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(AppDatesLocalization.Dates.title)
+            .accessibilityElement(children: .contain)
         }
     }
 }

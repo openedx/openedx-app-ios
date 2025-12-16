@@ -182,8 +182,7 @@ public struct AppDownloadsView: View {
             }
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(DownloadsLocalization.Downloads.title)
+            .accessibilityElement(children: .contain)
         }
     }
     
