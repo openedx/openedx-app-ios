@@ -151,8 +151,9 @@ class ScreenAssembly: Assembly {
                 storage: r.resolve(CoreStorage.self)!
             )
         }
-        
-        container.register(DiscoveryWebviewViewModel.self) { @MainActor r, sourceScreen in
+        .inObjectScope(.weak)
+
+    container.register(DiscoveryWebviewViewModel.self) { @MainActor r, sourceScreen in
             DiscoveryWebviewViewModel(
                 router: r.resolve(DiscoveryRouter.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
@@ -223,7 +224,8 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(DashboardRouter.self)!
             )
         }
-        
+        .inObjectScope(.container)
+
         container.register(AllCoursesViewModel.self) { @MainActor r in
             AllCoursesViewModel(
                 interactor: r.resolve(DashboardInteractorProtocol.self)!,
