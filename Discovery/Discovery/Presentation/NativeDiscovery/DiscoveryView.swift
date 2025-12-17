@@ -129,9 +129,11 @@ public struct DiscoveryView: View {
                                     VStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
                                             .padding(.top, 20)
-                                    }.frame(maxWidth: .infinity,
+                                    }
+                                    .frame(maxWidth: .infinity,
                                             maxHeight: .infinity)
                                 }
+
                                 VStack {}.frame(height: 40)
                             }
                             .frameLimit(width: proxy.size.width)
@@ -186,7 +188,7 @@ public struct DiscoveryView: View {
             }
         }
         .navigationBarHidden(sourceScreen != .startup)
-        .onAppear {
+        .onFirstAppear {
             if !(viewModel.searchQuery.isEmpty) {
                 router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
                 viewModel.searchQuery = ""

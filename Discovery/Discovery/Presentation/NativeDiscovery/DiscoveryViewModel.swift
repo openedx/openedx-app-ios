@@ -85,6 +85,7 @@ public final class DiscoveryViewModel {
                     await courses += try interactor.discovery(page: page)
                 }
                 self.nextPage += 1
+                
                 if !courses.isEmpty {
                     totalPages = courses[0].numPages
                 }
