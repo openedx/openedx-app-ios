@@ -174,11 +174,13 @@ public struct CourseOutlineAndProgressView: View {
                                 .opacity(viewModelProgress.isLoading || viewModelContainer.isShowProgress ? 0 : 1)
                             }
                             .onAppear {
-                                if viewModelProgress.courseProgress == nil {
-                                    Task {
+                                Task {
+                                    if viewModelProgress.courseProgress == nil {
                                         await viewModelProgress.getCourseProgress(courseID: courseID)
                                         await viewModelContainer
                                             .getCourseBlocks(courseID: courseID, withProgress: false)
+                                    } else {
+                                        await viewModelContainer.refreshLocalVideoProgress()
                                     }
                                 }
                             }

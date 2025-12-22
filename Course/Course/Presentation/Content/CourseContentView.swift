@@ -223,6 +223,11 @@ public struct CourseContentView: View {
                     await viewModel.updateVideoProgress(blockID: blockID, progress: progress)
                 }
             }
+            .onAppear {
+                Task {
+                    await viewModel.refreshLocalVideoProgress()
+                }
+            }
         case .assignments:
             AssignmentsContentView(
                 assignmentContentData: assignmentContentData,

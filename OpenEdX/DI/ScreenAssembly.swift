@@ -360,6 +360,7 @@ class ScreenAssembly: Assembly {
                 courseHelper: r.resolve(CourseDownloadHelperProtocol.self)!
             )
         }
+        .inObjectScope(.weak)
         container.register(
             CourseDownloadHelperProtocol.self
         ) { @MainActor r in
