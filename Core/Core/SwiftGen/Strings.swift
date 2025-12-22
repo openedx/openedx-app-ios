@@ -163,8 +163,8 @@ public enum CoreLocalization {
       /// Course Dates
       public static let title = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.TITLE", fallback: "Course Dates")
       public enum ResetDateBanner {
-        /// Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.
-        public static let body = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY", fallback: "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.")
+        /// Don't worry - shift our suggested schedule to complete the due assignments without losing any progress.
+        public static let body = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BODY", fallback: "Don't worry - shift our suggested schedule to complete the due assignments without losing any progress.")
         /// Shift due dates
         public static let button = CoreLocalization.tr("Localizable", "COURSE_DATES.RESET_DATE.RESET_DATE_BANNER.BUTTON", fallback: "Shift due dates")
         /// Missed some deadlines?

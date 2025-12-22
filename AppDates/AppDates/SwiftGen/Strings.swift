@@ -36,8 +36,8 @@ public enum AppDatesLocalization {
   public enum ShiftDueDates {
     /// Shift Due Dates
     public static let button = AppDatesLocalization.tr("Localizable", "SHIFT_DUE_DATES.BUTTON", fallback: "Shift Due Dates")
-    /// Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.
-    public static let description = AppDatesLocalization.tr("Localizable", "SHIFT_DUE_DATES.DESCRIPTION", fallback: "Don't worry - shift our suggested schedule to complete past due assignments without losing any progress.")
+    /// Don't worry - shift our suggested schedule to complete the due assignments without losing any progress.
+    public static let description = AppDatesLocalization.tr("Localizable", "SHIFT_DUE_DATES.DESCRIPTION", fallback: "Don't worry - shift our suggested schedule to complete the due assignments without losing any progress.")
     /// Missed Some Deadlines?
     public static let title = AppDatesLocalization.tr("Localizable", "SHIFT_DUE_DATES.TITLE", fallback: "Missed Some Deadlines?")
   }
