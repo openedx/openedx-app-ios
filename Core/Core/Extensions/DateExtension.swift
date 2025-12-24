@@ -97,7 +97,28 @@ public extension Date {
         specificFormatter.dateFormat = isCurrentYear ? "MMMM d" : "MMMM d, yyyy"
         return dueInString + specificFormatter.string(from: self)
     }
-    
+
+    func formattedDueStatus(referenceDate: Date = Date()) -> String {
+        let calendar = Calendar.current
+        let now = calendar.startOfDay(for: referenceDate)
+        let due = calendar.startOfDay(for: self)
+
+        let dayDiff = calendar.dateComponents([.day], from: now, to: due).day ?? 0
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        let formatted = formatter.string(from: self)
+
+        if dayDiff == 0 {
+            return CoreLocalization.Date.dueToday(formatted)
+        } else if dayDiff < 0 {
+            return CoreLocalization.Date.dueDatePast(-dayDiff, formatted)
+        } else {
+            return CoreLocalization.Date.dueInLeft(dayDiff, formatted)
+        }
+    }
+
     func isDateInNextWeek(date: Date, currentDate: Date) -> Bool {
         let calendar = Calendar.current
         guard let nextWeek = calendar.date(byAdding: .weekOfYear, value: 1, to: currentDate) else { return false }

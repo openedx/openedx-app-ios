@@ -60,6 +60,9 @@
 "DATE.DUE" = "Due ";
 "DATE.DUE_IN" = "Due in ";
 "DATE.DUE_IN_DAYS" = "Due in %@ Days";
+"DATE.DUE_TODAY" = "Due Today: %@";
+"DATE.DUE_DATE_PAST" = "%@ Days Past Due: %@";
+"DATE.DUE_IN_LEFT" = "Due in %@ Days: %@";
 
 "ALERT.ACCEPT" = "Accept";
 "ALERT.CANCEL" = "Cancel";

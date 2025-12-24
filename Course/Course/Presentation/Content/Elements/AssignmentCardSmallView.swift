@@ -166,6 +166,8 @@ struct AssignmentCardSmallView: View {
                     shortLabel: "HW1 01"
                 ),
                 statusText: "Not Started",
+                statusTextForCarousel: "",
+                sectionName: "",
                 sequenceName: "Test Assignment",
                 status: .incomplete,
                 shortLabel: "HW1 01"
@@ -196,6 +198,8 @@ struct AssignmentCardSmallView: View {
                     shortLabel: "HW1 02"
                 ),
                 statusText: "Not Started",
+                statusTextForCarousel: "",
+                sectionName: "",
                 sequenceName: "Test Assignment 2",
                 status: .incomplete,
                 shortLabel: "HW1 02"

@@ -10,25 +10,25 @@ import Core
 import Theme
 
 struct AssignmentDetailCardView: View {
-    
+
     let detailData: AssignmentDetailData
-    
+
     private var subsectionUI: CourseProgressSubsectionUI {
         detailData.subsectionUI
     }
-    
+
     private var sectionName: String {
         detailData.sectionName
     }
-    
+
     private var status: AssignmentCardStatus {
         return subsectionUI.status
     }
-    
+
     private var statusText: String {
         return subsectionUI.statusText
     }
-    
+
     private var cardBorderColor: Color {
         switch status {
         case .completed:
@@ -41,18 +41,18 @@ struct AssignmentDetailCardView: View {
             return Theme.Colors.cardViewStroke
         }
     }
-    
+
     var body: some View {
         Button(action: {
             detailData.onAssignmentTap(subsectionUI)
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: 4) {
-                    
+
                     Text(detailData.sectionName)
-                                .font(Theme.Fonts.labelMedium)
-                                .foregroundColor(Theme.Colors.textPrimary)
-                    
+                        .font(Theme.Fonts.labelMedium)
+                        .foregroundColor(Theme.Colors.textPrimary)
+
                     Text(subsectionUI.sequenceName)
                         .font(Theme.Fonts.bodyLarge)
                         .foregroundColor(Theme.Colors.textPrimary)
@@ -60,9 +60,9 @@ struct AssignmentDetailCardView: View {
                         Text(statusText)
                             .font(Theme.Fonts.bodySmall)
                             .foregroundColor(Theme.Colors.textPrimary)
-                        
+
                         Spacer()
-                        
+
                         Image(systemName: "arrow.right")
                             .foregroundColor(Theme.Colors.accentColor)
                             .font(.title2)

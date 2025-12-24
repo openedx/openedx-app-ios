@@ -485,7 +485,9 @@ public class Router: AuthorizationRouter,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        showVideoNavigation: Bool = false,
+        courseVideoStructure: CourseStructure? = nil
     ) {
         let controller = getUnitController(
             courseName: courseName,
@@ -494,7 +496,9 @@ public class Router: AuthorizationRouter,
             verticalIndex: verticalIndex,
             chapters: chapters,
             chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
+            sequentialIndex: sequentialIndex,
+            showVideoNavigation: showVideoNavigation,
+            courseVideoStructure: courseVideoStructure
         )
         navigationController.pushViewController(controller, animated: true)
     }
@@ -506,7 +510,9 @@ public class Router: AuthorizationRouter,
         verticalIndex: Int,
         chapters: [CourseChapter],
         chapterIndex: Int,
-        sequentialIndex: Int
+        sequentialIndex: Int,
+        showVideoNavigation: Bool = false,
+        courseVideoStructure: CourseStructure? = nil
     ) -> UIHostingController<CourseUnitView> {
         let viewModel = Container.shared.resolve(
             CourseUnitViewModel.self,
@@ -516,7 +522,9 @@ public class Router: AuthorizationRouter,
             chapters,
             chapterIndex,
             sequentialIndex,
-            verticalIndex
+            verticalIndex,
+            showVideoNavigation,
+            courseVideoStructure
         )!
         
         let config = Container.shared.resolve(ConfigProtocol.self)
@@ -605,7 +613,9 @@ public class Router: AuthorizationRouter,
         chapters: [CourseChapter],
         chapterIndex: Int,
         sequentialIndex: Int,
-        animated: Bool
+        animated: Bool,
+        showVideoNavigation: Bool,
+        courseVideoStructure: CourseStructure?
     ) {
 
         let controllerUnit = getUnitController(
@@ -615,14 +625,18 @@ public class Router: AuthorizationRouter,
             verticalIndex: verticalIndex,
             chapters: chapters,
             chapterIndex: chapterIndex,
-            sequentialIndex: sequentialIndex
+            sequentialIndex: sequentialIndex,
+            showVideoNavigation: showVideoNavigation,
+            courseVideoStructure: courseVideoStructure
         )
         
         var controllers = navigationController.viewControllers
         let config = Container.shared.resolve(ConfigProtocol.self)!
         let courseDropDownNavigationEnabled = config.uiComponents.courseDropDownNavigationEnabled
 
-        if courseDropDownNavigationEnabled || currentCourseTabSelection == CourseTab.dates.rawValue {
+        if courseDropDownNavigationEnabled
+            || currentCourseTabSelection == CourseTab.dates.rawValue
+            || showVideoNavigation {
             controllers.removeLast(1)
             controllers.append(contentsOf: [controllerUnit])
         } else {

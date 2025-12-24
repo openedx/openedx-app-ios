@@ -14,7 +14,7 @@ struct VideoSectionView: View {
     let sectionData: VideoSectionData
     let proxy: GeometryProxy
     @Binding var isShowingCompletedVideos: Bool
-    let onVideoTap: (CourseBlock, CourseChapter) -> Void
+    let onVideoTap: (CourseBlock, CourseChapter?) -> Void
     let onDownloadSectionTap: (CourseChapter, DownloadViewState) async -> Void
     
     private var chapter: CourseChapter {
@@ -104,14 +104,14 @@ struct VideoSectionView: View {
                     ScrollView(.horizontal, showsIndicators: false) {
                         LazyHStack(spacing: 0) {
                             ForEach(Array(visibleVideos.enumerated()), id: \.element.id) { index, video in
-                                VideoThumbnailView(
-                                    thumbnailData: VideoThumbnailData(
-                                        video: video,
-                                        chapter: chapter,
-                                        courseStructure: nil,
-                                        onVideoTap: onVideoTap
-                                    )
-                                )
+                                VideoThumbnailView(thumbnailData: VideoThumbnailData(
+                                    video: video,
+                                    chapter: chapter,
+                                    courseStructure: nil,
+                                    onVideoTap: onVideoTap
+                                ),
+                                type: .contentVideo)
+
                                 .padding(.leading, index == 0 ? 24 : 8)
                                 .id(video.id)
                                 

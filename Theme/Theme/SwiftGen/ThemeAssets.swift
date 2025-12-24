@@ -83,6 +83,7 @@ public enum ThemeAssets {
   public static let tabbarInactiveColor = ColorAsset(name: "TabbarInactiveColor")
   public static let textPrimary = ColorAsset(name: "TextPrimary")
   public static let textSecondary = ColorAsset(name: "TextSecondary")
+  public static let textSecondaryDark = ColorAsset(name: "TextSecondaryDark")
   public static let textSecondaryLight = ColorAsset(name: "TextSecondaryLight")
   public static let textInputBackground = ColorAsset(name: "TextInputBackground")
   public static let textInputPlaceholderColor = ColorAsset(name: "TextInputPlaceholderColor")

@@ -109,6 +109,16 @@ public enum CourseLocalization {
     }
     /// Tap to show completed sections
     public static let showCompletedSections = CourseLocalization.tr("Localizable", "ACCESSIBILITY.SHOW_COMPLETED_SECTIONS", fallback: "Tap to show completed sections")
+    /// Video Navigation
+    public static let videoNavigation = CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_NAVIGATION", fallback: "Video Navigation")
+    /// Video %@ from %@
+    public static func videoNavigationCount(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_NAVIGATION_COUNT", String(describing: p1), String(describing: p2), fallback: "Video %@ from %@")
+    }
+    /// %@ percent completed
+    public static func videoPercentageCompleted(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PERCENTAGE_COMPLETED", String(describing: p1), fallback: "%@ percent completed")
+    }
     /// Video progress %@ of %@ Completed.
     public static func videoProgressSection(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.VIDEO_PROGRESS_SECTION", String(describing: p1), String(describing: p2), fallback: "Video progress %@ of %@ Completed.")
@@ -140,6 +150,18 @@ public enum CourseLocalization {
     /// Weight: %@ percent of grade
     public static func weightContribution(_ p1: Any) -> String {
       return CourseLocalization.tr("Localizable", "ACCESSIBILITY.WEIGHT_CONTRIBUTION", String(describing: p1), fallback: "Weight: %@ percent of grade")
+    }
+    public enum Carousel {
+      /// %@ of %@ assignments completed
+      public static func assignmentsCompleted(_ p1: Any, _ p2: Any) -> String {
+        return CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.ASSIGNMENTS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@ of %@ assignments completed")
+      }
+      /// Last Page
+      public static let lastSlideButton = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.LAST_SLIDE_BUTTON", fallback: "Last Page")
+      /// Next Page
+      public static let nextSlideButton = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.NEXT_SLIDE_BUTTON", fallback: "Next Page")
+      /// Previous Page
+      public static let previousSlideButton = CourseLocalization.tr("Localizable", "ACCESSIBILITY.CAROUSEL.PREVIOUS_SLIDE_BUTTON", fallback: "Previous Page")
     }
   }
   public enum Alert {
@@ -227,6 +249,10 @@ public enum CourseLocalization {
     }
     /// Hide Completed
     public static let progressHideCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_HIDE_COMPLETED", fallback: "Hide Completed")
+    /// %@/%@ Sections Completed
+    public static func progressSectionsCompleted(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_SECTIONS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Sections Completed")
+    }
     /// %@/%@ Completed
     public static func progressVideosCompleted(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_VIDEOS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Completed")
@@ -301,10 +327,48 @@ public enum CourseLocalization {
     public static let next = CourseLocalization.tr("Localizable", "COURSEWARE.NEXT", fallback: "Next")
     /// Prev
     public static let previous = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS", fallback: "Prev")
+    /// Previous
+    public static let previousFull = CourseLocalization.tr("Localizable", "COURSEWARE.PREVIOUS_FULL", fallback: "Previous")
     /// Resume with:
     public static let resumeWith = CourseLocalization.tr("Localizable", "COURSEWARE.RESUME_WITH", fallback: "Resume with:")
     /// You've completed “
     public static let section = CourseLocalization.tr("Localizable", "COURSEWARE.SECTION", fallback: "You've completed “")
+  }
+  public enum CourseCarousel {
+    /// You’re all caught up on assignments!
+    public static let allAssignmentsCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_ASSIGNMENTS_COMPLETED", fallback: "You’re all caught up on assignments!")
+    /// All Content
+    public static let allContent = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_CONTENT", fallback: "All Content")
+    /// You’re all caught up on videos!
+    public static let allVideosCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ALL_VIDEOS_COMPLETED", fallback: "You’re all caught up on videos!")
+    /// Assignments
+    /// completed
+    public static let assigmentsCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.ASSIGMENTS_COMPLETED", fallback: "Assignments\ncompleted")
+    /// Continue Watching
+    public static let continueWatching = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.CONTINUE_WATCHING", fallback: "Continue Watching")
+    /// Grades
+    public static let grades = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES", fallback: "Grades")
+    /// This represents your weighted grade against the grade needed to pass this course.
+    public static let gradesDescription = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.GRADES_DESCRIPTION", fallback: "This represents your weighted grade against the grade needed to pass this course.")
+    /// Next Assignment
+    public static let nextAssignments = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.NEXT_ASSIGNMENTS", fallback: "Next Assignment")
+    /// Next Video
+    public static let nextVideo = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.NEXT_VIDEO", fallback: "Next Video")
+    /// You have completed %@%% of the course progress
+    public static func progressCompletion(_ p1: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.PROGRESS_COMPLETION", String(describing: p1), fallback: "You have completed %@%% of the course progress")
+    }
+    /// You’re auditing this course now and have limited access to course material.
+    public static let upgradeNowBody = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BODY", fallback: "You’re auditing this course now and have limited access to course material.")
+    /// Upgrade now
+    public static let upgradeNowButton = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.UPGRADE_NOW_BUTTON", fallback: "Upgrade now")
+    /// Videos
+    /// completed
+    public static let videosCompleted = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.VIDEOS_COMPLETED", fallback: "Videos\ncompleted")
+    /// All Assignments
+    public static let viewAllAssignments = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.VIEW_ALL_ASSIGNMENTS", fallback: "All Assignments")
+    /// All Videos
+    public static let viewAllVideos = CourseLocalization.tr("Localizable", "COURSE_CAROUSEL.VIEW_ALL_VIDEOS", fallback: "All Videos")
   }
   public enum CourseContainer {
     /// Content
@@ -562,6 +626,10 @@ public enum CourseLocalization {
   public enum Subtitles {
     /// Subtitles
     public static let title = CourseLocalization.tr("Localizable", "SUBTITLES.TITLE", fallback: "Subtitles")
+  }
+  public enum VideoNavigation {
+    /// No Video Title
+    public static let noVideoTitle = CourseLocalization.tr("Localizable", "VIDEO_NAVIGATION.NO_VIDEO_TITLE", fallback: "No Video Title")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

@@ -1,6 +1,6 @@
 API_HOST_URL: 'http://localhost:8000'
 SSO_URL: 'http://localhost:8000'
-SSO_FINISHED_URL:  'http://localhost:8000'
+SSO_FINISHED_URL: 'http://localhost:8000'
 ENVIRONMENT_DISPLAY_NAME: 'Localhost'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
 OAUTH_CLIENT_ID: ''
@@ -8,13 +8,13 @@ OAUTH_CLIENT_ID: ''
 SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
-    
+
 EXPERIMENTAL_FEATURES:
     APP_LEVEL_DOWNLOADS:
         ENABLED: false
     APP_LEVEL_DATES:
         ENABLED: false
-    
+
 UI_COMPONENTS:
     COURSE_UNIT_PROGRESS_ENABLED: false
     COURSE_NESTED_LIST_ENABLED: false

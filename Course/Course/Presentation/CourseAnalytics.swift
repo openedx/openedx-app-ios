@@ -80,6 +80,12 @@ public protocol CourseAnalytics {
     func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String)
     func courseHomeViewAllAssignmentsClicked(courseId: String, courseName: String)
     func courseHomeGradesViewProgressClicked(courseId: String, courseName: String)
+    func courseHomeSectionSubsectionClick(
+        courseId: String,
+        courseName: String,
+        courseSection: String,
+        courseSubsection: String
+    )
     func datesComponentTapped(
         courseId: String,
         blockId: String,
@@ -215,6 +221,12 @@ class CourseAnalyticsMock: CourseAnalytics {
     public func courseHomeViewAllContentClicked(courseId: String, courseName: String) {}
     public func courseHomeVideoClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func courseHomeViewAllVideosClicked(courseId: String, courseName: String) {}
+    public func courseHomeSectionSubsectionClick(
+        courseId: String,
+        courseName: String,
+        courseSection: String,
+        courseSubsection: String
+    ) {}
     public func courseHomeAssignmentClicked(courseId: String, courseName: String, blockId: String, blockName: String) {}
     public func courseHomeViewAllAssignmentsClicked(courseId: String, courseName: String) {}
     public func courseHomeGradesViewProgressClicked(courseId: String, courseName: String) {}

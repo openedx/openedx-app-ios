@@ -413,7 +413,17 @@ class ScreenAssembly: Assembly {
         
         container.register(
             CourseUnitViewModel.self
-        ) { @MainActor r, blockId, courseId, courseName, chapters, chapterIndex, sequentialIndex, verticalIndex in
+        ) {
+            @MainActor r,
+            blockId,
+            courseId,
+            courseName,
+            chapters,
+            chapterIndex,
+            sequentialIndex,
+            verticalIndex,
+            showVideoNavigation,
+            courseVideosStructure in
             CourseUnitViewModel(
                 lessonID: blockId,
                 courseID: courseId,
@@ -428,7 +438,9 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(CourseAnalytics.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
                 storage: r.resolve(CourseStorage.self)!,
-                manager: r.resolve(DownloadManagerProtocol.self)!
+                manager: r.resolve(DownloadManagerProtocol.self)!,
+                showVideoNavigation: showVideoNavigation,
+                courseVideosStructure: courseVideosStructure
             )
         }
         

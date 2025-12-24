@@ -10,12 +10,12 @@ import Core
 import Theme
 
 struct GradeDetailsView: View {
-    
+
     let assignmentPolicies: [CourseProgressAssignmentPolicy]
     @Binding var assignmentProgressData: [String: AssignmentProgressData]
     let currentGrade: Double
     let getAssignmentColor: (Int) -> Color
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             // Header
@@ -23,7 +23,7 @@ struct GradeDetailsView: View {
                 .font(Theme.Fonts.titleMedium)
                 .foregroundColor(Theme.Colors.textPrimary)
                 .accessibilityAddTraits(.isHeader)
-            
+
             // Table Header
             HStack {
                 Text(CourseLocalization.CourseContainer.Progress.assignmentType)
@@ -31,9 +31,9 @@ struct GradeDetailsView: View {
                     .foregroundColor(Theme.Colors.textPrimary)
                     .accessibilityLabel(CourseLocalization.Accessibility.assignmentTypeHeader)
                     .accessibilityAddTraits(.isHeader)
-                
+
                 Spacer()
-                
+
                 Text(CourseLocalization.CourseContainer.Progress.currentMaxPercent)
                     .font(Theme.Fonts.bodySmall)
                     .foregroundColor(Theme.Colors.textPrimary)
@@ -46,7 +46,7 @@ struct GradeDetailsView: View {
                 + ", "
                 + CourseLocalization.Accessibility.currentMaxPercentHeader
             )
-            
+
             // Assignment Items
             VStack(spacing: 0) {
                 ForEach(
@@ -59,20 +59,20 @@ struct GradeDetailsView: View {
                         assignmentType: policy.type,
                         color: getAssignmentColor(index)
                     )
-                    
+
                     Divider()
                         .padding(.vertical, 16)
                 }
             }
-            
+
             // Bottom Overall Grade
             HStack {
                 Text(CourseLocalization.CourseContainer.Progress.currentOverallWeightedGrade)
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.textPrimary)
-                
+
                 Spacer()
-                
+
                 Text("\(Int(currentGrade * 100))%")
                     .font(Theme.Fonts.labelLarge)
                     .foregroundColor(Theme.Colors.accentColor)

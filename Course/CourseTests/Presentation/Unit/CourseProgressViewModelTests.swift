@@ -500,7 +500,7 @@ final class CourseProgressViewModelTests: XCTestCase {
         )
         
         // Test with nil progress
-        let emptyProgress = viewModel.getAssignmentProgress(for: "Homework")
+        let emptyProgress = viewModel.getAssignmentProgress(for: "Homework", courseStructure: nil)
         XCTAssertEqual(emptyProgress.completed, 0)
         XCTAssertEqual(emptyProgress.total, 0)
         XCTAssertEqual(emptyProgress.earnedPoints, 0.0)
@@ -508,7 +508,7 @@ final class CourseProgressViewModelTests: XCTestCase {
         
         // Test with actual progress
         viewModel.courseProgress = CourseProgressViewModelTests.mockCourseProgress
-        let homeworkProgress = viewModel.getAssignmentProgress(for: "Homework")
+        let homeworkProgress = viewModel.getAssignmentProgress(for: "Homework", courseStructure: self.createMockCourseStructure())
         XCTAssertEqual(homeworkProgress.completed, 1)
         XCTAssertEqual(homeworkProgress.total, 1)
         XCTAssertEqual(homeworkProgress.earnedPoints, 8.0)
@@ -534,10 +534,100 @@ final class CourseProgressViewModelTests: XCTestCase {
         XCTAssertTrue(emptyData.isEmpty)
         
         // Test with actual progress
+        viewModel.courseStructure = createMockCourseStructure()
         viewModel.courseProgress = CourseProgressViewModelTests.mockCourseProgress
         let allData = viewModel.getAllAssignmentProgressData()
         XCTAssertEqual(allData.count, 2)
         XCTAssertNotNil(allData["Homework"])
         XCTAssertNotNil(allData["Exam"])
+    }
+
+    private func createMockCourseStructure(withDownloadableBlocks: Bool = false) -> CourseStructure {
+        let block = CourseBlock(
+            blockId: "block123",
+            id: "block123",
+            courseId: "course1",
+            topicId: nil,
+            graded: true,
+            due: nil,
+            completion: 1.0,
+            type: .problem,
+            displayName: "Homework Problem",
+            studentUrl: "https://test.com",
+            webUrl: "https://test.com",
+            subtitles: nil,
+            encodedVideo: withDownloadableBlocks ? CourseBlockEncodedVideo(
+                fallback: CourseBlockVideo(
+                    url: "https://test.com/video.mp4",
+                    fileSize: 100,
+                    streamPriority: 1,
+                    type: .desktopMP4
+                ),
+                youtube: nil,
+                desktopMP4: nil,
+                mobileHigh: nil,
+                mobileLow: nil,
+                hls: nil
+            ) : nil,
+            multiDevice: true,
+            offlineDownload: nil
+        )
+
+        let vertical = CourseVertical(
+            blockId: "vertical1",
+            id: "vertical1",
+            courseId: "course1",
+            displayName: "Homework Vertical",
+            type: .vertical,
+            completion: 1.0,
+            childs: [block],
+            webUrl: "https://test.com"
+        )
+
+        let sequential = CourseSequential(
+            blockId: "sequential1",
+            id: "sequential1",
+            displayName: "Homework Sequential",
+            type: .sequential,
+            completion: 1.0,
+            childs: [vertical],
+            sequentialProgress: SequentialProgress(
+                assignmentType: "Homework",
+                numPointsEarned: 8,
+                numPointsPossible: 10,
+                shortLabel: "HW"
+            ),
+            due: nil
+        )
+
+        let chapter = CourseChapter(
+            blockId: "chapter1",
+            id: "chapter1",
+            displayName: "Test Chapter",
+            type: .chapter,
+            childs: [sequential]
+        )
+
+        return CourseStructure(
+            id: "course1",
+            graded: false,
+            completion: 0.0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "Test Course",
+            topicID: nil,
+            childs: [chapter],
+            media: CourseMedia(
+                image: CourseImage(
+                    raw: "https://test.com/image.jpg",
+                    small: "https://test.com/image_small.jpg",
+                    large: "https://test.com/image_large.jpg"
+                )
+            ),
+            certificate: nil,
+            org: "Test Org",
+            isSelfPaced: true,
+            courseProgress: nil
+        )
     }
 }

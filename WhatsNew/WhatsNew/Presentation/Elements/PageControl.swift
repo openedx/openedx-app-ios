@@ -9,9 +9,22 @@ import SwiftUI
 import Core
 import Theme
 
-struct PageControl: View {
-    let numberOfPages: Int
-    var currentPage: Int
+public struct PageControl: View {
+    public let numberOfPages: Int
+    public var currentPage: Int
+
+    public init(numberOfPages: Int, currentPage: Int) {
+        self.numberOfPages = numberOfPages
+        self.currentPage = currentPage
+    }
+        
+    public var body: some View {
+        VStack {
+            Spacer()
+            dots
+            Spacer()
+        }
+    }
 
     private var dots: some View {
         HStack(spacing: 8) {
@@ -20,14 +33,6 @@ struct PageControl: View {
                     .frame(width: page == currentPage ? 24 : 8, height: 8)
                     .foregroundColor(page == currentPage ? Theme.Colors.accentXColor : Theme.Colors.textSecondaryLight)
             }
-        }
-    }
-
-    var body: some View {
-        VStack {
-            Spacer()
-            dots
-            Spacer()
         }
     }
 }
