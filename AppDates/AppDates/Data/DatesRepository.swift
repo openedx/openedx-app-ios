@@ -96,7 +96,7 @@ public final class DatesRepositoryMock: DatesRepositoryProtocol {
                     hasAccess: true
                 ),
             CourseDate(
-                date: Date(),
+                date: Date().addingTimeInterval(60 * 10),
                 title: "Today's Assignment 1",
                 courseName: "Course 1",
                 courseId: "course-v1:1+1+today1",
@@ -104,7 +104,7 @@ public final class DatesRepositoryMock: DatesRepositoryProtocol {
                 hasAccess: true
             ),
             CourseDate(
-                date: Date(),
+                date: Date().addingTimeInterval(60 * 20),
                 title: "Today's Assignment 2",
                 courseName: "Course 1",
                 courseId: "course-v1:1+1+today2",
