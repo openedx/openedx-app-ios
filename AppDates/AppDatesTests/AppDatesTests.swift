@@ -94,7 +94,7 @@ final class DatesViewModelTests: XCTestCase {
         )
         
         let courseDate2 = CourseDate(
-            date: date, // today
+            date: date.addingTimeInterval(60 * 60), // later today (not past due)
             title: "Test title 2",
             courseName: "Test Course 2",
             courseId: "course-456",
