@@ -84,7 +84,7 @@ struct CourseVideoCarouselSlideView: View {
         guard let chapter = courseChapter else { return nil }
         let videos = getAllVideos(from: chapter)
         if let partial = videos.first(where: {
-            $0.localVideoProgress > 0 && $0.localVideoProgress < 1
+            $0.localVideoProgress > 0 && $0.localVideoProgress < 1 && $0.completion < 1
         }) {
             return partial
         } else {
