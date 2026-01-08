@@ -84,8 +84,7 @@ public final class PostsViewModel {
     private let router: DiscussionRouter
     private let config: ConfigProtocol
     private let storage: CoreStorage
-    internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
-    private var cancellable: AnyCancellable?
+    @ObservationIgnored internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     
     public init(
         interactor: DiscussionInteractorProtocol,
@@ -97,11 +96,10 @@ public final class PostsViewModel {
         self.router = router
         self.config = config
         self.storage = storage
-        
-        cancellable = postStateSubject
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] state in
-                guard let self, let state else { return }
+
+        Task {
+            for await state in postStateSubject.values {
+                guard let state = state else { continue }
                 switch state {
                 case let .followed(id, followed):
                     self.updatePostFollowedState(id: id, followed: followed)
@@ -114,7 +112,8 @@ public final class PostsViewModel {
                 case let .reported(id, reported):
                     self.updatePostReportedState(id: id, reported: reported)
                 }
-            })
+            }
+        }
     }
     
     public func resetPosts() {
