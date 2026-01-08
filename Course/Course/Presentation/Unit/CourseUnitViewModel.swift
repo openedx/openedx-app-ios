@@ -135,11 +135,11 @@ public struct VerticalData: Equatable {
      var index: Int = 0
     var previousLesson: String = ""
     var nextLesson: String = ""
-     var showError: Bool = false
-    var errorMessage: String? {
-        didSet {
-            showError = errorMessage != nil
-        }
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
 
      public var allVideosForNavigation: [CourseBlock] = []

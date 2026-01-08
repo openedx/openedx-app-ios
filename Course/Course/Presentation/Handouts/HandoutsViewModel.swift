@@ -14,16 +14,13 @@ import SwiftUI
 public final class HandoutsViewModel {
     
     private(set) var isShowProgress = false
-    var showError: Bool = false
     var handouts: String?
     var updates: [CourseUpdate] = []
-    
-    var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
     
     private let interactor: CourseInteractorProtocol

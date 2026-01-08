@@ -67,8 +67,11 @@ final class DownloadsViewModel {
             .store(in: &cancellables)
         helper.progressPublisher()
             .sink {[weak self] task in
-                if let firstIndex = self?.downloads.firstIndex(where: { $0.id == task.id }) {
-                    self?.downloads[firstIndex].progress = task.progress
+                guard let self = self else { return }
+                if let firstIndex = self.downloads.firstIndex(where: { $0.id == task.id }) {
+                    var updatedDownloads = self.downloads
+                    updatedDownloads[firstIndex].progress = task.progress
+                    self.downloads = updatedDownloads
                 }
             }
             .store(in: &cancellables)

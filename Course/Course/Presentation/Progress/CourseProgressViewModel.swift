@@ -18,20 +18,17 @@ public class CourseProgressViewModel {
     var assignmentProgressData: [String: AssignmentProgressData] = [:]
     var isLoading: Bool = false
     var isShowRefresh = false
-    var showError: Bool = false
-    
+
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     let interactor: CourseInteractorProtocol
     var courseStructure: CourseStructure?
 
-    public var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+    public var errorMessage: String?
+
+    public var showError: Bool {
+        errorMessage != nil
     }
     
     public init(

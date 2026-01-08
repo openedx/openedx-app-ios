@@ -77,7 +77,7 @@ extension CourseTab {
     var courseVideosStructure: CourseStructure?
     var courseAssignmentsStructure: CourseStructure?
     var courseProgressDetails: CourseProgressDetails?
-    var showError: Bool = false
+//    var showError: Bool = false
     var sequentialsDownloadState: [String: DownloadViewState] = [:]
     private(set) var downloadableVerticals: Set<VerticalsDownloadState> = []
     var continueWith: ContinueWith?
@@ -99,12 +99,10 @@ extension CourseTab {
 
     let completionPublisher = NotificationCenter.default.publisher(for: .onblockCompletionRequested)
 
-    var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
 
     let router: CourseRouter

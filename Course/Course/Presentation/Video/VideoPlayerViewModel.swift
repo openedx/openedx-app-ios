@@ -26,13 +26,13 @@ public class VideoPlayerViewModel {
     var languages: [SubtitleUrl]
     var items: [PickerItem] = []
     var selectedLanguage: String?
-    
-    var showError: Bool = false
-    var errorMessage: String? {
-        didSet {
-            showError = errorMessage != nil
-        }
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
+
     var isPlayingInPip: Bool {
         playerHolder.isPlayingInPip
     }

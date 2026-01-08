@@ -11,7 +11,6 @@ public class CourseOutlineAndProgressViewModel {
     
     // MARK: - Variables
     public var courseProgress: CourseProgressDetails?
-    public var showError: Bool = false
     public var selection: Int
     var userSettings: UserSettings?
     var isInternetAvaliable: Bool = true
@@ -21,29 +20,27 @@ public class CourseOutlineAndProgressViewModel {
     let connectivity: ConnectivityProtocol
     let interactor: CourseInteractorProtocol
     let config: ConfigProtocol
-    
+
     let isActive: Bool?
     let courseStart: Date?
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
     let lastVisitedBlockID: String?
-    
+
     var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
-    
+
     private let authInteractor: AuthInteractorProtocol
     private(set) var storage: CourseStorage
-    
+
     private let cellularFileSizeLimit: Int = 100 * 1024 * 1024
     var courseHelper: CourseDownloadHelperProtocol
-    
-    public var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+
+    public var errorMessage: String?
+
+    public var showError: Bool {
+        errorMessage != nil
     }
     
     // MARK: - Init

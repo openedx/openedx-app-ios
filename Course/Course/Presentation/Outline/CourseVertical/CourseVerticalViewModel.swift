@@ -15,17 +15,14 @@ public final class CourseVerticalViewModel: @unchecked Sendable {
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     var verticals: [CourseVertical]
-    var showError: Bool = false
     let chapters: [CourseChapter]
     let chapterIndex: Int
     let sequentialIndex: Int
-    
-    var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
     
     public init(

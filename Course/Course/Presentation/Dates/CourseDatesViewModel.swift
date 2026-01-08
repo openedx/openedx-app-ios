@@ -23,17 +23,14 @@ public class CourseDatesViewModel {
     }
     
     var isShowProgress = true
-    var showError: Bool = false
     var courseDates: CourseDates?
     var isOn: Bool = false
     var eventState: EventState?
 
-    var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
     
     private let interactor: CourseInteractorProtocol
