@@ -208,7 +208,7 @@ struct DatesEmptyStateView: View {
     DatesView(
         viewModel: DatesViewModel(
             interactor: DatesInteractor.mock,
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             courseManager: CourseStructureManagerMock(),
             analytics: AppDatesAnalyticsMock(),
             router: AppDatesRouterMock()
