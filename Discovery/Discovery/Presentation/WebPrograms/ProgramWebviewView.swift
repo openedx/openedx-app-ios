@@ -139,7 +139,7 @@ struct ProgramWebviewView_Previews: PreviewProvider {
                 router: DiscoveryRouterMock(),
                 config: ConfigMock(),
                 interactor: DiscoveryInteractor.mock,
-                connectivity: Connectivity(),
+                connectivity: Connectivity(config: ConfigMock()),
                 analytics: DiscoveryAnalyticsMock(),
                 authInteractor: AuthInteractor.mock
             ),

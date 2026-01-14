@@ -466,7 +466,7 @@ public struct CourseOutlineAndProgressView: View {
         interactor: CourseInteractor.mock,
         router: CourseRouterMock(),
         analytics: CourseAnalyticsMock(),
-        connectivity: Connectivity()
+        connectivity: Connectivity(config: ConfigMock())
     )
     let vmOutline = CourseContainerViewModel(
         interactor: CourseInteractor.mock,
@@ -474,7 +474,7 @@ public struct CourseOutlineAndProgressView: View {
         router: CourseRouterMock(),
         analytics: CourseAnalyticsMock(),
         config: ConfigMock(),
-        connectivity: Connectivity(),
+        connectivity: Connectivity(config: ConfigMock()),
         manager: DownloadManagerMock(),
         storage: CourseStorageMock(),
         isActive: true,
@@ -487,7 +487,7 @@ public struct CourseOutlineAndProgressView: View {
         courseHelper: CourseDownloadHelper(courseStructure: nil, manager: DownloadManagerMock())
     )
 
-    return PreviewContainer(
+    PreviewContainer(
         viewModelContainer: vmOutline,
         viewModelProgress: vmProgress
     )
@@ -514,7 +514,7 @@ private struct PreviewContainer: View {
             collapsed: $collapsed,
             viewHeight: $viewHeight,
             dateTabIndex: 2,
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock())
         )
         .loadFonts()
         .task {

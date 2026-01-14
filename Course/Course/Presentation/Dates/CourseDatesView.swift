@@ -196,7 +196,7 @@ struct CourseDatesView_Previews: PreviewProvider {
             interactor: CourseInteractor(repository: CourseRepositoryMock()),
             router: CourseRouterMock(),
             cssInjector: CSSInjectorMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             config: ConfigMock(),
             courseID: "",
             courseName: "",
