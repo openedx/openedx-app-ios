@@ -67,6 +67,7 @@ public struct CourseOutlineAndProgressView: View {
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
+    @State private var openCertificateView: Bool = false
     @State private var showingDownloads: Bool = false
     @State private var showingVideoDownloadQuality: Bool = false
     @Binding private var selection: Int
@@ -129,6 +130,8 @@ public struct CourseOutlineAndProgressView: View {
                                 VStack(alignment: .leading) {
 
                                     Spacer()
+
+                                    certificateView
 
                                     if let continueWith = viewModelContainer.continueWith,
                                        let courseStructure = viewModelContainer.courseStructure {
@@ -298,9 +301,37 @@ public struct CourseOutlineAndProgressView: View {
                 carouselSections[idx]
                 Spacer()
             }
-            .tag(idx)
+                            .tag(idx)
+                            .padding(.horizontal, 24)
+                            .padding(.top, 16)
+        }
+    }
+
+    @ViewBuilder
+    private var certificateView: some View {
+        if let certificate = viewModelContainer.courseStructure?.certificate,
+           let url = certificate.url,
+           url.count > 0 {
+            MessageSectionView(
+                title: CourseLocalization.Outline.passedTheCourse(title),
+                actionTitle: CourseLocalization.Outline.viewCertificate,
+                action: {
+                    openCertificateView = true
+                    viewModelContainer.trackViewCertificateClicked(courseID: courseID)
+                }
+            )
             .padding(.horizontal, 24)
             .padding(.top, 16)
+            .fullScreenCover(
+                isPresented: $openCertificateView,
+                content: {
+                    WebBrowser(
+                        url: url,
+                        pageTitle: CourseLocalization.Outline.certificate,
+                        connectivity: connectivity
+                    )
+                }
+            )
         }
     }
 
