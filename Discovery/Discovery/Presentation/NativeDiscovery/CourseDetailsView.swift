@@ -439,7 +439,7 @@ struct CourseDetailsView_Previews: PreviewProvider {
             analytics: DiscoveryAnalyticsMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             storage: CoreStorageMock()
         )
         

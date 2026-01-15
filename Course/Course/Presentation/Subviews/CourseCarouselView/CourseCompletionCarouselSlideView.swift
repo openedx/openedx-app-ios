@@ -302,7 +302,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock())
         ),
         viewModelContainer: CourseContainerViewModel(
             interactor: CourseInteractor.mock,
@@ -310,7 +310,7 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             manager: DownloadManagerMock(),
             storage: CourseStorageMock(),
             isActive: true,

@@ -2,7 +2,7 @@
 //  Connectivity.swift
 //  OpenEdX
 //
-//  Created by  Stepanok Ivan on 15.12.2022.
+//  Created by  Stepanok Ivan on 15.12.2022.
 //
 
 import Alamofire
@@ -14,7 +14,7 @@ public enum InternetState: Sendable {
     case notReachable
 }
 
-//sourcery: AutoMockable
+// sourcery: AutoMockable
 @MainActor
 public protocol ConnectivityProtocol: Sendable {
     var isInternetAvaliable: Bool { get }
@@ -22,47 +22,91 @@ public protocol ConnectivityProtocol: Sendable {
     var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
 }
 
-@MainActor
 public class Connectivity: ConnectivityProtocol {
-    let networkManager = NetworkReachabilityManager()
-    
-    public var isInternetAvaliable: Bool {
-        //        false
-        networkManager?.isReachable ?? false
-    }
-    
-    public var isMobileData: Bool {
-        if let networkManager {
-           return networkManager.isReachableOnCellular
-        } else {
-            return false
+
+    private let networkManager = NetworkReachabilityManager()
+    private let verificationURL: URL
+    private let verificationTimeout: TimeInterval
+    private let cacheValidity: TimeInterval = 30
+
+    private var lastVerificationDate: TimeInterval?
+    private var lastVerificationResult: Bool = true
+
+    public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
+
+    private(set) var _isInternetAvailable: Bool = true {
+        didSet {
+            Task { @MainActor in
+                internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
+            }
         }
     }
-    
-    public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
-    
-    public init() {
-        checkInternet()
+
+    public var isInternetAvaliable: Bool {
+        if let last = lastVerificationDate,
+           Date().timeIntervalSince1970 - last < cacheValidity {
+            return lastVerificationResult
+        }
+
+        Task {
+            await performVerification()
+        }
+
+        return lastVerificationResult
     }
-    
-    func checkInternet() {
-        if let networkManager {
-            networkManager.startListening { status in
-                DispatchQueue.main.async {
-                    switch status {
-                    case .unknown:
-                        self.internetReachableSubject.send(InternetState.notReachable)
-                    case .notReachable:
-                        self.internetReachableSubject.send(InternetState.notReachable)
-                    case .reachable:
-                        self.internetReachableSubject.send(InternetState.reachable)
-                    }
+
+    public var isMobileData: Bool {
+        networkManager?.isReachableOnCellular == true
+    }
+
+    public init(
+        config: ConfigProtocol,
+        timeout: TimeInterval = 15
+    ) {
+        self.verificationURL = config.baseURL
+        self.verificationTimeout = timeout
+
+        networkManager?.startListening(onQueue: .global()) { [weak self] status in
+            guard let self = self else { return }
+            Task { @MainActor in
+                switch status {
+                case .reachable:
+                    await self.performVerification()
+                case .notReachable, .unknown:
+                    self.updateAvailability(false, at: 0)
                 }
             }
-        } else {
-            DispatchQueue.main.async {
-                self.internetReachableSubject.send(InternetState.notReachable)
-            }
         }
+    }
+
+    deinit {
+        networkManager?.stopListening()
+    }
+
+    private func performVerification() async {
+        let now = Date().timeIntervalSince1970
+        let live = await verifyInternet()
+        updateAvailability(live, at: now)
+    }
+
+    private func updateAvailability(_ available: Bool, at timestamp: TimeInterval) {
+        _isInternetAvailable = available
+        lastVerificationDate = timestamp
+        lastVerificationResult = available
+    }
+
+    private func verifyInternet() async -> Bool {
+        var request = URLRequest(url: verificationURL)
+        request.httpMethod = "HEAD"
+        request.timeoutInterval = verificationTimeout
+        do {
+            let (_, response) = try await URLSession.shared.data(for: request)
+            if let http = response as? HTTPURLResponse, (200..<400).contains(http.statusCode) {
+                return true
+            }
+        } catch {
+            return false
+        }
+        return false
     }
 }

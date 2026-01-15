@@ -205,7 +205,7 @@ struct AllCoursesView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = AllCoursesViewModel(
             interactor: DashboardInteractor.mock,
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             analytics: DashboardAnalyticsMock(),
             storage: CoreStorageMock()
         )

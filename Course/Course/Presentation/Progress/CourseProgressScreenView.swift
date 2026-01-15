@@ -19,6 +19,7 @@ struct CourseProgressScreenView: View {
     
     @StateObject
     private var viewModel: CourseProgressViewModel
+    private let initialCourseStructure: CourseStructure?
     
     private let connectivity: ConnectivityProtocol
     
@@ -37,7 +38,7 @@ struct CourseProgressScreenView: View {
         self._viewHeight = viewHeight
         self._viewModel = StateObject(wrappedValue: { viewModel }())
         self.connectivity = connectivity
-        self.viewModel.courseStructure = courseStructure
+        self.initialCourseStructure = courseStructure
     }
     
     public var body: some View {
@@ -111,6 +112,9 @@ struct CourseProgressScreenView: View {
                     .ignoresSafeArea()
             )
             .onFirstAppear {
+                if viewModel.courseStructure == nil {
+                    viewModel.courseStructure = initialCourseStructure
+                }
                 Task {
                     await viewModel.getCourseProgress(courseID: courseID)
                 }
@@ -222,3 +226,25 @@ struct CourseProgressScreenView: View {
         }
     }
 }
+
+#if DEBUG
+#Preview {
+    let vm = CourseProgressViewModel(
+        interactor: CourseInteractor.mock,
+        router: CourseRouterMock(),
+        analytics: CourseAnalyticsMock(),
+        connectivity: Connectivity(config: ConfigMock())
+    )
+    
+    CourseProgressScreenView(
+        courseID: "test",
+        coordinate: .constant(0),
+        collapsed: .constant(false),
+        viewHeight: .constant(0),
+        viewModel: vm,
+        connectivity: Connectivity(config: ConfigMock()),
+        courseStructure: nil
+    )
+    .loadFonts()
+}
+#endif
