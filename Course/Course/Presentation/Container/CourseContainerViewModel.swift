@@ -116,6 +116,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
     let lastVisitedBlockID: String?
+    private var didAutoOpenLastVisitedBlock = false
     
     var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
@@ -358,10 +359,14 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws {
         if let lastVisitedBlockID {
-            self.continueWith = findContinueVertical(
+            guard !didAutoOpenLastVisitedBlock else { return }
+            let continueWith = findContinueVertical(
                 blockID: lastVisitedBlockID,
                 courseStructure: courseStructure
             )
+            self.continueWith = continueWith
+            guard continueWith != nil else { return }
+            didAutoOpenLastVisitedBlock = true
             openLastVisitedBlock()
         } else {
             let result = try await interactor.resumeBlock(courseID: courseID)
