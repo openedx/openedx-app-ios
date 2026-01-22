@@ -9,6 +9,8 @@ SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
 
+APP_LEVEL_DATES_ENABLED: false
+
 EXPERIMENTAL_FEATURES:
     APP_LEVEL_DOWNLOADS:
         ENABLED: false

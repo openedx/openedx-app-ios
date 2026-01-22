@@ -323,8 +323,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
             
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(DashboardLocalization.Header.courses + DashboardLocalization.Header.welcomeBack)
+            .accessibilityElement(children: .contain)
         }
     }
 }

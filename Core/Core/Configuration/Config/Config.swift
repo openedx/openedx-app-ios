@@ -203,6 +203,7 @@ public class ConfigMock: Config, @unchecked Sendable {
         "PLATFORM_NAME": "OpenEdx",
         "TOKEN_TYPE": "JWT",
         "WHATS_NEW_ENABLED": false,
+        "APP_LEVEL_DATES_ENABLED": false,
         "AGREEMENT_URLS": [
             "PRIVACY_POLICY_URL": "https://www.example.com/privacy",
             "TOS_URL": "https://www.example.com/tos",
