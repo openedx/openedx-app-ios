@@ -27,7 +27,6 @@
 		02A98F172BD97886009B46BD /* CategoryFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A98F162BD97885009B46BD /* CategoryFilterView.swift */; };
 		02A9A90B2978194100B55797 /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A90A2978194100B55797 /* DashboardViewModelTests.swift */; };
 		02A9A90C2978194100B55797 /* Dashboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02EF39E728D89F560058F6BD /* Dashboard.framework */; platformFilter = ios; };
-		02A9A92929781A4D00B55797 /* DashboardMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A9A92829781A4D00B55797 /* DashboardMock.generated.swift */; };
 		02F175332A4DABBF0019CD70 /* DashboardAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F175322A4DABBF0019CD70 /* DashboardAnalytics.swift */; };
 		02F3BFE129252FCB0051930C /* DashboardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE029252FCB0051930C /* DashboardRouter.swift */; };
 		02F6EF3D28D9EB8C00835477 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 02F6EF3C28D9EB8C00835477 /* swiftgen.yml */; };
@@ -36,6 +35,7 @@
 		214DA1AADABC7BF4FB8EA1D7 /* Pods_App_Dashboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B008B2F0762EF35CADE3DD4 /* Pods_App_Dashboard.framework */; };
 		97E7DF0B2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */; };
 		9AD4A6A1AAF97092CF457FE2 /* Pods_App_Dashboard_DashboardTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22905947A936093AD23D4CF8 /* Pods_App_Dashboard_DashboardTests.framework */; };
+		A5B4681A2F29E583002A4ECA /* DashboardMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B468182F29E583002A4ECA /* DashboardMocks.generated.swift */; };
 		CE1735062CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735052CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift */; };
 		CE17350A2CD26CB500F9606A /* AllCoursesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735092CD26CB500F9606A /* AllCoursesViewModelTests.swift */; };
 		CEB1E26D2CC14E9B00921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E26C2CC14E9B00921517 /* OEXFoundation */; };
@@ -72,7 +72,6 @@
 		02A98F162BD97885009B46BD /* CategoryFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFilterView.swift; sourceTree = "<group>"; };
 		02A9A9082978194100B55797 /* DashboardTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DashboardTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		02A9A90A2978194100B55797 /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
-		02A9A92829781A4D00B55797 /* DashboardMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardMock.generated.swift; sourceTree = "<group>"; };
 		02EF39E728D89F560058F6BD /* Dashboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Dashboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		02F175322A4DABBF0019CD70 /* DashboardAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardAnalytics.swift; sourceTree = "<group>"; };
 		02F3BFE029252FCB0051930C /* DashboardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardRouter.swift; sourceTree = "<group>"; };
@@ -92,6 +91,7 @@
 		6BA3D1943CAB859ECDC95C76 /* Pods-App-Dashboard.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard.releasedev.xcconfig"; sourceTree = "<group>"; };
 		89D6F05AC9854DBBAB091D9C /* Pods-App-Dashboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard.release.xcconfig"; path = "Target Support Files/Pods-App-Dashboard/Pods-App-Dashboard.release.xcconfig"; sourceTree = "<group>"; };
 		97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseEnrollmentsMock.swift; sourceTree = "<group>"; };
+		A5B468182F29E583002A4ECA /* DashboardMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardMocks.generated.swift; sourceTree = "<group>"; };
 		BBABB135366FFB1DAEFA0D16 /* Pods-App-Dashboard-DashboardTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugprod.xcconfig"; sourceTree = "<group>"; };
 		CCF4C665AD91B6B96F6A11DF /* Pods-App-Dashboard-DashboardTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Dashboard-DashboardTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests.debugdev.xcconfig"; sourceTree = "<group>"; };
 		CE1735052CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryCourseDashboardViewModelTests.swift; sourceTree = "<group>"; };
@@ -177,8 +177,8 @@
 		02A9A9092978194100B55797 /* DashboardTests */ = {
 			isa = PBXGroup;
 			children = (
+				A5B468192F29E583002A4ECA /* Generated */,
 				0766DFD2299AD99B00EBEF6A /* Presentation */,
-				02A9A92829781A4D00B55797 /* DashboardMock.generated.swift */,
 			);
 			path = DashboardTests;
 			sourceTree = "<group>";
@@ -290,6 +290,14 @@
 				97E7DF0A2B7A3EAF00A2A09B /* CourseEnrollmentsMock.swift */,
 			);
 			path = Mock;
+			sourceTree = "<group>";
+		};
+		A5B468192F29E583002A4ECA /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				A5B468182F29E583002A4ECA /* DashboardMocks.generated.swift */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -477,9 +485,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Dashboard-DashboardTests/Pods-App-Dashboard-DashboardTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -495,7 +507,7 @@
 			files = (
 				02A9A90B2978194100B55797 /* DashboardViewModelTests.swift in Sources */,
 				CE17350A2CD26CB500F9606A /* AllCoursesViewModelTests.swift in Sources */,
-				02A9A92929781A4D00B55797 /* DashboardMock.generated.swift in Sources */,
+				A5B4681A2F29E583002A4ECA /* DashboardMocks.generated.swift in Sources */,
 				CE1735062CD2552A00F9606A /* PrimaryCourseDashboardViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

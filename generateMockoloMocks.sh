@@ -62,4 +62,13 @@ mockolo \
     --testable-imports "Discovery" "Core" \
     --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire" "CoreData"
 
+# Dashboard module (includes Core sources for shared protocols)
+echo "Generating Dashboard mocks..."
+mockolo \
+    --sourcedirs "Dashboard/Dashboard" "Core/Core" \
+    --destination "Dashboard/DashboardTests/Generated/DashboardMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "Dashboard" "Core" \
+    --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation"
+
 echo "Done! All mocks generated successfully."
