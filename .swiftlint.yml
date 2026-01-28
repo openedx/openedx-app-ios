@@ -20,6 +20,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Carthage
   - DerivedData
   - Pods
+  - DerivedData
   - Core/CoreTests
   - Authorization/AuthorizationTests
   - Course/CourseTests
@@ -30,6 +31,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Profile/ProfileTests
   - WhatsNew/WhatsNewTests
   - Theme/ThemeTests
+  - AppDates/AppDatesTests
   - vendor
   - Core/Core/SwiftGen
   - Authorization/Authorization/SwiftGen
@@ -41,6 +43,7 @@ excluded: # paths to ignore during linting. Takes precedence over `included`.
   - Profile/Profile/SwiftGen
   - WhatsNew/WhatsNew/SwiftGen
   - Theme/Theme/SwiftGen
+  - AppDates/AppDates/SwiftGen
 #  - Source/ExcludedFile.swift
 #  - Source/*/ExcludedFile.swift # Exclude files with a wildcard
 #analyzer_rules: # Rules run by `swiftlint analyze` (experimental)

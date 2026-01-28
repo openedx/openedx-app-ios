@@ -116,6 +116,7 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
     let lastVisitedBlockID: String?
+    private var didAutoOpenLastVisitedBlock = false
     
     var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
@@ -358,10 +359,14 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
     @MainActor
     private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws {
         if let lastVisitedBlockID {
-            self.continueWith = findContinueVertical(
+            guard !didAutoOpenLastVisitedBlock else { return }
+            let continueWith = findContinueVertical(
                 blockID: lastVisitedBlockID,
                 courseStructure: courseStructure
             )
+            self.continueWith = continueWith
+            guard continueWith != nil else { return }
+            didAutoOpenLastVisitedBlock = true
             openLastVisitedBlock()
         } else {
             let result = try await interactor.resumeBlock(courseID: courseID)
@@ -1363,18 +1368,25 @@ public final class CourseContainerViewModel: BaseCourseViewModel {
             .first { $0.type == assignmentType }?
             .type
     }
-    
+
     func assignmentTypeColor(for assignmentType: String) -> String? {
         guard let progressDetails = courseProgressDetails else { return nil }
-        
-        if let index = progressDetails.gradingPolicy.assignmentPolicies
-            .firstIndex(where: { $0.type == assignmentType }) {
-            let colors = progressDetails.gradingPolicy.assignmentColors
-            return index < colors.count ? colors[index] : nil
+
+        guard let index = progressDetails.gradingPolicy.assignmentPolicies
+            .firstIndex(where: { $0.type == assignmentType }) else {
+            return nil
         }
-        return nil
+
+        let colors = progressDetails.gradingPolicy.assignmentColors
+
+        guard !colors.isEmpty else { return nil }
+
+        let colorIndex = index % colors.count
+        let hexColor = colors[colorIndex]
+
+        return hexColor
     }
-    
+
     func getSequentialShortLabel(for blockKey: String) -> String? {
         guard let courseStructure = courseAssignmentsStructure ?? courseStructure else { return nil }
         

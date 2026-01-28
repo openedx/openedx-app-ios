@@ -17,6 +17,7 @@ public struct CourseContentView: View {
     @StateObject private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
+    @State private var openCertificateView: Bool = false
     
     private var videoContentData: VideoContentData {
         VideoContentData(
@@ -97,6 +98,8 @@ public struct CourseContentView: View {
                                 )
                                     .padding(.horizontal, 24)
                                     .padding(.top, 16)
+
+                                certificateView
                                 
                                 // MARK: - Content based on selected tab
                                 contentForSelectedTab(proxy: proxy)
@@ -175,6 +178,34 @@ public struct CourseContentView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+    }
+
+    @ViewBuilder
+    private var certificateView: some View {
+        if let certificate = viewModel.courseStructure?.certificate,
+           let url = certificate.url,
+           url.count > 0 {
+            MessageSectionView(
+                title: CourseLocalization.Outline.passedTheCourse(title),
+                actionTitle: CourseLocalization.Outline.viewCertificate,
+                action: {
+                    openCertificateView = true
+                    viewModel.trackViewCertificateClicked(courseID: courseID)
+                }
+            )
+            .padding(.horizontal, 24)
+            .padding(.top, 16)
+            .fullScreenCover(
+                isPresented: $openCertificateView,
+                content: {
+                    WebBrowser(
+                        url: url,
+                        pageTitle: CourseLocalization.Outline.certificate,
+                        connectivity: viewModel.connectivity
+                    )
+                }
+            )
+        }
     }
     
     @ViewBuilder

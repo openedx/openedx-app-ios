@@ -10,7 +10,7 @@ PODS:
 DEPENDENCIES:
   - SwiftGen (~> 6.6)
   - SwiftLint (~> 0.57.0)
-  - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, tag `4.2.0`)
+  - SwiftyMocky (from `https://github.com/MakeAWishFoundation/SwiftyMocky.git`, branch `master`)
 
 SPEC REPOS:
   trunk:
@@ -20,13 +20,13 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   SwiftyMocky:
+    :branch: master
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
-    :tag: 4.2.0
 
 CHECKOUT OPTIONS:
   SwiftyMocky:
+    :commit: 3672eea08c7098214ac54ee26c7a7e39ea01a2f1
     :git: https://github.com/MakeAWishFoundation/SwiftyMocky.git
-    :tag: 4.2.0
 
 SPEC CHECKSUMS:
   Sourcery: 6f5fe49b82b7e02e8c65560cbd52e1be67a1af2e
@@ -34,6 +34,6 @@ SPEC CHECKSUMS:
   SwiftLint: eb47480d47c982481592c195c221d11013a679cc
   SwiftyMocky: c5e96e4ff76ec6dbf5a5941aeb039b5a546954a0
 
-PODFILE CHECKSUM: 2d71ad797d49fa32b47c3315b92159de82824103
+PODFILE CHECKSUM: e8bbf406ccbac3957d776aa8c54be841a7924630
 
 COCOAPODS: 1.15.2
