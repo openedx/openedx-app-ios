@@ -14,7 +14,7 @@ public enum InternetState: Sendable {
     case notReachable
 }
 
-// sourcery: AutoMockable
+/// @mockable
 @MainActor
 public protocol ConnectivityProtocol: Sendable {
     var isInternetAvaliable: Bool { get }

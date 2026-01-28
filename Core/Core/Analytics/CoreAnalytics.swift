@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CoreAnalytics {
     func trackEvent(_ event: AnalyticsEvent, parameters: [String: Any]?)
     func trackEvent(_ event: AnalyticsEvent, biValue: EventBIValue, parameters: [String: Any]?)

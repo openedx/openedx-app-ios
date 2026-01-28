@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CourseStructureManagerProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure

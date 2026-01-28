@@ -18,7 +18,7 @@ abstract_target "App" do
     workspace './Core/Core.xcodeproj'
 
     target 'CoreTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :branch => 'master'
+      # Migrated to Mockolo
     end
   end
   
