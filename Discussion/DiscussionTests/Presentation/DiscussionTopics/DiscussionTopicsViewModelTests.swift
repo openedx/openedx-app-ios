@@ -2,10 +2,9 @@
 //  DiscussionTopicsViewModelTests.swift
 //  DiscussionTests
 //
-//  Created by  Stepanok Ivan on 31.01.2023.
+//  Created by  Stepanok Ivan on 31.01.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discussion
@@ -14,7 +13,7 @@ import SwiftUI
 
 @MainActor
 final class DiscussionTopicsViewModelTests: XCTestCase {
-    
+
     let topics = Topics(coursewareTopics: [
         CoursewareTopics(id: "1", name: "1", threadListURL: "1", children: [
             CoursewareTopics(id: "11", name: "11", threadListURL: "11", children: [])
@@ -43,20 +42,21 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let analytics = DiscussionAnalyticsMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
+
+        interactor.getTopicsHandler = { _ in self.topics }
+        interactor.getCourseDiscussionInfoHandler = { _ in self.discussionInfo }
+
         let viewModel = DiscussionTopicsViewModel(title: "",
                                                   interactor: interactor,
                                                   router: router,
                                                   analytics: analytics,
                                                   config: config)
 
-        Given(interactor, .getTopics(courseID: .any, willReturn: topics))
-        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
-
         await viewModel.getTopics(courseID: "1")
 
-        Verify(interactor, .getTopics(courseID: .any))
-        Verify(interactor, .getCourseDiscussionInfo(courseID: .any))
+        XCTAssertEqual(interactor.getTopicsCallCount, 1)
+        XCTAssertEqual(interactor.getCourseDiscussionInfoCallCount, 1)
 
         XCTAssertNotNil(viewModel.topics)
         XCTAssertNotNil(viewModel.discussionTopics)
@@ -64,52 +64,54 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testGetTopicsNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let analytics = DiscussionAnalyticsMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
+
+        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
+
+        interactor.getTopicsHandler = { _ in throw noInternetError }
+        interactor.getCourseDiscussionInfoHandler = { _ in self.discussionInfo }
+
         let viewModel = DiscussionTopicsViewModel(title: "",
                                                   interactor: interactor,
                                                   router: router,
                                                   analytics: analytics,
                                                   config: config)
 
-        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(interactor, .getTopics(courseID: .any, willThrow: noInternetError))
-        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
-
         await viewModel.getTopics(courseID: "1")
-        
-        Verify(interactor, .getCourseDiscussionInfo(courseID: .any))
-        Verify(interactor, .getTopics(courseID: .any))
+
+        XCTAssertEqual(interactor.getCourseDiscussionInfoCallCount, 1)
+        XCTAssertEqual(interactor.getTopicsCallCount, 1)
 
         XCTAssertNil(viewModel.topics)
         XCTAssertNil(viewModel.discussionTopics)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.isShowRefresh)
     }
-    
+
     func testGetTopicsUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let analytics = DiscussionAnalyticsMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
+
+        interactor.getTopicsHandler = { _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+        interactor.getCourseDiscussionInfoHandler = { _ in self.discussionInfo }
+
         let viewModel = DiscussionTopicsViewModel(title: "",
                                                   interactor: interactor,
                                                   router: router,
                                                   analytics: analytics,
                                                   config: config)
-        
-        Given(interactor, .getTopics(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
 
         await viewModel.getTopics(courseID: "1")
-        
-        Verify(interactor, .getCourseDiscussionInfo(courseID: .any))
-        Verify(interactor, .getTopics(courseID: .any))
+
+        XCTAssertEqual(interactor.getCourseDiscussionInfoCallCount, 1)
+        XCTAssertEqual(interactor.getTopicsCallCount, 1)
 
         XCTAssertNil(viewModel.topics)
         XCTAssertNil(viewModel.discussionTopics)

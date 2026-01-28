@@ -23,7 +23,6 @@
 		023F14AB291BF30300FD0EFF /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023F14AA291BF30300FD0EFF /* CommentCell.swift */; };
 		0240D8D22987FE1F003CFE50 /* PostViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0240D8D12987FE1F003CFE50 /* PostViewModelTests.swift */; };
 		0240D8D32987FE1F003CFE50 /* Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0218194D28F7344A00202564 /* Discussion.framework */; platformFilter = ios; };
-		0240D8DE2987FF91003CFE50 /* DiscussionMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0240D8DD2987FF91003CFE50 /* DiscussionMock.generated.swift */; };
 		02426DE42983DD4D00B31E6C /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 02426DE62983DD4D00B31E6C /* Localizable.stringsdict */; };
 		027BD39A2908256200392132 /* ThreadList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3992908256200392132 /* ThreadList.swift */; };
 		0282DA5F28F893CA003C3F07 /* PostsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282DA5E28F893CA003C3F07 /* PostsView.swift */; };
@@ -58,6 +57,7 @@
 		0766DFCA299AA3D400EBEF6A /* Data_CreatedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFC9299AA3D400EBEF6A /* Data_CreatedComment.swift */; };
 		7527943BE0D66C33B167A41A /* Pods_App_Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7A0375EDDEB8948165EAD /* Pods_App_Discussion.framework */; };
 		9FC0EF907C0334E383C300C4 /* Pods_App_Discussion_DiscussionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */; };
+		A5B4681D2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4681B2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift */; };
 		BA3C45672BA9E13000672C96 /* Data_DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */; };
 		BA3C45692BA9E18D00672C96 /* DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */; };
 		CE2691DD2D9D2868002B8B50 /* HTMLContentFixProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */; };
@@ -124,7 +124,6 @@
 		023F14AA291BF30300FD0EFF /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		0240D8CF2987FE1F003CFE50 /* DiscussionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiscussionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0240D8D12987FE1F003CFE50 /* PostViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewModelTests.swift; sourceTree = "<group>"; };
-		0240D8DD2987FF91003CFE50 /* DiscussionMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiscussionMock.generated.swift; sourceTree = "<group>"; };
 		02426DE52983DD4D00B31E6C /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		027BD3992908256200392132 /* ThreadList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadList.swift; sourceTree = "<group>"; };
 		0282DA5E28F893CA003C3F07 /* PostsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsView.swift; sourceTree = "<group>"; };
@@ -167,6 +166,7 @@
 		5F59EC4433FF0AE0743D284D /* Pods-App-Discussion.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		66A7A0375EDDEB8948165EAD /* Pods_App_Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A55CEBCC51BDC30B8354E258 /* Pods-App-Discussion.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugprod.xcconfig"; sourceTree = "<group>"; };
+		A5B4681B2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionMocks.generated.swift; sourceTree = "<group>"; };
 		ACA8EF2DEDDB7695162C381A /* Pods-App-Discussion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debug.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debug.xcconfig"; sourceTree = "<group>"; };
 		ACDA8EE733B97BCD8689A0B4 /* Pods-App-Discussion.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugstage.xcconfig"; sourceTree = "<group>"; };
 		B472516A5A79E87C40766D93 /* Pods-App-Discussion-DiscussionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -321,8 +321,8 @@
 		0240D8D02987FE1F003CFE50 /* DiscussionTests */ = {
 			isa = PBXGroup;
 			children = (
+				A5B4681C2F2A0EFD002A4ECA /* Generated */,
 				0766DFD8299ADAB500EBEF6A /* Presentation */,
-				0240D8DD2987FF91003CFE50 /* DiscussionMock.generated.swift */,
 			);
 			path = DiscussionTests;
 			sourceTree = "<group>";
@@ -481,6 +481,14 @@
 				02BE57BD298910BD00197812 /* BaseResponsesViewModelTests.swift */,
 			);
 			path = Base;
+			sourceTree = "<group>";
+		};
+		A5B4681C2F2A0EFD002A4ECA /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				A5B4681B2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		CE517F412D9C0A9D0012EF71 /* HTMLStreamer */ = {
@@ -668,9 +676,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -783,8 +795,8 @@
 			files = (
 				02E4F18129A8C2FD00F31684 /* DiscussionSearchTopicsViewModelTests.swift in Sources */,
 				02BE57BC29890D4A00197812 /* DiscussionTopicsViewModelTests.swift in Sources */,
+				A5B4681D2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift in Sources */,
 				020767682989528B00B976DE /* CreateNewThreadViewModelTests.swift in Sources */,
-				0240D8DE2987FF91003CFE50 /* DiscussionMock.generated.swift in Sources */,
 				02BE57BE298910BD00197812 /* BaseResponsesViewModelTests.swift in Sources */,
 				020767662989393200B976DE /* ResponsesViewModelTests.swift in Sources */,
 				0201771C29883E96003AC5EF /* ThreadViewModelTests.swift in Sources */,

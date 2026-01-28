@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DiscussionInteractorProtocol: Sendable {
     func getCourseDiscussionInfo(courseID: String) async throws -> DiscussionInfo
     func getThreadsList(courseID: String,

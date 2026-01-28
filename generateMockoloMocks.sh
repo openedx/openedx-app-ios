@@ -89,4 +89,13 @@ mockolo \
     --testable-imports "Profile" "Core" \
     --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire"
 
+# Discussion module (includes Core sources for shared protocols)
+echo "Generating Discussion mocks..."
+mockolo \
+    --sourcedirs "Discussion/Discussion" "Core/Core" \
+    --destination "Discussion/DiscussionTests/Generated/DiscussionMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "Discussion" "Core" \
+    --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire"
+
 echo "Done! All mocks generated successfully."

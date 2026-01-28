@@ -325,7 +325,7 @@ public struct PostsView: View {
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
         let topics = Topics(coursewareTopics: [], nonCoursewareTopics: [])
-        let router = DiscussionRouterMock()
+        let router = DiscussionRouterPreviewMock()
         let vm = PostsViewModel(
             interactor: DiscussionInteractor.mock,
             router: router,
