@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+/// @mockable
 public protocol CourseStorage: Sendable {
     var allowedDownloadLargeFile: Bool? { get set }
     var userSettings: UserSettings? { get set }

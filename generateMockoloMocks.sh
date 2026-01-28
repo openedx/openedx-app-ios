@@ -35,4 +35,13 @@ mockolo \
     --testable-imports "Authorization" "Core" \
     --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire" "CoreData"
 
+# Course module (includes Core sources for shared protocols)
+echo "Generating Course mocks..."
+mockolo \
+    --sourcedirs "Course/Course" "Core/Core" \
+    --destination "Course/CourseTests/Generated/CourseMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "Course" "Core" \
+    --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire" "CoreData"
+
 echo "Done! All mocks generated successfully."
