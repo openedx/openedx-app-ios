@@ -80,4 +80,13 @@ mockolo \
     --testable-imports "Downloads" "Core" \
     --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation"
 
+# Profile module (includes Core sources for shared protocols)
+echo "Generating Profile mocks..."
+mockolo \
+    --sourcedirs "Profile/Profile" "Core/Core" \
+    --destination "Profile/ProfileTests/Generated/ProfileMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "Profile" "Core" \
+    --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire"
+
 echo "Done! All mocks generated successfully."

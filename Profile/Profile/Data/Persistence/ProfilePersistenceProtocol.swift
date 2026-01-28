@@ -8,7 +8,7 @@
 import CoreData
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol ProfilePersistenceProtocol: Sendable {
     func getCourseState(courseID: String) async -> CourseCalendarState?
     func getAllCourseStates() async -> [CourseCalendarState]
@@ -22,7 +22,7 @@ public protocol ProfilePersistenceProtocol: Sendable {
 }
 
 #if DEBUG
-public struct ProfilePersistenceMock: ProfilePersistenceProtocol {
+public struct ProfilePersistencePreview: ProfilePersistenceProtocol {
     public func getCourseState(courseID: String) async -> CourseCalendarState? { nil }
     public func getAllCourseStates() async -> [CourseCalendarState] {[]}
     public func saveCourseState(state: CourseCalendarState) async {}
