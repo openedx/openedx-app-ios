@@ -15,7 +15,6 @@ import Profile
 import OEXFoundation
 
 // swiftlint:disable function_body_length
-//sourcery: AutoMockable
 @MainActor
 public protocol DeepLinkService {
     func configureWith(
