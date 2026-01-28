@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DownloadsInteractorProtocol: Sendable {
     func getDownloadCourses() async throws -> [DownloadCoursePreview]
     func getDownloadCoursesOffline() async throws -> [DownloadCoursePreview]

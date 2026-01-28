@@ -71,4 +71,13 @@ mockolo \
     --testable-imports "Dashboard" "Core" \
     --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation"
 
+# Downloads module (includes Core sources for shared protocols)
+echo "Generating Downloads mocks..."
+mockolo \
+    --sourcedirs "Downloads/Downloads" "Core/Core" \
+    --destination "Downloads/DownloadsTests/Generated/DownloadsMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "Downloads" "Core" \
+    --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation"
+
 echo "Done! All mocks generated successfully."

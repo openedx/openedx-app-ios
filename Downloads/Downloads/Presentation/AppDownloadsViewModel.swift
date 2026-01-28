@@ -780,10 +780,10 @@ public extension AppDownloadsViewModel {
         courseManager: CourseStructureManagerMock(),
         downloadManager: DownloadManagerMock(),
         connectivity: Connectivity(config: ConfigMock()),
-        downloadsHelper: DownloadsHelperMock(),
+        downloadsHelper: DownloadsHelperPreviewMock(),
         router: DownloadsRouterMock(),
         storage: DownloadsStorageMock(),
-        analytics: DownloadsAnalyticsMock()
+        analytics: DownloadsAnalyticsPreviewMock()
     )
 }
 #endif

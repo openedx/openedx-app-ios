@@ -34,7 +34,7 @@
 		CEB36E422D6A0E2C00907A89 /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = CEB36E412D6A0E2C00907A89 /* swiftgen.yml */; };
 		CEB36E562D6A2A0400907A89 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB36E552D6A2A0400907A89 /* Core.framework */; };
 		CEB36E5A2D6A2B9900907A89 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB36E592D6A2B9900907A89 /* OEXFoundation */; };
-		CEC873C02D75E15C00A2626C /* Downloads Mock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BF2D75E15C00A2626C /* Downloads Mock.generated.swift */; };
+		CEC873C02D75E15C00A2626C /* DownloadsMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */; };
 		EDE11E2D4D726D34775CF243 /* Pods_App_Downloads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4EC0036E64DA88BB2D053F /* Pods_App_Downloads.framework */; };
 /* End PBXBuildFile section */
 
@@ -102,7 +102,7 @@
 		CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsTests.swift; sourceTree = "<group>"; };
 		CEB36E412D6A0E2C00907A89 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		CEB36E552D6A2A0400907A89 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CEC873BF2D75E15C00A2626C /* Downloads Mock.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloads Mock.generated.swift"; sourceTree = "<group>"; };
+		CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DownloadsMocks.generated.swift"; sourceTree = "<group>"; };
 		F88F26577D0F66933184E825 /* Pods-App-Downloads.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugprod.xcconfig"; sourceTree = "<group>"; };
 		FA71B94B494DEAD479651F27 /* Pods-App-Downloads.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.releasestage.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -266,11 +266,19 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		CEC873C12D75E15C00A2626C /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 		CEB36E3F2D6A0DE800907A89 /* DownloadsTests */ = {
 			isa = PBXGroup;
 			children = (
+				CEC873C12D75E15C00A2626C /* Generated */,
 				CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */,
-				CEC873BF2D75E15C00A2626C /* Downloads Mock.generated.swift */,
 			);
 			path = DownloadsTests;
 			sourceTree = "<group>";
@@ -515,7 +523,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CEB36E402D6A0DE800907A89 /* DownloadsTests.swift in Sources */,
-				CEC873C02D75E15C00A2626C /* Downloads Mock.generated.swift in Sources */,
+				CEC873C02D75E15C00A2626C /* DownloadsMocks.generated.swift in Sources */,
 				CE8648942DA575DF00821EC9 /* DownloadCoursePreviewModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
