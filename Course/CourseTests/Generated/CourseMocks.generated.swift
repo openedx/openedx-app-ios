@@ -4,6 +4,7 @@
 
 
 
+import AVKit
 import Alamofire
 import Combine
 @testable import Core
@@ -495,6 +496,144 @@ public final class AuthInteractorProtocolMock: AuthInteractorProtocol, @unchecke
             return try await validateRegistrationFieldsHandler(fields)
         }
         return [String: String]()
+    }
+}
+
+public final class PlayerServiceProtocolMock: PlayerServiceProtocol, @unchecked Sendable {
+    private var _blockID: String!
+    private var _courseID: String!
+    private var _interactor: CourseInteractorProtocol!
+    public init() { }
+    public init(router: CourseRouter) {
+        self._router = router
+    }
+    required public init(courseID: String = "", blockID: String = "", interactor: CourseInteractorProtocol = CourseInteractorProtocolMock(), router: CourseRouter) {
+        self._courseID = courseID
+        self._blockID = blockID
+        self._interactor = interactor
+        self._router = router
+    }
+
+
+
+    private var _router: CourseRouter!
+    public var router: CourseRouter {
+        get { return _router }
+        set { _router = newValue }
+    }
+
+    private let blockCompletionRequestState = MockoloMutex(MockoloHandlerState<Never, @Sendable () async throws -> ()>())
+    public var blockCompletionRequestCallCount: Int {
+        return blockCompletionRequestState.withLock(\.callCount)
+    }
+    public var blockCompletionRequestHandler: (@Sendable () async throws -> ())? {
+        get { blockCompletionRequestState.withLock(\.handler) }
+        set { blockCompletionRequestState.withLock { $0.handler = newValue } }
+    }
+    public func blockCompletionRequest() async throws {
+        let blockCompletionRequestHandler = blockCompletionRequestState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let blockCompletionRequestHandler = blockCompletionRequestHandler {
+            try await blockCompletionRequestHandler()
+        }
+        
+    }
+
+    private let presentAppReviewState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> ()>())
+    public var presentAppReviewCallCount: Int {
+        return presentAppReviewState.withLock(\.callCount)
+    }
+    public var presentAppReviewHandler: (@Sendable () -> ())? {
+        get { presentAppReviewState.withLock(\.handler) }
+        set { presentAppReviewState.withLock { $0.handler = newValue } }
+    }
+    public func presentAppReview() {
+        let presentAppReviewHandler = presentAppReviewState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let presentAppReviewHandler = presentAppReviewHandler {
+            presentAppReviewHandler()
+        }
+        
+    }
+
+    private let presentViewState = MockoloMutex(MockoloHandlerState<Never, @Sendable (UIModalTransitionStyle, Bool, @MainActor () -> any View) -> ()>())
+    public var presentViewCallCount: Int {
+        return presentViewState.withLock(\.callCount)
+    }
+    public var presentViewHandler: (@Sendable (UIModalTransitionStyle, Bool, @MainActor () -> any View) -> ())? {
+        get { presentViewState.withLock(\.handler) }
+        set { presentViewState.withLock { $0.handler = newValue } }
+    }
+    public func presentView(transitionStyle: UIModalTransitionStyle, animated: Bool, content: @MainActor () -> any View) {
+        let presentViewHandler = presentViewState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let presentViewHandler = presentViewHandler {
+            presentViewHandler(transitionStyle, animated, content)
+        }
+        
+    }
+
+    private let getSubtitlesState = MockoloMutex(MockoloHandlerState<Never, @Sendable (String, String) async throws -> [Subtitle]>())
+    public var getSubtitlesCallCount: Int {
+        return getSubtitlesState.withLock(\.callCount)
+    }
+    public var getSubtitlesHandler: (@Sendable (String, String) async throws -> [Subtitle])? {
+        get { getSubtitlesState.withLock(\.handler) }
+        set { getSubtitlesState.withLock { $0.handler = newValue } }
+    }
+    public func getSubtitles(url: String, selectedLanguage: String) async throws -> [Subtitle] {
+        let getSubtitlesHandler = getSubtitlesState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let getSubtitlesHandler = getSubtitlesHandler {
+            return try await getSubtitlesHandler(url, selectedLanguage)
+        }
+        return [Subtitle]()
+    }
+
+    private let updateVideoProgressState = MockoloMutex(MockoloHandlerState<Never, @Sendable (Double) async -> ()>())
+    public var updateVideoProgressCallCount: Int {
+        return updateVideoProgressState.withLock(\.callCount)
+    }
+    public var updateVideoProgressHandler: (@Sendable (Double) async -> ())? {
+        get { updateVideoProgressState.withLock(\.handler) }
+        set { updateVideoProgressState.withLock { $0.handler = newValue } }
+    }
+    public func updateVideoProgress(progress: Double) async {
+        let updateVideoProgressHandler = updateVideoProgressState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let updateVideoProgressHandler = updateVideoProgressHandler {
+            await updateVideoProgressHandler(progress)
+        }
+        
+    }
+
+    private let loadVideoProgressState = MockoloMutex(MockoloHandlerState<Never, @Sendable () async -> Double?>())
+    public var loadVideoProgressCallCount: Int {
+        return loadVideoProgressState.withLock(\.callCount)
+    }
+    public var loadVideoProgressHandler: (@Sendable () async -> Double?)? {
+        get { loadVideoProgressState.withLock(\.handler) }
+        set { loadVideoProgressState.withLock { $0.handler = newValue } }
+    }
+    public func loadVideoProgress() async -> Double? {
+        let loadVideoProgressHandler = loadVideoProgressState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let loadVideoProgressHandler = loadVideoProgressHandler {
+            return await loadVideoProgressHandler()
+        }
+        return nil
     }
 }
 
@@ -2967,6 +3106,198 @@ public final class CourseRepositoryProtocolMock: CourseRepositoryProtocol, @unch
             return try await getCourseProgressOfflineHandler(courseID)
         }
         fatalError("getCourseProgressOfflineHandler returns can't have a default value thus its handler must be set")
+    }
+}
+
+public final class PlayerViewControllerHolderProtocolMock: PlayerViewControllerHolderProtocol, @unchecked Sendable {
+    private var _appStorage: CoreStorage!
+    private var _pipManager: PipManagerProtocol!
+    private var _playerDelegate: PlayerDelegateProtocol!
+    private var _playerService: PlayerServiceProtocol!
+    private var _playerTracker: (any PlayerTrackerProtocol)!
+    public init() { }
+    public init(url: URL? = nil, blockID: String = "", courseID: String = "", selectedCourseTab: Int = 0, playerController: PlayerControllerProtocol? = nil, isPlaying: Bool = false, isPlayingInPip: Bool = false, isOtherPlayerInPipPlaying: Bool = false, duration: TimeInterval = 0.0) {
+        self.url = url
+        self.blockID = blockID
+        self.courseID = courseID
+        self.selectedCourseTab = selectedCourseTab
+        self.playerController = playerController
+        self.isPlaying = isPlaying
+        self.isPlayingInPip = isPlayingInPip
+        self.isOtherPlayerInPipPlaying = isOtherPlayerInPipPlaying
+        self.duration = duration
+    }
+    required public init(url: URL? = nil, blockID: String = "", courseID: String = "", selectedCourseTab: Int = 0, pipManager: PipManagerProtocol, playerTracker: any PlayerTrackerProtocol, playerDelegate: PlayerDelegateProtocol? = nil, playerService: PlayerServiceProtocol, appStorage: CoreStorage? = nil) {
+        self.url = url
+        self.blockID = blockID
+        self.courseID = courseID
+        self.selectedCourseTab = selectedCourseTab
+        self._pipManager = pipManager
+        self._playerTracker = playerTracker
+        self._playerDelegate = playerDelegate
+        self._playerService = playerService
+        self._appStorage = appStorage
+    }
+
+
+
+    public var url: URL? = nil
+
+
+    public var blockID: String = ""
+
+
+    public var courseID: String = ""
+
+
+    public var selectedCourseTab: Int = 0
+
+
+    public var playerController: PlayerControllerProtocol? = nil
+
+
+    public var isPlaying: Bool = false
+
+
+    public var isPlayingInPip: Bool = false
+
+
+    public var isOtherPlayerInPipPlaying: Bool = false
+
+
+    public var duration: TimeInterval = 0.0
+
+    private let getTimePublisherState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> AnyPublisher<Double, Never>>())
+    public var getTimePublisherCallCount: Int {
+        return getTimePublisherState.withLock(\.callCount)
+    }
+    public var getTimePublisherHandler: (@Sendable () -> AnyPublisher<Double, Never>)? {
+        get { getTimePublisherState.withLock(\.handler) }
+        set { getTimePublisherState.withLock { $0.handler = newValue } }
+    }
+    public func getTimePublisher() -> AnyPublisher<Double, Never> {
+        let getTimePublisherHandler = getTimePublisherState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let getTimePublisherHandler = getTimePublisherHandler {
+            return getTimePublisherHandler()
+        }
+        fatalError("getTimePublisherHandler returns can't have a default value thus its handler must be set")
+    }
+
+    private let getErrorPublisherState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> AnyPublisher<Error, Never>>())
+    public var getErrorPublisherCallCount: Int {
+        return getErrorPublisherState.withLock(\.callCount)
+    }
+    public var getErrorPublisherHandler: (@Sendable () -> AnyPublisher<Error, Never>)? {
+        get { getErrorPublisherState.withLock(\.handler) }
+        set { getErrorPublisherState.withLock { $0.handler = newValue } }
+    }
+    public func getErrorPublisher() -> AnyPublisher<Error, Never> {
+        let getErrorPublisherHandler = getErrorPublisherState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let getErrorPublisherHandler = getErrorPublisherHandler {
+            return getErrorPublisherHandler()
+        }
+        fatalError("getErrorPublisherHandler returns can't have a default value thus its handler must be set")
+    }
+
+    private let getRatePublisherState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> AnyPublisher<Float, Never>>())
+    public var getRatePublisherCallCount: Int {
+        return getRatePublisherState.withLock(\.callCount)
+    }
+    public var getRatePublisherHandler: (@Sendable () -> AnyPublisher<Float, Never>)? {
+        get { getRatePublisherState.withLock(\.handler) }
+        set { getRatePublisherState.withLock { $0.handler = newValue } }
+    }
+    public func getRatePublisher() -> AnyPublisher<Float, Never> {
+        let getRatePublisherHandler = getRatePublisherState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let getRatePublisherHandler = getRatePublisherHandler {
+            return getRatePublisherHandler()
+        }
+        fatalError("getRatePublisherHandler returns can't have a default value thus its handler must be set")
+    }
+
+    private let getReadyPublisherState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> AnyPublisher<Bool, Never>>())
+    public var getReadyPublisherCallCount: Int {
+        return getReadyPublisherState.withLock(\.callCount)
+    }
+    public var getReadyPublisherHandler: (@Sendable () -> AnyPublisher<Bool, Never>)? {
+        get { getReadyPublisherState.withLock(\.handler) }
+        set { getReadyPublisherState.withLock { $0.handler = newValue } }
+    }
+    public func getReadyPublisher() -> AnyPublisher<Bool, Never> {
+        let getReadyPublisherHandler = getReadyPublisherState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let getReadyPublisherHandler = getReadyPublisherHandler {
+            return getReadyPublisherHandler()
+        }
+        fatalError("getReadyPublisherHandler returns can't have a default value thus its handler must be set")
+    }
+
+    private let getFinishPublisherState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> AnyPublisher<Void, Never>>())
+    public var getFinishPublisherCallCount: Int {
+        return getFinishPublisherState.withLock(\.callCount)
+    }
+    public var getFinishPublisherHandler: (@Sendable () -> AnyPublisher<Void, Never>)? {
+        get { getFinishPublisherState.withLock(\.handler) }
+        set { getFinishPublisherState.withLock { $0.handler = newValue } }
+    }
+    public func getFinishPublisher() -> AnyPublisher<Void, Never> {
+        let getFinishPublisherHandler = getFinishPublisherState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let getFinishPublisherHandler = getFinishPublisherHandler {
+            return getFinishPublisherHandler()
+        }
+        fatalError("getFinishPublisherHandler returns can't have a default value thus its handler must be set")
+    }
+
+    private let getServiceState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> PlayerServiceProtocol>())
+    public var getServiceCallCount: Int {
+        return getServiceState.withLock(\.callCount)
+    }
+    public var getServiceHandler: (@Sendable () -> PlayerServiceProtocol)? {
+        get { getServiceState.withLock(\.handler) }
+        set { getServiceState.withLock { $0.handler = newValue } }
+    }
+    public func getService() -> PlayerServiceProtocol {
+        let getServiceHandler = getServiceState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let getServiceHandler = getServiceHandler {
+            return getServiceHandler()
+        }
+        fatalError("getServiceHandler returns can't have a default value thus its handler must be set")
+    }
+
+    private let sendCompletionState = MockoloMutex(MockoloHandlerState<Never, @Sendable () async -> ()>())
+    public var sendCompletionCallCount: Int {
+        return sendCompletionState.withLock(\.callCount)
+    }
+    public var sendCompletionHandler: (@Sendable () async -> ())? {
+        get { sendCompletionState.withLock(\.handler) }
+        set { sendCompletionState.withLock { $0.handler = newValue } }
+    }
+    public func sendCompletion() async {
+        let sendCompletionHandler = sendCompletionState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let sendCompletionHandler = sendCompletionHandler {
+            await sendCompletionHandler()
+        }
+        
     }
 }
 

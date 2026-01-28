@@ -102,7 +102,7 @@
 		CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsTests.swift; sourceTree = "<group>"; };
 		CEB36E412D6A0E2C00907A89 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		CEB36E552D6A2A0400907A89 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DownloadsMocks.generated.swift"; sourceTree = "<group>"; };
+		CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsMocks.generated.swift; sourceTree = "<group>"; };
 		F88F26577D0F66933184E825 /* Pods-App-Downloads.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugprod.xcconfig"; sourceTree = "<group>"; };
 		FA71B94B494DEAD479651F27 /* Pods-App-Downloads.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.releasestage.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -266,14 +266,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		CEC873C12D75E15C00A2626C /* Generated */ = {
-			isa = PBXGroup;
-			children = (
-				CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */,
-			);
-			path = Generated;
-			sourceTree = "<group>";
-		};
 		CEB36E3F2D6A0DE800907A89 /* DownloadsTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -281,6 +273,14 @@
 				CEB36E3E2D6A0DE800907A89 /* DownloadsTests.swift */,
 			);
 			path = DownloadsTests;
+			sourceTree = "<group>";
+		};
+		CEC873C12D75E15C00A2626C /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		FA6696D1625DF71CF1ED8DD8 /* Frameworks */ = {
@@ -338,7 +338,6 @@
 				CEB36E0D2D6A0D0B00907A89 /* Sources */,
 				CEB36E0E2D6A0D0B00907A89 /* Frameworks */,
 				CEB36E0F2D6A0D0B00907A89 /* Resources */,
-				221FEA57FF59FA75CEF68692 /* [CP] Copy Pods Resources */,
 				CEB36E5C2D6A2B9900907A89 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -432,23 +431,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		221FEA57FF59FA75CEF68692 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A0943E23063B85F2D8D788FE /* [CP] Check Pods Manifest.lock */ = {
