@@ -136,14 +136,14 @@ struct ProgramWebviewView_Previews: PreviewProvider {
     static var previews: some View {
         ProgramWebviewView(
             viewModel: ProgramWebviewViewModel(
-                router: DiscoveryRouterMock(),
+                router: DiscoveryRouterPreviewMock(),
                 config: ConfigMock(),
                 interactor: DiscoveryInteractor.mock,
                 connectivity: Connectivity(config: ConfigMock()),
-                analytics: DiscoveryAnalyticsMock(),
+                analytics: DiscoveryAnalyticsPreviewMock(),
                 authInteractor: AuthInteractor.mock
             ),
-            router: DiscoveryRouterMock(),
+            router: DiscoveryRouterPreviewMock(),
             viewType: .program,
             pathID: ""
         )

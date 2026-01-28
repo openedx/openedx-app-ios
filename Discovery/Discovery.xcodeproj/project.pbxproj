@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		022D048A2976D7E100E0059B /* DiscoveryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04892976D7E100E0059B /* DiscoveryViewModelTests.swift */; };
 		022D048B2976D7E100E0059B /* Discovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0727879928D34C03002E9142 /* Discovery.framework */; platformFilter = ios; };
-		022D04982976DA8A00E0059B /* DiscoveryMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04972976DA8A00E0059B /* DiscoveryMock.generated.swift */; };
+		A5B469172F29DFCC002A4ECA /* DiscoveryMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B469152F29DFCC002A4ECA /* DiscoveryMocks.generated.swift */; };
 		0283347728D499BC00C828FC /* DiscoveryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283347628D499BC00C828FC /* DiscoveryInteractor.swift */; };
 		0284DBFC28D4856A00830893 /* DiscoveryEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */; };
 		0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DC0228D4922900830893 /* DiscoveryRepository.swift */; };
@@ -73,7 +73,7 @@
 /* Begin PBXFileReference section */
 		022D04872976D7E100E0059B /* DiscoveryUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiscoveryUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		022D04892976D7E100E0059B /* DiscoveryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryViewModelTests.swift; sourceTree = "<group>"; };
-		022D04972976DA8A00E0059B /* DiscoveryMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiscoveryMock.generated.swift; path = DiscoveryTests/DiscoveryMock.generated.swift; sourceTree = SOURCE_ROOT; };
+		A5B469152F29DFCC002A4ECA /* DiscoveryMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMocks.generated.swift; sourceTree = "<group>"; };
 		0283347628D499BC00C828FC /* DiscoveryInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryInteractor.swift; sourceTree = "<group>"; };
 		0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEndpoint.swift; sourceTree = "<group>"; };
 		0284DC0228D4922900830893 /* DiscoveryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryRepository.swift; sourceTree = "<group>"; };
@@ -166,10 +166,18 @@
 		022D04882976D7E100E0059B /* DiscoveryTests */ = {
 			isa = PBXGroup;
 			children = (
+				A5B469162F29DFCC002A4ECA /* Generated */,
 				0766DFD1299AD97300EBEF6A /* Presentation */,
-				022D04972976DA8A00E0059B /* DiscoveryMock.generated.swift */,
 			);
 			path = DiscoveryTests;
+			sourceTree = "<group>";
+		};
+		A5B469162F29DFCC002A4ECA /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				A5B469152F29DFCC002A4ECA /* DiscoveryMocks.generated.swift */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 		0284DBF828D4831000830893 /* Data */ = {
@@ -557,7 +565,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				022D048A2976D7E100E0059B /* DiscoveryViewModelTests.swift in Sources */,
-				022D04982976DA8A00E0059B /* DiscoveryMock.generated.swift in Sources */,
+				A5B469172F29DFCC002A4ECA /* DiscoveryMocks.generated.swift in Sources */,
 				E0B9F6AB2B4E718F00168366 /* CourseDetailsViewModelTests.swift in Sources */,
 				CFC84950299BE52C0055E497 /* SearchViewModelTests.swift in Sources */,
 			);

@@ -44,4 +44,22 @@ mockolo \
     --testable-imports "Course" "Core" \
     --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire" "CoreData"
 
+# WhatsNew module
+echo "Generating WhatsNew mocks..."
+mockolo \
+    --sourcedirs "WhatsNew/WhatsNew" \
+    --destination "WhatsNew/WhatsNewTests/Generated/WhatsNewMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "WhatsNew" \
+    --custom-imports "Foundation"
+
+# Discovery module (includes Core sources for shared protocols)
+echo "Generating Discovery mocks..."
+mockolo \
+    --sourcedirs "Discovery/Discovery" "Core/Core" \
+    --destination "Discovery/DiscoveryTests/Generated/DiscoveryMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "Discovery" "Core" \
+    --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire" "CoreData"
+
 echo "Done! All mocks generated successfully."
