@@ -7,8 +7,8 @@
 
 import Foundation
 
-//sourcery: AutoMockable
-public protocol AppDatesAnalytics {
+/// @mockable
+public protocol AppDatesAnalytics: Sendable {
     func mainDatesScreenViewed()
     func datesCourseClicked(courseId: String, courseName: String)
     func datesSettingsClicked()
@@ -16,7 +16,7 @@ public protocol AppDatesAnalytics {
 }
 
 #if DEBUG
-class AppDatesAnalyticsMock: AppDatesAnalytics {
+public final class `AppDatesAnalyticsPreviewMock`: AppDatesAnalytics {
     public func mainDatesScreenViewed() {}
     public func datesCourseClicked(courseId: String, courseName: String) {}
     public func datesSettingsClicked() {}

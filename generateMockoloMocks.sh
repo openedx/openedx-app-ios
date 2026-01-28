@@ -98,4 +98,13 @@ mockolo \
     --testable-imports "Discussion" "Core" \
     --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation" "Alamofire"
 
+# AppDates module (includes Core sources for shared protocols)
+echo "Generating AppDates mocks..."
+mockolo \
+    --sourcedirs "AppDates/AppDates" "Core/Core" \
+    --destination "AppDates/AppDatesTests/Generated/AppDatesMocks.generated.swift" \
+    --mock-final \
+    --testable-imports "AppDates" "Core" \
+    --custom-imports "Foundation" "SwiftUI" "Combine" "OEXFoundation"
+
 echo "Done! All mocks generated successfully."

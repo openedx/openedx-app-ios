@@ -9,6 +9,7 @@ import Foundation
 import Core
 import OEXFoundation
 
+/// @mockable
 public protocol DatesRepositoryProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline(limit: Int?, offset: Int?) async throws -> [CourseDate]
@@ -73,7 +74,7 @@ public actor DatesRepository: DatesRepositoryProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public final class DatesRepositoryMock: DatesRepositoryProtocol {
+public final class DatesRepositoryPreviewMock: DatesRepositoryProtocol {
     
     public init() {}
     
