@@ -115,7 +115,8 @@ extension CourseTab {
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
     let lastVisitedBlockID: String?
-
+    private var didAutoOpenLastVisitedBlock = false
+    
     var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
 
@@ -358,10 +359,14 @@ extension CourseTab {
     @MainActor
     private func getResumeBlock(courseID: String, courseStructure: CourseStructure) async throws {
         if let lastVisitedBlockID {
-            self.continueWith = findContinueVertical(
+            guard !didAutoOpenLastVisitedBlock else { return }
+            let continueWith = findContinueVertical(
                 blockID: lastVisitedBlockID,
                 courseStructure: courseStructure
             )
+            self.continueWith = continueWith
+            guard continueWith != nil else { return }
+            didAutoOpenLastVisitedBlock = true
             openLastVisitedBlock()
         } else {
             let result = try await interactor.resumeBlock(courseID: courseID)
@@ -1412,7 +1417,15 @@ extension CourseTab {
             let colors = progressDetails.gradingPolicy.assignmentColors
             return index < colors.count ? colors[index] : nil
         }
-        return nil
+
+        let colors = progressDetails.gradingPolicy.assignmentColors
+
+        guard !colors.isEmpty else { return nil }
+
+        let colorIndex = index % colors.count
+        let hexColor = colors[colorIndex]
+
+        return hexColor
     }
 
     func getSequentialShortLabel(for blockKey: String) -> String? {

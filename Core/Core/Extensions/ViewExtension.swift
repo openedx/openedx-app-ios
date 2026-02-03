@@ -130,6 +130,14 @@ public extension View {
             }
         }
     }
+    
+    func refreshableWithoutCancellation(action: @escaping () async -> Void) -> some View {
+        self.refreshable {
+            await Task {
+                await action()
+            }.value
+        }
+    }
 }
 
 public extension View {

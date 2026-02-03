@@ -46,6 +46,32 @@ public extension DataLayer {
             case verificationData = "verification_data"
             case disableProgressGraph = "disable_progress_graph"
         }
+
+        public init(from decoder: Decoder) throws {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            verifiedMode = try values.decodeIfPresent(String.self, forKey: .verifiedMode)
+            accessExpiration = try values.decodeIfPresent(String.self, forKey: .accessExpiration)
+            certificateData = try values.decodeIfPresent(CertificateData.self, forKey: .certificateData)
+                ?? CertificateData(
+                    certStatus: nil,
+                    certWebViewUrl: nil,
+                    downloadUrl: nil,
+                    certificateAvailableDate: nil
+                )
+            completionSummary = try values.decode(CompletionSummary.self, forKey: .completionSummary)
+            courseGrade = try values.decode(CourseGrade.self, forKey: .courseGrade)
+            creditCourseRequirements = try values.decodeIfPresent(String.self, forKey: .creditCourseRequirements)
+            end = try values.decodeIfPresent(String.self, forKey: .end)
+            enrollmentMode = try values.decode(String.self, forKey: .enrollmentMode)
+            gradingPolicy = try values.decode(GradingPolicy.self, forKey: .gradingPolicy)
+            hasScheduledContent = try values.decodeIfPresent(Bool.self, forKey: .hasScheduledContent)
+            sectionScores = try values.decode([SectionScore].self, forKey: .sectionScores)
+            studioUrl = try values.decode(String.self, forKey: .studioUrl)
+            username = try values.decode(String.self, forKey: .username)
+            userHasPassingGrade = try values.decode(Bool.self, forKey: .userHasPassingGrade)
+            verificationData = try values.decode(VerificationData.self, forKey: .verificationData)
+            disableProgressGraph = try values.decode(Bool.self, forKey: .disableProgressGraph)
+        }
         
         public init(
             verifiedMode: String?,
