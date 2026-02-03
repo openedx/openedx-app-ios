@@ -1418,14 +1418,7 @@ extension CourseTab {
             return index < colors.count ? colors[index] : nil
         }
 
-        let colors = progressDetails.gradingPolicy.assignmentColors
-
-        guard !colors.isEmpty else { return nil }
-
-        let colorIndex = index % colors.count
-        let hexColor = colors[colorIndex]
-
-        return hexColor
+        return nil
     }
 
     func getSequentialShortLabel(for blockKey: String) -> String? {
