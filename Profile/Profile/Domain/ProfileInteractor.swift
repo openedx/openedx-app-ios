@@ -9,7 +9,7 @@ import Foundation
 import Core
 import UIKit
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol ProfileInteractorProtocol: Sendable {
     func getUserProfile(username: String) async throws -> UserProfile
     func getMyProfile() async throws -> UserProfile

@@ -5,7 +5,6 @@
 //  Created by Vladimir Chekyrta on 10.01.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Authorization
@@ -15,15 +14,15 @@ import SwiftUI
 
 @MainActor
 final class SignInViewModelTests: XCTestCase {
-    
+
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
-    
+
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-    
+
     func testLoginValidationEmailError() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -31,23 +30,23 @@ final class SignInViewModelTests: XCTestCase {
         let analytics = AuthorizationAnalyticsMock()
         let viewModel = SignInViewModel(
             interactor: interactor,
-            router: router, 
+            router: router,
             config: ConfigMock(),
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
             sourceScreen: .default
         )
-        
+
         await viewModel.login(username: "", password: "")
-        
-        Verify(interactor, 0, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginCallCount, 0)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 0)
+
         XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidEmailAddressOrUsername)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
-    
+
     func testLoginValidationPasswordError() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -63,14 +62,14 @@ final class SignInViewModelTests: XCTestCase {
             sourceScreen: .default
         )
         await viewModel.login(username: "edxUser@edx.com", password: "")
-        
-        Verify(interactor, 0, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginCallCount, 0)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 0)
+
         XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidPasswordLenght)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
-    
+
     func testLoginSuccess() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -86,19 +85,19 @@ final class SignInViewModelTests: XCTestCase {
             sourceScreen: .default
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
-        
-        Given(interactor, .login(username: .any, password: .any, willReturn: user))
-        
+
+        interactor.loginHandler = { _, _ in user }
+
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
-        
-        Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(analytics, .userLogin(method: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginCallCount, 1)
+        XCTAssertEqual(analytics.userLoginCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 1)
+
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
     }
-    
+
     func testSSOLoginSuccess() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -114,18 +113,18 @@ final class SignInViewModelTests: XCTestCase {
             sourceScreen: .default
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
-        
-        Given(interactor, .login(ssoToken: .any, willReturn: user))
-        
+
+        interactor.loginSsoTokenHandler = { _ in user }
+
         await viewModel.ssoLogin(title: "Riyadah")
-        
-        Verify(interactor, 1, .login(ssoToken: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginSsoTokenCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 1)
+
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
     }
-    
+
     func testSocialLoginSuccess() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -146,13 +145,13 @@ final class SignInViewModelTests: XCTestCase {
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
 
-        Given(interactor, .login(externalToken: .any, backend: .any, willReturn: user))
+        interactor.loginExternalTokenHandler = { _, _ in user }
 
         await viewModel.login(with: result)
 
-        Verify(interactor, 1, .login(externalToken: .any, backend: .any))
-        Verify(analytics, .userLogin(method: .any))
-        Verify(router, 1, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
+        XCTAssertEqual(interactor.loginExternalTokenCallCount, 1)
+        XCTAssertEqual(analytics.userLoginCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 1)
 
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, true)
@@ -183,12 +182,12 @@ final class SignInViewModelTests: XCTestCase {
         let validationError = CustomValidationError(statusCode: 400, data: ["error_description": validationErrorMessage])
         let error = AFError.responseValidationFailed(reason: AFError.ResponseValidationFailureReason.customValidationFailed(error: validationError))
 
-        Given(interactor, .login(externalToken: .any, backend: .any, willThrow: error))
+        interactor.loginExternalTokenHandler = { _, _ in throw error }
 
         await viewModel.login(with: result)
 
-        Verify(interactor, 1, .login(externalToken: .any, backend: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
+        XCTAssertEqual(interactor.loginExternalTokenCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 0)
 
         XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
         XCTAssertEqual(viewModel.isShowProgress, false)
@@ -208,18 +207,18 @@ final class SignInViewModelTests: XCTestCase {
             storage: CoreStorageMock(),
             sourceScreen: .default
         )
-        
+
         let validationErrorMessage = "Some error"
         let validationError = CustomValidationError(statusCode: 400, data: ["error_description": validationErrorMessage])
         let error = AFError.responseValidationFailed(reason: AFError.ResponseValidationFailureReason.customValidationFailed(error: validationError))
-        
-        Given(interactor, .login(username: .any, password: .any, willThrow: error))
-        
+
+        interactor.loginHandler = { _, _ in throw error }
+
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
-        
-        Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 0)
+
         XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
@@ -238,18 +237,18 @@ final class SignInViewModelTests: XCTestCase {
             storage: CoreStorageMock(),
             sourceScreen: .default
         )
-        
-        Given(interactor, .login(username: .any, password: .any, willThrow: APIError.invalidGrant))
-        
+
+        interactor.loginHandler = { _, _ in throw APIError.invalidGrant }
+
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
-        
-        Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 0)
+
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.invalidCredentials)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
-    
+
     func testLoginErrorUnknown() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -264,18 +263,18 @@ final class SignInViewModelTests: XCTestCase {
             storage: CoreStorageMock(),
             sourceScreen: .default
         )
-        
-        Given(interactor, .login(username: .any, password: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+
+        interactor.loginHandler = { _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
-        
-        Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 0)
+
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
-    
+
     func testLoginNoInternetError() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -290,20 +289,20 @@ final class SignInViewModelTests: XCTestCase {
             storage: CoreStorageMock(),
             sourceScreen: .default
         )
-        
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(interactor, .login(username: .any, password: .any, willThrow: noInternetError))
-        
+
+        interactor.loginHandler = { _, _ in throw noInternetError }
+
         await viewModel.login(username: "edxUser@edx.com", password: "password123")
-        
-        Verify(interactor, 1, .login(username: .any, password: .any))
-        Verify(router, 0, .showMainOrWhatsNewScreen(sourceScreen: .any, postLoginData: .any))
-        
+
+        XCTAssertEqual(interactor.loginCallCount, 1)
+        XCTAssertEqual(router.showMainOrWhatsNewScreenCallCount, 0)
+
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertEqual(viewModel.isShowProgress, false)
     }
-    
+
     func testTrackForgotPasswordClicked() {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -318,10 +317,10 @@ final class SignInViewModelTests: XCTestCase {
             storage: CoreStorageMock(),
             sourceScreen: .default
         )
-        
+
         viewModel.trackForgotPasswordClicked()
-        
-        Verify(analytics, 1, .forgotPasswordClicked())
+
+        XCTAssertEqual(analytics.forgotPasswordClickedCallCount, 1)
     }
-    
+
 }

@@ -9,7 +9,7 @@ import Foundation
 import Core
 import Combine
 
-//sourcery: AutoMockable
+/// @mockable
 @MainActor
 public protocol DiscussionRouter: BaseRouter {
     
@@ -47,12 +47,12 @@ public protocol DiscussionRouter: BaseRouter {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
-    
+public class DiscussionRouterPreviewMock: BaseRouterMock, DiscussionRouter {
+
     public override init() {}
-    
+
     public func showUserDetails(username: String) {}
-    
+
     public func showThreads(
         courseID: String,
         topics: Topics,
@@ -61,7 +61,7 @@ public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
         isBlackedOut: Bool,
         animated: Bool
     ) {}
-    
+
     public func showThread(
         thread: UserThread,
         postStateSubject: CurrentValueSubject<PostState?, Never>,
@@ -70,7 +70,7 @@ public class DiscussionRouterMock: BaseRouterMock, DiscussionRouter {
     ) {}
 
     public func showDiscussionsSearch(courseID: String, isBlackedOut: Bool) {}
-    
+
     public func showComments(
         courseID: String,
         commentID: String,

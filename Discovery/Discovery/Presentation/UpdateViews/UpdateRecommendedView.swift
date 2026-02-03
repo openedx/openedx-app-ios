@@ -78,7 +78,7 @@ public struct UpdateRecommendedView: View {
 struct UpdateRecommendedView_Previews: PreviewProvider {
     static var previews: some View {
         UpdateRecommendedView(
-            router: DiscoveryRouterMock(),
+            router: DiscoveryRouterPreviewMock(),
             config: ConfigMock()
         )
     }

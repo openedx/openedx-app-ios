@@ -198,7 +198,7 @@ struct DiscussionSearchTopicsView_Previews: PreviewProvider {
             courseID: "123",
             interactor: DiscussionInteractor.mock,
             storage: CoreStorageMock(),
-            router: DiscussionRouterMock(),
+            router: DiscussionRouterPreviewMock(),
             debounce: .searchDebounce
         )
         

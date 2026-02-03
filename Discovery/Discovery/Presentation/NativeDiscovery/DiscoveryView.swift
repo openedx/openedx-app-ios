@@ -208,13 +208,13 @@ public struct DiscoveryView: View {
 #if DEBUG
 struct DiscoveryView_Previews: PreviewProvider {
     static var previews: some View {
-        let vm = DiscoveryViewModel(router: DiscoveryRouterMock(),
+        let vm = DiscoveryViewModel(router: DiscoveryRouterPreviewMock(),
                                     config: ConfigMock(),
                                     interactor: DiscoveryInteractor.mock,
                                     connectivity: Connectivity(config: ConfigMock()),
-                                    analytics: DiscoveryAnalyticsMock(),
+                                    analytics: DiscoveryAnalyticsPreviewMock(),
                                     storage: CoreStorageMock())
-        let router = DiscoveryRouterMock()
+        let router = DiscoveryRouterPreviewMock()
         
         DiscoveryView(viewModel: vm, router: router)
             .preferredColorScheme(.light)

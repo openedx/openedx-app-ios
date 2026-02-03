@@ -232,11 +232,11 @@ struct DiscussionView_Previews: PreviewProvider {
         let vm = DiscussionTopicsViewModel(
             title: "Course name",
             interactor: DiscussionInteractor.mock,
-            router: DiscussionRouterMock(),
-            analytics: DiscussionAnalyticsMock(),
+            router: DiscussionRouterPreviewMock(),
+            analytics: DiscussionAnalyticsPreviewMock(),
             config: ConfigMock()
         )
-        let router = DiscussionRouterMock()
+        let router = DiscussionRouterPreviewMock()
         
         DiscussionTopicsView(
             courseID: "",

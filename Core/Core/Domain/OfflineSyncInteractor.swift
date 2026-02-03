@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol OfflineSyncInteractorProtocol: Sendable {
     func submitOfflineProgress(courseID: String, blockID: String, data: String) async throws -> Bool
 }

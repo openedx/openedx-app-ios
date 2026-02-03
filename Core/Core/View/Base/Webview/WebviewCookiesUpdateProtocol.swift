@@ -7,8 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
-
+/// @mockable
 @MainActor
 public protocol WebviewCookiesUpdateProtocol: AnyObject {
     var authInteractor: AuthInteractorProtocol { get }

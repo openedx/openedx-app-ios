@@ -258,11 +258,11 @@ struct ResponsesView_Previews: PreviewProvider {
         let viewModel = ResponsesViewModel(
             courseID: "",
             interactor: DiscussionInteractor(repository: DiscussionRepositoryMock()),
-            router: DiscussionRouterMock(),
+            router: DiscussionRouterPreviewMock(),
             config: ConfigMock(),
             storage: CoreStorageMock(),
             threadStateSubject: .init(nil),
-            analytics: DiscussionAnalyticsMock()
+            analytics: DiscussionAnalyticsPreviewMock()
         )
         let post = Post(
             authorName: "Kirill",
@@ -283,8 +283,8 @@ struct ResponsesView_Previews: PreviewProvider {
             abuseFlagged: false,
             closed: false
         )
-        let router = DiscussionRouterMock()
-        
+        let router = DiscussionRouterPreviewMock()
+
         ResponsesView(
             commentID: "",
             viewModel: viewModel,

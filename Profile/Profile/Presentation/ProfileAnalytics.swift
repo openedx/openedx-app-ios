@@ -9,7 +9,7 @@ import Foundation
 import Core
 import OEXFoundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol ProfileAnalytics {
     func profileEditClicked()
     func profileSwitch(action: String)
@@ -31,7 +31,7 @@ public protocol ProfileAnalytics {
 }
 
 #if DEBUG
-class ProfileAnalyticsMock: ProfileAnalytics {
+class ProfileAnalyticsPreview: ProfileAnalytics {
     public func profileEditClicked() {}
     public func profileSwitch(action: String) {}
     public func profileEditDoneClicked() {}

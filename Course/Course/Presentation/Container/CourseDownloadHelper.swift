@@ -9,7 +9,7 @@ import Combine
 import Core
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CourseDownloadHelperProtocol: Sendable {
     var value: CourseDownloadValue? { get }
     var courseStructure: CourseStructure? { get set }

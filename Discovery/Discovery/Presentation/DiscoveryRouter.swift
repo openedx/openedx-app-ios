@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+/// @mockable
 @MainActor
 public protocol DiscoveryRouter: BaseRouter {
     func showCourseDetais(courseID: String, title: String)
@@ -40,7 +41,7 @@ public protocol DiscoveryRouter: BaseRouter {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public class DiscoveryRouterMock: BaseRouterMock, DiscoveryRouter {
+public class DiscoveryRouterPreviewMock: BaseRouterMock, DiscoveryRouter {
     
     public override init() {}
     

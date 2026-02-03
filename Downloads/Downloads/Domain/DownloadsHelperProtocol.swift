@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DownloadsHelperProtocol: Sendable {
     func calculateDownloadProgress(courseID: String) async -> (downloaded: Int, total: Int)
     func isDownloading(courseID: String) async -> Bool
@@ -17,7 +17,7 @@ public protocol DownloadsHelperProtocol: Sendable {
 }
 
 #if DEBUG
-public actor DownloadsHelperMock: DownloadsHelperProtocol {
+public actor DownloadsHelperPreviewMock: DownloadsHelperProtocol {
     
     public var mockDownloadProgress: (downloaded: Int, total: Int) = (0, 0)
     public var mockIsDownloading: Bool = false

@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 @MainActor
 public protocol CalendarManagerProtocol: Sendable {
     func createCalendarIfNeeded()

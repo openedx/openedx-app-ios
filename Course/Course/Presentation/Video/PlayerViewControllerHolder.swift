@@ -9,6 +9,7 @@
 @preconcurrency import Combine
 import Core
 
+/// @mockable
 @MainActor
 public protocol PlayerViewControllerHolderProtocol: AnyObject, Sendable {
     var url: URL? { get }

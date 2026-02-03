@@ -435,8 +435,8 @@ struct CourseDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = CourseDetailsViewModel(
             interactor: DiscoveryInteractor.mock,
-            router: DiscoveryRouterMock(),
-            analytics: DiscoveryAnalyticsMock(),
+            router: DiscoveryRouterPreviewMock(),
+            analytics: DiscoveryAnalyticsPreviewMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity(config: ConfigMock()),
