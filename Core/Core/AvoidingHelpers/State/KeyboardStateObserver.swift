@@ -7,7 +7,7 @@ import SwiftUI
 final class KeyboardStateObserver {
     private(set) var keyboardState: KeyboardState = .default
 
-    private var observers: [NSObjectProtocol] = []
+    nonisolated(unsafe) private var observers: [NSObjectProtocol] = []
 
     init() {
         let notificationCenter = NotificationCenter.default
@@ -60,7 +60,6 @@ final class KeyboardStateObserver {
         keyboardState = newState
     }
 
-    @MainActor
     deinit {
         observers.forEach { NotificationCenter.default.removeObserver($0) }
     }
