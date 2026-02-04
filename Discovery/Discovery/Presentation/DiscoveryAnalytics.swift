@@ -9,7 +9,7 @@ import Foundation
 import Core
 import OEXFoundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DiscoveryAnalytics {
     func discoverySearchBarClicked()
     func discoveryCoursesSearch(label: String, coursesCount: Int)
@@ -23,7 +23,7 @@ public protocol DiscoveryAnalytics {
 }
 
 #if DEBUG
-class DiscoveryAnalyticsMock: DiscoveryAnalytics {
+class DiscoveryAnalyticsPreviewMock: DiscoveryAnalytics {
     public func discoverySearchBarClicked() {}
     public func discoveryCoursesSearch(label: String, coursesCount: Int) {}
     public func discoveryCourseClicked(courseID: String, courseName: String) {}

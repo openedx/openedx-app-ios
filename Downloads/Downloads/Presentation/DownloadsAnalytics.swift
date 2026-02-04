@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DownloadsAnalytics {
     func downloadCourseClicked(courseId: String, courseName: String)
     func cancelDownloadClicked(courseId: String, courseName: String)
@@ -30,7 +30,7 @@ public enum AnalyticsError: String {
 }
 
 #if DEBUG
-public class DownloadsAnalyticsMock: DownloadsAnalytics {
+public class DownloadsAnalyticsPreviewMock: DownloadsAnalytics {
     public init() {}
     
     public func downloadCourseClicked(courseId: String, courseName: String) {}

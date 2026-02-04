@@ -8,7 +8,7 @@
 import CoreData
 import Combine
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CorePersistenceProtocol: Sendable {
     func set(userId: Int)
     func getUserID() -> Int?

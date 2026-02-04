@@ -200,12 +200,12 @@ public struct ManageAccountView: View {
 #if DEBUG
 struct ManageAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        let router = ProfileRouterMock()
+        let router = ProfileRouterPreview()
         let configMock = ConfigMock()
 
         let vm = ManageAccountViewModel(
             router: router,
-            analytics: ProfileAnalyticsMock(),
+            analytics: ProfileAnalyticsPreview(),
             config: configMock,
             connectivity: Connectivity(config: configMock),
             interactor: ProfileInteractor.mock

@@ -68,7 +68,7 @@ public struct UpdateRequiredView: View {
 struct UpdateRequiredView_Previews: PreviewProvider {
     static var previews: some View {
         UpdateRequiredView(
-        router: DiscoveryRouterMock(),
+        router: DiscoveryRouterPreviewMock(),
         config: ConfigMock()
     )
     .loadFonts()

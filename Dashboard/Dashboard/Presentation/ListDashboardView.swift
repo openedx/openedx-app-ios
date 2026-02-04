@@ -164,7 +164,7 @@ struct ListDashboardView_Previews: PreviewProvider {
         let vm = ListDashboardViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(config: ConfigMock()),
-            analytics: DashboardAnalyticsMock(),
+            analytics: DashboardAnalyticsPreviewMock(),
             storage: CoreStorageMock()
         )
         let router = DashboardRouterMock()

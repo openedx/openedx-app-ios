@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DashboardAnalytics {
     func dashboardCourseClicked(courseID: String, courseName: String)
     func mainProgramsClicked()
@@ -15,7 +15,7 @@ public protocol DashboardAnalytics {
 }
 
 #if DEBUG
-class DashboardAnalyticsMock: DashboardAnalytics {
+class DashboardAnalyticsPreviewMock: DashboardAnalytics {
     public func dashboardCourseClicked(courseID: String, courseName: String) {}
     public func mainProgramsClicked() {}
     public func mainCoursesClicked() {}

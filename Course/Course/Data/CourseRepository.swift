@@ -9,6 +9,7 @@ import Foundation
 import Core
 import OEXFoundation
 
+/// @mockable
 public protocol CourseRepositoryProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getLoadedCourseBlocks(courseID: String) async throws -> CourseStructure

@@ -149,7 +149,7 @@ public class NoWiFiError: LocalizedError, @unchecked Sendable {
     public init() {}
 }
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DownloadManagerProtocol: Sendable {
     func getCurrentDownloadTask() async -> DownloadDataTask?
     func eventPublisher() -> AnyPublisher<DownloadManagerEvent, Never>

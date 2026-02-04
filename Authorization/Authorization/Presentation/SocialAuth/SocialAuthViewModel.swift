@@ -10,7 +10,7 @@ import Core
 import AuthenticationServices
 import FacebookLogin
 import GoogleSignIn
-import MSAL
+//import MSAL
 import Swinject
 
 enum SocialAuthDetails {

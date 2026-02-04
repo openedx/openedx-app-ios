@@ -157,7 +157,7 @@
 		CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */; };
 		CE57127C2CD109DB00D4AB17 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE57127B2CD109DB00D4AB17 /* OEXFoundation */; };
 		CE7CAF392CC1561E00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF382CC1561E00E0AC9D /* OEXFoundation */; };
-		CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */; };
+		CE953A3B2CD0DA940023D667 /* CoreMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE953A3A2CD0DA940023D667 /* CoreMocks.generated.swift */; };
 		CEC873BE2D75D55600A2626C /* CourseStructureManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */; };
 		CEC875392D7845DB00A2626C /* DeviceStorageFullAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875372D7845DB00A2626C /* DeviceStorageFullAlertView.swift */; };
 		CEC8753A2D7845DB00A2626C /* DownloadActionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC875352D7845DB00A2626C /* DownloadActionView.swift */; };
@@ -375,7 +375,7 @@
 		CE38BBD62D9D8294002CD276 /* ExperimentalFeaturesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExperimentalFeaturesConfig.swift; sourceTree = "<group>"; };
 		CE54C2D12CC80D8500E529F9 /* DownloadManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManagerTests.swift; sourceTree = "<group>"; };
 		CE5BBFF32E24236500D51C92 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
-		CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMock.generated.swift; sourceTree = "<group>"; };
+		CE953A3A2CD0DA940023D667 /* CoreMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreMocks.generated.swift; sourceTree = "<group>"; };
 		CEC873BD2D75D55600A2626C /* CourseStructureManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureManagerProtocol.swift; sourceTree = "<group>"; };
 		CEC875352D7845DB00A2626C /* DownloadActionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadActionView.swift; sourceTree = "<group>"; };
 		CEC875362D7845DB00A2626C /* DownloadErrorAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadErrorAlertView.swift; sourceTree = "<group>"; };
@@ -862,6 +862,14 @@
 			path = DownloadManager;
 			sourceTree = "<group>";
 		};
+		CE953A3C2CD0DA940023D668 /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				CE953A3A2CD0DA940023D667 /* CoreMocks.generated.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 		CEC875382D7845DB00A2626C /* ActionViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -905,7 +913,7 @@
 		E09179FA2B0F204D002AB695 /* CoreTests */ = {
 			isa = PBXGroup;
 			children = (
-				CE953A3A2CD0DA940023D667 /* CoreMock.generated.swift */,
+				CE953A3C2CD0DA940023D668 /* Generated */,
 				CE54C2CE2CC80B4A00E529F9 /* DownloadManager */,
 				E09179FB2B0F204D002AB695 /* Configuration */,
 			);
@@ -949,10 +957,10 @@
 			buildConfigurationList = 07169476296D996900E3DED6 /* Build configuration list for PBXNativeTarget "CoreTests" */;
 			buildPhases = (
 				F87EB93C339DD81527F250AE /* [CP] Check Pods Manifest.lock */,
+				CE953A3D2CD0DA940023D669 /* Generate Mockolo Mocks */,
 				07169465296D996800E3DED6 /* Sources */,
 				07169466296D996800E3DED6 /* Frameworks */,
 				07169467296D996800E3DED6 /* Resources */,
-				C9AA9371F83D4B112F310DB8 /* [CP] Copy Pods Resources */,
 				CE7CAF3B2CC1561E00E0AC9D /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -1056,6 +1064,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		CE953A3D2CD0DA940023D669 /* Generate Mockolo Mocks */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Mockolo Mocks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which mockolo >/dev/null; then\n    mockolo \\\n        --sourcedirs \"${SRCROOT}/Core\" \\\n        --destination \"${SRCROOT}/CoreTests/Generated/CoreMocks.generated.swift\" \\\n        --mock-final \\\n        --testable-imports \"Core\" \\\n        --custom-imports \"Foundation\" \"SwiftUI\" \"Combine\"\nelse\n    echo \"warning: mockolo not installed, download from https://github.com/uber/mockolo\"\nfi\n";
+		};
 		0770DE5A28D0B1E5006D8A5D /* SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1074,23 +1101,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
-		};
-		C9AA9371F83D4B112F310DB8 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 		ED83AD5255805030E042D62A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1144,7 +1154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */,
-				CE953A3B2CD0DA940023D667 /* CoreMock.generated.swift in Sources */,
+				CE953A3B2CD0DA940023D667 /* CoreMocks.generated.swift in Sources */,
 				E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */,
 				CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */,
 			);

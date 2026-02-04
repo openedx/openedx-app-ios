@@ -2,10 +2,9 @@
 //  BaseResponsesViewModelTests.swift
 //  DiscussionTests
 //
-//  Created by  Stepanok Ivan on 31.01.2023.
+//  Created by  Stepanok Ivan on 31.01.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discussion
@@ -14,7 +13,7 @@ import SwiftUI
 
 @MainActor
 final class BaseResponsesViewModelTests: XCTestCase {
-    
+
     let post = Post(authorName: "1",
                     authorAvatar: "1",
                     postDate: Date(),
@@ -50,18 +49,18 @@ final class BaseResponsesViewModelTests: XCTestCase {
                     parentID: nil,
                     abuseFlagged: false,
                     closed: false)
-    
+
     var interactor: DiscussionInteractorProtocolMock!
     var router: DiscussionRouterMock!
-    var config: ConfigMock!
+    var config: ConfigProtocolMock!
     var viewModel: BaseResponsesViewModel!
-    
+
     override func setUp() async throws {
         try await super.setUp()
-        
+
         interactor = DiscussionInteractorProtocolMock()
         router = DiscussionRouterMock()
-        config = ConfigMock()
+        config = ConfigProtocolMock()
         viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -70,11 +69,11 @@ final class BaseResponsesViewModelTests: XCTestCase {
             analytics: DiscussionAnalyticsMock()
         )
     }
-    
+
     func testVoteThreadSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -85,24 +84,24 @@ final class BaseResponsesViewModelTests: XCTestCase {
         var result = false
 
         viewModel.postComments = post
-        
-        Given(interactor, .voteThread(voted: .any, threadID: .any, willProduce: {_ in}))
-                
+
+        interactor.voteThreadHandler = { _, _ in }
+
         result = await viewModel.vote(id: "1", isThread: true, voted: true, index: 0, courseID: "courseID")
 
-        Verify(interactor, .voteThread(voted: .value(true), threadID: .value("1")))
-        
+        XCTAssertEqual(interactor.voteThreadCallCount, 1)
+
         XCTAssertTrue(result)
         XCTAssertFalse(viewModel.postComments!.comments[0].voted)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testVoteResponseSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -115,12 +114,12 @@ final class BaseResponsesViewModelTests: XCTestCase {
 
         viewModel.postComments = post
         viewModel.postComments?.comments[0].voted = false
-        
-        Given(interactor, .voteResponse(voted: .any, responseID: .any, willProduce: {_ in}))
+
+        interactor.voteResponseHandler = { _, _ in }
 
         result = await viewModel.vote(id: "1", isThread: false, voted: true, index: 0, courseID: "courseID")
 
-        Verify(interactor, .voteResponse(voted: .value(true), responseID: .value("1")))
+        XCTAssertEqual(interactor.voteResponseCallCount, 1)
 
         XCTAssertTrue(result)
         XCTAssertTrue(viewModel.postComments!.comments[0].voted)
@@ -128,11 +127,11 @@ final class BaseResponsesViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testVoteParentThreadSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -144,24 +143,24 @@ final class BaseResponsesViewModelTests: XCTestCase {
         var result = false
 
         viewModel.postComments = post
-        
-        Given(interactor, .voteThread(voted: .any, threadID: .any, willProduce: {_ in}))
-         
+
+        interactor.voteThreadHandler = { _, _ in }
+
         result = await viewModel.vote(id: "1", isThread: true, voted: true, index: nil, courseID: "courseID")
 
-        Verify(interactor, .voteThread(voted: .value(true), threadID: .value("1")))
-        
+        XCTAssertEqual(interactor.voteThreadCallCount, 1)
+
         XCTAssertTrue(result)
         XCTAssertTrue(viewModel.postComments!.voted)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testVoteParentResponseSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -171,16 +170,16 @@ final class BaseResponsesViewModelTests: XCTestCase {
         )
 
         var result = false
-        
+
         viewModel.postComments = post
 
-        Given(interactor, .voteResponse(voted: .any, responseID: .any, willProduce: {_ in}))
+        interactor.voteResponseHandler = { _, _ in }
 
         viewModel.postComments?.voted = true
 
         result = await viewModel.vote(id: "2", isThread: false, voted: false, index: nil, courseID: "courseID")
-        
-        Verify(interactor, .voteResponse(voted: .value(false), responseID: .value("2")))
+
+        XCTAssertEqual(interactor.voteResponseCallCount, 1)
 
         XCTAssertTrue(result)
         XCTAssertFalse(viewModel.postComments!.voted)
@@ -188,11 +187,11 @@ final class BaseResponsesViewModelTests: XCTestCase {
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testVoteNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -204,23 +203,23 @@ final class BaseResponsesViewModelTests: XCTestCase {
         var result = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(interactor, .voteThread(voted: .any, threadID: .any, willThrow: noInternetError))
-        
+
+        interactor.voteThreadHandler = { _, _ in throw noInternetError }
+
         result = await viewModel.vote(id: "1", isThread: true, voted: true, index: 1, courseID: "courseID")
-        
-        Verify(interactor, .voteThread(voted: .value(true), threadID: .value("1")))
-        
+
+        XCTAssertEqual(interactor.voteThreadCallCount, 1)
+
         XCTAssertFalse(result)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testVoteUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -230,23 +229,23 @@ final class BaseResponsesViewModelTests: XCTestCase {
         )
 
         var result = false
-        
-        Given(interactor, .voteThread(voted: .any, threadID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+
+        interactor.voteThreadHandler = { _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         result = await viewModel.vote(id: "1", isThread: true, voted: true, index: nil, courseID: "courseID")
-        
-        Verify(interactor, .voteThread(voted: .value(true), threadID: .value("1")))
-        
+
+        XCTAssertEqual(interactor.voteThreadCallCount, 1)
+
         XCTAssertFalse(result)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testFlagThreadSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -256,26 +255,26 @@ final class BaseResponsesViewModelTests: XCTestCase {
         )
 
         var result = false
-        
+
         viewModel.postComments = post
-        
-        Given(interactor, .flagThread(abuseFlagged: .any, threadID: .any, willProduce: {_ in}))
-        
+
+        interactor.flagThreadHandler = { _, _ in }
+
         result = await viewModel.flag(id: "1", isThread: true, abuseFlagged: true, index: nil, courseID: "courseID")
-        
-        Verify(interactor, .flagThread(abuseFlagged: .value(true), threadID: .value("1")))
-        
+
+        XCTAssertEqual(interactor.flagThreadCallCount, 1)
+
         XCTAssertTrue(result)
         XCTAssertTrue(viewModel.postComments!.abuseFlagged)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testFlagCommentSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -285,26 +284,26 @@ final class BaseResponsesViewModelTests: XCTestCase {
         )
 
         var result = false
-        
+
         viewModel.postComments = post
-        
-        Given(interactor, .flagComment(abuseFlagged: .any, commentID: .any, willProduce: {_ in}))
-        
+
+        interactor.flagCommentHandler = { _, _ in }
+
         result = await viewModel.flag(id: "1", isThread: false, abuseFlagged: true, index: 0, courseID: "courseID")
-        
-        Verify(interactor, .flagComment(abuseFlagged: .value(true), commentID: .value("1")))
-        
+
+        XCTAssertEqual(interactor.flagCommentCallCount, 1)
+
         XCTAssertTrue(result)
         XCTAssertTrue(viewModel.postComments!.comments[0].abuseFlagged)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testFlagNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -316,23 +315,23 @@ final class BaseResponsesViewModelTests: XCTestCase {
         var result = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(interactor, .flagThread(abuseFlagged: .any, threadID: .any, willThrow: noInternetError))
-        
+
+        interactor.flagThreadHandler = { _, _ in throw noInternetError }
+
         result = await viewModel.flag(id: "1", isThread: true, abuseFlagged: true, index: 1, courseID: "courseID")
-        
-        Verify(interactor, .flagThread(abuseFlagged: .value(true), threadID: .value("1")))
+
+        XCTAssertEqual(interactor.flagThreadCallCount, 1)
 
         XCTAssertFalse(result)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testFlagUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -343,22 +342,22 @@ final class BaseResponsesViewModelTests: XCTestCase {
 
         var result = false
 
-        Given(interactor, .flagThread(abuseFlagged: .any, threadID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+        interactor.flagThreadHandler = { _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         result = await viewModel.flag(id: "1", isThread: true, abuseFlagged: true, index: nil, courseID: "courseID")
-        
-        Verify(interactor, .flagThread(abuseFlagged: .value(true), threadID: .value("1")))
+
+        XCTAssertEqual(interactor.flagThreadCallCount, 1)
 
         XCTAssertFalse(result)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testFollowThreadSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -368,26 +367,26 @@ final class BaseResponsesViewModelTests: XCTestCase {
         )
 
         var result = false
-        
+
         viewModel.postComments = post
 
-        Given(interactor, .followThread(following: .any, threadID: .any, willProduce: {_ in}))
-        
+        interactor.followThreadHandler = { _, _ in }
+
         result = await viewModel.followThread(following: true, threadID: "1")
-        
-        Verify(interactor, .followThread(following: .value(true), threadID: .value("1")))
-        
+
+        XCTAssertEqual(interactor.followThreadCallCount, 1)
+
         XCTAssertTrue(result)
         XCTAssertTrue(viewModel.postComments!.followed)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testFollowThreadNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -399,23 +398,23 @@ final class BaseResponsesViewModelTests: XCTestCase {
         var result = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(interactor, .followThread(following: .any, threadID: .any, willThrow: noInternetError))
-        
+
+        interactor.followThreadHandler = { _, _ in throw noInternetError }
+
         result = await viewModel.followThread(following: true, threadID: "1")
 
-        Verify(interactor, .followThread(following: .value(true), threadID: .value("1")))
+        XCTAssertEqual(interactor.followThreadCallCount, 1)
 
         XCTAssertFalse(result)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testFollowThreadUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -426,22 +425,22 @@ final class BaseResponsesViewModelTests: XCTestCase {
 
         var result = false
 
-        Given(interactor, .followThread(following: .any, threadID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+        interactor.followThreadHandler = { _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         result = await viewModel.followThread(following: true, threadID: "1")
 
-        Verify(interactor, .followThread(following: .value(true), threadID: .value("1")))
+        XCTAssertEqual(interactor.followThreadCallCount, 1)
 
         XCTAssertFalse(result)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testAddNewPost() {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         let viewModel = BaseResponsesViewModel(
             interactor: interactor,
             router: router,
@@ -449,9 +448,9 @@ final class BaseResponsesViewModelTests: XCTestCase {
             storage: CoreStorageMock(),
             analytics: DiscussionAnalyticsMock()
         )
-        
+
         viewModel.postComments = post
-        
+
         let newPost = Post(authorName: "new",
                            authorAvatar: "new",
                            postDate: Date(),
@@ -469,10 +468,10 @@ final class BaseResponsesViewModelTests: XCTestCase {
                            parentID: nil,
                            abuseFlagged: false,
                            closed: false)
-        
+
         viewModel.addNewPost(newPost)
-        
+
         XCTAssertTrue(viewModel.postComments!.comments.last!.authorName == "new")
     }
-    
+
 }

@@ -210,8 +210,8 @@ struct DatesEmptyStateView: View {
             interactor: DatesInteractor.mock,
             connectivity: Connectivity(config: ConfigMock()),
             courseManager: CourseStructureManagerMock(),
-            analytics: AppDatesAnalyticsMock(),
-            router: AppDatesRouterMock()
+            analytics: AppDatesAnalyticsPreviewMock(),
+            router: AppDatesRouterPreviewMock()
         )
     )
 }

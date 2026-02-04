@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DiscussionAnalytics {
     func discussionAllPostsClicked(courseId: String, courseName: String)
     func discussionFollowingClicked(courseId: String, courseName: String)
@@ -66,7 +66,7 @@ public protocol DiscussionAnalytics {
 }
 
 #if DEBUG
-class DiscussionAnalyticsMock: DiscussionAnalytics {
+class DiscussionAnalyticsPreviewMock: DiscussionAnalytics {
     public func discussionAllPostsClicked(courseId: String, courseName: String) {}
     public func discussionFollowingClicked(courseId: String, courseName: String) {}
     public func discussionTopicClicked(courseId: String, courseName: String, topicId: String, topicName: String) {}

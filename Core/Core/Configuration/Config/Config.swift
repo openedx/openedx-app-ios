@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol ConfigProtocol: Sendable {
     var baseURL: URL { get }
     var baseSSOURL: URL { get }
