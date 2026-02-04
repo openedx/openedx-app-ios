@@ -2,10 +2,9 @@
 //  CourseDetailsViewModelTests.swift
 //  CourseDetailsTests
 //
-//  Created by  Stepanok Ivan on 20.01.2023.
+//  Created by  Stepanok Ivan on 20.01.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discovery
@@ -22,17 +21,19 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
         let courseDetails = CourseDetails(
             courseID: "123",
             org: "org",
@@ -48,20 +49,19 @@ final class CourseDetailsViewModelTests: XCTestCase {
             courseVideoURL: nil,
             courseRawImage: nil
         )
-        
-        
-        Given(interactor, .getCourseDetails(courseID: "123",
-                                            willReturn: courseDetails))
-        
+
+
+        interactor.getCourseDetailsHandler = { _ in courseDetails }
+
         await viewModel.getCourseDetail(courseID: "123")
-        
-        Verify(interactor, 1, .getCourseDetails(courseID: .any))
-        
+
+        XCTAssertEqual(interactor.getCourseDetailsCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.showError)
     }
-    
+
     func testGetCourseDetailSuccessOffline() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -69,17 +69,19 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: false))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
+
+        connectivity.isInternetAvaliable = false
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
         let courseDetails = CourseDetails(
             courseID: "123",
             org: "org",
@@ -95,19 +97,18 @@ final class CourseDetailsViewModelTests: XCTestCase {
             courseVideoURL: nil,
             courseRawImage: nil
         )
-        
-        Given(interactor, .getLoadedCourseDetails(courseID: "123",
-                                                   willReturn: courseDetails))
-        
+
+        interactor.getLoadedCourseDetailsHandler = { _ in courseDetails }
+
         await viewModel.getCourseDetail(courseID: "123")
-        
-        Verify(interactor, 1, .getLoadedCourseDetails(courseID: .any))
-        
+
+        XCTAssertEqual(interactor.getLoadedCourseDetailsCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.showError)
     }
-    
+
     func testGetCourseDetailNoInternetError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -115,31 +116,32 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
-        Given(interactor, .getCourseDetails(courseID: "123",
-                                            willThrow: noInternetError))
-        
+        interactor.getCourseDetailsHandler = { _ in throw noInternetError }
+
         await viewModel.getCourseDetail(courseID: "123")
-        
-        Verify(interactor, 1, .getCourseDetails(courseID: .any))
-        
+
+        XCTAssertEqual(interactor.getCourseDetailsCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertTrue(viewModel.showError)
     }
-    
+
     func testGetCourseDetailNoCacheError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -147,29 +149,30 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
-        Given(interactor, .getCourseDetails(courseID: "123",
-                                            willThrow: NoCachedDataError()))
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
+        interactor.getCourseDetailsHandler = { _ in throw NoCachedDataError() }
+
         await viewModel.getCourseDetail(courseID: "123")
-        
-        Verify(interactor, 1, .getCourseDetails(courseID: .any))
-        
+
+        XCTAssertEqual(interactor.getCourseDetailsCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertTrue(viewModel.showError)
     }
-    
+
     func testGetCourseDetailUnknownError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -177,29 +180,30 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
-        Given(interactor, .getCourseDetails(courseID: "123",
-                                            willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
+        interactor.getCourseDetailsHandler = { _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         await viewModel.getCourseDetail(courseID: "123")
-        
-        Verify(interactor, 1, .getCourseDetails(courseID: .any))
-        
+
+        XCTAssertEqual(interactor.getCourseDetailsCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertTrue(viewModel.showError)
     }
-    
+
     func testEnrollToCourseSuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -207,30 +211,32 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
-        Given(interactor, .enrollToCourse(courseID: "123", willReturn: true))
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
+        interactor.enrollToCourseHandler = { _ in true }
+
         await viewModel.enrollToCourse(id: "123")
-        
-        Verify(interactor, 1, .enrollToCourse(courseID: .any))
-        Verify(analytics, .courseEnrollClicked(courseId: .any, courseName: .any))
-        Verify(analytics, .courseEnrollSuccess(courseId: .any, courseName: .any))
-        
+
+        XCTAssertEqual(interactor.enrollToCourseCallCount, 1)
+        XCTAssertTrue(analytics.courseEnrollClickedCallCount > 0)
+        XCTAssertTrue(analytics.courseEnrollSuccessCallCount > 0)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.showError)
     }
-    
+
     func testEnrollToCourseUnknownError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -238,30 +244,31 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
-        Given(interactor, .enrollToCourse(courseID: "123",
-                                          willThrow: AFError.explicitlyCancelled))
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
+        interactor.enrollToCourseHandler = { _ in throw AFError.explicitlyCancelled }
+
         await viewModel.enrollToCourse(id: "123")
-        
-        Verify(interactor, 1, .enrollToCourse(courseID: .any))
-        Verify(analytics, .courseEnrollClicked(courseId: .any, courseName: .any))
-        
+
+        XCTAssertEqual(interactor.enrollToCourseCallCount, 1)
+        XCTAssertTrue(analytics.courseEnrollClickedCallCount > 0)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertTrue(viewModel.showError)
     }
-    
+
     func testEnrollToCourseNoInternetError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -269,31 +276,32 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
-        Given(interactor, .enrollToCourse(courseID: "123",
-                                          willThrow: noInternetError))
-        
+        interactor.enrollToCourseHandler = { _ in throw noInternetError }
+
         await viewModel.enrollToCourse(id: "123")
-        
-        Verify(interactor, 1, .enrollToCourse(courseID: .any))
-        
+
+        XCTAssertEqual(interactor.enrollToCourseCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertTrue(viewModel.showError)
     }
-    
+
     func testEnrollToCourseNoCacheError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let router = DiscoveryRouterMock()
@@ -301,27 +309,28 @@ final class CourseDetailsViewModelTests: XCTestCase {
         let config = ConfigMock()
         let cssInjector = CSSInjectorMock()
         let connectivity = ConnectivityProtocolMock()
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        
-        let viewModel = CourseDetailsViewModel(interactor: interactor,
-                                               router: router,
-                                               analytics: analytics,
-                                               config: config,
-                                               cssInjector: cssInjector,
-                                               connectivity: connectivity,
-                                               storage: CoreStorageMock())
-        
-        Given(interactor, .enrollToCourse(courseID: "123",
-                                          willThrow: NoCachedDataError()))
-        
+
+        connectivity.isInternetAvaliable = true
+
+        let viewModel = CourseDetailsViewModel(
+            interactor: interactor,
+            router: router,
+            analytics: analytics,
+            config: config,
+            cssInjector: cssInjector,
+            connectivity: connectivity,
+            storage: CoreStorageMock()
+        )
+
+        interactor.enrollToCourseHandler = { _ in throw NoCachedDataError() }
+
         await viewModel.enrollToCourse(id: "123")
-        
-        Verify(interactor, 1, .enrollToCourse(courseID: .any))
-        
+
+        XCTAssertEqual(interactor.enrollToCourseCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertTrue(viewModel.showError)
     }
-    
+
 }

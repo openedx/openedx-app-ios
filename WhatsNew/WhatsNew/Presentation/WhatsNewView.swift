@@ -177,8 +177,8 @@ struct WhatsNewView_Previews: PreviewProvider {
         WhatsNewView(
             router: WhatsNewRouterMock(),
             viewModel: WhatsNewViewModel(
-                storage: WhatsNewStorageMock(),
-                analytics: WhatsNewAnalyticsMock()
+                storage: WhatsNewStoragePreviewMock(),
+                analytics: WhatsNewAnalyticsPreviewMock()
             )
         )
         .loadFonts()

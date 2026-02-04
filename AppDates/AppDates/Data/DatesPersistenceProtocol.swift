@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DatesPersistenceProtocol: Sendable {
     func loadCourseDates(limit: Int?, offset: Int?) async throws -> [CourseDate]
     func saveCourseDates(dates: [CourseDate], startIndex: Int) async
@@ -16,7 +16,7 @@ public protocol DatesPersistenceProtocol: Sendable {
 }
 
 #if DEBUG
-public struct DatesPersistenceMock: DatesPersistenceProtocol {
+public struct DatesPersistencePreviewMock: DatesPersistenceProtocol {
     public func loadCourseDates(limit: Int?, offset: Int?) async throws -> [CourseDate] {[]}
     public func saveCourseDates(dates: [CourseDate], startIndex: Int) async {}
     public func clearAllCourseDates() async {}

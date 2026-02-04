@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// @mockable
 @MainActor
 public protocol PlayerServiceProtocol: Sendable {
     var router: CourseRouter { get }

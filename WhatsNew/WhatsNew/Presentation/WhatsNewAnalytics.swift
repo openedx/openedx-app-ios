@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol WhatsNewAnalytics {
     func whatsnewPopup()
     func whatsnewDone(totalScreens: Int)
@@ -15,9 +15,9 @@ public protocol WhatsNewAnalytics {
 }
 
 #if DEBUG
-class WhatsNewAnalyticsMock: WhatsNewAnalytics {
-    public func whatsnewPopup() {}
-    public func whatsnewDone(totalScreens: Int) {}
-    public func whatsnewClose(totalScreens: Int, currentScreen: Int) {}
+class WhatsNewAnalyticsPreviewMock: WhatsNewAnalytics {
+    func whatsnewPopup() {}
+    func whatsnewDone(totalScreens: Int) {}
+    func whatsnewClose(totalScreens: Int, currentScreen: Int) {}
 }
 #endif

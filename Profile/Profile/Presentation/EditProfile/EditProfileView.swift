@@ -280,8 +280,8 @@ struct EditProfileView_Previews: PreviewProvider {
             viewModel: EditProfileViewModel(
                 userModel: userModel,
                 interactor: ProfileInteractor.mock,
-                router: ProfileRouterMock(),
-                analytics: ProfileAnalyticsMock()),
+                router: ProfileRouterPreview(),
+                analytics: ProfileAnalyticsPreview()),
             avatar: nil,
             profileDidEdit: {_ in}
         )

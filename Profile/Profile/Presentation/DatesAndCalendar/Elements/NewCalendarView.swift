@@ -160,12 +160,12 @@ struct NewCalendarView: View {
     NewCalendarView(
         title: .changeSyncOptions,
         viewModel: DatesAndCalendarViewModel(
-            router: ProfileRouterMock(),
+            router: ProfileRouterPreview(),
             interactor: ProfileInteractor(
                 repository: ProfileRepositoryMock()
             ),
-            profileStorage: ProfileStorageMock(),
-            persistence: ProfilePersistenceMock(),
+            profileStorage: ProfileStoragePreview(),
+            persistence: ProfilePersistencePreview(),
             calendarManager: CalendarManagerMock(),
             connectivity: Connectivity(config: ConfigMock())
         ),

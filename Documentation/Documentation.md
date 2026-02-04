@@ -230,6 +230,6 @@ The following technologies are used in the project:
 - CoreData, data persistence.
 - Firebase, infrastructure.
 - XCTest, unit testing framework.
-- SwiftyMocky, framework for automatic mock generation.
+- Mockolo, framework for automatic mock generation.
 - SwiftLint, a tool to enforce Swift style and conventions.
 - SwiftGen, the Swift code generator for assets.

@@ -23,7 +23,6 @@
 		0231124D28EDA804002588FB /* CourseUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231124C28EDA804002588FB /* CourseUnitView.swift */; };
 		0231124F28EDA811002588FB /* CourseUnitViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0231124E28EDA811002588FB /* CourseUnitViewModel.swift */; };
 		023812E8297AC8EB0087098F /* Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0289F8EE28E1C3510064F8F3 /* Course.framework */; platformFilter = ios; };
-		023812F3297AC9ED0087098F /* CourseMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023812F2297AC9EC0087098F /* CourseMock.generated.swift */; };
 		02454CA02A2618E70043052A /* YouTubeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02454C9F2A2618E70043052A /* YouTubeView.swift */; };
 		02454CA22A26190A0043052A /* EncodedVideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02454CA12A26190A0043052A /* EncodedVideoView.swift */; };
 		02454CA42A26193F0043052A /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02454CA32A26193F0043052A /* WebView.swift */; };
@@ -98,6 +97,7 @@
 		A5A510A22E66E8D600553607 /* CourseVideoCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A12E66E8D600553607 /* CourseVideoCarouselSlideView.swift */; };
 		A5A510A42E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */; };
 		A5A510A62E672E4A00553607 /* AssignmentCarouselDetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */; };
+		A5B468142F29DCA3002A4ECA /* CourseMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B468122F29DCA3002A4ECA /* CourseMocks.generated.swift */; };
 		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 		BA58CF5D2B3D804D005B102E /* CourseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF5C2B3D804D005B102E /* CourseStorage.swift */; };
 		BA58CF612B471041005B102E /* VideoDownloadQualityBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */; };
@@ -191,7 +191,6 @@
 		0231124C28EDA804002588FB /* CourseUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUnitView.swift; sourceTree = "<group>"; };
 		0231124E28EDA811002588FB /* CourseUnitViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseUnitViewModel.swift; sourceTree = "<group>"; };
 		023812E4297AC8EA0087098F /* CourseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CourseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		023812F2297AC9EC0087098F /* CourseMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseMock.generated.swift; sourceTree = "<group>"; };
 		02454C9F2A2618E70043052A /* YouTubeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeView.swift; sourceTree = "<group>"; };
 		02454CA12A26190A0043052A /* EncodedVideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedVideoView.swift; sourceTree = "<group>"; };
 		02454CA32A26193F0043052A /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
@@ -283,6 +282,7 @@
 		A5A510A12E66E8D600553607 /* CourseVideoCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseVideoCarouselSlideView.swift; sourceTree = "<group>"; };
 		A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentsCarouselSlideView.swift; sourceTree = "<group>"; };
 		A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCarouselDetailCardView.swift; sourceTree = "<group>"; };
+		A5B468122F29DCA3002A4ECA /* CourseMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseMocks.generated.swift; sourceTree = "<group>"; };
 		ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debug.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debug.xcconfig"; sourceTree = "<group>"; };
 		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BA58CF5C2B3D804D005B102E /* CourseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStorage.swift; sourceTree = "<group>"; };
@@ -383,8 +383,8 @@
 		023812E5297AC8EB0087098F /* CourseTests */ = {
 			isa = PBXGroup;
 			children = (
+				A5B468132F29DCA3002A4ECA /* Generated */,
 				0766DFD4299ADA3F00EBEF6A /* Presentation */,
-				023812F2297AC9EC0087098F /* CourseMock.generated.swift */,
 			);
 			path = CourseTests;
 			sourceTree = "<group>";
@@ -717,6 +717,14 @@
 			path = NewOutlIineAndProgress;
 			sourceTree = "<group>";
 		};
+		A5B468132F29DCA3002A4ECA /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				A5B468122F29DCA3002A4ECA /* CourseMocks.generated.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 		BA58CF622B471047005B102E /* VideoDownloadQualityBarView */ = {
 			isa = PBXGroup;
 			children = (
@@ -916,7 +924,6 @@
 				023812E0297AC8EA0087098F /* Sources */,
 				023812E1297AC8EA0087098F /* Frameworks */,
 				023812E2297AC8EA0087098F /* Resources */,
-				92C3B3183886DDECE1CBAC22 /* [CP] Copy Pods Resources */,
 				CE7CAF432CC1563500E0AC9D /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -1107,7 +1114,7 @@
 				065D575D2D4442D700350351 /* CourseDownloadHelperTests.swift in Sources */,
 				CE4BA8832E0806380050F2C7 /* CourseProgressViewModelTests.swift in Sources */,
 				02F78AEB29E6BCA20038DE30 /* VideoPlayerViewModelTests.swift in Sources */,
-				023812F3297AC9ED0087098F /* CourseMock.generated.swift in Sources */,
+				A5B468142F29DCA3002A4ECA /* CourseMocks.generated.swift in Sources */,
 				DB205BFB2AE81B1200136EC2 /* CourseDateViewModelTests.swift in Sources */,
 				022EA8CB297AD63B0014A8F7 /* CourseContainerViewModelTests.swift in Sources */,
 				0262148F29AE17C4008BD75A /* HandoutsViewModelTests.swift in Sources */,

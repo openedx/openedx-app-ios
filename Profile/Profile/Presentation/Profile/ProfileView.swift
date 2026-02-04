@@ -188,12 +188,12 @@ public struct ProfileView: View {
 #if DEBUG
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        let router = ProfileRouterMock()
+        let router = ProfileRouterPreview()
         let config = ConfigMock()
         let vm = ProfileViewModel(
             interactor: ProfileInteractor.mock,
             router: router,
-            analytics: ProfileAnalyticsMock(),
+            analytics: ProfileAnalyticsPreview(),
             config: config,
             connectivity: Connectivity(config: config)
         )

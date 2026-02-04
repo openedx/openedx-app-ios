@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DiscoveryInteractorProtocol: Sendable {
     func discovery(page: Int) async throws -> [CourseItem]
     func discoveryOffline() async throws -> [CourseItem]
@@ -54,6 +54,6 @@ public actor DiscoveryInteractor: DiscoveryInteractorProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public extension DiscoveryInteractor {
-    static let mock = DiscoveryInteractor(repository: DiscoveryRepositoryMock())
+    static let mock = DiscoveryInteractor(repository: DiscoveryRepositoryPreviewMock())
 }
 #endif

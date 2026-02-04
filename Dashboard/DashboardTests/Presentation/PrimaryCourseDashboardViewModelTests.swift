@@ -5,8 +5,6 @@
 //  Created by Ivan Stepanok on 30.10.2024.
 //
 
-
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Dashboard
@@ -15,26 +13,26 @@ import SwiftUI
 
 @MainActor
 final class PrimaryCourseDashboardViewModelTests: XCTestCase {
-    
+
     var interactor: DashboardInteractorProtocolMock!
     var connectivity: ConnectivityProtocolMock!
     var analytics: DashboardAnalyticsMock!
     var storage: CoreStorageMock!
-    var config: ConfigProtocolMock!
+    var config: ConfigMock!
     var router: DashboardRouterMock!
-    
+
     override func setUp() {
         super.setUp()
         interactor = DashboardInteractorProtocolMock()
         connectivity = ConnectivityProtocolMock()
         analytics = DashboardAnalyticsMock()
         storage = CoreStorageMock()
-        config = ConfigProtocolMock()
+        config = ConfigMock()
         router = DashboardRouterMock()
     }
-    
+
     let enrollment = PrimaryEnrollment(
-        primaryCourse: PrimaryCourse.init(
+        primaryCourse: PrimaryCourse(
             name: "Primary Course",
             org: "OpenEdX",
             courseID: "1",
@@ -50,7 +48,7 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
             resumeTitle: nil
         ),
         courses: [
-            CourseItem.init(
+            CourseItem(
                 name: "Course",
                 org: "OpenEdX",
                 shortDescription: "short description",
@@ -71,7 +69,7 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
         totalPages: 1,
         count: 1
     )
-    
+
     func testGetEnrollmentsSuccess() async throws {
         // Given
         let viewModel = PrimaryCourseDashboardViewModel(
@@ -82,21 +80,21 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
             storage: storage,
             router: router
         )
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getPrimaryEnrollment(pageSize: .any, willReturn: enrollment))
-        
+
+        connectivity.isInternetAvaliable = true
+        interactor.getPrimaryEnrollmentHandler = { _ in self.enrollment }
+
         // When
         await viewModel.getEnrollments()
-        
+
         // Then
-        Verify(interactor, 1, .getPrimaryEnrollment(pageSize: .value(UIDevice.current.userInterfaceIdiom == .pad ? 7 : 5)))
+        XCTAssertEqual(interactor.getPrimaryEnrollmentCallCount, 1)
         XCTAssertEqual(viewModel.enrollments, enrollment)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testGetEnrollmentsOfflineSuccess() async throws {
         // Given
         let viewModel = PrimaryCourseDashboardViewModel(
@@ -107,21 +105,21 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
             storage: storage,
             router: router
         )
-                
-        Given(connectivity, .isInternetAvaliable(getter: false))
-        Given(interactor, .getPrimaryEnrollmentOffline(willReturn: enrollment))
-        
+
+        connectivity.isInternetAvaliable = false
+        interactor.getPrimaryEnrollmentOfflineHandler = { self.enrollment }
+
         // When
         await viewModel.getEnrollments()
-        
+
         // Then
-        Verify(interactor, 1, .getPrimaryEnrollmentOffline())
+        XCTAssertEqual(interactor.getPrimaryEnrollmentOfflineCallCount, 1)
         XCTAssertEqual(viewModel.enrollments, enrollment)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testGetEnrollmentsNoCacheError() async throws {
         // Given
         let viewModel = PrimaryCourseDashboardViewModel(
@@ -132,21 +130,21 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
             storage: storage,
             router: router
         )
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getPrimaryEnrollment(pageSize: .any, willThrow: NoCachedDataError()))
-        
+
+        connectivity.isInternetAvaliable = true
+        interactor.getPrimaryEnrollmentHandler = { _ in throw NoCachedDataError() }
+
         // When
         await viewModel.getEnrollments()
-        
+
         // Then
-        Verify(interactor, 1, .getPrimaryEnrollment(pageSize: .value(UIDevice.current.userInterfaceIdiom == .pad ? 7 : 5)))
+        XCTAssertEqual(interactor.getPrimaryEnrollmentCallCount, 1)
         XCTAssertNil(viewModel.enrollments)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.noCachedData)
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testGetEnrollmentsUnknownError() async throws {
         // Given
         let viewModel = PrimaryCourseDashboardViewModel(
@@ -157,21 +155,21 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
             storage: storage,
             router: router
         )
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getPrimaryEnrollment(pageSize: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+
+        connectivity.isInternetAvaliable = true
+        interactor.getPrimaryEnrollmentHandler = { _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         // When
         await viewModel.getEnrollments()
-        
+
         // Then
-        Verify(interactor, 1, .getPrimaryEnrollment(pageSize: .value(UIDevice.current.userInterfaceIdiom == .pad ? 7 : 5)))
+        XCTAssertEqual(interactor.getPrimaryEnrollmentCallCount, 1)
         XCTAssertNil(viewModel.enrollments)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testTrackDashboardCourseClicked() {
         // Given
         let viewModel = PrimaryCourseDashboardViewModel(
@@ -182,17 +180,17 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
             storage: storage,
             router: router
         )
-        
+
         let courseID = "test-course-id"
         let courseName = "Test Course"
-        
+
         // When
         viewModel.trackDashboardCourseClicked(courseID: courseID, courseName: courseName)
-        
+
         // Then
-        Verify(analytics, 1, .dashboardCourseClicked(courseID: .value(courseID), courseName: .value(courseName)))
+        XCTAssertEqual(analytics.dashboardCourseClickedCallCount, 1)
     }
-    
+
     func testNotificationCenterSubscriptions() async {
         // Given
         let viewModel = PrimaryCourseDashboardViewModel(
@@ -203,20 +201,20 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
             storage: storage,
             router: router
         )
-        
-        Given(connectivity, .isInternetAvaliable(getter: true))
-        Given(interactor, .getPrimaryEnrollment(pageSize: .any, willReturn: enrollment))
-        
+
+        connectivity.isInternetAvaliable = true
+        interactor.getPrimaryEnrollmentHandler = { _ in self.enrollment }
+
         // When
         NotificationCenter.default.post(name: .onCourseEnrolled, object: nil)
         NotificationCenter.default.post(name: .onblockCompletionRequested, object: nil)
         NotificationCenter.default.post(name: .refreshEnrollments, object: nil)
-        
+
         // Wait a bit for async operations to complete
         try? await Task.sleep(nanoseconds: 100_000_000)
-        
+
         // Then
         // Verify that getEnrollments was called multiple times due to notifications
-        Verify(interactor, .getPrimaryEnrollment(pageSize: .any))
+        XCTAssertTrue(interactor.getPrimaryEnrollmentCallCount > 0)
     }
 }

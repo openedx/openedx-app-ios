@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+/// @mockable
 @MainActor
 public protocol AppDatesRouter: BaseRouter {
     func showSettings()
@@ -28,7 +29,7 @@ public protocol AppDatesRouter: BaseRouter {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public class AppDatesRouterMock: BaseRouterMock, AppDatesRouter {
+public class AppDatesRouterPreviewMock: BaseRouterMock, AppDatesRouter {
     public func showSettings() {}
     public func showUpdateRequiredView(showAccountLink: Bool) {}
     public func showCourseScreens(

@@ -8,7 +8,7 @@
 import Foundation
 import SwiftUI
 
-//sourcery: AutoMockable
+/// @mockable
 @MainActor
 public protocol BaseRouter: Sendable {
     

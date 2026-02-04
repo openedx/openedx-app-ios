@@ -7,15 +7,14 @@
 
 import Foundation
 
+/// @mockable
 public protocol WhatsNewStorage: Sendable {
     var whatsNewVersion: String? {get set}
 }
 
 #if DEBUG
-public final class WhatsNewStorageMock: WhatsNewStorage, @unchecked Sendable {
-  
+public final class WhatsNewStoragePreviewMock: WhatsNewStorage, @unchecked Sendable {
     public var whatsNewVersion: String?
-    
     public init() {}
 }
 #endif

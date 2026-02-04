@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		022D048A2976D7E100E0059B /* DiscoveryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04892976D7E100E0059B /* DiscoveryViewModelTests.swift */; };
 		022D048B2976D7E100E0059B /* Discovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0727879928D34C03002E9142 /* Discovery.framework */; platformFilter = ios; };
-		022D04982976DA8A00E0059B /* DiscoveryMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022D04972976DA8A00E0059B /* DiscoveryMock.generated.swift */; };
 		0283347728D499BC00C828FC /* DiscoveryInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283347628D499BC00C828FC /* DiscoveryInteractor.swift */; };
 		0284DBFC28D4856A00830893 /* DiscoveryEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */; };
 		0284DC0328D4922900830893 /* DiscoveryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DC0228D4922900830893 /* DiscoveryRepository.swift */; };
@@ -28,6 +27,7 @@
 		1402A0CA2B61012F00A0A00B /* ProgramWebviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1402A0C82B61012F00A0A00B /* ProgramWebviewViewModel.swift */; };
 		63C6E9CBBF5E33B8B9B4DFEC /* Pods_App_Discovery_DiscoveryUnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 780FC373E1D479E58870BD85 /* Pods_App_Discovery_DiscoveryUnitTests.framework */; };
 		9F47BCC672941A9854404EC7 /* Pods_App_Discovery.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 919E55130969D91EF03C4C0B /* Pods_App_Discovery.framework */; };
+		A5B469172F29DFCC002A4ECA /* DiscoveryMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B469152F29DFCC002A4ECA /* DiscoveryMocks.generated.swift */; };
 		CE7CAF312CC155FD00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF302CC155FD00E0AC9D /* OEXFoundation */; };
 		CEB1E26A2CC14E7900921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2692CC14E7900921517 /* OEXFoundation */; };
 		CFC8494C299A66080055E497 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = CFC8494E299A66080055E497 /* Localizable.stringsdict */; };
@@ -73,7 +73,6 @@
 /* Begin PBXFileReference section */
 		022D04872976D7E100E0059B /* DiscoveryUnitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DiscoveryUnitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		022D04892976D7E100E0059B /* DiscoveryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryViewModelTests.swift; sourceTree = "<group>"; };
-		022D04972976DA8A00E0059B /* DiscoveryMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DiscoveryMock.generated.swift; path = DiscoveryTests/DiscoveryMock.generated.swift; sourceTree = SOURCE_ROOT; };
 		0283347628D499BC00C828FC /* DiscoveryInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryInteractor.swift; sourceTree = "<group>"; };
 		0284DBFB28D4856A00830893 /* DiscoveryEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryEndpoint.swift; sourceTree = "<group>"; };
 		0284DC0228D4922900830893 /* DiscoveryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryRepository.swift; sourceTree = "<group>"; };
@@ -106,6 +105,7 @@
 		83FB998DD9C5B57B61B88170 /* Pods-App-Discovery-DiscoveryUnitTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		919E55130969D91EF03C4C0B /* Pods_App_Discovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9F968F74AD7F4B5F6E5A6084 /* Pods-App-Discovery-DiscoveryUnitTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.debugdev.xcconfig"; sourceTree = "<group>"; };
+		A5B469152F29DFCC002A4ECA /* DiscoveryMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscoveryMocks.generated.swift; sourceTree = "<group>"; };
 		AAC0D83F5D34491E9FABCABC /* Pods-App-Discovery-DiscoveryUnitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discovery-DiscoveryUnitTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CFC8494D299A66080055E497 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		CFC8494F299BE52C0055E497 /* SearchViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelTests.swift; sourceTree = "<group>"; };
@@ -166,8 +166,8 @@
 		022D04882976D7E100E0059B /* DiscoveryTests */ = {
 			isa = PBXGroup;
 			children = (
+				A5B469162F29DFCC002A4ECA /* Generated */,
 				0766DFD1299AD97300EBEF6A /* Presentation */,
-				022D04972976DA8A00E0059B /* DiscoveryMock.generated.swift */,
 			);
 			path = DiscoveryTests;
 			sourceTree = "<group>";
@@ -320,6 +320,14 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		A5B469162F29DFCC002A4ECA /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				A5B469152F29DFCC002A4ECA /* DiscoveryMocks.generated.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 		E0B9F6952B4D57F800168366 /* NativeDiscovery */ = {
 			isa = PBXGroup;
 			children = (
@@ -374,7 +382,6 @@
 				022D04832976D7E100E0059B /* Sources */,
 				022D04842976D7E100E0059B /* Frameworks */,
 				022D04852976D7E100E0059B /* Resources */,
-				7A53F60C849FA0F910D22A82 /* [CP] Copy Pods Resources */,
 				CE7CAF332CC155FE00E0AC9D /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -510,23 +517,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		7A53F60C849FA0F910D22A82 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Discovery-DiscoveryUnitTests/Pods-App-Discovery-DiscoveryUnitTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		CD2104C69B21D34605FA0B30 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -557,7 +547,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				022D048A2976D7E100E0059B /* DiscoveryViewModelTests.swift in Sources */,
-				022D04982976DA8A00E0059B /* DiscoveryMock.generated.swift in Sources */,
+				A5B469172F29DFCC002A4ECA /* DiscoveryMocks.generated.swift in Sources */,
 				E0B9F6AB2B4E718F00168366 /* CourseDetailsViewModelTests.swift in Sources */,
 				CFC84950299BE52C0055E497 /* SearchViewModelTests.swift in Sources */,
 			);

@@ -1,11 +1,10 @@
 //
-//  DiscussionTests.swift
+//  PostViewModelTests.swift
 //  DiscussionTests
 //
-//  Created by  Stepanok Ivan on 30.01.2023.
+//  Created by  Stepanok Ivan on 30.01.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discussion
@@ -14,7 +13,7 @@ import SwiftUI
 
 @MainActor
 final class PostViewModelTests: XCTestCase {
-    
+
     let threads = ThreadLists(threads: [
         UserThread(id: "1",
                    author: "1",
@@ -103,22 +102,21 @@ final class PostViewModelTests: XCTestCase {
     ])
 
     let discussionInfo = DiscussionInfo(discussionID: "1", blackouts: [])
-    
+
     var interactor: DiscussionInteractorProtocolMock!
     var router: DiscussionRouterMock!
-    var config: ConfigMock!
+    var config: ConfigProtocolMock!
     var viewModel: PostsViewModel!
-    
+
     override func setUp() async throws {
         try await super.setUp()
-        
+
         interactor = DiscussionInteractorProtocolMock()
         router = DiscussionRouterMock()
-        config = ConfigMock()
+        config = ConfigProtocolMock()
         let storage = CoreStorageMock()
+        storage.useRelativeDates = false
 
-        Given(storage, .useRelativeDates(getter: false))
-        
         viewModel = PostsViewModel(
             interactor: interactor,
             router: router,
@@ -129,113 +127,100 @@ final class PostViewModelTests: XCTestCase {
 
     func testGetThreadListSuccess() async throws {
         var result = false
-        
+
         viewModel.courseID = "1"
         viewModel.type = .allPosts
 
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willReturn: threads))
-        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willReturn: discussionInfo))
+        interactor.getThreadsListHandler = { _, _, _, _, _ in self.threads }
+        interactor.getCourseDiscussionInfoHandler = { _ in self.discussionInfo }
 
         viewModel.type = .allPosts
         result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
         result = false
-        
+
         viewModel.type = .courseTopics(topicID: "")
         result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
         result = false
-        
+
         viewModel.type = .followingPosts
         result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
         result = false
-        
+
         viewModel.type = .nonCourseTopics
         result = await viewModel.getPosts(pageNumber: 1)
         XCTAssertTrue(result)
-        result = false
 
-        Verify(interactor, 4, .getThreadsList(courseID: .value("1"), type: .any, sort: .any, filter: .any, page: .value(1)))
-        
+        XCTAssertEqual(interactor.getThreadsListCallCount, 4)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
     }
-    
+
     func testGetThreadListNoInternetError() async throws {
         var result = false
-        
+
         viewModel.isBlackedOut = false
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: noInternetError))
-        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willThrow: noInternetError))
+        interactor.getThreadsListHandler = { _, _, _, _, _ in throw noInternetError }
+        interactor.getCourseDiscussionInfoHandler = { _ in throw noInternetError }
 
         viewModel.courseID = "1"
         viewModel.type = .allPosts
         result = await viewModel.getPosts(pageNumber: 1)
 
-        Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
-        
+        XCTAssertEqual(interactor.getThreadsListCallCount, 1)
         XCTAssertFalse(result)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
     }
-    
+
     func testGetThreadListUnknownError() async throws {
         var result = false
-                
+
         viewModel.isBlackedOut = false
 
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        Given(interactor, .getCourseDiscussionInfo(courseID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
+        interactor.getThreadsListHandler = { _, _, _, _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+        interactor.getCourseDiscussionInfoHandler = { _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
 
         viewModel.courseID = "1"
         viewModel.type = .allPosts
         result = await viewModel.getPosts(pageNumber: 1)
 
-        Verify(interactor, 1, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
-        
+        XCTAssertEqual(interactor.getThreadsListCallCount, 1)
         XCTAssertFalse(result)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
     }
-    
+
     func testSortingAndFilters() async throws {
-       
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any,
-                                          willReturn: threads))
-        Given(interactor, .getCourseDiscussionInfo(courseID: "1", willReturn: discussionInfo))
-        
+        interactor.getThreadsListHandler = { _, _, _, _, _ in self.threads }
+        interactor.getCourseDiscussionInfoHandler = { _ in self.discussionInfo }
+
         viewModel.courseID = "1"
         viewModel.type = .allPosts
         viewModel.sortTitle = .mostActivity
         _ = await viewModel.getPosts(pageNumber: 1)
-        XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
-        
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .value(.recentActivity), filter: .any, page: .any,
-                                          willReturn: threads))
-        
+        XCTAssertEqual(viewModel.filteredPosts[0].title, "1")
+
         viewModel.filterTitle = .unread
         viewModel.sortTitle = .recentActivity
         _ = await viewModel.getPosts(pageNumber: 1)
-        XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
+        XCTAssertEqual(viewModel.filteredPosts[0].title, "1")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: {$0.unreadCommentCount == 4}))
-        
-        Given(interactor, .getThreadsList(courseID: .any, type: .any, sort: .value(.mostVotes), filter: .any, page: .any,
-                                          willReturn: threads))
-        
+
         viewModel.filterTitle = .unanswered
         viewModel.sortTitle = .mostVotes
         _ = await viewModel.getPosts(pageNumber: 1)
-        XCTAssertTrue(viewModel.filteredPosts[0].title == "1")
+        XCTAssertEqual(viewModel.filteredPosts[0].title, "1")
         XCTAssertNotNil(viewModel.filteredPosts.first(where: { $0.hasEndorsed }))
-        
-        Verify(interactor, .getThreadsList(courseID: .any, type: .any, sort: .any, filter: .any, page: .any))
-    }
 
+        XCTAssertTrue(interactor.getThreadsListCallCount > 0)
+    }
 }

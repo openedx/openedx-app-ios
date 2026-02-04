@@ -218,12 +218,12 @@ public struct SearchView: View {
 #if DEBUG
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        let router = DiscoveryRouterMock()
+        let router = DiscoveryRouterPreviewMock()
         let vm = SearchViewModel(
             interactor: DiscoveryInteractor.mock,
             connectivity: Connectivity(config: ConfigMock()),
             router: router,
-            analytics: DiscoveryAnalyticsMock(),
+            analytics: DiscoveryAnalyticsPreviewMock(),
             storage: CoreStorageMock(),
             debounce: .searchDebounce
         )

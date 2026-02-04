@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DatesInteractorProtocol: Sendable {
     func getCourseDates(page: Int) async throws -> ([CourseDate], String?)
     func getCourseDatesOffline(limit: Int?, offset: Int?) async throws -> [CourseDate]
@@ -39,6 +39,6 @@ public actor DatesInteractor: DatesInteractorProtocol {
 // Mark - For testing and SwiftUI preview
 #if DEBUG
 public extension DatesInteractor {
-    static let mock = DatesInteractor(repository: DatesRepositoryMock())
+    static let mock = DatesInteractor(repository: DatesRepositoryPreviewMock())
 }
 #endif

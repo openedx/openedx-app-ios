@@ -9,7 +9,7 @@ import Foundation
 import Core
 import UIKit
 
-//sourcery: AutoMockable
+/// @mockable
 @MainActor
 public protocol ProfileRouter: BaseRouter {
     
@@ -45,7 +45,7 @@ public protocol ProfileRouter: BaseRouter {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-public class ProfileRouterMock: BaseRouterMock, ProfileRouter {
+public class ProfileRouterPreview: BaseRouterMock, ProfileRouter {
     
     public override init() {}
     

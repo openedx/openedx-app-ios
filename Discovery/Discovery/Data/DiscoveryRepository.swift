@@ -11,6 +11,7 @@ import OEXFoundation
 import CoreData
 import Alamofire
 
+/// @mockable
 public protocol DiscoveryRepositoryProtocol: Sendable {
     func getDiscovery(page: Int) async throws -> [CourseItem]
     func searchCourses(page: Int, searchTerm: String) async throws -> [CourseItem]
@@ -82,7 +83,7 @@ public actor DiscoveryRepository: DiscoveryRepositoryProtocol {
 
 // Mark - For testing and SwiftUI preview
 #if DEBUG
-final class DiscoveryRepositoryMock: DiscoveryRepositoryProtocol {
+final class DiscoveryRepositoryPreviewMock: DiscoveryRepositoryProtocol {
     
     public  func getCourseDetails(courseID: String) async throws -> CourseDetails {
         return CourseDetails(

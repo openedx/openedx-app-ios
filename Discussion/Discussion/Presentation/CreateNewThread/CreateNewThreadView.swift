@@ -214,9 +214,9 @@ struct AddTopic_Previews: PreviewProvider {
     static var previews: some View {
         let vm = CreateNewThreadViewModel(
             interactor: DiscussionInteractor.mock,
-            router: DiscussionRouterMock(),
+            router: DiscussionRouterPreviewMock(),
             config: ConfigMock(),
-            analytics: DiscussionAnalyticsMock(),
+            analytics: DiscussionAnalyticsPreviewMock(),
             storage: CoreStorageMock()
         )
         

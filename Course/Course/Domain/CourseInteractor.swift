@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CourseInteractorProtocol: Sendable {
     func getCourseBlocks(courseID: String) async throws -> CourseStructure
     func getCourseVideoBlocks(fullStructure: CourseStructure) async -> CourseStructure
