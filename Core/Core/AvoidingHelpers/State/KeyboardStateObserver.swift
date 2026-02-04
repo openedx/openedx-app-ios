@@ -19,35 +19,46 @@ final class KeyboardStateObserver {
             queue: .main
         ) { [weak self] notification in
             guard let self = self else { return }
-
-            if let state = KeyboardState.from(notification: notification) {
-                self.updateState(state)
+            
+            let notificationData = NotificationData(from: notification)
+            
+            Task { @MainActor in
+                if let state = KeyboardState.from(notificationData: notificationData) {
+                    self.updateState(state)
+                }
             }
         }
 
-        // Observe keyboard will change frame
         let changeObserver = notificationCenter.addObserver(
             forName: UIResponder.keyboardWillChangeFrameNotification,
             object: nil,
             queue: .main
         ) { [weak self] notification in
             guard let self = self else { return }
-            // Extract data from notification synchronously on main queue
-            if let state = KeyboardState.from(notification: notification) {
-                self.updateState(state)
+            
+            // Extract notification data in nonisolated context
+            let notificationData = NotificationData(from: notification)
+            
+            Task { @MainActor in
+                if let state = KeyboardState.from(notificationData: notificationData) {
+                    self.updateState(state)
+                }
             }
         }
 
-        // Observe keyboard will hide
         let hideObserver = notificationCenter.addObserver(
             forName: UIResponder.keyboardWillHideNotification,
             object: nil,
             queue: .main
         ) { [weak self] notification in
             guard let self = self else { return }
-            // Extract data from notification synchronously on main queue
-            if let state = KeyboardState.from(notification: notification) {
-                self.updateState(state)
+            
+            let notificationData = NotificationData(from: notification)
+            
+            Task { @MainActor in
+                if let state = KeyboardState.from(notificationData: notificationData) {
+                    self.updateState(state)
+                }
             }
         }
 

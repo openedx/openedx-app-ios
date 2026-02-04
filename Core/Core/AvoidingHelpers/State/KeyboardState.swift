@@ -3,6 +3,16 @@
 import SwiftUI
 import UIKit
 
+struct NotificationData: @unchecked Sendable {
+    let name: Notification.Name
+    let userInfo: [AnyHashable: Any]?
+    
+    init(from notification: Notification) {
+        self.name = notification.name
+        self.userInfo = notification.userInfo
+    }
+}
+
 public struct KeyboardState: Sendable, Equatable {
     public let animationDuration: TimeInterval
 
@@ -32,6 +42,7 @@ extension KeyboardState {
         frame: .zero
     )
 
+    @MainActor
     static func from(notification: Notification) -> KeyboardState? {
         return from(
             notification: notification,
@@ -39,6 +50,7 @@ extension KeyboardState {
         )
     }
 
+    @MainActor
     static func from(
         notification: Notification,
         screen: UIScreen
@@ -53,6 +65,26 @@ extension KeyboardState {
         let animationCurve = Self.animationCurve(from: userInfo)
 
         let frame = Self.keyboardFrame(from: userInfo, screen: screen)
+
+        return KeyboardState(
+            animationDuration: animationDuration,
+            animationCurve: animationCurve,
+            frame: frame
+        )
+    }
+    
+    @MainActor
+    static func from(notificationData: NotificationData) -> KeyboardState? {
+        guard
+            expectedNotificationNames.contains(notificationData.name),
+            let userInfo = notificationData.userInfo else {
+            return nil
+        }
+
+        let animationDuration = Self.animationDuration(from: userInfo)
+        let animationCurve = Self.animationCurve(from: userInfo)
+
+        let frame = Self.keyboardFrame(from: userInfo, screen: .main)
 
         return KeyboardState(
             animationDuration: animationDuration,
@@ -86,6 +118,7 @@ extension KeyboardState {
         return curveValue
     }
 
+    @MainActor
     private static func keyboardFrame(
         from userInfo: [AnyHashable: Any],
         screen: UIScreen
