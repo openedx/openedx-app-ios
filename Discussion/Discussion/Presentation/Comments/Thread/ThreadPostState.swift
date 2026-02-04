@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ThreadPostState {
+public enum ThreadPostState: Sendable {
     case voted(id: String, voted: Bool, votesCount: Int)
     case flagged(id: String, flagged: Bool)
     case postAdded(id: String)
