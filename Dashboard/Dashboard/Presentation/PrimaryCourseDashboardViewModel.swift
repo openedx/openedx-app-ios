@@ -35,7 +35,7 @@ public class PrimaryCourseDashboardViewModel {
     let config: ConfigProtocol
     var storage: CoreStorage
     let router: DashboardRouter
-    @ObservationIgnored private var observers: [NSObjectProtocol] = []
+    @ObservationIgnored nonisolated(unsafe) private var observers: [NSObjectProtocol] = []
 
     private let ipadPageSize = 7
     private let iphonePageSize = 5
@@ -152,7 +152,6 @@ public class PrimaryCourseDashboardViewModel {
         analytics.dashboardCourseClicked(courseID: courseID, courseName: courseName)
     }
 
-    @MainActor
     deinit {
         observers.forEach { NotificationCenter.default.removeObserver($0) }
     }

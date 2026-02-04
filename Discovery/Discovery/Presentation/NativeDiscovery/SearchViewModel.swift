@@ -66,7 +66,7 @@ import Combine
         searchTask?.cancel()
 
         searchTask = Task { @MainActor in
-            try? await Task.sleep(for: .milliseconds(500))
+            try? await Task.sleep(for: .milliseconds(debounce.dueTimeInMilliseconds))
 
             guard !Task.isCancelled else { return }
 
