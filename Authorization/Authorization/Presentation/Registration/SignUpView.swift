@@ -18,9 +18,6 @@ public struct SignUpView: View {
 
     public init(viewModel: SignUpViewModel) {
         self.viewModel = viewModel
-        Task {
-           await viewModel.getRegistrationFields()
-        }
     }
     
     public var body: some View {
@@ -196,6 +193,9 @@ public struct SignUpView: View {
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .navigationBarHidden(true)
+        .task {
+            await viewModel.getRegistrationFields()
+        }
         .onFirstAppear {
             viewModel.trackScreenEvent()
         }
