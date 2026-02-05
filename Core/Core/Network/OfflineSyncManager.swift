@@ -7,7 +7,6 @@
 
 import Foundation
 @preconcurrency import WebKit
-@preconcurrency import Combine
 import Swinject
 import OEXFoundation
 
@@ -22,7 +21,6 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
     let persistence: CorePersistenceProtocol
     let interactor: OfflineSyncInteractorProtocol
     let connectivity: ConnectivityProtocol
-    private var cancellables = Set<AnyCancellable>()
     
     public init(
         persistence: CorePersistenceProtocol,
@@ -33,16 +31,26 @@ public class OfflineSyncManager: OfflineSyncManagerProtocol {
         self.interactor = interactor
         self.connectivity = connectivity
         
-        self.connectivity.internetReachableSubject.sink(receiveValue: { state in
-            switch state {
-            case .reachable:
-                Task(priority: .low) {
+        observeConnectivity()
+    }
+    
+    private func observeConnectivity() {
+        withObservationTracking {
+            _ = connectivity.internetState
+        } onChange: {
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                
+                switch self.connectivity.internetState {
+                case .reachable:
                     await self.syncOfflineProgress()
+                case .notReachable, nil:
+                    break
                 }
-            case .notReachable, nil:
-                 break
+                
+                self.observeConnectivity()
             }
-        }).store(in: &cancellables)
+        }
     }
     
     public func handleMessage(message: WKScriptMessage, blockID: String) async {

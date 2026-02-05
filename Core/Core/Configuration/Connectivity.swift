@@ -20,8 +20,11 @@ public protocol ConnectivityProtocol: Sendable {
     var isInternetAvaliable: Bool { get }
     var isMobileData: Bool { get }
     var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
+    var internetState: InternetState? { get }
 }
 
+@MainActor
+@Observable
 public class Connectivity: ConnectivityProtocol {
 
     private let networkManager = NetworkReachabilityManager()
@@ -32,12 +35,21 @@ public class Connectivity: ConnectivityProtocol {
     private var lastVerificationDate: TimeInterval?
     private var lastVerificationResult: Bool = true
 
+    // MARK: - Observable property (new way)
+    public private(set) var internetState: InternetState? {
+        didSet {
+            // Keep backward compatibility - update Combine subject
+            internetReachableSubject.send(internetState)
+        }
+    }
+    
+    // MARK: - Combine subject (for backward compatibility)
     public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
 
     private(set) var _isInternetAvailable: Bool = true {
         didSet {
             Task { @MainActor in
-                internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
+                internetState = _isInternetAvailable ? .reachable : .notReachable
             }
         }
     }

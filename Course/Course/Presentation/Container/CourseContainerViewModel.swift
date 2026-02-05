@@ -1158,12 +1158,7 @@ extension CourseTab {
             }
             .store(in: &cancellables)
 
-        connectivity.internetReachableSubject
-            .sink { [weak self] _ in
-                guard let self else { return }
-                self.isInternetAvaliable = self.connectivity.isInternetAvaliable
-            }
-            .store(in: &cancellables)
+        observeConnectivity()
 
         NotificationCenter.default.addObserver(
             self,
@@ -1187,6 +1182,18 @@ extension CourseTab {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    private func observeConnectivity() {
+        withObservationTracking {
+            _ = connectivity.internetState
+        } onChange: {
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                self.isInternetAvaliable = self.connectivity.isInternetAvaliable
+                self.observeConnectivity()
+            }
+        }
     }
 
     func handleVideoTap(video: CourseBlock, chapter: CourseChapter?) {
