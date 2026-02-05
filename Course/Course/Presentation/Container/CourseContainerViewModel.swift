@@ -149,7 +149,6 @@ extension CourseTab {
         selection: CourseTab = CourseTab.course,
         courseHelper: CourseDownloadHelperProtocol
     ) {
-
         self.interactor = interactor
         self.authInteractor = authInteractor
         self.router = router
@@ -258,6 +257,7 @@ extension CourseTab {
 
             self.courseStructure = courseStructure
             courseHelper.courseStructure = courseStructure
+            
             await courseHelper.refreshValue()
             update(from: courseHelper.value ?? .empty)
 
