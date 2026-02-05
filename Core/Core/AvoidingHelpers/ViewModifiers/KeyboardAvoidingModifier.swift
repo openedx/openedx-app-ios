@@ -18,7 +18,7 @@ private struct KeyboardAvoidingModifier: ViewModifier {
     private let dismissKeyboardByTap: Bool
     private let onProvideScrollInvocator: ((KeyboardScrollInvocator) -> Void)?
 
-    private var keyboardObserver = KeyboardStateObserver()
+    @State private var keyboardObserver = KeyboardStateObserver()
     @State private var scrollInvocator = KeyboardScrollInvocator()
     
     init(
@@ -62,8 +62,9 @@ private struct KeyboardAvoidingModifier: ViewModifier {
         }
         .onAppear {
             // Setup callback for manual scroll triggering
-            scrollInvocator.onTrigger = { [keyboardObserver, scrollerOptions, partialAvoidingPadding] in
-                guard !keyboardObserver.keyboardState.height.isZero,
+            scrollInvocator.onTrigger = { [weak keyboardObserver, scrollerOptions, partialAvoidingPadding] in
+                guard let keyboardObserver,
+                      !keyboardObserver.keyboardState.height.isZero,
                       let options = scrollerOptions else {
                     return
                 }

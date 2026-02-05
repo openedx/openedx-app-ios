@@ -165,6 +165,7 @@ class ScreenAssembly: Assembly {
                 sourceScreen: sourceScreen
             )
         }
+        .inObjectScope(.weak)
         
         container.register(ProgramWebviewViewModel.self) { @MainActor r in
             ProgramWebviewViewModel(
@@ -176,6 +177,7 @@ class ScreenAssembly: Assembly {
                 authInteractor: r.resolve(AuthInteractorProtocol.self)!
             )
         }
+        .inObjectScope(.weak)
         
         container.register(SearchViewModel.self) { @MainActor r in
             SearchViewModel(
@@ -214,6 +216,7 @@ class ScreenAssembly: Assembly {
                 storage: r.resolve(CoreStorage.self)!
             )
         }
+        .inObjectScope(.weak)
         
         container.register(PrimaryCourseDashboardViewModel.self) { @MainActor r in
             PrimaryCourseDashboardViewModel(
@@ -266,6 +269,7 @@ class ScreenAssembly: Assembly {
                 connectivity: r.resolve(ConnectivityProtocol.self)!
             )
         }
+        .inObjectScope(.weak)
         container.register(EditProfileViewModel.self) { @MainActor r, userModel in
             EditProfileViewModel(
                 userModel: userModel,
@@ -355,6 +359,7 @@ class ScreenAssembly: Assembly {
                 router: r.resolve(AppDatesRouter.self)!
             )
         }
+        .inObjectScope(.weak)
         
         // MARK: Course
         container.register(CoursePersistenceProtocol.self) { r in
@@ -753,6 +758,7 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(DownloadsAnalytics.self)!
             )
         }
+        .inObjectScope(.weak)
     }
 }
 // swiftlint:enable function_body_length closure_parameter_position type_body_length
