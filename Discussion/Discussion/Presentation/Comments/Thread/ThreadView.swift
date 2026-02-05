@@ -267,6 +267,7 @@ public struct ThreadView: View {
             .onDisappear {
                 onBackTapped()
                 viewModel.sendUpdateUnreadState()
+                viewModel.cleanup()
             }
             .edgesIgnoringSafeArea(.bottom)
             .background(

@@ -85,6 +85,7 @@ public final class PostsViewModel {
     private let config: ConfigProtocol
     private let storage: CoreStorage
     @ObservationIgnored internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
+    nonisolated(unsafe) private var observationTask: Task<Void, Never>?
     
     public init(
         interactor: DiscussionInteractorProtocol,
@@ -97,8 +98,11 @@ public final class PostsViewModel {
         self.config = config
         self.storage = storage
 
-        Task {
+        observationTask = Task { @MainActor in
             for await state in postStateSubject.values {
+                if Task.isCancelled {
+                    break
+                }
                 guard let state = state else { continue }
                 switch state {
                 case let .followed(id, followed):
@@ -116,9 +120,17 @@ public final class PostsViewModel {
         }
     }
     
+    deinit {
+        observationTask?.cancel()
+    }
+    
     public func resetPosts() {
         nextPage = 1
         totalPages = 1
+    }
+    
+    public func cleanup() {
+        observationTask?.cancel()
     }
     
     public func sort(by value: SortType) {

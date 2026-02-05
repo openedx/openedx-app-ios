@@ -16,6 +16,7 @@ public final class ThreadViewModel: BaseResponsesViewModel {
 
     @ObservationIgnored internal let threadStateSubject = CurrentValueSubject<ThreadPostState?, Never>(nil)
     @ObservationIgnored private let postStateSubject: CurrentValueSubject<PostState?, Never>
+    nonisolated(unsafe) private var observationTask: Task<Void, Never>?
     public var isBlackedOut: Bool = false
     private let analytics: DiscussionAnalytics?
 
@@ -32,8 +33,11 @@ public final class ThreadViewModel: BaseResponsesViewModel {
 
         super.init(interactor: interactor, router: router, config: config, storage: storage, analytics: analytics)
 
-        Task {
+        observationTask = Task { @MainActor in
             for await state in threadStateSubject.values {
+                if Task.isCancelled {
+                    break
+                }
                 guard let state = state else { continue }
                 switch state {
                 case let .voted(id, voted, votesCount):
@@ -46,6 +50,14 @@ public final class ThreadViewModel: BaseResponsesViewModel {
                 }
             }
         }
+    }
+    
+    deinit {
+        observationTask?.cancel()
+    }
+    
+    public func cleanup() {
+        observationTask?.cancel()
     }
     
     func generateComments(comments: [UserComment], thread: UserThread) -> Post {

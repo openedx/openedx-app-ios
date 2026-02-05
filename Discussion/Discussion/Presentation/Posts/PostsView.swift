@@ -244,6 +244,9 @@ public struct PostsView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
+            .onDisappear {
+                viewModel.cleanup()
+            }
         }
     }
     

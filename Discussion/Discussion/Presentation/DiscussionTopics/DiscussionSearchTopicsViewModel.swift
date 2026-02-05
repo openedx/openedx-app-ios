@@ -31,7 +31,8 @@ public final class DiscussionSearchTopicsViewModel {
     private var nextPage = 1
     private var totalPages = 1
 
-    @ObservationIgnored private var searchTask: Task<Void, Never>?
+    nonisolated(unsafe) private var searchTask: Task<Void, Never>?
+    nonisolated(unsafe) private var observationTask: Task<Void, Never>?
     // Keep CurrentValueSubject for now since it's passed to router
     @ObservationIgnored internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
     
@@ -62,7 +63,7 @@ public final class DiscussionSearchTopicsViewModel {
         self.debounceInterval = debounceInterval
 
         // Setup observer for postStateSubject
-        Task {
+        observationTask = Task {
             for await state in postStateSubject.values {
                 guard let state = state else { continue }
                 switch state {
@@ -83,6 +84,7 @@ public final class DiscussionSearchTopicsViewModel {
 
     deinit {
         searchTask?.cancel()
+        observationTask?.cancel()
     }
 
     private func handleSearchTextChange(_ text: String) {
