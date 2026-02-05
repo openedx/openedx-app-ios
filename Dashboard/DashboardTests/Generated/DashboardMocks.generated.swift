@@ -1548,9 +1548,10 @@ public final class DashboardInteractorProtocolMock: DashboardInteractorProtocol,
 
 public final class ConnectivityProtocolMock: ConnectivityProtocol, @unchecked Sendable {
     public init() { }
-    public init(isInternetAvaliable: Bool = false, isMobileData: Bool = false) {
+    public init(isInternetAvaliable: Bool = false, isMobileData: Bool = false, internetState: InternetState? = nil) {
         self.isInternetAvaliable = isInternetAvaliable
         self.isMobileData = isMobileData
+        self.internetState = internetState
     }
 
 
@@ -1566,6 +1567,9 @@ public final class ConnectivityProtocolMock: ConnectivityProtocol, @unchecked Se
         get { return _internetReachableSubject }
         set { _internetReachableSubject = newValue }
     }
+
+
+    public var internetState: InternetState? = nil
 }
 
 public final class DownloadManagerProtocolMock: DownloadManagerProtocol, @unchecked Sendable {
