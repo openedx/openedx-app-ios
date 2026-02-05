@@ -9,6 +9,7 @@ import Core
 import SwiftUI
 
 @Observable
+@MainActor
 public class UserProfileViewModel {
     
     public var userModel: UserProfile?

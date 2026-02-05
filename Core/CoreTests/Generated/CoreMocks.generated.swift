@@ -1411,6 +1411,9 @@ public final class CourseStructureManagerProtocolMock: CourseStructureManagerPro
 }
 
 public final class ConnectivityProtocolMock: ConnectivityProtocol, @unchecked Sendable {
+    
+    public var internetState: Core.InternetState?
+    
     public init() { }
     public init(isInternetAvaliable: Bool = false, isMobileData: Bool = false) {
         self.isInternetAvaliable = isInternetAvaliable
