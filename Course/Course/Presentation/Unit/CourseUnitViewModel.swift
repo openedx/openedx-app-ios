@@ -499,6 +499,9 @@ public struct VerticalData: Equatable {
               let courseStructure = courseVideosStructure else {
             return
         }
+        
+        // Save current video progress before navigation
+        NotificationCenter.default.post(name: .saveVideoProgressBeforeNavigation, object: nil)
 
         // Track video click analytics
         analytics.courseVideoClicked(

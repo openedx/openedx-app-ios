@@ -117,6 +117,13 @@ public class VideoPlayerViewModel {
                 self?.trackVideoCompleted()
             }
             .store(in: &subscription)
+        
+        NotificationCenter.default.publisher(for: .saveVideoProgressBeforeNavigation)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.saveCurrentProgress(duration: self.playerHolder.duration)
+            }
+            .store(in: &subscription)
 
     }
     

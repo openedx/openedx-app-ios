@@ -238,6 +238,7 @@ class ScreenAssembly: Assembly {
                 storage: r.resolve(CoreStorage.self)!
             )
         }
+        .inObjectScope(.weak)
         
         // MARK: Profile
         
