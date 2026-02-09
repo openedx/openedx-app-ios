@@ -78,14 +78,18 @@ final class KeyboardAvoidingViewController<Content: View>: UIViewController {
     private func subscribeToKeyboardPublisher() {
         Task { @MainActor [weak self] in
             guard let self else { return }
-            let observer = KeyboardStateObserver()
-            self.keyboardStateObserver = observer
+            
+            if self.keyboardStateObserver == nil {
+                self.keyboardStateObserver = KeyboardStateObserver()
+            }
+            
+            guard let observer = self.keyboardStateObserver else { return }
             
             withObservationTracking {
                 _ = observer.keyboardState
             } onChange: {
-                Task { @MainActor [weak self] in
-                    guard let self, let observer = self.keyboardStateObserver else { return }
+                Task { @MainActor in
+                    guard let observer = self.keyboardStateObserver else { return }
                     self.updateBottomConstraint(state: observer.keyboardState)
                     self.subscribeToKeyboardPublisher()
                 }
