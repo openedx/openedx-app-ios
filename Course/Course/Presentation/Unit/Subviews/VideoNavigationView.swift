@@ -132,7 +132,9 @@ struct VideoNavigationView: View {
         scrollTo(currentVideo.id)
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            guard let scroll = uiScrollView else { return }
+            guard let scroll = uiScrollView else {
+                return
+            }
             let newX = max(scroll.contentOffset.x - 20, 0)
             scroll.setContentOffset(CGPoint(x: newX, y: 0), animated: true)
         }

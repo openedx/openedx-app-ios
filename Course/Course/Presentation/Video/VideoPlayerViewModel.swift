@@ -272,10 +272,8 @@ public class VideoPlayerViewModel {
     }
     
     public func saveCurrentProgress(duration: TimeInterval) {
-        
         Task {
             let time = currentTime
-//            let duration = playerHolder.duration
                         
             if duration > 0 && time > 0 {
                 let progress = min(time / duration, 1.0)

@@ -190,12 +190,6 @@ public struct CourseUnitView: View {
                                 currentBlock: $currentBlock,
                                 block: block
                             )
-                            .onReceive(NotificationCenter.default.publisher(for:
-                                    .onVideoProgressUpdated)) { _ in
-                                Task {
-                                    await viewModel.getCourseVideoBlocks()
-                                }
-                            }
                         }
                     }
 

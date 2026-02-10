@@ -531,7 +531,8 @@ public class Router: AuthorizationRouter,
         let isDropdownActive = config?.uiComponents.courseDropDownNavigationEnabled ?? false
 
         let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
-        return UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view)
+        return controller
     }
     
     public func showCourseComponent(
@@ -617,7 +618,6 @@ public class Router: AuthorizationRouter,
         showVideoNavigation: Bool,
         courseVideoStructure: CourseStructure?
     ) {
-
         let controllerUnit = getUnitController(
             courseName: courseName,
             blockId: blockId,
