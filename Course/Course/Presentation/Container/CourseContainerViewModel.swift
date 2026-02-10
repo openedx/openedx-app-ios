@@ -1316,11 +1316,12 @@ extension CourseTab {
         }
 
         self.courseStructure = updatedStructure
-        self.courseVideosStructure = nil
-        let newVideoStructure = await interactor.getCourseVideoBlocks(fullStructure: updatedStructure)
-        self.courseVideosStructure = newVideoStructure
-        self.courseAssignmentsStructure = await interactor.getCourseAssignmentBlocks(fullStructure: updatedStructure)
-        updateAssignmentSections()
+        
+        if courseVideosStructure != nil {
+            let newVideoStructure = await interactor.getCourseVideoBlocks(fullStructure: updatedStructure)
+            self.courseVideosStructure = newVideoStructure
+        }
+        
         isRefreshingVideoProgress = false
     }
 
