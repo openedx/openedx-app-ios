@@ -1179,21 +1179,15 @@ extension CourseTab {
             }
             .store(in: &cancellables)
     }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
     
     private func observeConnectivity() {
-        withObservationTracking {
-            _ = connectivity.internetState
-        } onChange: {
-            Task { @MainActor [weak self] in
+        connectivity.internetReachableSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
                 guard let self else { return }
                 self.isInternetAvaliable = self.connectivity.isInternetAvaliable
-                self.observeConnectivity()
             }
-        }
+            .store(in: &cancellables)
     }
 
     func handleVideoTap(video: CourseBlock, chapter: CourseChapter?) {
