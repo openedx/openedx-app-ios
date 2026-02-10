@@ -173,7 +173,14 @@ public class EditProfileViewModel {
         } else {
             yearOfBirth = userModel.yearOfBirth
         }
-        if yearOfBirth == 0 || currentYear - yearOfBirth < minimumFullAccountAge {
+        
+        if yearOfBirth == 0 {
+            if profileChanges.profileType == .limited {
+                alertMessage = ProfileLocalization.Edit.tooYongUser
+            } else {
+                profileChanges.profileType.toggle()
+            }
+        } else if currentYear - yearOfBirth < minimumFullAccountAge {
             alertMessage = ProfileLocalization.Edit.tooYongUser
         } else {
             profileChanges.profileType.toggle()
@@ -183,30 +190,27 @@ public class EditProfileViewModel {
     }
     
     func checkProfileType() {
+        let yearOfBirth: Int
         if yearsConfiguration.text != "" {
-            let yearOfBirth = yearsConfiguration.text
-            if currentYear - (Int(yearOfBirth) ?? 0) < minimumFullAccountAge {
-                profileChanges.profileType = .limited
-                isYongUser = true
-            } else {
-                withAnimation {
-                    isYongUser = false
-                }
-            }
+            yearOfBirth = Int(yearsConfiguration.text) ?? 0
         } else {
-            if (currentYear - userModel.yearOfBirth) < minimumFullAccountAge {
-                profileChanges.profileType = .limited
-                isYongUser = true
-            } else {
-                withAnimation {
-                    isYongUser = false
-                }
-            }
+            yearOfBirth = userModel.yearOfBirth
         }
-        if profileChanges.profileType == .full {
-            isEditable = true
-        } else {
+        
+        if yearOfBirth == 0 {
+            withAnimation {
+                isYongUser = false
+            }
             isEditable = false
+        } else if currentYear - yearOfBirth < minimumFullAccountAge {
+            profileChanges.profileType = .limited
+            isYongUser = true
+            isEditable = false
+        } else {
+            withAnimation {
+                isYongUser = false
+            }
+            isEditable = profileChanges.profileType == .full
         }
     }
     
@@ -325,6 +329,7 @@ public class EditProfileViewModel {
         }
         
         generateFieldConfigurations()
+        checkProfileType()
     }
     
     private func generateYears() {
