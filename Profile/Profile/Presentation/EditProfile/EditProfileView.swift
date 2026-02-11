@@ -226,7 +226,22 @@ public struct EditProfileView: View {
                         BackNavigationButton(color: Theme.Colors.accentColor) {
                             viewModel.backButtonTapped()
                         }
-                        .offset(x: -8, y: -1.5)
+                        .offset(
+                            x: {
+                                if #available(iOS 26.0, *) {
+                                    return 6
+                                } else {
+                                    return -8
+                                }
+                            }(),
+                            y: {
+                                if #available(iOS 26.0, *) {
+                                    return 1
+                                } else {
+                                    return -1.5
+                                }
+                            }()
+                        )
                     }
                 )
                 ToolbarItem(placement: .navigationBarTrailing, content: {
