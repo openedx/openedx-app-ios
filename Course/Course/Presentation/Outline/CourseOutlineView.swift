@@ -75,11 +75,12 @@ public struct CourseOutlineView: View {
                             }
 
                             VStack(alignment: .leading) {
-                                
+
                                 if isVideo,
                                    viewModel.isShowProgress == false {
                                     downloadQualityBars(proxy: proxy)
                                 }
+
                                 certificateView
                                 
                                 if viewModel.courseStructure == nil,
@@ -88,8 +89,12 @@ public struct CourseOutlineView: View {
                                     FullScreenErrorView(
                                         type: .noContent(
                                             CourseLocalization.Error.coursewareUnavailable,
-                                            image: CoreAssets.information.swiftUIImage
-                                        )
+                                            image: CoreAssets.information.swiftUIImage,
+                                            showButton: true
+                                        ),
+                                        action: {
+                                            viewModel.router.back()
+                                        }
                                     )
                                     .frame(maxWidth: .infinity)
                                 } else {
