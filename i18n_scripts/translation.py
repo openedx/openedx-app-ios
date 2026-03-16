@@ -208,6 +208,13 @@ def get_languages_dirs(modules_dir: Path):
         raise
 
 
+def ensure_utf8(file_path: Path):
+    raw = file_path.read_bytes()
+    if raw[:2] in (b'\xff\xfe', b'\xfe\xff'):
+        text = raw.decode('utf-16')
+        file_path.write_text(text, encoding='utf-8')
+
+
 def get_translations_from_file(modules_dir, lang_dir):
     """
     Get translations from the translation file in the 'I18N' directory and distribute them into the appropriate
@@ -225,6 +232,7 @@ def get_translations_from_file(modules_dir, lang_dir):
     translations = defaultdict(list)
     try:
         translations_file_path = get_translation_file_path(modules_dir, I18N_MODULE_NAME, lang_dir)
+        ensure_utf8(translations_file_path)
         lang_list = localizable.parse_strings(filename=translations_file_path)
         for translation_entry in lang_list:
             module_name, key_remainder = translation_entry['key'].split('.', maxsplit=1)
