@@ -79,9 +79,11 @@ public struct WebBrowser: View {
     }
 }
 
+#if DEBUG
 struct WebBrowser_Previews: PreviewProvider {
     static var previews: some View {
         let configMock = ConfigMock()
         WebBrowser(url: "", pageTitle: "", connectivity: Connectivity(config: configMock))
     }
 }
+#endif

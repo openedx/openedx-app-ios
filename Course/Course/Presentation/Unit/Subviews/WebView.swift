@@ -17,6 +17,7 @@ struct WebView: View {
     let blockID: String
     var roundedBackgroundEnabled: Bool = true
     @State private var viewModel: WebUnitViewModel
+    private let connectivity: ConnectivityProtocol
     
     init(
         url: String,
@@ -24,15 +25,24 @@ struct WebView: View {
         injections: [WebviewInjection],
         blockID: String,
         roundedBackgroundEnabled: Bool = true,
-        viewModel: WebUnitViewModel? = nil
+        viewModel: WebUnitViewModel? = nil,
+        connectivity: ConnectivityProtocol? = nil
     ) {
         self.url = url
         self.localUrl = localUrl
         self.injections = injections
         self.blockID = blockID
         self.roundedBackgroundEnabled = roundedBackgroundEnabled
-        let resolvedViewModel = viewModel ?? Container.shared.resolve(WebUnitViewModel.self)!
+        
+        guard let resolvedViewModel = viewModel ?? Container.shared.resolve(WebUnitViewModel.self) else {
+            fatalError("WebUnitViewModel is not registered in the DI container")
+        }
         self._viewModel = State(initialValue: resolvedViewModel)
+        
+        guard let resolvedConnectivity = connectivity ?? Container.shared.resolve(ConnectivityProtocol.self) else {
+            fatalError("ConnectivityProtocol is not registered in the DI container")
+        }
+        self.connectivity = resolvedConnectivity
     }
     
     var body: some View {
@@ -41,7 +51,7 @@ struct WebView: View {
                 url: url,
                 dataUrl: localUrl,
                 viewModel: viewModel,
-                connectivity: Connectivity(config: ConfigMock()),
+                connectivity: connectivity,
                 injections: injections,
                 blockID: blockID
             )

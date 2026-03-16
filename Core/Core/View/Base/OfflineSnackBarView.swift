@@ -67,16 +67,22 @@ public struct OfflineSnackBarView: View {
                 withAnimation {
                     dismiss = false
                 }
-            case .reachable, .none:
+            case .reachable:
+                withAnimation {
+                    dismiss = true
+                }
+            case .none:
                 break
             }
         }
     }
 }
 
+#if DEBUG
 struct OfflineSnackBarView_Previews: PreviewProvider {
     static var previews: some View {
         let configMock = ConfigMock()
         OfflineSnackBarView(connectivity: Connectivity(config: configMock), reloadAction: {})
     }
 }
+#endif
