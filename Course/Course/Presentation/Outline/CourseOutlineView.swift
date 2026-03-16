@@ -68,7 +68,11 @@ public struct CourseOutlineView: View {
                                 viewHeight: $viewHeight
                             )
 
-                            RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+                            if viewModel.courseStructure != nil,
+                               viewModel.isShowProgress != false,
+                               isVideo {
+                                RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+                            }
 
                             VStack(alignment: .leading) {
                                 
@@ -88,7 +92,6 @@ public struct CourseOutlineView: View {
                                         )
                                     )
                                     .frame(maxWidth: .infinity)
-                                    .frame(height: proxy.size.height - viewHeight)
                                 } else {
                                     if let continueWith = viewModel.continueWith,
                                        let courseStructure = viewModel.courseStructure,
