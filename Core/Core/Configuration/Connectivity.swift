@@ -28,14 +28,17 @@ public class Connectivity: ConnectivityProtocol {
     private let verificationURL: URL
     private let verificationTimeout: TimeInterval
     private let cacheValidity: TimeInterval = 30
+    private let offlineDebounce: TimeInterval = 1.5
 
     private var lastVerificationDate: TimeInterval?
     private var lastVerificationResult: Bool = true
+    private var offlineTask: Task<Void, Never>?
 
     public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
 
     private(set) var _isInternetAvailable: Bool = true {
         didSet {
+            guard oldValue != _isInternetAvailable else { return }
             Task { @MainActor in
                 internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
             }
@@ -71,9 +74,10 @@ public class Connectivity: ConnectivityProtocol {
             Task { @MainActor in
                 switch status {
                 case .reachable:
+                    self.cancelOfflineDebounce()
                     await self.performVerification()
                 case .notReachable, .unknown:
-                    self.updateAvailability(false, at: 0)
+                    self.scheduleOffline()
                 }
             }
         }
@@ -81,6 +85,20 @@ public class Connectivity: ConnectivityProtocol {
 
     deinit {
         networkManager?.stopListening()
+    }
+
+    private func scheduleOffline() {
+        offlineTask?.cancel()
+        offlineTask = Task { @MainActor in
+            try? await Task.sleep(nanoseconds: UInt64(offlineDebounce * 1_000_000_000))
+            guard !Task.isCancelled else { return }
+            updateAvailability(false, at: 0)
+        }
+    }
+
+    private func cancelOfflineDebounce() {
+        offlineTask?.cancel()
+        offlineTask = nil
     }
 
     private func performVerification() async {

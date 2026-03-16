@@ -1,0 +1,100 @@
+{
+  "name": "Sandbox",
+  "light": {
+    "colors": {
+      "accentColor": "#cc3366",
+      "background": "#FFFFFF",
+      "textPrimary": "#19212F",
+      "textSecondary": "#97A5BB",
+      "infoColor": "#cc3366",
+      "textInputBackground": "#FFFFFF",
+      "textInputStroke": "#97A5BB",
+      "primaryButtonBg": "#cc3366",
+      "primaryButtonText": "#FFFFFF",
+      "secondaryButtonBorder": "#cc3366",
+      "secondaryButtonText": "#cc3366",
+      "tabbarBGColor": "#F8F9FA",
+      "tabbarInactiveColor": "#97A5BB",
+      "tabbarActiveColor": "#cc3366"
+    },
+    "images": {
+      "headerBackground": "images/header_background_light.png",
+      "appLogoLogin": "images/applogologin_light.png",
+      "appLogoSplash": "images/applogosplash_light.png"
+    },
+    "imagesMeta": {
+      "appLogoLogin": {
+        "width": 171,
+        "height": 48.45
+      }
+    }
+  },
+  "dark": {
+    "colors": {
+      "accentColor": "#AD1457",
+      "background": "#18202E",
+      "textPrimary": "#FFFFFF",
+      "textSecondary": "#79889F",
+      "infoColor": "#AD1457",
+      "textInputBackground": "#273346",
+      "textInputStroke": "#4E5A70",
+      "primaryButtonBg": "#AD1457",
+      "primaryButtonText": "#FFFFFF",
+      "secondaryButtonBorder": "#AD1457",
+      "secondaryButtonText": "#AD1457",
+      "tabbarBGColor": "#273346",
+      "tabbarInactiveColor": "#79889F",
+      "tabbarActiveColor": "#AD1457"
+    },
+    "images": {
+      "headerBackground": "images/header_background_dark.png",
+      "appLogoLogin": "images/applogologin_dark.png",
+      "appLogoSplash": "images/applogosplash_dark.png"
+    },
+    "imagesMeta": {
+      "appLogoLogin": {
+        "width": 171,
+        "height": 49.38
+      }
+    }
+  },
+  "icons": {
+    "appIcon": "images/app_icon_ios.png",
+    "appIconAndroid": {
+      "backgroundColor": "#cc3366",
+      "splashColorLight": "#cc3366",
+      "splashColorDark": "#cc3366",
+      "useBackground": true,
+      "assets": {
+        "mipmap-mdpi/ic_launcher.webp": "images/android/mipmap-mdpi/ic_launcher.webp",
+        "mipmap-mdpi/ic_launcher_round.webp": "images/android/mipmap-mdpi/ic_launcher_round.webp",
+        "mipmap-hdpi/ic_launcher.webp": "images/android/mipmap-hdpi/ic_launcher.webp",
+        "mipmap-hdpi/ic_launcher_round.webp": "images/android/mipmap-hdpi/ic_launcher_round.webp",
+        "mipmap-xhdpi/ic_launcher.webp": "images/android/mipmap-xhdpi/ic_launcher.webp",
+        "mipmap-xhdpi/ic_launcher_round.webp": "images/android/mipmap-xhdpi/ic_launcher_round.webp",
+        "mipmap-xxhdpi/ic_launcher.webp": "images/android/mipmap-xxhdpi/ic_launcher.webp",
+        "mipmap-xxhdpi/ic_launcher_round.webp": "images/android/mipmap-xxhdpi/ic_launcher_round.webp",
+        "mipmap-xxxhdpi/ic_launcher.webp": "images/android/mipmap-xxxhdpi/ic_launcher.webp",
+        "mipmap-xxxhdpi/ic_launcher_round.webp": "images/android/mipmap-xxxhdpi/ic_launcher_round.webp",
+        "mipmap-mdpi/ic_launcher_foreground.webp": "images/android/mipmap-mdpi/ic_launcher_foreground.webp",
+        "mipmap-hdpi/ic_launcher_foreground.webp": "images/android/mipmap-hdpi/ic_launcher_foreground.webp",
+        "mipmap-xhdpi/ic_launcher_foreground.webp": "images/android/mipmap-xhdpi/ic_launcher_foreground.webp",
+        "mipmap-xxhdpi/ic_launcher_foreground.webp": "images/android/mipmap-xxhdpi/ic_launcher_foreground.webp",
+        "mipmap-xxxhdpi/ic_launcher_foreground.webp": "images/android/mipmap-xxxhdpi/ic_launcher_foreground.webp",
+        "mipmap-mdpi/ic_launcher_background.webp": "images/android/mipmap-mdpi/ic_launcher_background.webp",
+        "mipmap-hdpi/ic_launcher_background.webp": "images/android/mipmap-hdpi/ic_launcher_background.webp",
+        "mipmap-xhdpi/ic_launcher_background.webp": "images/android/mipmap-xhdpi/ic_launcher_background.webp",
+        "mipmap-xxhdpi/ic_launcher_background.webp": "images/android/mipmap-xxhdpi/ic_launcher_background.webp",
+        "mipmap-xxxhdpi/ic_launcher_background.webp": "images/android/mipmap-xxxhdpi/ic_launcher_background.webp",
+        "drawable/app_splash_icon.png": "images/android/drawable/app_splash_icon.png",
+        "drawable-night/app_splash_icon.png": "images/android/drawable-night/app_splash_icon.png"
+      },
+      "playStore": "images/android/ic_launcher-playstore.png",
+      "scale": 1
+    }
+  },
+  "shapes": {
+    "rounded": true,
+    "buttonRadius": 8
+  }
+}

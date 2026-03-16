@@ -1,22 +1,22 @@
 {
-  "images" : [
+  "images": [
     {
-      "filename" : "Rectangle.png",
-      "idiom" : "universal"
+      "idiom": "universal",
+      "filename": "header_background_light.png"
     },
     {
-      "appearances" : [
+      "idiom": "universal",
+      "appearances": [
         {
-          "appearance" : "luminosity",
-          "value" : "dark"
+          "appearance": "luminosity",
+          "value": "dark"
         }
       ],
-      "filename" : "Rectangle-2.png",
-      "idiom" : "universal"
+      "filename": "header_background_dark.png"
     }
   ],
-  "info" : {
-    "author" : "xcode",
-    "version" : 1
+  "info": {
+    "author": "xcode",
+    "version": 1
   }
 }

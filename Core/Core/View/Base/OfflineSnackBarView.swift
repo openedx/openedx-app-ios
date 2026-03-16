@@ -69,7 +69,9 @@ public struct OfflineSnackBarView: View {
                     dismiss = false
                 }
             case .reachable:
-                break
+                withAnimation {
+                    dismiss = true
+                }
             case .none:
                 break
             }
