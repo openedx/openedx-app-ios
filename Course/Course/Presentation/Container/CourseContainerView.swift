@@ -134,7 +134,9 @@ public struct CourseContainerView: View {
                                ? (collapsed ? coordinateBoundaryLower : coordinate)
                                : (collapsed ? coordinateBoundaryLower : .zero))
                         )
+
                         backButton(containerWidth: proxy.size.width)
+
                     }
                 }
                 .ignoresSafeArea(edges: idiom == .pad ? .leading : .top)
