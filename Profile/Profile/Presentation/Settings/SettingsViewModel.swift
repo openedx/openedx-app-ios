@@ -11,11 +11,12 @@ import SwiftUI
 import Combine
 
 @MainActor
-public final class SettingsViewModel: ObservableObject {
+@Observable
+public final class SettingsViewModel {
     
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
-    @Published var wifiOnly: Bool {
+    private(set) var isShowProgress = false
+    var showError: Bool = false
+    var wifiOnly: Bool {
         willSet {
             if newValue != wifiOnly {
                 userSettings.wifiOnly = newValue
@@ -26,7 +27,7 @@ public final class SettingsViewModel: ObservableObject {
         }
     }
     
-    @Published var selectedQuality: StreamingQuality {
+    var selectedQuality: StreamingQuality {
         willSet {
             if newValue != selectedQuality {
                 userSettings.streamingQuality = newValue
@@ -53,9 +54,9 @@ public final class SettingsViewModel: ObservableObject {
         case updateRequired
     }
     
-    @Published var versionState: VersionState = .actual
-    @Published var currentVersion: String = ""
-    @Published var latestVersion: String = ""
+    var versionState: VersionState = .actual
+    var currentVersion: String = ""
+    var latestVersion: String = ""
 
     var errorMessage: String? {
         didSet {
@@ -65,7 +66,7 @@ public final class SettingsViewModel: ObservableObject {
         }
     }
     
-    @Published private(set) var userSettings: UserSettings
+    private(set) var userSettings: UserSettings
     
     private let interactor: ProfileInteractorProtocol
     private let downloadManager: DownloadManagerProtocol

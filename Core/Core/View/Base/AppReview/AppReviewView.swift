@@ -11,7 +11,7 @@ import Theme
 
 public struct AppReviewView: View {
         
-    @ObservedObject private var viewModel: AppReviewViewModel
+    @Bindable private var viewModel: AppReviewViewModel
 
     @Environment(\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode

@@ -14,7 +14,7 @@ struct CourseVideoDownloadBarView: View {
 
     // MARK: - Properties
 
-    @StateObject var viewModel: CourseVideoDownloadBarViewModel
+    var viewModel: CourseVideoDownloadBarViewModel
     private var onTap: (() -> Void)?
     private var onNotInternetAvaliable: (() -> Void)?
 
@@ -25,13 +25,12 @@ struct CourseVideoDownloadBarView: View {
         onTap: (() -> Void)? = nil,
         analytics: CourseAnalytics
     ) {
-        self._viewModel = .init(
-            wrappedValue: .init(
-                courseStructure: courseStructure,
-                courseViewModel: courseViewModel,
-                analytics: analytics
-            )
+        self.viewModel = CourseVideoDownloadBarViewModel(
+            courseStructure: courseStructure,
+            courseViewModel: courseViewModel,
+            analytics: analytics
         )
+
         self.onNotInternetAvaliable = onNotInternetAvaliable
         self.onTap = onTap
     }

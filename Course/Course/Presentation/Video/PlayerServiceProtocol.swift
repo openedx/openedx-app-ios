@@ -73,7 +73,7 @@ public final class PlayerService: PlayerServiceProtocol {
     
     public func updateVideoProgress(progress: Double) async {
         await interactor.updateLocalVideoProgress(blockID: blockID, progress: progress)
-        
+
         NotificationCenter.default.post(
             name: .onVideoProgressUpdated,
             object: nil,

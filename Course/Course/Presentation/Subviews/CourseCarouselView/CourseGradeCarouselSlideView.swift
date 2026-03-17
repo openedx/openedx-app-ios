@@ -5,8 +5,8 @@ import Core
 struct CourseGradeCarouselSlideView: View {
     
     // MARK: - Variables
-    @ObservedObject var viewModelProgress: CourseProgressViewModel
-    @ObservedObject var viewModelContainer: CourseContainerViewModel
+    @Bindable var viewModelProgress: CourseProgressViewModel
+    var viewModelContainer: CourseContainerViewModel
     
     // MARK: - Body
     var body: some View {

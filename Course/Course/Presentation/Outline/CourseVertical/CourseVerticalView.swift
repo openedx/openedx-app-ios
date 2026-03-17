@@ -16,7 +16,7 @@ public struct CourseVerticalView: View {
     private var title: String
     private var courseName: String
     private var courseID: String
-    @ObservedObject
+
     private var viewModel: CourseVerticalViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     

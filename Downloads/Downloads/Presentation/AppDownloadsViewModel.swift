@@ -12,17 +12,18 @@ import SwiftUI
 
 //swiftlint:disable type_body_length
 @MainActor
-public final class AppDownloadsViewModel: ObservableObject {
+@Observable
+public final class AppDownloadsViewModel {
     
     private var cancellables = Set<AnyCancellable>()
     private var downloadQueue = [String]()
     private var isProcessingQueue = false
     
-    @Published var courses: [DownloadCoursePreview] = []
-    @Published var downloadedSizes: [String: Int64] = [:]
-    @Published var downloadStates: [String: DownloadState] = [:]
-    @Published var showError: Bool = false
-    @Published private(set) var fetchInProgress = false
+    var courses: [DownloadCoursePreview] = []
+    var downloadedSizes: [String: Int64] = [:]
+    var downloadStates: [String: DownloadState] = [:]
+    var showError: Bool = false
+    private(set) var fetchInProgress = false
     
     private var courseTasks: [String: [DownloadDataTask]] = [:]
     private var courseSizes: [String: Int64] = [:]
