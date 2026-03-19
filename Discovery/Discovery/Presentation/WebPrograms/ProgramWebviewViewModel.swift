@@ -10,13 +10,16 @@ import Core
 import SwiftUI
 import WebKit
 
-public final class ProgramWebviewViewModel: ObservableObject, WebviewCookiesUpdateProtocol {
-    @Published var courseDetails: CourseDetails?
-    @Published private(set) var showProgress = false
-    @Published var showError: Bool = false
-    @Published var webViewError: Bool = false
-    @Published public var updatingCookies: Bool = false
-    @Published public var cookiesReady: Bool = false
+@Observable
+public final class ProgramWebviewViewModel: WebviewCookiesUpdateProtocol {
+    var courseDetails: CourseDetails?
+    private(set) var showProgress = false
+    var showError: Bool = false
+    var webViewError: Bool = false
+    var webViewIsLoading: Bool = false
+
+    public var updatingCookies: Bool = false
+    public var cookiesReady: Bool = false
     
     public var errorMessage: String? {
         didSet {

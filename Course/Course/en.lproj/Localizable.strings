@@ -183,6 +183,7 @@
 "COURSE.DUE_TOMORROW" = "Due Tomorrow";
 
 "COURSE.PROGRESS_COMPLETED" = "%@/%@ Completed";
+"COURSE.PROGRESS_SECTIONS_COMPLETED" = "%@/%@ Sections Completed";
 "COURSE.PROGRESS_VIDEOS_COMPLETED" = "%@/%@ Completed";
 "COURSE.PROGRESS_WATCHED" = "%@/%@ Watched";
 "COURSE.PROGRESS_VIEW_COMPLETED" = "View Completed";

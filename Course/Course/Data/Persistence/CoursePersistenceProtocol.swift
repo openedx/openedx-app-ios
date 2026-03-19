@@ -8,6 +8,7 @@
 import CoreData
 import Core
 
+/// @mockable
 public protocol CoursePersistenceProtocol: Sendable {
     func loadEnrollments() async throws -> [Core.CourseItem]
     func saveEnrollments(items: [Core.CourseItem]) async

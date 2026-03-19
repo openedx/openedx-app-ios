@@ -13,8 +13,7 @@ import Theme
 @MainActor
 public struct AllCoursesView: View {
     
-    @ObservedObject
-    private var viewModel: AllCoursesViewModel
+    @Bindable private var viewModel: AllCoursesViewModel
     private let router: DashboardRouter
     @Environment(\.isHorizontal) private var isHorizontal
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -206,7 +205,7 @@ struct AllCoursesView_Previews: PreviewProvider {
         let vm = AllCoursesViewModel(
             interactor: DashboardInteractor.mock,
             connectivity: Connectivity(config: ConfigMock()),
-            analytics: DashboardAnalyticsMock(),
+            analytics: DashboardAnalyticsPreviewMock(),
             storage: CoreStorageMock()
         )
         

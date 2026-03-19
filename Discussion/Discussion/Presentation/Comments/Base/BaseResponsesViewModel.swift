@@ -12,18 +12,19 @@ import Combine
 import Swinject
 
 @MainActor
+@Observable
 public class BaseResponsesViewModel {
     
-    @Published public var postComments: Post?
-    @Published public var isShowProgress = false
-    @Published public var showError = false
-    @Published public var showAlert = false
-    @Published public var addCommentsIsVisible = true
+    public var postComments: Post?
+    public var isShowProgress = false
+    public var showError = false
+    public var showAlert = false
+    public var addCommentsIsVisible = true
     internal var comments: [UserComment] = []
     
     public var nextPage = 2
     public var totalPages = 1
-    @Published public var itemsCount = 0
+    public var itemsCount = 0
     public var fetchInProgress = false
     
     var errorMessage: String? {

@@ -11,8 +11,8 @@ import OEXFoundation
 import Theme
 
 public struct DeleteAccountView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DeleteAccountViewModel
     
     public init(viewModel: DeleteAccountViewModel) {
@@ -184,12 +184,12 @@ public struct DeleteAccountView: View {
 #if DEBUG
 struct DeleteAccountView_Previews: PreviewProvider {
     static var previews: some View {
-        let router = ProfileRouterMock()
+        let router = ProfileRouterPreview()
         let vm = DeleteAccountViewModel(
             interactor: ProfileInteractor.mock,
             router: router,
             connectivity: Connectivity(config: ConfigMock()),
-            analytics: ProfileAnalyticsMock()
+            analytics: ProfileAnalyticsPreview()
         )
         
         DeleteAccountView(viewModel: vm)

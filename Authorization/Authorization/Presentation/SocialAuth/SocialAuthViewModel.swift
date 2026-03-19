@@ -10,7 +10,7 @@ import Core
 import AuthenticationServices
 import FacebookLogin
 import GoogleSignIn
-import MSAL
+//import MSAL
 import Swinject
 
 enum SocialAuthDetails {
@@ -57,14 +57,15 @@ enum SocialAuthDetails {
 }
 
 @MainActor
-final public class SocialAuthViewModel: ObservableObject {
+@Observable
+final public class SocialAuthViewModel {
 
     // MARK: - Properties
 
     private var completion: ((Result<SocialAuthDetails, Error>) -> Void)
     private let config: ConfigProtocol
 
-    @Published var lastUsedOption: SocialAuthMethod?
+    var lastUsedOption: SocialAuthMethod?
     var enabledOptions: [SocialAuthMethod] = []
     
     init(
@@ -81,10 +82,10 @@ final public class SocialAuthViewModel: ObservableObject {
         configureEnabledOptions()
     }
 
-    private lazy var appleAuthProvider: AppleAuthProvider  = .init(config: config)
-    private lazy var googleAuthProvider: GoogleAuthProvider = .init()
-    private lazy var facebookAuthProvider: FacebookAuthProvider = .init()
-    private lazy var microsoftAuthProvider: MicrosoftAuthProvider = .init()
+    @ObservationIgnored private lazy var appleAuthProvider: AppleAuthProvider  = .init(config: config)
+    @ObservationIgnored private lazy var googleAuthProvider: GoogleAuthProvider = .init()
+    @ObservationIgnored private lazy var facebookAuthProvider: FacebookAuthProvider = .init()
+    @ObservationIgnored private lazy var microsoftAuthProvider: MicrosoftAuthProvider = .init()
 
     private var topViewController: UIViewController? {
         UIApplication.topViewController()

@@ -13,7 +13,7 @@ import Theme
 
 struct AllContentView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @Bindable private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let dateTabIndex: Int
@@ -32,7 +32,7 @@ struct AllContentView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.proxy = proxy
         self.courseID = courseID
         self.dateTabIndex = dateTabIndex
@@ -74,7 +74,10 @@ struct AllContentView: View {
                                 // MARK: Course Progress
                                 if let progress = viewModel.courseProgress(),
                                    let total = progress.totalAssignmentsCount, total > 0 {
-                                    CourseProgressView(progress: progress)
+                                    CourseProgressView(
+                                        progress: progress,
+                                        fromAllContentTab: true
+                                    )
                                         .padding(.horizontal, 24)
                                         .accessibilityElement(children: .combine)
                                         .accessibilityLabel(CourseLocalization.Accessibility.courseProgressSection)

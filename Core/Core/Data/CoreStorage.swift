@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CoreStorage: Sendable {
     var accessToken: String? {get set}
     var refreshToken: String? {get set}

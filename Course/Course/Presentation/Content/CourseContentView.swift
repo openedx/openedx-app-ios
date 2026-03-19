@@ -14,9 +14,10 @@ import SwiftUIIntrospect
 
 public struct CourseContentView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @Bindable private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
+    @State private var openCertificateView: Bool = false
     
     private var videoContentData: VideoContentData {
         VideoContentData(
@@ -67,7 +68,7 @@ public struct CourseContentView: View {
         viewHeight: Binding<CGFloat>
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.courseID = courseID
         self._selection = selection
         self._coordinate = coordinate
@@ -97,6 +98,8 @@ public struct CourseContentView: View {
                                 )
                                     .padding(.horizontal, 24)
                                     .padding(.top, 16)
+
+                                certificateView
                                 
                                 // MARK: - Content based on selected tab
                                 contentForSelectedTab(proxy: proxy)
@@ -176,6 +179,34 @@ public struct CourseContentView: View {
                 .ignoresSafeArea()
         )
     }
+
+    @ViewBuilder
+    private var certificateView: some View {
+        if let certificate = viewModel.courseStructure?.certificate,
+           let url = certificate.url,
+           url.count > 0 {
+            MessageSectionView(
+                title: CourseLocalization.Outline.passedTheCourse(title),
+                actionTitle: CourseLocalization.Outline.viewCertificate,
+                action: {
+                    openCertificateView = true
+                    viewModel.trackViewCertificateClicked(courseID: courseID)
+                }
+            )
+            .padding(.horizontal, 24)
+            .padding(.top, 16)
+            .fullScreenCover(
+                isPresented: $openCertificateView,
+                content: {
+                    WebBrowser(
+                        url: url,
+                        pageTitle: CourseLocalization.Outline.certificate,
+                        connectivity: viewModel.connectivity
+                    )
+                }
+            )
+        }
+    }
     
     @ViewBuilder
     private func contentForSelectedTab(proxy: GeometryProxy) -> some View {
@@ -221,6 +252,11 @@ public struct CourseContentView: View {
                 }
                 Task {
                     await viewModel.updateVideoProgress(blockID: blockID, progress: progress)
+                }
+            }
+            .onAppear {
+                Task {
+                    await viewModel.refreshLocalVideoProgress()
                 }
             }
         case .assignments:

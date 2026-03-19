@@ -7,7 +7,6 @@
 
 import Foundation
 
-//sourcery: AutoMockable
 public protocol MainScreenAnalytics: Sendable {
     func mainDiscoveryTabClicked()
     func mainLearnTabClicked()
@@ -15,17 +14,19 @@ public protocol MainScreenAnalytics: Sendable {
     func mainProfileTabClicked()
     func mainProgramsTabClicked()
     func mainCoursesClicked()
+    func mainDatesScreenViewed()
     func mainProgramsClicked()
     func notificationPermissionStatus(status: String)
 }
 
 #if DEBUG
-final public class MainScreenAnalyticsMock: MainScreenAnalytics {
+final public class MainScreenAnalyticsPreviewMock: MainScreenAnalytics {
     public func mainDiscoveryTabClicked() {}
     public func mainLearnTabClicked() {}
     public func mainDownloadsTabClicked() {}
     public func mainProfileTabClicked() {}
     public func mainProgramsTabClicked() {}
+    public func mainDatesScreenViewed() {}
     public func mainProgramsClicked() {}
     public func mainCoursesClicked() {}
     public func notificationPermissionStatus(status: String) {}

@@ -11,8 +11,7 @@ import Theme
 
 public struct VideoSettingsView: View {
     
-    @ObservedObject
-    private var viewModel: SettingsViewModel
+    @Bindable private var viewModel: SettingsViewModel
     @Environment(\.isHorizontal) private var isHorizontal
     
     public init(viewModel: SettingsViewModel) {
@@ -132,12 +131,12 @@ public struct VideoSettingsView: View {
 
 #if DEBUG
 #Preview {
-        let router = ProfileRouterMock()
+        let router = ProfileRouterPreview()
         let vm = SettingsViewModel(
             interactor: ProfileInteractor.mock,
             downloadManager: DownloadManagerMock(),
             router: router,
-            analytics: ProfileAnalyticsMock(),
+            analytics: ProfileAnalyticsPreview(),
             coreAnalytics: CoreAnalyticsMock(),
             config: ConfigMock(),
             corePersistence: CorePersistenceMock(),

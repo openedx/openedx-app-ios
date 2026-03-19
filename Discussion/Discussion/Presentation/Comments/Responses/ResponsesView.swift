@@ -18,7 +18,7 @@ public struct ResponsesView: View {
     private let commentID: String
     private let parentComment: Post
     
-    @ObservedObject private var viewModel: ResponsesViewModel
+    private var viewModel: ResponsesViewModel
     @State private var isShowProgress: Bool = true
     
     public init(
@@ -227,6 +227,10 @@ public struct ResponsesView: View {
                         }
                     }
                 }
+
+                if viewModel.isShowProgress {
+                    ProgressBar(size: 40, lineWidth: 8)
+                }
             }
             .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
@@ -239,7 +243,22 @@ public struct ResponsesView: View {
                         BackNavigationButton(color: Theme.Colors.accentColor) {
                             viewModel.router.back()
                         }
-                        .offset(x: -8, y: -1.5)
+                        .offset(
+                            x: {
+                                if #available(iOS 26.0, *) {
+                                    return 6
+                                } else {
+                                    return -8
+                                }
+                            }(),
+                            y: {
+                                if #available(iOS 26.0, *) {
+                                    return 1
+                                } else {
+                                    return -1.5
+                                }
+                            }()
+                        )
                     }
                 )
             }
@@ -258,11 +277,11 @@ struct ResponsesView_Previews: PreviewProvider {
         let viewModel = ResponsesViewModel(
             courseID: "",
             interactor: DiscussionInteractor(repository: DiscussionRepositoryMock()),
-            router: DiscussionRouterMock(),
+            router: DiscussionRouterPreviewMock(),
             config: ConfigMock(),
             storage: CoreStorageMock(),
             threadStateSubject: .init(nil),
-            analytics: DiscussionAnalyticsMock()
+            analytics: DiscussionAnalyticsPreviewMock()
         )
         let post = Post(
             authorName: "Kirill",
@@ -283,8 +302,8 @@ struct ResponsesView_Previews: PreviewProvider {
             abuseFlagged: false,
             closed: false
         )
-        let router = DiscussionRouterMock()
-        
+        let router = DiscussionRouterPreviewMock()
+
         ResponsesView(
             commentID: "",
             viewModel: viewModel,

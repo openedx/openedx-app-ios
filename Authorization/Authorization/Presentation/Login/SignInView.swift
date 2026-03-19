@@ -18,7 +18,6 @@ public struct SignInView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     
-    @ObservedObject
     private var viewModel: SignInViewModel
     
     public init(viewModel: SignInViewModel) {

@@ -7,7 +7,7 @@
 
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol AuthInteractorProtocol: Sendable {
     @discardableResult
     func login(username: String, password: String) async throws -> User

@@ -13,7 +13,6 @@ import Theme
 
 public struct SettingsView: View {
     
-    @ObservedObject
     private var viewModel: SettingsViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
@@ -245,12 +244,12 @@ public struct SettingsView: View {
 
 #if DEBUG
 #Preview {
-    let router = ProfileRouterMock()
+    let router = ProfileRouterPreview()
     let vm = SettingsViewModel(
         interactor: ProfileInteractor.mock,
         downloadManager: DownloadManagerMock(),
         router: router,
-        analytics: ProfileAnalyticsMock(),
+        analytics: ProfileAnalyticsPreview(),
         coreAnalytics: CoreAnalyticsMock(),
         config: ConfigMock(),
         corePersistence: CorePersistenceMock(),

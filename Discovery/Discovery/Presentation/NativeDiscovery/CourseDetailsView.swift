@@ -13,11 +13,14 @@ import WebKit
 import Theme
 
 public struct CourseDetailsView: View {
-    
-    @ObservedObject private var viewModel: CourseDetailsViewModel
+
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.isHorizontal) var isHorizontal
-    @State private var isOverviewRendering = true
+
+    @State var isProcessing: Bool = true
+
+   private var viewModel: CourseDetailsViewModel
+
     private var title: String
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var courseID: String
@@ -121,13 +124,13 @@ public struct CourseDetailsView: View {
                                                 html: courseDetails.overviewHTML,
                                                 type: .discovery,
                                                 screenWidth: proxy.size.width - 48),
-                                            processing: { rendering in
-                                                isOverviewRendering = rendering
+                                            processing: { isProcessing in
+                                                self.isProcessing = isProcessing
                                             }
                                         )
                                         .padding(.horizontal, 16)
                                         
-                                        if isOverviewRendering {
+                                        if isProcessing {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(.top, 20)
                                                 .frame(maxWidth: .infinity)
@@ -435,8 +438,8 @@ struct CourseDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = CourseDetailsViewModel(
             interactor: DiscoveryInteractor.mock,
-            router: DiscoveryRouterMock(),
-            analytics: DiscoveryAnalyticsMock(),
+            router: DiscoveryRouterPreviewMock(),
+            analytics: DiscoveryAnalyticsPreviewMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
             connectivity: Connectivity(config: ConfigMock()),

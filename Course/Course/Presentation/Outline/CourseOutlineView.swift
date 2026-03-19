@@ -14,7 +14,7 @@ import SwiftUIIntrospect
 
 public struct CourseOutlineView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @Bindable private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -46,7 +46,7 @@ public struct CourseOutlineView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection
@@ -68,14 +68,19 @@ public struct CourseOutlineView: View {
                                 viewHeight: $viewHeight
                             )
 
-                            RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+                            if viewModel.courseStructure != nil,
+                               viewModel.isShowProgress != false,
+                               isVideo {
+                                RefreshProgressView(isShowRefresh: $viewModel.isShowRefresh)
+                            }
 
                             VStack(alignment: .leading) {
-                                
+
                                 if isVideo,
                                    viewModel.isShowProgress == false {
                                     downloadQualityBars(proxy: proxy)
                                 }
+
                                 certificateView
                                 
                                 if viewModel.courseStructure == nil,
@@ -84,11 +89,14 @@ public struct CourseOutlineView: View {
                                     FullScreenErrorView(
                                         type: .noContent(
                                             CourseLocalization.Error.coursewareUnavailable,
-                                            image: CoreAssets.information.swiftUIImage
-                                        )
+                                            image: CoreAssets.information.swiftUIImage,
+                                            showButton: true
+                                        ),
+                                        action: {
+                                            viewModel.router.back()
+                                        }
                                     )
                                     .frame(maxWidth: .infinity)
-                                    .frame(height: proxy.size.height - viewHeight)
                                 } else {
                                     if let continueWith = viewModel.continueWith,
                                        let courseStructure = viewModel.courseStructure,

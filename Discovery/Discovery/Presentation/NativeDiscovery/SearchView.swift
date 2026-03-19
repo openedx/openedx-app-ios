@@ -14,11 +14,10 @@ public struct SearchView: View {
     
     @FocusState
     private var focused: Bool
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: SearchViewModel<RunLoop>
-    @State private var animated: Bool = false
-    
+
     public init(viewModel: SearchViewModel<RunLoop>, searchQuery: String? = nil) {
         self.viewModel = viewModel
         self.viewModel.searchText = searchQuery ?? ""
@@ -102,8 +101,8 @@ public struct SearchView: View {
                                 searchHeader(viewModel: viewModel)
                                     .padding(.horizontal, 24)
                                     .padding(.bottom, 20)
-                                    .offset(y: animated ? 0 : 50)
-                                    .opacity(animated ? 1 : 0)
+                                    .offset(y: viewModel.animated ? 0 : 50)
+                                    .opacity(viewModel.animated ? 1 : 0)
                                 Spacer()
                             }
                             .padding(.leading, 10)
@@ -170,7 +169,7 @@ public struct SearchView: View {
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now()) {
                     withAnimation(.easeIn(duration: 0.3)) {
-                        animated = true
+                        viewModel.animated = true
                     }
                 }
             }
@@ -219,12 +218,12 @@ public struct SearchView: View {
 #if DEBUG
 struct SearchView_Previews: PreviewProvider {
     static var previews: some View {
-        let router = DiscoveryRouterMock()
+        let router = DiscoveryRouterPreviewMock()
         let vm = SearchViewModel(
             interactor: DiscoveryInteractor.mock,
             connectivity: Connectivity(config: ConfigMock()),
             router: router,
-            analytics: DiscoveryAnalyticsMock(),
+            analytics: DiscoveryAnalyticsPreviewMock(),
             storage: CoreStorageMock(),
             debounce: .searchDebounce
         )

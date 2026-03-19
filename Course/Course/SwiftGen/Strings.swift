@@ -249,6 +249,10 @@ public enum CourseLocalization {
     }
     /// Hide Completed
     public static let progressHideCompleted = CourseLocalization.tr("Localizable", "COURSE.PROGRESS_HIDE_COMPLETED", fallback: "Hide Completed")
+    /// %@/%@ Sections Completed
+    public static func progressSectionsCompleted(_ p1: Any, _ p2: Any) -> String {
+      return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_SECTIONS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Sections Completed")
+    }
     /// %@/%@ Completed
     public static func progressVideosCompleted(_ p1: Any, _ p2: Any) -> String {
       return CourseLocalization.tr("Localizable", "COURSE.PROGRESS_VIDEOS_COMPLETED", String(describing: p1), String(describing: p2), fallback: "%@/%@ Completed")

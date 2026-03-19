@@ -10,8 +10,8 @@ import Theme
 import Core
 
 public struct CoursesToSyncView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
@@ -79,6 +79,9 @@ public struct CoursesToSyncView: View {
                 }
             }
             .ignoresSafeArea(.all, edges: .horizontal)
+        }
+        .onChange(of: viewModel.hideInactiveCourses) { _, hide in
+            viewModel.profileStorage.hideInactiveCourses = hide
         }
     }
     
@@ -153,10 +156,10 @@ public struct CoursesToSyncView: View {
 struct CoursesToSyncView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DatesAndCalendarViewModel(
-            router: ProfileRouterMock(),
+            router: ProfileRouterPreview(),
             interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
-            profileStorage: ProfileStorageMock(),
-            persistence: ProfilePersistenceMock(),
+            profileStorage: ProfileStoragePreview(),
+            persistence: ProfilePersistencePreview(),
             calendarManager: CalendarManagerMock(),
             connectivity: Connectivity(config: ConfigMock())
         )

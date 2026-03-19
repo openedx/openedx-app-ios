@@ -8,23 +8,24 @@
 import Foundation
 import SwiftUI
 
-public class FieldConfiguration: ObservableObject {
-    @Published public var shake: Bool = false
-    @Published public var error: String {
+@Observable
+public class FieldConfiguration {
+     public var shake: Bool = false
+     public var error: String {
         didSet {
             if error.count > 0 {
                 shake = true
             }
         }
     }
-    @Published public var text: String {
+     public var text: String {
         didSet {
             error = ""
             shake = false
         }
     }
     
-    @Published public var selectedItem: PickerItem?
+    public var selectedItem: PickerItem?
     public let field: PickerFields
     
     public init(error: String = "", text: String = "", field: PickerFields, selectedItem: PickerItem? = nil) {

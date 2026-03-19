@@ -2,10 +2,9 @@
 //  SettingsViewModelTests.swift
 //  ProfileTests
 //
-//  Created by  Stepanok Ivan on 10.04.2024.
+//  Created by  Stepanok Ivan on 10.04.2024.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Profile
@@ -21,221 +20,228 @@ final class SettingsViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
-        
-        Given(storage, .updateAppRequired(getter: false))
-        Given(
-            interactor,
-            .getSettings(
-                willReturn: UserSettings(
-                    wifiOnly: true,
-                    streamingQuality: .auto,
-                    downloadQuality: .auto,
-                    playbackSpeed: 1.0
-                )
+        let downloadManager = DownloadManagerProtocolMock()
+        let corePersistence = CorePersistenceProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let config = ConfigProtocolMock()
+
+        storage.updateAppRequired = false
+        interactor.getSettingsHandler = {
+            UserSettings(
+                wifiOnly: true,
+                streamingQuality: .auto,
+                downloadQuality: .auto,
+                playbackSpeed: 1.0
             )
-        )
-        
-        
+        }
+        router.showStartupScreenHandler = { }
+        interactor.logOutHandler = { }
+
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
+            downloadManager: downloadManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(),
-            corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(config: ConfigMock()),
+            config: config,
+            corePersistence: corePersistence,
+            connectivity: connectivity,
             coreStorage: storage
         )
-        
+
         await viewModel.logOut()
-        
-        Verify(router, .showStartupScreen())
+
+        XCTAssertEqual(router.showStartupScreenCallCount, 1)
         XCTAssertFalse(viewModel.showError)
     }
-    
+
     func testTrackProfileVideoSettingsClicked() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        let corePersistence = CorePersistenceProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let config = ConfigProtocolMock()
 
-        Given(storage, .updateAppRequired(getter: false))
-        Given(
-            interactor,
-            .getSettings(
-                willReturn: UserSettings(
-                    wifiOnly: true,
-                    streamingQuality: .auto,
-                    downloadQuality: .auto,
-                    playbackSpeed: 1.0
-                )
+        storage.updateAppRequired = false
+        interactor.getSettingsHandler = {
+            UserSettings(
+                wifiOnly: true,
+                streamingQuality: .auto,
+                downloadQuality: .auto,
+                playbackSpeed: 1.0
             )
-        )
-        
+        }
+
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
+            downloadManager: downloadManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(),
-            corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(config: ConfigMock()),
+            config: config,
+            corePersistence: corePersistence,
+            connectivity: connectivity,
             coreStorage: storage
         )
-        
+
         viewModel.trackProfileVideoSettingsClicked()
-        
-        Verify(analytics, 1, .profileVideoSettingsClicked())
+
+        XCTAssertEqual(analytics.profileVideoSettingsClickedCallCount, 1)
     }
-    
+
     func testTrackEmailSupportClicked() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        let corePersistence = CorePersistenceProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let config = ConfigProtocolMock()
 
-        Given(storage, .updateAppRequired(getter: false))
-        Given(
-            interactor,
-            .getSettings(
-                willReturn: UserSettings(
-                    wifiOnly: true,
-                    streamingQuality: .auto,
-                    downloadQuality: .auto,
-                    playbackSpeed: 1.0
-                )
+        storage.updateAppRequired = false
+        interactor.getSettingsHandler = {
+            UserSettings(
+                wifiOnly: true,
+                streamingQuality: .auto,
+                downloadQuality: .auto,
+                playbackSpeed: 1.0
             )
-        )
-        
+        }
+
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
+            downloadManager: downloadManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(),
-            corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(config: ConfigMock()),
+            config: config,
+            corePersistence: corePersistence,
+            connectivity: connectivity,
             coreStorage: storage
         )
-        
+
         viewModel.trackEmailSupportClicked()
-        
-        Verify(analytics, 1, .emailSupportClicked())
+
+        XCTAssertEqual(analytics.emailSupportClickedCallCount, 1)
     }
-    
+
     func testTrackCookiePolicyClicked() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        let corePersistence = CorePersistenceProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let config = ConfigProtocolMock()
 
-        Given(storage, .updateAppRequired(getter: false))
-        Given(
-            interactor,
-            .getSettings(
-                willReturn: UserSettings(
-                    wifiOnly: true,
-                    streamingQuality: .auto,
-                    downloadQuality: .auto,
-                    playbackSpeed: 1.0
-                )
+        storage.updateAppRequired = false
+        interactor.getSettingsHandler = {
+            UserSettings(
+                wifiOnly: true,
+                streamingQuality: .auto,
+                downloadQuality: .auto,
+                playbackSpeed: 1.0
             )
-        )
-        
+        }
+
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
+            downloadManager: downloadManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(),
-            corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(config: ConfigMock()),
+            config: config,
+            corePersistence: corePersistence,
+            connectivity: connectivity,
             coreStorage: storage
         )
-        
+
         viewModel.trackCookiePolicyClicked()
-        
-        Verify(analytics, 1, .cookiePolicyClicked())
+
+        XCTAssertEqual(analytics.cookiePolicyClickedCallCount, 1)
     }
-    
+
     func testTrackPrivacyPolicyClicked() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        let corePersistence = CorePersistenceProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let config = ConfigProtocolMock()
 
-        Given(storage, .updateAppRequired(getter: false))
-        Given(
-            interactor,
-            .getSettings(
-                willReturn: UserSettings(
-                    wifiOnly: true,
-                    streamingQuality: .auto,
-                    downloadQuality: .auto,
-                    playbackSpeed: 1.0
-                )
+        storage.updateAppRequired = false
+        interactor.getSettingsHandler = {
+            UserSettings(
+                wifiOnly: true,
+                streamingQuality: .auto,
+                downloadQuality: .auto,
+                playbackSpeed: 1.0
             )
-        )
-        
+        }
+
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
+            downloadManager: downloadManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(),
-            corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(config: ConfigMock()),
+            config: config,
+            corePersistence: corePersistence,
+            connectivity: connectivity,
             coreStorage: storage
         )
-        
+
         viewModel.trackPrivacyPolicyClicked()
-        
-        Verify(analytics, 1, .privacyPolicyClicked())
+
+        XCTAssertEqual(analytics.privacyPolicyClickedCallCount, 1)
     }
-    
+
     func testTrackProfileEditClicked() {
         let interactor = ProfileInteractorProtocolMock()
         let router = ProfileRouterMock()
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
+        let downloadManager = DownloadManagerProtocolMock()
+        let corePersistence = CorePersistenceProtocolMock()
+        let connectivity = ConnectivityProtocolMock()
+        let config = ConfigProtocolMock()
 
-        Given(storage, .updateAppRequired(getter: false))
-        Given(
-            interactor,
-            .getSettings(
-                willReturn: UserSettings(
-                    wifiOnly: true,
-                    streamingQuality: .auto,
-                    downloadQuality: .auto,
-                    playbackSpeed: 1.0
-                )
+        storage.updateAppRequired = false
+        interactor.getSettingsHandler = {
+            UserSettings(
+                wifiOnly: true,
+                streamingQuality: .auto,
+                downloadQuality: .auto,
+                playbackSpeed: 1.0
             )
-        )
-        
+        }
+
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: DownloadManagerMock(),
+            downloadManager: downloadManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
-            config:  ConfigMock(),
-            corePersistence: CorePersistenceMock(),
-            connectivity: Connectivity(config: ConfigMock()),
+            config: config,
+            corePersistence: corePersistence,
+            connectivity: connectivity,
             coreStorage: storage
         )
-        
+
         viewModel.trackProfileEditClicked()
-        
-        Verify(analytics, 1, .profileEditClicked())
+
+        XCTAssertEqual(analytics.profileEditClickedCallCount, 1)
     }
 }
