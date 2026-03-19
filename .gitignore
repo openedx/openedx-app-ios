@@ -123,3 +123,6 @@ I18N/
 *.lproj/
 !en.lproj/
 /config_script/__pycache__
+
+# AI Assistant Configuration
+CLAUDE.md

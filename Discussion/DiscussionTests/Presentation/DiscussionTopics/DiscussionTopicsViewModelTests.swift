@@ -88,7 +88,7 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
         XCTAssertEqual(interactor.getTopicsCallCount, 1)
 
         XCTAssertNil(viewModel.topics)
-        XCTAssertNil(viewModel.discussionTopics)
+        XCTAssertTrue(viewModel.discussionTopics.isEmpty)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.isShowRefresh)
     }
@@ -114,7 +114,7 @@ final class DiscussionTopicsViewModelTests: XCTestCase {
         XCTAssertEqual(interactor.getTopicsCallCount, 1)
 
         XCTAssertNil(viewModel.topics)
-        XCTAssertNil(viewModel.discussionTopics)
+        XCTAssertTrue(viewModel.discussionTopics.isEmpty)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertFalse(viewModel.isShowRefresh)
     }

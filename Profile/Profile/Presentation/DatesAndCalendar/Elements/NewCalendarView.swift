@@ -26,7 +26,7 @@ struct NewCalendarView: View {
         }
     }
     
-    @ObservedObject
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     @Environment(\.isHorizontal) private var isHorizontal
     private var beginSyncingTapped: (() -> Void) = {}

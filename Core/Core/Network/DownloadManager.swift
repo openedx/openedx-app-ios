@@ -247,21 +247,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     }
     
     private func addObsevers() async {
-        await connectivity.internetReachableSubject
-            .sink {[weak self] state in
-                guard let self else { return }
-                Task {
-                    switch state {
-                    case .notReachable:
-                        await self.waitingAll()
-                    case .reachable:
-                        try? await self.resumeDownloading()
-                    case .none:
-                        return
-                    }
-                }
-            }
-            .store(in: &cancellables)
+        observeConnectivity()
         
         NotificationCenter.default.publisher(for: .tryDownloadAgain)
             .compactMap { $0.object as? [DownloadDataTask] }
@@ -271,6 +257,26 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
                 }
             }
             .store(in: &cancellables)
+    }
+    
+    nonisolated private func observeConnectivity() {
+        Task { @MainActor [connectivity] in
+            withObservationTracking {
+                _ = connectivity.internetState
+            } onChange: {
+                Task { [connectivity] in
+                    switch await connectivity.internetState {
+                    case .notReachable:
+                        await self.waitingAll()
+                    case .reachable:
+                        try? await self.resumeDownloading()
+                    case .none:
+                        break
+                    }
+                    self.observeConnectivity()
+                }
+            }
+        }
     }
     
     private func tryDownloadAgain(downloads: [DownloadDataTask]) async {

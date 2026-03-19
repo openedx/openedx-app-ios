@@ -11,20 +11,13 @@ import OEXFoundation
 import Theme
 
 public struct SignUpView: View {
-    
-    @State
-    private var disclosureGroupOpen: Bool = false
-    
+
     @Environment(\.isHorizontal) private var isHorizontal
-    
-    @ObservedObject
-    private var viewModel: SignUpViewModel
-    
+
+    @Bindable private var viewModel: SignUpViewModel
+
     public init(viewModel: SignUpViewModel) {
         self.viewModel = viewModel
-        Task {
-           await viewModel.getRegistrationFields()
-        }
     }
     
     public var body: some View {
@@ -115,7 +108,7 @@ public struct SignUpView: View {
                                 )
 
                                 if !viewModel.isShowProgress {
-                                    DisclosureGroup(isExpanded: $disclosureGroupOpen) {
+                                    DisclosureGroup(isExpanded: $viewModel.disclosureGroupOpen) {
                                         FieldsView(
                                             fields: optionalFields,
                                                    router: viewModel.router,
@@ -125,7 +118,7 @@ public struct SignUpView: View {
                                         )
                                         .padding(.horizontal, 1)
                                     } label: {
-                                        Text(disclosureGroupOpen
+                                        Text(viewModel.disclosureGroupOpen
                                              ? AuthLocalization.SignUp.hideFields
                                              : AuthLocalization.SignUp.showFields)
                                         .font(Theme.Fonts.labelLarge)
@@ -200,6 +193,9 @@ public struct SignUpView: View {
         .ignoresSafeArea(.all, edges: .horizontal)
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .navigationBarHidden(true)
+        .task {
+            await viewModel.getRegistrationFields()
+        }
         .onFirstAppear {
             viewModel.trackScreenEvent()
         }

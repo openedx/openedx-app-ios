@@ -47,17 +47,18 @@ public struct FileWebView: UIViewRepresentable {
     public func updateUIView(_ webview: WKWebView, context: Context) {
         
     }
-    
-    public class ViewModel: ObservableObject {
+
+    @Observable
+    public class ViewModel {
         
-        @Published var url: String
+        var url: String
         
         public init(url: String) {
             self.url = url
         }
     }
     
-    @ObservedObject var viewModel: ViewModel
+    var viewModel: ViewModel
     
     public init(viewModel: ViewModel) {
         self.viewModel = viewModel

@@ -120,8 +120,8 @@ public struct VerticalData: Equatable {
 }
 
 @MainActor
-public final class CourseUnitViewModel: ObservableObject {
-    
+@Observable public final class CourseUnitViewModel {
+
     enum LessonAction: Sendable {
         case next
         case previous
@@ -131,21 +131,22 @@ public final class CourseUnitViewModel: ObservableObject {
     var verticalIndex: Int
     var courseName: String
 
-    @Published var courseVideosStructure: CourseStructure?
-    @Published var index: Int = 0
+     var courseVideosStructure: CourseStructure?
+     var index: Int = 0
     var previousLesson: String = ""
     var nextLesson: String = ""
-    @Published var showError: Bool = false
-    var errorMessage: String? {
-        didSet {
-            showError = errorMessage != nil
-        }
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
 
-    @Published public var allVideosForNavigation: [CourseBlock] = []
-    @Published public var allVideosFetched = false
-    @Published public var isVideosForNavigationLoading: Bool = false
-    @Published var currentVideoIndex: Int?
+     public var allVideosForNavigation: [CourseBlock] = []
+     public var allVideosFetched = false
+     public var isVideosForNavigationLoading: Bool = false
+     var currentVideoIndex: Int?
+     private var videoBlocksTask: Task<Void, Never>?
 
     var lessonID: String
     var courseID: String
@@ -419,54 +420,65 @@ public final class CourseUnitViewModel: ObservableObject {
 
     @MainActor
     func getCourseVideoBlocks() async {
+        videoBlocksTask?.cancel()
+        
+        if isVideosForNavigationLoading {
+            return
+        }
+        
+        if !allVideosForNavigation.isEmpty && courseVideosStructure != nil {
+            return
+        }
         isVideosForNavigationLoading = true
         
-        defer {
-            Task { @MainActor in
-                try? await Task.sleep(for: .seconds(0.2))
-                self.isVideosForNavigationLoading = false
+        videoBlocksTask = Task { @MainActor in
+            defer {
+                Task { @MainActor in
+                    try? await Task.sleep(for: .seconds(0.2))
+                    self.isVideosForNavigationLoading = false
+                }
             }
-        }
-
-        if let courseVideosStructure {
-            do {
-                let videoFromCourse = await interactor.getCourseVideoBlocks(fullStructure: courseVideosStructure)
-
-                allVideosForNavigation = try await interactor.getAllVideosForNavigation(
-                    structure: videoFromCourse
-                )
-
-                return
-
-            } catch {
-                print("Failed to get all videos for course: \(error.localizedDescription)")
-            }
-        }
-
-        async let structureTask = getCourseStructure(courseID: courseID)
-
-        do {
-            guard let courseStructure = try await structureTask else {
-                throw NSError(
-                    domain: "GetCourseBlocks",
-                    code: 0,
-                    userInfo: [NSLocalizedDescriptionKey: "Course structure is nil"]
-                )
-            }
-
-            async let videosTask = interactor.getCourseVideoBlocks(fullStructure: courseStructure)
-            courseVideosStructure = await videosTask
 
             if let courseVideosStructure {
-                allVideosForNavigation = try await interactor.getAllVideosForNavigation(
-                    structure: courseVideosStructure
-                )
+                do {
+                    let videoFromCourse = await interactor.getCourseVideoBlocks(fullStructure: courseVideosStructure)
+
+                    allVideosForNavigation = try await interactor.getAllVideosForNavigation(
+                        structure: videoFromCourse
+                    )
+
+                    return
+
+                } catch {
+                }
             }
 
-        } catch {
-            print("Failed to load course blocks: \(error.localizedDescription)")
-            courseVideosStructure = nil
+            async let structureTask = getCourseStructure(courseID: courseID)
+
+            do {
+                guard let courseStructure = try await structureTask else {
+                    throw NSError(
+                        domain: "GetCourseBlocks",
+                        code: 0,
+                        userInfo: [NSLocalizedDescriptionKey: "Course structure is nil"]
+                    )
+                }
+
+                async let videosTask = interactor.getCourseVideoBlocks(fullStructure: courseStructure)
+                courseVideosStructure = await videosTask
+
+                if let courseVideosStructure {
+                    allVideosForNavigation = try await interactor.getAllVideosForNavigation(
+                        structure: courseVideosStructure
+                    )
+                }
+
+            } catch {
+                courseVideosStructure = nil
+            }
         }
+        
+        await videoBlocksTask?.value
     }
 
     func createBreadCrumpsForVideoNavigation(video: CourseBlock) -> String {
@@ -486,21 +498,21 @@ public final class CourseUnitViewModel: ObservableObject {
                     }
                 }
             }
-            .first
+            .first ?? ""
 
-        return breadcrumb ?? ""
+        return breadcrumb
     }
 
     func handleVideoTap(video: CourseBlock) {
-        // Find indices for navigation using full course structure
         guard let chapterIndex = findChapterIndexInFullStructure(video: video),
               let sequentialIndex = findSequentialIndexInFullStructure(video: video),
               let verticalIndex = findVerticalIndexInFullStructure(video: video),
               let courseStructure = courseVideosStructure else {
             return
         }
+        
+        NotificationCenter.default.post(name: .saveVideoProgressBeforeNavigation, object: nil)
 
-        // Track video click analytics
         analytics.courseVideoClicked(
             courseId: courseStructure.id,
             courseName: courseStructure.displayName,
@@ -523,22 +535,25 @@ public final class CourseUnitViewModel: ObservableObject {
     }
 
     private func findChapterIndexInFullStructure(video: CourseBlock) -> Int? {
-        guard let courseStructure = courseVideosStructure else { return nil }
+        guard let courseStructure = courseVideosStructure else {
+            return nil
+        }
 
-        // Find the chapter that contains this video in the full structure
-        return courseStructure.childs.firstIndex { fullChapter in
+        let index = courseStructure.childs.firstIndex { fullChapter in
             fullChapter.childs.contains { sequential in
                 sequential.childs.contains { vertical in
                     vertical.childs.contains { $0.id == video.id }
                 }
             }
         }
+        return index
     }
 
     private func findSequentialIndexInFullStructure(video: CourseBlock) -> Int? {
-        guard let courseStructure = courseVideosStructure else { return nil }
+        guard let courseStructure = courseVideosStructure else {
+            return nil
+        }
 
-        // Find the chapter and sequential that contains this video in the full structure
         for fullChapter in courseStructure.childs {
             if let sequentialIndex = fullChapter.childs.firstIndex(where: { sequential in
                 sequential.childs.contains { vertical in
@@ -552,9 +567,10 @@ public final class CourseUnitViewModel: ObservableObject {
     }
 
     private func findVerticalIndexInFullStructure(video: CourseBlock) -> Int? {
-        guard let courseStructure = courseVideosStructure else { return nil }
+        guard let courseStructure = courseVideosStructure else {
+            return nil
+        }
 
-        // Find the vertical that contains this video in the full structure
         for fullChapter in courseStructure.childs {
             for sequential in fullChapter.childs {
                 if let verticalIndex = sequential.childs.firstIndex(where: { vertical in

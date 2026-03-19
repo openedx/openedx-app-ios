@@ -13,7 +13,7 @@ import Swinject
 
 public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     
-    @StateObject private var viewModel: PrimaryCourseDashboardViewModel
+    private var viewModel: PrimaryCourseDashboardViewModel
     @ViewBuilder let programView: ProgramView
     private var openDiscoveryPage: () -> Void
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -25,7 +25,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
         programView: ProgramView,
         openDiscoveryPage: @escaping () -> Void
     ) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.programView = programView
         self.openDiscoveryPage = openDiscoveryPage
     }

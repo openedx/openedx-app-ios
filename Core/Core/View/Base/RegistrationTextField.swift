@@ -10,16 +10,14 @@ import Theme
 
 public struct RegistrationTextField: View {
     
-    @State public var shakeIt: Bool = false
     @State public var placeholder: String = ""
     public var keyboardType: UIKeyboardType
     public var textContentType: UITextContentType
     private var isTextArea: Bool
     private var scrollTo: (() -> Void) = {}
     
-    @ObservedObject
-    private var config: FieldConfiguration
-    
+    @Bindable private var config: FieldConfiguration
+
     public init(config: FieldConfiguration,
                 isTextArea: Bool = false,
                 keyboardType: UIKeyboardType = .default,

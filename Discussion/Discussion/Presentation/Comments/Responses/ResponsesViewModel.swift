@@ -10,9 +10,10 @@ import SwiftUI
 import Core
 import Combine
 
-public final class ResponsesViewModel: BaseResponsesViewModel, ObservableObject {
+@Observable
+public final class ResponsesViewModel: BaseResponsesViewModel {
     
-    @Published var scrollTrigger: Bool = false
+    var scrollTrigger: Bool = false
     private let threadStateSubject: CurrentValueSubject<ThreadPostState?, Never>
     public var isBlackedOut: Bool = false
     private let analytics: DiscussionAnalytics?

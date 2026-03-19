@@ -9,7 +9,8 @@ import SwiftUI
 import StoreKit
 
 @MainActor
-public class AppReviewViewModel: ObservableObject {
+@Observable
+public class AppReviewViewModel {
     
     enum ReviewState {
         case vote
@@ -42,12 +43,12 @@ public class AppReviewViewModel: ObservableObject {
         }
     }
     
-    @Published var state: ReviewState = .vote
-    @Published var rating: Int = 0
-    @Published var showReview: Bool = false
-    @Published var showSelectMailClientView: Bool = false
-    @Published var feedback: String = ""
-    @Published var clients: [ThirdPartyMailClient] = []
+    var state: ReviewState = .vote
+    var rating: Int = 0
+    var showReview: Bool = false
+    var showSelectMailClientView: Bool = false
+    var feedback: String = ""
+    var clients: [ThirdPartyMailClient] = []
     let allClients = ThirdPartyMailClient.clients
     
     private let config: ConfigProtocol

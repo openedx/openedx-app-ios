@@ -10,234 +10,157 @@ import Core
 import Theme
 
 struct CustomDisclosureGroup: View {
-    private let proxy: GeometryProxy
+    private let proxyWidth: CGFloat
     private let course: CourseStructure
     private let viewModel: CourseContainerViewModel
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    private let idiom: UIUserInterfaceIdiom
     
     init(course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
         self.course = course
-        self.proxy = proxy
+        self.proxyWidth = proxy.size.width
         self.viewModel = viewModel
+        self.idiom = UIDevice.current.userInterfaceIdiom
     }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            ForEach(course.childs) { chapter in
-                let chapterIndex = course.childs.firstIndex(where: { $0.id == chapter.id })
-                VStack(alignment: .leading, spacing: 0) {
-                    // MARK: - Progress Bar
-                    SectionProgressView(progress: chapterProgress(for: chapter))
-                        .padding(.horizontal, -16)
-                        .padding(.top, -12)
-                    
-                    Button(
-                        action: {
-                            withAnimation(.linear(duration: course.childs.count > 1 ? 0.2 : 0.05)) {
-                                viewModel.expandedSections[chapter.id, default: false].toggle()
-                            }
-                            viewModel.trackSectionClicked(chapter)
-                        }, label: {
-                            HStack {
-                                CoreAssets.chevronRight.swiftUIImage
-                                    .rotationEffect(
-                                        .degrees(viewModel.expandedSections[chapter.id] ?? false ? -90 : 90)
-                                    )
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                                if chapter.childs.allSatisfy({ $0.completion == 1 }) {
-                                    CoreAssets.finishedSequence.swiftUIImage.renderingMode(.template)
-                                        .foregroundColor(Theme.Colors.success)
-                                }
-                                Text(chapter.displayName)
-                                    .font(Theme.Fonts.titleMedium)
-                                    .foregroundColor(Theme.Colors.textPrimary)
-                                    .lineLimit(1)
-                                Spacer()
-                                if canDownloadAllSections(in: chapter),
-                                   let state = downloadAllButtonState(for: chapter) {
-                                    Button(
-                                        action: {
-                                            downloadAllSubsections(in: chapter, state: state)
-                                        }, label: {
-                                            switch state {
-                                            case .available:
-                                                DownloadAvailableView()
-                                            case .downloading:
-                                                DownloadProgressView()
-                                            case .finished:
-                                                DownloadFinishedView()
-                                            }
-                                            
-                                        }
-                                    )
-                                }
-                            }
-                        }
-                    )
-                    .padding(.top, 8)
-                    if viewModel.expandedSections[chapter.id] ?? false {
-                        VStack(alignment: .leading) {
-                            ForEach(chapter.childs) { sequential in
-                                let sequentialIndex = chapter.childs.firstIndex(where: { $0.id == sequential.id })
-                                VStack(alignment: .leading) {
-                                    HStack {
-                                        Button(
-                                            action: {
-                                                guard let chapterIndex = chapterIndex else { return }
-                                                guard let sequentialIndex else { return }
-                                                guard let courseVertical = sequential.childs.first else { return }
-                                                guard let block = courseVertical.childs.first else {
-                                                    viewModel.router.showGatedContentError(url: courseVertical.webUrl)
-                                                    return
-                                                }
-                                                
-                                                viewModel.trackSequentialClicked(sequential)
-                                                if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
-                                                    viewModel.router.showCourseUnit(
-                                                        courseName: viewModel.courseStructure?.displayName ?? "",
-                                                        blockId: block.id,
-                                                        courseID: viewModel.courseStructure?.id ?? "",
-                                                        verticalIndex: 0,
-                                                        chapters: course.childs,
-                                                        chapterIndex: chapterIndex,
-                                                        sequentialIndex: sequentialIndex,
-                                                        showVideoNavigation: false,
-                                                        courseVideoStructure: nil
-                                                    )
-                                                } else {
-                                                    viewModel.router.showCourseVerticalView(
-                                                        courseID: viewModel.courseStructure?.id ?? "",
-                                                        courseName: viewModel.courseStructure?.displayName ?? "",
-                                                        title: sequential.displayName,
-                                                        chapters: course.childs,
-                                                        chapterIndex: chapterIndex,
-                                                        sequentialIndex: sequentialIndex
-                                                    )
-                                                }
-                                            },
-                                            label: {
-                                                VStack(alignment: .leading) {
-                                                    HStack {
-                                                        if sequential.completion == 1 {
-                                                            CoreAssets.finishedSequence.swiftUIImage
-                                                                .renderingMode(.template)
-                                                                .resizable()
-                                                                .foregroundColor(Theme.Colors.success)
-                                                                .frame(width: 20, height: 20)
-                                                        } else {
-                                                            sequential.type.image
-                                                        }
-                                                        Text(sequential.displayName)
-                                                            .font(Theme.Fonts.titleSmall)
-                                                            .multilineTextAlignment(.leading)
-                                                            .lineLimit(1)
-                                                            .frame(
-                                                                maxWidth: idiom == .pad
-                                                                ? proxy.size.width * 0.5
-                                                                : proxy.size.width * 0.6,
-                                                                alignment: .leading
-                                                            )
-                                                    }
-                                                    if let assignmentStatusText = assignmentStatusText(
-                                                        sequential: sequential
-                                                    ) {
-                                                        Text(assignmentStatusText)
-                                                            .font(Theme.Fonts.bodySmall)
-                                                            .multilineTextAlignment(.leading)
-                                                            .lineLimit(2)
-                                                    }
-                                                }
-                                                .foregroundColor(Theme.Colors.textPrimary)
-                                                .accessibilityElement(children: .ignore)
-                                                .accessibilityLabel(sequential.displayName)
-                                            }
-                                        )
-                                        Spacer()
-                                        if sequential.due != nil {
-                                            CoreAssets.chevronRight.swiftUIImage
-                                                .foregroundColor(Theme.Colors.textPrimary)
-                                        }
-                                    }
-                                    .padding(.vertical, 4)
-                                }
-                            }
-                        }
-                        .padding(.top, 8)
-                    }
-                }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
-                .background(
-                    RoundedRectangle(cornerRadius: 6)
-                        .fill(Theme.Colors.datesSectionBackground)
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 6)
-                        .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
-                        .foregroundColor(Theme.Colors.cardViewStroke)
+            ForEach(Array(course.childs.enumerated()), id: \.element.id) { chapterIndex, chapter in
+                ChapterRowView(
+                    chapter: chapter,
+                    chapterIndex: chapterIndex,
+                    course: course,
+                    proxyWidth: proxyWidth,
+                    idiom: idiom,
+                    viewModel: viewModel
                 )
             }
         }
         .padding(.horizontal, 24)
         .padding(.vertical, 8)
+    }
+}
 
+// MARK: - Chapter Row 
+private struct ChapterRowView: View {
+    let chapter: CourseChapter
+    let chapterIndex: Int
+    let course: CourseStructure
+    let proxyWidth: CGFloat
+    let idiom: UIUserInterfaceIdiom
+    let viewModel: CourseContainerViewModel
+    
+    private var isExpanded: Bool {
+        viewModel.expandedSections[chapter.id] ?? false
     }
     
-    private func deleteMessage(for chapter: CourseChapter) -> String {
-        "\(CourseLocalization.Alert.deleteVideos) \"\(chapter.displayName)\"?"
+    private var isChapterCompleted: Bool {
+        chapter.childs.allSatisfy { $0.completion == 1 }
     }
     
-    func getAssignmentStatus(for date: Date) -> String {
-        let calendar = Calendar.current
-        let today = Date()
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            SectionProgressView(progress: viewModel.chapterProgress(for: chapter))
+                .padding(.horizontal, -16)
+                .padding(.top, -12)
+            
+            Button(
+                action: {
+                    withAnimation(.linear(duration: course.childs.count > 1 ? 0.2 : 0.05)) {
+                        viewModel.expandedSections[chapter.id, default: false].toggle()
+                    }
+                    viewModel.trackSectionClicked(chapter)
+                }, label: {
+                    HStack {
+                        CoreAssets.chevronRight.swiftUIImage
+                            .rotationEffect(
+                                .degrees(isExpanded ? -90 : 90)
+                            )
+                            .foregroundColor(Theme.Colors.textPrimary)
+                        if isChapterCompleted {
+                            CoreAssets.finishedSequence.swiftUIImage.renderingMode(.template)
+                                .foregroundColor(Theme.Colors.success)
+                        }
+                        Text(chapter.displayName)
+                            .font(Theme.Fonts.titleMedium)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                            .lineLimit(1)
+                        Spacer()
+                        if let state = downloadAllButtonState {
+                            Button(
+                                action: {
+                                    downloadAllSubsections(state: state)
+                                }, label: {
+                                    switch state {
+                                    case .available:
+                                        DownloadAvailableView()
+                                    case .downloading:
+                                        DownloadProgressView()
+                                    case .finished:
+                                        DownloadFinishedView()
+                                    }
+                                    
+                                }
+                            )
+                        }
+                    }
+                }
+            )
+            .padding(.top, 8)
+            if isExpanded {
+                VStack(alignment: .leading) {
+                    ForEach(Array(chapter.childs.enumerated()), id: \.element.id) { sequentialIndex, sequential in
+                        SequentialRowView(
+                            sequential: sequential,
+                            sequentialIndex: sequentialIndex,
+                            chapterIndex: chapterIndex,
+                            course: course,
+                            proxyWidth: proxyWidth,
+                            idiom: idiom,
+                            viewModel: viewModel
+                        )
+                    }
+                }
+                .padding(.top, 8)
+            }
+        }
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 6)
+                .fill(Theme.Colors.datesSectionBackground)
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 6)
+                .stroke(style: .init(lineWidth: 1, lineCap: .round, lineJoin: .round, miterLimit: 1))
+                .foregroundColor(Theme.Colors.cardViewStroke)
+        )
+    }
+    
+    private var downloadAllButtonState: DownloadViewState? {
+        guard canDownloadAllSections else { return nil }
         
-        if calendar.isDateInToday(date) {
-            return CourseLocalization.Course.dueToday
-        } else if calendar.isDateInTomorrow(date) {
-            return CourseLocalization.Course.dueTomorrow
-        } else if let daysUntil = calendar.dateComponents([.day], from: today, to: date).day, daysUntil > 0 {
-            return CourseLocalization.dueIn(daysUntil)
-        } else if let daysAgo = calendar.dateComponents([.day], from: date, to: today).day, daysAgo > 0 {
-            return CourseLocalization.pastDue(daysAgo)
+        var downloads: [DownloadViewState] = []
+        for sequential in chapter.childs {
+            if let state = viewModel.sequentialsDownloadState[sequential.id] {
+                downloads.append(state)
+            }
+        }
+        if downloads.contains(.downloading) {
+            return .downloading
+        } else if downloads.allSatisfy({ $0 == .finished }) {
+            return .finished
         } else {
-            return ""
+            return .available
         }
     }
     
-    private func canDownloadAllSections(in chapter: CourseChapter) -> Bool {
+    private var canDownloadAllSections: Bool {
         chapter.childs.contains { sequential in
-            sequentialDownloadState(sequential) != nil
+            viewModel.sequentialsDownloadState[sequential.id] != nil
         }
-    }
-
-    private func assignmentStatusText(
-        sequential: CourseSequential
-    ) -> String? {
-        var parts: [String] = []
-
-        // Name
-        if let name = sequential.sequentialProgress?.assignmentType,
-           !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            parts.append(name)
-        }
-
-        // Deadline
-        if let due = sequential.due {
-            parts.append(getAssignmentStatus(for: due))
-        }
-
-        // Progress
-        if let sp = sequential.sequentialProgress,
-           let earned = sp.numPointsEarned,
-           let possible = sp.numPointsPossible,
-           possible != 0 {
-            parts.append("\(earned) / \(possible)")
-        }
-
-        return parts.isEmpty ? nil : parts.joined(separator: " - ")
     }
     
-    private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
+    private func downloadAllSubsections(state: DownloadViewState) {
         Task {
             var allBlocks: [CourseBlock] = []
             var sequentialsToDownload: [CourseSequential] = []
@@ -259,32 +182,137 @@ struct CustomDisclosureGroup: View {
             )
         }
     }
+}
+
+// MARK: - Sequential Row
+private struct SequentialRowView: View {
+    let sequential: CourseSequential
+    let sequentialIndex: Int
+    let chapterIndex: Int
+    let course: CourseStructure
+    let proxyWidth: CGFloat
+    let idiom: UIUserInterfaceIdiom
+    let viewModel: CourseContainerViewModel
     
-    private func downloadAllButtonState(for chapter: CourseChapter) -> DownloadViewState? {
-        if canDownloadAllSections(in: chapter) {
-            var downloads: [DownloadViewState] = []
-            for sequential in chapter.childs {
-                if let state = sequentialDownloadState(sequential) {
-                    downloads.append(state)
+    private var maxWidth: CGFloat {
+        idiom == .pad ? proxyWidth * 0.5 : proxyWidth * 0.6
+    }
+    
+    private var assignmentText: String? {
+        var parts: [String] = []
+
+        if let name = sequential.sequentialProgress?.assignmentType,
+           !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            parts.append(name)
+        }
+
+        if let due = sequential.due {
+            parts.append(getAssignmentStatus(for: due))
+        }
+
+        if let sp = sequential.sequentialProgress,
+           let earned = sp.numPointsEarned,
+           let possible = sp.numPointsPossible,
+           possible != 0 {
+            parts.append("\(earned) / \(possible)")
+        }
+
+        return parts.isEmpty ? nil : parts.joined(separator: " - ")
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Button(
+                    action: {
+                        guard let courseVertical = sequential.childs.first else { return }
+                        guard let block = courseVertical.childs.first else {
+                            viewModel.router.showGatedContentError(url: courseVertical.webUrl)
+                            return
+                        }
+                        
+                        viewModel.trackSequentialClicked(sequential)
+                        if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
+                            viewModel.router.showCourseUnit(
+                                courseName: viewModel.courseStructure?.displayName ?? "",
+                                blockId: block.id,
+                                courseID: viewModel.courseStructure?.id ?? "",
+                                verticalIndex: 0,
+                                chapters: course.childs,
+                                chapterIndex: chapterIndex,
+                                sequentialIndex: sequentialIndex,
+                                showVideoNavigation: false,
+                                courseVideoStructure: nil
+                            )
+                        } else {
+                            viewModel.router.showCourseVerticalView(
+                                courseID: viewModel.courseStructure?.id ?? "",
+                                courseName: viewModel.courseStructure?.displayName ?? "",
+                                title: sequential.displayName,
+                                chapters: course.childs,
+                                chapterIndex: chapterIndex,
+                                sequentialIndex: sequentialIndex
+                            )
+                        }
+                    },
+                    label: {
+                        VStack(alignment: .leading) {
+                            HStack {
+                                if sequential.completion == 1 {
+                                    CoreAssets.finishedSequence.swiftUIImage
+                                        .renderingMode(.template)
+                                        .resizable()
+                                        .foregroundColor(Theme.Colors.success)
+                                        .frame(width: 20, height: 20)
+                                } else {
+                                    sequential.type.image
+                                }
+                                Text(sequential.displayName)
+                                    .font(Theme.Fonts.titleSmall)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(1)
+                                    .frame(
+                                        maxWidth: maxWidth,
+                                        alignment: .leading
+                                    )
+                            }
+                            if let assignmentText {
+                                Text(assignmentText)
+                                    .font(Theme.Fonts.bodySmall)
+                                    .multilineTextAlignment(.leading)
+                                    .lineLimit(2)
+                            }
+                        }
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel(sequential.displayName)
+                    }
+                )
+                Spacer()
+                if sequential.due != nil {
+                    CoreAssets.chevronRight.swiftUIImage
+                        .foregroundColor(Theme.Colors.textPrimary)
                 }
             }
-            if downloads.contains(.downloading) {
-                return .downloading
-            } else if downloads.allSatisfy({ $0 == .finished }) {
-                return .finished
-            } else {
-                return .available
-            }
+            .padding(.vertical, 4)
         }
-        return nil
     }
     
-    private func sequentialDownloadState(_ sequential: CourseSequential) -> DownloadViewState? {
-        return viewModel.sequentialsDownloadState[sequential.id]
-    }
-    
-    private func chapterProgress(for chapter: CourseChapter) -> Double {
-        return viewModel.chapterProgress(for: chapter)
+    private func getAssignmentStatus(for date: Date) -> String {
+        let calendar = Calendar.current
+        let today = Date()
+        
+        if calendar.isDateInToday(date) {
+            return CourseLocalization.Course.dueToday
+        } else if calendar.isDateInTomorrow(date) {
+            return CourseLocalization.Course.dueTomorrow
+        } else if let daysUntil = calendar.dateComponents([.day], from: today, to: date).day, daysUntil > 0 {
+            return CourseLocalization.dueIn(daysUntil)
+        } else if let daysAgo = calendar.dateComponents([.day], from: date, to: today).day, daysAgo > 0 {
+            return CourseLocalization.pastDue(daysAgo)
+        } else {
+            return ""
+        }
     }
 }
 

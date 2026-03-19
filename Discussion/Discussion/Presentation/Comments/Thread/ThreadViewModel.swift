@@ -9,13 +9,14 @@ import Foundation
 import Combine
 import Core
 
-public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
+@Observable
+public final class ThreadViewModel: BaseResponsesViewModel {
     
-    @Published var scrollTrigger: Bool = false
-    
-    internal let threadStateSubject = CurrentValueSubject<ThreadPostState?, Never>(nil)
-    private var cancellable: AnyCancellable?
-    private let postStateSubject: CurrentValueSubject<PostState?, Never>
+    var scrollTrigger: Bool = false
+
+    @ObservationIgnored internal let threadStateSubject = CurrentValueSubject<ThreadPostState?, Never>(nil)
+    @ObservationIgnored private let postStateSubject: CurrentValueSubject<PostState?, Never>
+    nonisolated(unsafe) private var observationTask: Task<Void, Never>?
     public var isBlackedOut: Bool = false
     private let analytics: DiscussionAnalytics?
 
@@ -29,13 +30,15 @@ public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
     ) {
         self.postStateSubject = postStateSubject
         self.analytics = analytics
-        
+
         super.init(interactor: interactor, router: router, config: config, storage: storage, analytics: analytics)
-        
-        cancellable = threadStateSubject
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] state in
-                guard let self, let state else { return }
+
+        observationTask = Task { @MainActor in
+            for await state in threadStateSubject.values {
+                if Task.isCancelled {
+                    break
+                }
+                guard let state = state else { continue }
                 switch state {
                 case let .voted(id, voted, votesCount):
                     self.updateThreadLikeState(id: id, voted: voted, votesCount: votesCount)
@@ -45,7 +48,16 @@ public final class ThreadViewModel: BaseResponsesViewModel, ObservableObject {
                     self.updateThreadPostsCountState(id: id)
                     self.sendPostRepliesCountState()
                 }
-            })
+            }
+        }
+    }
+    
+    deinit {
+        observationTask?.cancel()
+    }
+    
+    public func cleanup() {
+        observationTask?.cancel()
     }
     
     func generateComments(comments: [UserComment], thread: UserThread) -> Post {

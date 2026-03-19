@@ -15,6 +15,7 @@ import Core
 import OEXFoundation
 
 // MARK: - CalendarManager
+@MainActor
 public final class CalendarManager: CalendarManagerProtocol {
 
     let eventStore = EKEventStore()

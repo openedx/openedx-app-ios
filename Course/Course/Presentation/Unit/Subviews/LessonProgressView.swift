@@ -10,7 +10,7 @@ import Core
 import Theme
 
 struct LessonProgressView: View {
-    @ObservedObject var viewModel: CourseUnitViewModel
+    @Bindable var viewModel: CourseUnitViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
     

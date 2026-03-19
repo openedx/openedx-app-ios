@@ -14,7 +14,7 @@ public struct FullScreenErrorView: View {
         case noInternet
         case noInternetWithReload
         case generic
-        case noContent(_ message: String, image: SwiftUI.Image)
+        case noContent(_ message: String, image: SwiftUI.Image, showButton: Bool = false)
     }
     
     private let errorType: ErrorType
@@ -38,7 +38,7 @@ public struct FullScreenErrorView: View {
         VStack(spacing: 20) {
             Spacer()
             switch errorType {
-            case .noContent(let message, image: let image):
+            case .noContent(let message, image: let image, showButton: let show):
                 image
                     .resizable()
                     .renderingMode(.template)
@@ -91,7 +91,13 @@ public struct FullScreenErrorView: View {
                         self.action()
                     }
                 )
+            } else if case .noContent(_, _, let showButton) = errorType, showButton {
+                UnitButtonView(type: .custom(CoreLocalization.back)) {
+                    self.action()
+                }
+                .padding(.horizontal, 70)
             }
+
             Spacer()
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)

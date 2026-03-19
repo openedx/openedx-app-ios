@@ -10,8 +10,8 @@ import Theme
 import Core
 
 public struct CoursesToSyncView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
@@ -79,6 +79,9 @@ public struct CoursesToSyncView: View {
                 }
             }
             .ignoresSafeArea(.all, edges: .horizontal)
+        }
+        .onChange(of: viewModel.hideInactiveCourses) { _, hide in
+            viewModel.profileStorage.hideInactiveCourses = hide
         }
     }
     

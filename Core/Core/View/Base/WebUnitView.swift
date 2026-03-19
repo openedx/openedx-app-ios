@@ -11,7 +11,7 @@ import Theme
 
 public struct WebUnitView: View {
     
-    @StateObject private var viewModel: WebUnitViewModel
+    @Bindable private var viewModel: WebUnitViewModel
     @State private var isWebViewLoading = false
     
     private var url: String
@@ -30,9 +30,7 @@ public struct WebUnitView: View {
         injections: [WebviewInjection]?,
         blockID: String
     ) {
-        self._viewModel = .init(
-            wrappedValue: viewModel
-        )
+        self.viewModel = viewModel
         self.url = url
         self.dataUrl = dataUrl
         self.connectivity = connectivity

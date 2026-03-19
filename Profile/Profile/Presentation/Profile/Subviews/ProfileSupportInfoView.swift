@@ -20,7 +20,7 @@ struct ProfileSupportInfoView: View {
         let title: String
     }
 
-    @ObservedObject var viewModel: SettingsViewModel
+    var viewModel: SettingsViewModel
 
     var body: some View {
         Text(ProfileLocalization.supportInfo)

@@ -20,25 +20,37 @@ public protocol ConnectivityProtocol: Sendable {
     var isInternetAvaliable: Bool { get }
     var isMobileData: Bool { get }
     var internetReachableSubject: CurrentValueSubject<InternetState?, Never> { get }
+    var internetState: InternetState? { get }
 }
 
+@MainActor
+@Observable
 public class Connectivity: ConnectivityProtocol {
 
     private let networkManager = NetworkReachabilityManager()
     private let verificationURL: URL
     private let verificationTimeout: TimeInterval
     private let cacheValidity: TimeInterval = 30
+    private let notReachableDelay: TimeInterval = 1.5
 
     private var lastVerificationDate: TimeInterval?
     private var lastVerificationResult: Bool = true
+    private var notReachableTask: Task<Void, Never>?
 
+    // MARK: - Observable property (new way)
+    public private(set) var internetState: InternetState? {
+        didSet {
+            // Keep backward compatibility - update Combine subject
+            internetReachableSubject.send(internetState)
+        }
+    }
+    
+    // MARK: - Combine subject (for backward compatibility)
     public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
 
     private(set) var _isInternetAvailable: Bool = true {
         didSet {
-            Task { @MainActor in
-                internetReachableSubject.send(_isInternetAvailable ? .reachable : .notReachable)
-            }
+            internetState = _isInternetAvailable ? .reachable : .notReachable
         }
     }
 
@@ -71,9 +83,24 @@ public class Connectivity: ConnectivityProtocol {
             Task { @MainActor in
                 switch status {
                 case .reachable:
+                    // Cancel pending notReachable — network came back before debounce fired
+                    self.notReachableTask?.cancel()
+                    self.notReachableTask = nil
                     await self.performVerification()
                 case .notReachable, .unknown:
-                    self.updateAvailability(false, at: 0)
+                    // Debounce: wait before marking offline to filter transient blips
+                    self.notReachableTask?.cancel()
+                    self.notReachableTask = Task { @MainActor [weak self] in
+                        try? await Task.sleep(nanoseconds: UInt64((self?.notReachableDelay ?? 1.5) * 1_000_000_000))
+                        guard !Task.isCancelled, let self else { return }
+                        // Verify with a real request before going offline
+                        let live = await self.verifyInternet()
+                        if live {
+                            self.updateAvailability(true, at: Date().timeIntervalSince1970)
+                        } else {
+                            self.updateAvailability(false, at: Date().timeIntervalSince1970)
+                        }
+                    }
                 }
             }
         }
