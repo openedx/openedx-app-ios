@@ -57,8 +57,11 @@ public struct SearchView: View {
                                 viewModel.isSearchActive = editing
                             }
                         ).focused($focused)
-                            .onAppear {
-                                self.focused = true
+                            .onFirstAppear {
+                                Task { @MainActor in
+                                    try? await Task.sleep(for: .seconds(0.5))
+                                    self.focused = true
+                                }
                             }
                             .foregroundColor(Theme.Colors.textInputTextColor)
                             .font(Theme.Fonts.bodyLarge)
