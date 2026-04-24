@@ -91,14 +91,14 @@ public enum AuthLocalization {
     }
     /// Create account
     public static let createAccountBtn = AuthLocalization.tr("Localizable", "SIGN_UP.CREATE_ACCOUNT_BTN", fallback: "Create account")
-    /// Hide optional Fields
-    public static let hideFields = AuthLocalization.tr("Localizable", "SIGN_UP.HIDE_FIELDS", fallback: "Hide optional Fields")
+    /// Hide optional fields
+    public static let hideFields = AuthLocalization.tr("Localizable", "SIGN_UP.HIDE_FIELDS", fallback: "Hide optional fields")
     /// I agree that %@ may send me marketing messages.
     public static func marketingEmailTitle(_ p1: Any) -> String {
       return AuthLocalization.tr("Localizable", "SIGN_UP.MARKETING_EMAIL_TITLE", String(describing: p1), fallback: "I agree that %@ may send me marketing messages.")
     }
-    /// Show optional Fields
-    public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional Fields")
+    /// Show optional fields
+    public static let showFields = AuthLocalization.tr("Localizable", "SIGN_UP.SHOW_FIELDS", fallback: "Show optional fields")
     /// Create an account to start learning today!
     public static let subtitle = AuthLocalization.tr("Localizable", "SIGN_UP.SUBTITLE", fallback: "Create an account to start learning today!")
     /// You've successfully signed in.
