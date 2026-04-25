@@ -67,7 +67,7 @@ public struct TotalDownloadedProgressView: View {
                 ZStack(alignment: .leading) {
                     GeometryReader { geometry in
                         RoundedRectangle(cornerRadius: 2.5)
-                            .fill(Theme.Colors.textSecondary.opacity(0.5))
+                            .fill(Theme.Colors.courseProgressBG)
                             .frame(width: geometry.size.width, height: 5)
                         
                         RoundedCorners(tl: 2.5, tr: 0, bl: 2.5, br: 0)

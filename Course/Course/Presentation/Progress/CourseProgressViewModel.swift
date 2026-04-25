@@ -157,18 +157,14 @@ public class CourseProgressViewModel {
     }
 
     public func getAssignmentColor(for index: Int) -> Color {
-        guard let courseProgress = courseProgress else {
-            return Theme.Colors.textSecondary
-        }
+        let hexColor = courseProgress?.gradingPolicy.assignmentColorHex(for: index)
+            ?? CourseProgressGradingPolicy.assignmentColorHex(for: index, in: [])
         
-        if courseProgress.gradingPolicy.assignmentColors.isEmpty {
-            return Theme.Colors.accentColor
-        }
+        let fallbackHexColor = CourseProgressGradingPolicy.assignmentColorHex(for: index, in: [])
         
-        let colorIndex = index % courseProgress.gradingPolicy.assignmentColors.count
-        let hexColor = courseProgress.gradingPolicy.assignmentColors[colorIndex]
-        
-        return Color(hex: hexColor) ?? Theme.Colors.accentColor
+        return Color(hex: hexColor)
+            ?? Color(hex: fallbackHexColor)
+            ?? Theme.Colors.assignmentColor
     }
     
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {

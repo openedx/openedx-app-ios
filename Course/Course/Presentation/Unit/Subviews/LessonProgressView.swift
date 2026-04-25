@@ -34,7 +34,7 @@ struct LessonProgressView: View {
                         .foregroundColor(
                             selected == viewModel.selectedLesson()
                             ? .accentColor
-                            : Theme.Colors.textSecondary
+                            : Theme.Colors.progressSkip
                         )
                 }
                 Spacer()

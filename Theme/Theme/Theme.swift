@@ -64,6 +64,7 @@ public struct Theme: Sendable {
         nonisolated(unsafe) public private(set) static var success = ThemeAssets.success.swiftUIColor
         nonisolated(unsafe) public private(set) static var primaryButtonTextColor = ThemeAssets.primaryButtonTextColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var toggleSwitchColor = ThemeAssets.toggleSwitchColor.swiftUIColor
+        nonisolated(unsafe) public private(set) static var tabbarInactiveColor = ThemeAssets.tabbarInactiveColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var textInputTextColor = ThemeAssets.textInputTextColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var textInputPlaceholderColor = ThemeAssets.textInputPlaceholderColor.swiftUIColor
         nonisolated(unsafe) public private(set) static var infoColor = ThemeAssets.infoColor.swiftUIColor

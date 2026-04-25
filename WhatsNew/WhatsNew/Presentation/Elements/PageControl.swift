@@ -31,7 +31,7 @@ public struct PageControl: View {
             ForEach(0 ..< numberOfPages) { page in
                 RoundedRectangle(cornerRadius: 4)
                     .frame(width: page == currentPage ? 24 : 8, height: 8)
-                    .foregroundColor(page == currentPage ? Theme.Colors.accentXColor : Theme.Colors.textSecondaryLight)
+                    .foregroundColor(page == currentPage ? Theme.Colors.accentXColor : Theme.Colors.tabbarInactiveColor)
             }
         }
     }
