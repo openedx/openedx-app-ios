@@ -220,19 +220,19 @@ struct DownloadCourseCell: View {
                     
                     HStack {
                         CoreAssets.startDownloading.swiftUIImage
-                            .foregroundStyle(Theme.Colors.textSecondary)
+                            .foregroundStyle(Theme.Colors.secondaryContentColor)
                         Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
                             .font(Theme.Fonts.labelLarge)
-                            .foregroundStyle(Theme.Colors.textSecondary)
+                            .foregroundStyle(Theme.Colors.secondaryContentColor)
                     }
                 }
             case .notDownloaded, .loadingStructure:
                 HStack {
                     CoreAssets.startDownloading.swiftUIImage
-                        .foregroundStyle(Theme.Colors.textSecondary)
+                        .foregroundStyle(Theme.Colors.secondaryContentColor)
                     Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundStyle(Theme.Colors.textSecondary)
+                        .foregroundStyle(Theme.Colors.secondaryContentColor)
                 }
             }
         }
