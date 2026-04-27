@@ -14,6 +14,7 @@
 		0219C67828F4347600D64452 /* Course.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0219C67628F4347600D64452 /* Course.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		022213D22C0E08E500B917E6 /* ProfilePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022213D12C0E08E500B917E6 /* ProfilePersistence.swift */; };
 		024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E691F2AEFC3FB00FA0B59 /* MainScreenViewModel.swift */; };
+		AA0000012D07000000000001 /* SandboxDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000012D07000000000002 /* SandboxDisclaimerView.swift */; };
 		025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025AD4AB2A6FB95C00AB8FA7 /* DatabaseManager.swift */; };
 		025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; };
 		025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -105,6 +106,7 @@
 		022213D12C0E08E500B917E6 /* ProfilePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistence.swift; sourceTree = "<group>"; };
 		02450ABD29C35FF20094E2D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		024E691F2AEFC3FB00FA0B59 /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
+		AA0000012D07000000000002 /* SandboxDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxDisclaimerView.swift; sourceTree = "<group>"; };
 		025AD4AB2A6FB95C00AB8FA7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		025C77A028E463E900B3DFA3 /* CourseOutline.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CourseOutline.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		025DE1A328DB4DAE0053E0F4 /* Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -212,6 +214,7 @@
 			children = (
 				0727878D28D347C7002E9142 /* MainScreenView.swift */,
 				024E691F2AEFC3FB00FA0B59 /* MainScreenViewModel.swift */,
+				AA0000012D07000000000002 /* SandboxDisclaimerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -588,6 +591,7 @@
 				A500668D2B6143000024680B /* FCMProvider.swift in Sources */,
 				025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */,
 				024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */,
+				AA0000012D07000000000001 /* SandboxDisclaimerView.swift in Sources */,
 				065275372BB1B4070093BCCA /* PipManager.swift in Sources */,
 				0770DE2028D0858A006D8A5D /* Router.swift in Sources */,
 				CEE5EDEE2D6E0A290089F67C /* DownloadsPersistence.swift in Sources */,

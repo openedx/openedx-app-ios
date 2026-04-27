@@ -11,28 +11,31 @@ import Core
 import Authorization
 import WhatsNew
 import Swinject
+import Theme
 
 class RouteController: UIViewController {
-    
+
     private lazy var navigation: UINavigationController = {
         diContainer.resolve(UINavigationController.self)!
     }()
-    
+
     private lazy var appStorage: CoreStorage = {
         diContainer.resolve(CoreStorage.self)!
     }()
-    
+
     private lazy var analytics: AuthorizationAnalytics = {
         diContainer.resolve(AuthorizationAnalytics.self)!
     }()
-    
+
     private lazy var coreAnalytics: CoreAnalytics = {
         diContainer.resolve(CoreAnalytics.self)!
     }()
-    
+
+    private var disclaimerController: UIViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         if let user = appStorage.user, appStorage.accessToken != nil {
             analytics.identify(id: "\(user.id)", username: user.username ?? "", email: user.email ?? "")
             DispatchQueue.main.async {
@@ -43,9 +46,44 @@ class RouteController: UIViewController {
                 self.showStartupScreen()
             }
         }
-        
+
         resetAppSupportDirectoryUserData()
         coreAnalytics.trackEvent(.launch, biValue: .launch)
+
+        DispatchQueue.main.async {
+            self.showSandboxDisclaimer()
+        }
+    }
+
+    private func showSandboxDisclaimer() {
+        let disclaimerView = SandboxDisclaimerView { [weak self] in
+            self?.dismissSandboxDisclaimer()
+        }
+        let controller = UIHostingController(rootView: disclaimerView)
+        controller.modalPresentationStyle = .overFullScreen
+        controller.modalTransitionStyle = .crossDissolve
+        self.disclaimerController = controller
+
+        // Present on top of whatever is currently showing
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if let topController = self.topPresentedController() {
+                topController.present(controller, animated: true)
+            }
+        }
+    }
+
+    private func dismissSandboxDisclaimer() {
+        disclaimerController?.dismiss(animated: true) { [weak self] in
+            self?.disclaimerController = nil
+        }
+    }
+
+    private func topPresentedController() -> UIViewController? {
+        var top: UIViewController? = self
+        while let presented = top?.presentedViewController, presented !== disclaimerController {
+            top = presented
+        }
+        return top
     }
     
     private func showStartupScreen() {

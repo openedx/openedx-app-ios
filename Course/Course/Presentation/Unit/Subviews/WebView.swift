@@ -23,7 +23,7 @@ struct WebView: View {
                 url: url,
                 dataUrl: localUrl,
                 viewModel: Container.shared.resolve(WebUnitViewModel.self)!,
-                connectivity: Connectivity(config: ConfigMock()),
+                connectivity: Connectivity(config: Container.shared.resolve(ConfigProtocol.self)!),
                 injections: injections,
                 blockID: blockID
             )

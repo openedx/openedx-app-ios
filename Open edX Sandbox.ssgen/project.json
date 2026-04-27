@@ -1,0 +1,155 @@
+{
+  "appInfo" : {
+    "description" : "Open edx mobile application in a test environment.",
+    "name" : "Open edX Sandbox"
+  },
+  "backgroundGroups" : [
+    {
+      "createdAt" : "2026-03-16T13:51:48Z",
+      "id" : "9E42C8F6-B4A0-4BD3-9A55-EBED3B1F5D4D",
+      "panoramicImageFilename" : "panoramic_9E42C8F6-B4A0-4BD3-9A55-EBED3B1F5D4D.png",
+      "prompt" : "Generate a BACKGROUND image for App Store marketing.\n\nUSE EXACTLY THESE COLORS (mandatory):\n- #3E5EC2\n- #082B4D\n- #CC3165\n\nThe background MUST use these exact colors or darker\/more saturated versions of them.\nCreate smooth gradients and large soft shapes using ONLY these colors.\n\nDESIGN REQUIREMENTS:\n- Minimalist flat design\n- Large soft rounded geometric shapes\n- Smooth color transitions between the 3 colors\n- Premium, professional, advertising-ready aesthetic\n\nSTRICTLY FORBIDDEN:\n- ANY white, off-white, cream, or light colors\n- ANY shadows or drop shadows\n- ANY lighting effects or glows\n- Colors NOT in the palette above\n- Text, icons, UI elements, people, objects, devices\n\nComposition: Asymmetric balanced layout with 2-3 large rounded forms on dark background from palette\n\nWhite text must be easily readable on the background.",
+      "style" : "abstract"
+    },
+    {
+      "createdAt" : "2026-03-16T13:51:42Z",
+      "id" : "6FB20265-02CB-4061-ADC3-CE55D3FEECA1",
+      "panoramicImageFilename" : "panoramic_6FB20265-02CB-4061-ADC3-CE55D3FEECA1.png",
+      "prompt" : "Generate a BACKGROUND image for App Store marketing.\n\nUSE EXACTLY THESE COLORS (mandatory):\n- #3E5EC2\n- #082B4D\n- #CC3165\n\nThe background MUST use these exact colors or darker\/more saturated versions of them.\nCreate smooth gradients and large soft shapes using ONLY these colors.\n\nDESIGN REQUIREMENTS:\n- Minimalist flat design\n- Large soft rounded geometric shapes\n- Smooth color transitions between the 3 colors\n- Premium, professional, advertising-ready aesthetic\n\nSTRICTLY FORBIDDEN:\n- ANY white, off-white, cream, or light colors\n- ANY shadows or drop shadows\n- ANY lighting effects or glows\n- Colors NOT in the palette above\n- Text, icons, UI elements, people, objects, devices\n\nComposition: Centered radial composition with soft expanding circles\n\nWhite text must be easily readable on the background.",
+      "style" : "abstract"
+    },
+    {
+      "createdAt" : "2026-03-16T13:51:34Z",
+      "id" : "FC40496F-BDC1-470F-A9C1-17484E613DA4",
+      "panoramicImageFilename" : "panoramic_FC40496F-BDC1-470F-A9C1-17484E613DA4.png",
+      "prompt" : "Generate a BACKGROUND image for App Store marketing.\n\nUSE EXACTLY THESE COLORS (mandatory):\n- #3E5EC2\n- #082B4D\n- #CC3165\n\nThe background MUST use these exact colors or darker\/more saturated versions of them.\nCreate smooth gradients and large soft shapes using ONLY these colors.\n\nDESIGN REQUIREMENTS:\n- Minimalist flat design\n- Large soft rounded geometric shapes\n- Smooth color transitions between the 3 colors\n- Premium, professional, advertising-ready aesthetic\n\nSTRICTLY FORBIDDEN:\n- ANY white, off-white, cream, or light colors\n- ANY shadows or drop shadows\n- ANY lighting effects or glows\n- Colors NOT in the palette above\n- Text, icons, UI elements, people, objects, devices\n\nComposition: Large diagonal soft shapes flowing from bottom-left to top-right\n\nWhite text must be easily readable on the background.",
+      "style" : "abstract"
+    }
+  ],
+  "colorPalette" : {
+    "accentColor" : "#CC3266",
+    "allColors" : [
+      "#19212F",
+      "#E6E7E8",
+      "#092B4E",
+      "#97A5BB",
+      "#C2C3BD",
+      "#18191A",
+      "#3250A8",
+      "#C3C8C4"
+    ],
+    "backgroundColor" : "#E6E7E8",
+    "primaryColor" : "#19212F",
+    "secondaryColor" : "#092B4E",
+    "suggestedGradients" : [
+      [
+        "#19212F",
+        "#41567B"
+      ],
+      [
+        "#19212F",
+        "#092B4E"
+      ],
+      [
+        "#41567B",
+        "#000000"
+      ],
+      [
+        "#CC3266",
+        "#FF3E7F"
+      ]
+    ]
+  },
+  "customGradients" : [
+
+  ],
+  "designVariants" : [
+    {
+      "createdAt" : "2026-03-16T13:43:34Z",
+      "globalBackgroundColors" : [
+
+      ],
+      "globalBackgroundStyle" : "ai_generated:panoramic",
+      "globalDeviceFrame" : "iphone-deep-blue",
+      "globalIPadDeviceFrame" : "ipad-stroke-black",
+      "id" : "EF313D21-6805-4B4D-AA0C-6BD2BE742208",
+      "name" : "Variant A",
+      "screenshots" : [
+        {
+          "backgroundColors" : [
+
+          ],
+          "backgroundStyle" : "ai_generated:panoramic",
+          "deviceFrame" : "iphone-deep-blue",
+          "id" : "6B4BA7EF-1CBE-4D17-B35D-8D36622DFD26",
+          "iphoneImageFilename" : "6B4BA7EF-1CBE-4D17-B35D-8D36622DFD26_iphone.png",
+          "layout" : "device_top",
+          "overlayElements" : [
+
+          ],
+          "subtitle" : "Track progress and continue your learning journey.",
+          "title" : "Your Personalized Learning Hub"
+        },
+        {
+          "backgroundColors" : [
+
+          ],
+          "backgroundStyle" : "ai_generated:panoramic",
+          "deviceFrame" : "iphone-deep-blue",
+          "id" : "38C0D365-07CE-4A4F-941D-F0D0EA7F0ED6",
+          "iphoneImageFilename" : "38C0D365-07CE-4A4F-941D-F0D0EA7F0ED6_iphone.png",
+          "layout" : "device_bottom",
+          "overlayElements" : [
+
+          ],
+          "subtitle" : "Understand content, objectives, and enroll instantly.",
+          "title" : "Dive Into Course Details"
+        },
+        {
+          "backgroundColors" : [
+
+          ],
+          "backgroundStyle" : "ai_generated:panoramic",
+          "deviceFrame" : "iphone-deep-blue",
+          "id" : "F9FCE3B6-BE0C-4828-AC79-60BD86B1AE4D",
+          "iphoneImageFilename" : "F9FCE3B6-BE0C-4828-AC79-60BD86B1AE4D_iphone.png",
+          "layout" : "device_top",
+          "overlayElements" : [
+
+          ],
+          "subtitle" : "Search and explore courses effortlessly.",
+          "title" : "Discover New Courses"
+        },
+        {
+          "backgroundColors" : [
+
+          ],
+          "backgroundStyle" : "ai_generated:panoramic",
+          "deviceFrame" : "iphone-deep-blue",
+          "id" : "53B18FC8-BEC1-4A9B-B28B-9515C840502C",
+          "iphoneImageFilename" : "53B18FC8-BEC1-4A9B-B28B-9515C840502C_iphone.png",
+          "layout" : "device_bottom",
+          "overlayElements" : [
+
+          ],
+          "subtitle" : "Navigate lessons, track progress, and learn efficiently.",
+          "title" : "Master Your Coursework"
+        }
+      ],
+      "selectedBackgroundGroupId" : "9E42C8F6-B4A0-4BD3-9A55-EBED3B1F5D4D"
+    }
+  ],
+  "deviceType" : "iPhone",
+  "isPrimaryColorAutoDetected" : true,
+  "localization" : {
+    "selectedLanguageIds" : [
+
+    ],
+    "sourceLanguageId" : "en-US"
+  },
+  "primaryColorHex" : "#18202E",
+  "selectedGroupId" : "9E42C8F6-B4A0-4BD3-9A55-EBED3B1F5D4D",
+  "selectedScreenshotIndex" : 0,
+  "selectedVariantIndex" : 0,
+  "version" : "1.0"
+}

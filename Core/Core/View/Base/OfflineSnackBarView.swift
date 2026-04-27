@@ -79,9 +79,11 @@ public struct OfflineSnackBarView: View {
     }
 }
 
+#if DEBUG
 struct OfflineSnackBarView_Previews: PreviewProvider {
     static var previews: some View {
         let configMock = ConfigMock()
         OfflineSnackBarView(connectivity: Connectivity(config: configMock), reloadAction: {})
     }
 }
+#endif
