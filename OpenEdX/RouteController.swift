@@ -94,11 +94,8 @@ class RouteController: UIViewController {
             present(navigation, animated: false)
         } else {
             let controller = UIHostingController(
-                rootView: SignInView(
-                    viewModel: diContainer.resolve(
-                        SignInViewModel.self,
-                        argument: LogistrationSourceScreen.default
-                    )!
+                rootView: SandboxSplashView(
+                    router: diContainer.resolve(AuthorizationRouter.self)!
                 )
             )
             navigation.viewControllers = [controller]
