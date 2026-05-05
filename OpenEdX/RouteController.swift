@@ -50,9 +50,9 @@ class RouteController: UIViewController {
         resetAppSupportDirectoryUserData()
         coreAnalytics.trackEvent(.launch, biValue: .launch)
 
-        DispatchQueue.main.async {
-            self.showSandboxDisclaimer()
-        }
+//        DispatchQueue.main.async {
+//            self.showSandboxDisclaimer()
+//        }
     }
 
     private func showSandboxDisclaimer() {
