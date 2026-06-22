@@ -1,6 +1,9 @@
 strings:
   inputs:
     - WhatsNew/en.lproj
+  # The filter below matches .strings or .stringsdict files
+  # BUT excludes any file named "CustomLocalizable.strings"
+  filter: '^(?!.*CustomLocalizable\.strings$).*\.(?i:strings|stringsdict)$'
   outputs:
     - templateName: structured-swift5
       params:
