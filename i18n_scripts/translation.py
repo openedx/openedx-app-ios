@@ -50,7 +50,7 @@ def parse_arguments():
 @contextmanager
 def change_directory(new_dir: Path):
     """
-    Context manager to execute `os.chidir`.
+    Context manager to execute `os.chdir`.
 
     Usage:
 
@@ -69,7 +69,7 @@ def change_directory(new_dir: Path):
 
 def get_modules_dir(override: Path = None) -> Path:
     """
-    Gets the modeles directory (repository root directory).
+    Gets the modules directory (repository root directory).
     """
     if override:
         return override
@@ -109,13 +109,13 @@ def get_translation_file_path(modules_dir: Path, module_name, lang_dir, create_d
 
 def get_modules_to_translate(modules_dir: Path):
     """
-    Retrieve the names of modules that have translation files for a specified language.
+    Retrieve the names of modules that have translation files for the English language.
 
     Parameters:
         modules_dir (Path): The path to the directory containing all the modules.
 
     Returns:
-        list of str: A list of module names that have translation files for the specified language.
+        list of str: A list of module names that have English translation files.
     """
     try:
         modules_list = [
@@ -407,7 +407,7 @@ def add_localizable(xcode_project: XcodeProject, localizable_relative_path: Path
 
 def add_translation_files_to_xcode(modules_dir: Path = None):
     """
-    Add Localizable.strings files pulled from Transifex to XCode.
+    Add Localizable.strings files pulled from Transifex (or split from I18N) to XCode projects.
     """
     try:
         modules_dir = get_modules_dir(override=modules_dir)
