@@ -32,28 +32,23 @@ final class LMSDirectoryViewModel: ObservableObject {
     private let coordinator: LMSSelectionCoordinating
     private let overridesStore: LMSOverridesStoreProtocol
     private let analytics: LMSDirectoryAnalytics
-    private let connectivity: ConnectivityProtocol
     private let historyLimit = 10
 
     private var debounceTask: Task<Void, Never>?
     private var historyTask: Task<Void, Never>?
-    private var cancellables: Set<AnyCancellable> = []
 
     init(
         service: LMSDirectoryService,
         historyStore: LMSHistoryStoreProtocol,
         coordinator: LMSSelectionCoordinating,
         overridesStore: LMSOverridesStoreProtocol,
-        analytics: LMSDirectoryAnalytics,
-        connectivity: ConnectivityProtocol
+        analytics: LMSDirectoryAnalytics
     ) {
         self.service = service
         self.historyStore = historyStore
         self.coordinator = coordinator
         self.overridesStore = overridesStore
         self.analytics = analytics
-        self.connectivity = connectivity
-        observeConnectivity()
         loadHistory()
         applyPersistedTheme()
         loadConfig()
@@ -128,18 +123,6 @@ final class LMSDirectoryViewModel: ObservableObject {
                 self.state = self.searchText.isEmpty ? (entries.isEmpty ? .idle : .history) : self.state
             }
         }
-    }
-
-    private func observeConnectivity() {
-        connectivity.internetReachableSubject
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] state in
-                guard let state, let self else { return }
-                if case .notReachable = state, !self.searchText.isEmpty {
-                    self.state = .offline
-                }
-            }
-            .store(in: &cancellables)
     }
 
     private func scheduleSearch() {

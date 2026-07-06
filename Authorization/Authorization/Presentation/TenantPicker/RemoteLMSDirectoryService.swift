@@ -5,7 +5,6 @@ final class RemoteLMSDirectoryService: LMSDirectoryService {
 
     private let baseURL: URL
     private let session: URLSession
-    private let connectivity: ConnectivityProtocol
     private let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
@@ -14,17 +13,13 @@ final class RemoteLMSDirectoryService: LMSDirectoryService {
 
     init(
         baseURL: URL,
-        connectivity: ConnectivityProtocol,
         session: URLSession = .shared
     ) {
         self.baseURL = baseURL
-        self.connectivity = connectivity
         self.session = session
     }
 
     func search(query: String) async throws -> [LMSSearchResult] {
-        try await ensureOnline()
-
         var components = URLComponents(
             url: baseURL.appendingPathComponent("/api/v1/directory"),
             resolvingAgainstBaseURL: false
@@ -33,7 +28,7 @@ final class RemoteLMSDirectoryService: LMSDirectoryService {
             components.queryItems = [URLQueryItem(name: "q", value: query)]
         }
 
-        let (data, response) = try await session.data(from: components.url!)
+        let (data, response) = try await data(from: components.url!)
         try validateResponse(response)
 
         do {
@@ -54,10 +49,8 @@ final class RemoteLMSDirectoryService: LMSDirectoryService {
     }
 
     func fetchDetails(id: String) async throws -> LMSDetail {
-        try await ensureOnline()
-
         let url = baseURL.appendingPathComponent("/api/v1/directory/\(id)")
-        let (data, response) = try await session.data(from: url)
+        let (data, response) = try await data(from: url)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw LMSDirectoryError.decodingFailed
@@ -78,9 +71,8 @@ final class RemoteLMSDirectoryService: LMSDirectoryService {
     }
 
     func fetchConfig() async throws -> LMSRegistryConfig {
-        try await ensureOnline()
         let url = baseURL.appendingPathComponent("/api/v1/config")
-        let (data, response) = try await session.data(from: url)
+        let (data, response) = try await data(from: url)
         try validateResponse(response)
         do {
             return try decoder.decode(LMSConfigDTO.self, from: data).domainModel
@@ -90,14 +82,13 @@ final class RemoteLMSDirectoryService: LMSDirectoryService {
     }
 
     func fetchFeatured() async throws -> [LMSSearchResult] {
-        try await ensureOnline()
         var components = URLComponents(
             url: baseURL.appendingPathComponent("/api/v1/directory"),
             resolvingAgainstBaseURL: false
         )!
         components.queryItems = [URLQueryItem(name: "featured", value: "true")]
 
-        let (data, response) = try await session.data(from: components.url!)
+        let (data, response) = try await data(from: components.url!)
         try validateResponse(response)
         do {
             let listResponse = try decoder.decode(LMSListResponse.self, from: data)
@@ -118,12 +109,27 @@ final class RemoteLMSDirectoryService: LMSDirectoryService {
 
     // MARK: - Private
 
-    private func ensureOnline() async throws {
-        let isOnline = await MainActor.run { connectivity.isInternetAvaliable }
-        guard isOnline else {
+    /// Fetch from the registry. Reachability is decided by this call itself — a
+    /// genuinely offline device surfaces as `.offline`. The directory must not be
+    /// gated by reachability to the app's stock host, which isn't the registry and
+    /// (in the LMS Directory flow) isn't even chosen yet.
+    private func data(from url: URL) async throws -> (Data, URLResponse) {
+        do {
+            return try await session.data(from: url)
+        } catch let error as URLError where Self.offlineCodes.contains(error.code) {
             throw LMSDirectoryError.offline
         }
     }
+
+    private static let offlineCodes: Set<URLError.Code> = [
+        .notConnectedToInternet,
+        .networkConnectionLost,
+        .cannotConnectToHost,
+        .cannotFindHost,
+        .dnsLookupFailed,
+        .timedOut,
+        .dataNotAllowed
+    ]
 
     private func validateResponse(_ response: URLResponse) throws {
         guard let httpResponse = response as? HTTPURLResponse,

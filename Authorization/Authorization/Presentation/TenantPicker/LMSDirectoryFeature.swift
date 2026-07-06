@@ -81,8 +81,7 @@ public enum LMSDirectoryFeature {
             historyStore: container.resolve(LMSHistoryStoreProtocol.self)!,
             coordinator: coordinator,
             overridesStore: container.resolve(LMSOverridesStoreProtocol.self)!,
-            analytics: container.resolve(LMSDirectoryAnalytics.self)!,
-            connectivity: container.resolve(ConnectivityProtocol.self)!
+            analytics: container.resolve(LMSDirectoryAnalytics.self)!
         )
     }
 
@@ -102,13 +101,10 @@ public enum LMSDirectoryFeature {
         }.inObjectScope(.container)
 
         container.register(LMSDirectoryService.self) { resolver in
-            let connectivity = resolver.resolve(ConnectivityProtocol.self)!
             if let baseURL = directoryURL {
-                return RemoteLMSDirectoryService(
-                    baseURL: baseURL,
-                    connectivity: connectivity
-                )
+                return RemoteLMSDirectoryService(baseURL: baseURL)
             }
+            let connectivity = resolver.resolve(ConnectivityProtocol.self)!
             return MockLMSDirectoryService(connectivity: connectivity)
         }.inObjectScope(.container)
     }
