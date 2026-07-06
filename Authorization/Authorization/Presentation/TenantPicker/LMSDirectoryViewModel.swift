@@ -106,6 +106,10 @@ final class LMSDirectoryViewModel: ObservableObject {
                 self.results = items
                 self.state = items.isEmpty ? .empty : .results
             }
+        } catch LMSDirectoryError.offline {
+            await MainActor.run {
+                self.state = .offline
+            }
         } catch {
             await MainActor.run {
                 self.state = .error("We couldn't load the list of platforms.")

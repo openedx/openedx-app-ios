@@ -33,6 +33,8 @@
 		5FB79D2802949372CDAF08D6 /* Pods_App_Authorization_AuthorizationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAE9B7FD61FF88C9C4FE1E8 /* Pods_App_Authorization_AuthorizationTests.framework */; };
 		675A3266DB7422CBE5D8C383 /* LMSDirectoryQRScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3E65F49C6D33DA13103C3592 /* LMSDirectoryQRScannerView.swift */; };
 		6D7A416158E2FDD2F33B92AE /* LMSHistoryStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53AD905F2FFC3F8EBB47210 /* LMSHistoryStore.swift */; };
+		768AF63A56D5051A729CA064 /* RemoteLMSDirectoryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C762F79B426714E73FF19E46 /* RemoteLMSDirectoryServiceTests.swift */; };
+		935FEA69BE7D57F57D42BB86 /* LMSDirectoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9EF18C82B8CA9A89481E82 /* LMSDirectoryViewModelTests.swift */; };
 		95F57194827709F98991ECF9 /* LMSThemeApplier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0922F56B70DDA9F2910C6C /* LMSThemeApplier.swift */; };
 		999B1445AA69C9D434DA39CF /* RemoteLMSDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52219A516317365C162B9670 /* RemoteLMSDirectoryService.swift */; };
 		99C1654B2C0C4F0600DC384D /* ContainerWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C1654A2C0C4F0600DC384D /* ContainerWebView.swift */; };
@@ -132,6 +134,7 @@
 		99C1654C2C0C4F2F00DC384D /* SSOHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOHelper.swift; sourceTree = "<group>"; };
 		99C1654E2C0C4F5900DC384D /* SSOWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOWebView.swift; sourceTree = "<group>"; };
 		99C165502C0C4F7B00DC384D /* SSOWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOWebViewModel.swift; sourceTree = "<group>"; };
+		9B9EF18C82B8CA9A89481E82 /* LMSDirectoryViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryViewModelTests.swift; path = ../LMSDirectory/LMSDirectoryViewModelTests.swift; sourceTree = "<group>"; };
 		9BF6A1004A955E24527FCF0F /* Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A5B4680F2F29C845002A4ECA /* AuthorizationMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationMocks.generated.swift; sourceTree = "<group>"; };
 		A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; sourceTree = "<group>"; };
@@ -141,6 +144,7 @@
 		BADB3F542AD6DFC3004D5CFA /* SocialAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthViewModel.swift; sourceTree = "<group>"; };
 		BC0922F56B70DDA9F2910C6C /* LMSThemeApplier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSThemeApplier.swift; path = Authorization/Presentation/TenantPicker/LMSThemeApplier.swift; sourceTree = "<group>"; };
 		C54635D2863A11AFCC9A5235 /* LMSDirectoryFeature.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryFeature.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryFeature.swift; sourceTree = "<group>"; };
+		C762F79B426714E73FF19E46 /* RemoteLMSDirectoryServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RemoteLMSDirectoryServiceTests.swift; path = ../LMSDirectory/RemoteLMSDirectoryServiceTests.swift; sourceTree = "<group>"; };
 		CEB259FA2CC13A36007FC792 /* SocialAuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthError.swift; sourceTree = "<group>"; };
 		CEB259FC2CC13A36007FC792 /* AppleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthProvider.swift; sourceTree = "<group>"; };
 		CEB259FD2CC13A36007FC792 /* GoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthProvider.swift; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 			children = (
 				02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */,
 				07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */,
+				D81BDDA5554F6699B56037FD /* LMSDirectory */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -416,6 +421,15 @@
 				CEB25A002CC13A36007FC792 /* SocialAuthResponse.swift */,
 			);
 			path = SocialAuth;
+			sourceTree = "<group>";
+		};
+		D81BDDA5554F6699B56037FD /* LMSDirectory */ = {
+			isa = PBXGroup;
+			children = (
+				C762F79B426714E73FF19E46 /* RemoteLMSDirectoryServiceTests.swift */,
+				9B9EF18C82B8CA9A89481E82 /* LMSDirectoryViewModelTests.swift */,
+			);
+			name = LMSDirectory;
 			sourceTree = "<group>";
 		};
 		E03261622AE6464A002CA7EB /* Startup */ = {
@@ -618,6 +632,8 @@
 				07169464296D96DD00E3DED6 /* SignInViewModelTests.swift in Sources */,
 				A5B468112F29C845002A4ECA /* AuthorizationMocks.generated.swift in Sources */,
 				02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */,
+				768AF63A56D5051A729CA064 /* RemoteLMSDirectoryServiceTests.swift in Sources */,
+				935FEA69BE7D57F57D42BB86 /* LMSDirectoryViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
