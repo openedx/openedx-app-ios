@@ -47,6 +47,7 @@
 		07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D5DA3428D075AA00752FD9 /* AppDelegate.swift */; };
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		149FF39E2B9F1AB50034B33F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 149FF39C2B9F1AB50034B33F /* LaunchScreen.storyboard */; };
+		222D6F5B8D6BBD02F3E0AAA7 /* LMSDirectoryRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070574B3ABFF71F1AF727DDE /* LMSDirectoryRouter.swift */; };
 		705A908842AAAFC361CD9D52 /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58FAA9E3ECC93D0E638D877D /* Pods_App_OpenEdX.framework */; };
 		A500668B2B613ED10024680B /* PushNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668A2B613ED10024680B /* PushNotificationsManager.swift */; };
 		A500668D2B6143000024680B /* FCMProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A500668C2B6143000024680B /* FCMProvider.swift */; };
@@ -123,6 +124,7 @@
 		02ED50DB29A6600B008341CD /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = uk; path = uk.lproj/languages.json; sourceTree = "<group>"; };
 		02F175302A4DA95B0019CD70 /* MainScreenAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenAnalytics.swift; sourceTree = "<group>"; };
 		065275362BB1B4070093BCCA /* PipManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PipManager.swift; sourceTree = "<group>"; };
+		070574B3ABFF71F1AF727DDE /* LMSDirectoryRouter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMSDirectoryRouter.swift; sourceTree = "<group>"; };
 		071009C828D1DB3F00344290 /* ScreenAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenAssembly.swift; sourceTree = "<group>"; };
 		0727878D28D347C7002E9142 /* MainScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenView.swift; sourceTree = "<group>"; };
 		072787B028D34D83002E9142 /* Discovery.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Discovery.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -270,6 +272,7 @@
 				02ED50DA29A66007008341CD /* languages.json */,
 				02ED50D629A6554E008341CD /* сountries.json */,
 				0770DE6628D0BCC7006D8A5D /* Localizable.strings */,
+				070574B3ABFF71F1AF727DDE /* LMSDirectoryRouter.swift */,
 			);
 			path = OpenEdX;
 			sourceTree = "<group>";
@@ -599,6 +602,7 @@
 				A59568972B61653700ED4F90 /* DeepLink.swift in Sources */,
 				022213D22C0E08E500B917E6 /* ProfilePersistence.swift in Sources */,
 				A59568992B616D9400ED4F90 /* PushLink.swift in Sources */,
+				222D6F5B8D6BBD02F3E0AAA7 /* LMSDirectoryRouter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

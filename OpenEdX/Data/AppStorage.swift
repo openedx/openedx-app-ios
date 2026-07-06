@@ -106,6 +106,19 @@ public final class AppStorage: CoreStorage,
         }
     }
     
+    public var selectedLMSBaseURL: String? {
+        get {
+            return userDefaults.string(forKey: KEY_SELECTED_LMS_BASE_URL)
+        }
+        set(newValue) {
+            if let newValue {
+                userDefaults.set(newValue, forKey: KEY_SELECTED_LMS_BASE_URL)
+            } else {
+                userDefaults.removeObject(forKey: KEY_SELECTED_LMS_BASE_URL)
+            }
+        }
+    }
+
     public var reviewLastShownVersion: String? {
         get {
             return userDefaults.string(forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
@@ -391,6 +404,7 @@ public final class AppStorage: CoreStorage,
         accessToken = nil
         refreshToken = nil
         cookiesDate = nil
+        selectedLMSBaseURL = nil
         user = nil
         userProfile = nil
         // delete all cookies
@@ -405,6 +419,7 @@ public final class AppStorage: CoreStorage,
     private let KEY_REFRESH_TOKEN = "refreshToken"
     private let KEY_PUSH_TOKEN = "pushToken"
     private let KEY_COOKIES_DATE = "cookiesDate"
+    private let KEY_SELECTED_LMS_BASE_URL = "selectedLMSBaseURL"
     private let KEY_USER_PROFILE = "userProfile"
     private let KEY_USER = "refreshToken"
     private let KEY_SETTINGS = "userSettings"

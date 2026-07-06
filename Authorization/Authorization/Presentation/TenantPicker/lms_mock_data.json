@@ -1,0 +1,192 @@
+[
+  {
+    "id": "lms_mit_openlearning",
+    "title": "MIT Open Learning",
+    "description": "Digital and professional education programs from the Massachusetts Institute of Technology.",
+    "short_description": "MIT Open Learning programs.",
+    "base_url": "https://axim-mobile-dev.raccoongang.net",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/MIT_Logo_New.svg/2560px-MIT_Logo_New.svg.png",
+    "api": {
+      "host_url": "https://axim-mobile-dev.raccoongang.net",
+      "feedback_email": "openlearning-support@mit.edu",
+      "oauth_client_id": "bHvM10KwHSrM5Gk6uoRBaS3KFRhjSFHfGGfYP4SP"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": true
+    },
+    "accent_color": "#A31F34"
+  },
+  {
+    "id": "lms_stanford_online",
+    "title": "Stanford Online",
+    "description": "Courses and certificates from Stanford University delivered online.",
+    "short_description": "Stanford University online offerings.",
+    "base_url": "https://online.stanford.edu",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Stanford_Cardinal_logo.svg/120px-Stanford_Cardinal_logo.svg.png?20170714202931",
+    "api": {
+      "host_url": "https://online.stanford.edu",
+      "feedback_email": "support@online.stanford.edu",
+      "oauth_client_id": "stanford.online.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": false
+    },
+    "accent_color": "#8C1515"
+  },
+  {
+    "id": "lms_harvard_extension",
+    "title": "Harvard Extension School",
+    "description": "Flexible degrees and certificates from Harvard University's Division of online Continuing Education.",
+    "short_description": "Harvard Extension online and hybrid learning.",
+    "base_url": "https://extension.harvard.edu",
+    "logo_url": "https://extension.harvard.edu/wp-content/uploads/sites/8/2023/02/Social-Media-Profile-Picture-.png",
+    "api": {
+      "host_url": "https://extension.harvard.edu",
+      "feedback_email": "support@extension.harvard.edu",
+      "oauth_client_id": "harvard.extension.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": false,
+      "offline_downloads": true,
+      "smart_push_automation": false
+    },
+    "accent_color": "#A51C30"
+  },
+  {
+    "id": "lms_oxford_conted",
+    "title": "Oxford Continuing Education",
+    "description": "Short courses, certificates, and online programs from the University of Oxford Department for Continuing Education.",
+    "short_description": "University of Oxford continuing education.",
+    "base_url": "https://www.conted.ox.ac.uk",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/ff/Oxford-University-Circlet.svg/330px-Oxford-University-Circlet.svg.png",
+    "api": {
+      "host_url": "https://www.conted.ox.ac.uk",
+      "feedback_email": "support@conted.ox.ac.uk",
+      "oauth_client_id": "oxford.conted.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": true
+    },
+    "accent_color": "#002147"
+  },
+  {
+    "id": "lms_cambridge_ice",
+    "title": "Cambridge ICE",
+    "description": "Institute of online Continuing Education at the University of Cambridge delivering part-time and online study.",
+    "short_description": "University of Cambridge ICE courses.",
+    "base_url": "https://www.ice.cam.ac.uk",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/en/f/fb/Camb_uni_ihc.jpg",
+    "api": {
+      "host_url": "https://www.ice.cam.ac.uk",
+      "feedback_email": "support@ice.cam.ac.uk",
+      "oauth_client_id": "cambridge.ice.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": false
+    },
+    "accent_color": "#0072CF"
+  },
+  {
+    "id": "lms_imperial_digital",
+    "title": "Imperial Digital Learning",
+    "description": "Online courses and microcredentials from Imperial College London.",
+    "short_description": "Imperial College London online learning.",
+    "base_url": "https://axim-mobile-dev.raccoongang.net",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Shield_of_Imperial_College_London.svg/330px-Shield_of_Imperial_College_London.svg.png",
+    "api": {
+      "host_url": "https://axim-mobile-dev.raccoongang.net",
+      "feedback_email": "digitallearning@imperial.ac.uk",
+      "oauth_client_id": "bHvM10KwHSrM5Gk6uoRBaS3KFRhjSFHfGGfYP4SP"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": true
+    },
+    "accent_color": "#003E74"
+  },
+  {
+    "id": "lms_anu_online",
+    "title": "ANU Online",
+    "description": "Online degrees and professional courses from the Australian National University.",
+    "short_description": "ANU digital programs.",
+    "base_url": "https://www.anu.edu.au/study/anu-online",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Australian_National_University_coat_of_arms.svg/500px-Australian_National_University_coat_of_arms.svg.png",
+    "api": {
+      "host_url": "https://www.anu.edu.au",
+      "feedback_email": "support@anu.edu.au",
+      "oauth_client_id": "anu.online.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": false,
+      "offline_downloads": true,
+      "smart_push_automation": true
+    },
+    "accent_color": "#B9975B"
+  },
+  {
+    "id": "lms_eth_conted",
+    "title": "ETH Zurich Continuing Education",
+    "description": "Lifelong online learning and professional programs from ETH Zurich.",
+    "short_description": "ETH Zurich continuing education.",
+    "base_url": "https://ethz.ch/en/continuing-education.html",
+    "logo_url": "https://www.designyourway.net/blog/wp-content/uploads/2024/04/the-meaning-behind-the-ETH-zurich-logo.jpg",
+    "api": {
+      "host_url": "https://ethz.ch",
+      "feedback_email": "info@ethz.ch",
+      "oauth_client_id": "eth.conted.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": false
+    },
+    "accent_color": "#0F6CB6"
+  },
+  {
+    "id": "lms_nus_lifelong",
+    "title": "NUS Lifelong Learning",
+    "description": "Continuing online education and SkillsFuture programs from the National University of Singapore.",
+    "short_description": "NUS lifelong learning programs.",
+    "base_url": "https://www.nus.edu.sg/lifelonglearning",
+    "logo_url": "https://scale.nus.edu.sg/images/default-source/cet-2022/nus-l-3-for-alumni-(2023-new).png?sfvrsn=e93baa0e_4&MaxWidth=150&MaxHeight=150&ScaleUp=false&Quality=High&Method=ResizeFitToAreaArguments&Signature=060DFF94F7A1B4E14EF530C60F2FEECCCAB52ABF",
+    "api": {
+      "host_url": "https://www.nus.edu.sg",
+      "feedback_email": "lifelonglearning@nus.edu.sg",
+      "oauth_client_id": "nus.lifelong.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": false
+    },
+    "accent_color": "#003D7C"
+  },
+  {
+    "id": "lms_uoft_scs",
+    "title": "UofT School of Continuing Studies",
+    "description": "Certificates and professional online learning from the University of Toronto School of Continuing Studies.",
+    "short_description": "University of Toronto SCS online.",
+    "base_url": "https://learn.utoronto.ca",
+    "logo_url": "https://upload.wikimedia.org/wikipedia/en/thumb/0/04/Utoronto_coa.svg/500px-Utoronto_coa.svg.png",
+    "api": {
+      "host_url": "https://learn.utoronto.ca",
+      "feedback_email": "support@utoronto.ca",
+      "oauth_client_id": "utoronto.scs.mobile"
+    },
+    "feature_flags": {
+      "pre_login_discovery": true,
+      "offline_downloads": true,
+      "smart_push_automation": true
+    },
+    "accent_color": "#002A5C"
+  }
+]

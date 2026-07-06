@@ -12,9 +12,10 @@ import Theme
 import OEXFoundation
 
 public struct ProfileView: View {
-    
+
     @Bindable private var viewModel: ProfileViewModel
-    
+    @State private var showReportSheet = false
+
     public init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
     }
@@ -80,9 +81,14 @@ public struct ProfileView: View {
                     await viewModel.getMyProfile()
                 }
             }
+            .sheet(isPresented: $showReportSheet) {
+                ReportLMSView(viewModel: ReportLMSViewModel()) {
+                    showReportSheet = false
+                }
+            }
         }
     }
-    
+
     private var progressBar: some View {
         ProgressBar(size: 40, lineWidth: 8)
             .padding(.top, 200)
@@ -149,9 +155,26 @@ public struct ProfileView: View {
                 }.padding(.all, 24)
                 profileInfo
                 editProfileButton
+                if viewModel.config.lmsDirectory.enabled {
+                    reportButton
+                }
                 Spacer()
             }
         }
+    }
+
+    // MARK: - Report this LMS (shown only when the LMS Directory feature is on)
+    private var reportButton: some View {
+        StyledButton(
+            NSLocalizedString("Report this LMS", comment: "Profile: report the current platform"),
+            action: { showReportSheet = true },
+            color: Theme.Colors.alert,
+            textColor: Theme.Colors.white,
+            borderColor: Theme.Colors.alert
+        )
+        .padding(.horizontal, 24)
+        .padding(.bottom, 24)
+        .accessibilityIdentifier("report_lms_button")
     }
 
     // MARK: - Profile Info

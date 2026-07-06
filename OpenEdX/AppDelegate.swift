@@ -10,6 +10,7 @@ import Core
 import OEXFoundation
 import Swinject
 import Profile
+import Authorization
 import GoogleSignIn
 import FacebookCore
 import MSAL
@@ -50,7 +51,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         if let config = Container.shared.resolve(ConfigProtocol.self) {
             Theme.Shapes.isRoundedCorners = config.theme.isRoundedCorners
             Theme.Shapes.buttonCornersRadius = config.theme.buttonCornersRadius
-            
+
+            // LMS Directory: flag-gated. When on, the app can browse/pick any Open edX
+            // platform, re-theme to it, and route back to sign-in after selection.
+            if config.lmsDirectory.enabled {
+                Container.shared.register(LMSSelectionRouting.self) { _ in
+                    LMSDirectoryRouter()
+                }.inObjectScope(.container)
+                LMSDirectoryFeature.register(directoryBaseURL: config.lmsDirectory.directoryURL)
+            }
+
             if config.facebook.enabled {
                 ApplicationDelegate.shared.application(
                     application,

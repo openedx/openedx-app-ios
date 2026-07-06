@@ -21,3 +21,8 @@ UI_COMPONENTS:
     LOGIN_REGISTRATION_ENABLED: true
     SAML_SSO_LOGIN_ENABLED: false
     SAML_SSO_DEFAULT_LOGIN_BUTTON: false
+
+LMS_DIRECTORY:
+    ENABLED: true
+    DIRECTORY_URL: "https://openedx-lms.stepanok.com"
+    DIRECTORY_MODE: ""

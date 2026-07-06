@@ -35,6 +35,8 @@
 	</dict>
 	<key>NSCalendarsFullAccessUsageDescription</key>
 	<string>We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>The camera is used to scan a QR code that opens your learning platform.</string>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UIBackgroundModes</key>

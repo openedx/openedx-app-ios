@@ -28,6 +28,7 @@ public protocol ConfigProtocol: Sendable {
     var features: FeaturesConfig { get }
     var theme: ThemeConfig { get }
     var uiComponents: UIComponentsConfig { get }
+    var lmsDirectory: LMSDirectoryConfig { get }
     var discovery: DiscoveryConfig { get }
     var dashboard: DashboardConfig { get }
     var braze: BrazeConfig { get }
@@ -119,6 +120,14 @@ public class Config: @unchecked Sendable {
 
 extension Config: ConfigProtocol {
     public var baseURL: URL {
+        // LMS Directory: when the feature is on and the learner picked a platform,
+        // the whole app talks to that LMS. Off (default) → stock single-tenant host.
+        if lmsDirectory.enabled,
+           let selected = UserDefaults.standard.string(forKey: "selectedLMSBaseURL"),
+           !selected.isEmpty,
+           let selectedURL = URL(string: selected) {
+            return selectedURL
+        }
         guard let urlString = string(for: ConfigKeys.baseURL.rawValue),
               let url = URL(string: urlString) else {
             fatalError("Unable to find base url in config.")
