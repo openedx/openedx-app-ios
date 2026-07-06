@@ -14,7 +14,6 @@
 		0219C67828F4347600D64452 /* Course.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0219C67628F4347600D64452 /* Course.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		022213D22C0E08E500B917E6 /* ProfilePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022213D12C0E08E500B917E6 /* ProfilePersistence.swift */; };
 		024E69202AEFC3FB00FA0B59 /* MainScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E691F2AEFC3FB00FA0B59 /* MainScreenViewModel.swift */; };
-		AA0000012D07000000000001 /* SandboxDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000012D07000000000002 /* SandboxDisclaimerView.swift */; };
 		025AD4AC2A6FB95C00AB8FA7 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 025AD4AB2A6FB95C00AB8FA7 /* DatabaseManager.swift */; };
 		025DE1A428DB4DAE0053E0F4 /* Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; };
 		025DE1A528DB4DAE0053E0F4 /* Profile.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 025DE1A328DB4DAE0053E0F4 /* Profile.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -56,6 +55,7 @@
 		A59568952B61630500ED4F90 /* DeepLinkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568942B61630500ED4F90 /* DeepLinkManager.swift */; };
 		A59568972B61653700ED4F90 /* DeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568962B61653700ED4F90 /* DeepLink.swift */; };
 		A59568992B616D9400ED4F90 /* PushLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = A59568982B616D9400ED4F90 /* PushLink.swift */; };
+		AA0000012D07000000000001 /* SandboxDisclaimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA0000012D07000000000002 /* SandboxDisclaimerView.swift */; };
 		BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA7468752B96201D00793145 /* DeepLinkRouter.swift */; };
 		CE0BF0BA2CD9203A00D10289 /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = CE0BF0B92CD9203A00D10289 /* MSAL */; };
 		CE1D5B7B2CE60E000019CA34 /* ContainerMainActor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1D5B7A2CE60E000019CA34 /* ContainerMainActor.swift */; };
@@ -106,7 +106,6 @@
 		022213D12C0E08E500B917E6 /* ProfilePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePersistence.swift; sourceTree = "<group>"; };
 		02450ABD29C35FF20094E2D0 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		024E691F2AEFC3FB00FA0B59 /* MainScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreenViewModel.swift; sourceTree = "<group>"; };
-		AA0000012D07000000000002 /* SandboxDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxDisclaimerView.swift; sourceTree = "<group>"; };
 		025AD4AB2A6FB95C00AB8FA7 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		025C77A028E463E900B3DFA3 /* CourseOutline.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = CourseOutline.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		025DE1A328DB4DAE0053E0F4 /* Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -154,6 +153,7 @@
 		A59568942B61630500ED4F90 /* DeepLinkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkManager.swift; sourceTree = "<group>"; };
 		A59568962B61653700ED4F90 /* DeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLink.swift; sourceTree = "<group>"; };
 		A59568982B616D9400ED4F90 /* PushLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushLink.swift; sourceTree = "<group>"; };
+		AA0000012D07000000000002 /* SandboxDisclaimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandboxDisclaimerView.swift; sourceTree = "<group>"; };
 		BA7468752B96201D00793145 /* DeepLinkRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeepLinkRouter.swift; sourceTree = "<group>"; };
 		CE1D5B7A2CE60E000019CA34 /* ContainerMainActor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContainerMainActor.swift; sourceTree = "<group>"; };
 		CE3BD14D2CBEB0DA0026F4E3 /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
@@ -714,7 +714,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -806,7 +806,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -904,7 +904,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -996,7 +996,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -1148,12 +1148,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Sandbox";
+				INFOPLIST_KEY_CFBundleDisplayName = Sandbox;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
@@ -1186,12 +1186,12 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = OpenEdX/OpenEdX.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				FULLSTORY_ENABLED = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = OpenEdX/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Sandbox";
+				INFOPLIST_KEY_CFBundleDisplayName = Sandbox;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.education";
 				INFOPLIST_KEY_NSCalendarsUsageDescription = "We would like to utilize your calendar list to subscribe you to your personalized calendar for this course.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Allow access to your photo library so you can save photos in your gallery.";
