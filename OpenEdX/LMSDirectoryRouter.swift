@@ -20,6 +20,12 @@ final class LMSDirectoryRouter: LMSSelectionRouting {
 
     func showLogin() { showSignIn() }
 
+    func showLanding() {
+        guard let navigation = Container.shared.resolve(UINavigationController.self) else { return }
+        let landing = LMSDirectoryFeature.makeLandingController()
+        navigation.setViewControllers([landing], animated: true)
+    }
+
     private func showSignIn() {
         guard let navigation = Container.shared.resolve(UINavigationController.self),
               let viewModel = Container.shared.resolve(

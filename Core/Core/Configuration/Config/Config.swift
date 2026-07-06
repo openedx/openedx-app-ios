@@ -159,6 +159,13 @@ extension Config: ConfigProtocol {
     }
     
     public var oAuthClientId: String {
+        // LMS Directory: sign in against the selected platform's own registered
+        // mobile OAuth client, persisted at selection time. Off (default) → config.
+        if lmsDirectory.enabled,
+           let override = UserDefaults.standard.string(forKey: "lmsDirectory.selected_oauth_client_id"),
+           !override.isEmpty {
+            return override
+        }
         guard let clientID = string(for: ConfigKeys.oAuthClientID.rawValue) else {
             fatalError("Unable to find OAuth ClientID in config.")
         }
@@ -173,6 +180,11 @@ extension Config: ConfigProtocol {
     }
     
     public var feedbackEmail: String {
+        if lmsDirectory.enabled,
+           let override = UserDefaults.standard.string(forKey: "lmsDirectory.selected_feedback_email"),
+           !override.isEmpty {
+            return override
+        }
         return string(for: ConfigKeys.feedbackEmailAddress.rawValue) ?? ""
     }
 

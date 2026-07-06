@@ -8,6 +8,8 @@ import Alamofire
 public protocol LMSSelectionRouting: AnyObject {
     func presentDiscovery()
     func showLogin()
+    /// Return to the LMS directory landing (the sign-in "Change" affordance).
+    func showLanding()
 }
 
 @MainActor
