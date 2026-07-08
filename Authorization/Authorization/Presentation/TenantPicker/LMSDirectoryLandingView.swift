@@ -4,7 +4,6 @@ import Theme
 struct LMSDirectoryLandingView: View {
     @StateObject private var viewModel: LMSDirectoryViewModel
     @State private var showingSearch = false
-    @State private var showingQRInfo = false
     @State private var showingQRScanner = false
     @State private var qrError: String?
 
@@ -18,33 +17,30 @@ struct LMSDirectoryLandingView: View {
                 if showingSearch || viewModel.isCurated {
                     LMSDirectoryView(
                         viewModel: viewModel,
-                        onScanTapped: { showingQRInfo = true }
+                        onScanTapped: { showingQRScanner = true }
                     )
                 } else {
                     LMSDirectoryLandingIntroView(
                         onFindTapped: { showingSearch = true },
-                        onQRTapped: { showingQRInfo = true }
+                        onQRTapped: { showingQRScanner = true }
                     )
                 }
             }
             .padding(24)
         }
         .background(Theme.Colors.background.ignoresSafeArea())
-        .sheet(isPresented: $showingQRInfo) {
-            LMSDirectoryQRInstructionsView {
-                showingQRInfo = false
-                showingQRScanner = true
-            }
-        }
+        // Curated mode presents the org's fixed list, so the title reads "Choose…"
+        // rather than the search-oriented "Find your LMS".
+        .navigationTitle(viewModel.isCurated ? "Choose your platform" : "Find your LMS")
         .sheet(isPresented: $showingQRScanner) {
             LMSDirectoryQRScannerView {
                 showingQRScanner = false
             } onCodeScanned: { code in
                 showingQRScanner = false
-                if viewModel.handleScannedURL(code) {
-                    showingSearch = true
-                } else {
-                    qrError = "We couldn't read the QR code. Try again."
+                Task {
+                    if let error = await viewModel.selectScannedURL(code) {
+                        qrError = error
+                    }
                 }
             }
         }

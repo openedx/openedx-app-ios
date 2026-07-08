@@ -16,7 +16,11 @@ import Swinject
 
 final class LMSDirectoryRouter: LMSSelectionRouting {
 
-    func presentDiscovery() { showSignIn() }
+    func presentDiscovery() {
+        guard let router = Container.shared.resolve(Router.self) else { return }
+        router.getNavigationController().popToRootViewController(animated: false)
+        router.showDiscoveryScreen(searchQuery: nil, sourceScreen: .default)
+    }
 
     func showLogin() { showSignIn() }
 

@@ -76,12 +76,16 @@ public enum LMSDirectoryFeature {
             coreStorage: container.resolve(CoreStorage.self),
             container: container
         )
+        // Client-side DIRECTORY_MODE override: a non-empty value forces the mode.
+        let directoryMode = container.resolve(ConfigProtocol.self)?.lmsDirectory.directoryMode ?? ""
         return LMSDirectoryViewModel(
             service: container.resolve(LMSDirectoryService.self)!,
             historyStore: container.resolve(LMSHistoryStoreProtocol.self)!,
             coordinator: coordinator,
             overridesStore: container.resolve(LMSOverridesStoreProtocol.self)!,
-            analytics: container.resolve(LMSDirectoryAnalytics.self)!
+            analytics: container.resolve(LMSDirectoryAnalytics.self)!,
+            connectivity: container.resolve(ConnectivityProtocol.self)!,
+            directoryModeOverride: directoryMode
         )
     }
 
@@ -104,9 +108,27 @@ public enum LMSDirectoryFeature {
             if let baseURL = directoryURL {
                 return RemoteLMSDirectoryService(baseURL: baseURL)
             }
+            #if DEBUG
+            // Bundled sample catalog is DEBUG-only so it can never ship in a release
+            // build. In production the feature is gated on `lmsDirectory.isDirectoryReachable`
+            // (see AppDelegate/RouteController/Router), so this factory is only ever built
+            // with a real registry URL via the branch above.
             let connectivity = resolver.resolve(ConnectivityProtocol.self)!
             return MockLMSDirectoryService(connectivity: connectivity)
+            #else
+            fatalError(
+                "LMSDirectoryService requires a registry URL. The LMS Directory feature must be "
+                + "activated only when lmsDirectory.isDirectoryReachable is true; there is no mock "
+                + "catalog fallback in release builds."
+            )
+            #endif
         }.inObjectScope(.container)
+
+        // LMSSelectionCoordinating is intentionally NOT registered as a Swinject
+        // factory: the coordinator is @MainActor-isolated while Swinject's factory
+        // closure is nonisolated, so a registration drops the global actor and fails
+        // to compile under Swift 6 (converting an '@MainActor @Sendable (Resolver) -> ...'
+        // loses 'MainActor'). makeViewModel builds it inline on the main actor instead.
     }
 
     private static func applyPersistedSelectionIfNeeded() {
@@ -128,12 +150,21 @@ public enum LMSDirectoryFeature {
         }
     }
 
-    private static func resetOverrides() {
+    /// Purge any persisted LMS selection (base URL, branding, OAuth/feedback overrides)
+    /// and reset the theme to stock. Safe to call even when the feature never registered —
+    /// it falls back to a default store. Called on logout and when the feature is
+    /// disabled/unreachable at launch, so a stale selection can't leak branding into the
+    /// header/logo or route the app to a since-removed host.
+    public static func clearPersistedSelection() {
         let overrides = Container.shared.resolve(LMSOverridesStoreProtocol.self) ?? LMSOverridesStore()
-        let history = Container.shared.resolve(LMSHistoryStoreProtocol.self) ?? LMSHistoryStore()
         let storage = Container.shared.resolve(CoreStorage.self)
         try? overrides.clear(storage: storage)
-        try? history.unpinAll()
         LMSThemeApplier.applyAccentColor(nil)
+    }
+
+    private static func resetOverrides() {
+        clearPersistedSelection()
+        let history = Container.shared.resolve(LMSHistoryStoreProtocol.self) ?? LMSHistoryStore()
+        try? history.unpinAll()
     }
 }

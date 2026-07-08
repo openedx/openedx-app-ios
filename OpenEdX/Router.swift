@@ -9,6 +9,7 @@ import UIKit
 import SwiftUI
 import Core
 import Authorization
+import Theme
 import Swinject
 import Kingfisher
 import Course
@@ -132,6 +133,20 @@ public class Router: AuthorizationRouter,
     }
     
     public func showStartupScreen() {
+        // LMS Directory: after logout (or any restart of the pre-auth flow) send the
+        // learner back to the platform picker when the feature is reachable and nothing
+        // is selected — mirrors the app-launch path in RouteController. Reset branding to
+        // stock so the neutral landing isn't tinted by a just-cleared selection.
+        if let config = Container.shared.resolve(ConfigProtocol.self),
+           config.lmsDirectory.isDirectoryReachable,
+           LMSDirectoryFeature.shouldPresentLanding(storage: Container.shared.resolve(CoreStorage.self)) {
+            navigationController.setNavigationBarHidden(false, animated: false)
+            let landing = LMSDirectoryFeature.makeLandingController()
+            navigationController.setViewControllers([landing], animated: false)
+            Theme.Colors.update()
+            Theme.UIColors.update()
+            return
+        }
         if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
             let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
             let controller = UIHostingController(rootView: view)
@@ -741,7 +756,7 @@ public class Router: AuthorizationRouter,
         navigationController.pushViewController(controller, animated: true)
     }
     
-    public func  showEditProfile(
+    public func showEditProfile(
         userModel: Core.UserProfile,
         avatar: UIImage?,
         profileDidEdit: @escaping ((UserProfile?, UIImage?)) -> Void
@@ -861,7 +876,7 @@ public class Router: AuthorizationRouter,
         self.presentView(transitionStyle: .crossDissolve, view: view)
     }
     
-    private func prepareToPresent <ToPresent: View> (_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)
+    private func prepareToPresent<ToPresent: View>(_ toPresent: ToPresent, transitionStyle: UIModalTransitionStyle)
     -> UIViewController {
         let hosting = UIHostingController(rootView: toPresent)
         hosting.view.backgroundColor = .clear

@@ -32,23 +32,34 @@ final class LMSDirectoryViewModel: ObservableObject {
     private let coordinator: LMSSelectionCoordinating
     private let overridesStore: LMSOverridesStoreProtocol
     private let analytics: LMSDirectoryAnalytics
+    private let connectivity: ConnectivityProtocol
+    /// Client-side DIRECTORY_MODE override from the app's LMS_DIRECTORY config.
+    /// A non-empty value ("search" | "curated") forces the mode regardless of the
+    /// registry's `/api/v1/config` response; empty means defer to the registry.
+    private let directoryModeOverride: String
     private let historyLimit = 10
 
     private var debounceTask: Task<Void, Never>?
     private var historyTask: Task<Void, Never>?
+    private var cancellables: Set<AnyCancellable> = []
 
     init(
         service: LMSDirectoryService,
         historyStore: LMSHistoryStoreProtocol,
         coordinator: LMSSelectionCoordinating,
         overridesStore: LMSOverridesStoreProtocol,
-        analytics: LMSDirectoryAnalytics
+        analytics: LMSDirectoryAnalytics,
+        connectivity: ConnectivityProtocol,
+        directoryModeOverride: String = ""
     ) {
         self.service = service
         self.historyStore = historyStore
         self.coordinator = coordinator
         self.overridesStore = overridesStore
         self.analytics = analytics
+        self.connectivity = connectivity
+        self.directoryModeOverride = directoryModeOverride
+        observeConnectivity()
         loadHistory()
         applyPersistedTheme()
         loadConfig()
@@ -91,8 +102,21 @@ final class LMSDirectoryViewModel: ObservableObject {
         Task { [weak self] in
             guard let self else { return }
             let config = (try? await service.fetchConfig()) ?? .searchDefault
-            await MainActor.run { self.isCurated = config.isCurated }
-            if config.isCurated {
+            // A non-empty client DIRECTORY_MODE override wins over the registry's mode.
+            let curated: Bool
+            switch self.directoryModeOverride.lowercased() {
+            case "curated":
+                curated = true
+            case "search":
+                curated = false
+            default:
+                curated = config.isCurated
+            }
+            await MainActor.run { self.isCurated = curated }
+            // Share the mode so other tabs (e.g. Profile's "Report this LMS") can behave
+            // correctly: a curated/institution registry has no trust-&-safety reporting.
+            UserDefaults.standard.set(curated, forKey: "lmsDirectory.isCurated")
+            if curated {
                 await self.loadFeatured()
             }
         }
@@ -105,10 +129,6 @@ final class LMSDirectoryViewModel: ObservableObject {
             await MainActor.run {
                 self.results = items
                 self.state = items.isEmpty ? .empty : .results
-            }
-        } catch LMSDirectoryError.offline {
-            await MainActor.run {
-                self.state = .offline
             }
         } catch {
             await MainActor.run {
@@ -127,6 +147,18 @@ final class LMSDirectoryViewModel: ObservableObject {
                 self.state = self.searchText.isEmpty ? (entries.isEmpty ? .idle : .history) : self.state
             }
         }
+    }
+
+    private func observeConnectivity() {
+        connectivity.internetReachableSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard let state, let self else { return }
+                if case .notReachable = state, !self.searchText.isEmpty {
+                    self.state = .offline
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func scheduleSearch() {
@@ -212,13 +244,30 @@ final class LMSDirectoryViewModel: ObservableObject {
         }
     }
 
-    func handleScannedURL(_ value: String) -> Bool {
-        guard let normalized = normalizeScannedValue(value) else {
-            state = .error("Unable to read QR code. Try again.")
-            return false
+    /// Resolve a scanned LMS URL against the registry and select it straight away —
+    /// re-theming and routing to sign-in or pre-login Discovery per the platform's
+    /// settings (same path as tapping a catalog result). Returns an error message to
+    /// surface to the user, or nil on success (success navigates away via the coordinator).
+    func selectScannedURL(_ value: String) async -> String? {
+        guard let host = normalizeScannedValue(value) else {
+            return "We couldn't read the QR code. Try again."
         }
-        searchText = normalized
-        return true
+        do {
+            let results = try await service.search(query: host)
+            // Prefer an exact host match; fall back to the first result the registry returns.
+            let match = results.first {
+                $0.baseURL.host?.caseInsensitiveCompare(host) == .orderedSame
+            } ?? results.first
+            guard let match else {
+                return "That platform isn't in the directory yet."
+            }
+            await fetchAndApplyDetails(id: match.id, fromHistory: false)
+            return nil
+        } catch LMSDirectoryError.offline {
+            return "You appear to be offline. Check your connection and try again."
+        } catch {
+            return "We couldn't reach the directory. Try again."
+        }
     }
 
     private func normalizeScannedValue(_ value: String) -> String? {

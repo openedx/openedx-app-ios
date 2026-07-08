@@ -56,9 +56,13 @@ struct LMSDirectoryView: View {
     private var content: some View {
         switch viewModel.state {
         case .idle:
-            placeholder(text: "Start typing to find your platform.")
+            // Curated mode has no search/history — an idle state just means the fixed
+            // list is still loading.
+            if viewModel.isCurated { loadingView } else {
+                placeholder(text: "Start typing to find your platform.")
+            }
         case .history:
-            historySection
+            if viewModel.isCurated { loadingView } else { historySection }
         case .searching:
             loadingView
         case .results:
@@ -93,9 +97,12 @@ struct LMSDirectoryView: View {
 
     private var resultsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Results")
-                .font(Theme.Fonts.labelLarge)
-                .foregroundColor(Theme.Colors.textSecondary)
+            // "Results" is a search concept — in curated mode the list is just the platforms.
+            if !viewModel.isCurated {
+                Text("Results")
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textSecondary)
+            }
             ForEach(viewModel.results) { result in
                 resultRow(result)
             }

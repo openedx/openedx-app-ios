@@ -52,7 +52,7 @@ class RouteController: UIViewController {
         let resolvedConfig = Container.shared.resolve(ConfigProtocol.self)
         // LMS Directory: before sign-in, let the learner choose which platform to use.
         // Flag-gated; when off (default) this branch is skipped and the flow is stock.
-        if resolvedConfig?.lmsDirectory.enabled == true,
+        if resolvedConfig?.lmsDirectory.isDirectoryReachable == true,
            LMSDirectoryFeature.shouldPresentLanding(storage: appStorage) {
             let landing = LMSDirectoryFeature.makeLandingController()
             navigation.viewControllers = [landing]

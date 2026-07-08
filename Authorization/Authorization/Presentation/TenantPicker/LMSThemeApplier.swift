@@ -24,15 +24,49 @@ enum LMSThemeApplier {
         let accentDynamicColor = dynamicColor(light: lightAccent, dark: darkAccent)
         let accentDynamicUIColor = dynamicUIColor(light: lightAccent, dark: darkAccent)
 
-        // Upstream Theme.Colors.update(...) defaults every parameter, so we override
-        // only the accent-driven colors and leave everything else at the stock theme.
+        let buttonBackground = dynamicColor(
+            light: lightAccent.blending(with: .white, amount: 0.25),
+            dark: darkAccent.blending(with: .black, amount: 0.15)
+        )
+
+        let deleteAccountBackground = dynamicColor(
+            light: lightAccent.withAlphaComponent(0.15),
+            dark: darkAccent.withAlphaComponent(0.2)
+        )
+
+        let resumeBackground = dynamicColor(
+            light: lightAccent.blending(with: .white, amount: 0.4),
+            dark: darkAccent.blending(with: .white, amount: 0.25)
+        )
+
+        let socialAuthColor = dynamicColor(
+            light: lightAccent.blending(with: .white, amount: 0.2),
+            dark: darkAccent
+        )
+
+        let slidingStroke = dynamicColor(
+            light: lightAccent.blending(with: .white, amount: 0.45),
+            dark: ThemeAssets.slidingStrokeColor.color
+        )
+
+        let slidingText = dynamicColor(
+            light: lightAccent.blending(with: .white, amount: 0.65),
+            dark: ThemeAssets.slidingTextColor.color
+        )
+
         Theme.Colors.update(
             accentColor: accentDynamicColor,
             accentXColor: accentDynamicColor,
+            accentButtonColor: buttonBackground,
             secondaryButtonBorderColor: accentDynamicColor,
             secondaryButtonTextColor: accentDynamicColor,
             toggleSwitchColor: accentDynamicColor,
-            infoColor: accentDynamicColor
+            infoColor: accentDynamicColor,
+            deleteAccountBG: deleteAccountBackground,
+            resumeButtonBG: resumeBackground,
+            socialAuthColor: socialAuthColor,
+            slidingTextColor: slidingText,
+            slidingStrokeColor: slidingStroke
         )
 
         Theme.UIColors.update(

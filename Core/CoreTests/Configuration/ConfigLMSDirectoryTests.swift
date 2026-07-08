@@ -24,13 +24,13 @@ final class ConfigLMSDirectoryTests: XCTestCase {
         super.tearDown()
     }
 
-    private func makeConfig(enabled: Bool) -> Config {
+    private func makeConfig(enabled: Bool, directoryURL: String = "https://registry.example.com") -> Config {
         Config(properties: [
             "API_HOST_URL": "https://config-host.example.com",
             "OAUTH_CLIENT_ID": "config_client",
             "FEEDBACK_EMAIL_ADDRESS": "config@example.com",
             "TOKEN_TYPE": "JWT",
-            "LMS_DIRECTORY": ["ENABLED": enabled]
+            "LMS_DIRECTORY": ["ENABLED": enabled, "DIRECTORY_URL": directoryURL]
         ])
     }
 
@@ -61,6 +61,22 @@ final class ConfigLMSDirectoryTests: XCTestCase {
     func test_fallsBackToConfig_whenEnabledButNothingSelected() {
         let config = makeConfig(enabled: true)
 
+        XCTAssertEqual(config.baseURL.absoluteString, "https://config-host.example.com")
+        XCTAssertEqual(config.oAuthClientId, "config_client")
+        XCTAssertEqual(config.feedbackEmail, "config@example.com")
+    }
+
+    // Misconfiguration guard: ENABLED=true but no DIRECTORY_URL means the catalog is
+    // unreachable, so the app must NOT honor a stale persisted selection (no live
+    // registry could have produced it). It must fail closed to the stock config values.
+    func test_overridesIgnored_whenEnabledButDirectoryURLMissing() {
+        UserDefaults.standard.set("https://picked-lms.example.com", forKey: baseURLKey)
+        UserDefaults.standard.set("picked_client", forKey: clientIdKey)
+        UserDefaults.standard.set("picked@example.com", forKey: feedbackKey)
+
+        let config = makeConfig(enabled: true, directoryURL: "")
+
+        XCTAssertFalse(config.lmsDirectory.isDirectoryReachable)
         XCTAssertEqual(config.baseURL.absoluteString, "https://config-host.example.com")
         XCTAssertEqual(config.oAuthClientId, "config_client")
         XCTAssertEqual(config.feedbackEmail, "config@example.com")

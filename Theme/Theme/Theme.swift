@@ -92,6 +92,7 @@ public struct Theme: Sendable {
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
             accentXColor: Color = ThemeAssets.accentXColor.swiftUIColor,
+            accentButtonColor: Color = ThemeAssets.accentButtonColor.swiftUIColor,
             alert: Color = ThemeAssets.alert.swiftUIColor,
             avatarStroke: Color = ThemeAssets.avatarStroke.swiftUIColor,
             background: Color = ThemeAssets.background.swiftUIColor,
@@ -133,10 +134,16 @@ public struct Theme: Sendable {
             textInputTextColor: Color = ThemeAssets.textInputTextColor.swiftUIColor,
             textInputPlaceholderColor: Color = ThemeAssets.textInputPlaceholderColor.swiftUIColor,
             infoColor: Color = ThemeAssets.infoColor.swiftUIColor,
-            irreversibleAlert: Color = ThemeAssets.irreversibleAlert.swiftUIColor
+            irreversibleAlert: Color = ThemeAssets.irreversibleAlert.swiftUIColor,
+            deleteAccountBG: Color = ThemeAssets.deleteAccountBG.swiftUIColor,
+            resumeButtonBG: Color = ThemeAssets.resumeButtonBG.swiftUIColor,
+            socialAuthColor: Color = ThemeAssets.socialAuthColor.swiftUIColor,
+            slidingTextColor: Color = ThemeAssets.slidingTextColor.swiftUIColor,
+            slidingStrokeColor: Color = ThemeAssets.slidingStrokeColor.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
+            self.accentButtonColor = accentButtonColor
             self.alert = alert
             self.avatarStroke = avatarStroke
             self.background = background
@@ -179,6 +186,11 @@ public struct Theme: Sendable {
             self.textInputPlaceholderColor = textInputPlaceholderColor
             self.infoColor = infoColor
             self.irreversibleAlert = irreversibleAlert
+            self.deleteAccountBG = deleteAccountBG
+            self.resumeButtonBG = resumeButtonBG
+            self.socialAuthColor = socialAuthColor
+            self.slidingTextColor = slidingTextColor
+            self.slidingStrokeColor = slidingStrokeColor
         }
     }
     // swiftlint:enable line_length
@@ -342,5 +354,26 @@ extension View {
     public func loadFonts() -> some View {
         Theme.Fonts.registerFonts()
         return self
+    }
+}
+
+/// Displays the auth/settings header background image.
+/// Uses the LMS-provided login background URL when available,
+/// falling back to the default `ThemeAssets.headerBackground`.
+public struct LmsHeaderBackground: View {
+    public init() {}
+
+    public var body: some View {
+        if let bgURLString = UserDefaults.standard.string(forKey: "lmsDirectory.selected_login_background_url"),
+           !bgURLString.isEmpty,
+           let bgURL = URL(string: bgURLString) {
+            AsyncImage(url: bgURL) { image in
+                image.resizable().scaledToFill()
+            } placeholder: {
+                ThemeAssets.headerBackground.swiftUIImage.resizable()
+            }
+        } else {
+            ThemeAssets.headerBackground.swiftUIImage.resizable()
+        }
     }
 }

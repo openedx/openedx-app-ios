@@ -155,7 +155,10 @@ public struct ProfileView: View {
                 }.padding(.all, 24)
                 profileInfo
                 editProfileButton
-                if viewModel.config.lmsDirectory.enabled {
+                // No "Report this LMS" in curated/institution mode — you don't report
+                // your own organization's platforms (matches the registry hiding reports).
+                if viewModel.config.lmsDirectory.isDirectoryReachable
+                    && !UserDefaults.standard.bool(forKey: "lmsDirectory.isCurated") {
                     reportButton
                 }
                 Spacer()

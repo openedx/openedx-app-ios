@@ -58,8 +58,7 @@ public struct VideoDownloadQualityView: View {
             ZStack(alignment: .top) {
                 if !isModal {
                     VStack {
-                        ThemeAssets.headerBackground.swiftUIImage
-                            .resizable()
+                        LmsHeaderBackground()
                             .edgesIgnoringSafeArea(.top)
                     }
                     .frame(maxWidth: .infinity, maxHeight: 200)

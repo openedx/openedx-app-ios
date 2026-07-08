@@ -10,13 +10,15 @@ struct LMSDirectoryLandingIntroView: View {
             Spacer(minLength: 120)
             VStack(spacing: 12) {
                 ThemeAssets.appLogo.swiftUIImage
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(width: 140, height: 140)
-//                    .foregroundColor(Theme.Colors.accentColor)
+                    .foregroundColor(Theme.Colors.accentColor)
                     .accessibilityHidden(true)
-                Text("Welcome to Open X Project")
+                Text("Choose your learning platform")
                     .font(Theme.Fonts.titleLarge)
+                    .multilineTextAlignment(.center)
                     .foregroundColor(Theme.Colors.textPrimary)
                 Text("Connect to any LMS in our library to explore courses or continue learning.")
                     .font(Theme.Fonts.bodyLarge)
@@ -37,7 +39,7 @@ struct LMSDirectoryLandingIntroView: View {
                 Button(action: onQRTapped) {
                     HStack(spacing: 8) {
                         Image(systemName: "qrcode.viewfinder")
-                        Text("QR Login")
+                        Text("Sign in with QR code")
                     }
                     .font(Theme.Fonts.bodyLarge)
                     .foregroundColor(Theme.Colors.infoColor)

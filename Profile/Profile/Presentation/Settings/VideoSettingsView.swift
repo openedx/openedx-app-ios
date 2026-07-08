@@ -22,8 +22,7 @@ public struct VideoSettingsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.headerBackground.swiftUIImage
-                        .resizable()
+                    LmsHeaderBackground()
                         .edgesIgnoringSafeArea(.top)
                 }
                 .frame(maxWidth: .infinity, maxHeight: 200)

@@ -176,6 +176,7 @@ final class LMSHistoryStore: LMSHistoryStoreProtocol {
         attribute.name = name
         attribute.attributeType = type
         attribute.isOptional = isOptional
+        attribute.isIndexed = indexed
         return attribute
     }
 

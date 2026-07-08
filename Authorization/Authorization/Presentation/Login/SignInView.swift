@@ -27,8 +27,7 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
+                LmsHeaderBackground()
                     .edgesIgnoringSafeArea(.top)
                     .accessibilityIdentifier("auth_bg_image")
             }.frame(maxWidth: .infinity, maxHeight: 200)
@@ -59,7 +58,6 @@ public struct SignInView: View {
                     ScrollView {
                         VStack {
                             VStack(alignment: .leading) {
-                                selectedLMSBanner
                                 if viewModel.config.uiComponents.loginRegistrationEnabled {
                                     Text(AuthLocalization.SignIn.logInTitle)
                                         .font(Theme.Fonts.displaySmall)
@@ -71,6 +69,7 @@ public struct SignInView: View {
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("welcome_back_text")
+                                    selectedLMSBanner
                                     if viewModel.socialAuthEnabled {
                                         SocialAuthView(
                                             viewModel: .init(
@@ -325,7 +324,7 @@ public struct SignInView: View {
     /// The platform the learner picked, when the feature is on. Drives the logo and
     /// the "Change" banner so sign-in is branded for the selected LMS.
     private var lmsSelection: LMSDirectorySelectionInfo? {
-        guard viewModel.config.lmsDirectory.enabled else { return nil }
+        guard viewModel.config.lmsDirectory.isDirectoryReachable else { return nil }
         return LMSDirectoryFeature.currentSelectionInfo()
     }
 
@@ -366,7 +365,7 @@ public struct SignInView: View {
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 12)
-            .background(Theme.Shapes.textInputShape.fill(Theme.Colors.textInputBackground))
+            .background(Theme.Shapes.textInputShape.fill(Theme.Colors.loginBackground))
             .overlay(
                 Theme.Shapes.textInputShape
                     .stroke(lineWidth: 1)

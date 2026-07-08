@@ -122,7 +122,7 @@ extension Config: ConfigProtocol {
     public var baseURL: URL {
         // LMS Directory: when the feature is on and the learner picked a platform,
         // the whole app talks to that LMS. Off (default) → stock single-tenant host.
-        if lmsDirectory.enabled,
+        if lmsDirectory.isDirectoryReachable,
            let selected = UserDefaults.standard.string(forKey: "selectedLMSBaseURL"),
            !selected.isEmpty,
            let selectedURL = URL(string: selected) {
@@ -136,6 +136,14 @@ extension Config: ConfigProtocol {
     }
     
     public var baseSSOURL: URL {
+        // LMS Directory: when the feature is on and the learner picked a platform,
+        // SSO also targets that LMS. Off (default) → configured SSO host.
+        if lmsDirectory.isDirectoryReachable,
+           let selected = UserDefaults.standard.string(forKey: "selectedLMSBaseURL"),
+           !selected.isEmpty,
+           let selectedURL = URL(string: selected) {
+            return selectedURL
+        }
         guard let urlString = string(for: ConfigKeys.ssoBaseURL.rawValue),
               let url = URL(string: urlString) else {
             fatalError("Unable to find SSO base url in config.")
@@ -161,7 +169,7 @@ extension Config: ConfigProtocol {
     public var oAuthClientId: String {
         // LMS Directory: sign in against the selected platform's own registered
         // mobile OAuth client, persisted at selection time. Off (default) → config.
-        if lmsDirectory.enabled,
+        if lmsDirectory.isDirectoryReachable,
            let override = UserDefaults.standard.string(forKey: "lmsDirectory.selected_oauth_client_id"),
            !override.isEmpty {
             return override
@@ -180,7 +188,7 @@ extension Config: ConfigProtocol {
     }
     
     public var feedbackEmail: String {
-        if lmsDirectory.enabled,
+        if lmsDirectory.isDirectoryReachable,
            let override = UserDefaults.standard.string(forKey: "lmsDirectory.selected_feedback_email"),
            !override.isEmpty {
             return override

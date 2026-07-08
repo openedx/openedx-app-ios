@@ -62,7 +62,6 @@
 		E1FBF62E1395791882A6A2E2 /* LMSDirectoryConfigModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E4636E092C17473AAC3063 /* LMSDirectoryConfigModels.swift */; };
 		E778A8126843DE891196033C /* LMSDirectoryFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54635D2863A11AFCC9A5235 /* LMSDirectoryFeature.swift */; };
 		E834B83B7906F8A85301BAEA /* LMSDirectoryAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643ED7945A47425D9B6E18D3 /* LMSDirectoryAnalytics.swift */; };
-		F373ABD103D47FC0CC803A5A /* LMSDirectoryQRInstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74BFB9D3D0BDE2FE146832C0 /* LMSDirectoryQRInstructionsView.swift */; };
 		F52BE36894F6BC06B9EF5C06 /* LMSSelectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD15916DB50A754388E1677F /* LMSSelectionCoordinator.swift */; };
 /* End PBXBuildFile section */
 
@@ -125,7 +124,6 @@
 		643ED7945A47425D9B6E18D3 /* LMSDirectoryAnalytics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryAnalytics.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryAnalytics.swift; sourceTree = "<group>"; };
 		6476DC515B100AE6F9D74AED /* LMSOverridesStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSOverridesStore.swift; path = Authorization/Presentation/TenantPicker/LMSOverridesStore.swift; sourceTree = "<group>"; };
 		68795EBDC3000C1B12F9432C /* Pods-App-Authorization.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugprod.xcconfig"; sourceTree = "<group>"; };
-		74BFB9D3D0BDE2FE146832C0 /* LMSDirectoryQRInstructionsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryQRInstructionsView.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryQRInstructionsView.swift; sourceTree = "<group>"; };
 		7A84BB166492D4E46FBCF01C /* Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig"; sourceTree = "<group>"; };
 		90232EACBC849403FA59235A /* LMSDirectoryLandingIntroView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryLandingIntroView.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryLandingIntroView.swift; sourceTree = "<group>"; };
 		90DFBB75EF40580E180D71C8 /* Pods-App-Authorization.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugdev.xcconfig"; sourceTree = "<group>"; };
@@ -332,7 +330,6 @@
 				C54635D2863A11AFCC9A5235 /* LMSDirectoryFeature.swift */,
 				90232EACBC849403FA59235A /* LMSDirectoryLandingIntroView.swift */,
 				B39DF829F04AEA8C86DA599F /* LMSDirectoryLandingView.swift */,
-				74BFB9D3D0BDE2FE146832C0 /* LMSDirectoryQRInstructionsView.swift */,
 				3E65F49C6D33DA13103C3592 /* LMSDirectoryQRScannerView.swift */,
 				E6268F99F8CE485FB7B908D8 /* LMSDirectoryView.swift */,
 				E45B6D76F9942E50F52B04B1 /* LMSDirectoryViewModel.swift */,
@@ -668,7 +665,6 @@
 				E778A8126843DE891196033C /* LMSDirectoryFeature.swift in Sources */,
 				D3EF716372053A159F03DDF1 /* LMSDirectoryLandingIntroView.swift in Sources */,
 				B9DC07B706D5509A68E70E00 /* LMSDirectoryLandingView.swift in Sources */,
-				F373ABD103D47FC0CC803A5A /* LMSDirectoryQRInstructionsView.swift in Sources */,
 				675A3266DB7422CBE5D8C383 /* LMSDirectoryQRScannerView.swift in Sources */,
 				4F00E022EA4706DE1EBA0365 /* LMSDirectoryView.swift in Sources */,
 				46E446F8EECA2F03A8ACBB22 /* LMSDirectoryViewModel.swift in Sources */,

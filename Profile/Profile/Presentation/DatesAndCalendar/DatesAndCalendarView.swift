@@ -25,8 +25,7 @@ public struct DatesAndCalendarView: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
+                LmsHeaderBackground()
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: 200)
                     .accessibilityIdentifier("title_bg_image")
