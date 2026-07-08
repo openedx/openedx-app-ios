@@ -220,19 +220,19 @@ struct DownloadCourseCell: View {
                     
                     HStack {
                         CoreAssets.startDownloading.swiftUIImage
-                            .foregroundStyle(Theme.Colors.textSecondary)
+                            .foregroundStyle(Theme.Colors.secondaryContentColor)
                         Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
                             .font(Theme.Fonts.labelLarge)
-                            .foregroundStyle(Theme.Colors.textSecondary)
+                            .foregroundStyle(Theme.Colors.secondaryContentColor)
                     }
                 }
             case .notDownloaded, .loadingStructure:
                 HStack {
                     CoreAssets.startDownloading.swiftUIImage
-                        .foregroundStyle(Theme.Colors.textSecondary)
+                        .foregroundStyle(Theme.Colors.secondaryContentColor)
                     Text(DownloadsLocalization.Downloads.Cell.available(availableFormatted))
                         .font(Theme.Fonts.labelLarge)
-                        .foregroundStyle(Theme.Colors.textSecondary)
+                        .foregroundStyle(Theme.Colors.secondaryContentColor)
                 }
             }
         }
@@ -248,7 +248,7 @@ struct DownloadCourseCell: View {
         ZStack(alignment: .leading) {
             GeometryReader { geometry in
                 RoundedRectangle(cornerRadius: 4)
-                    .fill(Theme.Colors.textSecondary.opacity(0.5))
+                    .fill(Theme.Colors.courseProgressBG)
                     .frame(width: geometry.size.width, height: 8)
                 
                 if progressPercentage > 0 {

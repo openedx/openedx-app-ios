@@ -186,7 +186,7 @@ struct CourseProgressScreenView: View {
                     VStack(spacing: 16) {
                         Image(systemName: "doc.text")
                             .font(.system(size: 48))
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(Theme.Colors.emptyStateIconColor)
                         
                         Text(CourseLocalization.CourseContainer.Progress.noGradedAssignments)
                             .font(Theme.Fonts.titleMedium)

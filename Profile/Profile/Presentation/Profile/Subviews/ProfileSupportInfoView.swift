@@ -154,7 +154,7 @@ struct ProfileSupportInfoView: View {
         .accessibilityLabel(viewModel.title)
         Rectangle()
             .frame(height: 1)
-            .foregroundColor(Theme.Colors.textSecondary)
+            .foregroundColor(Theme.Colors.cardViewStroke)
     }
 
     @ViewBuilder
@@ -198,7 +198,7 @@ struct ProfileSupportInfoView: View {
         .accessibilityIdentifier(identifier)
         Rectangle()
             .frame(height: 1)
-            .foregroundColor(Theme.Colors.textSecondary)
+            .foregroundColor(Theme.Colors.cardViewStroke)
     }
 
     @ViewBuilder

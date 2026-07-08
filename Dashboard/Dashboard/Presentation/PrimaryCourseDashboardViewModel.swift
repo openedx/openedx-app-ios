@@ -72,7 +72,9 @@ public class PrimaryCourseDashboardViewModel {
             queue: .main
         ) { [weak self] _ in
             guard let self = self else { return }
-            self.updateEnrollmentsIfNeeded()
+            Task { @MainActor in
+                self.updateEnrollmentsIfNeeded()
+            }
         }
 
         let refreshObserver = NotificationCenter.default.addObserver(
@@ -96,17 +98,20 @@ public class PrimaryCourseDashboardViewModel {
             queue: .main
         ) { [weak self] notification in
             guard let self = self else { return }
-            if let latestVersion = notification.object as? String {
-                // Save the latest version to storage
-                self.storage.latestAvailableAppVersion = latestVersion
+            let latestVersion = notification.object as? String
+            Task { @MainActor in
+                if let latestVersion = latestVersion {
+                    // Save the latest version to storage
+                    self.storage.latestAvailableAppVersion = latestVersion
 
-                if let info = Bundle.main.infoDictionary {
-                    guard let currentVersion = info["CFBundleShortVersionString"] as? String else { return }
-                    if currentVersion.isAppVersionGreater(than: latestVersion) == false
-                        && currentVersion != latestVersion {
-                        if self.updateShowedOnce == false {
-                            self.router.showUpdateRecomendedView()
-                            self.updateShowedOnce = true
+                    if let info = Bundle.main.infoDictionary {
+                        guard let currentVersion = info["CFBundleShortVersionString"] as? String else { return }
+                        if currentVersion.isAppVersionGreater(than: latestVersion) == false
+                            && currentVersion != latestVersion {
+                            if self.updateShowedOnce == false {
+                                self.router.showUpdateRecomendedView()
+                                self.updateShowedOnce = true
+                            }
                         }
                     }
                 }

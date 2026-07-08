@@ -42,7 +42,7 @@ public struct FullScreenErrorView: View {
                 image
                     .resizable()
                     .renderingMode(.template)
-                    .foregroundStyle(Theme.Colors.textSecondary)
+                    .foregroundStyle(Theme.Colors.emptyStateIconColor)
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 72, maxHeight: 80)
                 
@@ -55,7 +55,7 @@ public struct FullScreenErrorView: View {
                     .noInternetWithReload:
                 CoreAssets.noWifi.swiftUIImage
                     .renderingMode(.template)
-                    .foregroundStyle(Theme.Colors.textSecondary)
+                    .foregroundStyle(Theme.Colors.emptyStateIconColor)
                     .scaledToFit()
                 
                 Text(CoreLocalization.Error.Internet.noInternetTitle)
@@ -70,7 +70,7 @@ public struct FullScreenErrorView: View {
             case .generic:
                 CoreAssets.notAvaliable.swiftUIImage
                     .renderingMode(.template)
-                    .foregroundStyle(Theme.Colors.textSecondary)
+                    .foregroundStyle(Theme.Colors.emptyStateIconColor)
                     .scaledToFit()
                 
                 Text(CoreLocalization.View.Snackbar.tryAgainBtn)

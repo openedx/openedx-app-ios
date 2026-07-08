@@ -47,7 +47,10 @@ public struct PickerView: View {
                             }
                         }
                     }, label: {
-                        Text(config.selectedItem?.value ?? "")
+                        Text(config.selectedItem?.value ?? config.field.label)
+                            .foregroundColor(config.selectedItem == nil
+                                             ? Theme.Colors.textInputPlaceholderColor
+                                             : Theme.Colors.textInputTextColor)
                         Spacer()
                         Image(systemName: "chevron.down")
                     })

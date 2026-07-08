@@ -222,40 +222,40 @@ private struct SequentialRowView: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            HStack {
-                Button(
-                    action: {
-                        guard let courseVertical = sequential.childs.first else { return }
-                        guard let block = courseVertical.childs.first else {
-                            viewModel.router.showGatedContentError(url: courseVertical.webUrl)
-                            return
-                        }
-                        
-                        viewModel.trackSequentialClicked(sequential)
-                        if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
-                            viewModel.router.showCourseUnit(
-                                courseName: viewModel.courseStructure?.displayName ?? "",
-                                blockId: block.id,
-                                courseID: viewModel.courseStructure?.id ?? "",
-                                verticalIndex: 0,
-                                chapters: course.childs,
-                                chapterIndex: chapterIndex,
-                                sequentialIndex: sequentialIndex,
-                                showVideoNavigation: false,
-                                courseVideoStructure: nil
-                            )
-                        } else {
-                            viewModel.router.showCourseVerticalView(
-                                courseID: viewModel.courseStructure?.id ?? "",
-                                courseName: viewModel.courseStructure?.displayName ?? "",
-                                title: sequential.displayName,
-                                chapters: course.childs,
-                                chapterIndex: chapterIndex,
-                                sequentialIndex: sequentialIndex
-                            )
-                        }
-                    },
-                    label: {
+            Button(
+                action: {
+                    guard let courseVertical = sequential.childs.first else { return }
+                    guard let block = courseVertical.childs.first else {
+                        viewModel.router.showGatedContentError(url: courseVertical.webUrl)
+                        return
+                    }
+
+                    viewModel.trackSequentialClicked(sequential)
+                    if viewModel.config.uiComponents.courseDropDownNavigationEnabled {
+                        viewModel.router.showCourseUnit(
+                            courseName: viewModel.courseStructure?.displayName ?? "",
+                            blockId: block.id,
+                            courseID: viewModel.courseStructure?.id ?? "",
+                            verticalIndex: 0,
+                            chapters: course.childs,
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex,
+                            showVideoNavigation: false,
+                            courseVideoStructure: nil
+                        )
+                    } else {
+                        viewModel.router.showCourseVerticalView(
+                            courseID: viewModel.courseStructure?.id ?? "",
+                            courseName: viewModel.courseStructure?.displayName ?? "",
+                            title: sequential.displayName,
+                            chapters: course.childs,
+                            chapterIndex: chapterIndex,
+                            sequentialIndex: sequentialIndex
+                        )
+                    }
+                },
+                label: {
+                    HStack {
                         VStack(alignment: .leading) {
                             HStack {
                                 if sequential.completion == 1 {
@@ -286,14 +286,15 @@ private struct SequentialRowView: View {
                         .foregroundColor(Theme.Colors.textPrimary)
                         .accessibilityElement(children: .ignore)
                         .accessibilityLabel(sequential.displayName)
+                        Spacer()
+                        if sequential.due != nil {
+                            CoreAssets.chevronRight.swiftUIImage
+                                .foregroundColor(Theme.Colors.textPrimary)
+                        }
                     }
-                )
-                Spacer()
-                if sequential.due != nil {
-                    CoreAssets.chevronRight.swiftUIImage
-                        .foregroundColor(Theme.Colors.textPrimary)
+                    .contentShape(Rectangle())
                 }
-            }
+            )
             .padding(.vertical, 4)
         }
     }
