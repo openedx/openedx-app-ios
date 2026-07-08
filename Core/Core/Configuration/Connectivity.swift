@@ -51,7 +51,7 @@ public class Connectivity: ConnectivityProtocol {
             internetReachableSubject.send(internetState)
         }
     }
-    
+
     // MARK: - Combine subject (for backward compatibility)
     public let internetReachableSubject = CurrentValueSubject<InternetState?, Never>(nil)
 
@@ -141,12 +141,9 @@ public class Connectivity: ConnectivityProtocol {
         request.timeoutInterval = verificationTimeout
         do {
             let (_, response) = try await URLSession.shared.data(for: request)
-            if let http = response as? HTTPURLResponse, (200..<400).contains(http.statusCode) {
-                return true
-            }
+            return response is HTTPURLResponse
         } catch {
             return false
         }
-        return false
     }
 }

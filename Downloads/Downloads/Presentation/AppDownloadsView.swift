@@ -192,7 +192,7 @@ public struct AppDownloadsView: View {
             CoreAssets.learnEmpty.swiftUIImage
                 .resizable()
                 .frame(width: 96, height: 96)
-                .foregroundStyle(Theme.Colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.emptyStateIconColor)
             Text(DownloadsLocalization.Downloads.NoCoursesToDownload.title)
                 .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)
