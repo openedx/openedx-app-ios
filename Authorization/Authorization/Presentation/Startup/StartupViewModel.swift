@@ -9,12 +9,12 @@ import Foundation
 import Core
 
 @MainActor
-public class StartupViewModel: ObservableObject {
+@Observable public class StartupViewModel {
     let router: AuthorizationRouter
     let analytics: CoreAnalytics
     let config: ConfigProtocol
     
-    @Published var searchQuery: String?
+    var searchQuery: String = ""
     
     public init(
         router: AuthorizationRouter,

@@ -11,8 +11,8 @@ import OEXFoundation
 import Theme
 
 public struct ManageAccountView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: ManageAccountViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal

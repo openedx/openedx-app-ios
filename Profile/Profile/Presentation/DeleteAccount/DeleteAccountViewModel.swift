@@ -10,10 +10,11 @@ import Core
 import SwiftUI
 
 @MainActor
-public final class DeleteAccountViewModel: ObservableObject {
+@Observable
+public final class DeleteAccountViewModel {
     
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
+    private(set) var isShowProgress = false
+    var showError: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -22,8 +23,8 @@ public final class DeleteAccountViewModel: ObservableObject {
         }
     }
     
-    @Published var password = ""
-    @Published var incorrectPassword: Bool = false
+    var password = ""
+    var incorrectPassword: Bool = false
     
     private let interactor: ProfileInteractorProtocol
     public let router: ProfileRouter

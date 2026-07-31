@@ -11,14 +11,15 @@ import SwiftUI
 import Combine
 
 @MainActor
-public class ListDashboardViewModel: ObservableObject {
+@Observable
+public class ListDashboardViewModel {
     
     public var nextPage = 1
     public var totalPages = 1
-    @Published public private(set) var fetchInProgress = false
+    public private(set) var fetchInProgress = false
     
-    @Published var courses: [CourseItem] = []
-    @Published var showError: Bool = false
+    var courses: [CourseItem] = []
+    var showError: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {

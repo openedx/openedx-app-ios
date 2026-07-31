@@ -10,7 +10,9 @@ import Core
 import Theme
 
 struct CourseDateListView: View {
-    @ObservedObject var viewModel: CourseDatesViewModel
+    
+    var viewModel: CourseDatesViewModel
+
     @State private var isExpanded = false
     @Binding var coordinate: CGFloat
     @Binding var collapsed: Bool

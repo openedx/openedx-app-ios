@@ -535,6 +535,28 @@ final class CourseProgressViewModelTests: XCTestCase {
         XCTAssertNotNil(allData["Exam"])
     }
 
+    func testAssignmentColorsFallbackToDefaultPalette() {
+        XCTAssertEqual(
+            CourseProgressGradingPolicy.normalizedAssignmentColors(nil),
+            CourseProgressGradingPolicy.defaultAssignmentColors
+        )
+        XCTAssertEqual(
+            CourseProgressGradingPolicy.normalizedAssignmentColors([]),
+            CourseProgressGradingPolicy.defaultAssignmentColors
+        )
+        XCTAssertEqual(
+            CourseProgressGradingPolicy.assignmentColorHex(for: 9, in: []),
+            CourseProgressGradingPolicy.defaultAssignmentColors[0]
+        )
+
+        let gradingPolicy = CourseProgressGradingPolicy(
+            assignmentPolicies: [],
+            gradeRange: [:],
+            assignmentColors: []
+        )
+        XCTAssertEqual(gradingPolicy.assignmentColors, CourseProgressGradingPolicy.defaultAssignmentColors)
+    }
+
     private func createMockCourseStructure(withDownloadableBlocks: Bool = false) -> CourseStructure {
         let block = CourseBlock(
             blockId: "block123",

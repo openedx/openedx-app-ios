@@ -11,7 +11,6 @@ import Combine
 
 struct CourseNavigationView: View {
     
-    @ObservedObject
     private var viewModel: CourseUnitViewModel
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
 

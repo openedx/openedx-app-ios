@@ -11,21 +11,22 @@ import Combine
 import Core
 
 @MainActor
-public final class PostsViewModel: ObservableObject {
+@Observable
+public final class PostsViewModel {
     
     public var nextPage = 1
     public var totalPages = 1
-    @Published public private(set) var fetchInProgress = false
+    public private(set) var fetchInProgress = false
     
     public enum ButtonType {
         case sort
         case filter
     }
     
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
-    @Published var filteredPosts: [DiscussionPost] = []
-    @Published var filterTitle: ThreadsFilter = .allThreads {
+    private(set) var isShowProgress = false
+    var showError: Bool = false
+    var filteredPosts: [DiscussionPost] = []
+    var filterTitle: ThreadsFilter = .allThreads {
         willSet {
             if courseID != nil {
                 resetPosts()
@@ -35,7 +36,8 @@ public final class PostsViewModel: ObservableObject {
             }
         }
     }
-    @Published var sortTitle: SortType = .recentActivity {
+
+    var sortTitle: SortType = .recentActivity {
         willSet {
             if courseID != nil {
                 resetPosts()
@@ -63,7 +65,7 @@ public final class PostsViewModel: ObservableObject {
     }
     
     public var courseID: String?
-    @Published var isBlackedOut: Bool?
+    var isBlackedOut: Bool?
 
     var errorMessage: String? {
         didSet {
@@ -82,8 +84,8 @@ public final class PostsViewModel: ObservableObject {
     private let router: DiscussionRouter
     private let config: ConfigProtocol
     private let storage: CoreStorage
-    internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
-    private var cancellable: AnyCancellable?
+    @ObservationIgnored internal let postStateSubject = CurrentValueSubject<PostState?, Never>(nil)
+    nonisolated(unsafe) private var observationTask: Task<Void, Never>?
     
     public init(
         interactor: DiscussionInteractorProtocol,
@@ -95,11 +97,13 @@ public final class PostsViewModel: ObservableObject {
         self.router = router
         self.config = config
         self.storage = storage
-        
-        cancellable = postStateSubject
-            .receive(on: RunLoop.main)
-            .sink(receiveValue: { [weak self] state in
-                guard let self, let state else { return }
+
+        observationTask = Task { @MainActor in
+            for await state in postStateSubject.values {
+                if Task.isCancelled {
+                    break
+                }
+                guard let state = state else { continue }
                 switch state {
                 case let .followed(id, followed):
                     self.updatePostFollowedState(id: id, followed: followed)
@@ -112,12 +116,21 @@ public final class PostsViewModel: ObservableObject {
                 case let .reported(id, reported):
                     self.updatePostReportedState(id: id, reported: reported)
                 }
-            })
+            }
+        }
+    }
+    
+    deinit {
+        observationTask?.cancel()
     }
     
     public func resetPosts() {
         nextPage = 1
         totalPages = 1
+    }
+    
+    public func cleanup() {
+        observationTask?.cancel()
     }
     
     public func sort(by value: SortType) {

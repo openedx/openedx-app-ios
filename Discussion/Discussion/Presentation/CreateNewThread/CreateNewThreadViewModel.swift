@@ -9,12 +9,13 @@ import Core
 import SwiftUI
 
 @MainActor
-public class CreateNewThreadViewModel: ObservableObject {
+@Observable
+public class CreateNewThreadViewModel {
     
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
-    @Published var allTopics: [CoursewareTopics] = []
-    @Published var selectedTopic: String = ""
+    private(set) var isShowProgress = false
+    var showError: Bool = false
+    var allTopics: [CoursewareTopics] = []
+    var selectedTopic: String = ""
     public var topics: Topics?
 
     var errorMessage: String? {

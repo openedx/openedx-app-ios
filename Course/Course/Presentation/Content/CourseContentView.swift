@@ -14,7 +14,7 @@ import SwiftUIIntrospect
 
 public struct CourseContentView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @Bindable private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     @State private var openCertificateView: Bool = false
@@ -68,7 +68,7 @@ public struct CourseContentView: View {
         viewHeight: Binding<CGFloat>
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.courseID = courseID
         self._selection = selection
         self._coordinate = coordinate
@@ -252,6 +252,11 @@ public struct CourseContentView: View {
                 }
                 Task {
                     await viewModel.updateVideoProgress(blockID: blockID, progress: progress)
+                }
+            }
+            .onAppear {
+                Task {
+                    await viewModel.refreshLocalVideoProgress()
                 }
             }
         case .assignments:

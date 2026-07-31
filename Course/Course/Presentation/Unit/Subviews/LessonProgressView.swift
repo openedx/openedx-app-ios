@@ -10,7 +10,7 @@ import Core
 import Theme
 
 struct LessonProgressView: View {
-    @ObservedObject var viewModel: CourseUnitViewModel
+    @Bindable var viewModel: CourseUnitViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
     
@@ -34,7 +34,7 @@ struct LessonProgressView: View {
                         .foregroundColor(
                             selected == viewModel.selectedLesson()
                             ? .accentColor
-                            : Theme.Colors.textSecondary
+                            : Theme.Colors.progressSkip
                         )
                 }
                 Spacer()

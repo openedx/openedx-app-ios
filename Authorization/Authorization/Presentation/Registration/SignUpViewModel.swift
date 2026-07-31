@@ -15,14 +15,24 @@ import GoogleSignIn
 import MSAL
 
 @MainActor
-public final class SignUpViewModel: ObservableObject {
-    
-    @Published var isShowProgress = false
-    @Published var scrollTo: Int?
-    @Published var showError: Bool = false
-    @Published var thirdPartyAuthSuccess: Bool = false
+@Observable public final class SignUpViewModel {
+
+    private let interactor: AuthInteractorProtocol
+    private let analytics: AuthorizationAnalytics
+    private let validator: Validator
+
+    let router: AuthorizationRouter
+    let config: ConfigProtocol
+    let cssInjector: CSSInjector
     let sourceScreen: LogistrationSourceScreen
-    
+    let storage: CoreStorage
+
+    var isShowProgress = false
+    var scrollTo: Int?
+    var showError: Bool = false
+    var thirdPartyAuthSuccess: Bool = false
+    var disclosureGroupOpen = false
+
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -31,7 +41,7 @@ public final class SignUpViewModel: ObservableObject {
         }
     }
     
-    @Published var fields: [FieldConfiguration] = []
+    var fields: [FieldConfiguration] = []
     var requiredFields: [FieldConfiguration] {
        fields.filter {
                 $0.field.required &&
@@ -49,15 +59,7 @@ public final class SignUpViewModel: ObservableObject {
         fields.filter { !$0.field.required }
     }
 
-    let router: AuthorizationRouter
-    let config: ConfigProtocol
-    let cssInjector: CSSInjector
-    
-    private let interactor: AuthInteractorProtocol
-    private let analytics: AuthorizationAnalytics
-    private let validator: Validator
     var authMethod: AuthMethod = .password
-    let storage: CoreStorage
 
     public init(
         interactor: AuthInteractorProtocol,

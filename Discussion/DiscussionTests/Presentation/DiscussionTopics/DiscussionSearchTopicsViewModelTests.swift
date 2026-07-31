@@ -52,7 +52,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                                                         interactor: interactor,
                                                         storage: storage,
                                                         router: router,
-                                                        debounce: .test)
+                                                        debounceInterval: 0.1)
 
         viewModel.searchText = "Test"
 
@@ -79,7 +79,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                                                         interactor: interactor,
                                                         storage: storage,
                                                         router: router,
-                                                        debounce: .test)
+                                                        debounceInterval: 0.1)
 
         viewModel.searchText = "Test"
 
@@ -105,7 +105,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                                                         interactor: interactor,
                                                         storage: storage,
                                                         router: router,
-                                                        debounce: .test)
+                                                        debounceInterval: 0.1)
 
         viewModel.searchText = "Test"
 
@@ -129,7 +129,7 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                                                         interactor: interactor,
                                                         storage: storage,
                                                         router: router,
-                                                        debounce: .test)
+                                                        debounceInterval: 0.1)
 
         viewModel.searchText = ""
 

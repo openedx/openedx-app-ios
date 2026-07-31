@@ -9,8 +9,8 @@ import WhatsNew
 public struct CourseOutlineAndProgressView: View {
     
     // MARK: - Variables
-    @StateObject private var viewModelContainer: CourseContainerViewModel
-    @StateObject private var viewModelProgress: CourseProgressViewModel
+    @Bindable private var viewModelContainer: CourseContainerViewModel
+    private var viewModelProgress: CourseProgressViewModel
     private let title: String
     private let courseID: String
     private let isVideo: Bool
@@ -94,8 +94,8 @@ public struct CourseOutlineAndProgressView: View {
         connectivity: ConnectivityProtocol
     ) {
         self.title = title
-        self._viewModelContainer = StateObject(wrappedValue: { viewModelContainer }())
-        self._viewModelProgress = StateObject(wrappedValue: { viewModelProgress}())
+        self.viewModelContainer = viewModelContainer
+        self.viewModelProgress = viewModelProgress
         self.courseID = courseID
         self.isVideo = isVideo
         self._selection = selection
@@ -109,6 +109,7 @@ public struct CourseOutlineAndProgressView: View {
     // MARK: - Body
     public var body: some View {
         ZStack(alignment: .top) {
+            // MARK: - RETURN THIS!
             if viewModelProgress.isLoading || viewModelContainer.isShowRefresh {
                 HStack(alignment: .center) {
                     ProgressBar(size: 40, lineWidth: 8)
@@ -116,6 +117,7 @@ public struct CourseOutlineAndProgressView: View {
                         .padding(.horizontal)
                 }
             } else {
+            // MARK: - RETURN THIS!
             GeometryReader { _ in
                 VStack(alignment: .center) {
                     // MARK: - Page Body
@@ -175,11 +177,13 @@ public struct CourseOutlineAndProgressView: View {
                                 .opacity(viewModelProgress.isLoading || viewModelContainer.isShowProgress ? 0 : 1)
                             }
                             .onAppear {
-                                if viewModelProgress.courseProgress == nil {
-                                    Task {
+                                Task {
+                                    if viewModelProgress.courseProgress == nil {
                                         await viewModelProgress.getCourseProgress(courseID: courseID)
                                         await viewModelContainer
                                             .getCourseBlocks(courseID: courseID, withProgress: false)
+                                    } else {
+                                        await viewModelContainer.refreshLocalVideoProgress()
                                     }
                                 }
                             }

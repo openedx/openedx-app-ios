@@ -20,9 +20,8 @@ public struct CreateNewThreadView: View {
     private var courseID: String
     
     @Environment(\.colorScheme) var colorScheme
-    
-    @ObservedObject
-    private var viewModel: CreateNewThreadViewModel
+
+    @Bindable private var viewModel: CreateNewThreadViewModel
     
     public init(
         viewModel: CreateNewThreadViewModel,

@@ -26,9 +26,10 @@ public struct BackNavigationMenuItem: Identifiable {
 }
 
 @MainActor
-class BackNavigationButtonViewModel: ObservableObject {
+@Observable
+class BackNavigationButtonViewModel {
     private let helper: BackNavigationProtocol
-    @Published var items: [BackNavigationMenuItem] = []
+    var items: [BackNavigationMenuItem] = []
     
     init() {
         self.helper = Container.shared.resolve(BackNavigationProtocol.self)!

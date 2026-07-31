@@ -9,22 +9,20 @@ import SwiftUI
 import Core
 import OEXFoundation
 
-public final class CourseVerticalViewModel: ObservableObject, @unchecked Sendable {
+@Observable
+public final class CourseVerticalViewModel: @unchecked Sendable {
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
-    @Published var verticals: [CourseVertical]
-    @Published var showError: Bool = false
+    var verticals: [CourseVertical]
     let chapters: [CourseChapter]
     let chapterIndex: Int
     let sequentialIndex: Int
-    
-    var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
     
     public init(

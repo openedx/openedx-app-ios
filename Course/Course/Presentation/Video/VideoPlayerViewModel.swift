@@ -12,26 +12,27 @@ import _AVKit_SwiftUI
 import Combine
 
 @MainActor
-public class VideoPlayerViewModel: ObservableObject {
-    @Published var pause: Bool = false
-    @Published var currentTime: Double = 0
-    @Published var isLoading: Bool = true
-    @Published var isLocalProgressApplied: Bool = false
+@Observable
+public class VideoPlayerViewModel {
+    var pause: Bool = false
+    var currentTime: Double = 0
+    var isLoading: Bool = true
+    var isLocalProgressApplied: Bool = false
 
     public let connectivity: ConnectivityProtocol
 
     private var subtitlesDownloaded: Bool = false
-    @Published var subtitles: [Subtitle] = []
+    var subtitles: [Subtitle] = []
     var languages: [SubtitleUrl]
-    @Published var items: [PickerItem] = []
-    @Published var selectedLanguage: String?
-    
-    @Published var showError: Bool = false
-    var errorMessage: String? {
-        didSet {
-            showError = errorMessage != nil
-        }
+    var items: [PickerItem] = []
+    var selectedLanguage: String?
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
+
     var isPlayingInPip: Bool {
         playerHolder.isPlayingInPip
     }
@@ -114,6 +115,13 @@ public class VideoPlayerViewModel: ObservableObject {
         playerHolder.getFinishPublisher()
             .sink { [weak self] in
                 self?.trackVideoCompleted()
+            }
+            .store(in: &subscription)
+        
+        NotificationCenter.default.publisher(for: .saveVideoProgressBeforeNavigation)
+            .sink { [weak self] _ in
+                guard let self = self else { return }
+                self.saveCurrentProgress(duration: self.playerHolder.duration)
             }
             .store(in: &subscription)
 
@@ -264,10 +272,8 @@ public class VideoPlayerViewModel: ObservableObject {
     }
     
     public func saveCurrentProgress(duration: TimeInterval) {
-        
         Task {
             let time = currentTime
-//            let duration = playerHolder.duration
                         
             if duration > 0 && time > 0 {
                 let progress = min(time / duration, 1.0)

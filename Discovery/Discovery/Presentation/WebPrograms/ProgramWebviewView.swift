@@ -17,9 +17,8 @@ public enum ProgramViewType: String, Equatable {
 }
 
 public struct ProgramWebviewView: View {
-    @State private var isLoading: Bool = true
-    
-    @StateObject private var viewModel: ProgramWebviewViewModel
+    @Bindable private var viewModel: ProgramWebviewViewModel
+
     private var router: DiscoveryRouter
     private var viewType: ProgramViewType
     public var pathID: String
@@ -43,7 +42,7 @@ public struct ProgramWebviewView: View {
         viewType: ProgramViewType = .program,
         pathID: String = ""
     ) {
-        self._viewModel = .init(wrappedValue: viewModel)
+        self.viewModel = viewModel
         self.router = router
         self.viewType = viewType
         self.pathID = pathID
@@ -60,7 +59,7 @@ public struct ProgramWebviewView: View {
                             openFile: {_ in},
                             injections: [.colorInversionCss]
                         ),
-                        isLoading: $isLoading,
+                        isLoading: $viewModel.webViewIsLoading,
                         refreshCookies: {
                             await viewModel.updateCookies(
                                 force: true
@@ -73,7 +72,7 @@ public struct ProgramWebviewView: View {
                     .accessibilityIdentifier("program_webview")
                     
                     let shouldShowProgress = (
-                        isLoading ||
+                        viewModel.webViewIsLoading ||
                         viewModel.showProgress ||
                         viewModel.updatingCookies
                     )

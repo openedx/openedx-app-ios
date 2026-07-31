@@ -73,9 +73,8 @@ final class SearchViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
 
-        // Wait for debounce + next event loop iteration
-        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-        await Task.yield()
+        // Wait for search to complete
+        try await Task.sleep(for: .milliseconds(10))
 
         XCTAssertTrue(interactor.searchCallCount > 0)
         XCTAssertTrue(analytics.discoveryCoursesSearchCallCount > 0)
@@ -128,10 +127,8 @@ final class SearchViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
 
-        // Wait for debounce + next event loop iteration
-        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-        await Task.yield()
-
+        // Wait for search to complete
+        try await Task.sleep(for: .milliseconds(10))
 
         XCTAssertEqual(interactor.searchCallCount, 1)
 
@@ -160,9 +157,8 @@ final class SearchViewModelTests: XCTestCase {
 
         viewModel.searchText = "Test"
 
-        // Wait for debounce + next event loop iteration
-        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-        await Task.yield()
+        // Wait for search to complete
+        try await Task.sleep(for: .milliseconds(10))
 
         XCTAssertEqual(interactor.searchCallCount, 1)
 
