@@ -40,6 +40,8 @@ public class Connectivity: ConnectivityProtocol {
     // MARK: - Observable property (new way)
     public private(set) var internetState: InternetState? {
         didSet {
+            // Don't re-emit an unchanged state — repeated .notReachable sends re-trigger the offline snackbar
+            guard oldValue != internetState else { return }
             // Keep backward compatibility - update Combine subject
             internetReachableSubject.send(internetState)
         }
