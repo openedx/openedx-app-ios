@@ -11,12 +11,9 @@ import OEXFoundation
 import Theme
 
 public struct DiscoveryView: View {
-    
-    @StateObject
-    private var viewModel: DiscoveryViewModel
+
+    @Bindable private var viewModel: DiscoveryViewModel
     private var router: DiscoveryRouter
-    @State private var searchQuery: String = ""
-    @State private var isRefreshing: Bool = false
     
     private var sourceScreen: LogistrationSourceScreen
     
@@ -42,9 +39,9 @@ public struct DiscoveryView: View {
         searchQuery: String? = nil,
         sourceScreen: LogistrationSourceScreen = .default
     ) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.router = router
-        self._searchQuery = State<String>(initialValue: searchQuery ?? "")
+        viewModel.searchQuery = searchQuery ?? ""
         self.sourceScreen = sourceScreen
     }
     
@@ -58,17 +55,17 @@ public struct DiscoveryView: View {
                     // MARK: - Search fake field
                     HStack(spacing: 11) {
                         Image(systemName: "magnifyingglass")
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(Theme.Colors.textInputPlaceholderColor)
                             .padding(.leading, 16)
                             .padding(.top, 1)
                             .accessibilityIdentifier("search_image")
                         Text(DiscoveryLocalization.search)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(Theme.Colors.textInputPlaceholderColor)
                             .accessibilityIdentifier("search_text")
                         Spacer()
                     }
                     .onTapGesture {
-                        router.showDiscoverySearch(searchQuery: searchQuery)
+                        router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
                         viewModel.discoverySearchBarClicked()
                     }
                     .frame(minHeight: 48)
@@ -82,7 +79,7 @@ public struct DiscoveryView: View {
                             .stroke(lineWidth: 1)
                             .fill(Theme.Colors.textInputUnfocusedStroke)
                     ).onTapGesture {
-                        router.showDiscoverySearch(searchQuery: searchQuery)
+                        router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
                         viewModel.discoverySearchBarClicked()
                     }
                     .padding(.top, 11.5)
@@ -132,9 +129,11 @@ public struct DiscoveryView: View {
                                     VStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
                                             .padding(.top, 20)
-                                    }.frame(maxWidth: .infinity,
+                                    }
+                                    .frame(maxWidth: .infinity,
                                             maxHeight: .infinity)
                                 }
+
                                 VStack {}.frame(height: 40)
                             }
                             .frameLimit(width: proxy.size.width)
@@ -190,9 +189,9 @@ public struct DiscoveryView: View {
         }
         .navigationBarHidden(sourceScreen != .startup)
         .onFirstAppear {
-            if !(searchQuery.isEmpty) {
-                router.showDiscoverySearch(searchQuery: searchQuery)
-                searchQuery = ""
+            if !(viewModel.searchQuery.isEmpty) {
+                router.showDiscoverySearch(searchQuery: viewModel.searchQuery)
+                viewModel.searchQuery = ""
             }
             Task {
                 await viewModel.discovery(page: 1)

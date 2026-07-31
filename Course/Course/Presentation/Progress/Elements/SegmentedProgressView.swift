@@ -168,14 +168,11 @@ extension SegmentedProgressView {
                 percentGraded: 0.0
             )
             
-            let color: Color
-            if !assignmentColors.isEmpty {
-                let colorIndex = index % assignmentColors.count
-                let hexColor = assignmentColors[colorIndex]
-                color = Color(hex: hexColor) ?? Theme.Colors.textSecondary
-            } else {
-                color = Theme.Colors.textSecondary
-            }
+            let hexColor = CourseProgressGradingPolicy.assignmentColorHex(for: index, in: assignmentColors)
+            let fallbackHexColor = CourseProgressGradingPolicy.assignmentColorHex(for: index, in: [])
+            let color = Color(hex: hexColor)
+                ?? Color(hex: fallbackHexColor)
+                ?? Theme.Colors.assignmentColor
             
             let segment = ProgressSegment(
                 progress: progressData.pointsPercentage,

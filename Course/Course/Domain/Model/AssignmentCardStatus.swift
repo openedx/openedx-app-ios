@@ -24,7 +24,7 @@ public enum AssignmentCardStatus: Sendable, Equatable {
         case .pastDue:
             return Theme.Colors.warning.opacity(0.1)
         case .notAvailable:
-            return Theme.Colors.textSecondary.opacity(0.1)
+            return Theme.Colors.cardViewStroke.opacity(0.1)
         }
     }
     
@@ -37,7 +37,7 @@ public enum AssignmentCardStatus: Sendable, Equatable {
         case .pastDue:
             return Theme.Colors.warning
         case .notAvailable:
-            return Theme.Colors.textSecondary
+            return Theme.Colors.cardViewStroke
         }
     }
     

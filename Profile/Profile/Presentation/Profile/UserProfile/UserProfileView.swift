@@ -14,7 +14,7 @@ import Theme
 public struct UserProfileView: View {
     
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject private var viewModel: UserProfileViewModel
+    private var viewModel: UserProfileViewModel
 
     public var isSheet: Bool
 

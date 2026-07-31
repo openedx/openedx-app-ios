@@ -10,8 +10,8 @@ import Theme
 import Core
 
 public struct SyncCalendarOptionsView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     
     @State private var screenDimmed: Bool = false
@@ -198,9 +198,12 @@ public struct SyncCalendarOptionsView: View {
                 await viewModel.fetchCourses()
             }
         }
-        .onChange(of: viewModel.courseCalendarSync) { sync in
+        .onChange(of: viewModel.courseCalendarSync) { _, sync in
             if !sync {
                 screenDimmed = true
+                withAnimation(.bouncy(duration: 0.3)) {
+                    viewModel.showDisableCalendarSync = true
+                }
             }
         }
         .onAppear {

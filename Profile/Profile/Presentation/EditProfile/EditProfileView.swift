@@ -12,7 +12,7 @@ import Theme
 
 public struct EditProfileView: View {
     
-    @ObservedObject public var viewModel: EditProfileViewModel
+    @Bindable public var viewModel: EditProfileViewModel
     @State private var showingImagePicker = false
     @State private var showingBottomSheet = false
     
@@ -119,14 +119,19 @@ public struct EditProfileView: View {
                                 }
                             }
                         }
-                        .onReceive(viewModel.yearsConfiguration.$text
-                            .combineLatest(viewModel.countriesConfiguration.$text,
-                                           viewModel.spokenLanguageConfiguration.$text),
-                                   perform: { _ in
+                        .onChange(of: viewModel.yearsConfiguration.text) { _, _ in
                             viewModel.checkChanges()
                             viewModel.checkProfileType()
-                        })
-                        .onChange(of: viewModel.profileChanges) { _ in
+                        }
+                        .onChange(of: viewModel.countriesConfiguration.text) { _, _ in
+                            viewModel.checkChanges()
+                            viewModel.checkProfileType()
+                        }
+                        .onChange(of: viewModel.spokenLanguageConfiguration.text) { _, _ in
+                            viewModel.checkChanges()
+                            viewModel.checkProfileType()
+                        }
+                        .onChange(of: viewModel.profileChanges) { _, _ in
                             viewModel.checkChanges()
                             viewModel.checkProfileType()
                         }
@@ -221,7 +226,22 @@ public struct EditProfileView: View {
                         BackNavigationButton(color: Theme.Colors.accentColor) {
                             viewModel.backButtonTapped()
                         }
-                        .offset(x: -8, y: -1.5)
+                        .offset(
+                            x: {
+                                if #available(iOS 26.0, *) {
+                                    return 6
+                                } else {
+                                    return -8
+                                }
+                            }(),
+                            y: {
+                                if #available(iOS 26.0, *) {
+                                    return 1
+                                } else {
+                                    return -1.5
+                                }
+                            }()
+                        )
                     }
                 )
                 ToolbarItem(placement: .navigationBarTrailing, content: {

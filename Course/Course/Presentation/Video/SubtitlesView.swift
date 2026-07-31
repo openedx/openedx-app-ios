@@ -19,7 +19,6 @@ public struct SubtitlesView: View {
     
     @Environment(\.isHorizontal) private var isHorizontal
     
-    @ObservedObject
     private var viewModel: VideoPlayerViewModel
     private var scrollTo: ((Date) -> Void) = { _ in }
     
@@ -74,7 +73,7 @@ public struct SubtitlesView: View {
                                             .multilineTextAlignment(.leading)
                                             .foregroundColor(subtitle.fromTo.contains(Date(milliseconds: currentTime))
                                                              ? Theme.Colors.textPrimary
-                                                             : Theme.Colors.textSecondary)
+                                                             : Theme.Colors.textTertiary)
                                             
                                             .onChange(of: currentTime, perform: { _ in
                                                 if subtitle.fromTo.contains(Date(milliseconds: currentTime)) {

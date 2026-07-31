@@ -11,8 +11,8 @@ import OEXFoundation
 import Theme
 
 public struct DeleteAccountView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DeleteAccountViewModel
     
     public init(viewModel: DeleteAccountViewModel) {
@@ -59,7 +59,7 @@ public struct DeleteAccountView: View {
                         // MARK: Password
                         Group {
                             Text(ProfileLocalization.DeleteAccount.password)
-                                .foregroundColor(Theme.Colors.textSecondary)
+                                .foregroundColor(Theme.Colors.textPrimary)
                                 .font(Theme.Fonts.labelLarge)
                                 .multilineTextAlignment(.leading)
                                 .padding(.top, 16)

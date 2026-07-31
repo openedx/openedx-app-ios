@@ -1,6 +1,5 @@
 //
 
-import Combine
 import SwiftUI
 import UIKit
 
@@ -12,7 +11,7 @@ final class KeyboardAvoidingViewController<Content: View>: UIViewController {
 
     private var hostingController: UIHostingController<Content>
     private var bottomConstraint: NSLayoutConstraint?
-    private var keyboardStateCancellable: AnyCancellable?
+    @MainActor private var keyboardStateObserver: KeyboardStateObserver?
     private var keyboardState: KeyboardState = .default
 
     var bottomPadding: CGFloat = 0 {
@@ -77,10 +76,25 @@ final class KeyboardAvoidingViewController<Content: View>: UIViewController {
     }
 
     private func subscribeToKeyboardPublisher() {
-        keyboardStateCancellable = Publishers.keyboardStatePublisher
-            .sink { [weak self] state in
-                self?.updateBottomConstraint(state: state)
+        Task { @MainActor [weak self] in
+            guard let self else { return }
+            
+            if self.keyboardStateObserver == nil {
+                self.keyboardStateObserver = KeyboardStateObserver()
             }
+            
+            guard let observer = self.keyboardStateObserver else { return }
+            
+            withObservationTracking {
+                _ = observer.keyboardState
+            } onChange: {
+                Task { @MainActor in
+                    guard let observer = self.keyboardStateObserver else { return }
+                    self.updateBottomConstraint(state: observer.keyboardState)
+                    self.subscribeToKeyboardPublisher()
+                }
+            }
+        }
     }
 
     private func updateBottomConstraint(state: KeyboardState) {

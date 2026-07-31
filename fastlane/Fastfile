@@ -15,7 +15,7 @@ update_fastlane
 
 before_all do
   xcodes(
-    version: '16.4',
+    version: '26.2',
     select_for_current_build_only: true,
   )
 

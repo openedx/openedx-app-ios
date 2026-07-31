@@ -11,26 +11,24 @@ import Foundation
 import Theme
 
 @MainActor
-public class CourseProgressViewModel: ObservableObject {
+@Observable
+public class CourseProgressViewModel {
     
-    @Published var courseProgress: CourseProgressDetails?
-    @Published var assignmentProgressData: [String: AssignmentProgressData] = [:]
-    @Published var isLoading: Bool = false
-    @Published var isShowRefresh = false
-    @Published var showError: Bool = false
-    
+    var courseProgress: CourseProgressDetails?
+    var assignmentProgressData: [String: AssignmentProgressData] = [:]
+    var isLoading: Bool = false
+    var isShowRefresh = false
+
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     let interactor: CourseInteractorProtocol
     var courseStructure: CourseStructure?
 
-    public var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+    public var errorMessage: String?
+
+    public var showError: Bool {
+        errorMessage != nil
     }
     
     public init(
@@ -159,18 +157,14 @@ public class CourseProgressViewModel: ObservableObject {
     }
 
     public func getAssignmentColor(for index: Int) -> Color {
-        guard let courseProgress = courseProgress else {
-            return Theme.Colors.textSecondary
-        }
+        let hexColor = courseProgress?.gradingPolicy.assignmentColorHex(for: index)
+            ?? CourseProgressGradingPolicy.assignmentColorHex(for: index, in: [])
         
-        if courseProgress.gradingPolicy.assignmentColors.isEmpty {
-            return Theme.Colors.accentColor
-        }
+        let fallbackHexColor = CourseProgressGradingPolicy.assignmentColorHex(for: index, in: [])
         
-        let colorIndex = index % courseProgress.gradingPolicy.assignmentColors.count
-        let hexColor = courseProgress.gradingPolicy.assignmentColors[colorIndex]
-        
-        return Color(hex: hexColor) ?? Theme.Colors.accentColor
+        return Color(hex: hexColor)
+            ?? Color(hex: fallbackHexColor)
+            ?? Theme.Colors.assignmentColor
     }
     
     public func getAllAssignmentProgressData() -> [String: AssignmentProgressData] {

@@ -13,7 +13,6 @@ import Theme
 
 public struct VideoQualityView: View {
     
-    @ObservedObject
     private var viewModel: SettingsViewModel
     @Environment(\.isHorizontal) private var isHorizontal
     
