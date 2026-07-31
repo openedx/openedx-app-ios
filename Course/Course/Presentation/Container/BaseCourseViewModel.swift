@@ -11,8 +11,8 @@ import Core
 import Combine
 
 @MainActor
-open class BaseCourseViewModel: ObservableObject {
-    
+@Observable open class BaseCourseViewModel {
+
     let manager: DownloadManagerProtocol
     var cancellables = Set<AnyCancellable>()
 

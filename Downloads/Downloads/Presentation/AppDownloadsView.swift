@@ -15,8 +15,8 @@ public struct AppDownloadsView: View {
     @Environment(\.isHorizontal) private var isHorizontal
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
-    @StateObject private var viewModel: AppDownloadsViewModel
-    
+    @Bindable private var viewModel: AppDownloadsViewModel
+
     private func columns() -> [GridItem] {
         isHorizontal || idiom == .pad
         ? [
@@ -29,7 +29,7 @@ public struct AppDownloadsView: View {
     }
     
     public init(viewModel: AppDownloadsViewModel) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
     }
     
     public var body: some View {
@@ -192,7 +192,7 @@ public struct AppDownloadsView: View {
             CoreAssets.learnEmpty.swiftUIImage
                 .resizable()
                 .frame(width: 96, height: 96)
-                .foregroundStyle(Theme.Colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.emptyStateIconColor)
             Text(DownloadsLocalization.Downloads.NoCoursesToDownload.title)
                 .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)

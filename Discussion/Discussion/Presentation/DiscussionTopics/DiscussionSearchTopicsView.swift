@@ -15,10 +15,10 @@ public struct DiscussionSearchTopicsView: View {
     @FocusState
     private var focused: Bool
     
-    @ObservedObject private var viewModel: DiscussionSearchTopicsViewModel<RunLoop>
+    @Bindable private var viewModel: DiscussionSearchTopicsViewModel
     @State private var animated: Bool = false
-    
-    public init(viewModel: DiscussionSearchTopicsViewModel<RunLoop>) {
+
+    public init(viewModel: DiscussionSearchTopicsViewModel) {
         self.viewModel = viewModel
     }
     
@@ -162,7 +162,7 @@ public struct DiscussionSearchTopicsView: View {
         }
     }
     
-    private func searchHeader(viewModel: DiscussionSearchTopicsViewModel<RunLoop>) -> some View {
+    private func searchHeader(viewModel: DiscussionSearchTopicsViewModel) -> some View {
         return VStack(alignment: .leading) {
             Text(DiscussionLocalization.Search.title)
                 .font(Theme.Fonts.displaySmall)
@@ -172,8 +172,8 @@ public struct DiscussionSearchTopicsView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
         }.listRowBackground(Color.clear)
     }
-    
-    private func searchDescription(viewModel: DiscussionSearchTopicsViewModel<RunLoop>) -> String {
+
+    private func searchDescription(viewModel: DiscussionSearchTopicsViewModel) -> String {
         let searchEmptyDescription = DiscussionLocalization.Search.emptyDescription
         let searchDescription =  DiscussionLocalization.searchResultsDescription(
             viewModel.searchResults.isEmpty
@@ -198,8 +198,7 @@ struct DiscussionSearchTopicsView_Previews: PreviewProvider {
             courseID: "123",
             interactor: DiscussionInteractor.mock,
             storage: CoreStorageMock(),
-            router: DiscussionRouterPreviewMock(),
-            debounce: .searchDebounce
+            router: DiscussionRouterPreviewMock()
         )
         
         DiscussionSearchTopicsView(viewModel: vm)

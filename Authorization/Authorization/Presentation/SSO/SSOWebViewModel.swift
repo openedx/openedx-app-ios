@@ -16,11 +16,12 @@ import GoogleSignIn
 import MSAL
 
 @MainActor
-public class SSOWebViewModel: ObservableObject {
+@Observable
+public class SSOWebViewModel {
 
-    @Published private(set) var isShowProgress = false
-    @Published private(set) var showError: Bool = false
-    @Published private(set) var showAlert: Bool = false
+    private(set) var isShowProgress = false
+    private(set) var showError: Bool = false
+    private(set) var showAlert: Bool = false
     let sourceScreen: LogistrationSourceScreen = .default
     
     var errorMessage: String? {

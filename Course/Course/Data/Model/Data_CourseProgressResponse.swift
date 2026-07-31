@@ -22,7 +22,7 @@ public extension DataLayer {
         public let gradingPolicy: GradingPolicy
         public let hasScheduledContent: Bool?
         public let sectionScores: [SectionScore]
-        public let studioUrl: String
+        public let studioUrl: String?
         public let username: String
         public let userHasPassingGrade: Bool
         public let verificationData: VerificationData
@@ -49,9 +49,9 @@ public extension DataLayer {
 
         public init(from decoder: Decoder) throws {
             let values = try decoder.container(keyedBy: CodingKeys.self)
-            verifiedMode = try values.decodeIfPresent(String.self, forKey: .verifiedMode)
-            accessExpiration = try values.decodeIfPresent(String.self, forKey: .accessExpiration)
-            certificateData = try values.decodeIfPresent(CertificateData.self, forKey: .certificateData)
+            verifiedMode = try? values.decodeIfPresent(String.self, forKey: .verifiedMode)
+            accessExpiration = try? values.decodeIfPresent(String.self, forKey: .accessExpiration)
+            certificateData = (try? values.decodeIfPresent(CertificateData.self, forKey: .certificateData))
                 ?? CertificateData(
                     certStatus: nil,
                     certWebViewUrl: nil,
@@ -60,17 +60,17 @@ public extension DataLayer {
                 )
             completionSummary = try values.decode(CompletionSummary.self, forKey: .completionSummary)
             courseGrade = try values.decode(CourseGrade.self, forKey: .courseGrade)
-            creditCourseRequirements = try values.decodeIfPresent(String.self, forKey: .creditCourseRequirements)
-            end = try values.decodeIfPresent(String.self, forKey: .end)
+            creditCourseRequirements = try? values.decodeIfPresent(String.self, forKey: .creditCourseRequirements)
+            end = try? values.decodeIfPresent(String.self, forKey: .end)
             enrollmentMode = try values.decode(String.self, forKey: .enrollmentMode)
             gradingPolicy = try values.decode(GradingPolicy.self, forKey: .gradingPolicy)
-            hasScheduledContent = try values.decodeIfPresent(Bool.self, forKey: .hasScheduledContent)
-            sectionScores = try values.decode([SectionScore].self, forKey: .sectionScores)
-            studioUrl = try values.decode(String.self, forKey: .studioUrl)
+            hasScheduledContent = try? values.decodeIfPresent(Bool.self, forKey: .hasScheduledContent)
+            sectionScores = (try? values.decode([SectionScore].self, forKey: .sectionScores)) ?? []
+            studioUrl = try? values.decodeIfPresent(String.self, forKey: .studioUrl)
             username = try values.decode(String.self, forKey: .username)
-            userHasPassingGrade = try values.decode(Bool.self, forKey: .userHasPassingGrade)
+            userHasPassingGrade = (try? values.decode(Bool.self, forKey: .userHasPassingGrade)) ?? false
             verificationData = try values.decode(VerificationData.self, forKey: .verificationData)
-            disableProgressGraph = try values.decode(Bool.self, forKey: .disableProgressGraph)
+            disableProgressGraph = (try? values.decode(Bool.self, forKey: .disableProgressGraph)) ?? false
         }
         
         public init(
@@ -85,7 +85,7 @@ public extension DataLayer {
             gradingPolicy: GradingPolicy,
             hasScheduledContent: Bool?,
             sectionScores: [SectionScore],
-            studioUrl: String,
+            studioUrl: String?,
             username: String,
             userHasPassingGrade: Bool,
             verificationData: VerificationData,
@@ -376,17 +376,7 @@ public extension DataLayer.GradingPolicy {
         CourseProgressGradingPolicy(
             assignmentPolicies: assignmentPolicies.map { $0.domain },
             gradeRange: gradeRange,
-            assignmentColors: assignmentColors ?? [
-                "#D24242",
-                 "#7B9645",
-                 "#5A5AD8",
-                 "#B0842C",
-                 "#2E90C2",
-                 "#D13F88",
-                 "#36A17D",
-                 "#AE5AD8",
-                 "#3BA03B"
-              ]
+            assignmentColors: CourseProgressGradingPolicy.normalizedAssignmentColors(assignmentColors)
         )
     }
 }

@@ -10,8 +10,8 @@ import Theme
 import Core
 
 public struct CoursesToSyncView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     
     @Environment(\.isHorizontal) private var isHorizontal
@@ -80,6 +80,9 @@ public struct CoursesToSyncView: View {
             }
             .ignoresSafeArea(.all, edges: .horizontal)
         }
+        .onChange(of: viewModel.hideInactiveCourses) { _, hide in
+            viewModel.profileStorage.hideInactiveCourses = hide
+        }
     }
     
     private var coursesList: some View {
@@ -136,7 +139,7 @@ public struct CoursesToSyncView: View {
             CoreAssets.learnEmpty.swiftUIImage
                 .resizable()
                 .frame(width: 96, height: 96)
-                .foregroundStyle(Theme.Colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.emptyStateIconColor)
             Text(ProfileLocalization.Sync.noSynced)
                 .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)

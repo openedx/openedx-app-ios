@@ -68,7 +68,7 @@ struct NoCoursesView: View {
             CoreAssets.learnEmpty.swiftUIImage
                 .resizable()
                 .frame(width: 96, height: 96)
-                .foregroundStyle(Theme.Colors.textSecondaryLight)
+                .foregroundStyle(Theme.Colors.emptyStateIconColor)
             Text(type.title)
                 .foregroundStyle(Theme.Colors.textPrimary)
                 .font(Theme.Fonts.titleMedium)

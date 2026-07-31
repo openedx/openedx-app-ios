@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 import Theme
 
 public struct OfflineSnackBarView: View {
@@ -62,7 +61,7 @@ public struct OfflineSnackBarView: View {
         .offset(y: dismiss ? 100 : 0)
         .opacity(dismiss ? 0 : 1)
         .transition(.move(edge: .bottom))
-        .onReceive(connectivity.internetReachableSubject, perform: { state in
+        .onChange(of: connectivity.internetState) { _, state in
             switch state {
             case .notReachable:
                 withAnimation {
@@ -75,7 +74,7 @@ public struct OfflineSnackBarView: View {
             case .none:
                 break
             }
-        })
+        }
     }
 }
 

@@ -12,18 +12,20 @@ public struct SecureInputView: View {
     
     @Binding private var text: String
     @State private var isSecured: Bool = true
+    private let placeholder: String
     
-    public init(_ text: Binding<String>) {
+    public init(_ text: Binding<String>, placeholder: String = "") {
         self._text = text
+        self.placeholder = placeholder
     }
     
     public var body: some View {
         ZStack(alignment: .trailing) {
             Group {
                 if isSecured {
-                    SecureField("", text: $text)
+                    SecureField(placeholder, text: $text)
                 } else {
-                    TextField("", text: $text)
+                    TextField(placeholder, text: $text)
                         .autocapitalization(.none)
                 }
             }.padding(.trailing, 32)

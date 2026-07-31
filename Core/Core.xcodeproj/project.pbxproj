@@ -48,7 +48,6 @@
 		027BD3AD2909475000392132 /* KeyboardScroller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3AA2909474F00392132 /* KeyboardScroller.swift */; };
 		027BD3AE2909475000392132 /* KeyboardScrollerOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3AB2909474F00392132 /* KeyboardScrollerOptions.swift */; };
 		027BD3AF2909475000392132 /* DismissKeyboardTapHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3AC2909475000392132 /* DismissKeyboardTapHandler.swift */; };
-		027BD3B32909475900392132 /* Publishers+KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3B02909475800392132 /* Publishers+KeyboardState.swift */; };
 		027BD3B42909475900392132 /* KeyboardState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3B12909475800392132 /* KeyboardState.swift */; };
 		027BD3B52909475900392132 /* KeyboardStateObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3B22909475900392132 /* KeyboardStateObserver.swift */; };
 		027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027BD3B62909476200392132 /* DismissKeyboardTapViewModifier.swift */; };
@@ -250,7 +249,6 @@
 		027BD3AA2909474F00392132 /* KeyboardScroller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardScroller.swift; sourceTree = "<group>"; };
 		027BD3AB2909474F00392132 /* KeyboardScrollerOptions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardScrollerOptions.swift; sourceTree = "<group>"; };
 		027BD3AC2909475000392132 /* DismissKeyboardTapHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissKeyboardTapHandler.swift; sourceTree = "<group>"; };
-		027BD3B02909475800392132 /* Publishers+KeyboardState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Publishers+KeyboardState.swift"; sourceTree = "<group>"; };
 		027BD3B12909475800392132 /* KeyboardState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardState.swift; sourceTree = "<group>"; };
 		027BD3B22909475900392132 /* KeyboardStateObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyboardStateObserver.swift; sourceTree = "<group>"; };
 		027BD3B62909476200392132 /* DismissKeyboardTapViewModifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissKeyboardTapViewModifier.swift; sourceTree = "<group>"; };
@@ -478,7 +476,6 @@
 			children = (
 				027BD3B12909475800392132 /* KeyboardState.swift */,
 				027BD3B22909475900392132 /* KeyboardStateObserver.swift */,
-				027BD3B02909475800392132 /* Publishers+KeyboardState.swift */,
 			);
 			path = State;
 			sourceTree = "<group>";
@@ -1064,25 +1061,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		CE953A3D2CD0DA940023D669 /* Generate Mockolo Mocks */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Generate Mockolo Mocks";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which mockolo >/dev/null; then\n    mockolo \\\n        --sourcedirs \"${SRCROOT}/Core\" \\\n        --destination \"${SRCROOT}/CoreTests/Generated/CoreMocks.generated.swift\" \\\n        --mock-final \\\n        --testable-imports \"Core\" \\\n        --custom-imports \"Foundation\" \"SwiftUI\" \"Combine\"\nelse\n    echo \"warning: mockolo not installed, download from https://github.com/uber/mockolo\"\nfi\n";
-		};
 		0770DE5A28D0B1E5006D8A5D /* SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
@@ -1101,6 +1079,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
+		};
+		CE953A3D2CD0DA940023D669 /* Generate Mockolo Mocks */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate Mockolo Mocks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which mockolo >/dev/null; then\n    mockolo \\\n        --sourcedirs \"${SRCROOT}/Core\" \\\n        --destination \"${SRCROOT}/CoreTests/Generated/CoreMocks.generated.swift\" \\\n        --mock-final \\\n        --testable-imports \"Core\" \\\n        --custom-imports \"Foundation\" \"SwiftUI\" \"Combine\"\nelse\n    echo \"warning: mockolo not installed, download from https://github.com/uber/mockolo\"\nfi\n";
 		};
 		ED83AD5255805030E042D62A /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1191,7 +1188,6 @@
 				06619EAF2B973B25001FAADE /* AccessibilityInjection.swift in Sources */,
 				BAFB99822B0E2354007D09F9 /* FacebookConfig.swift in Sources */,
 				02935B732BCECAD000B22F66 /* Data_PrimaryEnrollment.swift in Sources */,
-				027BD3B32909475900392132 /* Publishers+KeyboardState.swift in Sources */,
 				06DEA4A32BBD66A700110D20 /* BackNavigationButton.swift in Sources */,
 				0727877D28D25212002E9142 /* ProgressBar.swift in Sources */,
 				CE09B2B62CE796AE0090DB53 /* InvalidCoreDataContextError.swift in Sources */,
@@ -1423,7 +1419,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1453,7 +1449,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1543,7 +1539,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1572,7 +1568,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1594,7 +1590,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1617,7 +1613,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1640,7 +1636,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1663,7 +1659,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1685,7 +1681,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1707,7 +1703,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CoreTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1802,7 +1798,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1899,7 +1895,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2001,7 +1997,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2098,7 +2094,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2259,7 +2255,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2297,7 +2293,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

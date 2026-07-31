@@ -11,7 +11,8 @@ import OEXFoundation
 import Combine
 
 @MainActor
-final class CourseVideoDownloadBarViewModel: ObservableObject {
+@Observable
+final class CourseVideoDownloadBarViewModel {
 
     // MARK: - Properties
 
@@ -19,8 +20,8 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     private let courseViewModel: CourseContainerViewModel
     private let analytics: CourseAnalytics
 
-    @Published private(set) var currentDownloadTask: DownloadDataTask?
-    @Published private(set) var isOn: Bool = false
+    private(set) var currentDownloadTask: DownloadDataTask?
+    private(set) var isOn: Bool = false
 
     private var cancellables = Set<AnyCancellable>()
 
@@ -43,29 +44,27 @@ final class CourseVideoDownloadBarViewModel: ObservableObject {
     /// total progress of downloading video files
     var progress: Double = 0
 
-    var downloadableVerticals: Set<VerticalsDownloadState> = [] {
-        didSet {
-            let downloading = downloadableVerticals.filter { $0.state == .downloading }
-            downloadingVideos = downloading.flatMap { $0.downloadableBlocks }.count
+    var downloadableVerticals: Set<VerticalsDownloadState> = []
 
-            let finished = downloadableVerticals.filter { $0.state == .finished }
-            totalFinishedVideos = finished.flatMap { $0.downloadableBlocks }.count
-            
-            let inProgress = downloadableVerticals.filter { $0.state != .finished }
-            remainingVideos = inProgress.flatMap { $0.downloadableBlocks }.count
-            
-            let totalFinishedCount = finished.count
-            isAllVideosDownloaded = totalFinishedCount == downloadableVerticals.count
-        }
+    var downloadingVideos: Int {
+        let downloading = downloadableVerticals.filter { $0.state == .downloading }
+        return downloading.flatMap { $0.downloadableBlocks }.count
     }
 
-    var isAllVideosDownloaded: Bool = false
+    var totalFinishedVideos: Int {
+        let finished = downloadableVerticals.filter { $0.state == .finished }
+        return finished.flatMap { $0.downloadableBlocks }.count
+    }
 
-    var remainingVideos: Int = 0
+    var remainingVideos: Int {
+        let inProgress = downloadableVerticals.filter { $0.state != .finished }
+        return inProgress.flatMap { $0.downloadableBlocks }.count
+    }
 
-    var downloadingVideos: Int = 0
-
-    var totalFinishedVideos: Int = 0
+    var isAllVideosDownloaded: Bool {
+        let finished = downloadableVerticals.filter { $0.state == .finished }
+        return finished.count == downloadableVerticals.count && !downloadableVerticals.isEmpty
+    }
 
     var totalSize: String?
 

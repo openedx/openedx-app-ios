@@ -10,19 +10,17 @@ import Core
 import SwiftUI
 
 @MainActor
-public final class HandoutsViewModel: ObservableObject {
+@Observable
+public final class HandoutsViewModel {
     
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
-    @Published var handouts: String?
-    @Published var updates: [CourseUpdate] = []
-    
-    var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+    private(set) var isShowProgress = false
+    var handouts: String?
+    var updates: [CourseUpdate] = []
+
+    var errorMessage: String?
+
+    var showError: Bool {
+        errorMessage != nil
     }
     
     private let interactor: CourseInteractorProtocol

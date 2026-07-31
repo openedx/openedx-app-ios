@@ -13,7 +13,7 @@ import Theme
 
 struct AllContentView: View {
     
-    @StateObject private var viewModel: CourseContainerViewModel
+    @Bindable private var viewModel: CourseContainerViewModel
     private let title: String
     private let courseID: String
     private let dateTabIndex: Int
@@ -32,7 +32,7 @@ struct AllContentView: View {
         dateTabIndex: Int
     ) {
         self.title = title
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.proxy = proxy
         self.courseID = courseID
         self.dateTabIndex = dateTabIndex

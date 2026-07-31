@@ -209,6 +209,18 @@ public struct CourseProgressGrade: Sendable {
 }
 
 public struct CourseProgressGradingPolicy: Sendable {
+    public static let defaultAssignmentColors = [
+        "#D24242",
+        "#7B9645",
+        "#5A5AD8",
+        "#B0842C",
+        "#2E90C2",
+        "#D13F88",
+        "#36A17D",
+        "#AE5AD8",
+        "#3BA03B"
+    ]
+
     public let assignmentPolicies: [CourseProgressAssignmentPolicy]
     public let gradeRange: [String: Double]
     public let assignmentColors: [String]
@@ -220,7 +232,24 @@ public struct CourseProgressGradingPolicy: Sendable {
     ) {
         self.assignmentPolicies = assignmentPolicies
         self.gradeRange = gradeRange
-        self.assignmentColors = assignmentColors
+        self.assignmentColors = Self.normalizedAssignmentColors(assignmentColors)
+    }
+
+    public static func normalizedAssignmentColors(_ assignmentColors: [String]?) -> [String] {
+        guard let assignmentColors, !assignmentColors.isEmpty else {
+            return defaultAssignmentColors
+        }
+        return assignmentColors
+    }
+
+    public static func assignmentColorHex(for index: Int, in assignmentColors: [String]) -> String {
+        let colors = assignmentColors.isEmpty ? defaultAssignmentColors : assignmentColors
+        let colorIndex = max(0, index) % colors.count
+        return colors[colorIndex]
+    }
+
+    public func assignmentColorHex(for index: Int) -> String {
+        Self.assignmentColorHex(for: index, in: assignmentColors)
     }
 }
 

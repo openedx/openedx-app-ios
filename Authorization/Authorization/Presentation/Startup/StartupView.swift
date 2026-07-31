@@ -12,13 +12,12 @@ import Theme
 
 public struct StartupView: View {
     
-    @State private var searchQuery: String = ""
+//    @State private var searchQuery: String = ""
     
     @Environment(\.isHorizontal) private var isHorizontal
-    
-    @ObservedObject
-    private var viewModel: StartupViewModel
-    
+
+    @Bindable private var viewModel: StartupViewModel
+
     public init(viewModel: StartupViewModel) {
         self.viewModel = viewModel
     }
@@ -56,13 +55,13 @@ public struct StartupView: View {
                                 .padding(.leading, 16)
                                 .padding(.top, 1)
                                 .foregroundColor(Theme.Colors.textInputTextColor)
-                            TextField("", text: $searchQuery, onCommit: {
-                                if searchQuery.isEmpty { return }
+                            TextField("", text: $viewModel.searchQuery, onCommit: {
+                                if viewModel.searchQuery.isEmpty { return }
                                 viewModel.router.showDiscoveryScreen(
-                                    searchQuery: searchQuery,
+                                    searchQuery: viewModel.searchQuery,
                                     sourceScreen: .startup
                                 )
-                                viewModel.logAnalytics(searchQuery: searchQuery)
+                                viewModel.logAnalytics(searchQuery: viewModel.searchQuery)
                             })
                             .autocapitalization(.none)
                             .autocorrectionDisabled()
@@ -80,14 +79,14 @@ public struct StartupView: View {
                         .background(
                             Theme.InputFieldBackground(
                                 placeHolder: AuthLocalization.Startup.searchPlaceholder,
-                                text: searchQuery,
+                                text: viewModel.searchQuery,
                                 padding: 48
                             )
                         )
                         
                         Button {
                             viewModel.router.showDiscoveryScreen(
-                                searchQuery: searchQuery,
+                                searchQuery: viewModel.searchQuery,
                                 sourceScreen: .startup
                             )
                             viewModel.logAnalytics()
@@ -120,7 +119,7 @@ public struct StartupView: View {
                 .padding(.bottom, 2)
             }
             .onDisappear {
-                searchQuery = ""
+                viewModel.searchQuery = ""
             }
             .frameLimit()
         }

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 import EventKit
 import Theme
 import BranchSDK
@@ -17,35 +16,36 @@ import OEXFoundation
 // MARK: - DatesAndCalendarViewModel
 
 @MainActor
-public final class DatesAndCalendarViewModel: ObservableObject {
-    @Published var showCalendaAccessDenied: Bool = false
-    @Published var showDisableCalendarSync: Bool = false
-    @Published var showError: Bool = false
-    @Published var openNewCalendarView: Bool = false
+@Observable
+public final class DatesAndCalendarViewModel {
+    var showCalendaAccessDenied: Bool = false
+    var showDisableCalendarSync: Bool = false
+    var showError: Bool = false
+    var openNewCalendarView: Bool = false
     
-    @Published var accountSelection: DropDownPicker.DownPickerOption? = .init(
+    var accountSelection: DropDownPicker.DownPickerOption? = .init(
         title: ProfileLocalization.Calendar.Dropdown.icloud
     )
-    @Published var calendarName: String = ""
-    @Published var oldCalendarName: String = ""
-    @Published var colorSelection: DropDownPicker.DownPickerOption? = .init(color: .accent)
-    @Published var oldColorSelection: DropDownPicker.DownPickerOption? = .init(color: .accent)
+    var calendarName: String = ""
+    var oldCalendarName: String = ""
+    var colorSelection: DropDownPicker.DownPickerOption? = .init(color: .accent)
+    var oldColorSelection: DropDownPicker.DownPickerOption? = .init(color: .accent)
     
-    @Published var assignmentStatus: AssignmentStatus = .synced
-    @Published var courseCalendarSync: Bool = true
-    @Published var reconnectRequired: Bool = false
-    @Published var openChangeSyncView: Bool = false
-    @Published var syncingCoursesCount: Int = 0
+    var assignmentStatus: AssignmentStatus = .synced
+    var courseCalendarSync: Bool = true
+    var reconnectRequired: Bool = false
+    var openChangeSyncView: Bool = false
+    var syncingCoursesCount: Int = 0
     
-    @Published var coursesForSync = [CourseForSync]()
+     var coursesForSync = [CourseForSync]()
     
     private var coursesForSyncBeforeChanges = [CourseForSync]()
     
     private(set) var coursesForDeleting = [CourseForSync]()
     private(set) var coursesForAdding = [CourseForSync]()
     
-    @Published var synced: Bool = true
-    @Published var hideInactiveCourses: Bool = false
+    var synced: Bool = true
+    var hideInactiveCourses: Bool = false
     
     var errorMessage: String? {
         didSet {
@@ -74,12 +74,11 @@ public final class DatesAndCalendarViewModel: ObservableObject {
     
     var router: ProfileRouter
     private var interactor: ProfileInteractorProtocol
-    @Published var profileStorage: ProfileStorage
+    var profileStorage: ProfileStorage
     private var persistence: ProfilePersistenceProtocol
     private var calendarManager: CalendarManagerProtocol
     private var connectivity: ConnectivityProtocol
-    
-    private var cancellables = Set<AnyCancellable>()
+
     var calendarNameHint: String
     
     public init(
@@ -120,27 +119,7 @@ public final class DatesAndCalendarViewModel: ObservableObject {
         }
         self.courseCalendarSync = calendarSettings.courseCalendarSync
         self.hideInactiveCourses = profileStorage.hideInactiveCourses ?? false
-        
-        $hideInactiveCourses
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] hide in
-                guard let self = self else { return }
-                self.profileStorage.hideInactiveCourses = hide
-            })
-            .store(in: &cancellables)
-        
-        $courseCalendarSync
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] sync in
-                guard let self = self else { return }
-                if !sync {
-                    Task {
-                        await self.showDisableCalendarSync()
-                    }
-                }
-            })
-            .store(in: &cancellables)
-        
+
         updateCoursesCount()
     }
     
