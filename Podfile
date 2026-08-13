@@ -18,88 +18,97 @@ abstract_target "App" do
     workspace './Core/Core.xcodeproj'
 
     target 'CoreTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
   
   target "Authorization" do
     project './Authorization/Authorization.xcodeproj'
     workspace './Authorization/Authorization.xcodeproj'
-    
+
     target 'AuthorizationTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
   target "Discovery" do
     project './Discovery/Discovery.xcodeproj'
     workspace './Discovery/Discovery.xcodeproj'
-    
+
     target 'DiscoveryUnitTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
   target "WhatsNew" do
     project './WhatsNew/WhatsNew.xcodeproj'
     workspace './WhatsNew/WhatsNew.xcodeproj'
-    
+
     target 'WhatsNewTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
   target "Dashboard" do
     project './Dashboard/Dashboard.xcodeproj'
     workspace './Dashboard/Dashboard.xcodeproj'
-    
+
     target 'DashboardTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
   target "Downloads" do
     project './Downloads/Downloads.xcodeproj'
     workspace './Downloads/Downloads.xcodeproj'
-    
+
     target 'DownloadsTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
   target "Profile" do
     project './Profile/Profile.xcodeproj'
     workspace './Profile/Profile.xcodeproj'
-    
+
     target 'ProfileTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
   target "Course" do
     project './Course/Course.xcodeproj'
     workspace './Course/Course.xcodeproj'
-    
+
     target 'CourseTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
+  target "AppDates" do
+    project './AppDates/AppDates.xcodeproj'
+    workspace './AppDates/AppDates.xcodeproj'
+
+    target 'AppDatesTests' do
+      # Migrated to Mockolo
+    end
+  end
+
   target "Discussion" do
     project './Discussion/Discussion.xcodeproj'
     workspace './Discussion/Discussion.xcodeproj'
-    
+
     target 'DiscussionTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
-  
+
   target "Theme" do
     project './Theme/Theme.xcodeproj'
     workspace './Theme/Theme.xcodeproj'
-    
+
     target 'ThemeTests' do
-      pod 'SwiftyMocky', :git => 'https://github.com/MakeAWishFoundation/SwiftyMocky.git', :tag => '4.2.0'
+      # Migrated to Mockolo
     end
   end
   

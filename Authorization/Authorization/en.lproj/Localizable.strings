@@ -27,8 +27,8 @@ accordance with the [Privacy Policy.](%@)";
 
 "SIGN_UP.SUBTITLE" = "Create an account to start learning today!";
 "SIGN_UP.CREATE_ACCOUNT_BTN" = "Create account";
-"SIGN_UP.HIDE_FIELDS" = "Hide optional Fields";
-"SIGN_UP.SHOW_FIELDS" = "Show optional Fields";
+"SIGN_UP.HIDE_FIELDS" = "Hide optional fields";
+"SIGN_UP.SHOW_FIELDS" = "Show optional fields";
 "SIGN_UP.SUCCESS_SIGNIN_LABEL" = "You've successfully signed in.";
 "SIGN_UP.SUCCESS_SIGNIN_SUBLABEL" = "We just need a little more information before you start learning.";
 "SIGN_UP.AGREEMENT" = "By creating an account, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data inaccordance with the [Privacy Policy.](%@)";

@@ -18,8 +18,7 @@ public enum VideoPlayerState: Sendable {
 
 public struct EncodedVideoPlayer: View {
     
-    @StateObject
-    private var viewModel: EncodedVideoPlayerViewModel
+    @Bindable private var viewModel: EncodedVideoPlayerViewModel
     
     private var isOnScreen: Bool
     
@@ -45,7 +44,7 @@ public struct EncodedVideoPlayer: View {
         viewModel: EncodedVideoPlayerViewModel,
         isOnScreen: Bool
     ) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.isOnScreen = isOnScreen
     }
     
@@ -119,7 +118,7 @@ public struct EncodedVideoPlayer: View {
             viewModel.controller.player?.allowsExternalPlayback = true
             viewModel.controller.setNeedsStatusBarAppearanceUpdate()
         }
-        .onReceive(viewModel.$currentTime) { currentTime in
+        .onChange(of: viewModel.currentTime) { _, currentTime in
             let subtitle = viewModel.findSubtitle(at: Date(milliseconds: currentTime))
             subtitleText = subtitle?.text ?? ""
         }
@@ -145,7 +144,7 @@ struct EncodedVideoPlayer_Previews: PreviewProvider {
             viewModel: EncodedVideoPlayerViewModel(
                 languages: [],
                 playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>(nil),
-                connectivity: Connectivity(),
+                connectivity: Connectivity(config: ConfigMock()),
                 playerHolder: PlayerViewControllerHolder.mock,
                 appStorage: CoreStorageMock(),
                 analytics: CourseAnalyticsMock()

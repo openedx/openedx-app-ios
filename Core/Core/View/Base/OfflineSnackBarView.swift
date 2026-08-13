@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Combine
 import Theme
 
 public struct OfflineSnackBarView: View {
@@ -62,23 +61,28 @@ public struct OfflineSnackBarView: View {
         .offset(y: dismiss ? 100 : 0)
         .opacity(dismiss ? 0 : 1)
         .transition(.move(edge: .bottom))
-        .onReceive(connectivity.internetReachableSubject, perform: { state in
+        .onChange(of: connectivity.internetState) { _, state in
             switch state {
             case .notReachable:
                 withAnimation {
                     dismiss = false
                 }
             case .reachable:
-                break
+                withAnimation {
+                    dismiss = true
+                }
             case .none:
                 break
             }
-        })
+        }
     }
 }
 
+#if DEBUG
 struct OfflineSnackBarView_Previews: PreviewProvider {
     static var previews: some View {
-        OfflineSnackBarView(connectivity: Connectivity(), reloadAction: {})
+        let configMock = ConfigMock()
+        OfflineSnackBarView(connectivity: Connectivity(config: configMock), reloadAction: {})
     }
 }
+#endif

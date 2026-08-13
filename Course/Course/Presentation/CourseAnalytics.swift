@@ -47,7 +47,7 @@ public enum SnackbarType: String {
     case updated
 }
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CourseAnalytics {
     func resumeCourseClicked(courseId: String, courseName: String, blockId: String)
     func sequentialClicked(courseId: String, courseName: String, blockId: String, blockName: String)

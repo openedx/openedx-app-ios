@@ -10,8 +10,8 @@ import Theme
 import Core
 
 public struct SyncCalendarOptionsView: View {
-    
-    @ObservedObject
+
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     
     @State private var screenDimmed: Bool = false
@@ -198,9 +198,12 @@ public struct SyncCalendarOptionsView: View {
                 await viewModel.fetchCourses()
             }
         }
-        .onChange(of: viewModel.courseCalendarSync) { sync in
+        .onChange(of: viewModel.courseCalendarSync) { _, sync in
             if !sync {
                 screenDimmed = true
+                withAnimation(.bouncy(duration: 0.3)) {
+                    viewModel.showDisableCalendarSync = true
+                }
             }
         }
         .onAppear {
@@ -266,12 +269,12 @@ public struct SyncCalendarOptionsView: View {
 struct SyncCalendarOptionsView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = DatesAndCalendarViewModel(
-            router: ProfileRouterMock(),
+            router: ProfileRouterPreview(),
             interactor: ProfileInteractor(repository: ProfileRepositoryMock()),
-            profileStorage: ProfileStorageMock(),
-            persistence: ProfilePersistenceMock(),
+            profileStorage: ProfileStoragePreview(),
+            persistence: ProfilePersistencePreview(),
             calendarManager: CalendarManagerMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock())
         )
         SyncCalendarOptionsView(viewModel: vm)
             .loadFonts()

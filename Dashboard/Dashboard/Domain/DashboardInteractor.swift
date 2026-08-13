@@ -8,7 +8,7 @@
 import Foundation
 import Core
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol DashboardInteractorProtocol: Sendable {
     func getEnrollments(page: Int) async throws -> [CourseItem]
     func getEnrollmentsOffline() async throws -> [CourseItem]

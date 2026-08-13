@@ -52,6 +52,8 @@ public enum DiscoveryLocalization {
     public static let pleaseEnterTheSystem = DiscoveryLocalization.tr("Localizable", "ALERT.PLEASE_ENTER_THE_SYSTEM", fallback: "Please enter the system to continue with course enrollment.")
   }
   public enum Details {
+    /// Course banner
+    public static let courseBanner = DiscoveryLocalization.tr("Localizable", "DETAILS.COURSE_BANNER", fallback: "Course banner")
     /// Enroll now
     public static let enrollNow = DiscoveryLocalization.tr("Localizable", "DETAILS.ENROLL_NOW", fallback: "Enroll now")
     /// You cannot enroll in this course because the enrollment date is over.

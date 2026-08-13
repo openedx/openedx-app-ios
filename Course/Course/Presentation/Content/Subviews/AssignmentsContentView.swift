@@ -133,7 +133,6 @@ struct AssignmentsContentView: View {
                                                         )
                                                     
                                                     Spacer()
-                                                    
                                                     let weightColor = Color(
                                                         hex: assignmentContentData.assignmentTypeColors[section.key]
                                                         ?? "#666666"

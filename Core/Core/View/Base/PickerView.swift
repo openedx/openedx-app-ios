@@ -9,9 +9,8 @@ import SwiftUI
 import Theme
 
 public struct PickerView: View {
-    
-    @ObservedObject
-    private var config: FieldConfiguration
+
+    @Bindable private var config: FieldConfiguration
     private var router: BaseRouter
     
     public init(config: FieldConfiguration, router: BaseRouter) {
@@ -48,7 +47,10 @@ public struct PickerView: View {
                             }
                         }
                     }, label: {
-                        Text(config.selectedItem?.value ?? "")
+                        Text(config.selectedItem?.value ?? config.field.label)
+                            .foregroundColor(config.selectedItem == nil
+                                             ? Theme.Colors.textInputPlaceholderColor
+                                             : Theme.Colors.textInputTextColor)
                         Spacer()
                         Image(systemName: "chevron.down")
                     })

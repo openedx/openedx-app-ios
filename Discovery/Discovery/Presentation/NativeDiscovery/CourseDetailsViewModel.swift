@@ -16,12 +16,13 @@ public enum CourseState {
 }
 
 @MainActor
-public final class CourseDetailsViewModel: ObservableObject {
+@Observable
+public final class CourseDetailsViewModel {
     
-    @Published var courseDetails: CourseDetails?
-    @Published private(set) var isShowProgress = false
-    @Published var showError: Bool = false
-    @Published var isHorisontal: Bool = false
+    var courseDetails: CourseDetails?
+    private(set) var isShowProgress = false
+    var showError: Bool = false
+    var isHorisontal: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {
@@ -63,6 +64,7 @@ public final class CourseDetailsViewModel: ObservableObject {
     @MainActor
     func getCourseDetail(courseID: String, withProgress: Bool = true) async {
         isShowProgress = withProgress
+
         do {
             if connectivity.isInternetAvaliable {
                 courseDetails = try await interactor.getCourseDetails(courseID: courseID)

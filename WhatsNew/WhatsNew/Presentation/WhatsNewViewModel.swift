@@ -10,9 +10,12 @@ import Core
 import Swinject
 
 @MainActor
-public class WhatsNewViewModel: ObservableObject {
-    @Published var index: Int = 0
-    @Published var newItems: [WhatsNewPage] = []
+@Observable public class WhatsNewViewModel {
+
+    var index: Int = 0
+    var viewIndex: Int = 0
+    var newItems: [WhatsNewPage] = []
+
     private let storage: WhatsNewStorage
     var sourceScreen: LogistrationSourceScreen
     let analytics: WhatsNewAnalytics

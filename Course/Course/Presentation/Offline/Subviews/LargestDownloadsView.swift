@@ -12,8 +12,8 @@ import Theme
 public struct LargestDownloadsView: View {
     
     @State private var isEditing = false
-    @ObservedObject
-    private var viewModel: CourseContainerViewModel
+    
+   @Bindable private var viewModel: CourseContainerViewModel
     
     init(viewModel: CourseContainerViewModel) {
         self.viewModel = viewModel
@@ -93,7 +93,7 @@ struct LargestDownloadsView_Previews: PreviewProvider {
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             manager: DownloadManagerMock(),
             storage: CourseStorageMock(),
             isActive: true,

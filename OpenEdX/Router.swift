@@ -19,6 +19,7 @@ import Downloads
 import Profile
 import WhatsNew
 import Combine
+import AppDates
 
 // swiftlint:disable type_body_length file_length
 public class Router: AuthorizationRouter,
@@ -29,7 +30,8 @@ public class Router: AuthorizationRouter,
                      DashboardRouter,
                      CourseRouter,
                      DiscussionRouter,
-                     BackNavigationProtocol {
+                     BackNavigationProtocol,
+                     AppDatesRouter {
 
     public var container: Container
 
@@ -321,7 +323,7 @@ public class Router: AuthorizationRouter,
     }
     
     public func showDiscussionsSearch(courseID: String, isBlackedOut: Bool) {
-        let viewModel = Container.shared.resolve(DiscussionSearchTopicsViewModel<RunLoop>.self, argument: courseID)!
+        let viewModel = Container.shared.resolve(DiscussionSearchTopicsViewModel.self, argument: courseID)!
 
         let view = DiscussionSearchTopicsView(viewModel: viewModel)
         
@@ -529,7 +531,8 @@ public class Router: AuthorizationRouter,
         let isDropdownActive = config?.uiComponents.courseDropDownNavigationEnabled ?? false
 
         let view = CourseUnitView(viewModel: viewModel, isDropdownActive: isDropdownActive)
-        return UIHostingController(rootView: view)
+        let controller = UIHostingController(rootView: view)
+        return controller
     }
     
     public func showCourseComponent(
@@ -615,7 +618,6 @@ public class Router: AuthorizationRouter,
         showVideoNavigation: Bool,
         courseVideoStructure: CourseStructure?
     ) {
-
         let controllerUnit = getUnitController(
             courseName: courseName,
             blockId: blockId,

@@ -13,7 +13,7 @@ import Swinject
 
 public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     
-    @StateObject private var viewModel: PrimaryCourseDashboardViewModel
+    private var viewModel: PrimaryCourseDashboardViewModel
     @ViewBuilder let programView: ProgramView
     private var openDiscoveryPage: () -> Void
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
@@ -25,7 +25,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
         programView: ProgramView,
         openDiscoveryPage: @escaping () -> Void
     ) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.programView = programView
         self.openDiscoveryPage = openDiscoveryPage
     }
@@ -323,8 +323,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
             
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(DashboardLocalization.Header.courses + DashboardLocalization.Header.welcomeBack)
+            .accessibilityElement(children: .contain)
         }
     }
 }
@@ -334,8 +333,8 @@ struct PrimaryCourseDashboardView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = PrimaryCourseDashboardViewModel(
             interactor: DashboardInteractor.mock,
-            connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock(),
+            connectivity: Connectivity(config: ConfigMock()),
+            analytics: DashboardAnalyticsPreviewMock(),
             config: ConfigMock(),
             storage: CoreStorageMock(),
             router: DashboardRouterMock()

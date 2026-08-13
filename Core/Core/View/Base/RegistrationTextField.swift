@@ -10,16 +10,13 @@ import Theme
 
 public struct RegistrationTextField: View {
     
-    @State public var shakeIt: Bool = false
-    @State public var placeholder: String = ""
     public var keyboardType: UIKeyboardType
     public var textContentType: UITextContentType
     private var isTextArea: Bool
     private var scrollTo: (() -> Void) = {}
     
-    @ObservedObject
-    private var config: FieldConfiguration
-    
+    @Bindable private var config: FieldConfiguration
+
     public init(config: FieldConfiguration,
                 isTextArea: Bool = false,
                 keyboardType: UIKeyboardType = .default,
@@ -67,7 +64,7 @@ public struct RegistrationTextField: View {
                     .accessibilityIdentifier("\(config.field.name)_textarea")
             } else {
                 if textContentType == .password {
-                    SecureInputView($config.text)
+                    SecureInputView($config.text, placeholder: config.field.label)
                         .keyboardType(keyboardType)
                         .textContentType(textContentType)
                         .autocapitalization(.none)
@@ -89,7 +86,7 @@ public struct RegistrationTextField: View {
                         .shake($config.shake)
                         .accessibilityIdentifier("\(config.field.name)_textfield")
                 } else {
-                    TextField(placeholder, text: $config.text)
+                    TextField(config.field.label, text: $config.text)
                         .font(Theme.Fonts.bodyLarge)
                         .foregroundColor(Theme.Colors.textInputTextColor)
                         .keyboardType(keyboardType)

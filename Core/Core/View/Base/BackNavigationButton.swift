@@ -15,7 +15,7 @@ class BackButton: UIButton {
 }
 
 public struct BackNavigationButtonRepresentable: UIViewRepresentable {
-    @ObservedObject var viewModel: BackNavigationButtonViewModel
+    var viewModel: BackNavigationButtonViewModel
     var action: (() -> Void)?
     var color: Color
 
@@ -64,7 +64,7 @@ public struct BackNavigationButtonRepresentable: UIViewRepresentable {
 }
 
 public struct BackNavigationButton: View {
-    @StateObject var viewModel = BackNavigationButtonViewModel()
+    var viewModel = BackNavigationButtonViewModel()
     private let color: Color
     private let action: (() -> Void)?
     

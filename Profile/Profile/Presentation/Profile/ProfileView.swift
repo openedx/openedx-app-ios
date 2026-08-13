@@ -13,10 +13,10 @@ import OEXFoundation
 
 public struct ProfileView: View {
     
-    @StateObject private var viewModel: ProfileViewModel
+    @Bindable private var viewModel: ProfileViewModel
     
     public init(viewModel: ProfileViewModel) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
     }
     
     public var body: some View {
@@ -188,15 +188,16 @@ public struct ProfileView: View {
 #if DEBUG
 struct ProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        let router = ProfileRouterMock()
+        let router = ProfileRouterPreview()
+        let config = ConfigMock()
         let vm = ProfileViewModel(
             interactor: ProfileInteractor.mock,
             router: router,
-            analytics: ProfileAnalyticsMock(),
-            config: ConfigMock(),
-            connectivity: Connectivity()
+            analytics: ProfileAnalyticsPreview(),
+            config: config,
+            connectivity: Connectivity(config: config)
         )
-        
+
         ProfileView(viewModel: vm)
             .preferredColorScheme(.light)
             .previewDisplayName("DiscoveryView Light")

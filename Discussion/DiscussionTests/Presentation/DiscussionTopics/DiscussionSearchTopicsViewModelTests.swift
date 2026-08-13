@@ -2,10 +2,9 @@
 //  DiscussionSearchTopicsViewModelTests.swift
 //  DiscussionTests
 //
-//  Created by  Stepanok Ivan on 24.02.2023.
+//  Created by  Stepanok Ivan on 24.02.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discussion
@@ -19,12 +18,8 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
         let storage = CoreStorageMock()
-        let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
-                                                        interactor: interactor, 
-                                                        storage: storage,
-                                                        router: router,
-                                                        debounce: .test)
-        
+        storage.useRelativeDates = false
+
         let items = ThreadLists(
             threads: [
                 UserThread(id: "1",
@@ -50,17 +45,22 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
                            numPages: 1)
             ]
         )
-        Given(storage, .useRelativeDates(getter: false))
-        Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willReturn: items))
+
+        interactor.searchThreadsHandler = { _, _, _ in items }
+
+        let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
+                                                        interactor: interactor,
+                                                        storage: storage,
+                                                        router: router,
+                                                        debounceInterval: 0.1)
 
         viewModel.searchText = "Test"
-        
+
         // Wait for debounce + next event loop iteration
         try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
         await Task.yield()
 
-        Verify(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
-
+        XCTAssertEqual(interactor.searchThreadsCallCount, 1)
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
@@ -68,70 +68,76 @@ final class DiscussionSearchTopicsViewModelTests: XCTestCase {
     func testSearchNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
-                                                        interactor: interactor,
-                                                        storage: CoreStorageMock(),
-                                                        router: router,
-                                                        debounce: .test)
-        
+        let storage = CoreStorageMock()
+        storage.useRelativeDates = false
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
-        Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willThrow: noInternetError))
+        interactor.searchThreadsHandler = { _, _, _ in throw noInternetError }
+
+        let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
+                                                        interactor: interactor,
+                                                        storage: storage,
+                                                        router: router,
+                                                        debounceInterval: 0.1)
 
         viewModel.searchText = "Test"
-        
+
         // Wait for debounce + next event loop iteration
         try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
         await Task.yield()
 
-        Verify(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
-
+        XCTAssertEqual(interactor.searchThreadsCallCount, 1)
         XCTAssertTrue(viewModel.showError)
-        XCTAssertTrue(viewModel.errorMessage == CoreLocalization.Error.slowOrNoInternetConnection)
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testSearchUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
+        let storage = CoreStorageMock()
+        storage.useRelativeDates = false
+
+        interactor.searchThreadsHandler = { _, _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
                                                         interactor: interactor,
-                                                        storage: CoreStorageMock(),
+                                                        storage: storage,
                                                         router: router,
-                                                        debounce: .test)
-
-        Given(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
+                                                        debounceInterval: 0.1)
 
         viewModel.searchText = "Test"
-        
+
         // Wait for debounce + next event loop iteration
         try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
         await Task.yield()
 
-        Verify(interactor, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
-
+        XCTAssertEqual(interactor.searchThreadsCallCount, 1)
         XCTAssertTrue(viewModel.showError)
-        XCTAssertTrue(viewModel.errorMessage == CoreLocalization.Error.unknownError)
+        XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testEmptyQuerySuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
+        let storage = CoreStorageMock()
+        storage.useRelativeDates = false
+
         let viewModel = DiscussionSearchTopicsViewModel(courseID: "123",
                                                         interactor: interactor,
-                                                        storage: CoreStorageMock(),
+                                                        storage: storage,
                                                         router: router,
-                                                        debounce: .test)
-        
+                                                        debounceInterval: 0.1)
+
         viewModel.searchText = ""
-        
+
         // Wait for debounce + next event loop iteration
         try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
         await Task.yield()
 
-        Verify(interactor, 0, .searchThreads(courseID: .any, searchText: .any, pageNumber: .any))
-
+        XCTAssertEqual(interactor.searchThreadsCallCount, 0)
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }

@@ -18,6 +18,7 @@ import Authorization
 import Downloads
 import Profile
 import WhatsNew
+import AppDates
 
 // swiftlint:disable function_body_length
 class AppAssembly: Assembly {
@@ -83,14 +84,14 @@ class AppAssembly: Assembly {
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
         
+        container.register(AppDatesAnalytics.self) { r in
+            r.resolve(AnalyticsManager.self)!
+        }.inObjectScope(.container)
+
         container.register(DownloadsAnalytics.self) { r in
             r.resolve(AnalyticsManager.self)!
         }.inObjectScope(.container)
-        
-        container.register(ConnectivityProtocol.self) { @MainActor _ in
-            Connectivity()
-        }
-        
+
         container.register(DatabaseManager.self) { _ in
             DatabaseManager(databaseName: "Database")
         }.inObjectScope(.container)
@@ -112,6 +113,10 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(AuthorizationRouter.self) { r in
+            r.resolve(Router.self)!
+        }.inObjectScope(.container)
+        
+        container.register(AppDatesRouter.self) { r in
             r.resolve(Router.self)!
         }.inObjectScope(.container)
                 
@@ -193,7 +198,7 @@ class AppAssembly: Assembly {
                 keychain: r.resolve(KeychainSwift.self)!
             )
         }
-        
+
         container.register(Validator.self) { _ in
             Validator()
         }.inObjectScope(.container)
@@ -233,6 +238,13 @@ class AppAssembly: Assembly {
                 discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
                 courseDropDownNavigationEnabled: config.uiComponents.courseDropDownNavigationEnabled
+            )
+        }.inObjectScope(.container)
+
+        container.register(ConnectivityProtocol.self) { @MainActor r in
+            Connectivity(
+                config: r.resolve(ConfigProtocol.self)!,
+                timeout: 15
             )
         }.inObjectScope(.container)
     }

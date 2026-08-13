@@ -26,7 +26,7 @@ struct NewCalendarView: View {
         }
     }
     
-    @ObservedObject
+    @Bindable
     private var viewModel: DatesAndCalendarViewModel
     @Environment(\.isHorizontal) private var isHorizontal
     private var beginSyncingTapped: (() -> Void) = {}
@@ -160,14 +160,14 @@ struct NewCalendarView: View {
     NewCalendarView(
         title: .changeSyncOptions,
         viewModel: DatesAndCalendarViewModel(
-            router: ProfileRouterMock(),
+            router: ProfileRouterPreview(),
             interactor: ProfileInteractor(
                 repository: ProfileRepositoryMock()
             ),
-            profileStorage: ProfileStorageMock(),
-            persistence: ProfilePersistenceMock(),
+            profileStorage: ProfileStoragePreview(),
+            persistence: ProfilePersistencePreview(),
             calendarManager: CalendarManagerMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock())
         ),
         beginSyncingTapped: {
         },

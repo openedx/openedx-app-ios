@@ -13,11 +13,14 @@ import WebKit
 import Theme
 
 public struct CourseDetailsView: View {
-    
-    @ObservedObject private var viewModel: CourseDetailsViewModel
+
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.isHorizontal) var isHorizontal
-    @State private var isOverviewRendering = true
+
+    @State var isProcessing: Bool = true
+
+   private var viewModel: CourseDetailsViewModel
+
     private var title: String
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var courseID: String
@@ -73,18 +76,15 @@ public struct CourseDetailsView: View {
                                                 // MARK: - Course Banner
                                                 CourseBannerView(
                                                     courseDetails: courseDetails,
-                                                    proxy: proxy,
-                                                    isHorisontal: viewModel.isHorisontal,
                                                     onPlayButtonTap: { [weak viewModel] in
                                                         viewModel?.showCourseVideo()
                                                     }
                                                 )
-                                            }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
-                                                .frame(maxHeight: 250)
+                                                .frame(width: 312, height: 312 * 8.5 / 16)
                                                 .cornerRadius(12)
                                                 .padding(.horizontal, 6)
                                                 .padding(.top, 7)
-                                            
+                                            }
                                         }
                                     } else {
                                         // MARK: - iPhone
@@ -92,16 +92,14 @@ public struct CourseDetailsView: View {
                                             // MARK: - Course Banner
                                             CourseBannerView(
                                                 courseDetails: courseDetails,
-                                                proxy: proxy,
-                                                isHorisontal: viewModel.isHorisontal,
                                                 onPlayButtonTap: { [weak viewModel] in
                                                     viewModel?.showCourseVideo()
                                                 })
-                                        }.aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fill)
+                                            .aspectRatio(CGSize(width: 16, height: 8.5), contentMode: .fit)
                                             .cornerRadius(12)
                                             .padding(.horizontal, 6)
                                             .padding(.top, 7)
-                                            .fixedSize(horizontal: false, vertical: true)
+                                        }
                                         
                                         // MARK: - Course state button
                                         CourseStateView(title: title,
@@ -121,13 +119,13 @@ public struct CourseDetailsView: View {
                                                 html: courseDetails.overviewHTML,
                                                 type: .discovery,
                                                 screenWidth: proxy.size.width - 48),
-                                            processing: { rendering in
-                                                isOverviewRendering = rendering
+                                            processing: { isProcessing in
+                                                self.isProcessing = isProcessing
                                             }
                                         )
                                         .padding(.horizontal, 16)
                                         
-                                        if isOverviewRendering {
+                                        if isProcessing {
                                             ProgressBar(size: 40, lineWidth: 8)
                                                 .padding(.top, 20)
                                                 .frame(maxWidth: .infinity)
@@ -373,58 +371,40 @@ private struct CourseTitleView: View {
 
 private struct CourseBannerView: View {
     @State private var animate = false
-    private var isHorisontal: Bool
     private let courseDetails: CourseDetails
-    private let idiom: UIUserInterfaceIdiom
-    private let proxy: GeometryProxy
     private let onPlayButtonTap: () -> Void
     
     init(courseDetails: CourseDetails,
-         proxy: GeometryProxy,
-         isHorisontal: Bool,
          onPlayButtonTap: @escaping () -> Void) {
         self.courseDetails = courseDetails
-        self.isHorisontal = isHorisontal
-        self.idiom = UIDevice.current.userInterfaceIdiom
-        self.proxy = proxy
         self.onPlayButtonTap = onPlayButtonTap
     }
     
     var body: some View {
         ZStack(alignment: .center) {
-            if !isHorisontal {
-                KFImage(URL(string: courseDetails.courseBannerURL))
-                    .onFailureImage(CoreAssets.noCourseImage.image)
-                    .resizable()
-                    .aspectRatio(16/9, contentMode: .fill)
-                    .frame(width: idiom == .pad ? nil : proxy.size.width - 12)
-                    .opacity(animate ? 1 : 0)
-                    .onAppear {
-                        withAnimation(.linear(duration: 0.5)) {
-                            animate = true
-                        }
-                    }
-                    .accessibilityIdentifier("course_image")
-                if courseDetails.courseVideoURL != nil {
-                    PlayButton(action: onPlayButtonTap)
-                }
-            } else {
-                KFImage(URL(string: courseDetails.courseBannerURL))
-                    .onFailureImage(CoreAssets.noCourseImage.image)
-                    .resizable()
-                    .aspectRatio(16/9, contentMode: .fill)
-                    .frame(width: 312)
-                    .opacity(animate ? 1 : 0)
-                    .onAppear {
-                        withAnimation(.linear(duration: 0.5)) {
-                            animate = true
-                        }
-                    }
-                    .accessibilityIdentifier("course_image")
-                if courseDetails.courseVideoURL != nil {
-                    PlayButton(action: onPlayButtonTap)
-                }
+            bannerImage
+            if courseDetails.courseVideoURL != nil {
+                PlayButton(action: onPlayButtonTap)
             }
+        }
+    }
+
+    private var bannerImage: some View {
+        GeometryReader { proxy in
+            KFImage(URL(string: courseDetails.courseBannerURL))
+                .onFailureImage(CoreAssets.noCourseImage.image)
+                .resizable()
+                .scaledToFill()
+                .frame(width: proxy.size.width, height: proxy.size.height)
+                .clipped()
+                .opacity(animate ? 1 : 0)
+                .onAppear {
+                    withAnimation(.linear(duration: 0.5)) {
+                        animate = true
+                    }
+                }
+                .accessibilityIdentifier("course_image")
+                .accessibilityLabel(DiscoveryLocalization.Details.courseBanner)
         }
     }
 }
@@ -435,11 +415,11 @@ struct CourseDetailsView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = CourseDetailsViewModel(
             interactor: DiscoveryInteractor.mock,
-            router: DiscoveryRouterMock(),
-            analytics: DiscoveryAnalyticsMock(),
+            router: DiscoveryRouterPreviewMock(),
+            analytics: DiscoveryAnalyticsPreviewMock(),
             config: ConfigMock(),
             cssInjector: CSSInjectorMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             storage: CoreStorageMock()
         )
         

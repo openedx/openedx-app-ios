@@ -16,7 +16,7 @@ public struct CourseVerticalView: View {
     private var title: String
     private var courseName: String
     private var courseID: String
-    @ObservedObject
+
     private var viewModel: CourseVerticalViewModel
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
@@ -41,7 +41,6 @@ public struct CourseVerticalView: View {
                         // MARK: - Lessons list
                         ForEach(viewModel.verticals, id: \.id) { vertical in
                             if let index = viewModel.verticals.firstIndex(where: {$0.id == vertical.id}) {
-                                HStack {
                                 Button(action: {
                                     let vertical = viewModel.verticals[index]
                                     if let block = vertical.childs.first {
@@ -63,6 +62,7 @@ public struct CourseVerticalView: View {
                                         )
                                     }
                                 }, label: {
+                                    HStack {
                                         Group {
                                             if vertical.completion == 1 {
                                                 CoreAssets.finished.swiftUIImage
@@ -81,15 +81,17 @@ public struct CourseVerticalView: View {
                                                 .multilineTextAlignment(.leading)
                                                 .frame(maxWidth: .infinity, alignment: .leading)
                                         }.foregroundColor(Theme.Colors.textPrimary)
-                                    }).accessibilityElement(children: .ignore)
-                                        .accessibilityLabel(vertical.displayName)
                                         Spacer()
                                         Image(systemName: "chevron.right")
-                                        .flipsForRightToLeftLayoutDirection(true)
+                                            .flipsForRightToLeftLayoutDirection(true)
                                             .padding(.vertical, 8)
                                     }
+                                    .contentShape(Rectangle())
+                                })
+                                .accessibilityElement(children: .ignore)
+                                .accessibilityLabel(vertical.displayName)
                                 .padding(.horizontal, 36)
-                                    .padding(.vertical, 14)
+                                .padding(.vertical, 14)
                                 if index != viewModel.verticals.count - 1 {
                                     Divider()
                                         .frame(height: 1)
@@ -184,9 +186,9 @@ struct CourseVerticalView_Previews: PreviewProvider {
             sequentialIndex: 0,
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock())
         )
-        
+
         return Group {
             CourseVerticalView(
                 title: "Course title",

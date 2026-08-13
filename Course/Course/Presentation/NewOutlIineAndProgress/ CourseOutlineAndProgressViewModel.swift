@@ -6,43 +6,41 @@ import OEXFoundation
 import Combine
 
 @MainActor
-public class CourseOutlineAndProgressViewModel: ObservableObject {
+@Observable
+public class CourseOutlineAndProgressViewModel {
     
     // MARK: - Variables
-    @Published public var courseProgress: CourseProgressDetails?
-    @Published public var showError: Bool = false
-    @Published public var selection: Int
-    @Published var userSettings: UserSettings?
-    @Published var isInternetAvaliable: Bool = true
+    public var courseProgress: CourseProgressDetails?
+    public var selection: Int
+    var userSettings: UserSettings?
+    var isInternetAvaliable: Bool = true
 
     let router: CourseRouter
     let analytics: CourseAnalytics
     let connectivity: ConnectivityProtocol
     let interactor: CourseInteractorProtocol
     let config: ConfigProtocol
-    
+
     let isActive: Bool?
     let courseStart: Date?
     let courseEnd: Date?
     let enrollmentStart: Date?
     let enrollmentEnd: Date?
     let lastVisitedBlockID: String?
-    
+
     var courseDownloadTasks: [DownloadDataTask] = []
     private(set) var waitingDownloads: [CourseBlock]?
-    
+
     private let authInteractor: AuthInteractorProtocol
     private(set) var storage: CourseStorage
-    
+
     private let cellularFileSizeLimit: Int = 100 * 1024 * 1024
     var courseHelper: CourseDownloadHelperProtocol
-    
-    public var errorMessage: String? {
-        didSet {
-            withAnimation {
-                showError = errorMessage != nil
-            }
-        }
+
+    public var errorMessage: String?
+
+    public var showError: Bool {
+        errorMessage != nil
     }
     
     // MARK: - Init

@@ -36,7 +36,7 @@ struct AssignmentDetailCardView: View {
         case .pastDue:
             return Theme.Colors.warning
         case .notAvailable:
-            return Theme.Colors.textSecondary
+            return Theme.Colors.cardViewStroke
         default:
             return Theme.Colors.cardViewStroke
         }

@@ -25,13 +25,12 @@ public struct ListDashboardView: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(DashboardLocalization.Header.courses + DashboardLocalization.Header.welcomeBack)
     
-    @StateObject
-    private var viewModel: ListDashboardViewModel
+    @Bindable private var viewModel: ListDashboardViewModel
     private let router: DashboardRouter
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     
     public init(viewModel: ListDashboardViewModel, router: DashboardRouter) {
-        self._viewModel = StateObject(wrappedValue: { viewModel }())
+        self.viewModel = viewModel
         self.router = router
     }
     
@@ -145,7 +144,7 @@ public struct ListDashboardView: View {
                     }
                 }
             }
-            .onFirstAppear {
+            .onAppear {
                 Task {
                     await viewModel.getMyCourses(page: 1)
                 }
@@ -163,8 +162,8 @@ struct ListDashboardView_Previews: PreviewProvider {
     static var previews: some View {
         let vm = ListDashboardViewModel(
             interactor: DashboardInteractor.mock,
-            connectivity: Connectivity(),
-            analytics: DashboardAnalyticsMock(),
+            connectivity: Connectivity(config: ConfigMock()),
+            analytics: DashboardAnalyticsPreviewMock(),
             storage: CoreStorageMock()
         )
         let router = DashboardRouterMock()

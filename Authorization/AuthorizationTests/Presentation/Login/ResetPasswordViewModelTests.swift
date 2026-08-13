@@ -2,10 +2,9 @@
 //  ResetPasswordViewModelTests.swift
 //  AuthorizationTests
 //
-//  Created by  Stepanok Ivan on 04.04.2023.
+//  Created by  Stepanok Ivan on 04.04.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Authorization
@@ -25,7 +24,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
                                                router: router,
                                                analytics: analytics,
                                                validator: validator)
-        
+
         var isRecoveryPassword = true
         let binding = Binding(get: {
             return isRecoveryPassword
@@ -35,13 +34,13 @@ final class ResetPasswordViewModelTests: XCTestCase {
 
         await viewModel.resetPassword(email: "e", isRecovered: binding)
 
-        Verify(interactor, 0, .resetPassword(email: .any))
+        XCTAssertEqual(interactor.resetPasswordCallCount, 0)
 
         XCTAssertEqual(viewModel.errorMessage, AuthLocalization.Error.invalidEmailAddress)
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(isRecoveryPassword, true)
     }
-    
+
     func testResetPasswordSuccess() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -58,20 +57,20 @@ final class ResetPasswordViewModelTests: XCTestCase {
         }, set: { value in
             isRecoveryPassword = value
         })
-        
+
         let data = ResetPassword(success: true, responseText: "Success")
-        Given(interactor, .resetPassword(email: .any, willReturn: data))
+        interactor.resetPasswordHandler = { _ in data }
 
         await viewModel.resetPassword(email: "edxUser@edx.com", isRecovered: binding)
 
-        Verify(interactor, 1, .resetPassword(email: .any))
+        XCTAssertEqual(interactor.resetPasswordCallCount, 1)
 
         XCTAssertFalse(isRecoveryPassword)
         XCTAssertEqual(viewModel.errorMessage, nil)
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(isRecoveryPassword, false)
     }
-    
+
     func testResetPasswordErrorValidation() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -86,7 +85,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
         let validationError = CustomValidationError(statusCode: 400, data: ["value": validationErrorMessage])
         let error = AFError.responseValidationFailed(reason: AFError.ResponseValidationFailureReason.customValidationFailed(error: validationError))
 
-        Given(interactor, .resetPassword(email: .any, willThrow: error))
+        interactor.resetPasswordHandler = { _ in throw error }
 
         var isRecoveryPassword = true
         let binding = Binding(get: {
@@ -97,13 +96,13 @@ final class ResetPasswordViewModelTests: XCTestCase {
 
         await viewModel.resetPassword(email: "edxUser@edx.com", isRecovered: binding)
 
-        Verify(interactor, 1, .resetPassword(email: .any))
+        XCTAssertEqual(interactor.resetPasswordCallCount, 1)
 
         XCTAssertEqual(viewModel.errorMessage, validationErrorMessage)
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(isRecoveryPassword, true)
     }
-    
+
     func testResetPasswordErrorInvalidGrant() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -114,7 +113,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                validator: validator)
 
-        Given(interactor, .resetPassword(email: .any, willThrow: APIError.invalidGrant))
+        interactor.resetPasswordHandler = { _ in throw APIError.invalidGrant }
 
         var isRecoveryPassword = true
         let binding = Binding(get: {
@@ -125,13 +124,13 @@ final class ResetPasswordViewModelTests: XCTestCase {
 
         await viewModel.resetPassword(email: "edxUser@edx.com", isRecovered: binding)
 
-        Verify(interactor, 1, .resetPassword(email: .any))
+        XCTAssertEqual(interactor.resetPasswordCallCount, 1)
 
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.invalidCredentials)
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(isRecoveryPassword, true)
     }
-    
+
     func testResetPasswordErrorUnknown() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -142,7 +141,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
                                                analytics: analytics,
                                                validator: validator)
 
-        Given(interactor, .resetPassword(email: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
+        interactor.resetPasswordHandler = { _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
 
         var isRecoveryPassword = true
         let binding = Binding(get: {
@@ -153,13 +152,13 @@ final class ResetPasswordViewModelTests: XCTestCase {
 
         await viewModel.resetPassword(email: "edxUser@edx.com", isRecovered: binding)
 
-        Verify(interactor, 1, .resetPassword(email: .any))
+        XCTAssertEqual(interactor.resetPasswordCallCount, 1)
 
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertEqual(viewModel.isShowProgress, false)
         XCTAssertEqual(isRecoveryPassword, true)
     }
-    
+
     func testResetPasswordNoInternetError() async throws {
         let interactor = AuthInteractorProtocolMock()
         let router = AuthorizationRouterMock()
@@ -172,7 +171,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
-        Given(interactor, .resetPassword(email: .any, willThrow: noInternetError))
+        interactor.resetPasswordHandler = { _ in throw noInternetError }
 
         var isRecoveryPassword = true
         let binding = Binding(get: {
@@ -183,7 +182,7 @@ final class ResetPasswordViewModelTests: XCTestCase {
 
         await viewModel.resetPassword(email: "edxUser@edx.com", isRecovered: binding)
 
-        Verify(interactor, 1, .resetPassword(email: .any))
+        XCTAssertEqual(interactor.resetPasswordCallCount, 1)
 
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertEqual(viewModel.isShowProgress, false)

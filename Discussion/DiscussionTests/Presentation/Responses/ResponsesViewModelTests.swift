@@ -2,10 +2,9 @@
 //  ResponsesViewModelTests.swift
 //  DiscussionTests
 //
-//  Created by  Stepanok Ivan on 31.01.2023.
+//  Created by  Stepanok Ivan on 31.01.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discussion
@@ -14,7 +13,7 @@ import SwiftUI
 
 @MainActor
 final class ResponsesViewModelTests: XCTestCase {
-    
+
     let userComments = [
         UserComment(authorName: "1",
                     authorAvatar: "1",
@@ -62,7 +61,7 @@ final class ResponsesViewModelTests: XCTestCase {
                     parentID: nil,
                     abuseFlagged: false)
     ]
-    
+
     let post = Post(authorName: "1",
                     authorAvatar: "1",
                     postDate: Date(),
@@ -103,8 +102,12 @@ final class ResponsesViewModelTests: XCTestCase {
     func testGetCommentsSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         var result = false
+
+        interactor.getCommentResponsesHandler = { _, _ in
+            (self.userComments, Pagination(next: "", previous: "", count: 1, numPages: 1))
+        }
 
         let viewModel = ResponsesViewModel(courseID: "courseID",
                                            interactor: interactor,
@@ -113,28 +116,26 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: CoreStorageMock(),
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
-        
-        Given(interactor, .getCommentResponses(commentID: .any, page: .any,
-                                               willReturn: (userComments, Pagination(next: "",
-                                                                                     previous: "",
-                                                                                     count: 1,
-                                                                                     numPages: 1))))
-        
+
         result = await viewModel.getResponsesData(commentID: "1", parentComment: post, page: 1)
-        
-        Verify(interactor, .getCommentResponses(commentID: .any, page: .any))
-        
+
+        XCTAssertEqual(interactor.getCommentResponsesCallCount, 1)
+
         XCTAssertTrue(result)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testGetCommentsNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         var result = false
+
+        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
+
+        interactor.getCommentResponsesHandler = { _, _ in throw noInternetError }
 
         let viewModel = ResponsesViewModel(courseID: "courseID",
                                            interactor: interactor,
@@ -143,27 +144,25 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: CoreStorageMock(),
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
-        
-        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(interactor, .getCommentResponses(commentID: .any, page: .any, willThrow: noInternetError))
-        
+
         result = await viewModel.getResponsesData(commentID: "1", parentComment: post, page: 1)
-        
-        Verify(interactor, .getCommentResponses(commentID: .any, page: .any))
-        
+
+        XCTAssertEqual(interactor.getCommentResponsesCallCount, 1)
+
         XCTAssertFalse(result)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
         XCTAssertNotNil(viewModel.errorMessage)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
     }
-    
+
     func testGetCommentsUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
         var result = false
+
+        interactor.getCommentResponsesHandler = { _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
 
         let viewModel = ResponsesViewModel(courseID: "courseID",
                                            interactor: interactor,
@@ -172,13 +171,11 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: CoreStorageMock(),
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
-        
-        Given(interactor, .getCommentResponses(commentID: .any, page: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+
         result = await viewModel.getResponsesData(commentID: "1", parentComment: post, page: 1)
-        
-        Verify(interactor, .getCommentResponses(commentID: .any, page: .any))
-        
+
+        XCTAssertEqual(interactor.getCommentResponsesCallCount, 1)
+
         XCTAssertFalse(result)
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
@@ -189,7 +186,9 @@ final class ResponsesViewModelTests: XCTestCase {
     func testPostCommentSuccess() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
+
+        interactor.addCommentToHandler = { _, _, _ in self.post }
 
         let viewModel = ResponsesViewModel(courseID: "courseID",
                                            interactor: interactor,
@@ -198,22 +197,24 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: CoreStorageMock(),
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
-        
-        Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willReturn: post))
-        
+
         await viewModel.postComment(threadID: "1", rawBody: "1", parentID: nil)
-        
-        Verify(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any))
-        
+
+        XCTAssertEqual(interactor.addCommentToCallCount, 1)
+
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)
         XCTAssertFalse(viewModel.isShowProgress)
     }
-    
+
     func testPostCommentNoInternetError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
+
+        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
+
+        interactor.addCommentToHandler = { _, _, _ in throw noInternetError }
 
         let viewModel = ResponsesViewModel(courseID: "courseID",
                                            interactor: interactor,
@@ -222,24 +223,22 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: CoreStorageMock(),
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
-        
-        let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-        
-        Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willThrow: noInternetError))
-        
+
         await viewModel.postComment(threadID: "1", rawBody: "1", parentID: nil)
-        
-        Verify(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any))
-        
+
+        XCTAssertEqual(interactor.addCommentToCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
     }
-    
+
     func testPostCommentUnknownError() async throws {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
+
+        interactor.addCommentToHandler = { _, _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
 
         let viewModel = ResponsesViewModel(courseID: "courseID",
                                            interactor: interactor,
@@ -248,22 +247,24 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: CoreStorageMock(),
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
-        
-        Given(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
 
         await viewModel.postComment(threadID: "1", rawBody: "1", parentID: nil)
-        
-        Verify(interactor, .addCommentTo(threadID: .any, rawBody: .any, parentID: .any))
-        
+
+        XCTAssertEqual(interactor.addCommentToCallCount, 1)
+
         XCTAssertFalse(viewModel.isShowProgress)
         XCTAssertTrue(viewModel.showError)
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
     }
-    
+
     func testFetchMorePosts() async {
         let interactor = DiscussionInteractorProtocolMock()
         let router = DiscussionRouterMock()
-        let config = ConfigMock()
+        let config = ConfigProtocolMock()
+
+        interactor.getCommentResponsesHandler = { _, _ in
+            (self.userComments, Pagination(next: "", previous: "", count: 1, numPages: 1))
+        }
 
         let viewModel = ResponsesViewModel(courseID: "courseID",
                                            interactor: interactor,
@@ -272,20 +273,14 @@ final class ResponsesViewModelTests: XCTestCase {
                                            storage: CoreStorageMock(),
                                            threadStateSubject: .init(.postAdded(id: "1")),
                                            analytics: DiscussionAnalyticsMock())
-        
+
         viewModel.totalPages = 2
         viewModel.comments = userComments
-        
-        Given(interactor, .getCommentResponses(commentID: .any, page: .any,
-                                               willReturn: (userComments, Pagination(next: "",
-                                                                                     previous: "",
-                                                                                     count: 1,
-                                                                                     numPages: 1))))
-        
+
         await viewModel.fetchMorePosts(commentID: "1", parentComment: post, index: 0)
-        
-        Verify(interactor, .getCommentResponses(commentID: .any, page: .any))
-        
+
+        XCTAssertEqual(interactor.getCommentResponsesCallCount, 1)
+
         XCTAssertEqual(viewModel.comments.count, (userComments + userComments).count)
         XCTAssertFalse(viewModel.showError)
         XCTAssertNil(viewModel.errorMessage)

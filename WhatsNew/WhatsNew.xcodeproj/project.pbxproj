@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		020A7B5F2AE131A9000BAF70 /* WhatsNewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020A7B5E2AE131A9000BAF70 /* WhatsNewModel.swift */; };
 		020A7B612AE136D2000BAF70 /* WhatsNew.json in Resources */ = {isa = PBXBuildFile; fileRef = 020A7B602AE136D2000BAF70 /* WhatsNew.json */; };
-		020AC2692AEBB69E0086E975 /* WhatsNewMock.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020AC2682AEBB69E0086E975 /* WhatsNewMock.generated.swift */; };
 		028A37262ADFF3F8008CA604 /* WhatsNew.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028A371D2ADFF3F7008CA604 /* WhatsNew.framework */; };
 		028A372B2ADFF3F8008CA604 /* WhatsNewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028A372A2ADFF3F8008CA604 /* WhatsNewTests.swift */; };
 		028A373A2ADFF425008CA604 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 028A37392ADFF425008CA604 /* Core.framework */; };
@@ -25,6 +24,7 @@
 		02EC90AA2AE904E1007DE1E0 /* WhatsNewStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EC90A92AE904E1007DE1E0 /* WhatsNewStorage.swift */; };
 		02EC90AC2AE90C64007DE1E0 /* WhatsNewPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02EC90AB2AE90C64007DE1E0 /* WhatsNewPage.swift */; };
 		14769D3E2B99713800AB36D4 /* WhatsNewAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14769D3D2B99713800AB36D4 /* WhatsNewAnalytics.swift */; };
+		A5B468172F29DFCB002A4ECA /* WhatsNewMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B468152F29DFCB002A4ECA /* WhatsNewMocks.generated.swift */; };
 		B3BB9B06B226989A619C6440 /* Pods_App_WhatsNew.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05AC45C7050E30F8394E0C76 /* Pods_App_WhatsNew.framework */; };
 		CE7CAF352CC1560900E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF342CC1560900E0AC9D /* OEXFoundation */; };
 		CEB1E2672CC14E6400921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E2662CC14E6400921517 /* OEXFoundation */; };
@@ -57,7 +57,6 @@
 /* Begin PBXFileReference section */
 		020A7B5E2AE131A9000BAF70 /* WhatsNewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewModel.swift; sourceTree = "<group>"; };
 		020A7B602AE136D2000BAF70 /* WhatsNew.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = WhatsNew.json; path = WhatsNew/Data/WhatsNew.json; sourceTree = SOURCE_ROOT; };
-		020AC2682AEBB69E0086E975 /* WhatsNewMock.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WhatsNewMock.generated.swift; path = WhatsNewTests/WhatsNewMock.generated.swift; sourceTree = SOURCE_ROOT; };
 		028A371D2ADFF3F7008CA604 /* WhatsNew.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = WhatsNew.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		028A37252ADFF3F7008CA604 /* WhatsNewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WhatsNewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		028A372A2ADFF3F8008CA604 /* WhatsNewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewTests.swift; sourceTree = "<group>"; };
@@ -87,6 +86,7 @@
 		9844714991FA40ECDC228CC9 /* Pods-App-WhatsNew.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-WhatsNew.releasedev.xcconfig"; path = "Target Support Files/Pods-App-WhatsNew/Pods-App-WhatsNew.releasedev.xcconfig"; sourceTree = "<group>"; };
 		A2CABA11F5E7F89EFD9A05AC /* Pods-App-WhatsNew-WhatsNewTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-WhatsNew-WhatsNewTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-WhatsNew-WhatsNewTests/Pods-App-WhatsNew-WhatsNewTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 		A557A3CED4D6327AAE6AA02C /* Pods-App-WhatsNew-WhatsNewTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-WhatsNew-WhatsNewTests.release.xcconfig"; path = "Target Support Files/Pods-App-WhatsNew-WhatsNewTests/Pods-App-WhatsNew-WhatsNewTests.release.xcconfig"; sourceTree = "<group>"; };
+		A5B468152F29DFCB002A4ECA /* WhatsNewMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewMocks.generated.swift; sourceTree = "<group>"; };
 		A76975E21FF282D59CEC4452 /* Pods-App-WhatsNew.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-WhatsNew.debugprod.xcconfig"; path = "Target Support Files/Pods-App-WhatsNew/Pods-App-WhatsNew.debugprod.xcconfig"; sourceTree = "<group>"; };
 		AB8156676C9C771D691ADE07 /* Pods-App-WhatsNew.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-WhatsNew.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-WhatsNew/Pods-App-WhatsNew.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		B7EAC5E8F0ED2F1F81050C30 /* Pods-App-WhatsNew-WhatsNewTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-WhatsNew-WhatsNewTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-WhatsNew-WhatsNewTests/Pods-App-WhatsNew-WhatsNewTests.debugprod.xcconfig"; sourceTree = "<group>"; };
@@ -165,8 +165,8 @@
 		028A37292ADFF3F8008CA604 /* WhatsNewTests */ = {
 			isa = PBXGroup;
 			children = (
+				A5B468162F29DFCB002A4ECA /* Generated */,
 				02EC90B52AE92AEB007DE1E0 /* Presentation */,
-				020AC2682AEBB69E0086E975 /* WhatsNewMock.generated.swift */,
 			);
 			path = WhatsNewTests;
 			sourceTree = "<group>";
@@ -252,6 +252,14 @@
 			path = ../Pods;
 			sourceTree = "<group>";
 		};
+		A5B468162F29DFCB002A4ECA /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				A5B468152F29DFCB002A4ECA /* WhatsNewMocks.generated.swift */,
+			);
+			path = Generated;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -293,7 +301,6 @@
 				028A37212ADFF3F7008CA604 /* Sources */,
 				028A37222ADFF3F7008CA604 /* Frameworks */,
 				028A37232ADFF3F7008CA604 /* Resources */,
-				8A74692D666D8FF13F7BA64F /* [CP] Copy Pods Resources */,
 				CE7CAF372CC1560900E0AC9D /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -410,27 +417,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8A74692D666D8FF13F7BA64F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-WhatsNew-WhatsNewTests/Pods-App-WhatsNew-WhatsNewTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-WhatsNew-WhatsNewTests/Pods-App-WhatsNew-WhatsNewTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-WhatsNew-WhatsNewTests/Pods-App-WhatsNew-WhatsNewTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		E5055BD989FEEC50EF87C814 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -478,7 +464,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				028A372B2ADFF3F8008CA604 /* WhatsNewTests.swift in Sources */,
-				020AC2692AEBB69E0086E975 /* WhatsNewMock.generated.swift in Sources */,
+				A5B468172F29DFCB002A4ECA /* WhatsNewMocks.generated.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -647,7 +633,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -686,7 +672,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -715,7 +701,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -736,7 +722,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -832,7 +818,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -862,7 +848,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -958,7 +944,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -988,7 +974,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1084,7 +1070,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1114,7 +1100,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1203,7 +1189,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1232,7 +1218,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1321,7 +1307,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1350,7 +1336,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1439,7 +1425,7 @@
 				INFOPLIST_FILE = WhatsNew/Info.plist;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1468,7 +1454,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = L8PG7LC3Y3;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.app.WhatsNewTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";

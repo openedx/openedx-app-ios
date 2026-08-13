@@ -9,7 +9,7 @@ import Combine
 import Core
 import Foundation
 
-//sourcery: AutoMockable
+/// @mockable
 public protocol CourseDownloadHelperProtocol: Sendable {
     var value: CourseDownloadValue? { get }
     var courseStructure: CourseStructure? { get set }
@@ -82,18 +82,21 @@ public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecke
     public init (courseStructure: CourseStructure?, manager: DownloadManagerProtocol) {
         self.manager = manager
         self.courseStructure = courseStructure
+        
         manager.eventPublisher()
             .sink { [weak self] state in
                 guard let self else { return }
 
                 self.queue.async {[weak self] in
                     if case let .progress(currentTask) = state {
-                        if let value = self?.value {
-                            var newValue = value
-                            newValue.setCurrentDownloadTask(task: currentTask)
-                            self?.value = newValue
+                        Task { @MainActor [weak self] in
+                            if let value = self?.value {
+                                var newValue = value
+                                newValue.setCurrentDownloadTask(task: currentTask)
+                                self?.value = newValue
+                            }
+                            self?.sourceProgressPublisher.send(currentTask)
                         }
-                        self?.sourceProgressPublisher.send(currentTask)
                         return
                     }
                     
@@ -114,8 +117,12 @@ public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecke
     }
 
     public func refreshValue() async {
-        guard let courseStructure else { return }
+        guard let courseStructure else {
+            return
+        }
+        
         let downloadTasks = await manager.getDownloadTasks()
+        
         await enumerate(
             tasks: downloadTasks,
             courseStructure: courseStructure,
@@ -154,7 +161,10 @@ public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecke
     ) async {
         await withCheckedContinuation { continuation in
             queue.async {[weak self] in
-                guard let self else { return }
+                guard let self else {
+                    continuation.resume()
+                    return
+                }
                 let notFinishedTasks: [DownloadDataTask] = tasks.filter { $0.state != .finished }
                     .sorted(by: { $0.state.order < $1.state.order })
                 let courseDownloadTasks = tasks.filter { $0.courseId == courseStructure.id }
@@ -253,11 +263,11 @@ public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecke
                     state: downloadState
                 )
 
-                self.value = value
-                DispatchQueue.main.async {
-                    self.sourcePublisher.send(value)
+                Task { @MainActor [weak self] in
+                    self?.value = value
+                    self?.sourcePublisher.send(value)
                 }
-
+                
                 continuation.resume()
             }
         }

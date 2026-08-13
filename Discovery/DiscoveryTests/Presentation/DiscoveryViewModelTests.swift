@@ -2,10 +2,9 @@
 //  DiscoveryUnitTests.swift
 //  DiscoveryUnitTests
 //
-//  Created by  Stepanok Ivan on 17.01.2023.
+//  Created by  Stepanok Ivan on 17.01.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discovery
@@ -22,17 +21,19 @@ final class DiscoveryViewModelTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-    
+
     func testGetDiscoveryCourses() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
-                                           config: ConfigMock(),
-                                           interactor: interactor,
-                                           connectivity: connectivity,
-                                           analytics: analytics,
-                                           storage: CoreStorageMock())
+        let viewModel = DiscoveryViewModel(
+            router: DiscoveryRouterMock(),
+            config: ConfigMock(),
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
 
         let items = [
             CourseItem(name: "Test",
@@ -69,26 +70,28 @@ final class DiscoveryViewModelTests: XCTestCase {
         viewModel.courses = items + items + items
         viewModel.totalPages = 2
 
-        Given(interactor, .discovery(page: 1, willReturn: items))
+        interactor.discoveryHandler = { _ in items }
 
         await viewModel.getDiscoveryCourses(index: 3)
 
-        Verify(interactor, 1, .discovery(page: 1))
+        XCTAssertEqual(interactor.discoveryCallCount, 1)
 
         XCTAssertFalse(viewModel.showError)
         XCTAssertEqual(viewModel.totalPages, 2)
     }
-    
+
     func testDiscoverySuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
-                                           config: ConfigMock(),
-                                           interactor: interactor,
-                                           connectivity: connectivity,
-                                           analytics: analytics,
-                                           storage: CoreStorageMock())
+        let viewModel = DiscoveryViewModel(
+            router: DiscoveryRouterMock(),
+            config: ConfigMock(),
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
         let items = [
             CourseItem(name: "Test",
                        org: "org",
@@ -122,27 +125,29 @@ final class DiscoveryViewModelTests: XCTestCase {
                        progressPossible: 0)
         ]
 
-        Given(interactor, .discovery(page: 1, willReturn: items))
+        interactor.discoveryHandler = { _ in items }
 
         await viewModel.discovery(page: 1)
 
-        Verify(interactor, 1, .discovery(page: 1))
+        XCTAssertEqual(interactor.discoveryCallCount, 1)
 
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
         XCTAssertEqual(viewModel.nextPage, 2)
     }
-    
+
     func testDiscoveryOfflineSuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
-                                           config: ConfigMock(),
-                                           interactor: interactor,
-                                           connectivity: connectivity,
-                                           analytics: analytics,
-                                           storage: CoreStorageMock())
+        let viewModel = DiscoveryViewModel(
+            router: DiscoveryRouterMock(),
+            config: ConfigMock(),
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
         let items = [
             CourseItem(name: "Test",
                        org: "org",
@@ -175,66 +180,70 @@ final class DiscoveryViewModelTests: XCTestCase {
                        progressEarned: 0,
                        progressPossible: 0)
         ]
-        
-        Given(connectivity, .isInternetAvaliable(getter: false))
-                        
-        Given(interactor, .discoveryOffline(willReturn: items))
-        
+
+        connectivity.isInternetAvaliable = false
+
+        interactor.discoveryOfflineHandler = { items }
+
         await viewModel.discovery(page: 1)
-        
-        Verify(interactor, 1, .discoveryOffline())
-        
+
+        XCTAssertEqual(interactor.discoveryOfflineCallCount, 1)
+
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
         XCTAssertEqual(viewModel.nextPage, 2)
     }
-    
+
     func testDiscoveryNoInternetError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
-                                           config: ConfigMock(),
-                                           interactor: interactor,
-                                           connectivity: connectivity,
-                                           analytics: analytics,
-                                           storage: CoreStorageMock())
-        
+        let viewModel = DiscoveryViewModel(
+            router: DiscoveryRouterMock(),
+            config: ConfigMock(),
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
+
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
-                        
-        Given(interactor, .discovery(page: 1, willThrow: noInternetError))
-        
+
+        interactor.discoveryHandler = { _ in throw noInternetError }
+
         await viewModel.discovery(page: 1)
-        
-        Verify(interactor, 1, .discovery(page: 1))
-        
+
+        XCTAssertEqual(interactor.discoveryCallCount, 1)
+
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.slowOrNoInternetConnection)
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testDiscoveryUnknownError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
-        let viewModel = DiscoveryViewModel(router: DiscoveryRouterMock(),
-                                           config: ConfigMock(),
-                                           interactor: interactor,
-                                           connectivity: connectivity,
-                                           analytics: analytics,
-                                           storage: CoreStorageMock())
-        
+        let viewModel = DiscoveryViewModel(
+            router: DiscoveryRouterMock(),
+            config: ConfigMock(),
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            storage: CoreStorageMock()
+        )
+
         let noInternetError = AFError.sessionInvalidated(error: NSError())
-                        
-        Given(interactor, .discovery(page: 1, willThrow: noInternetError))
-        
+
+        interactor.discoveryHandler = { _ in throw noInternetError }
+
         await viewModel.discovery(page: 1)
-        
-        Verify(interactor, 1, .discovery(page: 1))
-        
+
+        XCTAssertEqual(interactor.discoveryCallCount, 1)
+
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
 }

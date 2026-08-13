@@ -86,7 +86,7 @@ struct ProfileBottomSheet: View {
                 VStack(alignment: .center, spacing: 4) {
                     HStack(alignment: .center) {
                         RoundedRectangle(cornerRadius: 2, style: .circular)
-                            .foregroundColor(Theme.Colors.textSecondary)
+                            .foregroundColor(Theme.Colors.secondaryContentColor)
                             .frame(width: 31, height: 4)
                             .padding(.top, 4)
                     }

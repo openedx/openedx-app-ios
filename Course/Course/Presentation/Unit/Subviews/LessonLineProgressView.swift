@@ -9,7 +9,7 @@ import SwiftUI
 import Theme
 
 struct LessonLineProgressView: View {
-    @ObservedObject var viewModel: CourseUnitViewModel
+    var viewModel: CourseUnitViewModel
 
     @Environment(\.isHorizontal) private var isHorizontal
 

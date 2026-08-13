@@ -11,7 +11,7 @@ import Theme
 
 public struct AppReviewView: View {
         
-    @ObservedObject private var viewModel: AppReviewViewModel
+    @Bindable private var viewModel: AppReviewViewModel
 
     @Environment(\.isHorizontal) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
@@ -92,7 +92,7 @@ public struct AppReviewView: View {
                                     if viewModel.feedback.isEmpty {
                                         Text(CoreLocalization.Review.better)
                                             .font(Theme.Fonts.bodyMedium)
-                                            .foregroundColor(Theme.Colors.textSecondary)
+                                            .foregroundColor(Theme.Colors.textInputPlaceholderColor)
                                             .padding(16)
                                     }
                                 }

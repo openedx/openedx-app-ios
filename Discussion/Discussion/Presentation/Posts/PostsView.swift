@@ -12,7 +12,7 @@ import Theme
 
 public struct PostsView: View {
     
-    @ObservedObject private var viewModel: PostsViewModel
+    private var viewModel: PostsViewModel
     @State private var showFilterSheet = false
     @State private var showSortSheet = false
     private let router: DiscussionRouter
@@ -244,6 +244,9 @@ public struct PostsView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
             )
+            .onDisappear {
+                viewModel.cleanup()
+            }
         }
     }
     
@@ -325,7 +328,7 @@ public struct PostsView: View {
 struct PostsView_Previews: PreviewProvider {
     static var previews: some View {
         let topics = Topics(coursewareTopics: [], nonCoursewareTopics: [])
-        let router = DiscussionRouterMock()
+        let router = DiscussionRouterPreviewMock()
         let vm = PostsViewModel(
             interactor: DiscussionInteractor.mock,
             router: router,

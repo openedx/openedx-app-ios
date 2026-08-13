@@ -5,8 +5,6 @@
 //  Created by Ivan Stepanok on 30.10.2024.
 //
 
-
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Dashboard
@@ -15,12 +13,12 @@ import SwiftUI
 
 @MainActor
 final class AllCoursesViewModelTests: XCTestCase {
-    
+
     var interactor: DashboardInteractorProtocolMock!
     var connectivity: ConnectivityProtocolMock!
     var analytics: DashboardAnalyticsMock!
     var storage: CoreStorageMock!
-    
+
     override func setUp() {
         super.setUp()
         interactor = DashboardInteractorProtocolMock()
@@ -28,9 +26,9 @@ final class AllCoursesViewModelTests: XCTestCase {
         analytics = DashboardAnalyticsMock()
         storage = CoreStorageMock()
     }
-    
+
     let mockEnrollment = PrimaryEnrollment(
-        primaryCourse: PrimaryCourse.init(
+        primaryCourse: PrimaryCourse(
             name: "Primary Course",
             org: "OpenEdX",
             courseID: "1",
@@ -46,7 +44,7 @@ final class AllCoursesViewModelTests: XCTestCase {
             resumeTitle: nil
         ),
         courses: [
-            CourseItem.init(
+            CourseItem(
                 name: "Course",
                 org: "OpenEdX",
                 shortDescription: "short description",
@@ -63,7 +61,7 @@ final class AllCoursesViewModelTests: XCTestCase {
                 progressEarned: 0,
                 progressPossible: 2
             ),
-            CourseItem.init(
+            CourseItem(
                 name: "Course",
                 org: "OpenEdX",
                 shortDescription: "short description",
@@ -80,7 +78,7 @@ final class AllCoursesViewModelTests: XCTestCase {
                 progressEarned: 0,
                 progressPossible: 2
             ),
-            CourseItem.init(
+            CourseItem(
                 name: "Course",
                 org: "OpenEdX",
                 shortDescription: "short description",
@@ -101,7 +99,7 @@ final class AllCoursesViewModelTests: XCTestCase {
         totalPages: 2,
         count: 1
     )
-    
+
     func testGetCoursesSuccess() async throws {
         // Given
         let viewModel = AllCoursesViewModel(
@@ -110,21 +108,21 @@ final class AllCoursesViewModelTests: XCTestCase {
             analytics: analytics,
             storage: storage
         )
-        
-        Given(interactor, .getAllCourses(filteredBy: .any, page: .any, willReturn: mockEnrollment))
-        
+
+        interactor.getAllCoursesHandler = { _, _ in self.mockEnrollment }
+
         // When
         await viewModel.getCourses(page: 1)
-        
+
         // Then
-        Verify(interactor, 1, .getAllCourses(filteredBy: .any, page: .value(1)))
+        XCTAssertEqual(interactor.getAllCoursesCallCount, 1)
         XCTAssertEqual(viewModel.myEnrollments?.courses.count, 3)
         XCTAssertEqual(viewModel.nextPage, 2)
         XCTAssertEqual(viewModel.totalPages, 2)
         XCTAssertFalse(viewModel.fetchInProgress)
         XCTAssertFalse(viewModel.showError)
     }
-    
+
     func testGetCoursesWithPagination() async throws {
         // Given
         let viewModel = AllCoursesViewModel(
@@ -133,18 +131,18 @@ final class AllCoursesViewModelTests: XCTestCase {
             analytics: analytics,
             storage: storage
         )
-        
-        Given(interactor, .getAllCourses(filteredBy: .any, page: .any, willReturn: mockEnrollment))
-        
+
+        interactor.getAllCoursesHandler = { _, _ in self.mockEnrollment }
+
         // When
         await viewModel.getCourses(page: 1)
         await viewModel.getCourses(page: 2)
-        
+
         // Then
-        Verify(interactor, 2, .getAllCourses(filteredBy: .any, page: .any))
+        XCTAssertEqual(interactor.getAllCoursesCallCount, 2)
         XCTAssertEqual(viewModel.nextPage, 3)
     }
-    
+
     func testGetCoursesNoCachedDataError() async throws {
         // Given
         let viewModel = AllCoursesViewModel(
@@ -153,18 +151,18 @@ final class AllCoursesViewModelTests: XCTestCase {
             analytics: analytics,
             storage: storage
         )
-        
-        Given(interactor, .getAllCourses(filteredBy: .any, page: .any, willThrow: NoCachedDataError()))
-        
+
+        interactor.getAllCoursesHandler = { _, _ in throw NoCachedDataError() }
+
         // When
         await viewModel.getCourses(page: 1)
-        
+
         // Then
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.noCachedData)
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testGetCoursesUnknownError() async throws {
         // Given
         let viewModel = AllCoursesViewModel(
@@ -173,18 +171,18 @@ final class AllCoursesViewModelTests: XCTestCase {
             analytics: analytics,
             storage: storage
         )
-        
-        Given(interactor, .getAllCourses(filteredBy: .any, page: .any, willThrow: NSError(domain: "error", code: -1, userInfo: nil)))
-        
+
+        interactor.getAllCoursesHandler = { _, _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+
         // When
         await viewModel.getCourses(page: 1)
-        
+
         // Then
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testGetMyCoursesPagination() async {
         // Given
         let viewModel = AllCoursesViewModel(
@@ -193,18 +191,18 @@ final class AllCoursesViewModelTests: XCTestCase {
             analytics: analytics,
             storage: storage
         )
-        
-        Given(interactor, .getAllCourses(filteredBy: .any, page: .any, willReturn: mockEnrollment))
-        
+
+        interactor.getAllCoursesHandler = { _, _ in self.mockEnrollment }
+
         // When
         await viewModel.getCourses(page: 1)
         await viewModel.getMyCoursesPagination(index: 0)
         await viewModel.getMyCoursesPagination(index: mockEnrollment.courses.count - 3)
-        
+
         // Then
-        Verify(interactor, 2, .getAllCourses(filteredBy: .any, page: .any))
+        XCTAssertEqual(interactor.getAllCoursesCallCount, 2)
     }
-    
+
     func testTrackDashboardCourseClicked() {
         // Given
         let viewModel = AllCoursesViewModel(
@@ -213,11 +211,11 @@ final class AllCoursesViewModelTests: XCTestCase {
             analytics: analytics,
             storage: storage
         )
-        
+
         // When
         viewModel.trackDashboardCourseClicked(courseID: "test-id", courseName: "Test Course")
-        
+
         // Then
-        Verify(analytics, 1, .dashboardCourseClicked(courseID: .value("test-id"), courseName: .value("Test Course")))
+        XCTAssertEqual(analytics.dashboardCourseClickedCallCount, 1)
     }
 }

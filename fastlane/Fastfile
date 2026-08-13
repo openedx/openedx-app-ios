@@ -10,12 +10,14 @@
 #     https://docs.fastlane.tools/plugins/available-plugins
 #
 
-# Uncomment the line if you want fastlane to automatically update itself
-update_fastlane
+# Do not enable update_fastlane here. In CI it self-updates fastlane at runtime,
+# so the version pinned in Gemfile.lock is not the version that actually runs,
+# and the RubyGems documentation hook it triggers pulls in rdoc, which fails to
+# load under bundler.
 
 before_all do
   xcodes(
-    version: '16.4',
+    version: '26.2',
     select_for_current_build_only: true,
   )
 

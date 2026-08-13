@@ -12,15 +12,12 @@ import Theme
 public struct WhatsNewView: View {
     
     private let router: WhatsNewRouter
-    
-    @ObservedObject
-    private var viewModel: WhatsNewViewModel
-    
+
+    @Bindable private var viewModel: WhatsNewViewModel
+
     @Environment(\.isHorizontal)
     private var isHorizontal
-    
-    @State var index = 0
-    
+
     public init(router: WhatsNewRouter, viewModel: WhatsNewViewModel) {
         self.router = router
         self.viewModel = viewModel
@@ -32,7 +29,7 @@ public struct WhatsNewView: View {
                 Theme.Colors.background
                     .ignoresSafeArea()
                 adaptiveStack(isHorizontal: isHorizontal) {
-                    TabView(selection: $index) {
+                    TabView(selection: $viewModel.viewIndex) {
                         ForEach(Array(viewModel.newItems.enumerated()), id: \.offset) { _, new in
                             adaptiveStack(isHorizontal: isHorizontal) {
                                 ZStack(alignment: .center) {
@@ -94,9 +91,9 @@ public struct WhatsNewView: View {
                         
                         HStack(spacing: 36) {
                             WhatsNewNavigationButton(type: .previous, action: {
-                                if index != 0 {
+                                if viewModel.viewIndex != 0 {
                                     withAnimation(.linear(duration: 0.3)) {
-                                        index -= 1
+                                        viewModel.viewIndex -= 1
                                     }
                                 }
                             })
@@ -105,9 +102,9 @@ public struct WhatsNewView: View {
                             WhatsNewNavigationButton(
                                 type: viewModel.index < viewModel.newItems.count - 1 ? .next : .done,
                                 action: {
-                                    if index < viewModel.newItems.count - 1 {
+                                    if viewModel.viewIndex < viewModel.newItems.count - 1 {
                                         withAnimation(.linear(duration: 0.3)) {
-                                            index += 1
+                                            viewModel.viewIndex += 1
                                         }
                                     } else {
                                         router.showMainOrWhatsNewScreen(
@@ -140,7 +137,7 @@ public struct WhatsNewView: View {
                         .accessibilityIdentifier("whatsnew_pagecontrol")
                 }
                 
-            }.onChange(of: index) { ind in
+            }.onChange(of: viewModel.viewIndex) { ind in
                 withAnimation(.linear(duration: 0.3)) {
                     viewModel.index = ind
                 }
@@ -180,8 +177,8 @@ struct WhatsNewView_Previews: PreviewProvider {
         WhatsNewView(
             router: WhatsNewRouterMock(),
             viewModel: WhatsNewViewModel(
-                storage: WhatsNewStorageMock(),
-                analytics: WhatsNewAnalyticsMock()
+                storage: WhatsNewStoragePreviewMock(),
+                analytics: WhatsNewAnalyticsPreviewMock()
             )
         )
         .loadFonts()

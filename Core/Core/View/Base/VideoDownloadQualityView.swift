@@ -9,12 +9,13 @@ import SwiftUI
 import Kingfisher
 import Theme
 
-public final class VideoDownloadQualityViewModel: ObservableObject {
+@Observable
+public final class VideoDownloadQualityViewModel {
 
     var didSelect: ((DownloadQuality) -> Void)?
     let downloadQuality = DownloadQuality.allCases
     
-    @Published var selectedDownloadQuality: DownloadQuality {
+    var selectedDownloadQuality: DownloadQuality {
         willSet {
             if newValue != selectedDownloadQuality {
                 didSelect?(newValue)
@@ -30,7 +31,6 @@ public final class VideoDownloadQualityViewModel: ObservableObject {
 
 public struct VideoDownloadQualityView: View {
 
-    @StateObject
     private var viewModel: VideoDownloadQualityViewModel
     private var analytics: CoreAnalytics
     private var router: BaseRouter
@@ -44,11 +44,9 @@ public struct VideoDownloadQualityView: View {
         router: BaseRouter,
         isModal: Bool = false
     ) {
-        self._viewModel = StateObject(
-            wrappedValue: .init(
-                downloadQuality: downloadQuality,
-                didSelect: didSelect
-            )
+        self.viewModel = VideoDownloadQualityViewModel(
+            downloadQuality: downloadQuality,
+            didSelect: didSelect
         )
         self.analytics = analytics
         self.router = router

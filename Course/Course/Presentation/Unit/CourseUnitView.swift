@@ -15,7 +15,7 @@ import Theme
 
 public struct CourseUnitView: View {
     
-    @ObservedObject public var viewModel: CourseUnitViewModel
+    public var viewModel: CourseUnitViewModel
     @State private var showAlert: Bool = false
     @State var alertMessage: String? {
         didSet {
@@ -190,12 +190,6 @@ public struct CourseUnitView: View {
                                 currentBlock: $currentBlock,
                                 block: block
                             )
-                            .onReceive(NotificationCenter.default.publisher(for:
-                                    .onVideoProgressUpdated)) { _ in
-                                Task {
-                                    await viewModel.getCourseVideoBlocks()
-                                }
-                            }
                         }
                     }
 
@@ -766,7 +760,7 @@ struct CourseUnitView_Previews: PreviewProvider {
             config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         ))

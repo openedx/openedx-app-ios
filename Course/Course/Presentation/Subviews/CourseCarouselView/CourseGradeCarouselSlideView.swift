@@ -5,8 +5,8 @@ import Core
 struct CourseGradeCarouselSlideView: View {
     
     // MARK: - Variables
-    @ObservedObject var viewModelProgress: CourseProgressViewModel
-    @ObservedObject var viewModelContainer: CourseContainerViewModel
+    @Bindable var viewModelProgress: CourseProgressViewModel
+    var viewModelContainer: CourseContainerViewModel
     
     // MARK: - Body
     var body: some View {
@@ -87,7 +87,7 @@ struct CourseGradeCarouselSlideView: View {
 
         return LazyVGrid(columns: columns, spacing: 16) {
             ForEach(
-                Array(viewModelProgress.assignmentPolicies.prefix(4).enumerated()),
+                Array(viewModelProgress.assignmentPolicies.enumerated()),
                 id: \.element.type
             ) { index, policy in
                 let progressData = viewModelProgress.getAssignmentProgress(
@@ -131,7 +131,7 @@ struct CourseGradeCarouselSlideView: View {
             interactor: CourseInteractor.mock,
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity()
+            connectivity: Connectivity(config: ConfigMock())
         ),
         viewModelContainer: CourseContainerViewModel(
             interactor: CourseInteractor.mock,
@@ -139,7 +139,7 @@ struct CourseGradeCarouselSlideView: View {
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
             config: ConfigMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             manager: DownloadManagerMock(),
             storage: CourseStorageMock(),
             isActive: true,

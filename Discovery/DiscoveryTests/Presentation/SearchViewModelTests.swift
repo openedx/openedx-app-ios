@@ -5,7 +5,6 @@
 //  Created by Paul Maul on 14.02.2023.
 //
 
-import SwiftyMocky
 import XCTest
 @testable import Core
 @testable import Discovery
@@ -22,21 +21,21 @@ final class SearchViewModelTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-    
+
     func testSearchSuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
             interactor: interactor,
             connectivity: connectivity,
             router: router,
-            analytics: analytics, 
+            analytics: analytics,
             storage: CoreStorageMock(),
             debounce: .test
         )
-        
+
         let items = [
             CourseItem(name: "Test",
                        org: "org",
@@ -70,24 +69,23 @@ final class SearchViewModelTests: XCTestCase {
                        progressPossible: 0)
         ]
 
-        Given(interactor, .search(page: 1, searchTerm: .any, willReturn: items))
+        interactor.searchHandler = { _, _ in items }
 
         viewModel.searchText = "Test"
-        
-        // Wait for debounce + next event loop iteration
-        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-        await Task.yield()
-        
-        Verify(interactor, .search(page: 1, searchTerm: .any))
-        Verify(analytics, .discoveryCoursesSearch(label: .any, coursesCount: .any))
+
+        // Wait for search to complete
+        try await Task.sleep(for: .milliseconds(10))
+
+        XCTAssertTrue(interactor.searchCallCount > 0)
+        XCTAssertTrue(analytics.discoveryCoursesSearchCallCount > 0)
 
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testSearchEmptyQuerySuccess() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
@@ -102,16 +100,16 @@ final class SearchViewModelTests: XCTestCase {
         viewModel.searchText = ""
 
         await Task.yield()
-        
-        Verify(interactor, 0, .search(page: 1, searchTerm: .any))
+
+        XCTAssertEqual(interactor.searchCallCount, 0)
 
         XCTAssertFalse(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
     }
-    
+
     func testSearchNoInternetError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
@@ -125,16 +123,14 @@ final class SearchViewModelTests: XCTestCase {
 
         let noInternetError = AFError.sessionInvalidated(error: URLError(.notConnectedToInternet))
 
-        Given(interactor, .search(page: .any, searchTerm: .any, willThrow: noInternetError))
-        
+        interactor.searchHandler = { _, _ in throw noInternetError }
+
         viewModel.searchText = "Test"
 
-        // Wait for debounce + next event loop iteration
-        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-        await Task.yield()
-        
-        
-        Verify(interactor, 1, .search(page: 1, searchTerm: .any))
+        // Wait for search to complete
+        try await Task.sleep(for: .milliseconds(10))
+
+        XCTAssertEqual(interactor.searchCallCount, 1)
 
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
@@ -143,7 +139,7 @@ final class SearchViewModelTests: XCTestCase {
 
     func testSearchUnknownError() async throws {
         let interactor = DiscoveryInteractorProtocolMock()
-        let connectivity = Connectivity()
+        let connectivity = Connectivity(config: ConfigMock())
         let analytics = DiscoveryAnalyticsMock()
         let router = DiscoveryRouterMock()
         let viewModel = SearchViewModel(
@@ -156,16 +152,15 @@ final class SearchViewModelTests: XCTestCase {
         )
 
         let unknownError = AFError.sessionInvalidated(error: NSError())
-        
-        Given(interactor, .search(page: .any, searchTerm: .any, willThrow: unknownError))
+
+        interactor.searchHandler = { _, _ in throw unknownError }
 
         viewModel.searchText = "Test"
-        
-        // Wait for debounce + next event loop iteration
-        try await Task.sleep(nanoseconds: UInt64(0.5 * Double(NSEC_PER_SEC)))
-        await Task.yield()
 
-        Verify(interactor, 1, .search(page: 1, searchTerm: .any))
+        // Wait for search to complete
+        try await Task.sleep(for: .milliseconds(10))
+
+        XCTAssertEqual(interactor.searchCallCount, 1)
 
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)

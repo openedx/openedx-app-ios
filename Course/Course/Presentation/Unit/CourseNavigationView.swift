@@ -11,7 +11,6 @@ import Combine
 
 struct CourseNavigationView: View {
     
-    @ObservedObject
     private var viewModel: CourseUnitViewModel
     private let playerStateSubject: CurrentValueSubject<VideoPlayerState?, Never>
 
@@ -201,7 +200,7 @@ struct CourseNavigationView_Previews: PreviewProvider {
             config: ConfigMock(),
             router: CourseRouterMock(),
             analytics: CourseAnalyticsMock(),
-            connectivity: Connectivity(),
+            connectivity: Connectivity(config: ConfigMock()),
             storage: CourseStorageMock(),
             manager: DownloadManagerMock()
         )

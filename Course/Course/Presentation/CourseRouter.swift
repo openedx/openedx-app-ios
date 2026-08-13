@@ -8,6 +8,7 @@
 import Foundation
 import Core
 
+/// @mockable
 @MainActor
 public protocol CourseRouter: BaseRouter {
     

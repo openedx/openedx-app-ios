@@ -20,9 +20,8 @@ public struct CreateNewThreadView: View {
     private var courseID: String
     
     @Environment(\.colorScheme) var colorScheme
-    
-    @ObservedObject
-    private var viewModel: CreateNewThreadViewModel
+
+    @Bindable private var viewModel: CreateNewThreadViewModel
     
     public init(
         viewModel: CreateNewThreadViewModel,
@@ -215,9 +214,9 @@ struct AddTopic_Previews: PreviewProvider {
     static var previews: some View {
         let vm = CreateNewThreadViewModel(
             interactor: DiscussionInteractor.mock,
-            router: DiscussionRouterMock(),
+            router: DiscussionRouterPreviewMock(),
             config: ConfigMock(),
-            analytics: DiscussionAnalyticsMock(),
+            analytics: DiscussionAnalyticsPreviewMock(),
             storage: CoreStorageMock()
         )
         
