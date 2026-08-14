@@ -1,7 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "Frame 4 1.svg",
+      "filename" : "applogologin_light.png",
+      "idiom" : "universal"
+    },
+    {
+      "appearances" : [
+        {
+          "appearance" : "luminosity",
+          "value" : "dark"
+        }
+      ],
+      "filename" : "applogologin_light 1.png",
       "idiom" : "universal"
     }
   ],

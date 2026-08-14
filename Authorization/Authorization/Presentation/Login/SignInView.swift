@@ -52,7 +52,7 @@ public struct SignInView: View {
                 ThemeAssets.appLogo.swiftUIImage
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 189, maxHeight: 89)
+                    .frame(maxWidth: 263, maxHeight: 76)
                     .padding(.top, isHorizontal ? 20 : 40)
                     .padding(.bottom, isHorizontal ? 10 : 40)
                     .accessibilityIdentifier("logo_image")

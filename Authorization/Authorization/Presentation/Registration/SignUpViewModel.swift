@@ -162,7 +162,11 @@ import MSAL
 
     private func configureFields() -> [String: String] {
         var validateFields: [String: String] = [:]
-        fields.forEach { validateFields[$0.field.name] = $0.text }
+        fields.forEach { field in
+            if field.field.required || !field.text.isEmpty {
+                validateFields[field.field.name] = field.text
+            }
+        }
         validateFields["honor_code"] = "true"
         validateFields["terms_of_service"] = "true"
         if let externalToken = externalToken, let backend = backend {

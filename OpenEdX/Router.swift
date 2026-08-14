@@ -137,11 +137,8 @@ public class Router: AuthorizationRouter,
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: true)
         } else {
-            let view = SignInView(
-                viewModel: Container.shared.resolve(
-                    SignInViewModel.self,
-                    argument: LogistrationSourceScreen.default
-                )!
+            let view = SandboxSplashView(
+                router: Container.shared.resolve(AuthorizationRouter.self)!
             )
             let controller = UIHostingController(rootView: view)
             navigationController.setViewControllers([controller], animated: false)

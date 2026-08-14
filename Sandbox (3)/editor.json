@@ -1,0 +1,83 @@
+{
+  "headerBg": {
+    "light": {
+      "type": "gradient",
+      "gradient": {
+        "top": "#b82669",
+        "bottom": "#22358c",
+        "reverse": false
+      },
+      "image": {
+        "source": "catalog",
+        "path": "assets/header-light.png",
+        "file": null,
+        "scale": 1,
+        "offsetY": 0,
+        "tint": null,
+        "tintOpacity": 0
+      }
+    },
+    "dark": {
+      "type": "gradient",
+      "gradient": {
+        "top": "#b82669",
+        "bottom": "#22358c",
+        "reverse": false
+      },
+      "image": {
+        "source": "catalog",
+        "path": "assets/header-dark.png",
+        "file": null,
+        "scale": 1,
+        "offsetY": 0,
+        "tint": null,
+        "tintOpacity": 0
+      }
+    }
+  },
+  "appIconOptions": {
+    "useBackground": true,
+    "bgColor": "#cc3366",
+    "makeWhite": true,
+    "scale": 1.2,
+    "androidScale": 1
+  },
+  "logoOptions": {
+    "loginScale": {
+      "light": 1,
+      "dark": 1
+    },
+    "makeWhite": {
+      "light": false,
+      "dark": false
+    }
+  },
+  "splashPad": {
+    "enabled": {
+      "light": false,
+      "dark": false
+    },
+    "color": {
+      "light": null,
+      "dark": null
+    },
+    "scale": {
+      "light": 1,
+      "dark": 1
+    }
+  },
+  "splashLogoOptions": {
+    "makeWhite": {
+      "light": false,
+      "dark": false
+    },
+    "squareIcon": {
+      "light": true,
+      "dark": true
+    }
+  },
+  "unify": {
+    "appLogoLogin": false,
+    "appLogoSplash": false
+  }
+}
