@@ -77,6 +77,39 @@ public class LMSDirectoryConfig: NSObject {
         return false
     }
 
+    /**
+     A stable identifier for the configured source.
+
+     Anything remembered *about* a source — the last mode the server reported, for
+     instance — is only meaningful while the source is the same one. Storing this
+     beside such a value is what lets a reader notice the build has been pointed
+     somewhere else and ignore what it remembers.
+     */
+    public var sourceKey: String {
+        switch source {
+        case let .service(url): return "service:\(url.absoluteString)"
+        case let .document(url): return "document:\(url.absoluteString)"
+        case let .bundledDocument(name): return "file:\(name)"
+        case .none: return ""
+        }
+    }
+
+    /**
+     Whether this build lists a fixed set of platforms, as far as the config alone
+     can say.
+
+     A document is always fixed. A service can be forced with DIRECTORY_MODE, but
+     otherwise only the server knows, and until it answers this is false.
+     */
+    public var isCuratedByConfiguration: Bool {
+        switch source {
+        case .document, .bundledDocument:
+            return true
+        case .service, .none:
+            return directoryMode.trimmingCharacters(in: .whitespaces).lowercased() == "curated"
+        }
+    }
+
     private var trimmedURL: String {
         directoryURL.trimmingCharacters(in: .whitespacesAndNewlines)
     }

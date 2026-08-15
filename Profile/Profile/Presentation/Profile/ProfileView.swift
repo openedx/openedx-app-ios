@@ -157,9 +157,8 @@ public struct ProfileView: View {
                 editProfileButton
                 // Reporting belongs to the universal app, where a stranger can list
                 // anything. A directory read from a document has no service to post
-                // to, and a curated one refuses reports — so neither offers it.
-                if viewModel.config.lmsDirectory.supportsReporting
-                    && !UserDefaults.standard.bool(forKey: "lmsDirectory.isCurated") {
+                // to, and a curated one vouches for its own platforms.
+                if LMSDirectoryState.canReport(for: viewModel.config.lmsDirectory) {
                     reportButton
                 }
                 Spacer()

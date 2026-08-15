@@ -1,5 +1,6 @@
 import Combine
 import Core
+import Swinject
 import Foundation
 
 @MainActor
@@ -115,7 +116,11 @@ final class LMSDirectoryViewModel: ObservableObject {
             await MainActor.run { self.isCurated = curated }
             // Share the mode so other tabs (e.g. Profile's "Report this LMS") can behave
             // correctly: a curated/institution registry has no trust-&-safety reporting.
-            UserDefaults.standard.set(curated, forKey: "lmsDirectory.isCurated")
+            // Stamped with the source it came from, so it is ignored if this build
+            // is later pointed somewhere else.
+            if let config = Container.shared.resolve(ConfigProtocol.self)?.lmsDirectory {
+                LMSDirectoryState.rememberCurated(curated, for: config)
+            }
             if curated {
                 await self.loadFeatured()
             }
