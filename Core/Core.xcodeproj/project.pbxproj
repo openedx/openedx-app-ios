@@ -132,6 +132,7 @@
 		315EFA6E6C806ECD7A37D51B /* LMSImageSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCAF519C51B689EAEEACA1C /* LMSImageSourceTests.swift */; };
 		3AA0380C24561FC1FC4E42AA /* ConfigLMSDirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05340946BE268A7D4BE1FD69 /* ConfigLMSDirectoryTests.swift */; };
 		5E58740A2AA9DF20F4644191 /* Pods_App_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33FA09A20AAE2B2A0BA89190 /* Pods_App_Core_CoreTests.framework */; };
+		82747331067960155ACCEC12 /* LMSDirectoryConfigSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43AD428CA5F0C0F77A330E72 /* LMSDirectoryConfigSourceTests.swift */; };
 		9784D47E2BF7762800AFEFFF /* FullScreenErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9784D47D2BF7762800AFEFFF /* FullScreenErrorView.swift */; };
 		A53A32352B233DEC005FE38A /* ThemeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53A32342B233DEC005FE38A /* ThemeConfig.swift */; };
 		A595689B2B6173DF00ED4F90 /* BranchConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A595689A2B6173DF00ED4F90 /* BranchConfig.swift */; };
@@ -347,6 +348,7 @@
 		3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		3BCAF519C51B689EAEEACA1C /* LMSImageSourceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMSImageSourceTests.swift; sourceTree = "<group>"; };
 		3C63D5D2247C793C259341B8 /* Pods-App-Core-CoreTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core-CoreTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests.releasedev.xcconfig"; sourceTree = "<group>"; };
+		43AD428CA5F0C0F77A330E72 /* LMSDirectoryConfigSourceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMSDirectoryConfigSourceTests.swift; sourceTree = "<group>"; };
 		5CEFA8766C44C519B86C681D /* Pods-App-Core-CoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core-CoreTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
 		8F3B171E9FA5E6F40B4890A8 /* Pods-App-Core-CoreTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core-CoreTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests.debugstage.xcconfig"; sourceTree = "<group>"; };
@@ -934,6 +936,7 @@
 				BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */,
 				05340946BE268A7D4BE1FD69 /* ConfigLMSDirectoryTests.swift */,
 				3BCAF519C51B689EAEEACA1C /* LMSImageSourceTests.swift */,
+				43AD428CA5F0C0F77A330E72 /* LMSDirectoryConfigSourceTests.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -1168,6 +1171,7 @@
 				CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */,
 				3AA0380C24561FC1FC4E42AA /* ConfigLMSDirectoryTests.swift in Sources */,
 				315EFA6E6C806ECD7A37D51B /* LMSImageSourceTests.swift in Sources */,
+				82747331067960155ACCEC12 /* LMSDirectoryConfigSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

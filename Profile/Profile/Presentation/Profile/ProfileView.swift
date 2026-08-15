@@ -155,9 +155,10 @@ public struct ProfileView: View {
                 }.padding(.all, 24)
                 profileInfo
                 editProfileButton
-                // No "Report this LMS" in curated/institution mode — you don't report
-                // your own organization's platforms (matches the registry hiding reports).
-                if viewModel.config.lmsDirectory.isDirectoryReachable
+                // Reporting belongs to the universal app, where a stranger can list
+                // anything. A directory read from a document has no service to post
+                // to, and a curated one refuses reports — so neither offers it.
+                if viewModel.config.lmsDirectory.supportsReporting
                     && !UserDefaults.standard.bool(forKey: "lmsDirectory.isCurated") {
                     reportButton
                 }

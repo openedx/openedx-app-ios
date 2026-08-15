@@ -61,6 +61,22 @@ public class LMSDirectoryConfig: NSObject {
         return url.pathExtension.lowercased() == "json" ? .document(url) : .service(url)
     }
 
+    /**
+     Whether this build can report a platform to anyone.
+
+     Reporting exists because the open catalog lets a stranger list anything; it
+     is part of the universal app, not of a provider's own list. A directory read
+     from a document has no service behind it at all, so there is nothing to post
+     to and the entry point must not appear.
+
+     A live service in curated mode also refuses reports, and is hidden separately
+     by the mode itself.
+     */
+    public var supportsReporting: Bool {
+        if case .service = source { return true }
+        return false
+    }
+
     private var trimmedURL: String {
         directoryURL.trimmingCharacters(in: .whitespacesAndNewlines)
     }
