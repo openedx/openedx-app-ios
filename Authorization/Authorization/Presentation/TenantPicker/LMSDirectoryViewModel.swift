@@ -119,7 +119,9 @@ final class LMSDirectoryViewModel: ObservableObject {
             // Stamped with the source it came from, so it is ignored if this build
             // is later pointed somewhere else.
             if let config = Container.shared.resolve(ConfigProtocol.self)?.lmsDirectory {
-                LMSDirectoryState.rememberCurated(curated, for: config)
+                await MainActor.run {
+                    LMSDirectoryState.shared.remember(curated ? .curated : .search, for: config)
+                }
             }
             if curated {
                 await self.loadFeatured()

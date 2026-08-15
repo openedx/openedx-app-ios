@@ -77,6 +77,16 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9639581B1C015752AD9739D2"
+               BuildableName = "LMSDirectoryUITests.xctest"
+               BlueprintName = "LMSDirectoryUITests"
+               ReferencedContainer = "container:OpenEdX.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "07169453296D913300E3DED6"
                BuildableName = "AuthorizationTests.xctest"
                BlueprintName = "AuthorizationTests"

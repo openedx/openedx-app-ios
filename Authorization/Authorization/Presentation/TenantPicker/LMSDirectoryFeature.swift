@@ -41,6 +41,26 @@ public enum LMSDirectoryFeature {
         registerDependencies()
         applyPersistedSelectionIfNeeded()
         observeLogout()
+        refreshDirectoryMode()
+    }
+
+    /**
+     Ask the registry what kind of catalog it is, on every launch.
+
+     The platform picker asks this too, but a learner who has already chosen a
+     platform never sees the picker again — so without this, a registry that
+     switched between an open catalog and a curated one would go unnoticed for the
+     life of the install. Anything that depends on the answer stays hidden until
+     it arrives; a failure changes nothing.
+     */
+    private static func refreshDirectoryMode() {
+        Task { @MainActor in
+            guard let config = Container.shared.resolve(ConfigProtocol.self)?.lmsDirectory,
+                  let service = Container.shared.resolve(LMSDirectoryService.self) else { return }
+            await LMSDirectoryState.shared.refresh(for: config) {
+                try await service.fetchConfig().isCurated ? .curated : .search
+            }
+        }
     }
 
     public static func shouldPresentLanding(storage: CoreStorage?) -> Bool {

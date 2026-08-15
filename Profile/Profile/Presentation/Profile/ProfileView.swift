@@ -15,6 +15,10 @@ public struct ProfileView: View {
 
     @Bindable private var viewModel: ProfileViewModel
     @State private var showReportSheet = false
+    /// Redraws when the directory finally says what kind of list it is, so the
+    /// reporting entry point appears the moment that becomes true rather than on
+    /// the next visit to this screen.
+    @ObservedObject private var directoryState = LMSDirectoryState.shared
 
     public init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
@@ -158,7 +162,7 @@ public struct ProfileView: View {
                 // Reporting belongs to the universal app, where a stranger can list
                 // anything. A directory read from a document has no service to post
                 // to, and a curated one vouches for its own platforms.
-                if LMSDirectoryState.canReport(for: viewModel.config.lmsDirectory) {
+                if directoryState.canReport(for: viewModel.config.lmsDirectory) {
                     reportButton
                 }
                 Spacer()

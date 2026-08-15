@@ -95,18 +95,22 @@ public class LMSDirectoryConfig: NSObject {
     }
 
     /**
-     Whether this build lists a fixed set of platforms, as far as the config alone
-     can say.
+     What kind of list this is, as far as the config file alone can settle it.
 
-     A document is always fixed. A service can be forced with DIRECTORY_MODE, but
-     otherwise only the server knows, and until it answers this is false.
+     A document is a fixed list by construction. For a service, `DIRECTORY_MODE`
+     settles it either way when set. `nil` means the config does not know and the
+     server has to be asked.
      */
-    public var isCuratedByConfiguration: Bool {
+    public var configuredMode: LMSDirectoryMode? {
         switch source {
         case .document, .bundledDocument:
-            return true
+            return .curated
         case .service, .none:
-            return directoryMode.trimmingCharacters(in: .whitespaces).lowercased() == "curated"
+            switch directoryMode.trimmingCharacters(in: .whitespaces).lowercased() {
+            case "curated": return .curated
+            case "search": return .search
+            default: return source == nil ? .curated : nil
+            }
         }
     }
 

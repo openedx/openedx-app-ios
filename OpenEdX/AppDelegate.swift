@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // platform, re-theme to it, and route back to sign-in after selection.
             // A remembered answer belongs to the directory it came from. Drop it
             // before anything reads it if this build now points somewhere else.
-            LMSDirectoryState.reconcile(with: config.lmsDirectory)
+            LMSDirectoryState.shared.reconcile(with: config.lmsDirectory)
 
             if config.lmsDirectory.isDirectoryReachable {
                 Container.shared.register(LMSSelectionRouting.self) { _ in
@@ -68,7 +68,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 // single-tenant. Purge any stale persisted selection so branding/host
                 // from a prior build or a since-removed URL cannot leak into this launch.
                 LMSDirectoryFeature.clearPersistedSelection()
-                LMSDirectoryState.clear()
+                LMSDirectoryState.shared.clear()
             }
 
             if config.facebook.enabled {

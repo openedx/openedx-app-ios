@@ -2,30 +2,35 @@
 //  LMSDirectoryStateTests.swift
 //  CoreTests
 //
-//  Whether a build offers to report a platform depends partly on something only
-//  the server can say, remembered between launches. These are the tests that a
-//  remembered answer is dropped the moment it stops applying — the failure they
-//  guard against is silent, and shows up as a button that is missing (or present)
-//  for the rest of a release.
+//  Whether a build offers to report a platform depends on something only a live
+//  server can say, remembered between launches. These cover the ways a
+//  remembered answer stops being true: the build is pointed elsewhere, the
+//  server changes its mind at the same address, or the value was written by a
+//  version that recorded no source at all.
 //
 
+import Combine
 import XCTest
 @testable import Core
 
+@MainActor
 final class LMSDirectoryStateTests: XCTestCase {
 
     private var defaults: UserDefaults!
+    private var state: LMSDirectoryState!
     private let suite = "LMSDirectoryStateTests"
 
     override func setUp() {
         super.setUp()
         UserDefaults().removePersistentDomain(forName: suite)
         defaults = UserDefaults(suiteName: suite)
+        state = LMSDirectoryState(defaults: defaults)
     }
 
     override func tearDown() {
         defaults.removePersistentDomain(forName: suite)
         defaults = nil
+        state = nil
         super.tearDown()
     }
 
@@ -44,102 +49,192 @@ final class LMSDirectoryStateTests: XCTestCase {
     // MARK: - What the configuration alone decides
 
     func testADocumentIsCuratedWithoutAskingAnyone() {
-        XCTAssertTrue(LMSDirectoryState.isCurated(for: document(), defaults: defaults))
-        XCTAssertTrue(LMSDirectoryState.isCurated(for: bundled(), defaults: defaults))
-        // …and therefore never offers reporting, whatever is remembered.
-        XCTAssertFalse(LMSDirectoryState.canReport(for: document(), defaults: defaults))
-        XCTAssertFalse(LMSDirectoryState.canReport(for: bundled(), defaults: defaults))
+        XCTAssertEqual(state.mode(for: document()), .curated)
+        XCTAssertEqual(state.mode(for: bundled()), .curated)
+        XCTAssertFalse(state.canReport(for: document()))
+        XCTAssertFalse(state.canReport(for: bundled()))
     }
 
-    func testAServiceStartsUncuratedUntilItSaysOtherwise() {
-        XCTAssertFalse(LMSDirectoryState.isCurated(for: service(), defaults: defaults))
-        XCTAssertTrue(LMSDirectoryState.canReport(for: service(), defaults: defaults))
+    func testAServiceIsUnknownUntilItAnswers() {
+        // The point of three states: an unanswered service is not "open", it is
+        // unknown, and nothing that depends on the answer may appear yet.
+        XCTAssertEqual(state.mode(for: service()), .unknown)
+        XCTAssertFalse(state.canReport(for: service()))
     }
 
     func testAForcedModeIsHonouredWithoutTheServer() {
-        XCTAssertTrue(LMSDirectoryState.isCurated(for: service(mode: "curated"), defaults: defaults))
-        XCTAssertFalse(LMSDirectoryState.canReport(for: service(mode: "curated"), defaults: defaults))
+        XCTAssertEqual(state.mode(for: service(mode: "curated")), .curated)
+        XCTAssertFalse(state.canReport(for: service(mode: "curated")))
+
+        XCTAssertEqual(state.mode(for: service(mode: "search")), .search)
+        XCTAssertTrue(state.canReport(for: service(mode: "search")))
     }
 
-    // MARK: - Moving between sources
+    func testADisabledDirectoryOffersNoReporting() {
+        state.remember(.search, for: service())
+        let off = LMSDirectoryConfig(dictionary: ["ENABLED": false, "DIRECTORY_URL": "https://registry.test"])
 
-    func testACuratedAnswerDoesNotFollowTheBuildToAnotherService() {
-        let curatedService = service("https://curated.test")
-        LMSDirectoryState.rememberCurated(true, for: curatedService, defaults: defaults)
-        XCTAssertFalse(LMSDirectoryState.canReport(for: curatedService, defaults: defaults))
-
-        // The build is pointed at an open catalog. The picker may never run again —
-        // a platform is already selected — so nothing would correct a remembered
-        // answer. It must not be believed in the first place.
-        let openCatalog = service("https://open.test")
-        XCTAssertFalse(LMSDirectoryState.isCurated(for: openCatalog, defaults: defaults))
-        XCTAssertTrue(LMSDirectoryState.canReport(for: openCatalog, defaults: defaults))
+        XCTAssertFalse(state.canReport(for: off))
     }
 
-    func testMovingFromADocumentToAnOpenCatalogRestoresReporting() {
-        // A document build remembers nothing, but an earlier service build might
-        // have left something behind.
-        LMSDirectoryState.rememberCurated(true, for: service("https://old.test"), defaults: defaults)
-        XCTAssertFalse(LMSDirectoryState.canReport(for: bundled(), defaults: defaults))
+    // MARK: - What a remembered answer is good for
 
-        let openCatalog = service("https://open.test")
-        XCTAssertTrue(LMSDirectoryState.canReport(for: openCatalog, defaults: defaults))
+    func testAnAnsweredServiceOffersReporting() {
+        state.remember(.search, for: service())
+
+        XCTAssertEqual(state.mode(for: service()), .search)
+        XCTAssertTrue(state.canReport(for: service()))
     }
 
     func testTheAnswerStillHoldsForTheSourceThatGaveIt() {
-        let catalog = service("https://registry.test")
-        LMSDirectoryState.rememberCurated(true, for: catalog, defaults: defaults)
-        XCTAssertTrue(LMSDirectoryState.isCurated(for: catalog, defaults: defaults))
-        XCTAssertFalse(LMSDirectoryState.canReport(for: catalog, defaults: defaults))
+        state.remember(.curated, for: service())
+
+        XCTAssertEqual(state.mode(for: service()), .curated)
+        XCTAssertFalse(state.canReport(for: service()))
     }
 
-    func testReconcileDropsAnAnswerThatNoLongerApplies() {
-        let old = service("https://old.test")
-        LMSDirectoryState.rememberCurated(true, for: old, defaults: defaults)
+    func testAnAnswerDoesNotFollowTheBuildToAnotherService() {
+        // The picker is skipped once a platform is selected, so nothing would
+        // ever overwrite an answer left by a different registry.
+        state.remember(.curated, for: service("https://old.test"))
 
-        LMSDirectoryState.reconcile(with: service("https://new.test"), defaults: defaults)
-        XCTAssertNil(defaults.string(forKey: "lmsDirectory.sourceKey"))
-        XCTAssertFalse(defaults.bool(forKey: "lmsDirectory.isCurated"))
+        XCTAssertEqual(state.mode(for: service("https://new.test")), .unknown)
+        XCTAssertFalse(state.canReport(for: service("https://new.test")))
+    }
+
+    func testMovingFromADocumentToAServiceLeavesTheModeUnknown() {
+        state.remember(.curated, for: document())
+
+        XCTAssertEqual(state.mode(for: service()), .unknown)
+        XCTAssertFalse(state.canReport(for: service()))
+    }
+
+    func testMovingFromAServiceToADocumentHidesReporting() {
+        state.remember(.search, for: service())
+
+        XCTAssertEqual(state.mode(for: document()), .curated)
+        XCTAssertFalse(state.canReport(for: document()))
+    }
+
+    // MARK: - The same address changing its mind
+
+    func testTheSameServiceCanChangeItsMode() {
+        state.remember(.curated, for: service())
+        XCTAssertFalse(state.canReport(for: service()))
+
+        state.remember(.search, for: service())
+
+        XCTAssertEqual(state.mode(for: service()), .search)
+        XCTAssertTrue(state.canReport(for: service()))
+    }
+
+    func testARefreshRecordsWhatTheServerNowSays() async {
+        state.remember(.curated, for: service())
+
+        await state.refresh(for: service()) { .search }
+
+        XCTAssertEqual(state.mode(for: service()), .search)
+        XCTAssertTrue(state.canReport(for: service()))
+    }
+
+    func testAFailedRefreshChangesNothing() async {
+        struct Offline: Error {}
+        state.remember(.search, for: service())
+
+        await state.refresh(for: service()) { throw Offline() }
+
+        XCTAssertEqual(state.mode(for: service()), .search)
+    }
+
+    func testARefreshDoesNotOverrideAConfiguredMode() async {
+        // DIRECTORY_MODE is the operator's decision; the server does not get a vote.
+        await state.refresh(for: service(mode: "curated")) { .search }
+
+        XCTAssertEqual(state.mode(for: service(mode: "curated")), .curated)
+    }
+
+    func testADocumentIsNeverRefreshed() async {
+        var asked = false
+        await state.refresh(for: document()) {
+            asked = true
+            return .search
+        }
+
+        XCTAssertFalse(asked, "a document has no server to ask")
+    }
+
+    // MARK: - Upgrades from a build that stored only a boolean
+
+    func testALegacyCuratedFlagIsNotTreatedAsAnOpenCatalog() {
+        // The upgrade the old code got wrong twice over: the flag names no source,
+        // so it cannot be trusted — and the absence of trust must hide reporting,
+        // not reveal it.
+        defaults.set(true, forKey: "lmsDirectory.isCurated")
+
+        XCTAssertEqual(state.mode(for: service()), .unknown)
+        XCTAssertFalse(state.canReport(for: service()))
+    }
+
+    func testALegacyOpenFlagAlsoHidesReportingUntilTheServerAnswers() {
+        defaults.set(false, forKey: "lmsDirectory.isCurated")
+
+        XCTAssertFalse(state.canReport(for: service()))
+
+        state.remember(.search, for: service())
+        XCTAssertTrue(state.canReport(for: service()))
+    }
+
+    func testReconcileDropsTheLegacyFlagEntirely() {
+        defaults.set(true, forKey: "lmsDirectory.isCurated")
+
+        state.reconcile(with: service())
+
+        XCTAssertNil(defaults.object(forKey: "lmsDirectory.isCurated"))
+    }
+
+    // MARK: - Housekeeping
+
+    func testReconcileDropsAnAnswerThatNoLongerApplies() {
+        state.remember(.search, for: service("https://old.test"))
+
+        state.reconcile(with: service("https://new.test"))
+
+        XCTAssertEqual(state.mode(for: service("https://new.test")), .unknown)
     }
 
     func testReconcileLeavesAMatchingAnswerAlone() {
-        let same = service("https://registry.test")
-        LMSDirectoryState.rememberCurated(true, for: same, defaults: defaults)
-        LMSDirectoryState.reconcile(with: same, defaults: defaults)
-        XCTAssertTrue(LMSDirectoryState.isCurated(for: same, defaults: defaults))
+        state.remember(.search, for: service())
+
+        state.reconcile(with: service())
+
+        XCTAssertEqual(state.mode(for: service()), .search)
     }
 
     func testClearForgetsEverything() {
-        LMSDirectoryState.rememberCurated(true, for: service(), defaults: defaults)
-        LMSDirectoryState.clear(defaults: defaults)
-        XCTAssertNil(defaults.string(forKey: "lmsDirectory.sourceKey"))
-        XCTAssertTrue(LMSDirectoryState.canReport(for: service(), defaults: defaults))
-    }
+        state.remember(.search, for: service())
 
-    // MARK: - Source keys
+        state.clear()
+
+        XCTAssertEqual(state.mode(for: service()), .unknown)
+        XCTAssertFalse(state.canReport(for: service()))
+    }
 
     func testEverySourceHasItsOwnKey() {
-        XCTAssertEqual(service("https://a.test").sourceKey, "service:https://a.test")
-        XCTAssertEqual(document("https://a.test/d.json").sourceKey, "document:https://a.test/d.json")
-        XCTAssertEqual(bundled("x.json").sourceKey, "file:x.json")
-        XCTAssertEqual(LMSDirectoryConfig(dictionary: ["ENABLED": false]).sourceKey, "")
+        XCTAssertNotEqual(service().sourceKey, document().sourceKey)
+        XCTAssertNotEqual(document().sourceKey, bundled().sourceKey)
+        XCTAssertNotEqual(service("https://a.test").sourceKey, service("https://b.test").sourceKey)
     }
 
-    /// An upgrade carries the old flag but no source key, and the flag alone is
-    /// exactly what went stale.
-    func testAValueFromAnOlderBuildWithNoSourceKeyIsNotTrusted() {
-        defaults.set(true, forKey: "lmsDirectory.isCurated")
+    func testAChangedAnswerIsObservable() {
+        // The Profile screen redraws off this; without it the entry point would
+        // only appear on the next visit.
+        var notified = 0
+        let token = state.objectWillChange.sink { _ in notified += 1 }
 
-        XCTAssertFalse(LMSDirectoryState.isCurated(for: service(), defaults: defaults))
-        XCTAssertTrue(LMSDirectoryState.canReport(for: service(), defaults: defaults))
-    }
+        state.remember(.search, for: service())
+        state.remember(.curated, for: service())
 
-    /// The gate the Profile screen reads: with the feature off there is no
-    /// directory at all, so there is nothing to report to.
-    func testADisabledDirectoryOffersNoReporting() {
-        LMSDirectoryState.rememberCurated(false, for: service(), defaults: defaults)
-        let off = LMSDirectoryConfig(dictionary: ["ENABLED": false, "DIRECTORY_URL": "https://registry.test"])
-
-        XCTAssertFalse(LMSDirectoryState.canReport(for: off, defaults: defaults))
+        XCTAssertEqual(notified, 2)
+        token.cancel()
     }
 }
