@@ -13,7 +13,7 @@ public enum LMSDirectoryFeature {
 
     private nonisolated(unsafe) static var isRegistered = false
     private nonisolated(unsafe) static var isEnabled = false
-    private nonisolated(unsafe) static var directoryURL: URL?
+    private nonisolated(unsafe) static var source: LMSDirectoryConfig.Source?
     private nonisolated(unsafe) static var logoutObserver: NSObjectProtocol?
 
     private static let landingTitle = NSLocalizedString(
@@ -21,16 +21,22 @@ public enum LMSDirectoryFeature {
         comment: "Title for universal app landing screen"
     )
 
-    public static func register(directoryBaseURL: String? = nil) {
+    public static func register(source: LMSDirectoryConfig.Source? = nil) {
         guard !isRegistered else { return }
         isRegistered = true
         isEnabled = true
-        if let urlString = directoryBaseURL, let url = URL(string: urlString) {
-            directoryURL = url
-            // Bridge the registry URL to shared storage so other modules (e.g. the
-            // Profile tab's "Report this LMS") can post complaints without a direct
-            // dependency on this feature. Mirrors how the selected LMS base URL is shared.
+        Self.source = source
+        // Bridge the service URL to shared storage so other modules (e.g. the
+        // Profile tab's "Report this LMS") can reach it without a direct dependency
+        // on this feature. Mirrors how the selected LMS base URL is shared.
+        //
+        // Only a live service has anything to post back to. A directory read from a
+        // document — hosted or bundled — is a one-way list, so the key stays unset
+        // and the features that depend on it stay hidden.
+        if case let .service(url) = source {
             UserDefaults.standard.set(url.absoluteString, forKey: "lmsRegistryURL")
+        } else {
+            UserDefaults.standard.removeObject(forKey: "lmsRegistryURL")
         }
         registerDependencies()
         applyPersistedSelectionIfNeeded()
@@ -105,23 +111,31 @@ public enum LMSDirectoryFeature {
         }.inObjectScope(.container)
 
         container.register(LMSDirectoryService.self) { resolver in
-            if let baseURL = directoryURL {
-                return RemoteLMSDirectoryService(baseURL: baseURL)
+            switch source {
+            case let .document(url):
+                return StaticLMSDirectoryService(source: .url(url))
+            case let .bundledDocument(name):
+                return StaticLMSDirectoryService(
+                    source: .bundledFile(name: name, bundle: .lmsDirectoryHost)
+                )
+            case let .service(url):
+                return RemoteLMSDirectoryService(baseURL: url)
+            case .none:
+                #if DEBUG
+                // Bundled sample catalog is DEBUG-only so it can never ship in a release
+                // build. In production the feature is gated on `lmsDirectory.isDirectoryReachable`
+                // (see AppDelegate/RouteController/Router), so this factory is only ever built
+                // with a configured source via the branches above.
+                let connectivity = resolver.resolve(ConnectivityProtocol.self)!
+                return MockLMSDirectoryService(connectivity: connectivity)
+                #else
+                fatalError(
+                    "LMSDirectoryService requires a directory source. The LMS Directory feature "
+                    + "must be activated only when lmsDirectory.isDirectoryReachable is true; "
+                    + "there is no mock catalog fallback in release builds."
+                )
+                #endif
             }
-            #if DEBUG
-            // Bundled sample catalog is DEBUG-only so it can never ship in a release
-            // build. In production the feature is gated on `lmsDirectory.isDirectoryReachable`
-            // (see AppDelegate/RouteController/Router), so this factory is only ever built
-            // with a real registry URL via the branch above.
-            let connectivity = resolver.resolve(ConnectivityProtocol.self)!
-            return MockLMSDirectoryService(connectivity: connectivity)
-            #else
-            fatalError(
-                "LMSDirectoryService requires a registry URL. The LMS Directory feature must be "
-                + "activated only when lmsDirectory.isDirectoryReachable is true; there is no mock "
-                + "catalog fallback in release builds."
-            )
-            #endif
         }.inObjectScope(.container)
 
         // LMSSelectionCoordinating is intentionally NOT registered as a Swinject
@@ -136,6 +150,7 @@ public enum LMSDirectoryFeature {
         guard let selection = overrides.currentSelection() else { return }
 
         LMSThemeApplier.applyAccentColor(selection.accentColor, darkColor: selection.accentColorDark)
+        LMSThemeApplier.applyLoginBackground(LMSImageSource(url: selection.theme?.loginBackgroundURL))
         // Config classes (UIComponentsConfig, DashboardConfig, FeaturesConfig)
         // read UserDefaults overrides automatically — no manual override needed
     }
@@ -160,6 +175,7 @@ public enum LMSDirectoryFeature {
         let storage = Container.shared.resolve(CoreStorage.self)
         try? overrides.clear(storage: storage)
         LMSThemeApplier.applyAccentColor(nil)
+        LMSThemeApplier.applyLoginBackground(nil)
     }
 
     private static func resetOverrides() {

@@ -22,7 +22,16 @@ UI_COMPONENTS:
     SAML_SSO_LOGIN_ENABLED: false
     SAML_SSO_DEFAULT_LOGIN_BUTTON: false
 
+# Where the app gets its list of Open edX platforms.
+# Set exactly one source. A bundled file wins if both are set.
+#   DIRECTORY_URL   a JSON document (…/directory.json), or the base URL of a
+#                   service that answers /api/v1/directory
+#   DIRECTORY_FILE  a JSON document added to the app target, for a build that
+#                   ships its list and never asks the network for it
+# Image fields in the document are either web addresses or the names of images
+# added to the app; anything that is not http(s) is looked up in the bundle.
 LMS_DIRECTORY:
     ENABLED: true
     DIRECTORY_URL: "https://openedx-lms.stepanok.com"
+    DIRECTORY_FILE: ""
     DIRECTORY_MODE: ""

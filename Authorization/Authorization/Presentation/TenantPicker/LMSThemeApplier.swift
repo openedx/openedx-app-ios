@@ -1,8 +1,51 @@
+import Core
+import Kingfisher
 import SwiftUI
 import Theme
 import UIKit
 
 enum LMSThemeApplier {
+
+    /// Warm every image the directory will ask for, before any screen asks for it.
+    ///
+    /// The whole directory arrives in one document, so the sign-in background of a
+    /// platform is known long before the learner picks it. Fetching it now is what
+    /// removes the visible pop-in later: by the time the sign-in screen is built,
+    /// the image is already decoded in Kingfisher's cache.
+    static func prefetch(_ sources: [LMSImageSource]) {
+        let urls = sources.compactMap(\.remoteURL)
+        guard !urls.isEmpty else { return }
+        ImagePrefetcher(urls: urls).start()
+    }
+
+    /// Put the selected platform's sign-in background where `LmsHeaderBackground`
+    /// can draw it in its first frame.
+    ///
+    /// Handing over a decoded image rather than a URL is the whole point: a view
+    /// that resolves a URL has to render something else first, and that flash is
+    /// what this removes. A bundled image is read straight from the app; a remote
+    /// one comes from Kingfisher's cache when it was prefetched, and is fetched
+    /// here when it was not.
+    static func applyLoginBackground(_ source: LMSImageSource?) {
+        guard let source else {
+            Theme.Images.update(headerBackground: nil)
+            return
+        }
+        if let bundled = source.bundledImage() {
+            Theme.Images.update(headerBackground: bundled)
+            return
+        }
+        guard let url = source.remoteURL else {
+            Theme.Images.update(headerBackground: nil)
+            return
+        }
+        KingfisherManager.shared.retrieveImage(with: url) { result in
+            let image = try? result.get().image
+            Task { @MainActor in
+                Theme.Images.update(headerBackground: image)
+            }
+        }
+    }
     static func applyAccentColor(_ color: LMSColor?, darkColor: LMSColor? = nil) {
         guard let color else {
             Theme.Colors.update()

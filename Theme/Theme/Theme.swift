@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 
 private let fontsParser = FontParser()
 
@@ -367,21 +368,34 @@ extension View {
     }
 }
 
+extension Theme {
+    /// Images the app swaps at runtime, alongside `Theme.Colors`.
+    ///
+    /// The header background is held as a decoded image rather than a URL so the
+    /// screens that show it can draw it in the first frame. Whoever selects an
+    /// LMS is responsible for having the image in hand before calling `update` —
+    /// see `LMSThemeApplier` — which is what stops the header fading in after the
+    /// rest of the sign-in screen has already appeared.
+    public enum Images {
+        nonisolated(unsafe) public private(set) static var headerBackground: UIImage?
+
+        public static func update(headerBackground: UIImage? = nil) {
+            Images.headerBackground = headerBackground
+        }
+    }
+}
+
 /// Displays the auth/settings header background image.
-/// Uses the LMS-provided login background URL when available,
-/// falling back to the default `ThemeAssets.headerBackground`.
+/// Uses the LMS-provided image when one has been loaded, falling back to the
+/// default `ThemeAssets.headerBackground`.
 public struct LmsHeaderBackground: View {
     public init() {}
 
     public var body: some View {
-        if let bgURLString = UserDefaults.standard.string(forKey: "lmsDirectory.selected_login_background_url"),
-           !bgURLString.isEmpty,
-           let bgURL = URL(string: bgURLString) {
-            AsyncImage(url: bgURL) { image in
-                image.resizable().scaledToFill()
-            } placeholder: {
-                ThemeAssets.headerBackground.swiftUIImage.resizable()
-            }
+        if let image = Theme.Images.headerBackground {
+            Image(uiImage: image)
+                .resizable()
+                .scaledToFill()
         } else {
             ThemeAssets.headerBackground.swiftUIImage.resizable()
         }

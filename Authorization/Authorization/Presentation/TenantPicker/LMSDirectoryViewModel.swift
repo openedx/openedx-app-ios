@@ -130,11 +130,29 @@ final class LMSDirectoryViewModel: ObservableObject {
                 self.results = items
                 self.state = items.isEmpty ? .empty : .results
             }
+            // Warm the artwork now. A document-backed directory already knows every
+            // platform's sign-in background, so fetching them while the learner is
+            // still choosing means the branded screen is ready the moment they do.
+            await prefetchArtwork(for: items)
         } catch {
             await MainActor.run {
                 self.state = .error("We couldn't load the list of platforms.")
             }
         }
+    }
+
+    /// Pull the images the next screens will need into the shared image cache.
+    ///
+    /// Only a document-backed directory can do this — a live catalog does not know
+    /// a platform's sign-in background until that platform is asked about, which is
+    /// exactly one round trip too late.
+    private func prefetchArtwork(for items: [LMSSearchResult]) async {
+        var sources = items.compactMap { LMSImageSource(url: $0.logoURL) }
+        if let documentService = service as? StaticLMSDirectoryService,
+           let all = try? await documentService.imageSources() {
+            sources = all
+        }
+        LMSThemeApplier.prefetch(sources)
     }
 
     private func loadHistory() {
@@ -241,6 +259,7 @@ final class LMSDirectoryViewModel: ObservableObject {
     private func applyPersistedTheme() {
         if let selection = overridesStore.currentSelection() {
             LMSThemeApplier.applyAccentColor(selection.accentColor, darkColor: selection.accentColorDark)
+            LMSThemeApplier.applyLoginBackground(LMSImageSource(url: selection.theme?.loginBackgroundURL))
         }
     }
 

@@ -26,6 +26,7 @@
 		0770DE6B28D0C035006D8A5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE6D28D0C035006D8A5D /* Localizable.strings */; };
 		0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7028D0C0E7006D8A5D /* Strings.swift */; };
 		0FE969FB22F82F2D38C35356 /* LMSOverridesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6476DC515B100AE6F9D74AED /* LMSOverridesStore.swift */; };
+		314E58A9645028CD68A2B338 /* StaticLMSDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7645C3630CAC8C86B8AA143F /* StaticLMSDirectoryService.swift */; };
 		39BADC147E3BA2D2401AEB91 /* lms_mock_data.json in Resources */ = {isa = PBXBuildFile; fileRef = 175E5DB220AA2B38AC403B0B /* lms_mock_data.json */; };
 		46E446F8EECA2F03A8ACBB22 /* LMSDirectoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45B6D76F9942E50F52B04B1 /* LMSDirectoryViewModel.swift */; };
 		4B00D19EC0BDB0F0B4CF4B84 /* LMSDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13A3D56EFC72C383B6B7809 /* LMSDirectoryService.swift */; };
@@ -62,6 +63,7 @@
 		E1FBF62E1395791882A6A2E2 /* LMSDirectoryConfigModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47E4636E092C17473AAC3063 /* LMSDirectoryConfigModels.swift */; };
 		E778A8126843DE891196033C /* LMSDirectoryFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54635D2863A11AFCC9A5235 /* LMSDirectoryFeature.swift */; };
 		E834B83B7906F8A85301BAEA /* LMSDirectoryAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643ED7945A47425D9B6E18D3 /* LMSDirectoryAnalytics.swift */; };
+		E98677D626D2D111EAFFEEDB /* StaticLMSDirectoryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76632219FE9EACAF3975E68F /* StaticLMSDirectoryServiceTests.swift */; };
 		F52BE36894F6BC06B9EF5C06 /* LMSSelectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD15916DB50A754388E1677F /* LMSSelectionCoordinator.swift */; };
 /* End PBXBuildFile section */
 
@@ -124,6 +126,8 @@
 		643ED7945A47425D9B6E18D3 /* LMSDirectoryAnalytics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryAnalytics.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryAnalytics.swift; sourceTree = "<group>"; };
 		6476DC515B100AE6F9D74AED /* LMSOverridesStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSOverridesStore.swift; path = Authorization/Presentation/TenantPicker/LMSOverridesStore.swift; sourceTree = "<group>"; };
 		68795EBDC3000C1B12F9432C /* Pods-App-Authorization.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugprod.xcconfig"; sourceTree = "<group>"; };
+		7645C3630CAC8C86B8AA143F /* StaticLMSDirectoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StaticLMSDirectoryService.swift; path = TenantPicker/StaticLMSDirectoryService.swift; sourceTree = "<group>"; };
+		76632219FE9EACAF3975E68F /* StaticLMSDirectoryServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StaticLMSDirectoryServiceTests.swift; path = LMSDirectory/StaticLMSDirectoryServiceTests.swift; sourceTree = "<group>"; };
 		7A84BB166492D4E46FBCF01C /* Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig"; sourceTree = "<group>"; };
 		90232EACBC849403FA59235A /* LMSDirectoryLandingIntroView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryLandingIntroView.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryLandingIntroView.swift; sourceTree = "<group>"; };
 		90DFBB75EF40580E180D71C8 /* Pods-App-Authorization.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugdev.xcconfig"; sourceTree = "<group>"; };
@@ -232,6 +236,7 @@
 				025F40DE29D1C1350064C183 /* Reset Password */,
 				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
 				02A2ACDA2A4B016100FBBBBB /* AuthorizationAnalytics.swift */,
+				40E2C04CC4389CAC09427A15 /* TenantPicker */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -259,6 +264,7 @@
 			children = (
 				022D0480297442B200E0059B /* Register */,
 				07169484296EC3D700E3DED6 /* Login */,
+				EF91968477D5715D1F0D4124 /* LMSDirectory */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -343,6 +349,14 @@
 				52219A516317365C162B9670 /* RemoteLMSDirectoryService.swift */,
 				BC0922F56B70DDA9F2910C6C /* LMSThemeApplier.swift */,
 				175E5DB220AA2B38AC403B0B /* lms_mock_data.json */,
+			);
+			name = TenantPicker;
+			sourceTree = "<group>";
+		};
+		40E2C04CC4389CAC09427A15 /* TenantPicker */ = {
+			isa = PBXGroup;
+			children = (
+				7645C3630CAC8C86B8AA143F /* StaticLMSDirectoryService.swift */,
 			);
 			name = TenantPicker;
 			sourceTree = "<group>";
@@ -436,6 +450,14 @@
 				E03261652AE64AF4002CA7EB /* StartupView.swift */,
 			);
 			path = Startup;
+			sourceTree = "<group>";
+		};
+		EF91968477D5715D1F0D4124 /* LMSDirectory */ = {
+			isa = PBXGroup;
+			children = (
+				76632219FE9EACAF3975E68F /* StaticLMSDirectoryServiceTests.swift */,
+			);
+			name = LMSDirectory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -631,6 +653,7 @@
 				02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */,
 				768AF63A56D5051A729CA064 /* RemoteLMSDirectoryServiceTests.swift in Sources */,
 				935FEA69BE7D57F57D42BB86 /* LMSDirectoryViewModelTests.swift in Sources */,
+				E98677D626D2D111EAFFEEDB /* StaticLMSDirectoryServiceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,6 +700,7 @@
 				0FE969FB22F82F2D38C35356 /* LMSOverridesStore.swift in Sources */,
 				999B1445AA69C9D434DA39CF /* RemoteLMSDirectoryService.swift in Sources */,
 				95F57194827709F98991ECF9 /* LMSThemeApplier.swift in Sources */,
+				314E58A9645028CD68A2B338 /* StaticLMSDirectoryService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

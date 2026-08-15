@@ -58,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 Container.shared.register(LMSSelectionRouting.self) { _ in
                     LMSDirectoryRouter()
                 }.inObjectScope(.container)
-                LMSDirectoryFeature.register(directoryBaseURL: config.lmsDirectory.directoryURL)
+                LMSDirectoryFeature.register(source: config.lmsDirectory.source)
             } else {
                 // Feature off or misconfigured (ENABLED but no registry URL) → stock
                 // single-tenant. Purge any stale persisted selection so branding/host

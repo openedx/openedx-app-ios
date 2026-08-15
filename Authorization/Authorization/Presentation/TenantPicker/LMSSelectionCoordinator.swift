@@ -57,6 +57,7 @@ final class LMSSelectionCoordinator: LMSSelectionCoordinating {
             try overridesStore.save(detail: detail, payload: payload, storage: coreStorage)
             analytics.selectionMade(id: detail.id, fromHistory: fromHistory)
             LMSThemeApplier.applyAccentColor(detail.accentColor, darkColor: detail.accentColorDark)
+            LMSThemeApplier.applyLoginBackground(LMSImageSource(url: detail.theme?.loginBackgroundURL))
             reRegisterAPI(with: detail.api.hostURL)
             await handlePostSelection(for: detail)
         } catch {

@@ -129,6 +129,7 @@
 		07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07E0939E2B308D2800F1E4B2 /* Data_Certificate.swift */; };
 		141F1D302B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 141F1D2F2B7328D4009E81EB /* WebviewCookiesUpdateProtocol.swift */; };
 		14769D3C2B9822EE00AB36D4 /* CoreAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */; };
+		315EFA6E6C806ECD7A37D51B /* LMSImageSourceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BCAF519C51B689EAEEACA1C /* LMSImageSourceTests.swift */; };
 		3AA0380C24561FC1FC4E42AA /* ConfigLMSDirectoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05340946BE268A7D4BE1FD69 /* ConfigLMSDirectoryTests.swift */; };
 		5E58740A2AA9DF20F4644191 /* Pods_App_Core_CoreTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 33FA09A20AAE2B2A0BA89190 /* Pods_App_Core_CoreTests.framework */; };
 		9784D47E2BF7762800AFEFFF /* FullScreenErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9784D47D2BF7762800AFEFFF /* FullScreenErrorView.swift */; };
@@ -167,6 +168,7 @@
 		CED42FFC2D099F0400C7AD89 /* DownloadManagerMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */; };
 		CEF4AA1E2DBA41C4006C4F0A /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF4AA1D2DBA41C4006C4F0A /* StringExtension.swift */; };
 		CFC84952299F8B890055E497 /* Debounce.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFC84951299F8B890055E497 /* Debounce.swift */; };
+		DAA69AFA6DCA62D32DD92F01 /* LMSImageSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 306EDAF293CF0A5139312D83 /* LMSImageSource.swift */; };
 		DBF6F2412B014ADA0098414B /* FirebaseConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */; };
 		DBF6F2462B01DAFE0098414B /* AgreementConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2452B01DAFE0098414B /* AgreementConfig.swift */; };
 		DBF6F24A2B0380E00098414B /* FeaturesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBF6F2492B0380E00098414B /* FeaturesConfig.swift */; };
@@ -339,9 +341,11 @@
 		14769D3B2B9822EE00AB36D4 /* CoreAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreAnalytics.swift; sourceTree = "<group>"; };
 		1A154A95AF4EE85A4A1C083B /* Pods-App-Core.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releasedev.xcconfig"; sourceTree = "<group>"; };
 		2B7E6FE7843FC4CF2BFA712D /* Pods-App-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debug.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debug.xcconfig"; sourceTree = "<group>"; };
+		306EDAF293CF0A5139312D83 /* LMSImageSource.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMSImageSource.swift; sourceTree = "<group>"; };
 		33FA09A20AAE2B2A0BA89190 /* Pods_App_Core_CoreTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Core_CoreTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		349B90CD6579F7B8D257E515 /* Pods_App_Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releaseprod.xcconfig"; sourceTree = "<group>"; };
+		3BCAF519C51B689EAEEACA1C /* LMSImageSourceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMSImageSourceTests.swift; sourceTree = "<group>"; };
 		3C63D5D2247C793C259341B8 /* Pods-App-Core-CoreTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core-CoreTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests.releasedev.xcconfig"; sourceTree = "<group>"; };
 		5CEFA8766C44C519B86C681D /* Pods-App-Core-CoreTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core-CoreTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests.debug.xcconfig"; sourceTree = "<group>"; };
 		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
@@ -581,6 +585,7 @@
 				0770DE1828D0847D006D8A5D /* BaseRouter.swift */,
 				0231CDBD2922422D00032416 /* CSSInjector.swift */,
 				02280F5A294B4E6F0032823A /* Connectivity.swift */,
+				306EDAF293CF0A5139312D83 /* LMSImageSource.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -928,6 +933,7 @@
 				E09179FC2B0F204D002AB695 /* ConfigTests.swift */,
 				BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */,
 				05340946BE268A7D4BE1FD69 /* ConfigLMSDirectoryTests.swift */,
+				3BCAF519C51B689EAEEACA1C /* LMSImageSourceTests.swift */,
 			);
 			path = Configuration;
 			sourceTree = "<group>";
@@ -1161,6 +1167,7 @@
 				E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */,
 				CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */,
 				3AA0380C24561FC1FC4E42AA /* ConfigLMSDirectoryTests.swift in Sources */,
+				315EFA6E6C806ECD7A37D51B /* LMSImageSourceTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1319,6 +1326,7 @@
 				CED42FFC2D099F0400C7AD89 /* DownloadManagerMock.swift in Sources */,
 				02066B482906F73400F4307E /* PickerMenu.swift in Sources */,
 				B8AF4F47FCE96744B4AD9F7E /* LMSDirectoryConfig.swift in Sources */,
+				DAA69AFA6DCA62D32DD92F01 /* LMSImageSource.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -189,8 +189,9 @@ private struct LMSRowContent: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            if let logoURL {
-                KFImage.url(logoURL)
+            switch LMSImageSource(url: logoURL) {
+            case let .remote(url):
+                KFImage.url(url)
                     .placeholder {
                         lmsInitialsView
                     }
@@ -203,7 +204,23 @@ private struct LMSRowContent: View {
                         RoundedRectangle(cornerRadius: 8)
                             .fill(Theme.Colors.background)
                     )
-            } else {
+            case .bundled:
+                // Shipped inside the app: there is nothing to load, so it draws in
+                // the first frame and works with no network at all.
+                if let image = LMSImageSource(url: logoURL)?.bundledImage() {
+                    Image(uiImage: image)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 44, height: 44)
+                        .cornerRadius(8)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8)
+                                .fill(Theme.Colors.background)
+                        )
+                } else {
+                    lmsInitialsView
+                }
+            case .none:
                 lmsInitialsView
             }
 
