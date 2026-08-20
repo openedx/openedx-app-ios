@@ -22,16 +22,29 @@ UI_COMPONENTS:
     SAML_SSO_LOGIN_ENABLED: false
     SAML_SSO_DEFAULT_LOGIN_BUTTON: false
 
-# Where the app gets its list of Open edX platforms.
-# Set exactly one source. A bundled file wins if both are set.
-#   DIRECTORY_URL   a JSON document (…/directory.json), or the base URL of a
-#                   service that answers /api/v1/directory
-#   DIRECTORY_FILE  a JSON document added to the app target, for a build that
-#                   ships its list and never asks the network for it
-# Image fields in the document are either web addresses or the names of images
-# added to the app; anything that is not http(s) is looked up in the bundle.
+# Where the app gets its list of Open edX platforms. Off by default: with
+# ENABLED false the app behaves exactly like a stock single-tenant build.
+#
+# Set ONE source. Each of these is a complete, working example:
+#
+#   DIRECTORY_URL: "https://example.com/lms_directory.json"   a JSON document
+#   DIRECTORY_URL: "https://registry.example.com"             a live registry
+#   DIRECTORY_FILE: "lms_directory.json"                      shipped in the app
+#
+# The address decides which it is: one ending in .json is read as a document —
+# a single file, fetched once, that already contains every platform and its
+# branding. Anything else is treated as the base URL of a service answering
+# /api/v1/directory. A bundled file wins over an address.
+#
+# DIRECTORY_MODE: "" | "search" | "curated" — only for a live registry, to
+# override what the server would otherwise decide. A document is always a fixed
+# list, so the key is ignored for one.
+#
+# Image fields inside a document are either web addresses or names of files
+# shipped with the app; anything that is not http(s) is looked up locally.
+# See Documentation/LMS_DIRECTORY.md for the file format.
 LMS_DIRECTORY:
-    ENABLED: true
-    DIRECTORY_URL: "https://openedx-lms.stepanok.com"
+    ENABLED: false
+    DIRECTORY_URL: ""
     DIRECTORY_FILE: ""
     DIRECTORY_MODE: ""

@@ -20,6 +20,22 @@ struct LMSDetail: Identifiable, Hashable, Sendable {
         let preLoginDiscovery: Bool
         let unknownUnitsMode: String?
 
+        /// What a platform gets when it says nothing: every flag off.
+        /// A directory can be written by hand, and a hand-written entry should
+        /// not have to spell out flags it does not use.
+        static let none = FeatureFlags(preLoginDiscovery: false, unknownUnitsMode: nil)
+
+        init(preLoginDiscovery: Bool, unknownUnitsMode: String?) {
+            self.preLoginDiscovery = preLoginDiscovery
+            self.unknownUnitsMode = unknownUnitsMode
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try decoder.container(keyedBy: CodingKeys.self)
+            preLoginDiscovery = try container.decodeIfPresent(Bool.self, forKey: .preLoginDiscovery) ?? false
+            unknownUnitsMode = try container.decodeIfPresent(String.self, forKey: .unknownUnitsMode)
+        }
+
         enum CodingKeys: String, CodingKey {
             case preLoginDiscovery = "pre_login_discovery"
             case unknownUnitsMode = "unknown_units_mode"
@@ -168,7 +184,7 @@ struct LMSDetailDTO: Codable {
     let title: String
     let description: String
     let api: APIDTO
-    let featureFlags: LMSDetail.FeatureFlags
+    let featureFlags: LMSDetail.FeatureFlags?
     let theme: LMSDetail.Theme?
     let uiComponents: LMSDetail.UIComponents?
     let dashboard: LMSDetail.Dashboard?
@@ -202,7 +218,7 @@ struct LMSDetailDTO: Codable {
                 feedbackEmail: api.feedbackEmail,
                 oauthClientId: api.oauthClientId
             ),
-            featureFlags: featureFlags,
+            featureFlags: featureFlags ?? .none,
             theme: theme,
             uiComponents: uiComponents,
             dashboard: dashboard,

@@ -14,8 +14,9 @@
 //      TEST_RUNNER_LMS_USERNAME=…  TEST_RUNNER_LMS_PASSWORD=…
 //
 //  Without the first variable the test skips: it drives a real sign-in, so it has
-//  nothing to say in a run that was not set up for it.
-//  `tools/mobile-verification/` in the registry repository sets all of this up.
+//  nothing to say in a run that was not set up for it. Point it at any Open edX
+//  you can sign into, or at a stand-in that answers /oauth2/access_token,
+//  /api/mobile/v0.5/my_user_info and /api/user/v1/accounts/<username>.
 //
 
 import XCTest

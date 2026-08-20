@@ -136,6 +136,37 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
 
     // MARK: - Failures
 
+    /// The smallest document a person could reasonably write by hand. Anything
+    /// the apps can default, they must default — the two platforms have to
+    /// accept the same file, and Android's parser already does.
+    func testAMinimalHandWrittenDocumentIsAccepted() async throws {
+        let minimal = """
+        {
+          "version": 1,
+          "platforms": [
+            {
+              "id": "1",
+              "title": "Alpha",
+              "description": "Alpha campus",
+              "short_description": "Alpha",
+              "base_url": "https://alpha.example.edu",
+              "api": {
+                "host_url": "https://alpha.example.edu",
+                "feedback_email": "support@example.edu",
+                "oauth_client_id": "alpha-client"
+              }
+            }
+          ]
+        }
+        """
+        let detail = try await makeRemoteService(body: minimal).fetchDetails(id: "1")
+
+        XCTAssertEqual(detail.title, "Alpha")
+        XCTAssertFalse(detail.featureFlags.preLoginDiscovery)
+        XCTAssertNil(detail.featureFlags.unknownUnitsMode)
+        XCTAssertNil(detail.logoURL)
+    }
+
     func testMalformedDocumentReportsDecodingFailure() async {
         let service = makeRemoteService(body: "{\"version\": 1}")
         do {
