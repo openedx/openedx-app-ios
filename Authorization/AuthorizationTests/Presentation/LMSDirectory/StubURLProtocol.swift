@@ -1,13 +1,15 @@
 //
 //  StubURLProtocol.swift
-//  AuthorizationTests
+//  Authorization
 //
-//  Answers the directory document without a network, so the tests around it can
-//  say exactly what came back — including nothing, and a connection that dropped.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Foundation
 
+/// AuthorizationTests
+/// Answers the directory document without a network, so the tests around it can
+/// say exactly what came back — including nothing, and a connection that dropped.
 final class StubURLProtocol: URLProtocol {
     nonisolated(unsafe) static var handler: (@Sendable (URLRequest) throws -> (HTTPURLResponse, Data))?
 

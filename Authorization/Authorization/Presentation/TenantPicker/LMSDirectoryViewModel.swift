@@ -2,14 +2,15 @@
 //  LMSDirectoryViewModel.swift
 //  Authorization
 //
-//  The platform picker: read the directory, show what is in it, and hand the
-//  chosen platform to the coordinator that re-themes the app and routes on to
-//  sign-in.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Core
 import Foundation
 
+/// The platform picker: read the directory, show what is in it, and hand the
+/// chosen platform to the coordinator that re-themes the app and routes on to
+/// sign-in.
 @MainActor
 final class LMSDirectoryViewModel: ObservableObject {
 

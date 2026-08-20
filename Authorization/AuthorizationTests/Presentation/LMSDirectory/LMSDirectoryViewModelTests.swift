@@ -1,11 +1,8 @@
 //
 //  LMSDirectoryViewModelTests.swift
-//  AuthorizationTests
+//  Authorization
 //
-//  The platform picker reads a fixed list and hands one platform to the
-//  coordinator. These cover what the learner sees while that happens: the list,
-//  an empty directory, a document that could not be read, and the selection
-//  actually reaching the coordinator that re-themes the app.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import XCTest
@@ -13,6 +10,11 @@ import Foundation
 @testable import Core
 @testable import Authorization
 
+/// AuthorizationTests
+/// The platform picker reads a fixed list and hands one platform to the
+/// coordinator. These cover what the learner sees while that happens: the list,
+/// an empty directory, a document that could not be read, and the selection
+/// actually reaching the coordinator that re-themes the app.
 @MainActor
 final class LMSDirectoryViewModelTests: XCTestCase {
 

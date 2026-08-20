@@ -1,3 +1,10 @@
+//
+//  LMSDirectoryAnalytics.swift
+//  Authorization
+//
+//  Created by Ivan Stepanok on 20.08.2026.
+//
+
 import Foundation
 
 protocol LMSDirectoryAnalytics: Sendable {

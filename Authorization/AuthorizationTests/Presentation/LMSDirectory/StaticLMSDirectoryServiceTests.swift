@@ -1,17 +1,19 @@
 //
 //  StaticLMSDirectoryServiceTests.swift
-//  AuthorizationTests
+//  Authorization
 //
-//  A directory read from a single JSON document — hosted or shipped inside the
-//  app — has to behave exactly like one read from a live service, and it has to
-//  keep behaving that way with no network at all. That is the whole promise of
-//  the document, so these are the tests that hold it.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Core
 import XCTest
 @testable import Authorization
 
+/// AuthorizationTests
+/// A directory read from a single JSON document — hosted or shipped inside the
+/// app — has to behave exactly like one read from a live service, and it has to
+/// keep behaving that way with no network at all. That is the whole promise of
+/// the document, so these are the tests that hold it.
 final class StaticLMSDirectoryServiceTests: XCTestCase {
 
     private func makeSession() -> URLSession {

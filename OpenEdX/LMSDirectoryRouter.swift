@@ -2,10 +2,7 @@
 //  LMSDirectoryRouter.swift
 //  OpenEdX
 //
-//  Routes the app onward after the learner picks a platform in the LMS Directory
-//  landing. Registered as `LMSSelectionRouting` so the feature's coordinator (in
-//  Authorization) can hand control back to the app's navigation without the feature
-//  depending on the app target.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import UIKit
@@ -14,6 +11,10 @@ import Core
 import Authorization
 import Swinject
 
+/// Routes the app onward after the learner picks a platform in the LMS Directory
+/// landing. Registered as `LMSSelectionRouting` so the feature's coordinator (in
+/// Authorization) can hand control back to the app's navigation without the feature
+/// depending on the app target.
 final class LMSDirectoryRouter: LMSSelectionRouting {
 
     func presentDiscovery() {

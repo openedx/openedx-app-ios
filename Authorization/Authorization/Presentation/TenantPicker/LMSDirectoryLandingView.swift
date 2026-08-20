@@ -2,12 +2,13 @@
 //  LMSDirectoryLandingView.swift
 //  Authorization
 //
-//  The first screen of a multi-tenant build: which platform is this?
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import SwiftUI
 import Theme
 
+/// The first screen of a multi-tenant build: which platform is this?
 struct LMSDirectoryLandingView: View {
     @StateObject private var viewModel: LMSDirectoryViewModel
 

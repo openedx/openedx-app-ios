@@ -1,15 +1,17 @@
 //
 //  LMSImageSourceTests.swift
-//  CoreTests
+//  Core
 //
-//  One field decides whether an image is downloaded or read out of the app. The
-//  rule is simple enough to state in a sentence, which is exactly why it needs
-//  tests: an operator editing the document by hand will lean on it.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import XCTest
 @testable import Core
 
+/// CoreTests
+/// One field decides whether an image is downloaded or read out of the app. The
+/// rule is simple enough to state in a sentence, which is exactly why it needs
+/// tests: an operator editing the document by hand will lean on it.
 final class LMSImageSourceTests: XCTestCase {
 
     func testWebAddressesAreDownloaded() {

@@ -379,8 +379,16 @@ extension Theme {
     public enum Images {
         nonisolated(unsafe) public private(set) static var headerBackground: UIImage?
 
+        /// Announces that the header image changed.
+        ///
+        /// The value is a plain static, so a view that already drew without it
+        /// would keep the stock artwork until something else redrew it. That is
+        /// what a cold start looks like when the picture is still arriving.
+        public static let didChange = Notification.Name("Theme.Images.headerBackgroundDidChange")
+
         public static func update(headerBackground: UIImage? = nil) {
             Images.headerBackground = headerBackground
+            NotificationCenter.default.post(name: didChange, object: nil)
         }
     }
 }
@@ -389,15 +397,25 @@ extension Theme {
 /// Uses the LMS-provided image when one has been loaded, falling back to the
 /// default `ThemeAssets.headerBackground`.
 public struct LmsHeaderBackground: View {
+    @State private var image: UIImage? = Theme.Images.headerBackground
+
     public init() {}
 
     public var body: some View {
-        if let image = Theme.Images.headerBackground {
-            Image(uiImage: image)
-                .resizable()
-                .scaledToFill()
-        } else {
-            ThemeAssets.headerBackground.swiftUIImage.resizable()
+        Group {
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                ThemeAssets.headerBackground.swiftUIImage.resizable()
+            }
+        }
+        // A cold start can draw this before the selected platform's artwork has
+        // arrived. Without this the stock header would stay for the life of the
+        // screen, which is not what the other platform does.
+        .onReceive(NotificationCenter.default.publisher(for: Theme.Images.didChange)) { _ in
+            image = Theme.Images.headerBackground
         }
     }
 }

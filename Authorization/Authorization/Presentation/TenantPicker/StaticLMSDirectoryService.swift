@@ -2,16 +2,7 @@
 //  StaticLMSDirectoryService.swift
 //  Authorization
 //
-//  Reads the whole directory from a single JSON document instead of a live API.
-//
-//  The document can come from a URL or from a file inside the app bundle, and
-//  nothing downstream can tell the difference. That is the point: an operator
-//  publishes the file wherever they like — their own web server, a CDN, or the
-//  app binary itself — and the app never learns anything about where it lives.
-//
-//  Everything arrives at once, so the platform list and every platform's details
-//  are known before the learner taps anything. That is what makes it possible to
-//  warm the logos and sign-in backgrounds ahead of the screen that shows them.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Core
@@ -57,6 +48,14 @@ enum LMSDirectoryDocumentSource: Sendable, Equatable {
     }
 }
 
+/// Reads the whole directory from a single JSON document instead of a live API.
+///
+/// The document can come from a URL or from a file inside the app bundle, and
+/// nothing downstream can tell the difference: an operator publishes the file
+/// wherever they like and the app never learns anything about where it lives.
+/// Everything arrives at once, so the list and every platform's details are
+/// known before the learner taps anything — which is what makes it possible to
+/// warm the logos and sign-in backgrounds ahead of the screen that shows them.
 final class StaticLMSDirectoryService: LMSDirectoryService {
 
     private let source: LMSDirectoryDocumentSource

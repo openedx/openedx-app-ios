@@ -2,18 +2,18 @@
 //  LMSImageSource.swift
 //  Core
 //
-//  Where a directory image actually comes from.
-//
-//  The directory document carries image fields as plain strings. A string that
-//  looks like a web address is fetched; anything else is the name of a file
-//  shipped inside the app. That one rule is what lets the same document work for
-//  an operator who hosts their images and for one who bundles them, without a
-//  second set of fields to keep in step.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Foundation
 import UIKit
 
+/// Where a directory image actually comes from.
+/// The directory document carries image fields as plain strings. A string that
+/// looks like a web address is fetched; anything else is the name of a file
+/// shipped inside the app. That one rule is what lets the same document work for
+/// an operator who hosts their images and for one who bundles them, without a
+/// second set of fields to keep in step.
 public enum LMSImageSource: Sendable, Hashable {
     /// An http(s) address to download.
     case remote(URL)

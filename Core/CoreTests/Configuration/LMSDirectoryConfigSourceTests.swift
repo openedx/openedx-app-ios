@@ -1,15 +1,17 @@
 //
 //  LMSDirectoryConfigSourceTests.swift
-//  CoreTests
+//  Core
 //
-//  Which document a build reads is decided entirely by the config file, and the
-//  mistakes are invisible until someone ships: a build that quietly ignores the
-//  copy it bundled, or one that thinks it has a directory when it has nothing.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import XCTest
 @testable import Core
 
+/// CoreTests
+/// Which document a build reads is decided entirely by the config file, and the
+/// mistakes are invisible until someone ships: a build that quietly ignores the
+/// copy it bundled, or one that thinks it has a directory when it has nothing.
 final class LMSDirectoryConfigSourceTests: XCTestCase {
 
     private func config(_ dict: [String: Any]) -> LMSDirectoryConfig {

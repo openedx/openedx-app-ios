@@ -1,16 +1,18 @@
 //
 //  ConfigLMSDirectoryTests.swift
-//  CoreTests
+//  Core
 //
-//  Regression coverage for the LMS Directory per-platform config overrides. When
-//  the feature is on and a platform is selected, the app must talk to that LMS and
-//  sign in with *its* OAuth client id / feedback email — not the baked-in config.
-//  When the flag is off (default) the stock config values always win.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import XCTest
 @testable import Core
 
+/// CoreTests
+/// Regression coverage for the LMS Directory per-platform config overrides. When
+/// the feature is on and a platform is selected, the app must talk to that LMS and
+/// sign in with *its* OAuth client id / feedback email — not the baked-in config.
+/// When the flag is off (default) the stock config values always win.
 final class ConfigLMSDirectoryTests: XCTestCase {
 
     private let baseURLKey = "selectedLMSBaseURL"

@@ -2,8 +2,7 @@
 //  LMSDirectoryView.swift
 //  Authorization
 //
-//  The list of platforms the directory holds. A document is a fixed list, so
-//  this is a list and nothing else — no search box, and nothing to type.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Core
@@ -11,6 +10,8 @@ import Kingfisher
 import SwiftUI
 import Theme
 
+/// The list of platforms the directory holds. A document is a fixed list, so
+/// this is a list and nothing else — no search box, and nothing to type.
 struct LMSDirectoryView: View {
     @ObservedObject private var viewModel: LMSDirectoryViewModel
 

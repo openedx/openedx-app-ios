@@ -2,9 +2,7 @@
 //  LMSDirectoryService.swift
 //  Authorization
 //
-//  Where the app's list of platforms comes from. One implementation today —
-//  a JSON document, hosted or shipped with the app — behind a protocol so the
-//  screen does not care which of the two it got.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Core
@@ -16,6 +14,9 @@ enum LMSDirectoryError: Error {
     case decodingFailed
 }
 
+/// Where the app's list of platforms comes from. One implementation today —
+/// a JSON document, hosted or shipped with the app — behind a protocol so the
+/// screen does not care which of the two it got.
 protocol LMSDirectoryService: Sendable {
     /// Every platform in the directory, in the order the document lists them.
     func platforms() async throws -> [LMSSummary]

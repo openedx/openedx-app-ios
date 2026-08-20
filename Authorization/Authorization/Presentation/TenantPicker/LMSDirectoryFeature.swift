@@ -1,3 +1,10 @@
+//
+//  LMSDirectoryFeature.swift
+//  Authorization
+//
+//  Created by Ivan Stepanok on 20.08.2026.
+//
+
 import Core
 import Foundation
 import SwiftUI

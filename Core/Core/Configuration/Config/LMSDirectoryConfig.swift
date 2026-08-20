@@ -2,9 +2,7 @@
 //  LMSDirectoryConfig.swift
 //  Core
 //
-//  Feature flag for the multi-tenant LMS Directory: a build that lets a learner
-//  choose which Open edX platform to sign in to. With ENABLED false the app
-//  behaves exactly like a stock single-tenant build.
+//  Created by Ivan Stepanok on 20.08.2026.
 //
 
 import Foundation
@@ -16,6 +14,9 @@ private enum Keys: String, RawStringExtractable {
     case directoryFile = "DIRECTORY_FILE"
 }
 
+/// Feature flag for the multi-tenant LMS Directory: a build that lets a learner
+/// choose which Open edX platform to sign in to. With ENABLED false the app
+/// behaves exactly like a stock single-tenant build.
 public class LMSDirectoryConfig: NSObject {
     /// Master gate. When false the feature is completely inert.
     public var enabled: Bool
