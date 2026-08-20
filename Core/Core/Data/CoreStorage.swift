@@ -24,6 +24,9 @@ public protocol CoreStorage: Sendable {
     var lastUsedSocialAuth: String? {get set}
     var latestAvailableAppVersion: String? {get set}
     var updateAppRequired: Bool {get set}
+    /// Base URL of the LMS the learner selected via the LMS Directory feature.
+    /// nil when no selection (stock single-tenant behaviour / after logout).
+    var selectedLMSBaseURL: String? {get set}
     func clear()
 }
 
@@ -44,8 +47,9 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
     public var lastUsedSocialAuth: String?
     public var latestAvailableAppVersion: String?
     public var updateAppRequired: Bool = false
+    public var selectedLMSBaseURL: String?
     public func clear() {}
-    
+
     public init() {}
 }
 #endif

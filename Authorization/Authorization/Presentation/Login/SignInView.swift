@@ -27,8 +27,7 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
+                LmsHeaderBackground()
                     .edgesIgnoringSafeArea(.top)
                     .accessibilityIdentifier("auth_bg_image")
             }.frame(maxWidth: .infinity, maxHeight: 200)
@@ -49,9 +48,7 @@ public struct SignInView: View {
             }
             
             VStack(alignment: .center) {
-                ThemeAssets.appLogo.swiftUIImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                lmsLogoView
                     .frame(maxWidth: 189, maxHeight: 89)
                     .padding(.top, isHorizontal ? 20 : 40)
                     .padding(.bottom, isHorizontal ? 10 : 40)
@@ -72,6 +69,7 @@ public struct SignInView: View {
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("welcome_back_text")
+                                    selectedLMSBanner
                                     if viewModel.socialAuthEnabled {
                                         SocialAuthView(
                                             viewModel: .init(
@@ -319,6 +317,63 @@ public struct SignInView: View {
     private func handleURL(_ url: URL) -> OpenURLAction.Result {
         viewModel.router.showWebBrowser(title: "", url: url)
         return .handled
+    }
+
+    // MARK: - LMS Directory branding
+
+    /// The platform the learner picked, when the feature is on. Drives the logo and
+    /// the "Change" banner so sign-in is branded for the selected LMS.
+    private var lmsSelection: LMSDirectorySelectionInfo? {
+        guard viewModel.config.lmsDirectory.isDirectoryReachable else { return nil }
+        return LMSDirectoryFeature.currentSelectionInfo()
+    }
+
+    @ViewBuilder
+    private var lmsLogoView: some View {
+        if let logoURL = lmsSelection?.logoURL {
+            AsyncImage(url: logoURL) { image in
+                image.resizable().aspectRatio(contentMode: .fit)
+            } placeholder: {
+                ThemeAssets.appLogo.swiftUIImage.resizable().aspectRatio(contentMode: .fit)
+            }
+        } else {
+            ThemeAssets.appLogo.swiftUIImage.resizable().aspectRatio(contentMode: .fit)
+        }
+    }
+
+    @ViewBuilder
+    private var selectedLMSBanner: some View {
+        if let info = lmsSelection {
+            HStack(spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(NSLocalizedString("Selected LMS", comment: "SignIn: selected platform label"))
+                        .font(Theme.Fonts.labelMedium)
+                        .foregroundColor(Theme.Colors.textSecondary)
+                    Text(info.title)
+                        .font(Theme.Fonts.bodyLarge)
+                        .foregroundColor(Theme.Colors.textPrimary)
+                        .lineLimit(1)
+                        .accessibilityIdentifier("selected_lms_title")
+                }
+                Spacer()
+                Button(NSLocalizedString("Change", comment: "SignIn: change selected platform")) {
+                    Container.shared.resolve(LMSSelectionRouting.self)?.showLanding()
+                }
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.accentColor)
+                .accessibilityIdentifier("change_lms_button")
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .background(Theme.Shapes.textInputShape.fill(Theme.Colors.loginBackground))
+            .overlay(
+                Theme.Shapes.textInputShape
+                    .stroke(lineWidth: 1)
+                    .fill(Theme.Colors.textInputStroke.opacity(0.5))
+            )
+            .padding(.bottom, 16)
+            .accessibilityIdentifier("selected_lms_banner")
+        }
     }
 }
 

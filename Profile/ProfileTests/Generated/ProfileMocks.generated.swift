@@ -18,7 +18,7 @@ import ZipArchive
 
 public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
     public init() { }
-    public init(baseURL: URL = URL(fileURLWithPath: ""), baseSSOURL: URL = URL(fileURLWithPath: ""), ssoFinishedURL: URL = URL(fileURLWithPath: ""), ssoButtonTitle: [String: Any] = [String: Any](), oAuthClientId: String = "", tokenType: TokenType, feedbackEmail: String = "", appStoreLink: String = "", faq: URL? = nil, platformName: String = "", agreement: AgreementConfig, firebase: FirebaseConfig, facebook: FacebookConfig, microsoft: MicrosoftConfig, google: GoogleConfig, appleSignIn: AppleSignInConfig, features: FeaturesConfig, theme: ThemeConfig, uiComponents: UIComponentsConfig, discovery: DiscoveryConfig, dashboard: DashboardConfig, braze: BrazeConfig, branch: BranchConfig, program: DiscoveryConfig, experimentalFeatures: ExperimentalFeaturesConfig, URIScheme: String = "") {
+    public init(baseURL: URL = URL(fileURLWithPath: ""), baseSSOURL: URL = URL(fileURLWithPath: ""), ssoFinishedURL: URL = URL(fileURLWithPath: ""), ssoButtonTitle: [String: Any] = [String: Any](), oAuthClientId: String = "", tokenType: TokenType, feedbackEmail: String = "", appStoreLink: String = "", faq: URL? = nil, platformName: String = "", agreement: AgreementConfig, firebase: FirebaseConfig, facebook: FacebookConfig, microsoft: MicrosoftConfig, google: GoogleConfig, appleSignIn: AppleSignInConfig, features: FeaturesConfig, theme: ThemeConfig, uiComponents: UIComponentsConfig, lmsDirectory: LMSDirectoryConfig, discovery: DiscoveryConfig, dashboard: DashboardConfig, braze: BrazeConfig, branch: BranchConfig, program: DiscoveryConfig, experimentalFeatures: ExperimentalFeaturesConfig, URIScheme: String = "") {
         self.baseURL = baseURL
         self.baseSSOURL = baseSSOURL
         self.ssoFinishedURL = ssoFinishedURL
@@ -38,6 +38,7 @@ public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
         self._features = features
         self._theme = theme
         self._uiComponents = uiComponents
+        self._lmsDirectory = lmsDirectory
         self._discovery = discovery
         self._dashboard = dashboard
         self._braze = braze
@@ -138,6 +139,12 @@ public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
         set { _theme = newValue }
     }
 
+
+    private var _lmsDirectory: LMSDirectoryConfig!
+    public var lmsDirectory: LMSDirectoryConfig {
+        get { return _lmsDirectory }
+        set { _lmsDirectory = newValue }
+    }
 
     private var _uiComponents: UIComponentsConfig!
     public var uiComponents: UIComponentsConfig {
@@ -258,7 +265,7 @@ public final class CoreAnalyticsMock: CoreAnalytics {
 
 public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
     public init() { }
-    public init(accessToken: String? = nil, refreshToken: String? = nil, pushToken: String? = nil, appleSignFullName: String? = nil, appleSignEmail: String? = nil, cookiesDate: Date? = nil, reviewLastShownVersion: String? = nil, lastReviewDate: Date? = nil, user: DataLayer.User? = nil, userSettings: UserSettings? = nil, resetAppSupportDirectoryUserData: Bool? = nil, useRelativeDates: Bool = false, lastUsedSocialAuth: String? = nil, latestAvailableAppVersion: String? = nil, updateAppRequired: Bool = false) {
+    public init(accessToken: String? = nil, refreshToken: String? = nil, pushToken: String? = nil, appleSignFullName: String? = nil, appleSignEmail: String? = nil, cookiesDate: Date? = nil, reviewLastShownVersion: String? = nil, lastReviewDate: Date? = nil, user: DataLayer.User? = nil, userSettings: UserSettings? = nil, resetAppSupportDirectoryUserData: Bool? = nil, useRelativeDates: Bool = false, lastUsedSocialAuth: String? = nil, latestAvailableAppVersion: String? = nil, updateAppRequired: Bool = false, selectedLMSBaseURL: String? = nil) {
         self.accessToken = accessToken
         self.refreshToken = refreshToken
         self.pushToken = pushToken
@@ -274,6 +281,7 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
         self.lastUsedSocialAuth = lastUsedSocialAuth
         self.latestAvailableAppVersion = latestAvailableAppVersion
         self.updateAppRequired = updateAppRequired
+        self.selectedLMSBaseURL = selectedLMSBaseURL
     }
 
 
@@ -321,6 +329,9 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
 
     public private(set) var updateAppRequiredSetCallCount = 0
     public var updateAppRequired: Bool = false { didSet { updateAppRequiredSetCallCount += 1 } }
+
+    public private(set) var selectedLMSBaseURLSetCallCount = 0
+    public var selectedLMSBaseURL: String? = nil { didSet { selectedLMSBaseURLSetCallCount += 1 } }
 
     private let clearState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> ()>())
     public var clearCallCount: Int {

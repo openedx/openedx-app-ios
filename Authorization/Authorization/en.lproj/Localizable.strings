@@ -55,3 +55,13 @@ accordance with the [Privacy Policy.](%@)";
 "STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
 "STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";
 "STARTUP.TITLE" = "Start";
+
+"LMS_DIRECTORY.TITLE" = "Choose your platform";
+"LMS_DIRECTORY.PROVIDER_SUBTITLE" = "Platforms published by %@";
+"LMS_DIRECTORY.EMPTY" = "This directory lists no platforms yet.";
+"LMS_DIRECTORY.LOAD_FAILED" = "We couldn't load the list of platforms.";
+"LMS_DIRECTORY.SELECT_FAILED" = "We couldn't open that platform. Please try again.";
+"LMS_DIRECTORY.INVALID_PLATFORM" = "That platform's settings could not be read.";
+"LMS_DIRECTORY.RETRY" = "Try again";
+"LMS_DIRECTORY.SELECTED" = "Selected LMS";
+"LMS_DIRECTORY.CHANGE" = "Change";
