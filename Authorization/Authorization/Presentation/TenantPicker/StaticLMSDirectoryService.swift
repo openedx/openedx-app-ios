@@ -15,18 +15,18 @@ struct LMSDirectoryDocumentDTO: Codable {
     struct Provider: Codable {
         let name: String
         let tagline: String?
-        let logoURL: URL?
+        let logo: URL?
 
         enum CodingKeys: String, CodingKey {
             case name
             case tagline
-            case logoURL = "logo_url"
+            case logo
         }
     }
 
-    let version: Int
+    let format: String?
     let provider: Provider?
-    let platforms: [LMSDetailDTO]
+    let include: [LMSDetailDTO]
 }
 
 /// Where a document is read from.
@@ -99,7 +99,7 @@ final class StaticLMSDirectoryService: LMSDirectoryService {
     // MARK: - Private
 
     private func allPlatforms() async throws -> [LMSDetail] {
-        try await document().platforms.map(\.domainModel)
+        try await document().include.map(\.domainModel)
     }
 
     private func document() async throws -> LMSDirectoryDocumentDTO {
@@ -176,13 +176,13 @@ private extension LMSDetail {
             title: title,
             shortDescription: shortDescription,
             baseURL: baseURL,
-            logoURL: effectiveLogoURL,
+            logoURL: logoURL,
             accentColorHex: accentColorHex
         )
     }
 
     var imageSources: [LMSImageSource] {
-        [effectiveLogoURL, theme?.loginBackgroundURL]
+        [logoURL, theme?.loginBackgroundURL]
             .compactMap { $0 }
             .compactMap(LMSImageSource.init(url:))
     }

@@ -28,7 +28,7 @@ final class LMSOverridesStore: LMSOverridesStoreProtocol {
         static let accentColorDark = "lmsDirectory.selected_accent_color_dark"
         static let unknownUnitsMode = "lmsDirectory.selected_unknown_units_mode"
         static let loginBackgroundURL = "lmsDirectory.selected_login_background_url"
-        static let logoUploadURL = "lmsDirectory.selected_logo_upload_url"
+        static let logoURL = "lmsDirectory.selected_logo_url"
         static let courseUnitProgress = "lmsDirectory.selected_course_unit_progress"
         static let courseDropdownNav = "lmsDirectory.selected_course_dropdown_nav"
         static let preLoginExperience = "lmsDirectory.selected_pre_login_experience"
@@ -52,7 +52,7 @@ final class LMSOverridesStore: LMSOverridesStoreProtocol {
         userDefaults.set(detail.theme?.accentColorDark, forKey: Keys.accentColorDark)
         userDefaults.set(detail.featureFlags.unknownUnitsMode ?? "block", forKey: Keys.unknownUnitsMode)
         userDefaults.set(detail.theme?.loginBackgroundURL?.absoluteString, forKey: Keys.loginBackgroundURL)
-        userDefaults.set(detail.effectiveLogoURL?.absoluteString, forKey: Keys.logoUploadURL)
+        userDefaults.set(detail.logoURL?.absoluteString, forKey: Keys.logoURL)
         userDefaults.set(detail.uiComponents?.courseUnitProgressEnabled ?? true, forKey: Keys.courseUnitProgress)
         userDefaults.set(detail.uiComponents?.courseDropdownNavigationEnabled ?? true, forKey: Keys.courseDropdownNav)
         userDefaults.set(detail.uiComponents?.preLoginExperienceEnabled ?? true, forKey: Keys.preLoginExperience)
@@ -76,7 +76,7 @@ final class LMSOverridesStore: LMSOverridesStoreProtocol {
         for key in [
             Keys.selectionPayload, Keys.feedbackEmail, Keys.oauthClientId,
             Keys.accentColor, Keys.accentColorDark, Keys.unknownUnitsMode,
-            Keys.loginBackgroundURL, Keys.logoUploadURL,
+            Keys.loginBackgroundURL, Keys.logoURL,
             Keys.courseUnitProgress, Keys.courseDropdownNav,
             Keys.preLoginExperience, Keys.dashboardType
         ] {

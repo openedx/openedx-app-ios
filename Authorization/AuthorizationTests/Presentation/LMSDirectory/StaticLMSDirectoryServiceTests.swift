@@ -29,16 +29,15 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
 
     private static let document = """
     {
-      "version": 1,
-      "provider": { "name": "Northwind", "tagline": "Five campuses, one app", "logo_url": null },
-      "platforms": [
+      "format": "v1",
+      "provider": { "name": "Northwind", "tagline": "Five campuses, one app", "logo": null },
+      "include": [
         {
           "id": "1",
-          "title": "Alpha",
-          "description": "Alpha campus",
-          "short_description": "Alpha",
-          "base_url": "https://alpha.example.edu",
-          "logo_url": "https://cdn.example.com/alpha.png",
+          "name": "Alpha",
+          "description": "Alpha",
+          "url": "https://alpha.example.edu",
+          "logo": "https://cdn.example.com/alpha.png",
           "accent_color": "#112233",
           "api": {
             "host_url": "https://alpha.example.edu",
@@ -46,15 +45,14 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
             "oauth_client_id": "alpha-client"
           },
           "feature_flags": { "pre_login_discovery": true, "unknown_units_mode": "block" },
-          "theme": { "login_background_url": "alpha-bg.png", "accent_color_dark": "#445566" }
+          "theme": { "login_background": "alpha-bg.png", "accent_color_dark": "#445566" }
         },
         {
           "id": "2",
-          "title": "Beta",
-          "description": "Beta campus",
-          "short_description": "Beta",
-          "base_url": "https://beta.example.edu",
-          "logo_url": "beta-logo.png",
+          "name": "Beta",
+          "description": "Beta",
+          "url": "https://beta.example.edu",
+          "logo": "beta-logo.png",
           "accent_color": null,
           "api": {
             "host_url": "https://beta.example.edu",
@@ -128,14 +126,13 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
     func testAMinimalHandWrittenDocumentIsAccepted() async throws {
         let minimal = """
         {
-          "version": 1,
-          "platforms": [
+          "format": "v1",
+          "include": [
             {
               "id": "1",
-              "title": "Alpha",
-              "description": "Alpha campus",
-              "short_description": "Alpha",
-              "base_url": "https://alpha.example.edu"
+              "name": "Alpha",
+              "description": "Alpha",
+              "url": "https://alpha.example.edu"
             }
           ]
         }
@@ -158,14 +155,13 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
     func testAPlatformNeedNotCarryItsOwnOAuthClient() async throws {
         let document = """
         {
-          "version": 1,
-          "platforms": [
+          "format": "v1",
+          "include": [
             {
               "id": "1",
-              "title": "Alpha",
-              "description": "Alpha campus",
-              "short_description": "Alpha",
-              "base_url": "https://alpha.example.edu",
+              "name": "Alpha",
+              "description": "Alpha",
+              "url": "https://alpha.example.edu",
               "api": { "host_url": "https://api.alpha.example.edu" }
             }
           ]

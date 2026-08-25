@@ -37,23 +37,21 @@ One JSON file. This is the whole format:
 
 ```json
 {
-  "version": 1,
+  "format": "v1",
   "provider": {
     "name": "Northwind Education Group",
     "tagline": "Five campuses, one app",
-    "logo_url": null
+    "logo": null
   },
-  "platforms": [
+  "include": [
     {
+      "name": "Northwind College",
+      "description": "Main campus",
+      "url": "https://learn.northwind.edu",
+      "logo": "https://cdn.northwind.edu/logo.png",
+
       "id": "1",
-      "title": "Northwind College",
-      "description": "The main campus, offering undergraduate programmes.",
-      "short_description": "Main campus",
-      "base_url": "https://learn.northwind.edu",
-      "logo_url": "https://cdn.northwind.edu/logo.png",
       "accent_color": "#002545",
-      "visibility": "public",
-      "featured": false,
       "api": {
         "feedback_email": "support@northwind.edu"
       },
@@ -63,8 +61,7 @@ One JSON file. This is the whole format:
       },
       "theme": {
         "accent_color_dark": "#4989bf",
-        "login_background_url": "https://cdn.northwind.edu/signin.png",
-        "logo_upload_url": null
+        "login_background": "https://cdn.northwind.edu/signin.png"
       },
       "ui_components": {
         "course_unit_progress_enabled": true,
@@ -81,21 +78,22 @@ One JSON file. This is the whole format:
 
 | field | what it is |
 | --- | --- |
-| `version` | `1`. The only version there is. |
-| `platforms[]` | At least one. An empty list gives the learner nothing to pick. |
-| `id` | Unique within the file. A string, even when it looks like a number. |
-| `title` | Shown in the list and on the sign-in screen. |
-| `description` / `short_description` | Long and one-line blurbs. |
-| `base_url` | The Open edX site. Must be `https` in a shipped build. |
+| `format` | `"v1"`. The only version there is. |
+| `include[]` | At least one platform. An empty list gives the learner nothing to pick. |
+| `name` | Shown in the list and on the sign-in screen. |
+| `url` | The Open edX site. Must be `https` in a shipped build. |
 
 ### Optional
 
-Everything else, `api` included. Omit a key and the app uses its own default, so
-the smallest useful entry is `id`, `title`, `description`, `short_description`
-and `base_url`. `provider` is optional too; its `name` is shown above the list.
+Everything else, `api` and `id` included. Omit a key and the app uses its own
+default, so the smallest useful entry is `name` and `url`. A platform that names
+no `id` is identified by its address, which is unique in a directory anyway.
+`provider` is optional too; its `name` is shown above the list.
 
-`visibility` and `featured` are accepted and ignored — every platform in the
-file is shown, in the order the file lists them.
+The key names follow the schema the Open edX mobile working group is settling
+on, so a file written by hand and a file exported from a registry are the same
+shape. Unknown keys are ignored, which is what lets a newer file stay readable
+by an older build.
 
 ### OAuth
 
@@ -117,8 +115,8 @@ Every image field takes either of two things, and the value itself says which:
 - something starting with `http://` or `https://` is downloaded;
 - anything else is the **name of a file shipped with the app**.
 
-So `"logo_url": "https://cdn.northwind.edu/logo.png"` is fetched, and
-`"logo_url": "northwind-logo.png"` is looked up in the app bundle. That is what makes a
+So `"logo": "https://cdn.northwind.edu/logo.png"` is fetched, and
+`"logo": "northwind-logo.png"` is looked up in the app bundle. That is what makes a
 fully offline build possible: put the images next to the document, refer to them
 by name, and the app never asks the network for a picture.
 

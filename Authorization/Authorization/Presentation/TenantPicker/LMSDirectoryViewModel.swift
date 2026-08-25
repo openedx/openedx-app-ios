@@ -112,8 +112,8 @@ private extension LMSDetail {
     func asDTO() -> LMSDetailDTO {
         LMSDetailDTO(
             id: id,
-            title: title,
-            description: description,
+            name: title,
+            description: shortDescription,
             api: .init(
                 hostURL: api.hostURL,
                 feedbackEmail: api.feedbackEmail,
@@ -124,9 +124,8 @@ private extension LMSDetail {
             uiComponents: uiComponents,
             dashboard: dashboard,
             accentColor: accentColorHex,
-            shortDescription: shortDescription,
-            baseURL: baseURL,
-            logoURL: logoURL
+            url: baseURL,
+            logo: logoURL
         )
     }
 }

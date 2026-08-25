@@ -52,12 +52,10 @@ struct LMSDetail: Identifiable, Hashable, Sendable {
     struct Theme: Hashable, Sendable, Codable {
         let accentColorDark: String?
         let loginBackgroundURL: URL?
-        let logoUploadURL: URL?
 
         enum CodingKeys: String, CodingKey {
             case accentColorDark = "accent_color_dark"
-            case loginBackgroundURL = "login_background_url"
-            case logoUploadURL = "logo_upload_url"
+            case loginBackgroundURL = "login_background"
         }
     }
 
@@ -105,10 +103,6 @@ struct LMSDetail: Identifiable, Hashable, Sendable {
     }
 
     /// Returns the best logo URL: uploaded logo takes priority over external URL
-    var effectiveLogoURL: URL? {
-        theme?.logoUploadURL ?? logoURL
-    }
-
     /// Whether unknown units should be shown in webview instead of blocked
     var showUnknownUnitsInWebview: Bool {
         featureFlags.unknownUnitsMode == "webview"
@@ -156,22 +150,23 @@ struct LMSDetailDTO: Codable {
         }
     }
 
-    let id: String
-    let title: String
-    let description: String
+    /// Optional: a file that names no id is identified by its address, which is
+    /// unique within a directory anyway.
+    let id: String?
+    let name: String
+    let description: String?
     let api: APIDTO?
     let featureFlags: LMSDetail.FeatureFlags?
     let theme: LMSDetail.Theme?
     let uiComponents: LMSDetail.UIComponents?
     let dashboard: LMSDetail.Dashboard?
     let accentColor: String?
-    let shortDescription: String
-    let baseURL: URL
-    let logoURL: URL?
+    let url: URL
+    let logo: URL?
 
     enum CodingKeys: String, CodingKey {
         case id
-        case title
+        case name
         case description
         case api
         case featureFlags = "feature_flags"
@@ -179,20 +174,19 @@ struct LMSDetailDTO: Codable {
         case uiComponents = "ui_components"
         case dashboard
         case accentColor = "accent_color"
-        case shortDescription = "short_description"
-        case baseURL = "base_url"
-        case logoURL = "logo_url"
+        case url
+        case logo
     }
 
     var domainModel: LMSDetail {
         LMSDetail(
-            id: id,
-            title: title,
-            description: description,
+            id: id ?? url.absoluteString,
+            title: name,
+            description: description ?? "",
             api: .init(
                 // A platform that names no separate API host is served from the
                 // same address the learner picked.
-                hostURL: api?.hostURL ?? baseURL,
+                hostURL: api?.hostURL ?? url,
                 feedbackEmail: api?.feedbackEmail ?? "",
                 // Empty means "the app's own", which is what Config falls back to.
                 oauthClientId: api?.oauthClientId ?? ""
@@ -202,9 +196,9 @@ struct LMSDetailDTO: Codable {
             uiComponents: uiComponents,
             dashboard: dashboard,
             accentColorHex: accentColor,
-            shortDescription: shortDescription,
-            baseURL: baseURL,
-            logoURL: logoURL
+            shortDescription: description ?? "",
+            baseURL: url,
+            logoURL: logo
         )
     }
 }
