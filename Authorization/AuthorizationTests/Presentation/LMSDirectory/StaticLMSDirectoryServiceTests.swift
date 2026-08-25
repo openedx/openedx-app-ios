@@ -135,12 +135,7 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
               "title": "Alpha",
               "description": "Alpha campus",
               "short_description": "Alpha",
-              "base_url": "https://alpha.example.edu",
-              "api": {
-                "host_url": "https://alpha.example.edu",
-                "feedback_email": "support@example.edu",
-                "oauth_client_id": "alpha-client"
-              }
+              "base_url": "https://alpha.example.edu"
             }
           ]
         }
@@ -151,6 +146,37 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
         XCTAssertFalse(detail.featureFlags.preLoginDiscovery)
         XCTAssertNil(detail.featureFlags.unknownUnitsMode)
         XCTAssertNil(detail.logoURL)
+        // No "api" block at all: the platform is served from the address the
+        // learner picked, and the app signs in with its own OAuth client.
+        XCTAssertEqual(detail.api.hostURL.absoluteString, "https://alpha.example.edu")
+        XCTAssertTrue(detail.api.oauthClientId.isEmpty)
+    }
+
+    /// A multi-instance app carries one OAuth client id of its own, which each
+    /// backend registers. A directory that names none per platform is the normal
+    /// case, and must not stop the file being read.
+    func testAPlatformNeedNotCarryItsOwnOAuthClient() async throws {
+        let document = """
+        {
+          "version": 1,
+          "platforms": [
+            {
+              "id": "1",
+              "title": "Alpha",
+              "description": "Alpha campus",
+              "short_description": "Alpha",
+              "base_url": "https://alpha.example.edu",
+              "api": { "host_url": "https://api.alpha.example.edu" }
+            }
+          ]
+        }
+        """
+
+        let detail = try await makeRemoteService(body: document).details(id: "1")
+
+        XCTAssertEqual(detail.api.hostURL.absoluteString, "https://api.alpha.example.edu")
+        XCTAssertTrue(detail.api.oauthClientId.isEmpty)
+        XCTAssertTrue(detail.api.feedbackEmail.isEmpty)
     }
 
     func testMalformedDocumentReportsDecodingFailure() async {

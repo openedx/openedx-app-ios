@@ -138,10 +138,16 @@ struct LMSColor: Sendable, Hashable {
 // MARK: - Wire format
 
 struct LMSDetailDTO: Codable {
+    /// Every field here is optional on purpose.
+    ///
+    /// A multi-instance app carries one OAuth client id of its own, which each
+    /// backend registers; the directory is not where per-platform credentials
+    /// live. A file that says nothing about any of this is the normal case, and
+    /// the app falls back to its own configuration.
     struct APIDTO: Codable {
-        let hostURL: URL
-        let feedbackEmail: String
-        let oauthClientId: String
+        let hostURL: URL?
+        let feedbackEmail: String?
+        let oauthClientId: String?
 
         enum CodingKeys: String, CodingKey {
             case hostURL = "host_url"
@@ -153,7 +159,7 @@ struct LMSDetailDTO: Codable {
     let id: String
     let title: String
     let description: String
-    let api: APIDTO
+    let api: APIDTO?
     let featureFlags: LMSDetail.FeatureFlags?
     let theme: LMSDetail.Theme?
     let uiComponents: LMSDetail.UIComponents?
@@ -184,9 +190,12 @@ struct LMSDetailDTO: Codable {
             title: title,
             description: description,
             api: .init(
-                hostURL: api.hostURL,
-                feedbackEmail: api.feedbackEmail,
-                oauthClientId: api.oauthClientId
+                // A platform that names no separate API host is served from the
+                // same address the learner picked.
+                hostURL: api?.hostURL ?? baseURL,
+                feedbackEmail: api?.feedbackEmail ?? "",
+                // Empty means "the app's own", which is what Config falls back to.
+                oauthClientId: api?.oauthClientId ?? ""
             ),
             featureFlags: featureFlags ?? .none,
             theme: theme,

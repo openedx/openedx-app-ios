@@ -55,9 +55,7 @@ One JSON file. This is the whole format:
       "visibility": "public",
       "featured": false,
       "api": {
-        "host_url": "https://learn.northwind.edu",
-        "feedback_email": "support@northwind.edu",
-        "oauth_client_id": "PASTE_THE_MOBILE_OAUTH_CLIENT_ID"
+        "feedback_email": "support@northwind.edu"
       },
       "feature_flags": {
         "pre_login_discovery": false,
@@ -89,18 +87,28 @@ One JSON file. This is the whole format:
 | `title` | Shown in the list and on the sign-in screen. |
 | `description` / `short_description` | Long and one-line blurbs. |
 | `base_url` | The Open edX site. Must be `https` in a shipped build. |
-| `api.host_url` | Usually the same as `base_url`. |
-| `api.oauth_client_id` | The site's **mobile** OAuth client id. Sign-in fails without the right one. |
-| `api.feedback_email` | May be `""`. |
 
 ### Optional
 
-Everything else. Omit a key and the app uses its own default, so the smallest
-useful entry is `id`, `title`, `description`, `short_description`, `base_url`
-and `api`. `provider` is optional too; its `name` is shown above the list.
+Everything else, `api` included. Omit a key and the app uses its own default, so
+the smallest useful entry is `id`, `title`, `description`, `short_description`
+and `base_url`. `provider` is optional too; its `name` is shown above the list.
 
 `visibility` and `featured` are accepted and ignored — every platform in the
 file is shown, in the order the file lists them.
+
+### OAuth
+
+A multi-instance app carries **one** OAuth client id of its own — the one in
+`config.yaml` — and each platform registers that id in its own OAuth
+Applications table, ideally restricted to the app's redirect scheme. The
+directory is not where per-platform credentials live, so `api` can be omitted
+entirely and usually should be.
+
+`api` is still read when present: `host_url` for a platform whose API lives at a
+different address than the one the learner picked, `oauth_client_id` for a
+platform that insists on its own, and `feedback_email` for the support address.
+A platform naming its own client id overrides the app's for that platform only.
 
 ## Images
 
