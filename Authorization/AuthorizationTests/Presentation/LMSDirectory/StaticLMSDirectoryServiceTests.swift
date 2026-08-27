@@ -33,7 +33,6 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
       "provider": { "name": "Northwind", "tagline": "Five campuses, one app", "logo": null },
       "include": [
         {
-          "id": "1",
           "name": "Alpha",
           "description": "Alpha",
           "url": "https://alpha.example.edu",
@@ -48,7 +47,6 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
           "theme": { "login_background": "alpha-bg.png", "accent_color_dark": "#445566" }
         },
         {
-          "id": "2",
           "name": "Beta",
           "description": "Beta",
           "url": "https://beta.example.edu",
@@ -95,15 +93,42 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
         // The document is fetched once and kept; if this asked the network again it
         // would fail, because the stub is torn down below.
         StubURLProtocol.handler = nil
-        let detail = try await service.details(id: "2")
+        let detail = try await service.details(id: "1")
         XCTAssertEqual(detail.title, "Beta")
         XCTAssertEqual(detail.api.oauthClientId, "beta-client")
+    }
+
+    /// Two entries may legitimately name the same address. Identifying a
+    /// platform by its URL merges them: the list draws one and opening it gives
+    /// the other one's settings.
+    func testTwoPlatformsMayShareAnAddressWithoutMerging() async throws {
+        let document = """
+        {
+          "format": "v1",
+          "include": [
+            { "name": "Alpha", "description": "Alpha", "url": "https://shared.example.edu",
+              "accent_color": "#111111" },
+            { "name": "Beta", "description": "Beta", "url": "https://shared.example.edu",
+              "accent_color": "#222222" }
+          ]
+        }
+        """
+        let service = makeRemoteService(body: document)
+
+        let items = try await service.platforms()
+        XCTAssertEqual(items.map(\.title), ["Alpha", "Beta"])
+        XCTAssertEqual(Set(items.map(\.id)).count, 2, "two rows must not collapse into one")
+
+        // Opening the second row gives the second platform, not the first.
+        let second = try await service.details(id: items[1].id)
+        XCTAssertEqual(second.title, "Beta")
+        XCTAssertEqual(second.accentColorHex, "#222222")
     }
 
     func testUnknownIdIsNotFound() async throws {
         let service = makeRemoteService()
         do {
-            _ = try await service.details(id: "does-not-exist")
+            _ = try await service.details(id: "9")
             XCTFail("Expected notFound")
         } catch {
             XCTAssertEqual(error as? LMSDirectoryError, .notFound)
@@ -129,7 +154,6 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
           "format": "v1",
           "include": [
             {
-              "id": "1",
               "name": "Alpha",
               "description": "Alpha",
               "url": "https://alpha.example.edu"
@@ -137,7 +161,7 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
           ]
         }
         """
-        let detail = try await makeRemoteService(body: minimal).details(id: "1")
+        let detail = try await makeRemoteService(body: minimal).details(id: "0")
 
         XCTAssertEqual(detail.title, "Alpha")
         XCTAssertFalse(detail.featureFlags.preLoginDiscovery)
@@ -158,7 +182,6 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
           "format": "v1",
           "include": [
             {
-              "id": "1",
               "name": "Alpha",
               "description": "Alpha",
               "url": "https://alpha.example.edu",
@@ -168,7 +191,7 @@ final class StaticLMSDirectoryServiceTests: XCTestCase {
         }
         """
 
-        let detail = try await makeRemoteService(body: document).details(id: "1")
+        let detail = try await makeRemoteService(body: document).details(id: "0")
 
         XCTAssertEqual(detail.api.hostURL.absoluteString, "https://api.alpha.example.edu")
         XCTAssertTrue(detail.api.oauthClientId.isEmpty)

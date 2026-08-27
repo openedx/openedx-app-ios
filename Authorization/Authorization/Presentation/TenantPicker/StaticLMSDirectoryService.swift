@@ -99,7 +99,9 @@ final class StaticLMSDirectoryService: LMSDirectoryService {
     // MARK: - Private
 
     private func allPlatforms() async throws -> [LMSDetail] {
-        try await document().include.map(\.domainModel)
+        try await document().include.enumerated().map { index, entry in
+            entry.domainModel(id: String(index))
+        }
     }
 
     private func document() async throws -> LMSDirectoryDocumentDTO {

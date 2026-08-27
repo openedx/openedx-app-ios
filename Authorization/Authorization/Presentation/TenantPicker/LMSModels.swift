@@ -150,9 +150,6 @@ struct LMSDetailDTO: Codable {
         }
     }
 
-    /// Optional: a file that names no id is identified by its address, which is
-    /// unique within a directory anyway.
-    let id: String?
     let name: String
     let description: String?
     let api: APIDTO?
@@ -165,7 +162,6 @@ struct LMSDetailDTO: Codable {
     let logo: URL?
 
     enum CodingKeys: String, CodingKey {
-        case id
         case name
         case description
         case api
@@ -178,9 +174,17 @@ struct LMSDetailDTO: Codable {
         case logo
     }
 
-    var domainModel: LMSDetail {
+    /**
+     The platform, identified by where it sits in the document.
+
+     Position is the only thing guaranteed unique. Two entries may legitimately
+     share an address — the same LMS listed twice under different branding — and
+     identifying them by URL silently merges them: the list draws one of the two
+     and tapping it opens the other one's settings.
+     */
+    func domainModel(id: String) -> LMSDetail {
         LMSDetail(
-            id: id ?? url.absoluteString,
+            id: id,
             title: name,
             description: description ?? "",
             api: .init(

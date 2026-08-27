@@ -50,7 +50,6 @@ One JSON file. This is the whole format:
       "url": "https://learn.northwind.edu",
       "logo": "https://cdn.northwind.edu/logo.png",
 
-      "id": "1",
       "accent_color": "#002545",
       "api": {
         "feedback_email": "support@northwind.edu"
@@ -85,9 +84,9 @@ One JSON file. This is the whole format:
 
 ### Optional
 
-Everything else, `api` and `id` included. Omit a key and the app uses its own
-default, so the smallest useful entry is `name` and `url`. A platform that names
-no `id` is identified by its address, which is unique in a directory anyway.
+Everything else, `api` included. Omit a key and the app uses its own default, so
+the smallest useful entry is `name` and `url`. A platform is identified by its
+address, so there is no separate id to keep in step with anything.
 `provider` is optional too; its `name` is shown above the list.
 
 The key names follow the schema the Open edX mobile working group is settling

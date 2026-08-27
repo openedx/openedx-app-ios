@@ -66,7 +66,9 @@ final class LMSOverridesStore: LMSOverridesStoreProtocol {
         else {
             return nil
         }
-        return dto.domainModel
+        // A stored selection is one platform, so its position is irrelevant; it
+        // only needs an id that is stable for the object it already holds.
+        return dto.domainModel(id: dto.url.absoluteString)
     }
 
     func clear(storage: CoreStorage?) throws {

@@ -111,7 +111,6 @@ final class LMSDirectoryViewModel: ObservableObject {
 private extension LMSDetail {
     func asDTO() -> LMSDetailDTO {
         LMSDetailDTO(
-            id: id,
             name: title,
             description: shortDescription,
             api: .init(
