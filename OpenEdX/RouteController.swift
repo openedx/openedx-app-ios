@@ -49,7 +49,17 @@ class RouteController: UIViewController {
     }
     
     private func showStartupScreen() {
-        if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
+        let resolvedConfig = Container.shared.resolve(ConfigProtocol.self)
+        // LMS Directory: before sign-in, let the learner choose which platform to use.
+        // Flag-gated; when off (default) this branch is skipped and the flow is stock.
+        if resolvedConfig?.lmsDirectory.isDirectoryReachable == true,
+           LMSDirectoryFeature.shouldPresentLanding(storage: appStorage) {
+            let landing = LMSDirectoryFeature.makeLandingController()
+            navigation.viewControllers = [landing]
+            present(navigation, animated: false)
+            return
+        }
+        if let config = resolvedConfig, config.features.startupScreenEnabled {
             let controller = UIHostingController(
                 rootView: StartupView(viewModel: diContainer.resolve(StartupViewModel.self)!))
             navigation.viewControllers = [controller]

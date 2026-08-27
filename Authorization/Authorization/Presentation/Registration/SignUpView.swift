@@ -23,8 +23,7 @@ public struct SignUpView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
+                LmsHeaderBackground()
                     .edgesIgnoringSafeArea(.top)
             }
             .frame(maxWidth: .infinity, maxHeight: 200)

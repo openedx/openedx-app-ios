@@ -21,3 +21,20 @@ UI_COMPONENTS:
     LOGIN_REGISTRATION_ENABLED: true
     SAML_SSO_LOGIN_ENABLED: false
     SAML_SSO_DEFAULT_LOGIN_BUTTON: false
+
+# Multi-tenant: let a learner choose which Open edX platform to sign in to.
+# Off by default — with ENABLED false the app is a stock single-tenant build.
+#
+# The list of platforms is one JSON document. Give it either way, not both:
+#
+#   DIRECTORY_URL:  "https://example.com/lms_directory.json"   fetched once
+#   DIRECTORY_FILE: "lms_directory.json"                       shipped in the app
+#
+# A bundled file wins over an address: a build that ships its own copy has
+# deliberately opted out of the network. Image fields inside the document are
+# either web addresses or names of files shipped with the app.
+# See Documentation/LMS_DIRECTORY.md for the format.
+LMS_DIRECTORY:
+    ENABLED: false
+    DIRECTORY_URL: ""
+    DIRECTORY_FILE: ""

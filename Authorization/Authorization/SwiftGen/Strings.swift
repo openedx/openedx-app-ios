@@ -54,6 +54,28 @@ public enum AuthLocalization {
     /// Forgot password
     public static let title = AuthLocalization.tr("Localizable", "FORGOT.TITLE", fallback: "Forgot password")
   }
+  public enum LmsDirectory {
+    /// Change
+    public static let change = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.CHANGE", fallback: "Change")
+    /// This directory lists no platforms yet.
+    public static let empty = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.EMPTY", fallback: "This directory lists no platforms yet.")
+    /// That platform's settings could not be read.
+    public static let invalidPlatform = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.INVALID_PLATFORM", fallback: "That platform's settings could not be read.")
+    /// We couldn't load the list of platforms.
+    public static let loadFailed = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.LOAD_FAILED", fallback: "We couldn't load the list of platforms.")
+    /// Platforms published by %@
+    public static func providerSubtitle(_ p1: Any) -> String {
+      return AuthLocalization.tr("Localizable", "LMS_DIRECTORY.PROVIDER_SUBTITLE", String(describing: p1), fallback: "Platforms published by %@")
+    }
+    /// Try again
+    public static let retry = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.RETRY", fallback: "Try again")
+    /// We couldn't open that platform. Please try again.
+    public static let selectFailed = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.SELECT_FAILED", fallback: "We couldn't open that platform. Please try again.")
+    /// Selected LMS
+    public static let selected = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.SELECTED", fallback: "Selected LMS")
+    /// Choose your platform
+    public static let title = AuthLocalization.tr("Localizable", "LMS_DIRECTORY.TITLE", fallback: "Choose your platform")
+  }
   public enum SignIn {
     /// By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
     /// accordance with the [Privacy Policy.](%@)

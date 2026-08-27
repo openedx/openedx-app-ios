@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftUI
+import UIKit
 
 private let fontsParser = FontParser()
 
@@ -96,6 +97,7 @@ public struct Theme: Sendable {
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
             accentXColor: Color = ThemeAssets.accentXColor.swiftUIColor,
+            accentButtonColor: Color = ThemeAssets.accentButtonColor.swiftUIColor,
             alert: Color = ThemeAssets.alert.swiftUIColor,
             avatarStroke: Color = ThemeAssets.avatarStroke.swiftUIColor,
             background: Color = ThemeAssets.background.swiftUIColor,
@@ -139,11 +141,17 @@ public struct Theme: Sendable {
             textInputPlaceholderColor: Color = ThemeAssets.textInputPlaceholderColor.swiftUIColor,
             infoColor: Color = ThemeAssets.infoColor.swiftUIColor,
             irreversibleAlert: Color = ThemeAssets.irreversibleAlert.swiftUIColor,
+            deleteAccountBG: Color = ThemeAssets.deleteAccountBG.swiftUIColor,
+            resumeButtonBG: Color = ThemeAssets.resumeButtonBG.swiftUIColor,
+            socialAuthColor: Color = ThemeAssets.socialAuthColor.swiftUIColor,
+            slidingTextColor: Color = ThemeAssets.slidingTextColor.swiftUIColor,
+            slidingStrokeColor: Color = ThemeAssets.slidingStrokeColor.swiftUIColor,
             emptyStateIconColor: Color = ThemeAssets.emptyStateIconColor.swiftUIColor,
             secondaryContentColor: Color = ThemeAssets.secondaryContentColor.swiftUIColor
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
+            self.accentButtonColor = accentButtonColor
             self.alert = alert
             self.avatarStroke = avatarStroke
             self.background = background
@@ -187,6 +195,11 @@ public struct Theme: Sendable {
             self.textInputPlaceholderColor = textInputPlaceholderColor
             self.infoColor = infoColor
             self.irreversibleAlert = irreversibleAlert
+            self.deleteAccountBG = deleteAccountBG
+            self.resumeButtonBG = resumeButtonBG
+            self.socialAuthColor = socialAuthColor
+            self.slidingTextColor = slidingTextColor
+            self.slidingStrokeColor = slidingStrokeColor
             self.emptyStateIconColor = emptyStateIconColor
             self.secondaryContentColor = secondaryContentColor
         }
@@ -352,5 +365,57 @@ extension View {
     public func loadFonts() -> some View {
         Theme.Fonts.registerFonts()
         return self
+    }
+}
+
+extension Theme {
+    /// Images the app swaps at runtime, alongside `Theme.Colors`.
+    ///
+    /// The header background is held as a decoded image rather than a URL so the
+    /// screens that show it can draw it in the first frame. Whoever selects an
+    /// LMS is responsible for having the image in hand before calling `update` —
+    /// see `LMSThemeApplier` — which is what stops the header fading in after the
+    /// rest of the sign-in screen has already appeared.
+    public enum Images {
+        nonisolated(unsafe) public private(set) static var headerBackground: UIImage?
+
+        /// Announces that the header image changed.
+        ///
+        /// The value is a plain static, so a view that already drew without it
+        /// would keep the stock artwork until something else redrew it. That is
+        /// what a cold start looks like when the picture is still arriving.
+        public static let didChange = Notification.Name("Theme.Images.headerBackgroundDidChange")
+
+        public static func update(headerBackground: UIImage? = nil) {
+            Images.headerBackground = headerBackground
+            NotificationCenter.default.post(name: didChange, object: nil)
+        }
+    }
+}
+
+/// Displays the auth/settings header background image.
+/// Uses the LMS-provided image when one has been loaded, falling back to the
+/// default `ThemeAssets.headerBackground`.
+public struct LmsHeaderBackground: View {
+    @State private var image: UIImage? = Theme.Images.headerBackground
+
+    public init() {}
+
+    public var body: some View {
+        Group {
+            if let image {
+                Image(uiImage: image)
+                    .resizable()
+                    .scaledToFill()
+            } else {
+                ThemeAssets.headerBackground.swiftUIImage.resizable()
+            }
+        }
+        // A cold start can draw this before the selected platform's artwork has
+        // arrived. Without this the stock header would stay for the life of the
+        // screen, which is not what the other platform does.
+        .onReceive(NotificationCenter.default.publisher(for: Theme.Images.didChange)) { _ in
+            image = Theme.Images.headerBackground
+        }
     }
 }

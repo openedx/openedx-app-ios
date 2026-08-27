@@ -12,9 +12,9 @@ import Theme
 import OEXFoundation
 
 public struct ProfileView: View {
-    
+
     @Bindable private var viewModel: ProfileViewModel
-    
+
     public init(viewModel: ProfileViewModel) {
         self.viewModel = viewModel
     }
@@ -82,7 +82,7 @@ public struct ProfileView: View {
             }
         }
     }
-    
+
     private var progressBar: some View {
         ProgressBar(size: 40, lineWidth: 8)
             .padding(.top, 200)

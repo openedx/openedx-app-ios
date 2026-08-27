@@ -16,6 +16,7 @@
 		02A2ACDB2A4B016100FBBBBB /* AuthorizationAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A2ACDA2A4B016100FBBBBB /* AuthorizationAnalytics.swift */; };
 		02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */; };
 		02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F3BFE4292533720051930C /* AuthorizationRouter.swift */; };
+		06FC79EABCA9B12D7E8669FA /* LMSModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2818570B2BF7697374ACD9ED /* LMSModels.swift */; };
 		071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C628D1DA4F00344290 /* SignInViewModel.swift */; };
 		07169458296D913400E3DED6 /* Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE3B28D0A319006D8A5D /* Authorization.framework */; platformFilter = ios; };
 		07169464296D96DD00E3DED6 /* SignInViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */; };
@@ -24,12 +25,21 @@
 		0770DE6828D0BF03006D8A5D /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE6728D0BF03006D8A5D /* swiftgen.yml */; };
 		0770DE6B28D0C035006D8A5D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE6D28D0C035006D8A5D /* Localizable.strings */; };
 		0770DE7128D0C0E7006D8A5D /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7028D0C0E7006D8A5D /* Strings.swift */; };
+		0D40DAEE442BC84AC56E9E79 /* StubURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C6C779D00BF30C254684D3F /* StubURLProtocol.swift */; };
+		0FE969FB22F82F2D38C35356 /* LMSOverridesStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6476DC515B100AE6F9D74AED /* LMSOverridesStore.swift */; };
+		314E58A9645028CD68A2B338 /* StaticLMSDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7645C3630CAC8C86B8AA143F /* StaticLMSDirectoryService.swift */; };
+		46E446F8EECA2F03A8ACBB22 /* LMSDirectoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E45B6D76F9942E50F52B04B1 /* LMSDirectoryViewModel.swift */; };
+		4B00D19EC0BDB0F0B4CF4B84 /* LMSDirectoryService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B13A3D56EFC72C383B6B7809 /* LMSDirectoryService.swift */; };
+		4F00E022EA4706DE1EBA0365 /* LMSDirectoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E6268F99F8CE485FB7B908D8 /* LMSDirectoryView.swift */; };
 		5FB79D2802949372CDAF08D6 /* Pods_App_Authorization_AuthorizationTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FAE9B7FD61FF88C9C4FE1E8 /* Pods_App_Authorization_AuthorizationTests.framework */; };
+		935FEA69BE7D57F57D42BB86 /* LMSDirectoryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B9EF18C82B8CA9A89481E82 /* LMSDirectoryViewModelTests.swift */; };
+		95F57194827709F98991ECF9 /* LMSThemeApplier.swift in Sources */ = {isa = PBXBuildFile; fileRef = BC0922F56B70DDA9F2910C6C /* LMSThemeApplier.swift */; };
 		99C1654B2C0C4F0600DC384D /* ContainerWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C1654A2C0C4F0600DC384D /* ContainerWebView.swift */; };
 		99C1654D2C0C4F2F00DC384D /* SSOHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C1654C2C0C4F2F00DC384D /* SSOHelper.swift */; };
 		99C1654F2C0C4F5900DC384D /* SSOWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C1654E2C0C4F5900DC384D /* SSOWebView.swift */; };
 		99C165512C0C4F7B00DC384D /* SSOWebViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99C165502C0C4F7B00DC384D /* SSOWebViewModel.swift */; };
 		A5B468112F29C845002A4ECA /* AuthorizationMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4680F2F29C845002A4ECA /* AuthorizationMocks.generated.swift */; };
+		B9DC07B706D5509A68E70E00 /* LMSDirectoryLandingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B39DF829F04AEA8C86DA599F /* LMSDirectoryLandingView.swift */; };
 		BA8B3A322AD5487300D25EF5 /* SocialAuthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8B3A312AD5487300D25EF5 /* SocialAuthView.swift */; };
 		BADB3F552AD6DFC3004D5CFA /* SocialAuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BADB3F542AD6DFC3004D5CFA /* SocialAuthViewModel.swift */; };
 		CE7CAF2D2CC155BE00E0AC9D /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CE7CAF2C2CC155BE00E0AC9D /* OEXFoundation */; };
@@ -45,6 +55,10 @@
 		DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */; };
 		E03261642AE64676002CA7EB /* StartupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261632AE64676002CA7EB /* StartupViewModel.swift */; };
 		E03261662AE64AF4002CA7EB /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261652AE64AF4002CA7EB /* StartupView.swift */; };
+		E778A8126843DE891196033C /* LMSDirectoryFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = C54635D2863A11AFCC9A5235 /* LMSDirectoryFeature.swift */; };
+		E834B83B7906F8A85301BAEA /* LMSDirectoryAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 643ED7945A47425D9B6E18D3 /* LMSDirectoryAnalytics.swift */; };
+		E98677D626D2D111EAFFEEDB /* StaticLMSDirectoryServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76632219FE9EACAF3975E68F /* StaticLMSDirectoryServiceTests.swift */; };
+		F52BE36894F6BC06B9EF5C06 /* LMSSelectionCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD15916DB50A754388E1677F /* LMSSelectionCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -92,13 +106,19 @@
 		0E586C84FB9FFDD8AAE29BB3 /* Pods-App-Authorization-AuthorizationTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1CB6628EDEAAC2431CD50D9A /* Pods-App-Authorization-AuthorizationTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debugprod.xcconfig"; sourceTree = "<group>"; };
 		1CD50AA5CB635FD7200C4DF9 /* Pods-App-Authorization.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugstage.xcconfig"; sourceTree = "<group>"; };
+		2818570B2BF7697374ACD9ED /* LMSModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSModels.swift; path = Authorization/Presentation/TenantPicker/LMSModels.swift; sourceTree = "<group>"; };
 		2F1206D6806C156203F01524 /* Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 		37CBD3ECE7D9B20E0BC61344 /* Pods-App-Authorization-AuthorizationTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.release.xcconfig"; sourceTree = "<group>"; };
 		3E0D103D8210828583660AF6 /* Pods-App-Authorization.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debug.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debug.xcconfig"; sourceTree = "<group>"; };
 		47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		49A74E7AC5109DFA06BDAF3A /* Pods-App-Authorization-AuthorizationTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releasedev.xcconfig"; sourceTree = "<group>"; };
+		4C6C779D00BF30C254684D3F /* StubURLProtocol.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LMSDirectory/StubURLProtocol.swift; sourceTree = "<group>"; };
 		4FAE9B7FD61FF88C9C4FE1E8 /* Pods_App_Authorization_AuthorizationTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Authorization_AuthorizationTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		643ED7945A47425D9B6E18D3 /* LMSDirectoryAnalytics.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryAnalytics.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryAnalytics.swift; sourceTree = "<group>"; };
+		6476DC515B100AE6F9D74AED /* LMSOverridesStore.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSOverridesStore.swift; path = Authorization/Presentation/TenantPicker/LMSOverridesStore.swift; sourceTree = "<group>"; };
 		68795EBDC3000C1B12F9432C /* Pods-App-Authorization.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugprod.xcconfig"; sourceTree = "<group>"; };
+		7645C3630CAC8C86B8AA143F /* StaticLMSDirectoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StaticLMSDirectoryService.swift; path = TenantPicker/StaticLMSDirectoryService.swift; sourceTree = "<group>"; };
+		76632219FE9EACAF3975E68F /* StaticLMSDirectoryServiceTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StaticLMSDirectoryServiceTests.swift; path = LMSDirectory/StaticLMSDirectoryServiceTests.swift; sourceTree = "<group>"; };
 		7A84BB166492D4E46FBCF01C /* Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.debugdev.xcconfig"; sourceTree = "<group>"; };
 		90DFBB75EF40580E180D71C8 /* Pods-App-Authorization.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.debugdev.xcconfig"; sourceTree = "<group>"; };
 		96C85172770225EB81A6D2DA /* Pods-App-Authorization.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasedev.xcconfig"; sourceTree = "<group>"; };
@@ -106,11 +126,16 @@
 		99C1654C2C0C4F2F00DC384D /* SSOHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOHelper.swift; sourceTree = "<group>"; };
 		99C1654E2C0C4F5900DC384D /* SSOWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOWebView.swift; sourceTree = "<group>"; };
 		99C165502C0C4F7B00DC384D /* SSOWebViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SSOWebViewModel.swift; sourceTree = "<group>"; };
+		9B9EF18C82B8CA9A89481E82 /* LMSDirectoryViewModelTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryViewModelTests.swift; path = ../LMSDirectory/LMSDirectoryViewModelTests.swift; sourceTree = "<group>"; };
 		9BF6A1004A955E24527FCF0F /* Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		A5B4680F2F29C845002A4ECA /* AuthorizationMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorizationMocks.generated.swift; sourceTree = "<group>"; };
 		A99D45203C981893C104053A /* Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization-AuthorizationTests/Pods-App-Authorization-AuthorizationTests.releasestage.xcconfig"; sourceTree = "<group>"; };
+		B13A3D56EFC72C383B6B7809 /* LMSDirectoryService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryService.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryService.swift; sourceTree = "<group>"; };
+		B39DF829F04AEA8C86DA599F /* LMSDirectoryLandingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryLandingView.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryLandingView.swift; sourceTree = "<group>"; };
 		BA8B3A312AD5487300D25EF5 /* SocialAuthView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthView.swift; sourceTree = "<group>"; };
 		BADB3F542AD6DFC3004D5CFA /* SocialAuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthViewModel.swift; sourceTree = "<group>"; };
+		BC0922F56B70DDA9F2910C6C /* LMSThemeApplier.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSThemeApplier.swift; path = Authorization/Presentation/TenantPicker/LMSThemeApplier.swift; sourceTree = "<group>"; };
+		C54635D2863A11AFCC9A5235 /* LMSDirectoryFeature.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryFeature.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryFeature.swift; sourceTree = "<group>"; };
 		CEB259FA2CC13A36007FC792 /* SocialAuthError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthError.swift; sourceTree = "<group>"; };
 		CEB259FC2CC13A36007FC792 /* AppleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppleAuthProvider.swift; sourceTree = "<group>"; };
 		CEB259FD2CC13A36007FC792 /* GoogleAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthProvider.swift; sourceTree = "<group>"; };
@@ -119,9 +144,12 @@
 		CEB25A002CC13A36007FC792 /* SocialAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthResponse.swift; sourceTree = "<group>"; };
 		E03261632AE64676002CA7EB /* StartupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupViewModel.swift; sourceTree = "<group>"; };
 		E03261652AE64AF4002CA7EB /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
+		E45B6D76F9942E50F52B04B1 /* LMSDirectoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryViewModel.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryViewModel.swift; sourceTree = "<group>"; };
+		E6268F99F8CE485FB7B908D8 /* LMSDirectoryView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSDirectoryView.swift; path = Authorization/Presentation/TenantPicker/LMSDirectoryView.swift; sourceTree = "<group>"; };
 		E78971D8E6ED2116BBF9FD66 /* Pods-App-Authorization.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.release.xcconfig"; sourceTree = "<group>"; };
 		F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasestage.xcconfig"; sourceTree = "<group>"; };
 		F5802BBA113276950ABCD9B3 /* Pods-App-Authorization.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releaseprod.xcconfig"; sourceTree = "<group>"; };
+		FD15916DB50A754388E1677F /* LMSSelectionCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LMSSelectionCoordinator.swift; path = Authorization/Presentation/TenantPicker/LMSSelectionCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +224,7 @@
 				025F40DE29D1C1350064C183 /* Reset Password */,
 				02F3BFE4292533720051930C /* AuthorizationRouter.swift */,
 				02A2ACDA2A4B016100FBBBBB /* AuthorizationAnalytics.swift */,
+				40E2C04CC4389CAC09427A15 /* TenantPicker */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -223,6 +252,7 @@
 			children = (
 				022D0480297442B200E0059B /* Register */,
 				07169484296EC3D700E3DED6 /* Login */,
+				EF91968477D5715D1F0D4124 /* LMSDirectory */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -232,6 +262,7 @@
 			children = (
 				02E0618329DC2373006E9024 /* ResetPasswordViewModelTests.swift */,
 				07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */,
+				D81BDDA5554F6699B56037FD /* LMSDirectory */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -245,6 +276,7 @@
 				0770DE3C28D0A319006D8A5D /* Products */,
 				0770DE4528D0A3DA006D8A5D /* Frameworks */,
 				83B4EF244208C770505E10CB /* Pods */,
+				1AF6FF0E9FF856AB8F1E02CC /* TenantPicker */,
 			);
 			sourceTree = "<group>";
 		};
@@ -284,6 +316,31 @@
 				0770DE7028D0C0E7006D8A5D /* Strings.swift */,
 			);
 			path = SwiftGen;
+			sourceTree = "<group>";
+		};
+		1AF6FF0E9FF856AB8F1E02CC /* TenantPicker */ = {
+			isa = PBXGroup;
+			children = (
+				C54635D2863A11AFCC9A5235 /* LMSDirectoryFeature.swift */,
+				B39DF829F04AEA8C86DA599F /* LMSDirectoryLandingView.swift */,
+				E6268F99F8CE485FB7B908D8 /* LMSDirectoryView.swift */,
+				E45B6D76F9942E50F52B04B1 /* LMSDirectoryViewModel.swift */,
+				FD15916DB50A754388E1677F /* LMSSelectionCoordinator.swift */,
+				643ED7945A47425D9B6E18D3 /* LMSDirectoryAnalytics.swift */,
+				B13A3D56EFC72C383B6B7809 /* LMSDirectoryService.swift */,
+				2818570B2BF7697374ACD9ED /* LMSModels.swift */,
+				6476DC515B100AE6F9D74AED /* LMSOverridesStore.swift */,
+				BC0922F56B70DDA9F2910C6C /* LMSThemeApplier.swift */,
+			);
+			name = TenantPicker;
+			sourceTree = "<group>";
+		};
+		40E2C04CC4389CAC09427A15 /* TenantPicker */ = {
+			isa = PBXGroup;
+			children = (
+				7645C3630CAC8C86B8AA143F /* StaticLMSDirectoryService.swift */,
+			);
+			name = TenantPicker;
 			sourceTree = "<group>";
 		};
 		83B4EF244208C770505E10CB /* Pods */ = {
@@ -359,6 +416,14 @@
 			path = SocialAuth;
 			sourceTree = "<group>";
 		};
+		D81BDDA5554F6699B56037FD /* LMSDirectory */ = {
+			isa = PBXGroup;
+			children = (
+				9B9EF18C82B8CA9A89481E82 /* LMSDirectoryViewModelTests.swift */,
+			);
+			name = LMSDirectory;
+			sourceTree = "<group>";
+		};
 		E03261622AE6464A002CA7EB /* Startup */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +431,15 @@
 				E03261652AE64AF4002CA7EB /* StartupView.swift */,
 			);
 			path = Startup;
+			sourceTree = "<group>";
+		};
+		EF91968477D5715D1F0D4124 /* LMSDirectory */ = {
+			isa = PBXGroup;
+			children = (
+				76632219FE9EACAF3975E68F /* StaticLMSDirectoryServiceTests.swift */,
+				4C6C779D00BF30C254684D3F /* StubURLProtocol.swift */,
+			);
+			name = LMSDirectory;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -558,6 +632,9 @@
 				07169464296D96DD00E3DED6 /* SignInViewModelTests.swift in Sources */,
 				A5B468112F29C845002A4ECA /* AuthorizationMocks.generated.swift in Sources */,
 				02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */,
+				935FEA69BE7D57F57D42BB86 /* LMSDirectoryViewModelTests.swift in Sources */,
+				E98677D626D2D111EAFFEEDB /* StaticLMSDirectoryServiceTests.swift in Sources */,
+				0D40DAEE442BC84AC56E9E79 /* StubURLProtocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -589,6 +666,17 @@
 				CEB25A052CC13A36007FC792 /* SocialAuthResponse.swift in Sources */,
 				CEB25A062CC13A36007FC792 /* MicrosoftAuthProvider.swift in Sources */,
 				CEB25A072CC13A36007FC792 /* SocialAuthError.swift in Sources */,
+				E778A8126843DE891196033C /* LMSDirectoryFeature.swift in Sources */,
+				B9DC07B706D5509A68E70E00 /* LMSDirectoryLandingView.swift in Sources */,
+				4F00E022EA4706DE1EBA0365 /* LMSDirectoryView.swift in Sources */,
+				46E446F8EECA2F03A8ACBB22 /* LMSDirectoryViewModel.swift in Sources */,
+				F52BE36894F6BC06B9EF5C06 /* LMSSelectionCoordinator.swift in Sources */,
+				E834B83B7906F8A85301BAEA /* LMSDirectoryAnalytics.swift in Sources */,
+				4B00D19EC0BDB0F0B4CF4B84 /* LMSDirectoryService.swift in Sources */,
+				06FC79EABCA9B12D7E8669FA /* LMSModels.swift in Sources */,
+				0FE969FB22F82F2D38C35356 /* LMSOverridesStore.swift in Sources */,
+				95F57194827709F98991ECF9 /* LMSThemeApplier.swift in Sources */,
+				314E58A9645028CD68A2B338 /* StaticLMSDirectoryService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
