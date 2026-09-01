@@ -25,10 +25,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gems-
 
+      - uses: ruby/setup-ruby@v1
+        with:
+          # fastlane 2.225.0 and its dependency tree are not Ruby 3.4 ready.
+          # macos-latest ships Ruby 3.4, so pin the last version that works.
+          ruby-version: '3.3'
+
       - name: Setup environment
         run: |
           source ci_scripts/ci_prepare_env.sh && setup_github_actions_environment
-          xcodes select 16.1
+          xcodes select 26.2
 
       - name: SwiftLint
         run: |
