@@ -13,6 +13,14 @@ import Swinject
 
 class NetworkAssembly: Assembly {
     func assemble(container: Container) {
+        container.register(TenantStore.self) { _ in
+            TenantStore()
+        }.inObjectScope(.container)
+
+        container.register(TenantProvider.self) { r in
+            r.resolve(TenantStore.self)!
+        }.inObjectScope(.container)
+
         container.register(RequestInterceptor.self) { r in
             RequestInterceptor(config: r.resolve(ConfigProtocol.self)!, storage: r.resolve(CoreStorage.self)!)
         }.inObjectScope(.container)
