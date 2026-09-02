@@ -21,3 +21,82 @@ UI_COMPONENTS:
     LOGIN_REGISTRATION_ENABLED: true
     SAML_SSO_LOGIN_ENABLED: false
     SAML_SSO_DEFAULT_LOGIN_BUTTON: false
+
+
+# Multi-tenant configuration. Each TENANTS entry overrides the top-level
+# values above for that tenant; fields it omits fall back to them via
+# TenantsConfig.init(array:fallback:) — see
+# Core/Core/Configuration/Config/TenantsConfig.swift.
+TENANTS:
+  -
+    KEY: "example-tenant"
+    name: "Example Tenant"
+    TENANT_NAME:
+        ar: "مثال المستأجر"
+        en: "Example Tenant"
+    color: "#3C68FF"
+    ENVIRONMENT_DISPLAY_NAME: "Example Tenant"
+    OAUTH_CLIENT_ID: 'example-oauth-client-id'
+    API_HOST_URL: 'https://example-tenant.example.com'
+    API_HOST_URL_HIDDEN_LOGIN: 'https://example-tenant-hidden.example.com'
+    SSO_URL: 'https://example-tenant.example.com/auth/login/tpa-saml/?auth_entry=login'
+    SSO_URL_SUCCESSFUL_LOGIN: "https://example-tenant.example.com/auth/login/tpa-saml/auth/complete/tpa-saml"
+    SSO_BUTTON_TITLE:
+        ar: "الدخول عبر SSO"
+        en: "Sign in with SSO"
+    IS_SWITCH_TENANT_LOGIN_ENABLED: true
+
+    LOGO_URL: "exampleTenantAppLogo"
+    THEME:
+        light:
+            accent_color: "#3C68FF"
+            accent_x_color: "#1C355E"
+            alert: "#FF3D71"
+            avatar_stroke: "#3D4964"
+            background: "#FFFFFF"
+            background_stroke: "#FFFFFF"
+            card_view_background: "#CCD3DF"
+            card_view_stroke: "#CCD3DF"
+            certificate_foreground: "#2EB865"
+            comment_cell_background: "#F5F5F5"
+            next_week_timeline_color: "#97A5BB"
+            past_due_timeline_color: "#FFC94D"
+            this_week_timeline_color: "#3D4964"
+            today_timeline_color: "#42AAFF"
+            upcoming_timeline_color: "#CCD4E0"
+            shadow_color: "#000000"
+            snackbar_error_color: "#EB4F4F"
+            snackbar_info_color: "#42AAFF"
+            snackbar_text_color: "#FFFFFF"
+            styled_button_text: "#FFFFFF"
+            text_primary: "#18202E"
+            text_secondary: "#31CAB4"
+            text_secondary_light: "#97A5BB"
+            text_input_background: "#FFFFFF"
+            text_input_stroke: "#97A5BB"
+            text_input_unfocused_background: "#F9FAFB"
+            text_input_unfocused_stroke: "#CCD4E0"
+            warning: "#FFC248"
+            white: "#FFFFFF"
+            on_progress: "#F0CC00"
+            progress_done: "#BBE6D7"
+            progress_skip: "#DDD9DA"
+            dates_section_background: "#F9FAFB"
+            dates_section_stroke: "#CCD4E0"
+            navigation_bar_tint_color: "#FFFFFF"
+            secondary_button_border_color: "#3C68FF"
+            secondary_button_text_color: "#3C68FF"
+            success: "#30A171"
+            primary_button_text_color: "#FFFFFF"
+            toggle_switch_color: "#3C68FF"
+            text_input_text_color: "#19212F"
+            text_input_placeholder_color: "#97A5BB"
+            info_color: "#3C68FF"
+            irreversible_alert: "#FF3D71"
+
+    UI_COMPONENTS:
+        COURSE_UNIT_PROGRESS_ENABLED: false
+        COURSE_NESTED_LIST_ENABLED: false
+        LOGIN_REGISTRATION_ENABLED: true
+        SAML_SSO_LOGIN_ENABLED: false
+        SAML_SSO_DEFAULT_LOGIN_BUTTON: false
