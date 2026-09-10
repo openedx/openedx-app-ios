@@ -105,6 +105,7 @@ public enum ThemeAssets {
   public static let white = ColorAsset(name: "white")
   public static let appLogo = ImageAsset(name: "appLogo")
   public static let assignmentStroke = ColorAsset(name: "assignmentStroke")
+  public static let exampleTenantAppLogo = ImageAsset(name: "exampleTenantAppLogo")
   public static let headerBackground = ImageAsset(name: "headerBackground")
 }
 // swiftlint:enable identifier_name line_length nesting type_body_length type_name
