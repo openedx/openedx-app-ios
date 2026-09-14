@@ -13,12 +13,12 @@ import Swinject
 
 class NetworkAssembly: Assembly {
     func assemble(container: Container) {
-        container.register(TenantStore.self) { _ in
-            TenantStore()
+        container.register(InstanceStore.self) { _ in
+            InstanceStore()
         }.inObjectScope(.container)
 
-        container.register(TenantProvider.self) { r in
-            r.resolve(TenantStore.self)!
+        container.register(InstanceProvider.self) { r in
+            r.resolve(InstanceStore.self)!
         }.inObjectScope(.container)
 
         container.register(RequestInterceptor.self) { r in
