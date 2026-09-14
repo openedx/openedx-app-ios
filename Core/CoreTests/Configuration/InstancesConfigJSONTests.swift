@@ -1,5 +1,5 @@
 //
-//  TenantsConfigJSONTests.swift
+//  InstancesConfigJSONTests.swift
 //  CoreTests
 //
 //  Created by Rawan Matar on 31/08/2026.
@@ -8,15 +8,15 @@
 import XCTest
 @testable import Core
 
-final class TenantsConfigJSONTests: XCTestCase {
+final class InstancesConfigJSONTests: XCTestCase {
 
-    func test_bareArrayShape_parsesTenants() throws {
+    func test_bareArrayShape_parsesInstances() throws {
         let json = """
         [
             {
                 "KEY": "acme",
                 "name": "Acme",
-                "TENANT_NAME": { "en": "Acme University" },
+                "INSTANCE_NAME": { "en": "Acme University" },
                 "color": "#112233",
                 "OAUTH_CLIENT_ID": "acme-client-id",
                 "API_HOST_URL": "https://acme.example.com"
@@ -24,17 +24,17 @@ final class TenantsConfigJSONTests: XCTestCase {
         ]
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
+        let config = try InstancesConfig(jsonData: json)
 
-        XCTAssertEqual(config.tenants.count, 1)
-        XCTAssertEqual(config.tenant(withKey: "acme")?.oAuthClientId, "acme-client-id")
-        XCTAssertEqual(config.tenant(withKey: "acme")?.baseURL.absoluteString, "https://acme.example.com")
+        XCTAssertEqual(config.instances.count, 1)
+        XCTAssertEqual(config.instance(withKey: "acme")?.oAuthClientId, "acme-client-id")
+        XCTAssertEqual(config.instance(withKey: "acme")?.baseURL.absoluteString, "https://acme.example.com")
     }
 
-    func test_tenantsKeyedObjectShape_parsesTenants() throws {
+    func test_instancesKeyedObjectShape_parsesInstances() throws {
         let json = """
         {
-            "TENANTS": [
+            "INSTANCES": [
                 {
                     "name": "Beta",
                     "OAUTH_CLIENT_ID": "beta-client-id",
@@ -44,24 +44,24 @@ final class TenantsConfigJSONTests: XCTestCase {
         }
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
+        let config = try InstancesConfig(jsonData: json)
 
-        XCTAssertEqual(config.tenants.count, 1)
+        XCTAssertEqual(config.instances.count, 1)
         // No explicit KEY -> falls back to a slugified name, same as the YAML path.
-        XCTAssertEqual(config.tenant(withKey: "beta")?.name, "Beta")
+        XCTAssertEqual(config.instance(withKey: "beta")?.name, "Beta")
     }
 
-    func test_liveAPIShape_lowercaseSnakeCaseFields_parsesTenants() throws {
-        // Lowercase "tenants" wrapper, snake_case field names -- the shape that
+    func test_liveAPIShape_lowercaseSnakeCaseFields_parsesInstances() throws {
+        // Lowercase "instances" wrapper, snake_case field names -- the shape that
         // originally triggered .unrecognizedShape.
         let json = """
         {
-            "tenants": [
+            "instances": [
                 {
-                    "name": "Example Tenant",
-                    "tenant_name": { "ar": "مثال المستأجر", "en": "Example Tenant" },
+                    "name": "Example Instance",
+                    "instance_name": { "ar": "اسم المُزود", "en": "Example Instance" },
                     "color": "#3C68FF",
-                    "api_host_url": "https://example-tenant.example.com",
+                    "api_host_url": "https://example-instance.example.com",
                     "oauth_client_id": "example-oauth-client-id",
                     "ui_components": { "course_banner_enabled": true }
                 }
@@ -69,29 +69,29 @@ final class TenantsConfigJSONTests: XCTestCase {
         }
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
+        let config = try InstancesConfig(jsonData: json)
 
-        XCTAssertEqual(config.tenants.count, 1)
-        let tenant = try XCTUnwrap(config.tenants.first)
-        XCTAssertEqual(tenant.oAuthClientId, "example-oauth-client-id")
-        XCTAssertEqual(tenant.baseURL.absoluteString, "https://example-tenant.example.com")
-        XCTAssertEqual(tenant.tenantName, "Example Tenant")
-        XCTAssertEqual(tenant.key, "example-tenant")
+        XCTAssertEqual(config.instances.count, 1)
+        let instance = try XCTUnwrap(config.instances.first)
+        XCTAssertEqual(instance.oAuthClientId, "example-oauth-client-id")
+        XCTAssertEqual(instance.baseURL.absoluteString, "https://example-instance.example.com")
+        XCTAssertEqual(instance.instanceName, "Example Instance")
+        XCTAssertEqual(instance.key, "example-instance")
     }
 
     func test_unrecognizedShape_throws() {
-        // A valid JSON object, but not the bare-array or TENANTS/tenants-keyed
+        // A valid JSON object, but not the bare-array or INSTANCES/instances-keyed
         // shape this parser accepts.
         let json = "{\"foo\": \"bar\"}".data(using: .utf8)!
 
-        XCTAssertThrowsError(try TenantsConfig(jsonData: json)) { error in
-            XCTAssertEqual(error as? TenantJSONError, .unrecognizedShape)
+        XCTAssertThrowsError(try InstancesConfig(jsonData: json)) { error in
+            XCTAssertEqual(error as? InstanceJSONError, .unrecognizedShape)
         }
     }
 
-    func test_malformedTenantEntries_areSkippedNotThrown() throws {
+    func test_malformedInstanceEntries_areSkippedNotThrown() throws {
         // Second entry is missing OAUTH_CLIENT_ID/API_HOST_URL -- matches
-        // Tenant.init?(dictionary:)'s existing "drop, don't crash" behavior.
+        // Instance.init?(dictionary:)'s existing "drop, don't crash" behavior.
         let json = """
         [
             { "name": "Valid", "OAUTH_CLIENT_ID": "id", "API_HOST_URL": "https://valid.example.com" },
@@ -99,13 +99,13 @@ final class TenantsConfigJSONTests: XCTestCase {
         ]
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
+        let config = try InstancesConfig(jsonData: json)
 
-        XCTAssertEqual(config.tenants.count, 1)
-        XCTAssertEqual(config.tenants.first?.name, "Valid")
+        XCTAssertEqual(config.instances.count, 1)
+        XCTAssertEqual(config.instances.first?.name, "Valid")
     }
 
-    // MARK: - THEME / LOGO_URL (tenant-JSON-driven theming)
+    // MARK: - THEME / LOGO_URL (instance-JSON-driven theming)
 
     func test_themeBlock_parsesLightAndDarkPalettes() throws {
         let json = """
@@ -124,34 +124,34 @@ final class TenantsConfigJSONTests: XCTestCase {
         ]
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
-        let tenant = try XCTUnwrap(config.tenant(withKey: "acme"))
+        let config = try InstancesConfig(jsonData: json)
+        let instance = try XCTUnwrap(config.instance(withKey: "acme"))
 
-        XCTAssertEqual(tenant.logoURLString, "https://cdn.example.com/acme-logo.png")
-        XCTAssertEqual(tenant.themeColors?.light["accent_color"], "#1E88E5")
-        XCTAssertEqual(tenant.themeColors?.light["background"], "#FFFFFF")
-        XCTAssertEqual(tenant.themeColors?.dark["accent_color"], "#4FA8FF")
-        XCTAssertEqual(tenant.themeColors?.dark["background"], "#0A0A0A")
+        XCTAssertEqual(instance.logoURLString, "https://cdn.example.com/acme-logo.png")
+        XCTAssertEqual(instance.themeColors?.light["accent_color"], "#1E88E5")
+        XCTAssertEqual(instance.themeColors?.light["background"], "#FFFFFF")
+        XCTAssertEqual(instance.themeColors?.dark["accent_color"], "#4FA8FF")
+        XCTAssertEqual(instance.themeColors?.dark["background"], "#0A0A0A")
     }
 
     func test_noThemeBlock_leavesThemeColorsNil() throws {
         // No THEME/LOGO_URL at all -- the additive, backward-compatible path every
-        // tenant used before this feature.
+        // instance used before this feature.
         let json = """
         [{ "name": "Plain", "OAUTH_CLIENT_ID": "id", "API_HOST_URL": "https://plain.example.com" }]
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
-        let tenant = try XCTUnwrap(config.tenants.first)
+        let config = try InstancesConfig(jsonData: json)
+        let instance = try XCTUnwrap(config.instances.first)
 
-        XCTAssertNil(tenant.themeColors)
-        XCTAssertNil(tenant.logoURLString)
+        XCTAssertNil(instance.themeColors)
+        XCTAssertNil(instance.logoURLString)
     }
 
     func test_themeBlock_unrecognizedFieldKey_doesNotFailParsing() throws {
         // An unknown key inside light/dark is carried through as plain dict data --
         // ThemeColorSet.derived(fromHex:light:dark:) is what ignores unmapped keys.
-        // This only confirms the JSON layer never fails the tenant over it.
+        // This only confirms the JSON layer never fails the instance over it.
         let json = """
         [
             {
@@ -163,10 +163,10 @@ final class TenantsConfigJSONTests: XCTestCase {
         ]
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
+        let config = try InstancesConfig(jsonData: json)
 
-        XCTAssertEqual(config.tenants.count, 1)
-        XCTAssertEqual(config.tenants.first?.themeColors?.light["not_a_real_field"], "#000000")
+        XCTAssertEqual(config.instances.count, 1)
+        XCTAssertEqual(config.instances.first?.themeColors?.light["not_a_real_field"], "#000000")
     }
 
     func test_remoteSnakeCaseThemeAndLogoKeys_areNormalized() throws {
@@ -174,7 +174,7 @@ final class TenantsConfigJSONTests: XCTestCase {
         // every other remote field already does (see remoteToYAMLKeyMap).
         let json = """
         {
-            "tenants": [
+            "instances": [
                 {
                     "name": "Acme",
                     "oauth_client_id": "id",
@@ -186,22 +186,22 @@ final class TenantsConfigJSONTests: XCTestCase {
         }
         """.data(using: .utf8)!
 
-        let config = try TenantsConfig(jsonData: json)
-        let tenant = try XCTUnwrap(config.tenants.first)
+        let config = try InstancesConfig(jsonData: json)
+        let instance = try XCTUnwrap(config.instances.first)
 
-        XCTAssertEqual(tenant.logoURLString, "acmeAppLogo")
-        XCTAssertEqual(tenant.themeColors?.light["accent_color"], "#1E88E5")
+        XCTAssertEqual(instance.logoURLString, "acmeAppLogo")
+        XCTAssertEqual(instance.themeColors?.light["accent_color"], "#1E88E5")
     }
 
     func test_loader_returnsEmptyCatalog_onFetchFailureWithNoCache() async {
         let userDefaults = UserDefaults(suiteName: #function)!
         userDefaults.removePersistentDomain(forName: #function)
 
-        let loader = TenantConfigLoader(apiService: FailingTenantApiService(), userDefaults: userDefaults)
+        let loader = InstanceConfigLoader(apiService: FailingInstanceApiService(), userDefaults: userDefaults)
 
         let result = await loader.load()
 
-        XCTAssertTrue(result.tenants.isEmpty)
+        XCTAssertTrue(result.instances.isEmpty)
     }
 
     func test_loader_fallsBackToCache_onFetchFailure() async {
@@ -210,13 +210,13 @@ final class TenantsConfigJSONTests: XCTestCase {
         let cachedJSON = """
         [{ "name": "Cached", "OAUTH_CLIENT_ID": "cached-id", "API_HOST_URL": "https://cached.example.com" }]
         """.data(using: .utf8)!
-        userDefaults.set(cachedJSON, forKey: "org.openedx.core.cachedTenantsJSON")
+        userDefaults.set(cachedJSON, forKey: "org.openedx.core.cachedInstancesJSON")
 
-        let loader = TenantConfigLoader(apiService: FailingTenantApiService(), userDefaults: userDefaults)
+        let loader = InstanceConfigLoader(apiService: FailingInstanceApiService(), userDefaults: userDefaults)
 
         let result = await loader.load()
 
-        XCTAssertEqual(result.tenants.first?.name, "Cached")
+        XCTAssertEqual(result.instances.first?.name, "Cached")
     }
 
     func test_loader_returnsLiveFetch_andCachesIt_onSuccess() async {
@@ -227,25 +227,25 @@ final class TenantsConfigJSONTests: XCTestCase {
         [{ "name": "Remote", "OAUTH_CLIENT_ID": "remote-id", "API_HOST_URL": "https://remote.example.com" }]
         """.data(using: .utf8)!
 
-        let loader = TenantConfigLoader(
-            apiService: StubTenantApiService(data: remoteJSON),
+        let loader = InstanceConfigLoader(
+            apiService: StubInstanceApiService(data: remoteJSON),
             userDefaults: userDefaults
         )
 
         let result = await loader.load()
 
-        XCTAssertEqual(result.tenants.first?.name, "Remote")
-        XCTAssertNotNil(userDefaults.data(forKey: "org.openedx.core.cachedTenantsJSON"))
+        XCTAssertEqual(result.instances.first?.name, "Remote")
+        XCTAssertNotNil(userDefaults.data(forKey: "org.openedx.core.cachedInstancesJSON"))
     }
 }
 
-private struct FailingTenantApiService: TenantApiServiceProtocol {
+private struct FailingInstanceApiService: InstanceApiServiceProtocol {
     func fetchRawData() async throws -> Data {
         throw URLError(.notConnectedToInternet)
     }
 }
 
-private struct StubTenantApiService: TenantApiServiceProtocol {
+private struct StubInstanceApiService: InstanceApiServiceProtocol {
     let data: Data
     func fetchRawData() async throws -> Data { data }
 }

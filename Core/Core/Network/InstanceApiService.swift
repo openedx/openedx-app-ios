@@ -1,5 +1,5 @@
 //
-//  TenantApiService.swift
+//  InstanceApiService.swift
 //  Core
 //
 //  Created by Rawan Matar on 31/08/2026.
@@ -7,26 +7,26 @@
 
 import Foundation
 
-public enum TenantApiError: Error {
+public enum InstanceApiError: Error {
     case invalidResponse(statusCode: Int)
 }
 
-public protocol TenantApiServiceProtocol: Sendable {
+public protocol InstanceApiServiceProtocol: Sendable {
     func fetchRawData() async throws -> Data
 }
 
-/// Fetches the remote tenant catalog as raw JSON bytes. Plain `URLSession`, not routed
+/// Fetches the remote instance catalog as raw JSON bytes. Plain `URLSession`, not routed
 /// through `OEXFoundation`'s `API`/`Alamofire.Session` -- this is a fixed, anonymous,
-/// external endpoint, not a per-tenant platform API call. Parsing lives on
-/// `TenantsConfig(jsonData:fallback:)`, not here.
-public final class TenantApiService: TenantApiServiceProtocol, Sendable {
-    /// Placeholder endpoint -- replace with the real hosted tenant-catalog URL.
-    public static let defaultURL = URL(string: "https://example.com/tenants.json")!
+/// external endpoint, not a per-instance platform API call. Parsing lives on
+/// `InstancesConfig(jsonData:fallback:)`, not here.
+public final class InstanceApiService: InstanceApiServiceProtocol, Sendable {
+    /// Placeholder endpoint -- replace with the real hosted instance-catalog URL.
+    public static let defaultURL = URL(string: "https://example.com/instances.json")!
 
     private let url: URL
     private let session: URLSession
 
-    public init(url: URL = TenantApiService.defaultURL, session: URLSession = .shared) {
+    public init(url: URL = InstanceApiService.defaultURL, session: URLSession = .shared) {
         self.url = url
         self.session = session
     }
@@ -39,7 +39,7 @@ public final class TenantApiService: TenantApiServiceProtocol, Sendable {
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse, 200..<300 ~= http.statusCode else {
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
-            throw TenantApiError.invalidResponse(statusCode: statusCode)
+            throw InstanceApiError.invalidResponse(statusCode: statusCode)
         }
         return data
     }
