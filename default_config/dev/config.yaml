@@ -23,30 +23,30 @@ UI_COMPONENTS:
     SAML_SSO_DEFAULT_LOGIN_BUTTON: false
 
 
-# Multi-tenant configuration. Each TENANTS entry overrides the top-level
-# values above for that tenant; fields it omits fall back to them via
-# TenantsConfig.init(array:fallback:) — see
-# Core/Core/Configuration/Config/TenantsConfig.swift.
-TENANTS:
+# Multi-instance configuration. Each INSTANCES entry overrides the top-level
+# values above for that instance; fields it omits fall back to them via
+# InstancesConfig.init(array:fallback:) — see
+# Core/Core/Configuration/Config/InstancesConfig.swift.
+INSTANCES:
   -
-    KEY: "example-tenant"
-    name: "Example Tenant"
-    TENANT_NAME:
-        ar: "مثال المستأجر"
-        en: "Example Tenant"
+    KEY: "example-instance"
+    name: "Example Instance"
+    INSTANCE_NAME:
+        ar: "اسم المُزود"
+        en: "Example Instance"
     color: "#3C68FF"
-    ENVIRONMENT_DISPLAY_NAME: "Example Tenant"
+    ENVIRONMENT_DISPLAY_NAME: "Example Instance"
     OAUTH_CLIENT_ID: 'example-oauth-client-id'
-    API_HOST_URL: 'https://example-tenant.example.com'
-    API_HOST_URL_HIDDEN_LOGIN: 'https://example-tenant-hidden.example.com'
-    SSO_URL: 'https://example-tenant.example.com/auth/login/tpa-saml/?auth_entry=login'
-    SSO_URL_SUCCESSFUL_LOGIN: "https://example-tenant.example.com/auth/login/tpa-saml/auth/complete/tpa-saml"
+    API_HOST_URL: 'https://example-instance.example.com'
+    API_HOST_URL_HIDDEN_LOGIN: 'https://example-instance-hidden.example.com'
+    SSO_URL: 'https://example-instance.example.com/auth/login/tpa-saml/?auth_entry=login'
+    SSO_URL_SUCCESSFUL_LOGIN: "https://example-instance.example.com/auth/login/tpa-saml/auth/complete/tpa-saml"
     SSO_BUTTON_TITLE:
         ar: "الدخول عبر SSO"
         en: "Sign in with SSO"
-    IS_SWITCH_TENANT_LOGIN_ENABLED: true
+    IS_SWITCH_INSTANCE_LOGIN_ENABLED: true
 
-    LOGO_URL: "exampleTenantAppLogo"
+    LOGO_URL: "exampleInstanceAppLogo"
     THEME:
         light:
             accent_color: "#3C68FF"

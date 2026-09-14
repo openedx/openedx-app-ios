@@ -1,5 +1,5 @@
 //
-//  TenantsConfig.swift
+//  InstancesConfig.swift
 //  Core
 //
 //  Created by Rawan Matar on 31/08/2026.
@@ -8,20 +8,20 @@
 import Foundation
 import OEXFoundation
 
-// MARK: - TenantProvider
+// MARK: - InstanceProvider
 
-/// Read-only, thread-safe access to the currently selected tenant.
-public protocol TenantProvider: Sendable {
-    /// `nil` when no tenant is selected (e.g. single-tenant deployment).
-    var currentTenant: Tenant? { get }
+/// Read-only, thread-safe access to the currently selected instance.
+public protocol InstanceProvider: Sendable {
+    /// `nil` when no instance is selected (e.g. single-instance deployment).
+    var currentInstance: Instance? { get }
 }
 
-// MARK: - Tenant
+// MARK: - Instance
 
-private enum TenantKeys: String, RawStringExtractable {
+private enum InstanceKeys: String, RawStringExtractable {
     case key = "KEY"
     case name
-    case tenantName = "TENANT_NAME"
+    case instanceName = "INSTANCE_NAME"
     case color
     case oAuthClientId = "OAUTH_CLIENT_ID"
     case baseURL = "API_HOST_URL"
@@ -29,16 +29,16 @@ private enum TenantKeys: String, RawStringExtractable {
     case baseSSOURL = "SSO_URL"
     case successfulSSOLoginURL = "SSO_URL_SUCCESSFUL_LOGIN"
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
-    case isSwitchTenantLoginEnabled = "IS_SWITCH_TENANT_LOGIN_ENABLED"
+    case isSwitchInstanceLoginEnabled = "IS_SWITCH_INSTANCE_LOGIN_ENABLED"
     case uiComponents = "UI_COMPONENTS"
     case logoURL = "LOGO_URL"
     case headerBackgroundURL = "HEADER_BACKGROUND_URL"
     case theme = "THEME"
 }
 
-/// Per-mode (`light`/`dark`) color overrides parsed from the tenant's `THEME` block.
+/// Per-mode (`light`/`dark`) color overrides parsed from the instance's `THEME` block.
 /// Missing keys fall back to `ThemeColorSet.derived(fromHex:light:dark:)`.
-public struct TenantThemeColors: Codable, Sendable, Equatable {
+public struct InstanceThemeColors: Codable, Sendable, Equatable {
     public let light: [String: String]
     public let dark: [String: String]
 
@@ -48,14 +48,14 @@ public struct TenantThemeColors: Codable, Sendable, Equatable {
     }
 }
 
-public struct Tenant: Codable, Identifiable, Sendable, Equatable, Hashable {
+public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     /// Same as `key`.
     public var id: String { key }
 
     /// Machine-readable identifier, e.g. "niepd". Falls back to a slugified `name`.
     public let key: String
     public let name: String
-    public let tenantName: String
+    public let instanceName: String
     public let color: String
     public let oAuthClientId: String
     public let baseURL: URL
@@ -64,16 +64,16 @@ public struct Tenant: Codable, Identifiable, Sendable, Equatable, Hashable {
     public let baseSSOURL: URL?
     public let successfulSSOLoginURL: URL?
     public let environmentDisplayName: String?
-    public let isSwitchTenantLoginEnabled: Bool
+    public let isSwitchInstanceLoginEnabled: Bool
     public let uiComponents: UIComponentsConfig
     /// Remote URL, or a bundled asset name. `nil` keeps the default logo.
     public let logoURLString: String?
     /// Remote URL only. `nil` keeps the default header background.
     public let headerBackgroundURLString: String?
     /// `nil` derives the palette from `color` instead.
-    public let themeColors: TenantThemeColors?
+    public let themeColors: InstanceThemeColors?
 
-    public static func == (lhs: Tenant, rhs: Tenant) -> Bool {
+    public static func == (lhs: Instance, rhs: Instance) -> Bool {
         lhs.key == rhs.key
     }
 
@@ -83,69 +83,69 @@ public struct Tenant: Codable, Identifiable, Sendable, Equatable, Hashable {
 
     /// Fails if required fields (`name`, `API_HOST_URL`, `OAUTH_CLIENT_ID`) are missing.
     public init?(dictionary: [String: Any]) {
-        guard let name = dictionary[TenantKeys.name] as? String, !name.isEmpty,
-              let urlString = dictionary[TenantKeys.baseURL] as? String,
+        guard let name = dictionary[InstanceKeys.name] as? String, !name.isEmpty,
+              let urlString = dictionary[InstanceKeys.baseURL] as? String,
               let baseURL = URL(string: urlString),
-              let oAuthClientId = dictionary[TenantKeys.oAuthClientId] as? String, !oAuthClientId.isEmpty
+              let oAuthClientId = dictionary[InstanceKeys.oAuthClientId] as? String, !oAuthClientId.isEmpty
         else { return nil }
 
         self.name = name
         self.baseURL = baseURL
         self.oAuthClientId = oAuthClientId
 
-        if let explicitKey = dictionary[TenantKeys.key] as? String, !explicitKey.isEmpty {
+        if let explicitKey = dictionary[InstanceKeys.key] as? String, !explicitKey.isEmpty {
             self.key = explicitKey
         } else {
-            self.key = Tenant.slugify(name)
+            self.key = Instance.slugify(name)
         }
 
         var languageCode = "en"
         if let langCode = Locale.preferredLanguages.first?.prefix(2) {
             languageCode = String(langCode)
         }
-        if let tenantNameDict = dictionary[TenantKeys.tenantName] as? [String: Any] {
-            self.tenantName = (tenantNameDict[languageCode] as? String)
-                ?? (tenantNameDict["en"] as? String)
+        if let instanceNameDict = dictionary[InstanceKeys.instanceName] as? [String: Any] {
+            self.instanceName = (instanceNameDict[languageCode] as? String)
+                ?? (instanceNameDict["en"] as? String)
                 ?? name
         } else {
-            self.tenantName = name
+            self.instanceName = name
         }
 
-        self.color = dictionary[TenantKeys.color] as? String ?? "#007AFF"
-        self.isSwitchTenantLoginEnabled = dictionary[TenantKeys.isSwitchTenantLoginEnabled] as? Bool ?? false
+        self.color = dictionary[InstanceKeys.color] as? String ?? "#007AFF"
+        self.isSwitchInstanceLoginEnabled = dictionary[InstanceKeys.isSwitchInstanceLoginEnabled] as? Bool ?? false
 
-        if let hiddenLoginString = dictionary[TenantKeys.baseURLHiddenLogin] as? String,
+        if let hiddenLoginString = dictionary[InstanceKeys.baseURLHiddenLogin] as? String,
            let hiddenLoginURL = URL(string: hiddenLoginString) {
             self.baseURLHiddenLogin = hiddenLoginURL
         } else {
             self.baseURLHiddenLogin = baseURL
         }
 
-        if let ssoString = dictionary[TenantKeys.baseSSOURL] as? String {
+        if let ssoString = dictionary[InstanceKeys.baseSSOURL] as? String {
             self.baseSSOURL = URL(string: ssoString)
         } else {
             self.baseSSOURL = nil
         }
 
-        if let successString = dictionary[TenantKeys.successfulSSOLoginURL] as? String {
+        if let successString = dictionary[InstanceKeys.successfulSSOLoginURL] as? String {
             self.successfulSSOLoginURL = URL(string: successString)
         } else {
             self.successfulSSOLoginURL = nil
         }
 
-        self.environmentDisplayName = dictionary[TenantKeys.environmentDisplayName] as? String
+        self.environmentDisplayName = dictionary[InstanceKeys.environmentDisplayName] as? String
 
-        if let uiDict = dictionary[TenantKeys.uiComponents] as? [String: Any] {
+        if let uiDict = dictionary[InstanceKeys.uiComponents] as? [String: Any] {
             self.uiComponents = UIComponentsConfig(dictionary: uiDict)
         } else {
             self.uiComponents = UIComponentsConfig(dictionary: [:])
         }
 
-        self.logoURLString = dictionary[TenantKeys.logoURL] as? String
-        self.headerBackgroundURLString = dictionary[TenantKeys.headerBackgroundURL] as? String
+        self.logoURLString = dictionary[InstanceKeys.logoURL] as? String
+        self.headerBackgroundURLString = dictionary[InstanceKeys.headerBackgroundURL] as? String
 
-        if let themeDict = dictionary[TenantKeys.theme] as? [String: Any] {
-            self.themeColors = TenantThemeColors(
+        if let themeDict = dictionary[InstanceKeys.theme] as? [String: Any] {
+            self.themeColors = InstanceThemeColors(
                 light: themeDict["light"] as? [String: String] ?? [:],
                 dark: themeDict["dark"] as? [String: String] ?? [:]
             )
@@ -163,18 +163,18 @@ public struct Tenant: Codable, Identifiable, Sendable, Equatable, Hashable {
 
     // MARK: Codable
     // `uiComponents` and remote-media fields aren't persisted; re-populated from
-    // `TenantStore.tenantsConfig` right after decode.
+    // `InstanceStore.instancesConfig` right after decode.
     private enum CodingKeys: String, CodingKey {
-        case key, name, tenantName, color, oAuthClientId
+        case key, name, instanceName, color, oAuthClientId
         case baseURL, baseURLHiddenLogin, baseSSOURL, successfulSSOLoginURL
-        case environmentDisplayName, isSwitchTenantLoginEnabled
+        case environmentDisplayName, isSwitchInstanceLoginEnabled
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         key = try container.decode(String.self, forKey: .key)
         name = try container.decode(String.self, forKey: .name)
-        tenantName = try container.decode(String.self, forKey: .tenantName)
+        instanceName = try container.decode(String.self, forKey: .instanceName)
         color = try container.decode(String.self, forKey: .color)
         oAuthClientId = try container.decode(String.self, forKey: .oAuthClientId)
         baseURL = try container.decode(URL.self, forKey: .baseURL)
@@ -182,7 +182,7 @@ public struct Tenant: Codable, Identifiable, Sendable, Equatable, Hashable {
         baseSSOURL = try container.decodeIfPresent(URL.self, forKey: .baseSSOURL)
         successfulSSOLoginURL = try container.decodeIfPresent(URL.self, forKey: .successfulSSOLoginURL)
         environmentDisplayName = try container.decodeIfPresent(String.self, forKey: .environmentDisplayName)
-        isSwitchTenantLoginEnabled = try container.decode(Bool.self, forKey: .isSwitchTenantLoginEnabled)
+        isSwitchInstanceLoginEnabled = try container.decode(Bool.self, forKey: .isSwitchInstanceLoginEnabled)
         uiComponents = UIComponentsConfig(dictionary: [:])
         logoURLString = nil
         headerBackgroundURLString = nil
@@ -193,7 +193,7 @@ public struct Tenant: Codable, Identifiable, Sendable, Equatable, Hashable {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(key, forKey: .key)
         try container.encode(name, forKey: .name)
-        try container.encode(tenantName, forKey: .tenantName)
+        try container.encode(instanceName, forKey: .instanceName)
         try container.encode(color, forKey: .color)
         try container.encode(oAuthClientId, forKey: .oAuthClientId)
         try container.encode(baseURL, forKey: .baseURL)
@@ -201,54 +201,54 @@ public struct Tenant: Codable, Identifiable, Sendable, Equatable, Hashable {
         try container.encodeIfPresent(baseSSOURL, forKey: .baseSSOURL)
         try container.encodeIfPresent(successfulSSOLoginURL, forKey: .successfulSSOLoginURL)
         try container.encodeIfPresent(environmentDisplayName, forKey: .environmentDisplayName)
-        try container.encode(isSwitchTenantLoginEnabled, forKey: .isSwitchTenantLoginEnabled)
+        try container.encode(isSwitchInstanceLoginEnabled, forKey: .isSwitchInstanceLoginEnabled)
     }
 }
 
-// MARK: - TenantsConfig
+// MARK: - InstancesConfig
 
-public struct TenantsConfig: Sendable {
-    public let tenants: [Tenant]
+public struct InstancesConfig: Sendable {
+    public let instances: [Instance]
 
     public init() {
-        self.tenants = []
+        self.instances = []
     }
 
     /// - Parameter fallback: base `config.yaml` values used to fill fields a
-    ///   `TENANTS` entry omits (tenant-level wins).
+    ///   `INSTANCES` entry omits (instance-level wins).
     public init(array: [[String: Any]], fallback: [String: Any] = [:]) {
-        // Drop invalid entries instead of producing a half-populated Tenant.
-        self.tenants = array.compactMap { dict in
-            let merged = fallback.merging(dict) { _, tenantValue in tenantValue }
-            guard let tenant = Tenant(dictionary: merged) else {
+        // Drop invalid entries instead of producing a half-populated Instance.
+        self.instances = array.compactMap { dict in
+            let merged = fallback.merging(dict) { _, instanceValue in instanceValue }
+            guard let instance = Instance(dictionary: merged) else {
                 #if DEBUG
-                print("⚠️ TenantsConfig: skipping malformed TENANTS entry: \(dict["name"] ?? "<unknown>")")
+                print("⚠️ InstancesConfig: skipping malformed INSTANCES entry: \(dict["name"] ?? "<unknown>")")
                 #endif
                 return nil
             }
-            return tenant
+            return instance
         }
     }
 
-    public func tenant(withKey key: String) -> Tenant? {
-        tenants.first { $0.key == key }
+    public func instance(withKey key: String) -> Instance? {
+        instances.first { $0.key == key }
     }
 }
 
 #if DEBUG
-public extension Tenant {
+public extension Instance {
     static func mock(
         key: String = "mock",
         name: String = "Test",
-        tenantName: String = "Test",
+        instanceName: String = "Test",
         color: String = "#fff",
         oAuthClientId: String = "mockClientId",
         baseURL: URL = URL(string: "https://mock.base.url")!
-    ) -> Tenant {
-        Tenant(dictionary: [
+    ) -> Instance {
+        Instance(dictionary: [
             "KEY": key,
             "name": name,
-            "TENANT_NAME": ["en": tenantName],
+            "INSTANCE_NAME": ["en": instanceName],
             "color": color,
             "OAUTH_CLIENT_ID": oAuthClientId,
             "API_HOST_URL": baseURL.absoluteString
@@ -256,10 +256,10 @@ public extension Tenant {
     }
 }
 
-public final class TenantProviderMock: TenantProvider, @unchecked Sendable {
-    public var currentTenant: Tenant?
-    public init(currentTenant: Tenant? = .mock()) {
-        self.currentTenant = currentTenant
+public final class InstanceProviderMock: InstanceProvider, @unchecked Sendable {
+    public var currentInstance: Instance?
+    public init(currentInstance: Instance? = .mock()) {
+        self.currentInstance = currentInstance
     }
 }
 #endif
