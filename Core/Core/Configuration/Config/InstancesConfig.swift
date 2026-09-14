@@ -27,13 +27,17 @@ private enum InstanceKeys: String, RawStringExtractable {
     case baseURL = "API_HOST_URL"
     case baseURLHiddenLogin = "API_HOST_URL_HIDDEN_LOGIN"
     case baseSSOURL = "SSO_URL"
-    case successfulSSOLoginURL = "SSO_URL_SUCCESSFUL_LOGIN"
+    case ssoFinishedURL = "SSO_FINISHED_URL"
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
     case isSwitchInstanceLoginEnabled = "IS_SWITCH_INSTANCE_LOGIN_ENABLED"
     case uiComponents = "UI_COMPONENTS"
     case logoURL = "LOGO_URL"
     case headerBackgroundURL = "HEADER_BACKGROUND_URL"
     case theme = "THEME"
+    case feedbackEmail = "FEEDBACK_EMAIL_ADDRESS"
+    case ssoButtonTitle = "SSO_BUTTON_TITLE"
+    case experimentalFeatures = "EXPERIMENTAL_FEATURES"
+    case agreementURLs = "AGREEMENT_URLS"
 }
 
 /// Per-mode (`light`/`dark`) color overrides parsed from the instance's `THEME` block.
@@ -62,7 +66,7 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     /// Falls back to `baseURL` if not set.
     public let baseURLHiddenLogin: URL
     public let baseSSOURL: URL?
-    public let successfulSSOLoginURL: URL?
+    public let ssoFinishedURL: URL?
     public let environmentDisplayName: String?
     public let isSwitchInstanceLoginEnabled: Bool
     public let uiComponents: UIComponentsConfig
@@ -72,6 +76,11 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     public let headerBackgroundURLString: String?
     /// `nil` derives the palette from `color` instead.
     public let themeColors: InstanceThemeColors?
+    public let feedbackEmail: String?
+    /// Locale code -> button label, e.g. `["en": "Sign in with SSO"]`. `nil` falls back to the app-wide default.
+    public let ssoButtonTitle: [String: String]?
+    public let appLevelDownloadsEnabled: Bool?
+    public let agreement: AgreementConfig?
 
     public static func == (lhs: Instance, rhs: Instance) -> Bool {
         lhs.key == rhs.key
@@ -127,10 +136,10 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
             self.baseSSOURL = nil
         }
 
-        if let successString = dictionary[InstanceKeys.successfulSSOLoginURL] as? String {
-            self.successfulSSOLoginURL = URL(string: successString)
+        if let ssoFinishedString = dictionary[InstanceKeys.ssoFinishedURL] as? String {
+            self.ssoFinishedURL = URL(string: ssoFinishedString)
         } else {
-            self.successfulSSOLoginURL = nil
+            self.ssoFinishedURL = nil
         }
 
         self.environmentDisplayName = dictionary[InstanceKeys.environmentDisplayName] as? String
@@ -152,6 +161,22 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         } else {
             self.themeColors = nil
         }
+
+        self.feedbackEmail = dictionary[InstanceKeys.feedbackEmail] as? String
+        self.ssoButtonTitle = dictionary[InstanceKeys.ssoButtonTitle] as? [String: String]
+
+        if let experimentalDict = dictionary[InstanceKeys.experimentalFeatures] as? [String: AnyObject] {
+            let experimental = ExperimentalFeaturesConfig(dictionary: experimentalDict)
+            self.appLevelDownloadsEnabled = experimental.appLevelDownloadsEnabled
+        } else {
+            self.appLevelDownloadsEnabled = nil
+        }
+
+        if let agreementDict = dictionary[InstanceKeys.agreementURLs] as? [String: AnyObject] {
+            self.agreement = AgreementConfig(dictionary: agreementDict)
+        } else {
+            self.agreement = nil
+        }
     }
 
     private static func slugify(_ name: String) -> String {
@@ -162,11 +187,12 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     }
 
     // MARK: Codable
-    // `uiComponents` and remote-media fields aren't persisted; re-populated from
+    // `uiComponents`, remote-media fields, and the feedback/SSO-button/experimental-
+    // features/agreement overrides aren't persisted; re-populated from
     // `InstanceStore.instancesConfig` right after decode.
     private enum CodingKeys: String, CodingKey {
         case key, name, instanceName, color, oAuthClientId
-        case baseURL, baseURLHiddenLogin, baseSSOURL, successfulSSOLoginURL
+        case baseURL, baseURLHiddenLogin, baseSSOURL, ssoFinishedURL
         case environmentDisplayName, isSwitchInstanceLoginEnabled
     }
 
@@ -180,13 +206,17 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         baseURL = try container.decode(URL.self, forKey: .baseURL)
         baseURLHiddenLogin = try container.decode(URL.self, forKey: .baseURLHiddenLogin)
         baseSSOURL = try container.decodeIfPresent(URL.self, forKey: .baseSSOURL)
-        successfulSSOLoginURL = try container.decodeIfPresent(URL.self, forKey: .successfulSSOLoginURL)
+        ssoFinishedURL = try container.decodeIfPresent(URL.self, forKey: .ssoFinishedURL)
         environmentDisplayName = try container.decodeIfPresent(String.self, forKey: .environmentDisplayName)
         isSwitchInstanceLoginEnabled = try container.decode(Bool.self, forKey: .isSwitchInstanceLoginEnabled)
         uiComponents = UIComponentsConfig(dictionary: [:])
         logoURLString = nil
         headerBackgroundURLString = nil
         themeColors = nil
+        feedbackEmail = nil
+        ssoButtonTitle = nil
+        appLevelDownloadsEnabled = nil
+        agreement = nil
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -199,7 +229,7 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         try container.encode(baseURL, forKey: .baseURL)
         try container.encode(baseURLHiddenLogin, forKey: .baseURLHiddenLogin)
         try container.encodeIfPresent(baseSSOURL, forKey: .baseSSOURL)
-        try container.encodeIfPresent(successfulSSOLoginURL, forKey: .successfulSSOLoginURL)
+        try container.encodeIfPresent(ssoFinishedURL, forKey: .ssoFinishedURL)
         try container.encodeIfPresent(environmentDisplayName, forKey: .environmentDisplayName)
         try container.encode(isSwitchInstanceLoginEnabled, forKey: .isSwitchInstanceLoginEnabled)
     }

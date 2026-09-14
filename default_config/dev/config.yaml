@@ -40,11 +40,23 @@ INSTANCES:
     API_HOST_URL: 'https://example-instance.example.com'
     API_HOST_URL_HIDDEN_LOGIN: 'https://example-instance-hidden.example.com'
     SSO_URL: 'https://example-instance.example.com/auth/login/tpa-saml/?auth_entry=login'
-    SSO_URL_SUCCESSFUL_LOGIN: "https://example-instance.example.com/auth/login/tpa-saml/auth/complete/tpa-saml"
+    SSO_FINISHED_URL: "https://example-instance.example.com/auth/login/tpa-saml/auth/complete/tpa-saml"
     SSO_BUTTON_TITLE:
         ar: "الدخول عبر SSO"
         en: "Sign in with SSO"
     IS_SWITCH_INSTANCE_LOGIN_ENABLED: true
+    FEEDBACK_EMAIL_ADDRESS: 'support@example-instance.example.com'
+
+    EXPERIMENTAL_FEATURES:
+        APP_LEVEL_DOWNLOADS:
+            ENABLED: false
+
+    AGREEMENT_URLS:
+        PRIVACY_POLICY_URL: 'https://example-instance.example.com/privacy'
+        TOS_URL: 'https://example-instance.example.com/tos'
+        COOKIE_POLICY_URL: 'https://example-instance.example.com/cookie'
+        DATA_SELL_CONSENT_URL: 'https://example-instance.example.com/sell'
+        EULA_URL: 'https://example-instance.example.com/eula'
 
     LOGO_URL: "exampleInstanceAppLogo"
     THEME:
