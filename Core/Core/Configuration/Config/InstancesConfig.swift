@@ -235,6 +235,65 @@ public struct InstancesConfig: Sendable {
     }
 }
 
+// MARK: - Remote (JSON) parsing
+
+/// Thrown when a JSON payload isn't a bare tenant array or a TENANTS/tenants-keyed object.
+public enum TenantJSONError: Error, Equatable {
+    case unrecognizedShape
+}
+
+/// Maps the live API's snake_case field names to the upper-snake-case keys
+/// `Tenant.init?(dictionary:)` expects (shared with the YAML parser).
+private let remoteToYAMLKeyMap: [String: String] = [
+    "key": "KEY",
+    "tenant_name": "TENANT_NAME",
+    "oauth_client_id": "OAUTH_CLIENT_ID",
+    "api_host_url": "API_HOST_URL",
+    "api_host_url_hidden_login": "API_HOST_URL_HIDDEN_LOGIN",
+    "sso_url": "SSO_URL",
+    "sso_url_successful_login": "SSO_URL_SUCCESSFUL_LOGIN",
+    "environment_display_name": "ENVIRONMENT_DISPLAY_NAME",
+    "is_switch_tenant_login_enabled": "IS_SWITCH_TENANT_LOGIN_ENABLED",
+    "ui_components": "UI_COMPONENTS",
+    "course_dropdown_navigation_enabled": "COURSE_DROPDOWN_NAVIGATION_ENABLED",
+    "course_unit_progress_enabled": "COURSE_UNIT_PROGRESS_ENABLED",
+    "login_registration_enabled": "LOGIN_REGISTRATION_ENABLED",
+    "saml_sso_login_enabled": "SAML_SSO_LOGIN_ENABLED",
+    "saml_sso_default_login_button": "SAML_SSO_DEFAULT_LOGIN_BUTTON",
+    "logo_url": "LOGO_URL",
+    "header_background_url": "HEADER_BACKGROUND_URL",
+    "theme": "THEME"
+]
+
+/// Recursively remaps snake_case keys to their YAML equivalents; unmapped keys pass through.
+private func normalizeRemoteKeys(_ dict: [String: Any]) -> [String: Any] {
+    var result: [String: Any] = [:]
+    for (key, value) in dict {
+        let mappedKey = remoteToYAMLKeyMap[key.lowercased()] ?? key
+        result[mappedKey] = (value as? [String: Any]).map(normalizeRemoteKeys) ?? value
+    }
+    return result
+}
+
+public extension TenantsConfig {
+    /// Parses the same TENANTS shape as `config.yaml`, sourced from JSON -- normalizes
+    /// field names then hands off to the existing `init(array:fallback:)`. Accepts a
+    /// bare array or a "tenants"/"TENANTS"-keyed object.
+    init(jsonData: Data, fallback: [String: Any] = [:]) throws {
+        let json = try JSONSerialization.jsonObject(with: jsonData)
+        let rawArray: [[String: Any]]
+        if let array = json as? [[String: Any]] {
+            rawArray = array
+        } else if let object = json as? [String: Any],
+                  let wrapped = (object["TENANTS"] ?? object["tenants"]) as? [[String: Any]] {
+            rawArray = wrapped
+        } else {
+            throw TenantJSONError.unrecognizedShape
+        }
+        self.init(array: rawArray.map(normalizeRemoteKeys), fallback: fallback)
+    }
+}
+
 #if DEBUG
 public extension Instance {
     static func mock(

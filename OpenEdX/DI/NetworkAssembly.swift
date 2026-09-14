@@ -21,6 +21,14 @@ class NetworkAssembly: Assembly {
             r.resolve(InstanceStore.self)!
         }.inObjectScope(.container)
 
+        container.register(TenantApiServiceProtocol.self) { _ in
+            TenantApiService()
+        }.inObjectScope(.container)
+
+        container.register(TenantConfigLoader.self) { r in
+            TenantConfigLoader(apiService: r.resolve(TenantApiServiceProtocol.self)!)
+        }.inObjectScope(.container)
+
         container.register(RequestInterceptor.self) { r in
             RequestInterceptor(config: r.resolve(ConfigProtocol.self)!, storage: r.resolve(CoreStorage.self)!)
         }.inObjectScope(.container)
