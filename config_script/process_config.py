@@ -1,14 +1,16 @@
 import plistlib
 import os
+import shutil
 import yaml
 from pathlib import Path
 import sys
 import json
 
 class PlistManager:
-    def __init__(self, config_dir, config_files):
+    def __init__(self, config_dir, config_files, json_files=None):
         self.config_dir = config_dir
         self.config_files = config_files
+        self.json_files = json_files or []
 
     def get_config_paths(self):
         return [Path(self.config_dir) / config_name for config_name in self.config_files]
@@ -96,6 +98,24 @@ class PlistManager:
             plistlib.dump(plist, plist_file)
             print(f"File {file_name} has been written to:")
             print(f"{file_path}")
+
+    def copy_json_files_to_bundle(self):
+        built_products_path = self.get_built_products_path()
+        wrapper_name = self.get_wrapper_name()
+
+        if not (built_products_path and wrapper_name):
+            print("The BUILT_PRODUCTS_DIR or WRAPPER_NAME environment variable is not set.")
+            return
+
+        for filename in self.json_files:
+            src = Path(self.config_dir) / filename
+            dst = os.path.join(built_products_path, wrapper_name, filename)
+            if src.exists():
+                shutil.copyfile(src, dst)
+                print(f"File {filename} has been copied to:")
+                print(f"{dst}")
+            else:
+                print(f"{src} not found. Skipping.")
 
     def print_info_plist_contents(self, plist_path):
         if not plist_path:
@@ -309,6 +329,7 @@ def process_plist_files(configuration_manager, plist_manager, config):
     bundle_config_path = plist_manager.get_bundle_config_path()
     config_plist = plist_manager.yaml_to_plist()
     plist_manager.write_to_plist_file(config_plist, bundle_config_path)
+    plist_manager.copy_json_files_to_bundle()
 
 def main(configuration, scheme_mappings):
     current_config = get_current_config(configuration, scheme_mappings)
@@ -333,7 +354,8 @@ def main(configuration, scheme_mappings):
         
         if data:
             ios_files = data.get('ios', {}).get('files', [])
-            plist_manager = PlistManager(path, ios_files)
+            ios_json_files = data.get('ios', {}).get('json_files', [])
+            plist_manager = PlistManager(path, ios_files, ios_json_files)
             config = plist_manager.load_config()
 
             if config:

@@ -7,10 +7,11 @@
 
 import Foundation
 
-/// Decides where the instance catalog comes from at app launch. Live-fetch-first with
-/// cache fallback -- always awaits the API so a freshly published catalog wins over a
-/// stale cache; falls back to the last cached copy (then an empty catalog) if the
-/// live fetch fails for any reason.
+/// Decides where the instance catalog comes from at app launch. Live-fetch-first --
+/// always awaits the API so a freshly published catalog wins over a stale cache -- then
+/// falls back through the last cached copy, the catalog bundled with the binary, and
+/// finally an empty catalog, in that order, if the live fetch fails for any reason
+/// (including no `INSTANCES_CATALOG_URL` being configured at all).
 ///
 /// Callers `await load()` and hand the result to `InstanceStore.updateInstancesConfig(_:)`
 /// before showing the instance picker or sign-in screen -- see `RouteController.swift`.
@@ -44,7 +45,19 @@ public final class InstanceConfigLoader: Sendable {
                let cached = try? InstancesConfig(jsonData: cachedData) {
                 return cached
             }
+            if let bundled = Self.loadBundled() {
+                return bundled
+            }
             return InstancesConfig()
         }
+    }
+
+    /// Ships with the binary -- last resort before an empty catalog.
+    private static func loadBundled() -> InstancesConfig? {
+        guard let url = Bundle.main.url(forResource: "config", withExtension: "json"),
+              let data = try? Data(contentsOf: url) else {
+            return nil
+        }
+        return try? InstancesConfig(jsonData: data)
     }
 }

@@ -5,6 +5,11 @@ ENVIRONMENT_DISPLAY_NAME: 'Localhost'
 FEEDBACK_EMAIL_ADDRESS: 'support@example.com'
 OAUTH_CLIENT_ID: ''
 
+# Remote instances-catalog endpoint. Empty/unset -- the app falls back to the
+# catalog bundled with the binary (see default_config/dev/config.json and
+# Core/Core/Configuration/Config/InstanceConfigLoader.swift).
+INSTANCES_CATALOG_URL: ''
+
 SSO_BUTTON_TITLE:
     ar: "الدخول عبر SSO"
     en: "Sign in with SSO"
@@ -38,7 +43,6 @@ INSTANCES:
     ENVIRONMENT_DISPLAY_NAME: "Example Instance"
     OAUTH_CLIENT_ID: 'example-oauth-client-id'
     API_HOST_URL: 'https://example-instance.example.com'
-    API_HOST_URL_HIDDEN_LOGIN: 'https://example-instance-hidden.example.com'
     SSO_URL: 'https://example-instance.example.com/auth/login/tpa-saml/?auth_entry=login'
     SSO_URL_SUCCESSFUL_LOGIN: "https://example-instance.example.com/auth/login/tpa-saml/auth/complete/tpa-saml"
     SSO_BUTTON_TITLE:

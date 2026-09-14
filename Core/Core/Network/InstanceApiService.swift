@@ -8,6 +8,9 @@
 import Foundation
 
 public enum InstanceApiError: Error {
+    /// No `INSTANCES_CATALOG_URL` configured -- caller should fall back without
+    /// attempting a network call.
+    case notConfigured
     case invalidResponse(statusCode: Int)
 }
 
@@ -20,18 +23,20 @@ public protocol InstanceApiServiceProtocol: Sendable {
 /// external endpoint, not a per-instance platform API call. Parsing lives on
 /// `InstancesConfig(jsonData:fallback:)`, not here.
 public final class InstanceApiService: InstanceApiServiceProtocol, Sendable {
-    /// Placeholder endpoint -- replace with the real hosted instance-catalog URL.
-    public static let defaultURL = URL(string: "https://example.com/instances.json")!
-
-    private let url: URL
+    private let url: URL?
     private let session: URLSession
 
-    public init(url: URL = InstanceApiService.defaultURL, session: URLSession = .shared) {
+    /// - Parameter url: `ConfigProtocol.instancesCatalogURL`. `nil` when unconfigured.
+    public init(url: URL? = nil, session: URLSession = .shared) {
         self.url = url
         self.session = session
     }
 
     public func fetchRawData() async throws -> Data {
+        guard let url else {
+            throw InstanceApiError.notConfigured
+        }
+
         var request = URLRequest(url: url)
         request.cachePolicy = .reloadIgnoringLocalCacheData
         request.timeoutInterval = 10

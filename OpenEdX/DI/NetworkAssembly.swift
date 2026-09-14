@@ -21,8 +21,8 @@ class NetworkAssembly: Assembly {
             r.resolve(InstanceStore.self)!
         }.inObjectScope(.container)
 
-        container.register(InstanceApiServiceProtocol.self) { _ in
-            InstanceApiService()
+        container.register(InstanceApiServiceProtocol.self) { r in
+            InstanceApiService(url: r.resolve(ConfigProtocol.self)!.instancesCatalogURL)
         }.inObjectScope(.container)
 
         container.register(InstanceConfigLoader.self) { r in

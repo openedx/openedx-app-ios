@@ -25,7 +25,6 @@ private enum InstanceKeys: String, RawStringExtractable {
     case color
     case oAuthClientId = "OAUTH_CLIENT_ID"
     case baseURL = "API_HOST_URL"
-    case baseURLHiddenLogin = "API_HOST_URL_HIDDEN_LOGIN"
     case baseSSOURL = "SSO_URL"
     case successfulSSOLoginURL = "SSO_URL_SUCCESSFUL_LOGIN"
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
@@ -59,8 +58,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     public let color: String
     public let oAuthClientId: String
     public let baseURL: URL
-    /// Falls back to `baseURL` if not set.
-    public let baseURLHiddenLogin: URL
     public let baseSSOURL: URL?
     public let successfulSSOLoginURL: URL?
     public let environmentDisplayName: String?
@@ -114,13 +111,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         self.color = dictionary[InstanceKeys.color] as? String ?? "#007AFF"
         self.isSwitchInstanceLoginEnabled = dictionary[InstanceKeys.isSwitchInstanceLoginEnabled] as? Bool ?? false
 
-        if let hiddenLoginString = dictionary[InstanceKeys.baseURLHiddenLogin] as? String,
-           let hiddenLoginURL = URL(string: hiddenLoginString) {
-            self.baseURLHiddenLogin = hiddenLoginURL
-        } else {
-            self.baseURLHiddenLogin = baseURL
-        }
-
         if let ssoString = dictionary[InstanceKeys.baseSSOURL] as? String {
             self.baseSSOURL = URL(string: ssoString)
         } else {
@@ -166,7 +156,7 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     // `InstanceStore.instancesConfig` right after decode.
     private enum CodingKeys: String, CodingKey {
         case key, name, instanceName, color, oAuthClientId
-        case baseURL, baseURLHiddenLogin, baseSSOURL, successfulSSOLoginURL
+        case baseURL, baseSSOURL, successfulSSOLoginURL
         case environmentDisplayName, isSwitchInstanceLoginEnabled
     }
 
@@ -178,7 +168,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         color = try container.decode(String.self, forKey: .color)
         oAuthClientId = try container.decode(String.self, forKey: .oAuthClientId)
         baseURL = try container.decode(URL.self, forKey: .baseURL)
-        baseURLHiddenLogin = try container.decode(URL.self, forKey: .baseURLHiddenLogin)
         baseSSOURL = try container.decodeIfPresent(URL.self, forKey: .baseSSOURL)
         successfulSSOLoginURL = try container.decodeIfPresent(URL.self, forKey: .successfulSSOLoginURL)
         environmentDisplayName = try container.decodeIfPresent(String.self, forKey: .environmentDisplayName)
@@ -197,7 +186,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         try container.encode(color, forKey: .color)
         try container.encode(oAuthClientId, forKey: .oAuthClientId)
         try container.encode(baseURL, forKey: .baseURL)
-        try container.encode(baseURLHiddenLogin, forKey: .baseURLHiddenLogin)
         try container.encodeIfPresent(baseSSOURL, forKey: .baseSSOURL)
         try container.encodeIfPresent(successfulSSOLoginURL, forKey: .successfulSSOLoginURL)
         try container.encodeIfPresent(environmentDisplayName, forKey: .environmentDisplayName)
@@ -249,7 +237,6 @@ private let remoteToYAMLKeyMap: [String: String] = [
     "instance_name": "INSTANCE_NAME",
     "oauth_client_id": "OAUTH_CLIENT_ID",
     "api_host_url": "API_HOST_URL",
-    "api_host_url_hidden_login": "API_HOST_URL_HIDDEN_LOGIN",
     "sso_url": "SSO_URL",
     "sso_url_successful_login": "SSO_URL_SUCCESSFUL_LOGIN",
     "environment_display_name": "ENVIRONMENT_DISPLAY_NAME",
