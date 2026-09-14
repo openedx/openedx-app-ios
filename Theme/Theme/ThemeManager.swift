@@ -18,13 +18,13 @@ public final class ThemeManager: ObservableObject {
         self.theme = .default
     }
 
-    /// Applies the theme for the given tenant (or the default when `key` is `nil`).
-    /// Safe to call at launch or any time the selected tenant changes. Palette/logo
-    /// params are the tenant's `THEME.light`/`THEME.dark`/`LOGO_URL`/
+    /// Applies the theme for the given instance (or the default when `key` is `nil`).
+    /// Safe to call at launch or any time the selected instance changes. Palette/logo
+    /// params are the instance's `THEME.light`/`THEME.dark`/`LOGO_URL`/
     /// `HEADER_BACKGROUND_URL` JSON fields — all optional.
     public func applyTheme(
         key: String?,
-        tenantName: String? = nil,
+        instanceName: String? = nil,
         colorHex: String? = nil,
         themeColorsLight: [String: String] = [:],
         themeColorsDark: [String: String] = [:],
@@ -33,7 +33,7 @@ public final class ThemeManager: ObservableObject {
     ) {
         let selectedTheme = ThemeDefinition.resolve(
             key: key,
-            tenantName: tenantName,
+            instanceName: instanceName,
             colorHex: colorHex,
             themeColorsLight: themeColorsLight,
             themeColorsDark: themeColorsDark,

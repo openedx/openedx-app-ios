@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Per-tenant color palette. Only the colors `ThemeManager.applyTheme` can override
+/// Per-instance color palette. Only the colors `ThemeManager.applyTheme` can override
 /// live here; everything else stays on the compiled default asset catalog.
 public struct ThemeColorSet: Sendable {
     public var accentColor: Color
@@ -156,10 +156,10 @@ public struct ThemeColorSet: Sendable {
         self.secondaryContentColor = secondaryContentColor
     }
 
-    /// Colors compiled into the base asset catalog (no tenant selected).
+    /// Colors compiled into the base asset catalog (no instance selected).
     public static let `default` = ThemeColorSet()
 
-    /// Derives a tenant palette from its accent hex, then layers any per-field
+    /// Derives an instance palette from its accent hex, then layers any per-field
     /// `THEME` overrides on top. Bespoke, fully hand-authored palettes can still be
     /// supplied directly via `ThemeDefinition`.
     public static func derived(
@@ -178,7 +178,7 @@ public struct ThemeColorSet: Sendable {
         set.secondaryButtonTextColor = accent
         set.infoColor = accent
 
-        // Only fields the tenant actually set are overridden.
+        // Only fields the instance actually set are overridden.
         for (jsonKey, keyPath) in ThemeColorSet.paletteKeyPaths {
             guard let lightHex = light[jsonKey] else { continue }
             let darkHex = dark[jsonKey] ?? lightHex
@@ -189,7 +189,7 @@ public struct ThemeColorSet: Sendable {
         return set
     }
 
-    /// Maps a tenant JSON `THEME` field name to the `ThemeColorSet` property it overrides.
+    /// Maps an instance JSON `THEME` field name to the `ThemeColorSet` property it overrides.
     private nonisolated(unsafe) static let paletteKeyPaths: [String: WritableKeyPath<ThemeColorSet, Color>] = [
         "accent_color": \.accentColor,
         "accent_x_color": \.accentXColor,

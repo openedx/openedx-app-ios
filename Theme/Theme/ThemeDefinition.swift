@@ -36,25 +36,25 @@ public struct ThemeDefinition: Sendable {
         self.name = name
     }
 
-    /// Compiled default theme, unaffected by any tenant.
+    /// Compiled default theme, unaffected by any instance.
     public static let `default` = ThemeDefinition()
 
-    /// Resolves a tenant's theme straight from its JSON fields. `key == nil` returns `.default`.
+    /// Resolves an instance's theme straight from its JSON fields. `key == nil` returns `.default`.
     ///
     /// - Parameters:
-    ///   - key: the tenant's stable `Tenant.key`.
-    ///   - tenantName: display name, used as `ThemeDefinition.name`.
-    ///   - colorHex: the tenant's `color` field — fallback accent, and the value used
+    ///   - key: the instance's stable `Instance.key`.
+    ///   - instanceName: display name, used as `ThemeDefinition.name`.
+    ///   - colorHex: the instance's `color` field — fallback accent, and the value used
     ///     for any color `themeColorsLight`/`themeColorsDark` don't set.
-    ///   - themeColorsLight: the tenant's `THEME.light` block (snake_case field -> hex).
-    ///   - themeColorsDark: the tenant's `THEME.dark` block; a missing field reuses light.
+    ///   - themeColorsLight: the instance's `THEME.light` block (snake_case field -> hex).
+    ///   - themeColorsDark: the instance's `THEME.dark` block; a missing field reuses light.
     ///   - logoURLString: `http(s)://...` resolves via `appLogoURL` (remote), anything
     ///     else is looked up as a bundled asset name; `nil`/not-found keeps the default logo.
     ///   - headerBackgroundURLString: `http(s)://...` resolves via `appHeaderBackgroundURL`;
     ///     otherwise keeps the compiled default `bgColor`.
     public static func resolve(
         key: String?,
-        tenantName: String?,
+        instanceName: String?,
         colorHex: String?,
         themeColorsLight: [String: String] = [:],
         themeColorsDark: [String: String] = [:],
@@ -64,7 +64,7 @@ public struct ThemeDefinition: Sendable {
         guard let key else { return .default }
 
         var resolved = ThemeDefinition.default
-        resolved.name = tenantName ?? key
+        resolved.name = instanceName ?? key
         resolved.colors = .derived(fromHex: colorHex ?? "#007AFF", light: themeColorsLight, dark: themeColorsDark)
 
         if let logoURLString {
@@ -90,7 +90,7 @@ public struct ThemeDefinition: Sendable {
         return url
     }
 
-    /// Looks up a bundled image asset by name (for tenant-JSON-supplied logo names).
+    /// Looks up a bundled image asset by name (for instance-JSON-supplied logo names).
     private static func bundledLogoImage(named name: String) -> Image? {
         guard let uiImage = UIImage(named: name, in: Bundle(for: ThemeBundleMarker.self), compatibleWith: nil) else {
             return nil
@@ -101,7 +101,7 @@ public struct ThemeDefinition: Sendable {
 
 private final class ThemeBundleMarker {}
 
-/// In-memory cache so a tenant image (logo, header background) only downloads
+/// In-memory cache so an instance image (logo, header background) only downloads
 /// once per app run. Keyed by URL, so logos and header backgrounds share one cache.
 private final class RemoteThemeImageCache: @unchecked Sendable {
     static let shared = RemoteThemeImageCache()
@@ -116,7 +116,7 @@ private final class RemoteThemeImageCache: @unchecked Sendable {
     }
 }
 
-/// Renders a remote tenant-branding image at `url`, falling back to `fallback`
+/// Renders a remote instance-branding image at `url`, falling back to `fallback`
 /// while loading, on failure, or when `url` is `nil`.
 private struct RemoteThemeImage: View {
     let url: URL?
@@ -167,7 +167,7 @@ private struct RemoteThemeImage: View {
 }
 
 /// A resolved theme's logo — remote (`appLogoURL`) falling back to bundled (`appLogo`).
-public struct TenantLogoImage: View {
+public struct InstanceLogoImage: View {
     let theme: ThemeDefinition
 
     public init(theme: ThemeDefinition) {
@@ -180,7 +180,7 @@ public struct TenantLogoImage: View {
 }
 
 /// A resolved theme's header banner — remote (`appHeaderBackgroundURL`) falling back to `bgColor`.
-public struct TenantHeaderBackgroundImage: View {
+public struct InstanceHeaderBackgroundImage: View {
     let theme: ThemeDefinition
 
     public init(theme: ThemeDefinition) {

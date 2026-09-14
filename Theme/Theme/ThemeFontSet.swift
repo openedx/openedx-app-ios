@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// Per-tenant font size/weight overrides on top of whatever font family is compiled in.
+/// Per-instance font size/weight overrides on top of whatever font family is compiled in.
 public struct ThemeFontSet: Sendable {
     public var titleMedium: Font
     public var bodyLarge: Font
