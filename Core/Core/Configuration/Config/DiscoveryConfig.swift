@@ -27,7 +27,7 @@ public class DiscoveryWebviewConfig: NSObject, @unchecked Sendable {
     public let baseURL: String?
     public let courseDetailTemplate: String?
     public let programDetailTemplate: String?
-    
+
     init(dictionary: [String: AnyObject]) {
         baseURL = dictionary[DiscoveryKeys.baseURL] as? String
         courseDetailTemplate = dictionary[DiscoveryKeys.courseDetailTemplate] as? String
@@ -42,14 +42,14 @@ public class DiscoveryConfig: NSObject, @unchecked Sendable {
     public var isWebViewConfigured: Bool {
         type == .webview && webview.baseURL != nil
     }
-    
+
     init(dictionary: [String: AnyObject]) {
         type = (dictionary[DiscoveryKeys.discoveryType] as? String).flatMap {
             DiscoveryConfigType(rawValue: $0)
         } ?? .native
         webview = DiscoveryWebviewConfig(dictionary: dictionary[DiscoveryKeys.webview] as? [String: AnyObject] ?? [:])
     }
-    
+
     public var enabled: Bool {
         return type != .none
     }
