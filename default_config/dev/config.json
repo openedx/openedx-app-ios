@@ -36,6 +36,10 @@
     },
     "URI_SCHEME": "org.openedx.app",
     "APP_STORE_ID": "0000000000",
+    "API_HOST_URL": "https://example-instance.example.com",
+    "SSO_URL": "https://example-instance.example.com/auth/login/tpa-saml/?auth_entry=login",
+    "SSO_FINISHED_URL": "https://example-instance.example.com/auth/login/tpa-saml/auth/complete/tpa-saml",
+    "OAUTH_CLIENT_ID": "example-oauth-client-id",
     "INSTANCES_CATALOG_URL": "",
     "INSTANCES": [
         {
