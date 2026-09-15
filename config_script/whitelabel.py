@@ -542,9 +542,9 @@ class WhitelabelApp:
         data = self.parse_yaml(mappings_path)
         if data:
             # get config for ios described in mappings file
-            ios_files = data.get('ios', {}).get('files', [])
+            ios_json_files = data.get('ios', {}).get('json_files', [])
             # re-use PlistManager class from process_config.py script
-            plist_manager = PlistManager(path, ios_files)
+            plist_manager = PlistManager(path, ios_json_files)
             config = plist_manager.load_config()
             if config:
                 return config

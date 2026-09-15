@@ -261,6 +261,12 @@ final class InstancesConfigJSONTests: XCTestCase {
         XCTAssertEqual(result.instances.first?.name, "Cached")
         XCTAssertEqual(userDefaults.data(forKey: "org.openedx.core.cachedInstancesJSON"), cachedJSON)
     }
+
+    func test_bundledCatalogURL_returnsNil_whenNoBundledConfigJSON() {
+        // CoreTests' bundle doesn't ship a config.json -- mirrors loadBundled()'s own
+        // "not found" path, which every loader test above already exercises indirectly.
+        XCTAssertNil(InstanceConfigLoader.bundledCatalogURL())
+    }
 }
 
 private struct FailingInstanceApiService: InstanceApiServiceProtocol {

@@ -65,10 +65,30 @@ public final class InstanceConfigLoader: Sendable {
 
     /// Ships with the binary -- the baseline before any remote fetch has ever succeeded.
     private static func loadBundled() -> InstancesConfig? {
-        guard let url = Bundle.main.url(forResource: "config", withExtension: "json"),
-              let data = try? Data(contentsOf: url) else {
+        guard let data = bundledConfigData() else {
             return nil
         }
         return try? InstancesConfig(jsonData: data)
+    }
+
+    /// `INSTANCES_CATALOG_URL` from the same bundled config.json's app-level keys --
+    /// used to build `InstanceApiService` at DI-registration time, independent of
+    /// `ConfigProtocol` (that property is being retired there along with the rest of
+    /// YAML; see NetworkAssembly.swift).
+    public static func bundledCatalogURL() -> URL? {
+        guard let data = bundledConfigData(),
+              let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+              let urlString = object["INSTANCES_CATALOG_URL"] as? String,
+              !urlString.isEmpty else {
+            return nil
+        }
+        return URL(string: urlString)
+    }
+
+    private static func bundledConfigData() -> Data? {
+        guard let url = Bundle.main.url(forResource: "config", withExtension: "json") else {
+            return nil
+        }
+        return try? Data(contentsOf: url)
     }
 }

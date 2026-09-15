@@ -26,7 +26,8 @@ public final class InstanceApiService: InstanceApiServiceProtocol, Sendable {
     private let url: URL?
     private let session: URLSession
 
-    /// - Parameter url: `ConfigProtocol.instancesCatalogURL`. `nil` when unconfigured.
+    /// - Parameter url: `INSTANCES_CATALOG_URL` from the bundled config.json's
+    ///   app-level keys (see `InstanceConfigLoader.bundledCatalogURL()`). `nil` when unconfigured.
     public init(url: URL? = nil, session: URLSession = .shared) {
         self.url = url
         self.session = session
