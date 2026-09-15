@@ -25,14 +25,11 @@ private enum InstanceKeys: String, RawStringExtractable {
     case color
     case oAuthClientId = "OAUTH_CLIENT_ID"
     case baseURL = "API_HOST_URL"
-    case baseURLHiddenLogin = "API_HOST_URL_HIDDEN_LOGIN"
     case baseSSOURL = "SSO_URL"
     case ssoFinishedURL = "SSO_FINISHED_URL"
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
     case isSwitchInstanceLoginEnabled = "IS_SWITCH_INSTANCE_LOGIN_ENABLED"
     case uiComponents = "UI_COMPONENTS"
-    case logoURL = "LOGO_URL"
-    case headerBackgroundURL = "HEADER_BACKGROUND_URL"
     case theme = "THEME"
     case feedbackEmail = "FEEDBACK_EMAIL_ADDRESS"
     case ssoButtonTitle = "SSO_BUTTON_TITLE"
@@ -63,8 +60,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     public let color: String
     public let oAuthClientId: String
     public let baseURL: URL
-    /// Falls back to `baseURL` if not set.
-    public let baseURLHiddenLogin: URL
     public let baseSSOURL: URL?
     public let ssoFinishedURL: URL?
     public let environmentDisplayName: String?
@@ -123,13 +118,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         self.color = dictionary[InstanceKeys.color] as? String ?? "#007AFF"
         self.isSwitchInstanceLoginEnabled = dictionary[InstanceKeys.isSwitchInstanceLoginEnabled] as? Bool ?? false
 
-        if let hiddenLoginString = dictionary[InstanceKeys.baseURLHiddenLogin] as? String,
-           let hiddenLoginURL = URL(string: hiddenLoginString) {
-            self.baseURLHiddenLogin = hiddenLoginURL
-        } else {
-            self.baseURLHiddenLogin = baseURL
-        }
-
         if let ssoString = dictionary[InstanceKeys.baseSSOURL] as? String {
             self.baseSSOURL = URL(string: ssoString)
         } else {
@@ -150,10 +138,13 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
             self.uiComponents = UIComponentsConfig(dictionary: [:])
         }
 
-        self.logoURLString = dictionary[InstanceKeys.logoURL] as? String
-        self.headerBackgroundURLString = dictionary[InstanceKeys.headerBackgroundURL] as? String
+        // Logo/header live inside THEME (siblings of light/dark) rather than as their
+        // own top-level instance fields.
+        let themeDict = dictionary[InstanceKeys.theme] as? [String: Any]
+        self.logoURLString = themeDict?["logo_url"] as? String
+        self.headerBackgroundURLString = themeDict?["header_background_url"] as? String
 
-        if let themeDict = dictionary[InstanceKeys.theme] as? [String: Any] {
+        if let themeDict {
             self.themeColors = InstanceThemeColors(
                 light: themeDict["light"] as? [String: String] ?? [:],
                 dark: themeDict["dark"] as? [String: String] ?? [:]
@@ -192,7 +183,7 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     // `InstanceStore.instancesConfig` right after decode.
     private enum CodingKeys: String, CodingKey {
         case key, name, instanceName, color, oAuthClientId
-        case baseURL, baseURLHiddenLogin, baseSSOURL, ssoFinishedURL
+        case baseURL, baseSSOURL, ssoFinishedURL
         case environmentDisplayName, isSwitchInstanceLoginEnabled
     }
 
@@ -204,7 +195,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         color = try container.decode(String.self, forKey: .color)
         oAuthClientId = try container.decode(String.self, forKey: .oAuthClientId)
         baseURL = try container.decode(URL.self, forKey: .baseURL)
-        baseURLHiddenLogin = try container.decode(URL.self, forKey: .baseURLHiddenLogin)
         baseSSOURL = try container.decodeIfPresent(URL.self, forKey: .baseSSOURL)
         ssoFinishedURL = try container.decodeIfPresent(URL.self, forKey: .ssoFinishedURL)
         environmentDisplayName = try container.decodeIfPresent(String.self, forKey: .environmentDisplayName)
@@ -227,7 +217,6 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         try container.encode(color, forKey: .color)
         try container.encode(oAuthClientId, forKey: .oAuthClientId)
         try container.encode(baseURL, forKey: .baseURL)
-        try container.encode(baseURLHiddenLogin, forKey: .baseURLHiddenLogin)
         try container.encodeIfPresent(baseSSOURL, forKey: .baseSSOURL)
         try container.encodeIfPresent(ssoFinishedURL, forKey: .ssoFinishedURL)
         try container.encodeIfPresent(environmentDisplayName, forKey: .environmentDisplayName)
