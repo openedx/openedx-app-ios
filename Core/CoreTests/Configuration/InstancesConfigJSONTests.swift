@@ -193,7 +193,9 @@ final class InstancesConfigJSONTests: XCTestCase {
         XCTAssertEqual(instance.themeColors?.light["accent_color"], "#1E88E5")
     }
 
-    func test_loader_returnsEmptyCatalog_onFetchFailureWithNoCache() async {
+    // MARK: - InstanceConfigLoader: baseline = last-cached-good, else bundled, else empty
+
+    func test_loader_returnsEmptyCatalog_whenNoCacheNoBundledAndFetchFails() async {
         let userDefaults = UserDefaults(suiteName: #function)!
         userDefaults.removePersistentDomain(forName: #function)
 
@@ -204,11 +206,11 @@ final class InstancesConfigJSONTests: XCTestCase {
         XCTAssertTrue(result.instances.isEmpty)
     }
 
-    func test_loader_fallsBackToCache_onFetchFailure() async {
+    func test_loader_usesCachedResponse_asBaseline_whenFetchFails() async {
         let userDefaults = UserDefaults(suiteName: #function)!
         userDefaults.removePersistentDomain(forName: #function)
         let cachedJSON = """
-        [{ "name": "Cached", "OAUTH_CLIENT_ID": "cached-id", "API_HOST_URL": "https://cached.example.com" }]
+        [{ "NAME": "Cached", "OAUTH_CLIENT_ID": "cached-id", "API_HOST_URL": "https://cached.example.com" }]
         """.data(using: .utf8)!
         userDefaults.set(cachedJSON, forKey: "org.openedx.core.cachedInstancesJSON")
 
@@ -219,12 +221,12 @@ final class InstancesConfigJSONTests: XCTestCase {
         XCTAssertEqual(result.instances.first?.name, "Cached")
     }
 
-    func test_loader_returnsLiveFetch_andCachesIt_onSuccess() async {
+    func test_loader_replacesBaseline_andCachesIt_onNonEmptyFetch() async {
         let userDefaults = UserDefaults(suiteName: #function)!
         userDefaults.removePersistentDomain(forName: #function)
 
         let remoteJSON = """
-        [{ "name": "Remote", "OAUTH_CLIENT_ID": "remote-id", "API_HOST_URL": "https://remote.example.com" }]
+        [{ "NAME": "Remote", "OAUTH_CLIENT_ID": "remote-id", "API_HOST_URL": "https://remote.example.com" }]
         """.data(using: .utf8)!
 
         let loader = InstanceConfigLoader(
@@ -236,6 +238,28 @@ final class InstancesConfigJSONTests: XCTestCase {
 
         XCTAssertEqual(result.instances.first?.name, "Remote")
         XCTAssertNotNil(userDefaults.data(forKey: "org.openedx.core.cachedInstancesJSON"))
+    }
+
+    func test_loader_keepsCachedBaseline_whenFetchSucceedsWithZeroInstances() async {
+        // A reachable catalog endpoint returning an empty array is not the same as it
+        // being unreachable -- per product rule, zero instances must NOT replace (or
+        // overwrite the cache of) whatever the baseline already was.
+        let userDefaults = UserDefaults(suiteName: #function)!
+        userDefaults.removePersistentDomain(forName: #function)
+        let cachedJSON = """
+        [{ "NAME": "Cached", "OAUTH_CLIENT_ID": "cached-id", "API_HOST_URL": "https://cached.example.com" }]
+        """.data(using: .utf8)!
+        userDefaults.set(cachedJSON, forKey: "org.openedx.core.cachedInstancesJSON")
+
+        let loader = InstanceConfigLoader(
+            apiService: StubInstanceApiService(data: "[]".data(using: .utf8)!),
+            userDefaults: userDefaults
+        )
+
+        let result = await loader.load()
+
+        XCTAssertEqual(result.instances.first?.name, "Cached")
+        XCTAssertEqual(userDefaults.data(forKey: "org.openedx.core.cachedInstancesJSON"), cachedJSON)
     }
 }
 
