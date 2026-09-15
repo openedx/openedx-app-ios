@@ -20,9 +20,9 @@ public protocol InstanceProvider: Sendable {
 
 private enum InstanceKeys: String, RawStringExtractable {
     case key = "KEY"
-    case name
+    case name = "NAME"
     case instanceName = "INSTANCE_NAME"
-    case color
+    case color = "COLOR"
     case oAuthClientId = "OAUTH_CLIENT_ID"
     case baseURL = "API_HOST_URL"
     case baseSSOURL = "SSO_URL"
@@ -155,16 +155,19 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
             self.uiComponents = UIComponentsConfig(dictionary: [:])
         }
 
-        // Logo/header live inside THEME (siblings of light/dark) rather than as their
-        // own top-level instance fields.
+        // Logo/header live inside THEME (siblings of LIGHT/DARK) rather than as their
+        // own top-level instance fields. Keys here are uppercase like the rest of the
+        // schema -- only the light/dark palette dicts' own internal field names (e.g.
+        // accent_color) stay lowercase, since those belong to Theme's already-shipped
+        // ThemeColorSet.derived(fromHex:light:dark:) contract, not this file.
         let themeDict = dictionary[InstanceKeys.theme] as? [String: Any]
-        self.logoURLString = themeDict?["logo_url"] as? String
-        self.headerBackgroundURLString = themeDict?["header_background_url"] as? String
+        self.logoURLString = themeDict?["LOGO_URL"] as? String
+        self.headerBackgroundURLString = themeDict?["HEADER_BACKGROUND_URL"] as? String
 
         if let themeDict {
             self.themeColors = InstanceThemeColors(
-                light: themeDict["light"] as? [String: String] ?? [:],
-                dark: themeDict["dark"] as? [String: String] ?? [:]
+                light: themeDict["LIGHT"] as? [String: String] ?? [:],
+                dark: themeDict["DARK"] as? [String: String] ?? [:]
             )
         } else {
             self.themeColors = nil
@@ -303,7 +306,7 @@ public struct InstancesConfig: Sendable {
             let merged = fallback.merging(dict) { _, instanceValue in instanceValue }
             guard let instance = Instance(dictionary: merged) else {
                 #if DEBUG
-                print("⚠️ InstancesConfig: skipping malformed INSTANCES entry: \(dict["name"] ?? "<unknown>")")
+                print("⚠️ InstancesConfig: skipping malformed INSTANCES entry: \(dict["NAME"] ?? "<unknown>")")
                 #endif
                 return nil
             }
@@ -328,9 +331,9 @@ public extension Instance {
     ) -> Instance {
         Instance(dictionary: [
             "KEY": key,
-            "name": name,
+            "NAME": name,
             "INSTANCE_NAME": ["en": instanceName],
-            "color": color,
+            "COLOR": color,
             "OAUTH_CLIENT_ID": oAuthClientId,
             "API_HOST_URL": baseURL.absoluteString
         ])!

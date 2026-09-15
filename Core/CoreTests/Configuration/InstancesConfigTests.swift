@@ -10,7 +10,7 @@ class InstancesConfigTests: XCTestCase {
 
     private let requiredFields: [String: Any] = [
         "KEY": "test-instance",
-        "name": "Test Instance",
+        "NAME": "Test Instance",
         "INSTANCE_NAME": ["en": "Test Instance"],
         "OAUTH_CLIENT_ID": "client-id",
         "API_HOST_URL": "https://test-instance.example.com"
@@ -53,8 +53,8 @@ class InstancesConfigTests: XCTestCase {
         dictionary["PROGRAM"] = ["TYPE": "none"]
         dictionary["DASHBOARD"] = ["TYPE": "list"]
         dictionary["THEME"] = [
-            "light": ["accent_color": "#3C68FF"],
-            "dark": ["accent_color": "#1C355E"],
+            "LIGHT": ["accent_color": "#3C68FF"],
+            "DARK": ["accent_color": "#1C355E"],
             "ROUNDED_CORNERS_STYLE": false,
             "BUTTON_CORNERS_RADIUS": 4.0
         ]
