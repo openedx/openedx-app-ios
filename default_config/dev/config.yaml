@@ -35,7 +35,7 @@ UI_COMPONENTS:
 INSTANCES:
   -
     KEY: "example-instance"
-    name: "Example Instance"
+    NAME: "Example Instance"
     INSTANCE_NAME:
         ar: "اسم المُزود"
         en: "Example Instance"
@@ -49,16 +49,18 @@ INSTANCES:
         en: "Sign in with SSO"
     IS_SWITCH_INSTANCE_LOGIN_ENABLED: true
 
-    # `light`/`dark` need only override the colors an instance actually wants to brand --
+    # LIGHT/DARK need only override the colors an instance actually wants to brand --
     # everything else derives from `accent_color` (see ThemeColorSet.derived(fromHex:light:dark:)
-    # in Theme/Theme/ThemeColorSet.swift). `logo_url`/`header_background_url` are optional and
-    # apply to both modes; omit either to keep the compiled default asset.
+    # in Theme/Theme/ThemeColorSet.swift) -- that palette dict's own field names (accent_color
+    # and siblings) stay lowercase, matching Theme's already-shipped contract. LOGO_URL/
+    # HEADER_BACKGROUND_URL are optional and apply to both modes; omit either to keep the
+    # compiled default asset.
     THEME:
-        light:
+        LIGHT:
             accent_color: "#3C68FF"
-        dark:
+        DARK:
             accent_color: "#1C355E"
-        logo_url: "exampleInstanceAppLogo"
+        LOGO_URL: "exampleInstanceAppLogo"
 
     UI_COMPONENTS:
         COURSE_UNIT_PROGRESS_ENABLED: false

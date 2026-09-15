@@ -19,7 +19,7 @@ final class InstanceStoreTests: XCTestCase {
     func test_singleInstanceCatalog_noPriorSelection_autoSelectsTheOnlyInstance() {
         let onlyInstance = Instance.mock(key: "acme")
         let catalog = InstancesConfig(array: [
-            ["KEY": "acme", "name": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
+            ["KEY": "acme", "NAME": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
         ])
         let defaults = freshUserDefaults(#function)
 
@@ -32,8 +32,8 @@ final class InstanceStoreTests: XCTestCase {
 
     func test_multiInstanceCatalog_noPriorSelection_doesNotAutoSelect() {
         let catalog = InstancesConfig(array: [
-            ["name": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"],
-            ["name": "Beta", "OAUTH_CLIENT_ID": "beta-id", "API_HOST_URL": "https://beta.example.com"]
+            ["NAME": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"],
+            ["NAME": "Beta", "OAUTH_CLIENT_ID": "beta-id", "API_HOST_URL": "https://beta.example.com"]
         ])
         let defaults = freshUserDefaults(#function)
 
@@ -44,7 +44,7 @@ final class InstanceStoreTests: XCTestCase {
 
     func test_singleInstanceCatalog_staleSavedKey_reselectsTheOnlyInstance() {
         let catalog = InstancesConfig(array: [
-            ["KEY": "acme", "name": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
+            ["KEY": "acme", "NAME": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
         ])
         let defaults = freshUserDefaults(#function)
         defaults.set("some-other-instance", forKey: "selectedInstanceKey")
@@ -56,7 +56,7 @@ final class InstanceStoreTests: XCTestCase {
 
     func test_singleInstanceCatalog_matchingSavedKey_resolvesWithoutReselecting() {
         let catalog = InstancesConfig(array: [
-            ["KEY": "acme", "name": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
+            ["KEY": "acme", "NAME": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
         ])
         let defaults = freshUserDefaults(#function)
         defaults.set("acme", forKey: "selectedInstanceKey")
@@ -76,7 +76,7 @@ final class InstanceStoreTests: XCTestCase {
 
     func test_singleInstanceCatalog_deselecting_reselectsTheOnlyInstance() {
         let catalog = InstancesConfig(array: [
-            ["KEY": "acme", "name": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
+            ["KEY": "acme", "NAME": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"]
         ])
         let defaults = freshUserDefaults(#function)
         let store = InstanceStore(userDefaults: defaults, instancesConfig: { catalog })
@@ -89,8 +89,8 @@ final class InstanceStoreTests: XCTestCase {
 
     func test_multiInstanceCatalog_deselecting_staysDeselected() {
         let catalog = InstancesConfig(array: [
-            ["KEY": "acme", "name": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"],
-            ["KEY": "beta", "name": "Beta", "OAUTH_CLIENT_ID": "beta-id", "API_HOST_URL": "https://beta.example.com"]
+            ["KEY": "acme", "NAME": "Acme", "OAUTH_CLIENT_ID": "acme-id", "API_HOST_URL": "https://acme.example.com"],
+            ["KEY": "beta", "NAME": "Beta", "OAUTH_CLIENT_ID": "beta-id", "API_HOST_URL": "https://beta.example.com"]
         ])
         let defaults = freshUserDefaults(#function)
         let store = InstanceStore(userDefaults: defaults, instancesConfig: { catalog })

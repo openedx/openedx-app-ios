@@ -15,9 +15,9 @@ final class InstancesConfigJSONTests: XCTestCase {
         [
             {
                 "KEY": "acme",
-                "name": "Acme",
+                "NAME": "Acme",
                 "INSTANCE_NAME": { "en": "Acme University" },
-                "color": "#112233",
+                "COLOR": "#112233",
                 "OAUTH_CLIENT_ID": "acme-client-id",
                 "API_HOST_URL": "https://acme.example.com"
             }
@@ -36,7 +36,7 @@ final class InstancesConfigJSONTests: XCTestCase {
         {
             "INSTANCES": [
                 {
-                    "name": "Beta",
+                    "NAME": "Beta",
                     "OAUTH_CLIENT_ID": "beta-client-id",
                     "API_HOST_URL": "https://beta.example.com"
                 }
@@ -94,8 +94,8 @@ final class InstancesConfigJSONTests: XCTestCase {
         // Instance.init?(dictionary:)'s existing "drop, don't crash" behavior.
         let json = """
         [
-            { "name": "Valid", "OAUTH_CLIENT_ID": "id", "API_HOST_URL": "https://valid.example.com" },
-            { "name": "Missing fields" }
+            { "NAME": "Valid", "OAUTH_CLIENT_ID": "id", "API_HOST_URL": "https://valid.example.com" },
+            { "NAME": "Missing fields" }
         ]
         """.data(using: .utf8)!
 
@@ -112,13 +112,13 @@ final class InstancesConfigJSONTests: XCTestCase {
         [
             {
                 "KEY": "acme",
-                "name": "Acme",
+                "NAME": "Acme",
                 "OAUTH_CLIENT_ID": "acme-client-id",
                 "API_HOST_URL": "https://acme.example.com",
                 "THEME": {
-                    "light": { "accent_color": "#1E88E5", "background": "#FFFFFF" },
-                    "dark": { "accent_color": "#4FA8FF", "background": "#0A0A0A" },
-                    "logo_url": "https://cdn.example.com/acme-logo.png"
+                    "LIGHT": { "accent_color": "#1E88E5", "background": "#FFFFFF" },
+                    "DARK": { "accent_color": "#4FA8FF", "background": "#0A0A0A" },
+                    "LOGO_URL": "https://cdn.example.com/acme-logo.png"
                 }
             }
         ]
@@ -138,7 +138,7 @@ final class InstancesConfigJSONTests: XCTestCase {
         // No THEME/LOGO_URL at all -- the additive, backward-compatible path every
         // instance used before this feature.
         let json = """
-        [{ "name": "Plain", "OAUTH_CLIENT_ID": "id", "API_HOST_URL": "https://plain.example.com" }]
+        [{ "NAME": "Plain", "OAUTH_CLIENT_ID": "id", "API_HOST_URL": "https://plain.example.com" }]
         """.data(using: .utf8)!
 
         let config = try InstancesConfig(jsonData: json)
@@ -155,10 +155,10 @@ final class InstancesConfigJSONTests: XCTestCase {
         let json = """
         [
             {
-                "name": "Acme",
+                "NAME": "Acme",
                 "OAUTH_CLIENT_ID": "id",
                 "API_HOST_URL": "https://acme.example.com",
-                "THEME": { "light": { "not_a_real_field": "#000000" } }
+                "THEME": { "LIGHT": { "not_a_real_field": "#000000" } }
             }
         ]
         """.data(using: .utf8)!
@@ -170,9 +170,9 @@ final class InstancesConfigJSONTests: XCTestCase {
     }
 
     func test_remoteSnakeCaseThemeAndLogoKeys_areNormalized() throws {
-        // Confirms "theme" normalizes to "THEME" the same way every other remote field
-        // does (see remoteToYAMLKeyMap) -- logo_url lives inside it and, having no map
-        // entry of its own, passes through unchanged (lowercase, as Instance expects).
+        // Confirms "theme"/"light"/"logo_url" all normalize to their uppercase
+        // equivalents the same way every other remote field does (see
+        // remoteToYAMLKeyMap) -- Instance now expects THEME/LIGHT/LOGO_URL uniformly.
         let json = """
         {
             "instances": [
