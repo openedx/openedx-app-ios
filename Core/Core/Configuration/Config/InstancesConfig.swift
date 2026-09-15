@@ -35,6 +35,12 @@ private enum InstanceKeys: String, RawStringExtractable {
     case ssoButtonTitle = "SSO_BUTTON_TITLE"
     case experimentalFeatures = "EXPERIMENTAL_FEATURES"
     case agreementURLs = "AGREEMENT_URLS"
+    case tokenType = "TOKEN_TYPE"
+    case discoveryConfig = "DISCOVERY"
+    case programConfig = "PROGRAM"
+    case faq = "FAQ_URL"
+    case platformName = "PLATFORM_NAME"
+    case dashboard = "DASHBOARD"
 }
 
 /// Per-mode (`light`/`dark`) color overrides parsed from the instance's `THEME` block.
@@ -76,6 +82,17 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     public let ssoButtonTitle: [String: String]?
     public let appLevelDownloadsEnabled: Bool?
     public let agreement: AgreementConfig?
+    public let tokenType: TokenType
+    public let discovery: DiscoveryConfig
+    public let program: DiscoveryConfig
+    public let faq: URL?
+    /// Defaults to `instanceName` when unset (never blank).
+    public let platformName: String
+    public let features: FeaturesConfig
+    public let dashboard: DashboardConfig
+    /// Corner-style overrides, nested in THEME (siblings of light/dark/logo_url/header_background_url).
+    public let isRoundedCorners: Bool
+    public let buttonCornersRadius: Double
 
     public static func == (lhs: Instance, rhs: Instance) -> Bool {
         lhs.key == rhs.key
@@ -168,6 +185,41 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         } else {
             self.agreement = nil
         }
+
+        if let tokenTypeValue = dictionary[InstanceKeys.tokenType] as? String,
+           let tokenType = TokenType(rawValue: tokenTypeValue) {
+            self.tokenType = tokenType
+        } else {
+            self.tokenType = .jwt
+        }
+
+        self.discovery = DiscoveryConfig(
+            dictionary: dictionary[InstanceKeys.discoveryConfig] as? [String: AnyObject] ?? [:]
+        )
+        self.program = DiscoveryConfig(
+            dictionary: dictionary[InstanceKeys.programConfig] as? [String: AnyObject] ?? [:]
+        )
+
+        if let faqString = dictionary[InstanceKeys.faq] as? String, let faqURL = URL(string: faqString) {
+            self.faq = faqURL
+        } else {
+            self.faq = nil
+        }
+
+        if let platformNameValue = dictionary[InstanceKeys.platformName] as? String, !platformNameValue.isEmpty {
+            self.platformName = platformNameValue
+        } else {
+            self.platformName = self.instanceName
+        }
+
+        self.features = FeaturesConfig(dictionary: dictionary)
+        self.dashboard = DashboardConfig(
+            dictionary: dictionary[InstanceKeys.dashboard] as? [String: AnyObject] ?? [:]
+        )
+
+        // Same truthy-default trick as ThemeConfig: absent/non-Bool means rounded (true).
+        self.isRoundedCorners = themeDict?["ROUNDED_CORNERS_STYLE"] as? Bool != false
+        self.buttonCornersRadius = themeDict?["BUTTON_CORNERS_RADIUS"] as? Double ?? 8.0
     }
 
     private static func slugify(_ name: String) -> String {
@@ -178,9 +230,10 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     }
 
     // MARK: Codable
-    // `uiComponents`, remote-media fields, and the feedback/SSO-button/experimental-
-    // features/agreement overrides aren't persisted; re-populated from
-    // `InstanceStore.instancesConfig` right after decode.
+    // `uiComponents`, remote-media fields, the feedback/SSO-button/experimental-
+    // features/agreement overrides, and the instance-level config objects (tokenType,
+    // discovery, program, faq, platformName, features, dashboard, corner-style theme)
+    // aren't persisted; re-populated from `InstanceStore.instancesConfig` right after decode.
     private enum CodingKeys: String, CodingKey {
         case key, name, instanceName, color, oAuthClientId
         case baseURL, baseSSOURL, ssoFinishedURL
@@ -207,6 +260,15 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         ssoButtonTitle = nil
         appLevelDownloadsEnabled = nil
         agreement = nil
+        tokenType = .jwt
+        discovery = DiscoveryConfig(dictionary: [:])
+        program = DiscoveryConfig(dictionary: [:])
+        faq = nil
+        platformName = instanceName
+        features = FeaturesConfig(dictionary: [:])
+        dashboard = DashboardConfig(dictionary: [:])
+        isRoundedCorners = true
+        buttonCornersRadius = 8.0
     }
 
     public func encode(to encoder: Encoder) throws {

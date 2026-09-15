@@ -66,6 +66,23 @@ INSTANCES:
         dark:
             accent_color: "#1C355E"
         logo_url: "exampleInstanceAppLogo"
+        ROUNDED_CORNERS_STYLE: true
+        BUTTON_CORNERS_RADIUS: 8.0
+
+    # Instance-level overrides for properties that otherwise fall back to the app-wide
+    # config.yaml values above. Omit any of these to inherit the app-wide default.
+    TOKEN_TYPE: "BEARER"
+    PLATFORM_NAME: "Example Instance"
+    FAQ_URL: "https://example-instance.example.com/faq"
+    WHATS_NEW_ENABLED: false
+    PRE_LOGIN_EXPERIENCE_ENABLED: false
+    APP_LEVEL_DATES_ENABLED: false
+    DISCOVERY:
+        TYPE: "native"
+    PROGRAM:
+        TYPE: "none"
+    DASHBOARD:
+        TYPE: "gallery"
 
     UI_COMPONENTS:
         COURSE_UNIT_PROGRESS_ENABLED: false
