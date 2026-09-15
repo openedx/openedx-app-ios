@@ -39,7 +39,6 @@ INSTANCES:
     INSTANCE_NAME:
         ar: "اسم المُزود"
         en: "Example Instance"
-    color: "#3C68FF"
     ENVIRONMENT_DISPLAY_NAME: "Example Instance"
     OAUTH_CLIENT_ID: 'example-oauth-client-id'
     API_HOST_URL: 'https://example-instance.example.com'
@@ -50,53 +49,16 @@ INSTANCES:
         en: "Sign in with SSO"
     IS_SWITCH_INSTANCE_LOGIN_ENABLED: true
 
-    LOGO_URL: "exampleInstanceAppLogo"
+    # `light`/`dark` need only override the colors an instance actually wants to brand --
+    # everything else derives from `accent_color` (see ThemeColorSet.derived(fromHex:light:dark:)
+    # in Theme/Theme/ThemeColorSet.swift). `logo_url`/`header_background_url` are optional and
+    # apply to both modes; omit either to keep the compiled default asset.
     THEME:
         light:
             accent_color: "#3C68FF"
-            accent_x_color: "#1C355E"
-            alert: "#FF3D71"
-            avatar_stroke: "#3D4964"
-            background: "#FFFFFF"
-            background_stroke: "#FFFFFF"
-            card_view_background: "#CCD3DF"
-            card_view_stroke: "#CCD3DF"
-            certificate_foreground: "#2EB865"
-            comment_cell_background: "#F5F5F5"
-            next_week_timeline_color: "#97A5BB"
-            past_due_timeline_color: "#FFC94D"
-            this_week_timeline_color: "#3D4964"
-            today_timeline_color: "#42AAFF"
-            upcoming_timeline_color: "#CCD4E0"
-            shadow_color: "#000000"
-            snackbar_error_color: "#EB4F4F"
-            snackbar_info_color: "#42AAFF"
-            snackbar_text_color: "#FFFFFF"
-            styled_button_text: "#FFFFFF"
-            text_primary: "#18202E"
-            text_secondary: "#31CAB4"
-            text_secondary_light: "#97A5BB"
-            text_input_background: "#FFFFFF"
-            text_input_stroke: "#97A5BB"
-            text_input_unfocused_background: "#F9FAFB"
-            text_input_unfocused_stroke: "#CCD4E0"
-            warning: "#FFC248"
-            white: "#FFFFFF"
-            on_progress: "#F0CC00"
-            progress_done: "#BBE6D7"
-            progress_skip: "#DDD9DA"
-            dates_section_background: "#F9FAFB"
-            dates_section_stroke: "#CCD4E0"
-            navigation_bar_tint_color: "#FFFFFF"
-            secondary_button_border_color: "#3C68FF"
-            secondary_button_text_color: "#3C68FF"
-            success: "#30A171"
-            primary_button_text_color: "#FFFFFF"
-            toggle_switch_color: "#3C68FF"
-            text_input_text_color: "#19212F"
-            text_input_placeholder_color: "#97A5BB"
-            info_color: "#3C68FF"
-            irreversible_alert: "#FF3D71"
+        dark:
+            accent_color: "#1C355E"
+        logo_url: "exampleInstanceAppLogo"
 
     UI_COMPONENTS:
         COURSE_UNIT_PROGRESS_ENABLED: false

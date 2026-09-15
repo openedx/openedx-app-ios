@@ -30,8 +30,6 @@ private enum InstanceKeys: String, RawStringExtractable {
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
     case isSwitchInstanceLoginEnabled = "IS_SWITCH_INSTANCE_LOGIN_ENABLED"
     case uiComponents = "UI_COMPONENTS"
-    case logoURL = "LOGO_URL"
-    case headerBackgroundURL = "HEADER_BACKGROUND_URL"
     case theme = "THEME"
 }
 
@@ -131,10 +129,13 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
             self.uiComponents = UIComponentsConfig(dictionary: [:])
         }
 
-        self.logoURLString = dictionary[InstanceKeys.logoURL] as? String
-        self.headerBackgroundURLString = dictionary[InstanceKeys.headerBackgroundURL] as? String
+        // Logo/header live inside THEME (siblings of light/dark) rather than as their
+        // own top-level instance fields.
+        let themeDict = dictionary[InstanceKeys.theme] as? [String: Any]
+        self.logoURLString = themeDict?["logo_url"] as? String
+        self.headerBackgroundURLString = themeDict?["header_background_url"] as? String
 
-        if let themeDict = dictionary[InstanceKeys.theme] as? [String: Any] {
+        if let themeDict {
             self.themeColors = InstanceThemeColors(
                 light: themeDict["light"] as? [String: String] ?? [:],
                 dark: themeDict["dark"] as? [String: String] ?? [:]
@@ -247,8 +248,6 @@ private let remoteToYAMLKeyMap: [String: String] = [
     "login_registration_enabled": "LOGIN_REGISTRATION_ENABLED",
     "saml_sso_login_enabled": "SAML_SSO_LOGIN_ENABLED",
     "saml_sso_default_login_button": "SAML_SSO_DEFAULT_LOGIN_BUTTON",
-    "logo_url": "LOGO_URL",
-    "header_background_url": "HEADER_BACKGROUND_URL",
     "theme": "THEME"
 ]
 

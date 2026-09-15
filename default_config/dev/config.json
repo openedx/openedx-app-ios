@@ -6,7 +6,6 @@
             "ar": "اسم المُزود",
             "en": "Example Instance"
         },
-        "color": "#3C68FF",
         "ENVIRONMENT_DISPLAY_NAME": "Example Instance",
         "OAUTH_CLIENT_ID": "example-oauth-client-id",
         "API_HOST_URL": "https://example-instance.example.com",
@@ -17,7 +16,15 @@
             "en": "Sign in with SSO"
         },
         "IS_SWITCH_INSTANCE_LOGIN_ENABLED": true,
-        "LOGO_URL": "exampleInstanceAppLogo",
+        "THEME": {
+            "light": {
+                "accent_color": "#3C68FF"
+            },
+            "dark": {
+                "accent_color": "#1C355E"
+            },
+            "logo_url": "exampleInstanceAppLogo"
+        },
         "UI_COMPONENTS": {
             "COURSE_UNIT_PROGRESS_ENABLED": false,
             "COURSE_NESTED_LIST_ENABLED": false,

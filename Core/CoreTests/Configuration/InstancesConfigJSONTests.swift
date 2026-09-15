@@ -115,10 +115,10 @@ final class InstancesConfigJSONTests: XCTestCase {
                 "name": "Acme",
                 "OAUTH_CLIENT_ID": "acme-client-id",
                 "API_HOST_URL": "https://acme.example.com",
-                "LOGO_URL": "https://cdn.example.com/acme-logo.png",
                 "THEME": {
                     "light": { "accent_color": "#1E88E5", "background": "#FFFFFF" },
-                    "dark": { "accent_color": "#4FA8FF", "background": "#0A0A0A" }
+                    "dark": { "accent_color": "#4FA8FF", "background": "#0A0A0A" },
+                    "logo_url": "https://cdn.example.com/acme-logo.png"
                 }
             }
         ]
@@ -170,8 +170,9 @@ final class InstancesConfigJSONTests: XCTestCase {
     }
 
     func test_remoteSnakeCaseThemeAndLogoKeys_areNormalized() throws {
-        // Confirms "logo_url"/"theme" normalize to "LOGO_URL"/"THEME" the same way
-        // every other remote field already does (see remoteToYAMLKeyMap).
+        // Confirms "theme" normalizes to "THEME" the same way every other remote field
+        // does (see remoteToYAMLKeyMap) -- logo_url lives inside it and, having no map
+        // entry of its own, passes through unchanged (lowercase, as Instance expects).
         let json = """
         {
             "instances": [
@@ -179,8 +180,7 @@ final class InstancesConfigJSONTests: XCTestCase {
                     "name": "Acme",
                     "oauth_client_id": "id",
                     "api_host_url": "https://acme.example.com",
-                    "logo_url": "acmeAppLogo",
-                    "theme": { "light": { "accent_color": "#1E88E5" } }
+                    "theme": { "light": { "accent_color": "#1E88E5" }, "logo_url": "acmeAppLogo" }
                 }
             ]
         }
