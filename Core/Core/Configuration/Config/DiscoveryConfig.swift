@@ -22,7 +22,8 @@ private enum DiscoveryKeys: String, RawStringExtractable {
     case programDetailTemplate = "PROGRAM_DETAIL_TEMPLATE"
 }
 
-public class DiscoveryWebviewConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class DiscoveryWebviewConfig: NSObject, @unchecked Sendable {
     public let baseURL: String?
     public let courseDetailTemplate: String?
     public let programDetailTemplate: String?
@@ -34,7 +35,8 @@ public class DiscoveryWebviewConfig: NSObject {
     }
 }
 
-public class DiscoveryConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class DiscoveryConfig: NSObject, @unchecked Sendable {
     public let type: DiscoveryConfigType
     public let webview: DiscoveryWebviewConfig
     public var isWebViewConfigured: Bool {
