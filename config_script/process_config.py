@@ -308,6 +308,21 @@ DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_YAML_FILENAME
 CONFIG_DIRECTORY_NAME = 'config_directory'
 CONFIG_MAPPINGS = 'config_mapping'
 MAPPINGS_FILENAME = 'file_mappings.yaml'
+LEGACY_YAML_CONFIG_FILENAME = 'config.yaml'
+JSON_CONFIG_FILENAME = 'config.json'
+
+
+# Fail with a clear reason if config.yaml wasn't converted.
+def fail_if_unmigrated_yaml_config(config_directory_path):
+    yaml_path = os.path.join(config_directory_path, LEGACY_YAML_CONFIG_FILENAME)
+    json_path = os.path.join(config_directory_path, JSON_CONFIG_FILENAME)
+    if os.path.exists(yaml_path) and not os.path.exists(json_path):
+        print(
+            f"Found '{yaml_path}' but no '{json_path}'. config.yaml was retired for "
+            f"config.json -- run: python3 config_script/yaml_to_json_config.py {yaml_path}"
+        )
+        sys.exit(1)
+
 
 def get_current_config(configuration, scheme_mappings):
     for key, values in scheme_mappings.items():
@@ -351,6 +366,8 @@ def main(configuration, scheme_mappings):
 
     if config_directory and config_name:
         path = os.path.join(config_directory, config_name)
+        fail_if_unmigrated_yaml_config(path)
+
         mappings_path = os.path.join(path, MAPPINGS_FILENAME)
         data = parse_yaml(mappings_path)
         
