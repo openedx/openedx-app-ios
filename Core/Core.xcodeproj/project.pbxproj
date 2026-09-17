@@ -91,6 +91,8 @@
 		0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */; };
 		12624ABABF5AE7FBF7B4F5E5 /* InstancesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC6455FBE49B22E32CB777A /* InstancesConfig.swift */; };
 		41A744FEB981583CE4B1DEB8 /* InstanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE4D43A09B50EB85B793D5 /* InstanceStore.swift */; };
+		FC6CA744719A3BDF470AAF22 /* InstanceProvider+CurrentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0251BC4E833C6CD650A467 /* InstanceProvider+CurrentKey.swift */; };
+		F9B869222683CEB16E39F8D1 /* InstanceNamespacedDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB9B2B3E3AD270F886237AAF /* InstanceNamespacedDefaults.swift */; };
 		064987932B4D69FF0071642A /* DragAndDropCssInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0649878A2B4D69FE0071642A /* DragAndDropCssInjection.swift */; };
 		064987942B4D69FF0071642A /* WebviewInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0649878B2B4D69FE0071642A /* WebviewInjection.swift */; };
 		064987952B4D69FF0071642A /* SurveyCssInjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0649878C2B4D69FE0071642A /* SurveyCssInjection.swift */; };
@@ -299,6 +301,8 @@
 		0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIComponentsConfig.swift; sourceTree = "<group>"; };
 		2FC6455FBE49B22E32CB777A /* InstancesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstancesConfig.swift; sourceTree = "<group>"; };
 		53CE4D43A09B50EB85B793D5 /* InstanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStore.swift; sourceTree = "<group>"; };
+		CC0251BC4E833C6CD650A467 /* InstanceProvider+CurrentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceProvider+CurrentKey.swift"; sourceTree = "<group>"; };
+		AB9B2B3E3AD270F886237AAF /* InstanceNamespacedDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceNamespacedDefaults.swift; sourceTree = "<group>"; };
 		0649878A2B4D69FE0071642A /* DragAndDropCssInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragAndDropCssInjection.swift; sourceTree = "<group>"; };
 		0649878B2B4D69FE0071642A /* WebviewInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebviewInjection.swift; sourceTree = "<group>"; };
 		0649878C2B4D69FE0071642A /* SurveyCssInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SurveyCssInjection.swift; sourceTree = "<group>"; };
@@ -602,6 +606,7 @@
 				0236961728F9A21600EEF206 /* Repository */,
 				0727877528D2383C002E9142 /* Model */,
 				0770DE2428D08FBA006D8A5D /* CoreStorage.swift */,
+				AB9B2B3E3AD270F886237AAF /* InstanceNamespacedDefaults.swift */,
 				02512FEF299533DE0024D438 /* CoreDataHandlerProtocol.swift */,
 			);
 			path = Data;
@@ -906,6 +911,7 @@
 				0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */,
 				2FC6455FBE49B22E32CB777A /* InstancesConfig.swift */,
 				53CE4D43A09B50EB85B793D5 /* InstanceStore.swift */,
+				CC0251BC4E833C6CD650A467 /* InstanceProvider+CurrentKey.swift */,
 				C135C3B9B580C3AEA3A1EDF2 /* InstanceConfigLoader.swift */,
 				0727876F28D23411002E9142 /* Config.swift */,
 				DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */,
@@ -1327,6 +1333,8 @@
 				0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */,
 				12624ABABF5AE7FBF7B4F5E5 /* InstancesConfig.swift in Sources */,
 				41A744FEB981583CE4B1DEB8 /* InstanceStore.swift in Sources */,
+				FC6CA744719A3BDF470AAF22 /* InstanceProvider+CurrentKey.swift in Sources */,
+				F9B869222683CEB16E39F8D1 /* InstanceNamespacedDefaults.swift in Sources */,
 				F6CA7FECCB007C4E2BE6FF53 /* InstanceApiService.swift in Sources */,
 				E68669DB419E746E0FB536E5 /* InstanceConfigLoader.swift in Sources */,
 				027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */,

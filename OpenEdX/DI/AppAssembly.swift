@@ -169,7 +169,8 @@ class AppAssembly: Assembly {
         container.register(AppStorage.self) { r in
             AppStorage(
                 keychain: r.resolve(KeychainSwift.self)!,
-                userDefaults: r.resolve(UserDefaults.self)!
+                userDefaults: r.resolve(UserDefaults.self)!,
+                instanceStore: r.resolve(InstanceProvider.self)!
             )
         }.inObjectScope(.container)
         
