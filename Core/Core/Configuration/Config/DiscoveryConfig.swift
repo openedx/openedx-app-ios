@@ -22,11 +22,12 @@ private enum DiscoveryKeys: String, RawStringExtractable {
     case programDetailTemplate = "PROGRAM_DETAIL_TEMPLATE"
 }
 
-public class DiscoveryWebviewConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class DiscoveryWebviewConfig: NSObject, @unchecked Sendable {
     public let baseURL: String?
     public let courseDetailTemplate: String?
     public let programDetailTemplate: String?
-    
+
     init(dictionary: [String: AnyObject]) {
         baseURL = dictionary[DiscoveryKeys.baseURL] as? String
         courseDetailTemplate = dictionary[DiscoveryKeys.courseDetailTemplate] as? String
@@ -34,20 +35,21 @@ public class DiscoveryWebviewConfig: NSObject {
     }
 }
 
-public class DiscoveryConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class DiscoveryConfig: NSObject, @unchecked Sendable {
     public let type: DiscoveryConfigType
     public let webview: DiscoveryWebviewConfig
     public var isWebViewConfigured: Bool {
         type == .webview && webview.baseURL != nil
     }
-    
+
     init(dictionary: [String: AnyObject]) {
         type = (dictionary[DiscoveryKeys.discoveryType] as? String).flatMap {
             DiscoveryConfigType(rawValue: $0)
         } ?? .native
         webview = DiscoveryWebviewConfig(dictionary: dictionary[DiscoveryKeys.webview] as? [String: AnyObject] ?? [:])
     }
-    
+
     public var enabled: Bool {
         return type != .none
     }

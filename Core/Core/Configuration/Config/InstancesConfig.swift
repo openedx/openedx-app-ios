@@ -20,20 +20,27 @@ public protocol InstanceProvider: Sendable {
 
 private enum InstanceKeys: String, RawStringExtractable {
     case key = "KEY"
-    case name
+    case name = "NAME"
     case instanceName = "INSTANCE_NAME"
-    case color
+    case color = "COLOR"
     case oAuthClientId = "OAUTH_CLIENT_ID"
     case baseURL = "API_HOST_URL"
-    case baseURLHiddenLogin = "API_HOST_URL_HIDDEN_LOGIN"
     case baseSSOURL = "SSO_URL"
-    case successfulSSOLoginURL = "SSO_URL_SUCCESSFUL_LOGIN"
+    case ssoFinishedURL = "SSO_FINISHED_URL"
     case environmentDisplayName = "ENVIRONMENT_DISPLAY_NAME"
     case isSwitchInstanceLoginEnabled = "IS_SWITCH_INSTANCE_LOGIN_ENABLED"
     case uiComponents = "UI_COMPONENTS"
-    case logoURL = "LOGO_URL"
-    case headerBackgroundURL = "HEADER_BACKGROUND_URL"
     case theme = "THEME"
+    case feedbackEmail = "FEEDBACK_EMAIL_ADDRESS"
+    case ssoButtonTitle = "SSO_BUTTON_TITLE"
+    case experimentalFeatures = "EXPERIMENTAL_FEATURES"
+    case agreementURLs = "AGREEMENT_URLS"
+    case tokenType = "TOKEN_TYPE"
+    case discoveryConfig = "DISCOVERY"
+    case programConfig = "PROGRAM"
+    case faq = "FAQ_URL"
+    case platformName = "PLATFORM_NAME"
+    case dashboard = "DASHBOARD"
 }
 
 /// Per-mode (`light`/`dark`) color overrides parsed from the instance's `THEME` block.
@@ -59,10 +66,8 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     public let color: String
     public let oAuthClientId: String
     public let baseURL: URL
-    /// Falls back to `baseURL` if not set.
-    public let baseURLHiddenLogin: URL
     public let baseSSOURL: URL?
-    public let successfulSSOLoginURL: URL?
+    public let ssoFinishedURL: URL?
     public let environmentDisplayName: String?
     public let isSwitchInstanceLoginEnabled: Bool
     public let uiComponents: UIComponentsConfig
@@ -72,6 +77,22 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     public let headerBackgroundURLString: String?
     /// `nil` derives the palette from `color` instead.
     public let themeColors: InstanceThemeColors?
+    public let feedbackEmail: String?
+    /// Locale code -> button label, e.g. `["en": "Sign in with SSO"]`. `nil` falls back to the app-wide default.
+    public let ssoButtonTitle: [String: String]?
+    public let appLevelDownloadsEnabled: Bool?
+    public let agreement: AgreementConfig?
+    public let tokenType: TokenType
+    public let discovery: DiscoveryConfig
+    public let program: DiscoveryConfig
+    public let faq: URL?
+    /// Defaults to `instanceName` when unset (never blank).
+    public let platformName: String
+    public let features: FeaturesConfig
+    public let dashboard: DashboardConfig
+    /// Corner-style overrides, nested in THEME (siblings of light/dark/logo_url/header_background_url).
+    public let isRoundedCorners: Bool
+    public let buttonCornersRadius: Double
 
     public static func == (lhs: Instance, rhs: Instance) -> Bool {
         lhs.key == rhs.key
@@ -114,23 +135,16 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         self.color = dictionary[InstanceKeys.color] as? String ?? "#007AFF"
         self.isSwitchInstanceLoginEnabled = dictionary[InstanceKeys.isSwitchInstanceLoginEnabled] as? Bool ?? false
 
-        if let hiddenLoginString = dictionary[InstanceKeys.baseURLHiddenLogin] as? String,
-           let hiddenLoginURL = URL(string: hiddenLoginString) {
-            self.baseURLHiddenLogin = hiddenLoginURL
-        } else {
-            self.baseURLHiddenLogin = baseURL
-        }
-
         if let ssoString = dictionary[InstanceKeys.baseSSOURL] as? String {
             self.baseSSOURL = URL(string: ssoString)
         } else {
             self.baseSSOURL = nil
         }
 
-        if let successString = dictionary[InstanceKeys.successfulSSOLoginURL] as? String {
-            self.successfulSSOLoginURL = URL(string: successString)
+        if let ssoFinishedString = dictionary[InstanceKeys.ssoFinishedURL] as? String {
+            self.ssoFinishedURL = URL(string: ssoFinishedString)
         } else {
-            self.successfulSSOLoginURL = nil
+            self.ssoFinishedURL = nil
         }
 
         self.environmentDisplayName = dictionary[InstanceKeys.environmentDisplayName] as? String
@@ -141,17 +155,74 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
             self.uiComponents = UIComponentsConfig(dictionary: [:])
         }
 
-        self.logoURLString = dictionary[InstanceKeys.logoURL] as? String
-        self.headerBackgroundURLString = dictionary[InstanceKeys.headerBackgroundURL] as? String
+        // Logo/header live inside THEME (siblings of LIGHT/DARK) rather than as their
+        // own top-level instance fields. Keys here are uppercase like the rest of the
+        // schema -- only the light/dark palette dicts' own internal field names (e.g.
+        // accent_color) stay lowercase, since those belong to Theme's already-shipped
+        // ThemeColorSet.derived(fromHex:light:dark:) contract, not this file.
+        let themeDict = dictionary[InstanceKeys.theme] as? [String: Any]
+        self.logoURLString = themeDict?["LOGO_URL"] as? String
+        self.headerBackgroundURLString = themeDict?["HEADER_BACKGROUND_URL"] as? String
 
-        if let themeDict = dictionary[InstanceKeys.theme] as? [String: Any] {
+        if let themeDict {
             self.themeColors = InstanceThemeColors(
-                light: themeDict["light"] as? [String: String] ?? [:],
-                dark: themeDict["dark"] as? [String: String] ?? [:]
+                light: themeDict["LIGHT"] as? [String: String] ?? [:],
+                dark: themeDict["DARK"] as? [String: String] ?? [:]
             )
         } else {
             self.themeColors = nil
         }
+
+        self.feedbackEmail = dictionary[InstanceKeys.feedbackEmail] as? String
+        self.ssoButtonTitle = dictionary[InstanceKeys.ssoButtonTitle] as? [String: String]
+
+        if let experimentalDict = dictionary[InstanceKeys.experimentalFeatures] as? [String: AnyObject] {
+            let experimental = ExperimentalFeaturesConfig(dictionary: experimentalDict)
+            self.appLevelDownloadsEnabled = experimental.appLevelDownloadsEnabled
+        } else {
+            self.appLevelDownloadsEnabled = nil
+        }
+
+        if let agreementDict = dictionary[InstanceKeys.agreementURLs] as? [String: AnyObject] {
+            self.agreement = AgreementConfig(dictionary: agreementDict)
+        } else {
+            self.agreement = nil
+        }
+
+        if let tokenTypeValue = dictionary[InstanceKeys.tokenType] as? String,
+           let tokenType = TokenType(rawValue: tokenTypeValue) {
+            self.tokenType = tokenType
+        } else {
+            self.tokenType = .jwt
+        }
+
+        self.discovery = DiscoveryConfig(
+            dictionary: dictionary[InstanceKeys.discoveryConfig] as? [String: AnyObject] ?? [:]
+        )
+        self.program = DiscoveryConfig(
+            dictionary: dictionary[InstanceKeys.programConfig] as? [String: AnyObject] ?? [:]
+        )
+
+        if let faqString = dictionary[InstanceKeys.faq] as? String, let faqURL = URL(string: faqString) {
+            self.faq = faqURL
+        } else {
+            self.faq = nil
+        }
+
+        if let platformNameValue = dictionary[InstanceKeys.platformName] as? String, !platformNameValue.isEmpty {
+            self.platformName = platformNameValue
+        } else {
+            self.platformName = self.instanceName
+        }
+
+        self.features = FeaturesConfig(dictionary: dictionary)
+        self.dashboard = DashboardConfig(
+            dictionary: dictionary[InstanceKeys.dashboard] as? [String: AnyObject] ?? [:]
+        )
+
+        // Same truthy-default trick as ThemeConfig: absent/non-Bool means rounded (true).
+        self.isRoundedCorners = themeDict?["ROUNDED_CORNERS_STYLE"] as? Bool != false
+        self.buttonCornersRadius = themeDict?["BUTTON_CORNERS_RADIUS"] as? Double ?? 8.0
     }
 
     private static func slugify(_ name: String) -> String {
@@ -162,11 +233,13 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
     }
 
     // MARK: Codable
-    // `uiComponents` and remote-media fields aren't persisted; re-populated from
-    // `InstanceStore.instancesConfig` right after decode.
+    // `uiComponents`, remote-media fields, the feedback/SSO-button/experimental-
+    // features/agreement overrides, and the instance-level config objects (tokenType,
+    // discovery, program, faq, platformName, features, dashboard, corner-style theme)
+    // aren't persisted; re-populated from `InstanceStore.instancesConfig` right after decode.
     private enum CodingKeys: String, CodingKey {
         case key, name, instanceName, color, oAuthClientId
-        case baseURL, baseURLHiddenLogin, baseSSOURL, successfulSSOLoginURL
+        case baseURL, baseSSOURL, ssoFinishedURL
         case environmentDisplayName, isSwitchInstanceLoginEnabled
     }
 
@@ -178,15 +251,27 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         color = try container.decode(String.self, forKey: .color)
         oAuthClientId = try container.decode(String.self, forKey: .oAuthClientId)
         baseURL = try container.decode(URL.self, forKey: .baseURL)
-        baseURLHiddenLogin = try container.decode(URL.self, forKey: .baseURLHiddenLogin)
         baseSSOURL = try container.decodeIfPresent(URL.self, forKey: .baseSSOURL)
-        successfulSSOLoginURL = try container.decodeIfPresent(URL.self, forKey: .successfulSSOLoginURL)
+        ssoFinishedURL = try container.decodeIfPresent(URL.self, forKey: .ssoFinishedURL)
         environmentDisplayName = try container.decodeIfPresent(String.self, forKey: .environmentDisplayName)
         isSwitchInstanceLoginEnabled = try container.decode(Bool.self, forKey: .isSwitchInstanceLoginEnabled)
         uiComponents = UIComponentsConfig(dictionary: [:])
         logoURLString = nil
         headerBackgroundURLString = nil
         themeColors = nil
+        feedbackEmail = nil
+        ssoButtonTitle = nil
+        appLevelDownloadsEnabled = nil
+        agreement = nil
+        tokenType = .jwt
+        discovery = DiscoveryConfig(dictionary: [:])
+        program = DiscoveryConfig(dictionary: [:])
+        faq = nil
+        platformName = instanceName
+        features = FeaturesConfig(dictionary: [:])
+        dashboard = DashboardConfig(dictionary: [:])
+        isRoundedCorners = true
+        buttonCornersRadius = 8.0
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -197,9 +282,8 @@ public struct Instance: Codable, Identifiable, Sendable, Equatable, Hashable {
         try container.encode(color, forKey: .color)
         try container.encode(oAuthClientId, forKey: .oAuthClientId)
         try container.encode(baseURL, forKey: .baseURL)
-        try container.encode(baseURLHiddenLogin, forKey: .baseURLHiddenLogin)
         try container.encodeIfPresent(baseSSOURL, forKey: .baseSSOURL)
-        try container.encodeIfPresent(successfulSSOLoginURL, forKey: .successfulSSOLoginURL)
+        try container.encodeIfPresent(ssoFinishedURL, forKey: .ssoFinishedURL)
         try container.encodeIfPresent(environmentDisplayName, forKey: .environmentDisplayName)
         try container.encode(isSwitchInstanceLoginEnabled, forKey: .isSwitchInstanceLoginEnabled)
     }
@@ -222,7 +306,7 @@ public struct InstancesConfig: Sendable {
             let merged = fallback.merging(dict) { _, instanceValue in instanceValue }
             guard let instance = Instance(dictionary: merged) else {
                 #if DEBUG
-                print("⚠️ InstancesConfig: skipping malformed INSTANCES entry: \(dict["name"] ?? "<unknown>")")
+                print("⚠️ InstancesConfig: skipping malformed INSTANCES entry: \(dict["NAME"] ?? "<unknown>")")
                 #endif
                 return nil
             }
@@ -247,9 +331,9 @@ public extension Instance {
     ) -> Instance {
         Instance(dictionary: [
             "KEY": key,
-            "name": name,
+            "NAME": name,
             "INSTANCE_NAME": ["en": instanceName],
-            "color": color,
+            "COLOR": color,
             "OAUTH_CLIENT_ID": oAuthClientId,
             "API_HOST_URL": baseURL.absoluteString
         ])!
