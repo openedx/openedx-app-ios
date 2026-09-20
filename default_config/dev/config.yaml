@@ -21,3 +21,74 @@ UI_COMPONENTS:
     LOGIN_REGISTRATION_ENABLED: true
     SAML_SSO_LOGIN_ENABLED: false
     SAML_SSO_DEFAULT_LOGIN_BUTTON: false
+
+
+# Multi-instance configuration. Each INSTANCES entry overrides the top-level
+# values above for that instance; fields it omits fall back to them via
+# InstancesConfig.init(array:fallback:) — see
+# Core/Core/Configuration/Config/InstancesConfig.swift.
+INSTANCES:
+  -
+    KEY: "example-instance"
+    NAME: "Example Instance"
+    INSTANCE_NAME:
+        ar: "اسم المُزود"
+        en: "Example Instance"
+    ENVIRONMENT_DISPLAY_NAME: "Example Instance"
+    OAUTH_CLIENT_ID: 'example-oauth-client-id'
+    API_HOST_URL: 'https://example-instance.example.com'
+    SSO_URL: 'https://example-instance.example.com/auth/login/tpa-saml/?auth_entry=login'
+    SSO_FINISHED_URL: "https://example-instance.example.com/auth/login/tpa-saml/auth/complete/tpa-saml"
+    SSO_BUTTON_TITLE:
+        ar: "الدخول عبر SSO"
+        en: "Sign in with SSO"
+    IS_SWITCH_INSTANCE_LOGIN_ENABLED: true
+    FEEDBACK_EMAIL_ADDRESS: 'support@example-instance.example.com'
+
+    EXPERIMENTAL_FEATURES:
+        APP_LEVEL_DOWNLOADS:
+            ENABLED: false
+
+    AGREEMENT_URLS:
+        PRIVACY_POLICY_URL: 'https://example-instance.example.com/privacy'
+        TOS_URL: 'https://example-instance.example.com/tos'
+        COOKIE_POLICY_URL: 'https://example-instance.example.com/cookie'
+        DATA_SELL_CONSENT_URL: 'https://example-instance.example.com/sell'
+        EULA_URL: 'https://example-instance.example.com/eula'
+
+    # LIGHT/DARK need only override the colors an instance actually wants to brand --
+    # everything else derives from `accent_color` (see ThemeColorSet.derived(fromHex:light:dark:)
+    # in Theme/Theme/ThemeColorSet.swift) -- that palette dict's own field names (accent_color
+    # and siblings) stay lowercase, matching Theme's already-shipped contract. LOGO_URL/
+    # HEADER_BACKGROUND_URL are optional and apply to both modes; omit either to keep the
+    # compiled default asset.
+    THEME:
+        LIGHT:
+            accent_color: "#3C68FF"
+        DARK:
+            accent_color: "#1C355E"
+        LOGO_URL: "exampleInstanceAppLogo"
+        ROUNDED_CORNERS_STYLE: true
+        BUTTON_CORNERS_RADIUS: 8.0
+
+    # Instance-level overrides for properties that otherwise fall back to the app-wide
+    # config.yaml values above. Omit any of these to inherit the app-wide default.
+    TOKEN_TYPE: "BEARER"
+    PLATFORM_NAME: "Example Instance"
+    FAQ_URL: "https://example-instance.example.com/faq"
+    WHATS_NEW_ENABLED: false
+    PRE_LOGIN_EXPERIENCE_ENABLED: false
+    APP_LEVEL_DATES_ENABLED: false
+    DISCOVERY:
+        TYPE: "native"
+    PROGRAM:
+        TYPE: "none"
+    DASHBOARD:
+        TYPE: "gallery"
+
+    UI_COMPONENTS:
+        COURSE_UNIT_PROGRESS_ENABLED: false
+        COURSE_NESTED_LIST_ENABLED: false
+        LOGIN_REGISTRATION_ENABLED: true
+        SAML_SSO_LOGIN_ENABLED: false
+        SAML_SSO_DEFAULT_LOGIN_BUTTON: false
