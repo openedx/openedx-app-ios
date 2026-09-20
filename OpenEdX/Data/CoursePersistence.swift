@@ -14,14 +14,23 @@ import Core
 public final class CoursePersistence: CoursePersistenceProtocol {
     
     private let container: NSPersistentContainer
-    
-    public init(container: NSPersistentContainer) {
+    private let instanceStore: InstanceProvider
+
+    /// See PR-7 CoreData/Downloads scoping — `loadEnrollments()` used to fetch with no
+    /// predicate at all, returning every instance's cached enrollments in one call.
+    private var instanceKey: String { instanceStore.currentInstanceKey }
+
+    public init(container: NSPersistentContainer, instanceStore: InstanceProvider) {
         self.container = container
+        self.instanceStore = instanceStore
     }
     
     public func loadEnrollments() async throws -> [CourseItem] {
+        let currentInstanceKey = instanceKey
         return try await container.performBackgroundTask { context in
-            let result = try? context.fetch(CDCourseItem.fetchRequest())
+            let request = CDCourseItem.fetchRequest()
+            request.predicate = NSPredicate(format: "instanceKey == %@", currentInstanceKey)
+            let result = try? context.fetch(request)
                 .map {
                     CourseItem(name: $0.name ?? "",
                                org: $0.org ?? "",
@@ -48,7 +57,11 @@ public final class CoursePersistence: CoursePersistenceProtocol {
     }
     
     public func saveEnrollments(items: [CourseItem]) async {
+        let currentInstanceKey = instanceKey
         await container.performBackgroundTask { context in
+            // Required so a repeat sync for the same instance upserts by the widened
+            // (courseID, instanceKey) uniqueness constraint instead of throwing on save.
+            context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             for item in items {
                 let newItem = CDCourseItem(context: context)
                 newItem.name = item.name
@@ -63,6 +76,7 @@ public final class CoursePersistence: CoursePersistenceProtocol {
                 newItem.numPages = Int32(item.numPages)
                 newItem.courseID = item.courseID
                 newItem.courseCount = Int32(item.coursesCount)
+                newItem.instanceKey = currentInstanceKey
             }
             do {
                 try context.save()

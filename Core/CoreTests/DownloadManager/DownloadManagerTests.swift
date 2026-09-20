@@ -51,7 +51,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         let blocks = [createMockCourseBlock()]
@@ -78,7 +79,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         let blocks = [createMockCourseBlock()]
@@ -106,7 +108,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When
@@ -132,7 +135,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When
@@ -162,7 +166,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When
@@ -192,7 +197,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When
@@ -223,7 +229,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When
@@ -245,7 +252,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When
@@ -263,7 +271,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When
@@ -288,7 +297,8 @@ final class DownloadManagerTests: XCTestCase {
         let downloadManager = DownloadManager(
             persistence: persistence,
             appStorage: storage,
-            connectivity: connectivity
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock())
         )
 
         // When

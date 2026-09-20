@@ -72,6 +72,7 @@
 		02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */; };
 		02A4833829B8A8F900D33F33 /* CoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833629B8A8F800D33F33 /* CoreDataModel.xcdatamodeld */; };
 		02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833929B8A9AB00D33F33 /* DownloadManager.swift */; };
+		7B8106DEF9C14DC5CC42BCFD /* InstanceFilePathProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = A594A2067B4DB128CD9FC9CB /* InstanceFilePathProvider.swift */; };
 		02A4833C29B8C57800D33F33 /* DownloadView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A4833B29B8C57800D33F33 /* DownloadView.swift */; };
 		02A8C5812C05DBB4004B91FF /* Data_EnrollmentsStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A8C5802C05DBB4004B91FF /* Data_EnrollmentsStatus.swift */; };
 		02AA27942C2C1B88006F5B6A /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 02AA27932C2C1B88006F5B6A /* ZipArchive */; };
@@ -282,6 +283,7 @@
 		02A4833429B8A73400D33F33 /* CorePersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CorePersistenceProtocol.swift; sourceTree = "<group>"; };
 		02A4833729B8A8F800D33F33 /* CoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		02A4833929B8A9AB00D33F33 /* DownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadManager.swift; sourceTree = "<group>"; };
+		A594A2067B4DB128CD9FC9CB /* InstanceFilePathProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceFilePathProvider.swift; sourceTree = "<group>"; };
 		02A4833B29B8C57800D33F33 /* DownloadView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadView.swift; sourceTree = "<group>"; };
 		02A8C5802C05DBB4004B91FF /* Data_EnrollmentsStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_EnrollmentsStatus.swift; sourceTree = "<group>"; };
 		02AFCC172AEFDB24000360F0 /* ThirdPartyMailClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThirdPartyMailClient.swift; sourceTree = "<group>"; };
@@ -715,6 +717,7 @@
 				0236961E28F9A2F600EEF206 /* AuthEndpoint.swift */,
 				029A132B2C2471F8005FB830 /* OfflineSyncEndpoint.swift */,
 				02A4833929B8A9AB00D33F33 /* DownloadManager.swift */,
+				A594A2067B4DB128CD9FC9CB /* InstanceFilePathProvider.swift */,
 				CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */,
 				029A13272C246AE6005FB830 /* OfflineSyncManager.swift */,
 				C4ECF181EAB4F56BED580775 /* InstanceApiService.swift */,
@@ -1243,6 +1246,7 @@
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,
 				0260E58028FD792800BBBE18 /* WebUnitViewModel.swift in Sources */,
 				02A4833A29B8A9AB00D33F33 /* DownloadManager.swift in Sources */,
+				7B8106DEF9C14DC5CC42BCFD /* InstanceFilePathProvider.swift in Sources */,
 				9784D47E2BF7762800AFEFFF /* FullScreenErrorView.swift in Sources */,
 				027BD3AE2909475000392132 /* KeyboardScrollerOptions.swift in Sources */,
 				BAFB99922B14E23D007D09F9 /* AppleSignInConfig.swift in Sources */,

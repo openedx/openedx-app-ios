@@ -13,14 +13,20 @@ import Foundation
 public final class DownloadsPersistence: DownloadsPersistenceProtocol {
     
     private let container: NSPersistentContainer
-    
-    public init(container: NSPersistentContainer) {
+    private let instanceStore: InstanceProvider
+    private var instanceKey: String { instanceStore.currentInstanceKey }
+
+    public init(container: NSPersistentContainer, instanceStore: InstanceProvider) {
         self.container = container
+        self.instanceStore = instanceStore
     }
     
     public func loadDownloadCourses() async throws -> [Downloads.DownloadCoursePreview] {
+        let currentInstanceKey = instanceKey
         return try await container.performBackgroundTask { context in
-            let result = try? context.fetch(CDDownloadCoursePreview.fetchRequest())
+            let request = CDDownloadCoursePreview.fetchRequest()
+            request.predicate = NSPredicate(format: "instanceKey == %@", currentInstanceKey)
+            let result = try? context.fetch(request)
                 .map { Downloads.DownloadCoursePreview(
                     id: $0.id ?? "",
                     name: $0.name ?? "",
@@ -37,6 +43,7 @@ public final class DownloadsPersistence: DownloadsPersistenceProtocol {
     }
 
     public func saveDownloadCourses(courses: [Downloads.DownloadCoursePreview]) async {
+        let currentInstanceKey = instanceKey
         await container.performBackgroundTask { context in
             for course in courses {
                 let newCourse = CDDownloadCoursePreview(context: context)
@@ -45,6 +52,7 @@ public final class DownloadsPersistence: DownloadsPersistenceProtocol {
                 newCourse.name = course.name
                 newCourse.image = course.image
                 newCourse.totalSize = course.totalSize
+                newCourse.instanceKey = currentInstanceKey
             }
             do {
                 try context.save()

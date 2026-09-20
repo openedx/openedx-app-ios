@@ -364,7 +364,10 @@ class ScreenAssembly: Assembly {
         
         // MARK: Course
         container.register(CoursePersistenceProtocol.self) { r in
-            CoursePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+            CoursePersistence(
+                container: r.resolve(DatabaseManager.self)!.getPersistentContainer(),
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }
         
         container.register(CourseDetailsViewModel.self) { @MainActor r in
@@ -717,7 +720,10 @@ class ScreenAssembly: Assembly {
         // MARK: Downloads
         
         container.register(DownloadsPersistenceProtocol.self) { r in
-            DownloadsPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+            DownloadsPersistence(
+                container: r.resolve(DatabaseManager.self)!.getPersistentContainer(),
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }
         
         container.register(DownloadsRepositoryProtocol.self) { r in
