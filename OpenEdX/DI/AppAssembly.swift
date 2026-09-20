@@ -115,6 +115,15 @@ class AppAssembly: Assembly {
                 filePathProvider: r.resolve(InstanceFilePathProvider.self)!
             )
         }.inObjectScope(.container)
+
+        container.register(InstanceSessionManagerProtocol.self) { r in
+            InstanceSessionManager(
+                instanceStore: r.resolve(InstanceStore.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!
+                // pushTokenUnregistrar: nil -- wired once push/Firebase lands.
+            )
+        }.inObjectScope(.container)
         
         container.register(AuthorizationRouter.self) { r in
             r.resolve(Router.self)!

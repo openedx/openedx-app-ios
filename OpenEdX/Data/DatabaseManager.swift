@@ -88,4 +88,28 @@ final class DatabaseManager: CoreDataHandlerProtocol {
             }
         }
     }
+
+    // instanceKey is optional on all four entities (PR-7); batch-delete each to clear just this instance's rows.
+    public func clear(instanceKey: String) async {
+        let entityNames = ["CDDownloadData", "CDOfflineProgress", "CDCourseItem", "CDDownloadCoursePreview"]
+        await getPersistentContainer().performBackgroundTask { context in
+            for entityName in entityNames {
+                let request = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
+                request.predicate = NSPredicate(format: "instanceKey == %@", instanceKey)
+                let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
+                deleteRequest.resultType = .resultTypeObjectIDs
+                do {
+                    let result = try context.execute(deleteRequest) as? NSBatchDeleteResult
+                    if let objectIDs = result?.result as? [NSManagedObjectID] {
+                        NSManagedObjectContext.mergeChanges(
+                            fromRemoteContextSave: [NSDeletedObjectsKey: objectIDs],
+                            into: [context]
+                        )
+                    }
+                } catch {
+                    print("⛔️⛔️⛔️⛔️⛔️", entityName, error)
+                }
+            }
+        }
+    }
 }
