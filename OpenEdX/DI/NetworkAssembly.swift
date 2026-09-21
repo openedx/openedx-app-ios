@@ -21,6 +21,10 @@ class NetworkAssembly: Assembly {
             r.resolve(InstanceStore.self)!
         }.inObjectScope(.container)
 
+        container.register(InstanceFilePathProvider.self) { r in
+            InstanceFilePathProvider(instanceStore: r.resolve(InstanceProvider.self)!)
+        }.inObjectScope(.container)
+
         container.register(InstanceApiServiceProtocol.self) { _ in
             // INSTANCES_CATALOG_URL now lives in the bundled config.json's app-level
             // keys (see InstanceConfigLoader.bundledCatalogURL()), not ConfigProtocol --

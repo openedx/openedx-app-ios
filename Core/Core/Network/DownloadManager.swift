@@ -203,6 +203,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     private let persistence: CorePersistenceProtocol
     private let appStorage: CoreStorage
     private let connectivity: ConnectivityProtocol
+    private let filePathProvider: InstanceFilePathProvider
     private var downloadRequest: DownloadRequest?
     nonisolated
     private let currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
@@ -228,11 +229,13 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     public init(
         persistence: CorePersistenceProtocol,
         appStorage: CoreStorage,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        filePathProvider: InstanceFilePathProvider
     ) {
         self.persistence = persistence
         self.appStorage = appStorage
         self.connectivity = connectivity
+        self.filePathProvider = filePathProvider
         if let userId = appStorage.user?.id {
             persistence.set(userId: userId)
             Task {
@@ -776,33 +779,10 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
             .store(in: &cancellables)
     }
 
+    // Scoped per instance via InstanceFilePathProvider so two instances can't collide
+    // on the same numeric user id or shared course/block ids.
     private var filesFolderUrl: URL? {
-        let documentDirectoryURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
-        guard let folderPathComponent else { return nil }
-        let directoryURL = documentDirectoryURL.appendingPathComponent(folderPathComponent, isDirectory: true)
-
-        if FileManager.default.fileExists(atPath: directoryURL.path) {
-            return URL(fileURLWithPath: directoryURL.path)
-        } else {
-            do {
-                try FileManager.default.createDirectory(
-                    at: directoryURL,
-                    withIntermediateDirectories: true,
-                    attributes: nil
-                )
-                return URL(fileURLWithPath: directoryURL.path)
-            } catch {
-                debugLog(error.localizedDescription)
-                return nil
-            }
-        }
-    }
-
-    private var folderPathComponent: String? {
-        if let id = appStorage.user?.id {
-            return "\(id)_Files"
-        }
-        return nil
+        filePathProvider.downloadsFolderURL(userId: appStorage.user?.id)
     }
 
     private func saveFile(fileName: String, data: Data, folderURL: URL) {

@@ -101,14 +101,18 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(CorePersistenceProtocol.self) { r in
-            CorePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+            CorePersistence(
+                container: r.resolve(DatabaseManager.self)!.getPersistentContainer(),
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(DownloadManagerProtocol.self) { @MainActor r in
             DownloadManager(
                 persistence: r.resolve(CorePersistenceProtocol.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                filePathProvider: r.resolve(InstanceFilePathProvider.self)!
             )
         }.inObjectScope(.container)
         
