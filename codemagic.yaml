@@ -19,7 +19,6 @@ workflows:
             -workspace "OpenEdX.xcworkspace" \
             -scheme "OpenEdXDev" \
 	    -configuration ReleaseProd \
-            -configuration Debug \
             -sdk iphonesimulator \
             -destination 'generic/platform=iOS Simulator' \
             -skipPackagePluginValidation \
