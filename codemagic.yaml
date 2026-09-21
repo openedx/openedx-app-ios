@@ -1,0 +1,29 @@
+workflows:
+  ios-simulator:
+    name: Open edX iOS Simulator
+
+    instance_type: mac_mini_m2
+
+    environment:
+      xcode: latest
+      cocoapods: default
+
+    scripts:
+      - name: Install CocoaPods dependencies
+        script: |
+          pod install
+
+      - name: Build iOS Simulator
+        script: |
+          xcodebuild \
+            -workspace "OpenEdX.xcworkspace" \
+            -scheme "OpenEdXDev" \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+    artifacts:
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
