@@ -21,6 +21,18 @@ class NetworkAssembly: Assembly {
             r.resolve(InstanceStore.self)!
         }.inObjectScope(.container)
 
+        container.register(InstanceApiServiceProtocol.self) { _ in
+            // INSTANCES_CATALOG_URL now lives in the bundled config.json's app-level
+            // keys (see InstanceConfigLoader.bundledCatalogURL()), not ConfigProtocol --
+            // that property is dead weight, left in place only until the ConfigProtocol
+            // cleanup pass that retires YAML for the app-level keys still on Config too.
+            InstanceApiService(url: InstanceConfigLoader.bundledCatalogURL())
+        }.inObjectScope(.container)
+
+        container.register(InstanceConfigLoader.self) { r in
+            InstanceConfigLoader(apiService: r.resolve(InstanceApiServiceProtocol.self)!)
+        }.inObjectScope(.container)
+
         container.register(RequestInterceptor.self) { r in
             RequestInterceptor(config: r.resolve(ConfigProtocol.self)!, storage: r.resolve(CoreStorage.self)!)
         }.inObjectScope(.container)

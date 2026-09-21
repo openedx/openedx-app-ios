@@ -16,7 +16,7 @@ import ZipArchive
 
 public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
     public init() { }
-    public init(baseURL: URL = URL(fileURLWithPath: ""), baseSSOURL: URL = URL(fileURLWithPath: ""), ssoFinishedURL: URL = URL(fileURLWithPath: ""), ssoButtonTitle: [String: Any] = [String: Any](), oAuthClientId: String = "", tokenType: TokenType, feedbackEmail: String = "", appStoreLink: String = "", faq: URL? = nil, platformName: String = "", agreement: AgreementConfig, firebase: FirebaseConfig, facebook: FacebookConfig, microsoft: MicrosoftConfig, google: GoogleConfig, appleSignIn: AppleSignInConfig, features: FeaturesConfig, theme: ThemeConfig, uiComponents: UIComponentsConfig, discovery: DiscoveryConfig, dashboard: DashboardConfig, braze: BrazeConfig, branch: BranchConfig, program: DiscoveryConfig, experimentalFeatures: ExperimentalFeaturesConfig, URIScheme: String = "") {
+    public init(baseURL: URL = URL(fileURLWithPath: ""), baseSSOURL: URL = URL(fileURLWithPath: ""), ssoFinishedURL: URL = URL(fileURLWithPath: ""), ssoButtonTitle: [String: Any] = [String: Any](), oAuthClientId: String = "", tokenType: TokenType, feedbackEmail: String = "", appStoreLink: String = "", faq: URL? = nil, platformName: String = "", agreement: AgreementConfig, firebase: FirebaseConfig, facebook: FacebookConfig, microsoft: MicrosoftConfig, google: GoogleConfig, appleSignIn: AppleSignInConfig, features: FeaturesConfig, theme: ThemeConfig, uiComponents: UIComponentsConfig, discovery: DiscoveryConfig, dashboard: DashboardConfig, braze: BrazeConfig, branch: BranchConfig, program: DiscoveryConfig, experimentalFeatures: ExperimentalFeaturesConfig, URIScheme: String = "", instancesCatalogURL: URL? = nil) {
         self.baseURL = baseURL
         self.baseSSOURL = baseSSOURL
         self.ssoFinishedURL = ssoFinishedURL
@@ -43,6 +43,7 @@ public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
         self._program = program
         self._experimentalFeatures = experimentalFeatures
         self.URIScheme = URIScheme
+        self.instancesCatalogURL = instancesCatalogURL
     }
 
 
@@ -187,6 +188,7 @@ public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
 
 
     public var URIScheme: String = ""
+    public var instancesCatalogURL: URL? = nil
 }
 
 public final class CoreAnalyticsMock: CoreAnalytics {

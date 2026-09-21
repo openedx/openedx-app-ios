@@ -1,17 +1,18 @@
 import plistlib
 import os
+import shutil
 import yaml
 from pathlib import Path
 import sys
 import json
 
 class PlistManager:
-    def __init__(self, config_dir, config_files):
+    def __init__(self, config_dir, json_files):
         self.config_dir = config_dir
-        self.config_files = config_files
+        self.json_files = json_files
 
-    def get_config_paths(self):
-        return [Path(self.config_dir) / config_name for config_name in self.config_files]
+    def get_json_config_paths(self):
+        return [Path(self.config_dir) / config_name for config_name in self.json_files]
 
     def get_product_name(self):
         return os.getenv('PRODUCT_NAME')
@@ -63,10 +64,10 @@ class PlistManager:
     def load_config(self):
         properties = {}
 
-        for path in self.get_config_paths():
+        for path in self.get_json_config_paths():
             try:
                 with open(path, 'r') as file:
-                    dict = yaml.safe_load(file)
+                    dict = json.load(file)
                     if dict is not None:
                         properties = merge_dicts(properties, dict)
             except FileNotFoundError:
@@ -74,19 +75,19 @@ class PlistManager:
 
         return properties
 
-    def yaml_to_plist(self):
+    def json_to_plist(self):
         plist_data = {}
 
-        for path in self.get_config_paths():
+        for path in self.get_json_config_paths():
             try:
                 with open(path, 'r') as file:
-                    yaml_data = yaml.safe_load(file)
-                    if yaml_data is not None:
-                        plist_data = merge_dicts(plist_data, yaml_data)
+                    json_data = json.load(file)
+                    if json_data is not None:
+                        plist_data = merge_dicts(plist_data, json_data)
             except FileNotFoundError:
                 print(f"{path} not found. Skipping.")
-            except yaml.YAMLError as e:
-                print(f"Error parsing YAML file {path}: {e}")
+            except json.JSONDecodeError as e:
+                print(f"Error parsing JSON file {path}: {e}")
 
         return plist_data
 
@@ -96,6 +97,27 @@ class PlistManager:
             plistlib.dump(plist, plist_file)
             print(f"File {file_name} has been written to:")
             print(f"{file_path}")
+
+    def copy_json_files_to_bundle(self):
+        # Same files load_config()/json_to_plist() parse for the build-time plist --
+        # also shipped verbatim so InstanceConfigLoader can read the INSTANCES block
+        # directly from the bundle at runtime (see InstanceConfigLoader.swift).
+        built_products_path = self.get_built_products_path()
+        wrapper_name = self.get_wrapper_name()
+
+        if not (built_products_path and wrapper_name):
+            print("The BUILT_PRODUCTS_DIR or WRAPPER_NAME environment variable is not set.")
+            return
+
+        for filename in self.json_files:
+            src = Path(self.config_dir) / filename
+            dst = os.path.join(built_products_path, wrapper_name, filename)
+            if src.exists():
+                shutil.copyfile(src, dst)
+                print(f"File {filename} has been copied to:")
+                print(f"{dst}")
+            else:
+                print(f"{src} not found. Skipping.")
 
     def print_info_plist_contents(self, plist_path):
         if not plist_path:
@@ -307,8 +329,9 @@ def process_plist_files(configuration_manager, plist_manager, config):
     configuration_manager.update_info_plist(info_plist_content, info_plist_path)
 
     bundle_config_path = plist_manager.get_bundle_config_path()
-    config_plist = plist_manager.yaml_to_plist()
+    config_plist = plist_manager.json_to_plist()
     plist_manager.write_to_plist_file(config_plist, bundle_config_path)
+    plist_manager.copy_json_files_to_bundle()
 
 def main(configuration, scheme_mappings):
     current_config = get_current_config(configuration, scheme_mappings)
@@ -332,8 +355,8 @@ def main(configuration, scheme_mappings):
         data = parse_yaml(mappings_path)
         
         if data:
-            ios_files = data.get('ios', {}).get('files', [])
-            plist_manager = PlistManager(path, ios_files)
+            ios_json_files = data.get('ios', {}).get('json_files', [])
+            plist_manager = PlistManager(path, ios_json_files)
             config = plist_manager.load_config()
 
             if config:

@@ -176,6 +176,9 @@
 		E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179FC2B0F204D002AB695 /* ConfigTests.swift */; };
 		E0D5861A2B2FF74C009B4BA7 /* DiscoveryConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586192B2FF74C009B4BA7 /* DiscoveryConfig.swift */; };
 		E0D586362B314CD3009B4BA7 /* LogistrationBottomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D586352B314CD3009B4BA7 /* LogistrationBottomView.swift */; };
+		F6CA7FECCB007C4E2BE6FF53 /* InstanceApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4ECF181EAB4F56BED580775 /* InstanceApiService.swift */; };
+		E68669DB419E746E0FB536E5 /* InstanceConfigLoader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C135C3B9B580C3AEA3A1EDF2 /* InstanceConfigLoader.swift */; };
+		DC7F1114BF076EADC70E0B12 /* InstancesConfigJSONTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18582E5FF673AB654D47E8B7 /* InstancesConfigJSONTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -403,6 +406,9 @@
 		F7ED6F0C276DBD2F1BA38987 /* Pods-CoreTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreTests.release.xcconfig"; path = "Target Support Files/Pods-CoreTests/Pods-CoreTests.release.xcconfig"; sourceTree = "<group>"; };
 		FB6C49AC95A27A1222AD0F06 /* Pods-App-Core-CoreTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core-CoreTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Core-CoreTests/Pods-App-Core-CoreTests.releasestage.xcconfig"; sourceTree = "<group>"; };
 		FD97820E148E423964AC0CAB /* Pods-CoreTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreTests.releasedev.xcconfig"; path = "Target Support Files/Pods-CoreTests/Pods-CoreTests.releasedev.xcconfig"; sourceTree = "<group>"; };
+		C4ECF181EAB4F56BED580775 /* InstanceApiService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstanceApiService.swift; sourceTree = "<group>"; };
+		C135C3B9B580C3AEA3A1EDF2 /* InstanceConfigLoader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstanceConfigLoader.swift; sourceTree = "<group>"; };
+		18582E5FF673AB654D47E8B7 /* InstancesConfigJSONTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstancesConfigJSONTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -706,6 +712,7 @@
 				02A4833929B8A9AB00D33F33 /* DownloadManager.swift */,
 				CED42FFB2D099F0400C7AD89 /* DownloadManagerMock.swift */,
 				029A13272C246AE6005FB830 /* OfflineSyncManager.swift */,
+				C4ECF181EAB4F56BED580775 /* InstanceApiService.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -899,6 +906,7 @@
 				0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */,
 				2FC6455FBE49B22E32CB777A /* InstancesConfig.swift */,
 				53CE4D43A09B50EB85B793D5 /* InstanceStore.swift */,
+				C135C3B9B580C3AEA3A1EDF2 /* InstanceConfigLoader.swift */,
 				0727876F28D23411002E9142 /* Config.swift */,
 				DBF6F2402B014ADA0098414B /* FirebaseConfig.swift */,
 				A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */,
@@ -933,6 +941,7 @@
 				E09179FC2B0F204D002AB695 /* ConfigTests.swift */,
 				BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */,
 				A1B6ADB9B9C23899FFDCE9D5 /* InstanceStoreTests.swift */,
+				18582E5FF673AB654D47E8B7 /* InstancesConfigJSONTests.swift */,
 				BDE56371521165CD47B36418 /* InstancesConfigTests.swift */,
 			);
 			path = Configuration;
@@ -1168,6 +1177,7 @@
 				CE953A3B2CD0DA940023D667 /* CoreMocks.generated.swift in Sources */,
 				E09179FD2B0F204E002AB695 /* ConfigTests.swift in Sources */,
 				CE54C2D22CC80D8500E529F9 /* DownloadManagerTests.swift in Sources */,
+				DC7F1114BF076EADC70E0B12 /* InstancesConfigJSONTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1317,6 +1327,8 @@
 				0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */,
 				12624ABABF5AE7FBF7B4F5E5 /* InstancesConfig.swift in Sources */,
 				41A744FEB981583CE4B1DEB8 /* InstanceStore.swift in Sources */,
+				F6CA7FECCB007C4E2BE6FF53 /* InstanceApiService.swift in Sources */,
+				E68669DB419E746E0FB536E5 /* InstanceConfigLoader.swift in Sources */,
 				027BD3B82909476200392132 /* DismissKeyboardTapViewModifier.swift in Sources */,
 				0770DE6128D0B2CB006D8A5D /* Assets.swift in Sources */,
 				07E0939F2B308D2800F1E4B2 /* Data_Certificate.swift in Sources */,
