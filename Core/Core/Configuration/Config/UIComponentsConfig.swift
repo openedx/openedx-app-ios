@@ -16,7 +16,8 @@ private enum Keys: String, RawStringExtractable {
     case samlSSODefaultLoginButton = "SAML_SSO_DEFAULT_LOGIN_BUTTON"
 }
 
-public class UIComponentsConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class UIComponentsConfig: NSObject, @unchecked Sendable {
     public var courseDropDownNavigationEnabled: Bool
     public var courseUnitProgressEnabled: Bool
     public var loginRegistrationEnabled: Bool
