@@ -1,7 +1,6 @@
 import plistlib
 import os
 import shutil
-import yaml
 from pathlib import Path
 import sys
 import json
@@ -295,19 +294,34 @@ class ConfigurationManager:
             print(f"Error reading or writing plist file: {e}")
             sys.exit(1)
 
-def parse_yaml(file_path):
+def parse_json(file_path):
     try:
         with open(file_path, 'r') as file:
-            return yaml.safe_load(file)
+            return json.load(file)
     except Exception as e:
         print(f"Unable to open or read the file '{file_path}': {e}")
         return None
 
-CONFIG_SETTINGS_YAML_FILENAME = 'config_settings.yaml'
-DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_YAML_FILENAME
+CONFIG_SETTINGS_FILENAME = 'config_settings.json'
+DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_FILENAME
 CONFIG_DIRECTORY_NAME = 'config_directory'
 CONFIG_MAPPINGS = 'config_mapping'
-MAPPINGS_FILENAME = 'file_mappings.yaml'
+MAPPINGS_FILENAME = 'file_mappings.json'
+LEGACY_YAML_CONFIG_FILENAME = 'config.yaml'
+JSON_CONFIG_FILENAME = 'config.json'
+
+
+# Fail with a clear reason if config.yaml wasn't converted.
+def fail_if_unmigrated_yaml_config(config_directory_path):
+    yaml_path = os.path.join(config_directory_path, LEGACY_YAML_CONFIG_FILENAME)
+    json_path = os.path.join(config_directory_path, JSON_CONFIG_FILENAME)
+    if os.path.exists(yaml_path) and not os.path.exists(json_path):
+        print(
+            f"Found '{yaml_path}' but no '{json_path}'. config.yaml was retired for "
+            f"config.json -- run: python3 config_script/yaml_to_json_config.py {yaml_path}"
+        )
+        sys.exit(1)
+
 
 def get_current_config(configuration, scheme_mappings):
     for key, values in scheme_mappings.items():
@@ -340,19 +354,21 @@ def main(configuration, scheme_mappings):
         print("Config not found in mappings. Exiting.")
         sys.exit(1)
 
-    config_settings = parse_yaml(CONFIG_SETTINGS_YAML_FILENAME)
+    config_settings = parse_json(CONFIG_SETTINGS_FILENAME)
     
     if not config_settings:
         print("Parsing default config.")
-        config_settings = parse_yaml(DEFAULT_CONFIG_PATH)
+        config_settings = parse_json(DEFAULT_CONFIG_PATH)
 
     config_directory = config_settings.get(CONFIG_DIRECTORY_NAME)
     config_name = config_settings.get(CONFIG_MAPPINGS, {}).get(current_config)
 
     if config_directory and config_name:
         path = os.path.join(config_directory, config_name)
+        fail_if_unmigrated_yaml_config(path)
+
         mappings_path = os.path.join(path, MAPPINGS_FILENAME)
-        data = parse_yaml(mappings_path)
+        data = parse_json(mappings_path)
         
         if data:
             ios_json_files = data.get('ios', {}).get('json_files', [])
