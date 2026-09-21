@@ -34,7 +34,11 @@ class NetworkAssembly: Assembly {
         }.inObjectScope(.container)
 
         container.register(RequestInterceptor.self) { r in
-            RequestInterceptor(config: r.resolve(ConfigProtocol.self)!, storage: r.resolve(CoreStorage.self)!)
+            RequestInterceptor(
+                config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(Alamofire.Session.self) { r in

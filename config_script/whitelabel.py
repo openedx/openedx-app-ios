@@ -50,11 +50,11 @@ class WhitelabelApp:
         config1: # build configuration name in project
           app_bundle_id: "bundle.id.app.new1" # bundle ID which should be set
           product_name: "Mobile App Name1" # app name which should be set
-          env_config: 'prod' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.yaml defines)
+          env_config: 'prod' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.json defines)
         config2: # build configuration name in project
           app_bundle_id: "bundle.id.app.new2" # bundle ID which should be set
           product_name: "Mobile App Name2" # app name which should be set
-          env_config: 'dev' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.yaml defines)
+          env_config: 'dev' # env name for this configuration. possible values: prod/dev/stage (values which config_settings.json defines)
     font:
       font_import_file_path: 'path/to/importing/Font_file.ttf' # path to ttf font file what should be imported to project
       project_font_file_path: 'path/to/font/file/in/project/font.ttf' # path to existing ttf font file in project
@@ -520,16 +520,16 @@ class WhitelabelApp:
             logging.debug("Project's Files for copying not found in config")
 
     # params from MOBILE CONFIG
-    CONFIG_SETTINGS_YAML_FILENAME = 'config_settings.yaml'
-    DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_YAML_FILENAME
+    CONFIG_SETTINGS_FILENAME = 'config_settings.json'
+    DEFAULT_CONFIG_PATH = './default_config/' + CONFIG_SETTINGS_FILENAME
     CONFIG_DIRECTORY_NAME = 'config_directory'
     CONFIG_MAPPINGS = 'config_mapping'
-    MAPPINGS_FILENAME = 'file_mappings.yaml'
+    MAPPINGS_FILENAME = 'file_mappings.json'
 
-    def parse_yaml(self, file_path):
+    def parse_json(self, file_path):
         try:
             with open(file_path, 'r') as file:
-                return yaml.safe_load(file)
+                return json.load(file)
         except Exception as e:
             logging.error(f"Unable to open or read the file '{file_path}': {e}")
             return None
@@ -539,7 +539,7 @@ class WhitelabelApp:
         path = os.path.join(config_directory, config_folder)
         mappings_path = os.path.join(path, self.MAPPINGS_FILENAME)
         # read mappings file
-        data = self.parse_yaml(mappings_path)
+        data = self.parse_json(mappings_path)
         if data:
             # get config for ios described in mappings file
             ios_json_files = data.get('ios', {}).get('json_files', [])
@@ -556,9 +556,9 @@ class WhitelabelApp:
 
     def set_flags_from_mobile_config(self):
         # get path to mobile config
-        config_settings = self.parse_yaml(self.CONFIG_SETTINGS_YAML_FILENAME)
+        config_settings = self.parse_json(self.CONFIG_SETTINGS_FILENAME)
         if not config_settings:
-            config_settings = self.parse_yaml(self.DEFAULT_CONFIG_PATH)
+            config_settings = self.parse_json(self.DEFAULT_CONFIG_PATH)
         config_directory = config_settings.get(self.CONFIG_DIRECTORY_NAME)
         # check if we found config directory
         if config_directory:
@@ -579,7 +579,7 @@ class WhitelabelApp:
                             # project_file_string = self.replace_fullstory_flag(project_file_string, config_directory, name, config_folder, errors_texts)
                             pass
                         else:
-                            logging.error("Config folder for '"+config['env_config']+"' is not defined in config_settings.yaml->config_mapping")
+                            logging.error("Config folder for '"+config['env_config']+"' is not defined in config_settings.json->config_mapping")
                     else:
                         logging.error("'env_config' is not defined for "+name)
                 # write to project file

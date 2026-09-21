@@ -4,6 +4,12 @@
 //
 //  Created by Vladimir Chekyrta on 14.09.2022.
 //
+//  Instance-aware: requests built by `API` against the app's default
+//  `ConfigProtocol.baseURL` are re-targeted at the currently selected instance's
+//  host in `adapt(...)`, and `refreshToken(...)` prefers the selected instance's
+//  base URL / OAuth client id. Requests that already point elsewhere (SSO
+//  webviews, third-party SDKs) are left untouched.
+//
 
 import Foundation
 import Alamofire
@@ -17,10 +23,12 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
     
     private let config: ConfigProtocol
     private let storage: CoreStorage
+    private let instanceStore: InstanceProvider
     
-    public init(config: ConfigProtocol, storage: CoreStorage) {
+    public init(config: ConfigProtocol, storage: CoreStorage, instanceStore: InstanceProvider) {
         self.config = config
         self.storage = storage
+        self.instanceStore = instanceStore
     }
     
     private let lock = NSLock()
@@ -63,8 +71,36 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
             
             urlRequest.setValue(userAgent, forHTTPHeaderField: "User-Agent")
             
+            urlRequest = rewriteHostIfNeeded(urlRequest)
+            
             completion(.success(urlRequest))
         }
+    
+    /// If an instance is selected and the request currently targets the app's base
+    /// `ConfigProtocol.baseURL` (i.e. it was built by `API` from its fixed baseURL),
+    /// re-target it at the instance's host, preserving path/query/fragment. Requests
+    /// that already point somewhere else are left untouched.
+    private func rewriteHostIfNeeded(_ request: URLRequest) -> URLRequest {
+        guard let instance = instanceStore.currentInstance,
+              let requestURL = request.url,
+              var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: false),
+              let targetComponents = URLComponents(url: instance.baseURL, resolvingAgainstBaseURL: false),
+              requestURL.host == config.baseURL.host
+        else {
+            // No instance selected, the instance host can't be parsed, or this request
+            // wasn't built against the app's default base URL to begin with.
+            return request
+        }
+        
+        components.scheme = targetComponents.scheme
+        components.host = targetComponents.host
+        components.port = targetComponents.port
+        
+        guard let newURL = components.url else { return request }
+        var newRequest = request
+        newRequest.url = newURL
+        return newRequest
+    }
     
     public func retry(
         _ request: Request,
@@ -119,11 +155,16 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
         
         mutableState.isRefreshing = true
         
-        let url = config.baseURL.appendingPathComponent("/oauth2/access_token")
+        // Prefer the currently selected instance's base URL / OAuth client id; fall
+        // back to the app config for single-instance deployments (or before an
+        // instance has been picked).
+        let currentInstance = instanceStore.currentInstance
+        let url = (currentInstance?.baseURL ?? config.baseURL).appendingPathComponent("/oauth2/access_token")
+        let clientId = currentInstance?.oAuthClientId ?? config.oAuthClientId
         
         let parameters: [String: Encodable & Sendable] = [
             "grant_type": AuthConstants.GrantTypeRefreshToken,
-            "client_id": config.oAuthClientId,
+            "client_id": clientId,
             "refresh_token": refreshToken,
             "token_type": config.tokenType.rawValue,
             "asymmetric_jwt": true
