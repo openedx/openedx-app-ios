@@ -22,106 +22,109 @@ public final class AppStorage: CoreStorage,
 
     private nonisolated(unsafe) let keychain: KeychainSwift
     private nonisolated(unsafe) let userDefaults: UserDefaults
+    // Keys below are scoped to the active instance.
+    private let namespace: InstanceNamespacedKey
 
-    public init(keychain: KeychainSwift, userDefaults: UserDefaults) {
+    public init(keychain: KeychainSwift, userDefaults: UserDefaults, instanceStore: InstanceProvider) {
         self.keychain = keychain
         self.userDefaults = userDefaults
+        self.namespace = InstanceNamespacedKey(instanceStore: instanceStore)
     }
 
     public var accessToken: String? {
         get {
-            return keychain.get(KEY_ACCESS_TOKEN)
+            return keychain.get(namespace.scoped(KEY_ACCESS_TOKEN))
         }
         set(newValue) {
             if let newValue {
-                keychain.set(newValue, forKey: KEY_ACCESS_TOKEN)
+                keychain.set(newValue, forKey: namespace.scoped(KEY_ACCESS_TOKEN))
             } else {
-                keychain.delete(KEY_ACCESS_TOKEN)
+                keychain.delete(namespace.scoped(KEY_ACCESS_TOKEN))
             }
         }
     }
 
     public var refreshToken: String? {
         get {
-            return keychain.get(KEY_REFRESH_TOKEN)
+            return keychain.get(namespace.scoped(KEY_REFRESH_TOKEN))
         }
         set(newValue) {
             if let newValue {
-                keychain.set(newValue, forKey: KEY_REFRESH_TOKEN)
+                keychain.set(newValue, forKey: namespace.scoped(KEY_REFRESH_TOKEN))
             } else {
-                keychain.delete(KEY_REFRESH_TOKEN)
+                keychain.delete(namespace.scoped(KEY_REFRESH_TOKEN))
             }
         }
     }
     
     public var pushToken: String? {
         get {
-            return keychain.get(KEY_PUSH_TOKEN)
+            return keychain.get(namespace.scoped(KEY_PUSH_TOKEN))
         }
         set(newValue) {
             if let newValue {
-                keychain.set(newValue, forKey: KEY_PUSH_TOKEN)
+                keychain.set(newValue, forKey: namespace.scoped(KEY_PUSH_TOKEN))
             } else {
-                keychain.delete(KEY_PUSH_TOKEN)
+                keychain.delete(namespace.scoped(KEY_PUSH_TOKEN))
             }
         }
     }
 
     public var appleSignFullName: String? {
         get {
-            return keychain.get(KEY_APPLE_SIGN_FULLNAME)
+            return keychain.get(namespace.scoped(KEY_APPLE_SIGN_FULLNAME))
         }
         set(newValue) {
             if let newValue {
-                keychain.set(newValue, forKey: KEY_APPLE_SIGN_FULLNAME)
+                keychain.set(newValue, forKey: namespace.scoped(KEY_APPLE_SIGN_FULLNAME))
             } else {
-                keychain.delete(KEY_APPLE_SIGN_FULLNAME)
+                keychain.delete(namespace.scoped(KEY_APPLE_SIGN_FULLNAME))
             }
         }
     }
 
     public var appleSignEmail: String? {
         get {
-            return keychain.get(KEY_APPLE_SIGN_EMAIL)
+            return keychain.get(namespace.scoped(KEY_APPLE_SIGN_EMAIL))
         }
         set(newValue) {
             if let newValue {
-                keychain.set(newValue, forKey: KEY_APPLE_SIGN_EMAIL)
+                keychain.set(newValue, forKey: namespace.scoped(KEY_APPLE_SIGN_EMAIL))
             } else {
-                keychain.delete(KEY_APPLE_SIGN_EMAIL)
+                keychain.delete(namespace.scoped(KEY_APPLE_SIGN_EMAIL))
             }
         }
     }
 
     public var cookiesDate: Date? {
         get {
-            return userDefaults.object(forKey: KEY_COOKIES_DATE) as? Date
+            return userDefaults.object(forKey: namespace.scoped(KEY_COOKIES_DATE)) as? Date
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_COOKIES_DATE)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_COOKIES_DATE))
             } else {
-                userDefaults.removeObject(forKey: KEY_COOKIES_DATE)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_COOKIES_DATE))
             }
         }
     }
     
     public var reviewLastShownVersion: String? {
         get {
-            return userDefaults.string(forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+            return userDefaults.string(forKey: namespace.scoped(KEY_REVIEW_LAST_SHOWN_VERSION))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_REVIEW_LAST_SHOWN_VERSION))
             } else {
-                userDefaults.removeObject(forKey: KEY_REVIEW_LAST_SHOWN_VERSION)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_REVIEW_LAST_SHOWN_VERSION))
             }
         }
     }
     
     public var lastReviewDate: Date? {
         get {
-            guard let dateString = userDefaults.string(forKey: KEY_REVIEW_LAST_REVIEW_DATE) else {
+            guard let dateString = userDefaults.string(forKey: namespace.scoped(KEY_REVIEW_LAST_REVIEW_DATE)) else {
                 return nil
             }
             return Date(iso8601: dateString)
@@ -133,30 +136,30 @@ public final class AppStorage: CoreStorage,
                         style: .iso8601,
                         useRelativeDates: false
                     ),
-                    forKey: KEY_REVIEW_LAST_REVIEW_DATE
+                    forKey: namespace.scoped(KEY_REVIEW_LAST_REVIEW_DATE)
                 )
             } else {
-                userDefaults.removeObject(forKey: KEY_REVIEW_LAST_REVIEW_DATE)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_REVIEW_LAST_REVIEW_DATE))
             }
         }
     }
     
     public var whatsNewVersion: String? {
         get {
-            return userDefaults.string(forKey: KEY_WHATSNEW_VERSION)
+            return userDefaults.string(forKey: namespace.scoped(KEY_WHATSNEW_VERSION))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_WHATSNEW_VERSION)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_WHATSNEW_VERSION))
             } else {
-                userDefaults.removeObject(forKey: KEY_WHATSNEW_VERSION)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_WHATSNEW_VERSION))
             }
         }
     }
 
     public var userProfile: DataLayer.UserProfile? {
         get {
-            guard let userJson = userDefaults.data(forKey: KEY_USER_PROFILE) else {
+            guard let userJson = userDefaults.data(forKey: namespace.scoped(KEY_USER_PROFILE)) else {
                 return nil
             }
             return try? JSONDecoder().decode(DataLayer.UserProfile.self, from: userJson)
@@ -165,17 +168,17 @@ public final class AppStorage: CoreStorage,
             if let user = newValue {
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(user) {
-                    userDefaults.set(encoded, forKey: KEY_USER_PROFILE)
+                    userDefaults.set(encoded, forKey: namespace.scoped(KEY_USER_PROFILE))
                 }
             } else {
-                userDefaults.set(nil, forKey: KEY_USER_PROFILE)
+                userDefaults.set(nil, forKey: namespace.scoped(KEY_USER_PROFILE))
             }
         }
     }
 
     public var userSettings: UserSettings? {
         get {
-            if let userSettings = userDefaults.data(forKey: KEY_SETTINGS),
+            if let userSettings = userDefaults.data(forKey: namespace.scoped(KEY_SETTINGS)),
                 let settings = try? JSONDecoder().decode(UserSettings.self, from: userSettings) {
                 return settings
             } else {
@@ -187,7 +190,7 @@ public final class AppStorage: CoreStorage,
                 )
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(defaultSettings) {
-                    userDefaults.set(encoded, forKey: KEY_SETTINGS)
+                    userDefaults.set(encoded, forKey: namespace.scoped(KEY_SETTINGS))
                 }
                 return defaultSettings
             }
@@ -196,39 +199,39 @@ public final class AppStorage: CoreStorage,
             if let settings = newValue {
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(settings) {
-                    userDefaults.set(encoded, forKey: KEY_SETTINGS)
+                    userDefaults.set(encoded, forKey: namespace.scoped(KEY_SETTINGS))
                 }
             } else {
-                userDefaults.set(nil, forKey: KEY_SETTINGS)
+                userDefaults.set(nil, forKey: namespace.scoped(KEY_SETTINGS))
             }
         }
     }
 
     public var latestAvailableAppVersion: String? {
         get {
-            return userDefaults.string(forKey: KEY_LATEST_AVAILABLE_APP_VERSION)
+            return userDefaults.string(forKey: namespace.scoped(KEY_LATEST_AVAILABLE_APP_VERSION))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_LATEST_AVAILABLE_APP_VERSION)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_LATEST_AVAILABLE_APP_VERSION))
             } else {
-                userDefaults.removeObject(forKey: KEY_LATEST_AVAILABLE_APP_VERSION)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_LATEST_AVAILABLE_APP_VERSION))
             }
         }
     }
 
     public var updateAppRequired: Bool {
         get {
-            return userDefaults.bool(forKey: KEY_UPDATE_APP_REQUIRED)
+            return userDefaults.bool(forKey: namespace.scoped(KEY_UPDATE_APP_REQUIRED))
         }
         set {
-            userDefaults.set(newValue, forKey: KEY_UPDATE_APP_REQUIRED)
+            userDefaults.set(newValue, forKey: namespace.scoped(KEY_UPDATE_APP_REQUIRED))
         }
     }
 
     public var user: DataLayer.User? {
         get {
-            guard let userJson = userDefaults.data(forKey: KEY_USER) else {
+            guard let userJson = userDefaults.data(forKey: namespace.scoped(KEY_USER)) else {
                 return nil
             }
             return try? JSONDecoder().decode(DataLayer.User.self, from: userJson)
@@ -237,30 +240,30 @@ public final class AppStorage: CoreStorage,
             if let user = newValue {
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(user) {
-                    userDefaults.set(encoded, forKey: KEY_USER)
+                    userDefaults.set(encoded, forKey: namespace.scoped(KEY_USER))
                 }
             } else {
-                userDefaults.set(nil, forKey: KEY_USER)
+                userDefaults.set(nil, forKey: namespace.scoped(KEY_USER))
             }
         }
     }
 
     public var allowedDownloadLargeFile: Bool? {
         get {
-            return userDefaults.bool(forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+            return userDefaults.bool(forKey: namespace.scoped(KEY_ALLOWED_DOWNLOAD_LARGE_FILE))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_ALLOWED_DOWNLOAD_LARGE_FILE))
             } else {
-                userDefaults.removeObject(forKey: KEY_ALLOWED_DOWNLOAD_LARGE_FILE)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_ALLOWED_DOWNLOAD_LARGE_FILE))
             }
         }
     }
         
     public var calendarSettings: CalendarSettings? {
         get {
-            guard let userJson = userDefaults.data(forKey: KEY_CALENDAR_SETTINGS) else {
+            guard let userJson = userDefaults.data(forKey: namespace.scoped(KEY_CALENDAR_SETTINGS)) else {
                 return nil
             }
             return try? JSONDecoder().decode(CalendarSettings.self, from: userJson)
@@ -269,69 +272,69 @@ public final class AppStorage: CoreStorage,
             if let settings = newValue {
                 let encoder = JSONEncoder()
                 if let encoded = try? encoder.encode(settings) {
-                    userDefaults.set(encoded, forKey: KEY_CALENDAR_SETTINGS)
+                    userDefaults.set(encoded, forKey: namespace.scoped(KEY_CALENDAR_SETTINGS))
                 }
             } else {
-                userDefaults.set(nil, forKey: KEY_CALENDAR_SETTINGS)
+                userDefaults.set(nil, forKey: namespace.scoped(KEY_CALENDAR_SETTINGS))
             }
         }
     }
                 
     public var resetAppSupportDirectoryUserData: Bool? {
         get {
-            return userDefaults.bool(forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+            return userDefaults.bool(forKey: namespace.scoped(KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA))
             } else {
-                userDefaults.removeObject(forKey: KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_RESET_APP_SUPPORT_DIRECTORY_USER_DATA))
             }
         }
     }
     
     public var lastCalendarName: String? {
         get {
-            return userDefaults.string(forKey: KEY_LAST_CALENDAR_NAME)
+            return userDefaults.string(forKey: namespace.scoped(KEY_LAST_CALENDAR_NAME))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_LAST_CALENDAR_NAME)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_LAST_CALENDAR_NAME))
             } else {
-                userDefaults.removeObject(forKey: KEY_LAST_CALENDAR_NAME)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_LAST_CALENDAR_NAME))
             }
         }
     }
 
     public var lastUsedSocialAuth: String? {
         get {
-            return userDefaults.string(forKey: KEY_LAST_USED_SOCIAL_AUTH)
+            return userDefaults.string(forKey: namespace.scoped(KEY_LAST_USED_SOCIAL_AUTH))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_LAST_USED_SOCIAL_AUTH)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_LAST_USED_SOCIAL_AUTH))
             } else {
-                userDefaults.removeObject(forKey: KEY_LAST_USED_SOCIAL_AUTH)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_LAST_USED_SOCIAL_AUTH))
             }
         }
     }
     
     public var lastLoginUsername: String? {
         get {
-            return userDefaults.string(forKey: KEY_LAST_LOGIN_USERNAME)
+            return userDefaults.string(forKey: namespace.scoped(KEY_LAST_LOGIN_USERNAME))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_LAST_LOGIN_USERNAME)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_LAST_LOGIN_USERNAME))
             } else {
-                userDefaults.removeObject(forKey: KEY_LAST_LOGIN_USERNAME)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_LAST_LOGIN_USERNAME))
             }
         }
     }
     
     public var lastCalendarUpdateDate: Date? {
         get {
-            guard let dateString = userDefaults.string(forKey: KEY_LAST_CALENDAR_UPDATE_DATE) else {
+            guard let dateString = userDefaults.string(forKey: namespace.scoped(KEY_LAST_CALENDAR_UPDATE_DATE)) else {
                 return nil
             }
             return Date(iso8601: dateString)
@@ -343,36 +346,36 @@ public final class AppStorage: CoreStorage,
                         style: .iso8601,
                         useRelativeDates: useRelativeDates
                     ),
-                    forKey: KEY_LAST_CALENDAR_UPDATE_DATE
+                    forKey: namespace.scoped(KEY_LAST_CALENDAR_UPDATE_DATE)
                 )
             } else {
-                userDefaults.removeObject(forKey: KEY_LAST_CALENDAR_UPDATE_DATE)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_LAST_CALENDAR_UPDATE_DATE))
             }
         }
     }
     
     public var hideInactiveCourses: Bool? {
         get {
-            return userDefaults.bool(forKey: KEY_HIDE_INACTIVE_COURSES)
+            return userDefaults.bool(forKey: namespace.scoped(KEY_HIDE_INACTIVE_COURSES))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_HIDE_INACTIVE_COURSES)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_HIDE_INACTIVE_COURSES))
             } else {
-                userDefaults.removeObject(forKey: KEY_HIDE_INACTIVE_COURSES)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_HIDE_INACTIVE_COURSES))
             }
         }
     }
     
     public var firstCalendarUpdate: Bool? {
         get {
-            return userDefaults.bool(forKey: KEY_FIRST_CALENDAR_UPDATE)
+            return userDefaults.bool(forKey: namespace.scoped(KEY_FIRST_CALENDAR_UPDATE))
         }
         set(newValue) {
             if let newValue {
-                userDefaults.set(newValue, forKey: KEY_FIRST_CALENDAR_UPDATE)
+                userDefaults.set(newValue, forKey: namespace.scoped(KEY_FIRST_CALENDAR_UPDATE))
             } else {
-                userDefaults.removeObject(forKey: KEY_FIRST_CALENDAR_UPDATE)
+                userDefaults.removeObject(forKey: namespace.scoped(KEY_FIRST_CALENDAR_UPDATE))
             }
         }
     }
@@ -380,10 +383,10 @@ public final class AppStorage: CoreStorage,
     public var useRelativeDates: Bool {
         get {
             // We use userDefaults.object to return the default value as true
-            return userDefaults.object(forKey: KEY_USE_RELATIVE_DATES) as? Bool ?? true
+            return userDefaults.object(forKey: namespace.scoped(KEY_USE_RELATIVE_DATES)) as? Bool ?? true
         }
         set {
-            userDefaults.set(newValue, forKey: KEY_USE_RELATIVE_DATES)
+            userDefaults.set(newValue, forKey: namespace.scoped(KEY_USE_RELATIVE_DATES))
         }
     }
     
@@ -406,7 +409,8 @@ public final class AppStorage: CoreStorage,
     private let KEY_PUSH_TOKEN = "pushToken"
     private let KEY_COOKIES_DATE = "cookiesDate"
     private let KEY_USER_PROFILE = "userProfile"
-    private let KEY_USER = "refreshToken"
+    // was "refreshToken" (duplicate of KEY_REFRESH_TOKEN) -- fixed while touching this file.
+    private let KEY_USER = "user"
     private let KEY_SETTINGS = "userSettings"
     private let KEY_REVIEW_LAST_SHOWN_VERSION = "reviewLastShownVersion"
     private let KEY_REVIEW_LAST_REVIEW_DATE = "lastReviewDate"
