@@ -15,7 +15,7 @@ Modern vision of the mobile application for the Open edX platform from Raccoon G
 
 4. Ensure that the ``OpenEdXDev``, ``OpenEdXStage`` or ``OpenEdXProd`` scheme is selected.
 
-5. Configure `config_settings.yaml` inside `default_config` and `config.json` inside sub direcroties to point to your OpenEdx configuration [Configuration Documentation](./Documentation/CONFIGURATION_MANAGEMENT.md)
+5. Configure `config_settings.json` inside `default_config` and `config.json` inside sub direcroties to point to your OpenEdx configuration [Configuration Documentation](./Documentation/CONFIGURATION_MANAGEMENT.md)
 
 6. Click the **Run** button.
 
