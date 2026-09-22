@@ -186,14 +186,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             analyticsManager?.userLogout(force: true)
             
             lastForceLogoutTime = Date().timeIntervalSince1970
-            Container.shared.resolve(CoreStorage.self)?.clear()
-            
+
+            // Routes through InstanceSessionManager instead of duplicating cleanup here.
             Task {
-                await Container.shared.resolve(CorePersistenceProtocol.self)?.deleteAllProgress()
-                await Container.shared.resolve(DownloadManagerProtocol.self)?.deleteAll()
-                await Container.shared.resolve(CoreDataHandlerProtocol.self)?.clear()
+                await Container.shared.resolve(InstanceSessionManagerProtocol.self)?.logoutCurrentInstance()
+                window?.rootViewController = RouteController()
             }
-            window?.rootViewController = RouteController()
         }
         
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()
