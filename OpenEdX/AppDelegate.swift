@@ -76,10 +76,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = RouteController()
-        window?.makeKeyAndVisible()
         window?.tintColor = Theme.UIColors.accentColor
-          
+
+        // Wait for the instance catalog before showing anything, so routing happens
+        // against the real catalog, not the bundled placeholder. The Launch Screen stays up
+        // for the wait -- makeKeyAndVisible() is what ends it, so no extra UI is needed.
+        Task {
+            await loadInstanceCatalog()
+            window?.rootViewController = RouteController()
+            window?.makeKeyAndVisible()
+        }
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didUserAuthorize),
@@ -156,6 +163,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             )
         }
         // Initialize your plugins here
+    }
+
+    /// Fetches the remote instance catalog and hands it to `InstanceStore`. Falls back to
+    /// the bundled/cached catalog near-instantly if no URL is configured or the fetch fails.
+    private func loadInstanceCatalog() async {
+        guard let loader = Container.shared.resolve(InstanceConfigLoader.self),
+              let instanceStore = Container.shared.resolve(InstanceStore.self) else {
+            return
+        }
+        let config = await loader.load()
+        instanceStore.updateInstancesConfig(config)
     }
 
     private func initDI() {
