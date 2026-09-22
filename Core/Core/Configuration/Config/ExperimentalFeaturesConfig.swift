@@ -25,6 +25,13 @@ public final class ExperimentalFeaturesConfig: NSObject {
             appLevelDownloadsEnabled = isEnabled
         }
     }
+
+    /// For instance-provided values (`InstanceAwareConfig`), which already come as a typed
+    /// `Instance.appLevelDownloadsEnabled` rather than a raw dictionary.
+    init(appLevelDownloadsEnabled: Bool) {
+        self.appLevelDownloadsEnabled = appLevelDownloadsEnabled
+        super.init()
+    }
 }
 
 private let key = "EXPERIMENTAL_FEATURES"
