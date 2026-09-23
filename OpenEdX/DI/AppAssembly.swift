@@ -161,8 +161,11 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
-        container.register(ConfigProtocol.self) { _ in
-            Config()
+        container.register(ConfigProtocol.self) { r in
+            InstanceAwareConfig(
+                appConfig: Config(),
+                instanceProvider: r.resolve(InstanceProvider.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(CSSInjector.self) { r in
