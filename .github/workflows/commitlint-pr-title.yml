@@ -1,0 +1,96 @@
+# Lint the commit subject that a squash merge will actually create.
+#
+# .github/workflows/commitlint.yml lints the commits on the pull request branch.
+# Those commits are not what lands on `develop`: this repo squash-merges, and
+# `squash_merge_commit_title` is COMMIT_OR_PR_TITLE, so GitHub composes the
+# subject as either the pull request title or, when the branch holds exactly one
+# commit, that commit's own subject — then appends " (#<number>)".
+#
+# Nothing lints that composed string today, so non-conventional subjects reach
+# `develop` through pull requests whose branch commits all passed. The release
+# pull request is the first place they are ever checked, by which point they are
+# immutable history.
+#
+# This job composes the same string and lints it with the same
+# commitlint.config.mjs the commit job uses, so one ruleset governs both.
+
+name: Lint PR Title
+
+on:
+  pull_request:
+    # `edited` is the essential trigger: a title can change at any time, including
+    # after every other check has gone green. `synchronize` re-runs when commits
+    # change, which matters because the single-commit branch below reads the head
+    # commit's subject.
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+
+jobs:
+  pr-title:
+    name: Lint PR Title
+    # Release pull requests (develop -> main) land as merge commits, whose subject
+    # is GitHub's auto-generated "Merge pull request #N from ...". commitlint
+    # ignores those by default, so the release title never becomes a linted
+    # subject and checking it would be pure friction.
+    if: ${{ !(github.head_ref == 'develop' && github.base_ref == 'main') }}
+    runs-on: ubuntu-latest
+
+    concurrency:
+      group: commitlint-pr-title-${{ github.event.pull_request.number }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          # Depth 2 brings in both parents of the pull request merge ref, so the
+          # head commit is present for the single-commit case below. The default
+          # checkout is the merge ref itself, whose subject is "Merge <sha> into
+          # <sha>" — never the string we want.
+          fetch-depth: 2
+
+      - name: Install commitlint
+        # commitlint resolves `extends` relative to the directory holding the
+        # config, so @commitlint/config-conventional has to be installed beside
+        # commitlint.config.mjs at the repo root. Installing through
+        # `npx --package` puts it in the npx cache instead, where the resolver
+        # cannot see it, and every run fails with MODULE_NOT_FOUND.
+        #
+        # There is no root package.json, and --no-save writes neither one nor a
+        # lockfile, so this leaves only node_modules behind.
+        run: |
+          npm install --no-save --no-audit --no-fund \
+            @commitlint/cli@19.8.1 \
+            @commitlint/config-conventional@19.8.1
+
+      - name: Lint the squash commit subject
+        env:
+          # The title is untrusted input. Passing it through the environment
+          # rather than interpolating it into the script keeps it out of the
+          # shell's parse step.
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_COMMITS: ${{ github.event.pull_request.commits }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          set -euo pipefail
+
+          # Mirror COMMIT_OR_PR_TITLE. If the count is ever missing from the
+          # payload this falls through to the title, which is the behaviour of
+          # every multi-commit pull request and the common case.
+          if [ "${PR_COMMITS:-}" = "1" ]; then
+            SUBJECT=$(git log -1 --pretty=%s "$HEAD_SHA")
+            echo "Pull request has one commit; GitHub will use its subject."
+          else
+            SUBJECT=$PR_TITLE
+            echo "Pull request has ${PR_COMMITS:-?} commits; GitHub will use the title."
+          fi
+
+          echo "Linting: ${SUBJECT} (#${PR_NUMBER})"
+
+          # printf rather than echo: a subject beginning with "-" must reach
+          # commitlint on stdin as data, not be read as an option.
+          printf '%s (#%s)' "$SUBJECT" "$PR_NUMBER" \
+            | npx commitlint --config commitlint.config.mjs
