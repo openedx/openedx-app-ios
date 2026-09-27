@@ -101,6 +101,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
 
+        // window.tintColor isn't live-bound to Theme.UIColors.accentColor -- it's a one-time
+        // snapshot, so anything relying on the inherited tint (nav bars, back buttons, bar
+        // button items) needs this to pick up a later instance switch/logout.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(accentColorDidChange),
+            name: .accentColorDidChange,
+            object: nil
+        )
+
         return true
     }
 
@@ -196,6 +206,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @objc private func didUserAuthorize() {
         Container.shared.resolve(PushNotificationsManager.self)?.synchronizeToken()
+    }
+
+    @objc private func accentColorDidChange() {
+        window?.tintColor = Theme.UIColors.accentColor
     }
     
     @objc func didUserLogout(_ notification: Notification) {

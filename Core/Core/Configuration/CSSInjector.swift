@@ -11,10 +11,17 @@ import Theme
 
 public class CSSInjector {
     
-    public let baseURL: URL
+    /// Read live via `config.baseURL`, not cached -- `config` is `InstanceAwareConfig` in
+    /// production, so its `.baseURL` tracks whichever instance is selected. Caching it here
+    /// (this is a DI singleton, resolved once) rewrote course/comment HTML's relative
+    /// media/honor/privacy links against whatever instance was selected when CSSInjector was
+    /// first resolved -- stale forever after any later switch, same bug already found and
+    /// fixed in RequestInterceptor and Connectivity.
+    private let config: ConfigProtocol
+    public var baseURL: URL { config.baseURL }
     
     public init(config: ConfigProtocol) {
-        self.baseURL = config.baseURL
+        self.config = config
     }
     
     public enum CssType {

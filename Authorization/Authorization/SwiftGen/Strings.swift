@@ -54,12 +54,42 @@ public enum AuthLocalization {
     /// Forgot password
     public static let title = AuthLocalization.tr("Localizable", "FORGOT.TITLE", fallback: "Forgot password")
   }
+  public enum LearningSites {
+    /// Add a Learning Site
+    public static let addSite = AuthLocalization.tr("Localizable", "LEARNING_SITES.ADD_SITE", fallback: "Add a Learning Site")
+    /// Current Learning Site
+    public static let currentSite = AuthLocalization.tr("Localizable", "LEARNING_SITES.CURRENT_SITE", fallback: "Current Learning Site")
+    /// No schools match your search
+    public static let emptySearch = AuthLocalization.tr("Localizable", "LEARNING_SITES.EMPTY_SEARCH", fallback: "No schools match your search")
+    /// Get Started
+    public static let getStarted = AuthLocalization.tr("Localizable", "LEARNING_SITES.GET_STARTED", fallback: "Get Started")
+    /// Log Out
+    public static let logOutAction = AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_ACTION", fallback: "Log Out")
+    /// Are you sure you want to log out of %@?
+    public static func logOutMessage(_ p1: Any) -> String {
+      return AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_MESSAGE", String(describing: p1), fallback: "Are you sure you want to log out of %@?")
+    }
+    /// Log Out
+    public static let logOutTitle = AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_TITLE", fallback: "Log Out")
+    /// More Learning Sites
+    public static let moreSites = AuthLocalization.tr("Localizable", "LEARNING_SITES.MORE_SITES", fallback: "More Learning Sites")
+    /// University of Arts & Sciences
+    public static let searchPlaceholder = AuthLocalization.tr("Localizable", "LEARNING_SITES.SEARCH_PLACEHOLDER", fallback: "University of Arts & Sciences")
+    /// Search
+    public static let searchTitle = AuthLocalization.tr("Localizable", "LEARNING_SITES.SEARCH_TITLE", fallback: "Search")
+    /// Learning Sites
+    public static let title = AuthLocalization.tr("Localizable", "LEARNING_SITES.TITLE", fallback: "Learning Sites")
+    /// Welcome! Select your learning site
+    public static let welcomeSubtitle = AuthLocalization.tr("Localizable", "LEARNING_SITES.WELCOME_SUBTITLE", fallback: "Welcome! Select your learning site")
+  }
   public enum SignIn {
     /// By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
     /// accordance with the [Privacy Policy.](%@)
     public static func agreement(_ p1: Any, _ p2: Any, _ p3: Any, _ p4: Any, _ p5: Any, _ p6: Any) -> String {
       return AuthLocalization.tr("Localizable", "SIGN_IN.AGREEMENT", String(describing: p1), String(describing: p2), String(describing: p3), String(describing: p4), String(describing: p5), String(describing: p6), fallback: "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in\naccordance with the [Privacy Policy.](%@)")
     }
+    /// Change
+    public static let change = AuthLocalization.tr("Localizable", "SIGN_IN.CHANGE", fallback: "Change")
     /// Email
     public static let email = AuthLocalization.tr("Localizable", "SIGN_IN.EMAIL", fallback: "Email")
     /// Email or username
@@ -73,6 +103,8 @@ public enum AuthLocalization {
     public static let logInTitle = AuthLocalization.tr("Localizable", "SIGN_IN.LOG_IN_TITLE", fallback: "Sign in")
     /// Password
     public static let password = AuthLocalization.tr("Localizable", "SIGN_IN.PASSWORD", fallback: "Password")
+    /// Selected Site
+    public static let selectedSite = AuthLocalization.tr("Localizable", "SIGN_IN.SELECTED_SITE", fallback: "Selected Site")
     /// Start today to build your career with confidence
     public static let ssoHeading = AuthLocalization.tr("Localizable", "SIGN_IN.SSO_HEADING", fallback: "Start today to build your career with confidence")
     /// Log in through the national unified sign-on service
@@ -117,28 +149,6 @@ public enum AuthLocalization {
     public static let searchTitle = AuthLocalization.tr("Localizable", "STARTUP.SEARCH_TITLE", fallback: "What do you want to learn?")
     /// Start
     public static let title = AuthLocalization.tr("Localizable", "STARTUP.TITLE", fallback: "Start")
-  }
-  public enum LearningSites {
-    /// Learning Sites
-    public static let title = AuthLocalization.tr("Localizable", "LEARNING_SITES.TITLE", fallback: "Learning Sites")
-    /// Current Learning Site
-    public static let currentSite = AuthLocalization.tr("Localizable", "LEARNING_SITES.CURRENT_SITE", fallback: "Current Learning Site")
-    /// More Learning Sites
-    public static let moreSites = AuthLocalization.tr("Localizable", "LEARNING_SITES.MORE_SITES", fallback: "More Learning Sites")
-    /// Add a Learning Site
-    public static let addSite = AuthLocalization.tr("Localizable", "LEARNING_SITES.ADD_SITE", fallback: "Add a Learning Site")
-    /// Search for your school
-    public static let searchPlaceholder = AuthLocalization.tr("Localizable", "LEARNING_SITES.SEARCH_PLACEHOLDER", fallback: "Search for your school")
-    /// No schools match your search
-    public static let emptySearch = AuthLocalization.tr("Localizable", "LEARNING_SITES.EMPTY_SEARCH", fallback: "No schools match your search")
-    /// Log Out
-    public static let logOutTitle = AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_TITLE", fallback: "Log Out")
-    /// Are you sure you want to log out of %@?
-    public static func logOutMessage(_ p1: Any) -> String {
-      return AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_MESSAGE", String(describing: p1), fallback: "Are you sure you want to log out of %@?")
-    }
-    /// Log Out
-    public static let logOutAction = AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_ACTION", fallback: "Log Out")
   }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length

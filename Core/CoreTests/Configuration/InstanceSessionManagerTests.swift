@@ -101,4 +101,25 @@ final class InstanceSessionManagerTests: XCTestCase {
 
         XCTAssertEqual(Theme.UIColors.accentColor.cgColor, ThemeAssets.accentColor.color.cgColor)
     }
+
+    // A plain COLOR field (no nested THEME.LIGHT/DARK) still applies -- most instances don't
+    // configure the full light/dark palette.
+    func testSwitchActiveInstance_WithOnlyFlatColor_StillAppliesAccentColor() async {
+        let branded = Instance(dictionary: [
+            "NAME": "Branded", "OAUTH_CLIENT_ID": "branded-id", "API_HOST_URL": "https://branded.example.com",
+            "COLOR": "#445566"
+        ])!
+
+        await sut.switchActiveInstance(to: branded)
+
+        XCTAssertEqual(Theme.UIColors.accentColor.cgColor, UIColor(hex: "#445566")!.cgColor)
+    }
+
+    // AppDelegate refreshes window.tintColor (a one-time snapshot, not live-bound to
+    // Theme.UIColors.accentColor) off this notification -- it has to actually fire.
+    func testApplyThemeForCurrentInstance_PostsAccentColorDidChange() async {
+        let expectation = expectation(forNotification: .accentColorDidChange, object: nil)
+        await sut.switchActiveInstance(to: instanceA)
+        await fulfillment(of: [expectation], timeout: 1)
+    }
 }

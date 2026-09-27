@@ -79,9 +79,9 @@ import Core
         let alreadySignedIn = hasSession(instance)
         await sessionManager.switchActiveInstance(to: instance)
         if alreadySignedIn {
-            router.showMainOrWhatsNewScreen(sourceScreen: .default, postLoginData: nil)
+            router.showMainOrWhatsNewScreen(sourceScreen: .learningSites, postLoginData: nil)
         } else {
-            router.showLoginScreen(sourceScreen: .default)
+            router.showLoginScreen(sourceScreen: .learningSites)
         }
     }
 

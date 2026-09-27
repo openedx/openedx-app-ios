@@ -9,6 +9,13 @@ import Foundation
 import SwiftUI
 import Theme
 
+extension Notification.Name {
+    /// Posted whenever `applyThemeForCurrentInstance()` updates `Theme.Colors`/`Theme.UIColors`.
+    /// `UIWindow.tintColor` is a one-time snapshot, not a live binding to those statics -- the
+    /// app layer observes this to refresh it. See AppDelegate.
+    public static let accentColorDidChange = Notification.Name("org.openedx.core.accentColorDidChange")
+}
+
 /// @mockable
 public protocol InstanceSessionManagerProtocol: Sendable {
     /// Switches the active instance without tearing down the outgoing one's session.
@@ -90,20 +97,38 @@ public final class InstanceSessionManager: InstanceSessionManagerProtocol {
             // defaults to it).
             Theme.Colors.update()
             Theme.UIColors.update()
+            Self.postAccentColorDidChange()
             return
         }
         Theme.Colors.update(accentColor: Color(uiColor: accentColor))
         Theme.UIColors.update(accentColor: accentColor)
+        Self.postAccentColorDidChange()
+    }
+
+    /// This type isn't actor-isolated, so `applyThemeForCurrentInstance()` can run off the
+    /// main thread (e.g. called via `await` from a nonisolated async context). `post(...)`
+    /// delivers to every observer SYNCHRONOUSLY on the posting thread, and AppDelegate's
+    /// observer touches `UIWindow.tintColor` -- touching UIKit off-main crashed
+    /// (EXC_BREAKPOINT) the moment an instance was selected. Always post from main.
+    private static func postAccentColorDidChange() {
+        if Thread.isMainThread {
+            NotificationCenter.default.post(name: .accentColorDidChange, object: nil)
+        } else {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .accentColorDidChange, object: nil)
+            }
+        }
     }
 
     /// A single UIColor that resolves to the instance's light/dark "accent_color" hex per the
     /// active trait collection -- SwiftUI's `Color(uiColor:)` stays adaptive through this.
+    /// Falls back to the instance's flat `color` field when THEME.LIGHT.accent_color isn't set,
+    /// per `Instance.themeColors`'s own doc comment ("nil derives the palette from color").
     private static func resolveAccentColor(for instance: Instance?) -> UIColor? {
-        guard let lightHex = instance?.themeColors?.light["accent_color"],
-              let light = UIColor(hex: lightHex) else {
-            return nil
-        }
-        let dark = instance?.themeColors?.dark["accent_color"].flatMap { UIColor(hex: $0) } ?? light
+        guard let instance else { return nil }
+        let lightHex = instance.themeColors?.light["accent_color"] ?? instance.color
+        guard let light = UIColor(hex: lightHex) else { return nil }
+        let dark = instance.themeColors?.dark["accent_color"].flatMap { UIColor(hex: $0) } ?? light
         return UIColor { $0.userInterfaceStyle == .dark ? dark : light }
     }
 }

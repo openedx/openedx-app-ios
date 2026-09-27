@@ -34,7 +34,7 @@ public struct SignInView: View {
                 .edgesIgnoringSafeArea(.top)
                 .accessibilityIdentifier("auth_bg_image")
             }.frame(maxWidth: .infinity, maxHeight: 200)
-            if viewModel.config.features.startupScreenEnabled {
+            if viewModel.config.features.startupScreenEnabled || viewModel.sourceScreen == .learningSites {
                 VStack {
                     BackNavigationButton(
                         color: Theme.Colors.loginNavigationText,
@@ -66,6 +66,11 @@ public struct SignInView: View {
                     ScrollView {
                         VStack {
                             VStack(alignment: .leading) {
+                                if let instance = viewModel.currentInstance {
+                                    selectedSiteSection(instance)
+                                        .padding(.bottom, 20)
+                                        .accessibilityIdentifier("selected_site_section")
+                                }
                                 if viewModel.config.uiComponents.loginRegistrationEnabled {
                                     Text(AuthLocalization.SignIn.logInTitle)
                                         .font(Theme.Fonts.displaySmall)
@@ -298,6 +303,42 @@ public struct SignInView: View {
         }
     }
     
+    private func selectedSiteSection(_ instance: Instance) -> some View {
+        HStack(spacing: 12) {
+            InstanceThemedImage(
+                source: instance.logoURLString,
+                allowsBundledAsset: true,
+                fallback: ThemeAssets.appLogo.swiftUIImage
+            )
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 32, height: 32)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(AuthLocalization.SignIn.selectedSite)
+                    .font(Theme.Fonts.labelSmall)
+                    .foregroundColor(Theme.Colors.textSecondary)
+                Text(instance.name)
+                    .font(Theme.Fonts.bodyLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+            }
+
+            Spacer()
+
+            Button(AuthLocalization.SignIn.change) {
+                viewModel.router.back()
+            }
+            .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.accentColor)
+            .accessibilityIdentifier("change_site_button")
+        }
+        .padding(12)
+        .overlay(
+            Theme.Shapes.textInputShape
+                .stroke(lineWidth: 1)
+                .fill(Theme.Colors.textInputStroke)
+        )
+    }
+
     @ViewBuilder
     private var agreements: some View {
         if let eulaURL = viewModel.config.agreement.eulaURL,
