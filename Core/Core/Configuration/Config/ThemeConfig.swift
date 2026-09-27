@@ -22,6 +22,14 @@ public final class ThemeConfig: NSObject {
         buttonCornersRadius = dictionary[ThemeKeys.buttonCornersRadius] as? Double ?? 8.0
         super.init()
     }
+
+    /// For instance-provided corner-style values (`InstanceAwareConfig`), which already come
+    /// as typed `Instance` fields rather than a raw dictionary.
+    init(isRoundedCorners: Bool, buttonCornersRadius: Double) {
+        self.isRoundedCorners = isRoundedCorners
+        self.buttonCornersRadius = buttonCornersRadius
+        super.init()
+    }
 }
 
 private let ThemeKey = "THEME"

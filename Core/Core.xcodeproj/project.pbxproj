@@ -92,6 +92,7 @@
 		0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */; };
 		12624ABABF5AE7FBF7B4F5E5 /* InstancesConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC6455FBE49B22E32CB777A /* InstancesConfig.swift */; };
 		41A744FEB981583CE4B1DEB8 /* InstanceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53CE4D43A09B50EB85B793D5 /* InstanceStore.swift */; };
+		27F7F2CB3BB2E4C57BFBD8A9 /* InstanceAwareConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 603B5DD22009C587F7D9AB39 /* InstanceAwareConfig.swift */; };
 		7EE1DD11BB73A4C2A9032023 /* InstanceSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3CC07EFD1E702E6E3D0847D7 /* InstanceSessionManager.swift */; };
 		8B9199CE27AC5B6CBC254B66 /* PushTokenUnregistering.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA667E8817CE4A8910BE9EB3 /* PushTokenUnregistering.swift */; };
 		FC6CA744719A3BDF470AAF22 /* InstanceProvider+CurrentKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = CC0251BC4E833C6CD650A467 /* InstanceProvider+CurrentKey.swift */; };
@@ -153,6 +154,7 @@
 		BAD9CA332B28A8F300DE790A /* AjaxProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */; };
 		BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */; };
 		A79BEFA61FDAFB006FBD32F6 /* RequestInterceptorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D8C6EECDB077F495200840 /* RequestInterceptorTests.swift */; };
+		9D542FE5CE0962C8780CC669 /* InstanceAwareConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 188AE524145A44449FD4B673 /* InstanceAwareConfigTests.swift */; };
 		EB3F7F969DFFD23CA3BE856C /* InstanceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B6ADB9B9C23899FFDCE9D5 /* InstanceStoreTests.swift */; };
 		ABD4C72FE7D0048D457D2937 /* InstanceSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08BCEBDF0BD7D711CA7205DE /* InstanceSessionManagerTests.swift */; };
 		9C33F22BA8733548621D5A97 /* InstancesConfigTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE56371521165CD47B36418 /* InstancesConfigTests.swift */; };
@@ -309,6 +311,7 @@
 		0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIComponentsConfig.swift; sourceTree = "<group>"; };
 		2FC6455FBE49B22E32CB777A /* InstancesConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstancesConfig.swift; sourceTree = "<group>"; };
 		53CE4D43A09B50EB85B793D5 /* InstanceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStore.swift; sourceTree = "<group>"; };
+		603B5DD22009C587F7D9AB39 /* InstanceAwareConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceAwareConfig.swift; sourceTree = "<group>"; };
 		CC0251BC4E833C6CD650A467 /* InstanceProvider+CurrentKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "InstanceProvider+CurrentKey.swift"; sourceTree = "<group>"; };
 		AB9B2B3E3AD270F886237AAF /* InstanceNamespacedDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceNamespacedDefaults.swift; sourceTree = "<group>"; };
 		0649878A2B4D69FE0071642A /* DragAndDropCssInjection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DragAndDropCssInjection.swift; sourceTree = "<group>"; };
@@ -384,6 +387,7 @@
 		BAD9CA322B28A8F300DE790A /* AjaxProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AjaxProvider.swift; sourceTree = "<group>"; };
 		BAD9CA412B2B140100DE790A /* AgreementConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgreementConfigTests.swift; sourceTree = "<group>"; };
 		02D8C6EECDB077F495200840 /* RequestInterceptorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestInterceptorTests.swift; sourceTree = "<group>"; };
+		188AE524145A44449FD4B673 /* InstanceAwareConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceAwareConfigTests.swift; sourceTree = "<group>"; };
 		A1B6ADB9B9C23899FFDCE9D5 /* InstanceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceStoreTests.swift; sourceTree = "<group>"; };
 		08BCEBDF0BD7D711CA7205DE /* InstanceSessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceSessionManagerTests.swift; sourceTree = "<group>"; };
 		BDE56371521165CD47B36418 /* InstancesConfigTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstancesConfigTests.swift; sourceTree = "<group>"; };
@@ -924,6 +928,7 @@
 				0604C9A92B22FACF00AD5DBF /* UIComponentsConfig.swift */,
 				2FC6455FBE49B22E32CB777A /* InstancesConfig.swift */,
 				53CE4D43A09B50EB85B793D5 /* InstanceStore.swift */,
+				603B5DD22009C587F7D9AB39 /* InstanceAwareConfig.swift */,
 				CC0251BC4E833C6CD650A467 /* InstanceProvider+CurrentKey.swift */,
 				C135C3B9B580C3AEA3A1EDF2 /* InstanceConfigLoader.swift */,
 				0727876F28D23411002E9142 /* Config.swift */,
@@ -951,6 +956,7 @@
 				CE54C2CE2CC80B4A00E529F9 /* DownloadManager */,
 				E09179FB2B0F204D002AB695 /* Configuration */,
 				02D8C6EECDB077F495200840 /* RequestInterceptorTests.swift */,
+				188AE524145A44449FD4B673 /* InstanceAwareConfigTests.swift */,
 			);
 			path = CoreTests;
 			sourceTree = "<group>";
@@ -1194,6 +1200,7 @@
 			files = (
 				BAD9CA422B2B140100DE790A /* AgreementConfigTests.swift in Sources */,
 				A79BEFA61FDAFB006FBD32F6 /* RequestInterceptorTests.swift in Sources */,
+				9D542FE5CE0962C8780CC669 /* InstanceAwareConfigTests.swift in Sources */,
 				EB3F7F969DFFD23CA3BE856C /* InstanceStoreTests.swift in Sources */,
 				ABD4C72FE7D0048D457D2937 /* InstanceSessionManagerTests.swift in Sources */,
 				9C33F22BA8733548621D5A97 /* InstancesConfigTests.swift in Sources */,
@@ -1351,6 +1358,7 @@
 				0604C9AA2B22FACF00AD5DBF /* UIComponentsConfig.swift in Sources */,
 				12624ABABF5AE7FBF7B4F5E5 /* InstancesConfig.swift in Sources */,
 				41A744FEB981583CE4B1DEB8 /* InstanceStore.swift in Sources */,
+				27F7F2CB3BB2E4C57BFBD8A9 /* InstanceAwareConfig.swift in Sources */,
 				FC6CA744719A3BDF470AAF22 /* InstanceProvider+CurrentKey.swift in Sources */,
 				F9B869222683CEB16E39F8D1 /* InstanceNamespacedDefaults.swift in Sources */,
 				F6CA7FECCB007C4E2BE6FF53 /* InstanceApiService.swift in Sources */,
