@@ -7,6 +7,7 @@
 
 import XCTest
 import Foundation
+import Theme
 @testable import Core
 
 private final class PushTokenUnregisteringSpy: PushTokenUnregistering, @unchecked Sendable {
@@ -82,5 +83,22 @@ final class InstanceSessionManagerTests: XCTestCase {
         XCTAssertEqual(downloadManager.cancelAllDownloadingCallCount, 1)
         XCTAssertEqual(storage.clearCallCount, 1)
         XCTAssertNil(instanceStore.currentInstance)
+    }
+
+    // Switching to an instance with its own accent_color applies it app-wide via the
+    // existing Theme.Colors/UIColors.update() mechanism; logging out resets to the default.
+    func testSwitchActiveInstance_WithAccentColor_UpdatesThemeThenLogoutResets() async {
+        let branded = Instance(dictionary: [
+            "NAME": "Branded", "OAUTH_CLIENT_ID": "branded-id", "API_HOST_URL": "https://branded.example.com",
+            "THEME": ["LIGHT": ["accent_color": "#112233"]]
+        ])!
+
+        await sut.switchActiveInstance(to: branded)
+
+        XCTAssertEqual(Theme.UIColors.accentColor.cgColor, UIColor(hex: "#112233")!.cgColor)
+
+        await sut.logoutCurrentInstance()
+
+        XCTAssertEqual(Theme.UIColors.accentColor.cgColor, ThemeAssets.accentColor.color.cgColor)
     }
 }

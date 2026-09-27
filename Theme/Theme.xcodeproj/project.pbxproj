@@ -13,11 +13,13 @@
 		0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7A28D0C78C006D8A5D /* Theme.swift */; };
 		4875747BC644481E79603124 /* Pods_App_Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EFD5ECB23A4898127124B9 /* Pods_App_Theme.framework */; };
 		E04A731A2B171D2B00E31764 /* FontParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179F82B0EF981002AB695 /* FontParserTests.swift */; };
+		2A3E81F320D84BFC8A214AE1 /* UIColorHexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D838B177D324C20A195BE14 /* UIColorHexTests.swift */; };
 		E0C716A72B0B05BA00858BAB /* fonts.json in Resources */ = {isa = PBXBuildFile; fileRef = E0C716A62B0B05BA00858BAB /* fonts.json */; };
 		E0C716A92B0B065600858BAB /* FontParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C716A82B0B065600858BAB /* FontParser.swift */; };
 		E0C716AB2B0B0B8E00858BAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0C716AA2B0B0B8E00858BAB /* Assets.xcassets */; };
 		E0D6E69F2B161BD70089F9C9 /* ThemeAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D6E69E2B161BD70089F9C9 /* ThemeAssets.swift */; };
 		E0D6E6A72B16DD4E0089F9C9 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D6E6A62B16DD4E0089F9C9 /* RoundedCorners.swift */; };
+		D8BDB62C7A984EEB82E2B7AD /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77397399EEE64A5E9C59DB05 /* UIColor+Hex.swift */; };
 		E0D6E6B22B16EA380089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE0828D07831006D8A5D /* Theme.framework */; platformFilter = ios; };
 /* End PBXBuildFile section */
 
@@ -63,11 +65,13 @@
 		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
 		E001ADD92B1767C000DE3A03 /* Theme.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Theme.xctestplan; path = ../Theme.xctestplan; sourceTree = "<group>"; };
 		E09179F82B0EF981002AB695 /* FontParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParserTests.swift; sourceTree = "<group>"; };
+		4D838B177D324C20A195BE14 /* UIColorHexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexTests.swift; sourceTree = "<group>"; };
 		E0C716A62B0B05BA00858BAB /* fonts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = fonts.json; sourceTree = "<group>"; };
 		E0C716A82B0B065600858BAB /* FontParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParser.swift; sourceTree = "<group>"; };
 		E0C716AA2B0B0B8E00858BAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0D6E69E2B161BD70089F9C9 /* ThemeAssets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeAssets.swift; sourceTree = "<group>"; };
 		E0D6E6A62B16DD4E0089F9C9 /* RoundedCorners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
+		77397399EEE64A5E9C59DB05 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		E0D6E6AE2B16EA380089F9C9 /* ThemeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThemeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F6E09DC289758CE811EF93D8 /* Pods-App-Theme-ThemeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.release.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -181,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				E09179F82B0EF981002AB695 /* FontParserTests.swift */,
+				4D838B177D324C20A195BE14 /* UIColorHexTests.swift */,
 			);
 			path = ThemeTests;
 			sourceTree = "<group>";
@@ -189,6 +194,7 @@
 			isa = PBXGroup;
 			children = (
 				E0D6E6A62B16DD4E0089F9C9 /* RoundedCorners.swift */,
+				77397399EEE64A5E9C59DB05 /* UIColor+Hex.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -386,6 +392,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0D6E6A72B16DD4E0089F9C9 /* RoundedCorners.swift in Sources */,
+				D8BDB62C7A984EEB82E2B7AD /* UIColor+Hex.swift in Sources */,
 				E0C716A92B0B065600858BAB /* FontParser.swift in Sources */,
 				0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */,
 				E0D6E69F2B161BD70089F9C9 /* ThemeAssets.swift in Sources */,
@@ -397,6 +404,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E04A731A2B171D2B00E31764 /* FontParserTests.swift in Sources */,
+				2A3E81F320D84BFC8A214AE1 /* UIColorHexTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

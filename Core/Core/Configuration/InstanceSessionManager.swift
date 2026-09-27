@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import SwiftUI
+import Theme
 
 /// @mockable
 public protocol InstanceSessionManagerProtocol: Sendable {
@@ -22,6 +24,11 @@ public protocol InstanceSessionManagerProtocol: Sendable {
     /// when it's the active instance; otherwise just clears that instance's stored tokens,
     /// leaving the active session untouched.
     func logout(_ instance: Instance) async
+
+    /// Applies the current instance's accent color (or resets to the app default if none is
+    /// selected). Called once at launch after the catalog resolves -- a persisted-selection
+    /// restore doesn't go through `switchActiveInstance(to:)`, so nothing else triggers it.
+    func applyThemeForCurrentInstance()
 }
 
 public final class InstanceSessionManager: InstanceSessionManagerProtocol {
@@ -46,7 +53,7 @@ public final class InstanceSessionManager: InstanceSessionManagerProtocol {
         // No teardown -- storage, CoreData, and downloads stay untouched.
         instanceStore.select(instance)
 
-        // No ThemeManager yet -- apply per-instance theme here once it exists.
+        applyThemeForCurrentInstance()
     }
 
     public func logoutCurrentInstance() async {
@@ -62,7 +69,7 @@ public final class InstanceSessionManager: InstanceSessionManagerProtocol {
         // Clear selection last, so nothing observes a half-logged-out state.
         instanceStore.select(nil)
 
-        // No ThemeManager yet -- reset theme here once it exists.
+        applyThemeForCurrentInstance()
 
         // CoreData rows and downloaded files are left in place on purpose --
         // see CoreDataHandlerProtocol.clear(instanceKey:) for an explicit wipe.
@@ -74,6 +81,30 @@ public final class InstanceSessionManager: InstanceSessionManagerProtocol {
         } else {
             storage.clearSession(forInstanceKey: instance.key)
         }
+    }
+
+    public func applyThemeForCurrentInstance() {
+        guard let accentColor = Self.resolveAccentColor(for: instanceStore.currentInstance) else {
+            // Nothing selected, or the instance didn't supply an accent_color -- back to
+            // the app-level default (every other Theme.Colors.update() param already
+            // defaults to it).
+            Theme.Colors.update()
+            Theme.UIColors.update()
+            return
+        }
+        Theme.Colors.update(accentColor: Color(uiColor: accentColor))
+        Theme.UIColors.update(accentColor: accentColor)
+    }
+
+    /// A single UIColor that resolves to the instance's light/dark "accent_color" hex per the
+    /// active trait collection -- SwiftUI's `Color(uiColor:)` stays adaptive through this.
+    private static func resolveAccentColor(for instance: Instance?) -> UIColor? {
+        guard let lightHex = instance?.themeColors?.light["accent_color"],
+              let light = UIColor(hex: lightHex) else {
+            return nil
+        }
+        let dark = instance?.themeColors?.dark["accent_color"].flatMap { UIColor(hex: $0) } ?? light
+        return UIColor { $0.userInterfaceStyle == .dark ? dark : light }
     }
 }
 
@@ -102,6 +133,11 @@ public final class InstanceSessionManagerProtocolMock: InstanceSessionManagerPro
         logoutCallCount += 1
         lastLoggedOutInstance = instance
         logoutHandler?(instance)
+    }
+
+    public private(set) var applyThemeForCurrentInstanceCallCount = 0
+    public func applyThemeForCurrentInstance() {
+        applyThemeForCurrentInstanceCallCount += 1
     }
 }
 #endif

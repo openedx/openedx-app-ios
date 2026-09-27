@@ -174,6 +174,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         let config = await loader.load()
         instanceStore.updateInstancesConfig(config)
+
+        // A persisted selection is restored inside updateInstancesConfig() above without
+        // going through switchActiveInstance(to:), so nothing else applies its theme colors.
+        Container.shared.resolve(InstanceSessionManagerProtocol.self)?.applyThemeForCurrentInstance()
     }
 
     private func initDI() {
