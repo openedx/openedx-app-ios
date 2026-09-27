@@ -295,6 +295,7 @@ class ScreenAssembly: Assembly {
             SettingsViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
                 sessionManager: r.resolve(InstanceSessionManagerProtocol.self)!,
+                instanceStore: r.resolve(InstanceStore.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,

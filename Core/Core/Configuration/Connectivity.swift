@@ -43,6 +43,9 @@ public class Connectivity: ConnectivityProtocol {
     private var lastVerificationDate: TimeInterval?
     private var lastVerificationResult: Bool = true
     private var notReachableTask: Task<Void, Never>?
+    /// Not removed in `deinit` -- this is a `.container`-scope singleton, alive for the
+    /// app's whole session.
+    private var instanceObserver: NSObjectProtocol?
 
     // MARK: - Observable property (new way)
     public private(set) var internetState: InternetState? {
@@ -84,6 +87,19 @@ public class Connectivity: ConnectivityProtocol {
     ) {
         self.config = config
         self.verificationTimeout = timeout
+
+        // The first verification often runs before any instance is selected, hits the
+        // placeholder host, and that "offline" verdict then sits cached -- causing a false
+        // offline banner right after login. Re-verify whenever the selected instance changes.
+        instanceObserver = NotificationCenter.default.addObserver(
+            forName: .instanceDidChange,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            Task { @MainActor in
+                await self?.performVerification()
+            }
+        }
 
         networkManager?.startListening(onQueue: .global()) { [weak self] status in
             guard let self = self else { return }

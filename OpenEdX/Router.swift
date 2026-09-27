@@ -132,12 +132,11 @@ public class Router: AuthorizationRouter,
     }
     
     public func showStartupScreen() {
-        // Same branch as RouteController.showStartupScreen() -- a multi-instance catalog
-        // with nothing selected needs the site picker, not Startup/SignIn. Reached when a
-        // full logout (e.g. Settings' Log Out) clears the selection while other sites are
-        // still in the catalog.
+        // Same branch as RouteController.showStartupScreen() -- no valid session exists
+        // here, so for a multi-instance catalog that means the site picker, not
+        // Startup/SignIn. Also covers a full logout that clears the selection while other
+        // sites remain.
         if let instanceStore = Container.shared.resolve(InstanceStore.self),
-           instanceStore.currentInstance == nil,
            instanceStore.instancesConfig.instances.count > 1 {
             let view = LearningSitesView(
                 viewModel: Container.shared.resolve(LearningSitesViewModel.self, argument: false)!

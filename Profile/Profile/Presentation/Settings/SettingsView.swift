@@ -66,11 +66,10 @@ public struct SettingsView: View {
                                     .accessibilityIdentifier("progress_bar")
                             } else {
                                 manageAccount
-                                learningSites
                                 settings
                                 datesAndCalendar
                                 ProfileSupportInfoView(viewModel: viewModel)
-                                logOutButton
+                                currentLearningSite
                             }
                         }
                         .frame(
@@ -164,32 +163,6 @@ public struct SettingsView: View {
         )
     }
     
-    // MARK: - Learning Sites
-
-    @ViewBuilder
-    private var learningSites: some View {
-        VStack(alignment: .leading, spacing: 27) {
-            Button(action: {
-                viewModel.router.showLearningSites()
-            }, label: {
-                HStack {
-                    Text(ProfileLocalization.learningSites)
-                        .font(Theme.Fonts.titleMedium)
-                    Spacer()
-                    Image(systemName: "chevron.right")
-                        .flipsForRightToLeftLayoutDirection(true)
-                }
-            })
-            .accessibilityIdentifier("learning_sites_button")
-        }
-        .accessibilityElement(children: .ignore)
-        .accessibilityLabel(ProfileLocalization.learningSites)
-        .cardStyle(
-            bgColor: Theme.Colors.textInputUnfocusedBackground,
-            strokeColor: .clear
-        )
-    }
-
     // MARK: - Settings
     
     @ViewBuilder
@@ -225,47 +198,98 @@ public struct SettingsView: View {
         )
     }
     
-    // MARK: - Log out
-    
-    private var logOutButton: some View {
-        VStack {
-            Button(action: {
-                viewModel.trackLogoutClickedClicked()
-                viewModel.router.presentView(
-                    transitionStyle: .crossDissolve,
-                    animated: true
-                ) {
-                    AlertView(
-                        alertTitle: ProfileLocalization.LogoutAlert.title,
-                        alertMessage: ProfileLocalization.LogoutAlert.text,
-                        positiveAction: CoreLocalization.Alert.accept,
-                        onCloseTapped: {
-                            viewModel.router.dismiss(animated: true)
-                        },
-                        firstButtonTapped: {
-                            viewModel.router.dismiss(animated: true)
-                            Task {
-                                await viewModel.logOut()
-                            }
-                        },
-                        type: .logOut
-                    )
-                }
-            }, label: {
-                HStack {
-                    Text(ProfileLocalization.logout)
-                    Spacer()
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
-                }
-            })
-            .accessibilityElement(children: .ignore)
-            .accessibilityLabel(ProfileLocalization.logout)
-            .accessibilityIdentifier("logout_button")
+    // MARK: - Current Learning Site
+
+    // One card: the site row (opens the site-switch screen) plus Log Out folded in below it.
+    @ViewBuilder
+    private var currentLearningSite: some View {
+        if let instance = viewModel.currentInstance {
+            Text(ProfileLocalization.currentLearningSite)
+                .padding(.horizontal, 24)
+                .font(Theme.Fonts.labelLarge)
+                .foregroundColor(Theme.Colors.textSecondary)
+                .accessibilityIdentifier("current_learning_site_text")
+                .padding(.top, 12)
+
+            VStack(alignment: .leading, spacing: 0) {
+                Button(action: { viewModel.router.showLearningSites() }, label: {
+                    HStack(spacing: 12) {
+                        InstanceThemedImage(
+                            source: instance.logoURLString,
+                            allowsBundledAsset: true,
+                            fallback: ThemeAssets.appLogo.swiftUIImage
+                        )
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(instance.baseURL.host ?? instance.baseURL.absoluteString)
+                                .font(Theme.Fonts.labelMedium)
+                                .foregroundColor(Theme.Colors.textSecondary)
+                            Text(instance.name)
+                                .font(Theme.Fonts.titleSmall)
+                                .foregroundColor(Theme.Colors.textPrimary)
+                        }
+
+                        Spacer()
+
+                        Image(systemName: "chevron.right")
+                            .flipsForRightToLeftLayoutDirection(true)
+                            .foregroundColor(Theme.Colors.textPrimary)
+                    }
+                    .frame(minHeight: 60)
+                    // Balances cardStyle's top inset so the row centers between the card's
+                    // top edge and the divider, instead of hugging the divider.
+                    .padding(.bottom, 26)
+                })
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(instance.name)
+                .accessibilityIdentifier("current_learning_site_button")
+
+                Divider()
+
+                Button(action: { presentLogOutConfirm() }, label: {
+                    HStack {
+                        Text(ProfileLocalization.logout)
+                        Spacer()
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                    }
+                })
+                .foregroundColor(Theme.Colors.alert)
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(ProfileLocalization.logout)
+                .accessibilityIdentifier("logout_button")
+                .padding(.top, 27)
+            }
+            .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
+            .padding(.bottom, 60)
         }
-        .foregroundColor(Theme.Colors.alert)
-        .cardStyle(bgColor: Theme.Colors.textInputUnfocusedBackground, strokeColor: .clear)
-        .padding(.top, 24)
-        .padding(.bottom, 60)
+    }
+
+    // MARK: - Log out
+
+    private func presentLogOutConfirm() {
+        viewModel.trackLogoutClickedClicked()
+        viewModel.router.presentView(
+            transitionStyle: .crossDissolve,
+            animated: true
+        ) {
+            AlertView(
+                alertTitle: ProfileLocalization.LogoutAlert.title,
+                alertMessage: ProfileLocalization.LogoutAlert.text,
+                positiveAction: CoreLocalization.Alert.accept,
+                onCloseTapped: {
+                    viewModel.router.dismiss(animated: true)
+                },
+                firstButtonTapped: {
+                    viewModel.router.dismiss(animated: true)
+                    Task {
+                        await viewModel.logOut()
+                    }
+                },
+                type: .logOut
+            )
+        }
     }
 }
 
@@ -275,6 +299,7 @@ public struct SettingsView: View {
     let vm = SettingsViewModel(
         interactor: ProfileInteractor.mock,
         sessionManager: InstanceSessionManagerProtocolMock(),
+        instanceStore: InstanceStore(),
         router: router,
         analytics: ProfileAnalyticsPreview(),
         coreAnalytics: CoreAnalyticsMock(),

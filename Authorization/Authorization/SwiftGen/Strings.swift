@@ -77,6 +77,8 @@ public enum AuthLocalization {
     public static let searchPlaceholder = AuthLocalization.tr("Localizable", "LEARNING_SITES.SEARCH_PLACEHOLDER", fallback: "University of Arts & Sciences")
     /// Search
     public static let searchTitle = AuthLocalization.tr("Localizable", "LEARNING_SITES.SEARCH_TITLE", fallback: "Search")
+    /// Select or add a learning site
+    public static let subtitle = AuthLocalization.tr("Localizable", "LEARNING_SITES.SUBTITLE", fallback: "Select or add a learning site")
     /// Learning Sites
     public static let title = AuthLocalization.tr("Localizable", "LEARNING_SITES.TITLE", fallback: "Learning Sites")
     /// Welcome! Select your learning site

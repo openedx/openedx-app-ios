@@ -26,7 +26,7 @@ final class LearningSitesViewModelTests: XCTestCase {
         return InstanceStore(userDefaults: freshUserDefaults(name), instancesConfig: { catalog })
     }
 
-    func test_currentLearningSites_reflectsHasSession() {
+    func test_otherLearningSites_reflectsHasSessionWhenNotCurrent() {
         let storage = CoreStorageMock()
         storage.sessionInstanceKeys = ["acme"]
         let viewModel = LearningSitesViewModel(
@@ -37,7 +37,9 @@ final class LearningSitesViewModelTests: XCTestCase {
             isSwitching: true
         )
 
-        XCTAssertEqual(viewModel.currentLearningSites.map(\.key), ["acme"])
+        // Nothing was `select`-ed on the store, so "acme" is signed in but not current.
+        XCTAssertNil(viewModel.currentInstance)
+        XCTAssertEqual(viewModel.otherLearningSites.map(\.key), ["acme"])
         XCTAssertEqual(viewModel.addableSites.map(\.key), ["beta"])
     }
 
@@ -108,7 +110,7 @@ final class LearningSitesViewModelTests: XCTestCase {
             isSwitching: true
         )
         let acme = store.instance(withKey: "acme")!
-        XCTAssertEqual(viewModel.currentLearningSites.map(\.key), ["acme"])
+        XCTAssertEqual(viewModel.otherLearningSites.map(\.key), ["acme"])
 
         // The mock session manager doesn't touch `storage` itself -- mirror what the real
         // InstanceSessionManager does so `refresh()` sees the logout reflected.
@@ -116,6 +118,28 @@ final class LearningSitesViewModelTests: XCTestCase {
         await viewModel.logOut(acme)
 
         XCTAssertEqual(sessionManager.logoutCallCount, 1)
-        XCTAssertTrue(viewModel.currentLearningSites.isEmpty)
+        XCTAssertTrue(viewModel.otherLearningSites.isEmpty)
+    }
+
+    func test_logOut_ofCurrentInstance_showsStartupScreenInsteadOfRefreshing() async {
+        let router = AuthorizationRouterMock()
+        let sessionManager = InstanceSessionManagerProtocolMock()
+        let storage = CoreStorageMock()
+        storage.sessionInstanceKeys = ["acme"]
+        let store = makeStore(#function)
+        let acme = store.instance(withKey: "acme")!
+        store.select(acme)
+        let viewModel = LearningSitesViewModel(
+            instanceStore: store,
+            storage: storage,
+            sessionManager: sessionManager,
+            router: router,
+            isSwitching: true
+        )
+
+        await viewModel.logOut(acme)
+
+        XCTAssertEqual(sessionManager.logoutCallCount, 1)
+        XCTAssertEqual(router.showStartupScreenCallCount, 1)
     }
 }

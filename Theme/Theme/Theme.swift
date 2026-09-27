@@ -96,6 +96,7 @@ public struct Theme: Sendable {
         public static func update(
             accentColor: Color = ThemeAssets.accentColor.swiftUIColor,
             accentXColor: Color = ThemeAssets.accentXColor.swiftUIColor,
+            accentButtonColor: Color = ThemeAssets.accentButtonColor.swiftUIColor,
             alert: Color = ThemeAssets.alert.swiftUIColor,
             avatarStroke: Color = ThemeAssets.avatarStroke.swiftUIColor,
             background: Color = ThemeAssets.background.swiftUIColor,
@@ -144,6 +145,7 @@ public struct Theme: Sendable {
         ) {
             self.accentColor = accentColor
             self.accentXColor = accentXColor
+            self.accentButtonColor = accentButtonColor
             self.alert = alert
             self.avatarStroke = avatarStroke
             self.background = background

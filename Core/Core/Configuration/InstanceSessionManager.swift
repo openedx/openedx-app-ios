@@ -100,8 +100,14 @@ public final class InstanceSessionManager: InstanceSessionManagerProtocol {
             Self.postAccentColorDidChange()
             return
         }
-        Theme.Colors.update(accentColor: Color(uiColor: accentColor))
-        Theme.UIColors.update(accentColor: accentColor)
+        // accentXColor/accentButtonColor share accentColor's value -- no separate config
+        // key exists for them.
+        Theme.Colors.update(
+            accentColor: Color(uiColor: accentColor),
+            accentXColor: Color(uiColor: accentColor),
+            accentButtonColor: Color(uiColor: accentColor)
+        )
+        Theme.UIColors.update(accentColor: accentColor, accentXColor: accentColor)
         Self.postAccentColorDidChange()
     }
 

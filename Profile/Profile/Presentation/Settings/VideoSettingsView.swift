@@ -135,6 +135,7 @@ public struct VideoSettingsView: View {
         let vm = SettingsViewModel(
             interactor: ProfileInteractor.mock,
             sessionManager: InstanceSessionManagerProtocolMock(),
+            instanceStore: InstanceStore(),
             router: router,
             analytics: ProfileAnalyticsPreview(),
             coreAnalytics: CoreAnalyticsMock(),

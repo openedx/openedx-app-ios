@@ -70,6 +70,7 @@ public final class SettingsViewModel {
     
     private let interactor: ProfileInteractorProtocol
     private let sessionManager: InstanceSessionManagerProtocol
+    private let instanceStore: InstanceStore
     let router: ProfileRouter
     let analytics: ProfileAnalytics
     let coreAnalytics: CoreAnalytics
@@ -77,10 +78,14 @@ public final class SettingsViewModel {
     let corePersistence: CorePersistenceProtocol
     let connectivity: ConnectivityProtocol
     private var coreStorage: CoreStorage
+
+    /// The signed-in instance, shown as the "Current Learning Site" section in Settings.
+    var currentInstance: Instance? { instanceStore.currentInstance }
     
     public init(
         interactor: ProfileInteractorProtocol,
         sessionManager: InstanceSessionManagerProtocol,
+        instanceStore: InstanceStore,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         coreAnalytics: CoreAnalytics,
@@ -91,6 +96,7 @@ public final class SettingsViewModel {
     ) {
         self.interactor = interactor
         self.sessionManager = sessionManager
+        self.instanceStore = instanceStore
         self.router = router
         self.analytics = analytics
         self.coreAnalytics = coreAnalytics

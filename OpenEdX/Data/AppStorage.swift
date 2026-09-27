@@ -417,6 +417,14 @@ public final class AppStorage: CoreStorage,
         keychain.delete("\(key).\(KEY_REFRESH_TOKEN)")
     }
 
+    /// Whether a `user` record survives in UserDefaults for `key`'s instance -- the
+    /// UserDefaults counterpart to `hasSession(forInstanceKey:)`'s Keychain check, used to
+    /// detect Keychain outliving a UserDefaults wipe (reinstall). Not part of `CoreStorage`,
+    /// so it doesn't need mocking everywhere that protocol is.
+    public func hasUserRecord(forInstanceKey key: String) -> Bool {
+        userDefaults.data(forKey: "\(key).\(KEY_USER)") != nil
+    }
+
     private let KEY_ACCESS_TOKEN = "accessToken"
     private let KEY_REFRESH_TOKEN = "refreshToken"
     private let KEY_PUSH_TOKEN = "pushToken"

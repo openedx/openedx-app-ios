@@ -33,6 +33,11 @@ public final class InstanceStore: InstanceProvider, @unchecked Sendable {
         return _remoteInstancesConfig ?? localInstancesConfig()
     }
 
+    /// Looks up an instance in the current catalog by its `key`.
+    public func instance(withKey key: String) -> Instance? {
+        instancesConfig.instance(withKey: key)
+    }
+
     public init(
         userDefaults: UserDefaults = .standard,
         instancesConfig: @escaping () -> InstancesConfig = { InstancesConfig() }

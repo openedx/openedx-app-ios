@@ -40,6 +40,7 @@ final class SettingsViewModelTests: XCTestCase {
         let viewModel = SettingsViewModel(
             interactor: interactor,
             sessionManager: sessionManager,
+            instanceStore: InstanceStore(),
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -80,6 +81,7 @@ final class SettingsViewModelTests: XCTestCase {
         let viewModel = SettingsViewModel(
             interactor: interactor,
             sessionManager: sessionManager,
+            instanceStore: InstanceStore(),
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -118,6 +120,7 @@ final class SettingsViewModelTests: XCTestCase {
         let viewModel = SettingsViewModel(
             interactor: interactor,
             sessionManager: sessionManager,
+            instanceStore: InstanceStore(),
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -156,6 +159,7 @@ final class SettingsViewModelTests: XCTestCase {
         let viewModel = SettingsViewModel(
             interactor: interactor,
             sessionManager: sessionManager,
+            instanceStore: InstanceStore(),
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -194,6 +198,7 @@ final class SettingsViewModelTests: XCTestCase {
         let viewModel = SettingsViewModel(
             interactor: interactor,
             sessionManager: sessionManager,
+            instanceStore: InstanceStore(),
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -232,6 +237,7 @@ final class SettingsViewModelTests: XCTestCase {
         let viewModel = SettingsViewModel(
             interactor: interactor,
             sessionManager: sessionManager,
+            instanceStore: InstanceStore(),
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,

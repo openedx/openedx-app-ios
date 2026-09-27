@@ -62,6 +62,7 @@ accordance with the [Privacy Policy.](%@)";
 "LEARNING_SITES.GET_STARTED" = "Get Started";
 "LEARNING_SITES.WELCOME_SUBTITLE" = "Welcome! Select your learning site";
 "LEARNING_SITES.SEARCH_TITLE" = "Search";
+"LEARNING_SITES.SUBTITLE" = "Select or add a learning site";
 "LEARNING_SITES.CURRENT_SITE" = "Current Learning Site";
 "LEARNING_SITES.MORE_SITES" = "More Learning Sites";
 "LEARNING_SITES.ADD_SITE" = "Add a Learning Site";

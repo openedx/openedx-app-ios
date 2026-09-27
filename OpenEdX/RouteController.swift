@@ -53,10 +53,10 @@ class RouteController: UIViewController {
     }
     
     private func showStartupScreen() {
-        // A multi-instance catalog with nothing selected yet needs the site picker, not
-        // Startup/SignIn -- those assume a single (app-level) destination to sign into.
-        // A single-instance catalog never reaches here: InstanceStore auto-selects it.
-        if instanceStore.currentInstance == nil, instanceStore.instancesConfig.instances.count > 1 {
+        // No valid session exists at this point (see the check above), so for a
+        // multi-instance catalog that means the site picker, not Startup/SignIn. A
+        // single-instance catalog never reaches here -- InstanceStore auto-selects it.
+        if instanceStore.instancesConfig.instances.count > 1 {
             let controller = UIHostingController(
                 rootView: LearningSitesView(
                     viewModel: diContainer.resolve(LearningSitesViewModel.self, argument: false)!

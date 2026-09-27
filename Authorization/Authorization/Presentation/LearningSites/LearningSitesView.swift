@@ -31,22 +31,38 @@ public struct LearningSitesView: View {
 
                 VStack(alignment: .center) {
                     if viewModel.isSwitching {
-                        ZStack {
-                            HStack {
-                                Text(AuthLocalization.LearningSites.title)
-                                    .titleSettings(color: Theme.Colors.loginNavigationText)
-                                    .accessibilityIdentifier("learning_sites_title_text")
+                        // Fixed spacing, not a Spacer -- an unbounded Spacer here would expand
+                        // to fill whatever room the ScrollView below doesn't claim.
+                        VStack(alignment: .leading, spacing: 12) {
+                            BackNavigationButton(
+                                color: Theme.Colors.loginNavigationText,
+                                action: { viewModel.router.back() }
+                            )
+                            .backViewStyle()
+                            .padding(.leading, isHorizontal ? 48 : 16)
+                            .accessibilityIdentifier("back_button")
+
+                            // The site being switched FROM.
+                            if let current = viewModel.currentInstance {
+                                HStack(spacing: 12) {
+                                    InstanceThemedImage(
+                                        source: current.logoURLString,
+                                        allowsBundledAsset: true,
+                                        fallback: ThemeAssets.appLogo.swiftUIImage
+                                    )
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 56, height: 56)
+
+                                    Text(current.name)
+                                        .font(Theme.Fonts.titleLarge)
+                                        .foregroundColor(Theme.Colors.loginNavigationText)
+                                        .accessibilityIdentifier("current_site_header_name")
+                                }
+                                .frame(maxWidth: .infinity, alignment: .center)
+                                .padding(.bottom, 24)
                             }
-                            VStack {
-                                BackNavigationButton(
-                                    color: Theme.Colors.loginNavigationText,
-                                    action: { viewModel.router.back() }
-                                )
-                                .backViewStyle()
-                                .padding(.leading, isHorizontal ? 48 : 0)
-                                .accessibilityIdentifier("back_button")
-                            }.frame(minWidth: 0, maxWidth: .infinity, alignment: .topLeading)
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     } else {
                         ThemeAssets.appLogo.swiftUIImage
                             .resizable()
@@ -59,7 +75,19 @@ public struct LearningSitesView: View {
 
                     ScrollView {
                         VStack(alignment: .leading, spacing: 24) {
-                            if !viewModel.isSwitching {
+                            if viewModel.isSwitching {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(AuthLocalization.LearningSites.title)
+                                        .font(Theme.Fonts.displaySmall)
+                                        .foregroundColor(Theme.Colors.textPrimary)
+                                        .accessibilityIdentifier("learning_sites_title_text")
+
+                                    Text(AuthLocalization.LearningSites.subtitle)
+                                        .font(Theme.Fonts.titleSmall)
+                                        .foregroundColor(Theme.Colors.textSecondary)
+                                        .accessibilityIdentifier("learning_sites_subtitle_text")
+                                }
+                            } else {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(AuthLocalization.LearningSites.getStarted)
                                         .font(Theme.Fonts.displaySmall)
@@ -73,16 +101,24 @@ public struct LearningSitesView: View {
                                 }
                             }
 
-                            if !viewModel.currentLearningSites.isEmpty {
+                            if let current = viewModel.currentInstance {
                                 sitesSection(
                                     title: AuthLocalization.LearningSites.currentSite,
-                                    sites: viewModel.currentLearningSites,
+                                    sites: [current],
+                                    showsLogOut: true
+                                )
+                            }
+
+                            if !viewModel.otherLearningSites.isEmpty {
+                                sitesSection(
+                                    title: AuthLocalization.LearningSites.moreSites,
+                                    sites: viewModel.otherLearningSites,
                                     showsLogOut: true
                                 )
                             }
 
                             sitesSection(
-                                title: AuthLocalization.LearningSites.searchTitle,
+                                title: AuthLocalization.LearningSites.addSite,
                                 sites: viewModel.addableSites,
                                 showsLogOut: false,
                                 searchField: true
@@ -170,12 +206,12 @@ public struct LearningSitesView: View {
             .frame(width: 50, height: 50)
 
             VStack(alignment: .leading, spacing: 2) {
-                Text(instance.name)
-                    .font(Theme.Fonts.titleSmall)
-                    .foregroundColor(Theme.Colors.textPrimary)
                 Text(instance.baseURL.host ?? instance.baseURL.absoluteString)
                     .font(Theme.Fonts.labelMedium)
                     .foregroundColor(Theme.Colors.textSecondary)
+                Text(instance.name)
+                    .font(Theme.Fonts.titleSmall)
+                    .foregroundColor(Theme.Colors.textPrimary)
             }
 
             Spacer()
@@ -188,7 +224,7 @@ public struct LearningSitesView: View {
                 .accessibilityIdentifier("log_out_site_button")
             }
         }
-        .frame(height: 60)
+        .frame(minHeight: 60)
         .contentShape(Rectangle())
         .onTapGesture {
             Task { await viewModel.select(instance) }
