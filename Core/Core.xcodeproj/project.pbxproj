@@ -146,6 +146,7 @@
 		A5F4E7B52B61544A00ACD166 /* BrazeConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5F4E7B42B61544A00ACD166 /* BrazeConfig.swift */; };
 		BA4AFB422B5A7A0900A21367 /* VideoDownloadQualityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */; };
 		BA4AFB442B6A5AF100A21367 /* CheckBoxView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */; };
+		B2AECBAAC7724AB79606BE34 /* InstanceThemedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57672758BE8D441C9F585B61 /* InstanceThemedImage.swift */; };
 		BA593F1C2AF8E498009ADB51 /* ScrollSlidingTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA593F1B2AF8E498009ADB51 /* ScrollSlidingTabBar.swift */; };
 		BA593F1E2AF8E4A0009ADB51 /* FrameReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA593F1D2AF8E4A0009ADB51 /* FrameReader.swift */; };
 		BA8FA6682AD59A5700EA029A /* SocialAuthButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */; };
@@ -379,6 +380,7 @@
 		B2556B4A2D4F84F402A7A7D9 /* Pods-CoreTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CoreTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-CoreTests/Pods-CoreTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityView.swift; sourceTree = "<group>"; };
 		BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CheckBoxView.swift; sourceTree = "<group>"; };
+		57672758BE8D441C9F585B61 /* InstanceThemedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstanceThemedImage.swift; sourceTree = "<group>"; };
 		BA593F1B2AF8E498009ADB51 /* ScrollSlidingTabBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollSlidingTabBar.swift; sourceTree = "<group>"; };
 		BA593F1D2AF8E4A0009ADB51 /* FrameReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FrameReader.swift; sourceTree = "<group>"; };
 		BA8FA6672AD59A5700EA029A /* SocialAuthButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthButton.swift; sourceTree = "<group>"; };
@@ -788,6 +790,7 @@
 				027BD3C42909707700392132 /* Shake.swift */,
 				023A1135291432B200D0D354 /* RegistrationTextField.swift */,
 				BA4AFB432B6A5AF100A21367 /* CheckBoxView.swift */,
+				57672758BE8D441C9F585B61 /* InstanceThemedImage.swift */,
 				023A1137291432FD00D0D354 /* FieldConfiguration.swift */,
 				BA4AFB412B5A7A0900A21367 /* VideoDownloadQualityView.swift */,
 				BA593F1A2AF8E487009ADB51 /* ScrollSlidingTabBar */,
@@ -1275,6 +1278,7 @@
 				064987992B4D69FF0071642A /* WebViewScriptInjectionProtocol.swift in Sources */,
 				070019AE28F701B200D5FC78 /* Certificate.swift in Sources */,
 				BA4AFB442B6A5AF100A21367 /* CheckBoxView.swift in Sources */,
+				B2AECBAAC7724AB79606BE34 /* InstanceThemedImage.swift in Sources */,
 				076F297F2A1F80C800967E7D /* Pagination.swift in Sources */,
 				14769D3C2B9822EE00AB36D4 /* CoreAnalytics.swift in Sources */,
 				CEC873BE2D75D55600A2626C /* CourseStructureManagerProtocol.swift in Sources */,

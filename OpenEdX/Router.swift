@@ -132,6 +132,21 @@ public class Router: AuthorizationRouter,
     }
     
     public func showStartupScreen() {
+        // Same branch as RouteController.showStartupScreen() -- a multi-instance catalog
+        // with nothing selected needs the site picker, not Startup/SignIn. Reached when a
+        // full logout (e.g. Settings' Log Out) clears the selection while other sites are
+        // still in the catalog.
+        if let instanceStore = Container.shared.resolve(InstanceStore.self),
+           instanceStore.currentInstance == nil,
+           instanceStore.instancesConfig.instances.count > 1 {
+            let view = LearningSitesView(
+                viewModel: Container.shared.resolve(LearningSitesViewModel.self, argument: false)!
+            )
+            let controller = UIHostingController(rootView: view)
+            navigationController.setViewControllers([controller], animated: true)
+            return
+        }
+
         if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
             let view = StartupView(viewModel: Container.shared.resolve(StartupViewModel.self)!)
             let controller = UIHostingController(rootView: view)
@@ -802,6 +817,13 @@ public class Router: AuthorizationRouter,
     public func showManageAccount() {
         let viewModel = Container.shared.resolve(ManageAccountViewModel.self)!
         let view = ManageAccountView(viewModel: viewModel)
+        let controller = UIHostingController(rootView: view)
+        navigationController.pushViewController(controller, animated: true)
+    }
+
+    public func showLearningSites() {
+        let viewModel = Container.shared.resolve(LearningSitesViewModel.self, argument: true)!
+        let view = LearningSitesView(viewModel: viewModel)
         let controller = UIHostingController(rootView: view)
         navigationController.pushViewController(controller, animated: true)
     }

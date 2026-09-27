@@ -127,7 +127,7 @@ public struct VideoQualityView: View {
     let router = ProfileRouterPreview()
     let vm = SettingsViewModel(
         interactor: ProfileInteractor.mock,
-        downloadManager: DownloadManagerMock(),
+        sessionManager: InstanceSessionManagerProtocolMock(),
         router: router,
         analytics: ProfileAnalyticsPreview(),
         coreAnalytics: CoreAnalyticsMock(),

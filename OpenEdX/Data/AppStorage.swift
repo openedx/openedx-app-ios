@@ -404,6 +404,19 @@ public final class AppStorage: CoreStorage,
         }
     }
 
+    /// Checks a specific instance's session without switching the active instance --
+    /// namespaced keychain entries already exist per instance, this just reads one directly.
+    public func hasSession(forInstanceKey key: String) -> Bool {
+        keychain.get("\(key).\(KEY_ACCESS_TOKEN)") != nil
+    }
+
+    /// Clears a specific instance's tokens without switching the active instance or touching
+    /// its downloaded content -- the non-current-instance counterpart to `clear()`.
+    public func clearSession(forInstanceKey key: String) {
+        keychain.delete("\(key).\(KEY_ACCESS_TOKEN)")
+        keychain.delete("\(key).\(KEY_REFRESH_TOKEN)")
+    }
+
     private let KEY_ACCESS_TOKEN = "accessToken"
     private let KEY_REFRESH_TOKEN = "refreshToken"
     private let KEY_PUSH_TOKEN = "pushToken"

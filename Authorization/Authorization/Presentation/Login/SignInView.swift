@@ -27,10 +27,12 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
-                    .edgesIgnoringSafeArea(.top)
-                    .accessibilityIdentifier("auth_bg_image")
+                InstanceThemedImage(
+                    source: viewModel.currentInstance?.headerBackgroundURLString,
+                    fallback: ThemeAssets.headerBackground.swiftUIImage
+                )
+                .edgesIgnoringSafeArea(.top)
+                .accessibilityIdentifier("auth_bg_image")
             }.frame(maxWidth: .infinity, maxHeight: 200)
             if viewModel.config.features.startupScreenEnabled {
                 VStack {
@@ -49,13 +51,16 @@ public struct SignInView: View {
             }
             
             VStack(alignment: .center) {
-                ThemeAssets.appLogo.swiftUIImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 189, maxHeight: 89)
-                    .padding(.top, isHorizontal ? 20 : 40)
-                    .padding(.bottom, isHorizontal ? 10 : 40)
-                    .accessibilityIdentifier("logo_image")
+                InstanceThemedImage(
+                    source: viewModel.currentInstance?.logoURLString,
+                    allowsBundledAsset: true,
+                    fallback: ThemeAssets.appLogo.swiftUIImage
+                )
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: 189, maxHeight: 89)
+                .padding(.top, isHorizontal ? 20 : 40)
+                .padding(.bottom, isHorizontal ? 10 : 40)
+                .accessibilityIdentifier("logo_image")
                 
                 GeometryReader { proxy in
                     ScrollView {
@@ -332,6 +337,7 @@ struct SignInView_Previews: PreviewProvider {
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator(),
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
         

@@ -36,6 +36,8 @@ public enum ProfileLocalization {
   public static let logout = ProfileLocalization.tr("Localizable", "LOGOUT", fallback: "Log out")
   /// Manage Account
   public static let manageAccount = ProfileLocalization.tr("Localizable", "MANAGE_ACCOUNT", fallback: "Manage Account")
+  /// Learning Sites
+  public static let learningSites = ProfileLocalization.tr("Localizable", "LEARNING_SITES", fallback: "Learning Sites")
   /// Privacy policy
   public static let privacy = ProfileLocalization.tr("Localizable", "PRIVACY", fallback: "Privacy policy")
   /// Settings

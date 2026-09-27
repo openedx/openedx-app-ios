@@ -91,9 +91,20 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!,
                 storage: r.resolve(CoreStorage.self)!,
+                instanceProvider: r.resolve(InstanceProvider.self)!,
                 sourceScreen: sourceScreen
             )
         }
+        container.register(LearningSitesViewModel.self) { @MainActor r, isSwitching in
+            LearningSitesViewModel(
+                instanceStore: r.resolve(InstanceStore.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                sessionManager: r.resolve(InstanceSessionManagerProtocol.self)!,
+                router: r.resolve(AuthorizationRouter.self)!,
+                isSwitching: isSwitching
+            )
+        }
+
         container.register(SSOWebViewModel.self) { @MainActor r in
             SSOWebViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
@@ -283,7 +294,7 @@ class ScreenAssembly: Assembly {
         container.register(SettingsViewModel.self) { @MainActor r in
             SettingsViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
-                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
+                sessionManager: r.resolve(InstanceSessionManagerProtocol.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,

@@ -69,7 +69,7 @@ public final class SettingsViewModel {
     private(set) var userSettings: UserSettings
     
     private let interactor: ProfileInteractorProtocol
-    private let downloadManager: DownloadManagerProtocol
+    private let sessionManager: InstanceSessionManagerProtocol
     let router: ProfileRouter
     let analytics: ProfileAnalytics
     let coreAnalytics: CoreAnalytics
@@ -80,7 +80,7 @@ public final class SettingsViewModel {
     
     public init(
         interactor: ProfileInteractorProtocol,
-        downloadManager: DownloadManagerProtocol,
+        sessionManager: InstanceSessionManagerProtocol,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         coreAnalytics: CoreAnalytics,
@@ -90,7 +90,7 @@ public final class SettingsViewModel {
         coreStorage: CoreStorage
     ) {
         self.interactor = interactor
-        self.downloadManager = downloadManager
+        self.sessionManager = sessionManager
         self.router = router
         self.analytics = analytics
         self.coreAnalytics = coreAnalytics
@@ -166,7 +166,7 @@ public final class SettingsViewModel {
     
     func logOut() async {
         try? await interactor.logOut()
-        try? await downloadManager.cancelAllDownloading()
+        await sessionManager.logoutCurrentInstance()
         await corePersistence.deleteAllProgress()
         router.showStartupScreen()
         analytics.userLogout(force: false)

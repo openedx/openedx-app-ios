@@ -55,3 +55,13 @@ accordance with the [Privacy Policy.](%@)";
 "STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
 "STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";
 "STARTUP.TITLE" = "Start";
+
+"LEARNING_SITES.TITLE" = "Learning Sites";
+"LEARNING_SITES.CURRENT_SITE" = "Current Learning Site";
+"LEARNING_SITES.MORE_SITES" = "More Learning Sites";
+"LEARNING_SITES.ADD_SITE" = "Add a Learning Site";
+"LEARNING_SITES.SEARCH_PLACEHOLDER" = "Search for your school";
+"LEARNING_SITES.EMPTY_SEARCH" = "No schools match your search";
+"LEARNING_SITES.LOG_OUT_TITLE" = "Log Out";
+"LEARNING_SITES.LOG_OUT_MESSAGE" = "Are you sure you want to log out of %@?";
+"LEARNING_SITES.LOG_OUT_ACTION" = "Log Out";

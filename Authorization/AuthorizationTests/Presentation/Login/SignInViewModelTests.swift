@@ -35,6 +35,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 
@@ -59,6 +60,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
         await viewModel.login(username: "edxUser@edx.com", password: "")
@@ -82,6 +84,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
@@ -110,6 +113,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
         let user = User(id: 1, username: "username", email: "edxUser@edx.com", name: "Name", userAvatar: "")
@@ -137,6 +141,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 
@@ -169,6 +174,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 
@@ -205,6 +211,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 
@@ -235,6 +242,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 
@@ -261,6 +269,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 
@@ -287,6 +296,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 
@@ -315,6 +325,7 @@ final class SignInViewModelTests: XCTestCase {
             analytics: analytics,
             validator: validator,
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
 

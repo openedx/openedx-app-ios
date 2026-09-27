@@ -118,6 +118,28 @@ public enum AuthLocalization {
     /// Start
     public static let title = AuthLocalization.tr("Localizable", "STARTUP.TITLE", fallback: "Start")
   }
+  public enum LearningSites {
+    /// Learning Sites
+    public static let title = AuthLocalization.tr("Localizable", "LEARNING_SITES.TITLE", fallback: "Learning Sites")
+    /// Current Learning Site
+    public static let currentSite = AuthLocalization.tr("Localizable", "LEARNING_SITES.CURRENT_SITE", fallback: "Current Learning Site")
+    /// More Learning Sites
+    public static let moreSites = AuthLocalization.tr("Localizable", "LEARNING_SITES.MORE_SITES", fallback: "More Learning Sites")
+    /// Add a Learning Site
+    public static let addSite = AuthLocalization.tr("Localizable", "LEARNING_SITES.ADD_SITE", fallback: "Add a Learning Site")
+    /// Search for your school
+    public static let searchPlaceholder = AuthLocalization.tr("Localizable", "LEARNING_SITES.SEARCH_PLACEHOLDER", fallback: "Search for your school")
+    /// No schools match your search
+    public static let emptySearch = AuthLocalization.tr("Localizable", "LEARNING_SITES.EMPTY_SEARCH", fallback: "No schools match your search")
+    /// Log Out
+    public static let logOutTitle = AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_TITLE", fallback: "Log Out")
+    /// Are you sure you want to log out of %@?
+    public static func logOutMessage(_ p1: Any) -> String {
+      return AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_MESSAGE", String(describing: p1), fallback: "Are you sure you want to log out of %@?")
+    }
+    /// Log Out
+    public static let logOutAction = AuthLocalization.tr("Localizable", "LEARNING_SITES.LOG_OUT_ACTION", fallback: "Log Out")
+  }
 }
 // swiftlint:enable explicit_type_interface function_parameter_count identifier_name line_length
 // swiftlint:enable nesting type_body_length type_name vertical_whitespace_opening_braces

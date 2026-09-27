@@ -66,6 +66,7 @@ public struct SettingsView: View {
                                     .accessibilityIdentifier("progress_bar")
                             } else {
                                 manageAccount
+                                learningSites
                                 settings
                                 datesAndCalendar
                                 ProfileSupportInfoView(viewModel: viewModel)
@@ -163,6 +164,32 @@ public struct SettingsView: View {
         )
     }
     
+    // MARK: - Learning Sites
+
+    @ViewBuilder
+    private var learningSites: some View {
+        VStack(alignment: .leading, spacing: 27) {
+            Button(action: {
+                viewModel.router.showLearningSites()
+            }, label: {
+                HStack {
+                    Text(ProfileLocalization.learningSites)
+                        .font(Theme.Fonts.titleMedium)
+                    Spacer()
+                    Image(systemName: "chevron.right")
+                        .flipsForRightToLeftLayoutDirection(true)
+                }
+            })
+            .accessibilityIdentifier("learning_sites_button")
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(ProfileLocalization.learningSites)
+        .cardStyle(
+            bgColor: Theme.Colors.textInputUnfocusedBackground,
+            strokeColor: .clear
+        )
+    }
+
     // MARK: - Settings
     
     @ViewBuilder
@@ -247,7 +274,7 @@ public struct SettingsView: View {
     let router = ProfileRouterPreview()
     let vm = SettingsViewModel(
         interactor: ProfileInteractor.mock,
-        downloadManager: DownloadManagerMock(),
+        sessionManager: InstanceSessionManagerProtocolMock(),
         router: router,
         analytics: ProfileAnalyticsPreview(),
         coreAnalytics: CoreAnalyticsMock(),

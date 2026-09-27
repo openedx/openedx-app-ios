@@ -20,7 +20,7 @@ final class SettingsViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
-        let downloadManager = DownloadManagerProtocolMock()
+        let sessionManager = InstanceSessionManagerProtocolMock()
         let corePersistence = CorePersistenceProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let config = ConfigProtocolMock()
@@ -39,7 +39,7 @@ final class SettingsViewModelTests: XCTestCase {
 
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: downloadManager,
+            sessionManager: sessionManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -51,6 +51,7 @@ final class SettingsViewModelTests: XCTestCase {
 
         await viewModel.logOut()
 
+        XCTAssertEqual(sessionManager.logoutCurrentInstanceCallCount, 1)
         XCTAssertEqual(router.showStartupScreenCallCount, 1)
         XCTAssertFalse(viewModel.showError)
     }
@@ -61,7 +62,7 @@ final class SettingsViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
-        let downloadManager = DownloadManagerProtocolMock()
+        let sessionManager = InstanceSessionManagerProtocolMock()
         let corePersistence = CorePersistenceProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let config = ConfigProtocolMock()
@@ -78,7 +79,7 @@ final class SettingsViewModelTests: XCTestCase {
 
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: downloadManager,
+            sessionManager: sessionManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -99,7 +100,7 @@ final class SettingsViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
-        let downloadManager = DownloadManagerProtocolMock()
+        let sessionManager = InstanceSessionManagerProtocolMock()
         let corePersistence = CorePersistenceProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let config = ConfigProtocolMock()
@@ -116,7 +117,7 @@ final class SettingsViewModelTests: XCTestCase {
 
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: downloadManager,
+            sessionManager: sessionManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -137,7 +138,7 @@ final class SettingsViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
-        let downloadManager = DownloadManagerProtocolMock()
+        let sessionManager = InstanceSessionManagerProtocolMock()
         let corePersistence = CorePersistenceProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let config = ConfigProtocolMock()
@@ -154,7 +155,7 @@ final class SettingsViewModelTests: XCTestCase {
 
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: downloadManager,
+            sessionManager: sessionManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -175,7 +176,7 @@ final class SettingsViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
-        let downloadManager = DownloadManagerProtocolMock()
+        let sessionManager = InstanceSessionManagerProtocolMock()
         let corePersistence = CorePersistenceProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let config = ConfigProtocolMock()
@@ -192,7 +193,7 @@ final class SettingsViewModelTests: XCTestCase {
 
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: downloadManager,
+            sessionManager: sessionManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
@@ -213,7 +214,7 @@ final class SettingsViewModelTests: XCTestCase {
         let analytics = ProfileAnalyticsMock()
         let coreAnalytics = CoreAnalyticsMock()
         let storage = CoreStorageMock()
-        let downloadManager = DownloadManagerProtocolMock()
+        let sessionManager = InstanceSessionManagerProtocolMock()
         let corePersistence = CorePersistenceProtocolMock()
         let connectivity = ConnectivityProtocolMock()
         let config = ConfigProtocolMock()
@@ -230,7 +231,7 @@ final class SettingsViewModelTests: XCTestCase {
 
         let viewModel = SettingsViewModel(
             interactor: interactor,
-            downloadManager: downloadManager,
+            sessionManager: sessionManager,
             router: router,
             analytics: analytics,
             coreAnalytics: coreAnalytics,
