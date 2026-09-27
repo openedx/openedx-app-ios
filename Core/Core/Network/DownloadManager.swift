@@ -238,10 +238,15 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         self.filePathProvider = filePathProvider
         if let userId = appStorage.user?.id {
             persistence.set(userId: userId)
-            Task {
-                await self.addObsevers()
-                await self.backgroundTask()
-            }
+        }
+        // DownloadManager is a container-scope singleton, first built at app launch
+        // (RouteController resolves it before any login screen shows) -- gating this
+        // behind an already-logged-in user meant it never ran for the app's whole
+        // life on a fresh launch, so the .userAuthorized/.instanceDidChange queue
+        // reset below never actually wired up. Always start observing.
+        Task {
+            await self.addObsevers()
+            await self.backgroundTask()
         }
     }
     
@@ -260,6 +265,24 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
                 }
             }
             .store(in: &cancellables)
+
+        // queue caches CorePersistence rows in memory, keyed only by courseId/blockId
+        // (no userId/instanceKey). CorePersistence itself re-scopes correctly on every
+        // login/instance switch, but this cache doesn't -- so a stale queue from before
+        // the switch leaks "finished" entries into a different user/instance that
+        // happens to share the same course/block ids. Drop it so the next read refetches.
+        NotificationCenter.default.publisher(for: .userAuthorized)
+            .merge(with: NotificationCenter.default.publisher(for: .instanceDidChange))
+            .sink { [weak self] _ in
+                Task { [weak self] in
+                    await self?.resetQueue()
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    private func resetQueue() {
+        queue = []
     }
     
     nonisolated private func observeConnectivity() {

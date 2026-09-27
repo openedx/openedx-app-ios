@@ -146,6 +146,15 @@ public class Connectivity: ConnectivityProtocol {
     }
 
     private func verifyInternet() async -> Bool {
+        if await headCheck() { return true }
+        // A single failed check -- especially the very first one, which can land right as
+        // the app cold-launches -- is often the network stack still warming up, not real
+        // offline. Retry once before trusting it and showing the offline banner.
+        try? await Task.sleep(nanoseconds: 800_000_000)
+        return await headCheck()
+    }
+
+    private func headCheck() async -> Bool {
         var request = URLRequest(url: config.baseURL)
         request.httpMethod = "HEAD"
         request.timeoutInterval = verificationTimeout

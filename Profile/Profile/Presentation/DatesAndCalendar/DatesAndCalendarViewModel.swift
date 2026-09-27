@@ -78,8 +78,10 @@ public final class DatesAndCalendarViewModel {
     private var persistence: ProfilePersistenceProtocol
     private var calendarManager: CalendarManagerProtocol
     private var connectivity: ConnectivityProtocol
+    private let instanceStore: InstanceStore
 
     var calendarNameHint: String
+    var currentInstance: Instance? { instanceStore.currentInstance }
     
     public init(
         router: ProfileRouter,
@@ -87,7 +89,8 @@ public final class DatesAndCalendarViewModel {
         profileStorage: ProfileStorage,
         persistence: ProfilePersistenceProtocol,
         calendarManager: CalendarManagerProtocol,
-        connectivity: ConnectivityProtocol
+        connectivity: ConnectivityProtocol,
+        instanceStore: InstanceStore
     ) {
         self.router = router
         self.interactor = interactor
@@ -95,6 +98,7 @@ public final class DatesAndCalendarViewModel {
         self.persistence = persistence
         self.calendarManager = calendarManager
         self.connectivity = connectivity
+        self.instanceStore = instanceStore
         self.calendarNameHint = ProfileLocalization.Calendar.courseDates((Bundle.main.applicationName ?? ""))
     }
     

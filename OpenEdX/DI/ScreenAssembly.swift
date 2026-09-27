@@ -313,7 +313,8 @@ class ScreenAssembly: Assembly {
                 profileStorage: r.resolve(ProfileStorage.self)!,
                 persistence: r.resolve(ProfilePersistenceProtocol.self)!,
                 calendarManager: r.resolve(CalendarManagerProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                instanceStore: r.resolve(InstanceStore.self)!
             )
         }
         .inObjectScope(.weak)
@@ -324,7 +325,8 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                interactor: r.resolve(ProfileInteractorProtocol.self)!
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                instanceStore: r.resolve(InstanceStore.self)!
             )
         }
         

@@ -25,9 +25,11 @@ public struct SettingsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.headerBackground.swiftUIImage
-                        .resizable()
-                        .edgesIgnoringSafeArea(.top)
+                    InstanceThemedImage(
+                        source: viewModel.currentInstance?.headerBackgroundURLString,
+                        fallback: ThemeAssets.headerBackground.swiftUIImage
+                    )
+                    .edgesIgnoringSafeArea(.top)
                 }
                 .frame(maxWidth: .infinity, maxHeight: 50)
                 .accessibilityIdentifier("auth_bg_image")
@@ -204,49 +206,54 @@ public struct SettingsView: View {
     @ViewBuilder
     private var currentLearningSite: some View {
         if let instance = viewModel.currentInstance {
-            Text(ProfileLocalization.currentLearningSite)
-                .padding(.horizontal, 24)
-                .font(Theme.Fonts.labelLarge)
-                .foregroundColor(Theme.Colors.textSecondary)
-                .accessibilityIdentifier("current_learning_site_text")
-                .padding(.top, 12)
+            // Single-instance deployments have nothing to switch between -- only Log Out applies.
+            if viewModel.hasMultipleInstances {
+                Text(ProfileLocalization.currentLearningSite)
+                    .padding(.horizontal, 24)
+                    .font(Theme.Fonts.labelLarge)
+                    .foregroundColor(Theme.Colors.textSecondary)
+                    .accessibilityIdentifier("current_learning_site_text")
+                    .padding(.top, 12)
+            }
 
             VStack(alignment: .leading, spacing: 0) {
-                Button(action: { viewModel.router.showLearningSites() }, label: {
-                    HStack(spacing: 12) {
-                        InstanceThemedImage(
-                            source: instance.logoURLString,
-                            allowsBundledAsset: true,
-                            fallback: ThemeAssets.appLogo.swiftUIImage
-                        )
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50, height: 50)
+                if viewModel.hasMultipleInstances {
+                    Button(action: { viewModel.router.showLearningSites() }, label: {
+                        HStack(spacing: 12) {
+                            InstanceThemedImage(
+                                source: instance.logoURLString,
+                                allowsBundledAsset: true,
+                                fallback: ThemeAssets.appLogo.swiftUIImage
+                            )
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 50, height: 50)
 
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(instance.baseURL.host ?? instance.baseURL.absoluteString)
-                                .font(Theme.Fonts.labelMedium)
-                                .foregroundColor(Theme.Colors.textSecondary)
-                            Text(instance.name)
-                                .font(Theme.Fonts.titleSmall)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(instance.baseURL.host ?? instance.baseURL.absoluteString)
+                                    .font(Theme.Fonts.labelMedium)
+                                    .foregroundColor(Theme.Colors.textSecondary)
+                                Text(instance.name)
+                                    .font(Theme.Fonts.titleSmall)
+                                    .foregroundColor(Theme.Colors.textPrimary)
+                            }
+
+                            Spacer()
+
+                            Image(systemName: "chevron.right")
+                                .flipsForRightToLeftLayoutDirection(true)
                                 .foregroundColor(Theme.Colors.textPrimary)
                         }
+                        .frame(minHeight: 60)
+                        // Balances cardStyle's top inset so the row centers between the card's
+                        // top edge and the divider, instead of hugging the divider.
+                        .padding(.bottom, 26)
+                    })
+                    .accessibilityElement(children: .ignore)
+                    .accessibilityLabel(instance.name)
+                    .accessibilityIdentifier("current_learning_site_button")
 
-                        Spacer()
-
-                        Image(systemName: "chevron.right")
-                            .flipsForRightToLeftLayoutDirection(true)
-                            .foregroundColor(Theme.Colors.textPrimary)
-                    }
-                    .frame(minHeight: 60)
-                    // Balances cardStyle's top inset so the row centers between the card's
-                    // top edge and the divider, instead of hugging the divider.
-                    .padding(.bottom, 26)
-                })
-                .accessibilityElement(children: .ignore)
-                .accessibilityLabel(instance.name)
-                .accessibilityIdentifier("current_learning_site_button")
-
-                Divider()
+                    Divider()
+                }
 
                 Button(action: { presentLogOutConfirm() }, label: {
                     HStack {

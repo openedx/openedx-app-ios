@@ -24,9 +24,11 @@ public struct VideoQualityView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.headerBackground.swiftUIImage
-                        .resizable()
-                        .edgesIgnoringSafeArea(.top)
+                    InstanceThemedImage(
+                        source: viewModel.currentInstance?.headerBackgroundURLString,
+                        fallback: ThemeAssets.headerBackground.swiftUIImage
+                    )
+                    .edgesIgnoringSafeArea(.top)
                 }
                 .frame(maxWidth: .infinity, maxHeight: 200)
                 .accessibilityIdentifier("auth_bg_image")

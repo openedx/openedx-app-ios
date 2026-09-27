@@ -81,6 +81,7 @@ public final class SettingsViewModel {
 
     /// The signed-in instance, shown as the "Current Learning Site" section in Settings.
     var currentInstance: Instance? { instanceStore.currentInstance }
+    var hasMultipleInstances: Bool { instanceStore.instancesConfig.instances.count > 1 }
     
     public init(
         interactor: ProfileInteractorProtocol,

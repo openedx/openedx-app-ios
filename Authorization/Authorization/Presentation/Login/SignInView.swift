@@ -66,7 +66,7 @@ public struct SignInView: View {
                     ScrollView {
                         VStack {
                             VStack(alignment: .leading) {
-                                if let instance = viewModel.currentInstance {
+                                if let instance = viewModel.currentInstance, viewModel.hasMultipleInstances {
                                     selectedSiteSection(instance)
                                         .padding(.bottom, 20)
                                         .accessibilityIdentifier("selected_site_section")

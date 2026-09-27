@@ -49,6 +49,7 @@ import MSAL
     /// The instance being signed into, for per-instance branding. `nil` on a single-instance
     /// deployment, where the static default branding applies.
     var currentInstance: Instance? { instanceProvider.currentInstance }
+    var hasMultipleInstances: Bool { instanceProvider.hasMultipleInstances }
 
     public init(
         interactor: AuthInteractorProtocol,

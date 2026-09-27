@@ -8,11 +8,13 @@
 import SwiftUI
 import Kingfisher
 import Theme
+import Swinject
 
 @Observable
 public final class VideoDownloadQualityViewModel {
 
     var didSelect: ((DownloadQuality) -> Void)?
+    var currentInstance: Instance? { Container.shared.resolve(InstanceStore.self)?.currentInstance }
     let downloadQuality = DownloadQuality.allCases
     
     var selectedDownloadQuality: DownloadQuality {
@@ -58,9 +60,11 @@ public struct VideoDownloadQualityView: View {
             ZStack(alignment: .top) {
                 if !isModal {
                     VStack {
-                        ThemeAssets.headerBackground.swiftUIImage
-                            .resizable()
-                            .edgesIgnoringSafeArea(.top)
+                        InstanceThemedImage(
+                            source: viewModel.currentInstance?.headerBackgroundURLString,
+                            fallback: ThemeAssets.headerBackground.swiftUIImage
+                        )
+                        .edgesIgnoringSafeArea(.top)
                     }
                     .frame(maxWidth: .infinity, maxHeight: 200)
                     .accessibilityIdentifier("auth_bg_image")
