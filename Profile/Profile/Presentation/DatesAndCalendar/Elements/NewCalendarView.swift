@@ -167,7 +167,8 @@ struct NewCalendarView: View {
             profileStorage: ProfileStoragePreview(),
             persistence: ProfilePersistencePreview(),
             calendarManager: CalendarManagerMock(),
-            connectivity: Connectivity(config: ConfigMock())
+            connectivity: Connectivity(config: ConfigMock()),
+            instanceStore: InstanceStore()
         ),
         beginSyncingTapped: {
         },

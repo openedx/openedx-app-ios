@@ -341,6 +341,14 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
         }
         
     }
+
+    public var sessionInstanceKeys: Set<String> = []
+    public func hasSession(forInstanceKey key: String) -> Bool {
+        sessionInstanceKeys.contains(key)
+    }
+    public func clearSession(forInstanceKey key: String) {
+        sessionInstanceKeys.remove(key)
+    }
 }
 
 public final class AuthInteractorProtocolMock: AuthInteractorProtocol, @unchecked Sendable {

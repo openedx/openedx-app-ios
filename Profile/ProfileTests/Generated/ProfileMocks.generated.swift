@@ -342,6 +342,14 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
         }
         
     }
+
+    public var sessionInstanceKeys: Set<String> = []
+    public func hasSession(forInstanceKey key: String) -> Bool {
+        sessionInstanceKeys.contains(key)
+    }
+    public func clearSession(forInstanceKey key: String) {
+        sessionInstanceKeys.remove(key)
+    }
 }
 
 public final class AuthInteractorProtocolMock: AuthInteractorProtocol, @unchecked Sendable {
@@ -1780,6 +1788,25 @@ public final class ProfileRouterMock: ProfileRouter, @unchecked Sendable {
         }
         if let showManageAccountHandler = showManageAccountHandler {
             showManageAccountHandler()
+        }
+        
+    }
+
+    private let showLearningSitesState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> ()>())
+    public var showLearningSitesCallCount: Int {
+        return showLearningSitesState.withLock(\.callCount)
+    }
+    public var showLearningSitesHandler: (@Sendable () -> ())? {
+        get { showLearningSitesState.withLock(\.handler) }
+        set { showLearningSitesState.withLock { $0.handler = newValue } }
+    }
+    public func showLearningSites() {
+        let showLearningSitesHandler = showLearningSitesState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let showLearningSitesHandler = showLearningSitesHandler {
+            showLearningSitesHandler()
         }
         
     }

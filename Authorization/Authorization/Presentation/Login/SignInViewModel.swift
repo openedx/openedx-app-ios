@@ -44,6 +44,12 @@ import MSAL
     private let analytics: AuthorizationAnalytics
     private let validator: Validator
     let storage: CoreStorage
+    private let instanceProvider: InstanceProvider
+
+    /// The instance being signed into, for per-instance branding. `nil` on a single-instance
+    /// deployment, where the static default branding applies.
+    var currentInstance: Instance? { instanceProvider.currentInstance }
+    var hasMultipleInstances: Bool { instanceProvider.hasMultipleInstances }
 
     public init(
         interactor: AuthInteractorProtocol,
@@ -52,6 +58,7 @@ import MSAL
         analytics: AuthorizationAnalytics,
         validator: Validator,
         storage: CoreStorage,
+        instanceProvider: InstanceProvider,
         sourceScreen: LogistrationSourceScreen
     ) {
         self.interactor = interactor
@@ -60,6 +67,7 @@ import MSAL
         self.analytics = analytics
         self.validator = validator
         self.storage = storage
+        self.instanceProvider = instanceProvider
         self.sourceScreen = sourceScreen
     }
 

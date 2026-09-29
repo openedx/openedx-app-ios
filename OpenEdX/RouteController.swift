@@ -29,6 +29,10 @@ class RouteController: UIViewController {
     private lazy var coreAnalytics: CoreAnalytics = {
         diContainer.resolve(CoreAnalytics.self)!
     }()
+
+    private lazy var instanceStore: InstanceStore = {
+        diContainer.resolve(InstanceStore.self)!
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +53,20 @@ class RouteController: UIViewController {
     }
     
     private func showStartupScreen() {
+        // No valid session exists at this point (see the check above), so for a
+        // multi-instance catalog that means the site picker, not Startup/SignIn. A
+        // single-instance catalog never reaches here -- InstanceStore auto-selects it.
+        if instanceStore.instancesConfig.instances.count > 1 {
+            let controller = UIHostingController(
+                rootView: LearningSitesView(
+                    viewModel: diContainer.resolve(LearningSitesViewModel.self, argument: false)!
+                )
+            )
+            navigation.viewControllers = [controller]
+            present(navigation, animated: false)
+            return
+        }
+
         if let config = Container.shared.resolve(ConfigProtocol.self), config.features.startupScreenEnabled {
             let controller = UIHostingController(
                 rootView: StartupView(viewModel: diContainer.resolve(StartupViewModel.self)!))

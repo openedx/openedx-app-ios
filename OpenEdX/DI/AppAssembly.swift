@@ -249,12 +249,11 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { @MainActor r in
-            let config = r.resolve(ConfigProtocol.self)!
-            return PipManager(
+            PipManager(
                 router: r.resolve(Router.self)!,
                 discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
-                courseDropDownNavigationEnabled: config.uiComponents.courseDropDownNavigationEnabled
+                config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
 

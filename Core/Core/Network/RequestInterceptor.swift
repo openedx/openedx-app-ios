@@ -25,10 +25,19 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
     private let storage: CoreStorage
     private let instanceStore: InstanceProvider
     
+    /// `config.baseURL` is itself instance-aware (`InstanceAwareConfig`) and moves on every
+    /// switch. `API`'s own baseURL is a one-time snapshot taken at DI registration
+    /// (NetworkAssembly) -- captured here too, at the same moment (same resolution chain, no
+    /// instance switch can land in between), so `rewriteHostIfNeeded` keeps comparing against
+    /// what requests are actually still built with, not against a value that's since moved on
+    /// to whatever instance is currently selected.
+    private let defaultHost: String?
+    
     public init(config: ConfigProtocol, storage: CoreStorage, instanceStore: InstanceProvider) {
         self.config = config
         self.storage = storage
         self.instanceStore = instanceStore
+        self.defaultHost = config.baseURL.host
     }
     
     private let lock = NSLock()
@@ -85,7 +94,7 @@ final public class RequestInterceptor: Alamofire.RequestInterceptor {
               let requestURL = request.url,
               var components = URLComponents(url: requestURL, resolvingAgainstBaseURL: false),
               let targetComponents = URLComponents(url: instance.baseURL, resolvingAgainstBaseURL: false),
-              requestURL.host == config.baseURL.host
+              requestURL.host == defaultHost
         else {
             // No instance selected, the instance host can't be parsed, or this request
             // wasn't built against the app's default base URL to begin with.

@@ -27,10 +27,19 @@ public final class InstanceStore: InstanceProvider, @unchecked Sendable {
         return _currentInstance
     }
 
+    public var hasMultipleInstances: Bool {
+        instancesConfig.instances.count > 1
+    }
+
     /// The catalog currently in effect: the remote one once set, else `localInstancesConfig`.
     public var instancesConfig: InstancesConfig {
         lock.lock(); defer { lock.unlock() }
         return _remoteInstancesConfig ?? localInstancesConfig()
+    }
+
+    /// Looks up an instance in the current catalog by its `key`.
+    public func instance(withKey key: String) -> Instance? {
+        instancesConfig.instance(withKey: key)
     }
 
     public init(

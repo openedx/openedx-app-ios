@@ -14,6 +14,8 @@ import OEXFoundation
 public protocol InstanceProvider: Sendable {
     /// `nil` when no instance is selected (e.g. single-instance deployment).
     var currentInstance: Instance? { get }
+    /// Whether the catalog has more than one instance to switch between.
+    var hasMultipleInstances: Bool { get }
 }
 
 // MARK: - Instance
@@ -404,8 +406,10 @@ public extension Instance {
 
 public final class InstanceProviderMock: InstanceProvider, @unchecked Sendable {
     public var currentInstance: Instance?
-    public init(currentInstance: Instance? = .mock()) {
+    public var hasMultipleInstances: Bool
+    public init(currentInstance: Instance? = .mock(), hasMultipleInstances: Bool = true) {
         self.currentInstance = currentInstance
+        self.hasMultipleInstances = hasMultipleInstances
     }
 }
 #endif

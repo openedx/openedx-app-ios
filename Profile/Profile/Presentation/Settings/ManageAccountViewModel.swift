@@ -30,19 +30,24 @@ public final class ManageAccountViewModel {
     let config: ConfigProtocol
     let connectivity: ConnectivityProtocol
     private let interactor: ProfileInteractorProtocol
+    private let instanceStore: InstanceStore
+
+    var currentInstance: Instance? { instanceStore.currentInstance }
     
     public init(
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         config: ConfigProtocol,
         connectivity: ConnectivityProtocol,
-        interactor: ProfileInteractorProtocol
+        interactor: ProfileInteractorProtocol,
+        instanceStore: InstanceStore
     ) {
         self.router = router
         self.analytics = analytics
         self.config = config
         self.connectivity = connectivity
         self.interactor = interactor
+        self.instanceStore = instanceStore
     }
     
     @MainActor

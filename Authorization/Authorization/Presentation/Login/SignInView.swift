@@ -27,12 +27,14 @@ public struct SignInView: View {
     public var body: some View {
         ZStack(alignment: .top) {
             VStack {
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
-                    .edgesIgnoringSafeArea(.top)
-                    .accessibilityIdentifier("auth_bg_image")
+                InstanceThemedImage(
+                    source: viewModel.currentInstance?.headerBackgroundURLString,
+                    fallback: ThemeAssets.headerBackground.swiftUIImage
+                )
+                .edgesIgnoringSafeArea(.top)
+                .accessibilityIdentifier("auth_bg_image")
             }.frame(maxWidth: .infinity, maxHeight: 200)
-            if viewModel.config.features.startupScreenEnabled {
+            if viewModel.config.features.startupScreenEnabled || viewModel.sourceScreen == .learningSites {
                 VStack {
                     BackNavigationButton(
                         color: Theme.Colors.loginNavigationText,
@@ -49,18 +51,26 @@ public struct SignInView: View {
             }
             
             VStack(alignment: .center) {
-                ThemeAssets.appLogo.swiftUIImage
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 189, maxHeight: 89)
-                    .padding(.top, isHorizontal ? 20 : 40)
-                    .padding(.bottom, isHorizontal ? 10 : 40)
-                    .accessibilityIdentifier("logo_image")
+                InstanceThemedImage(
+                    source: viewModel.currentInstance?.logoURLString,
+                    allowsBundledAsset: true,
+                    fallback: ThemeAssets.appLogo.swiftUIImage
+                )
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: 189, maxHeight: 89)
+                .padding(.top, isHorizontal ? 20 : 40)
+                .padding(.bottom, isHorizontal ? 10 : 40)
+                .accessibilityIdentifier("logo_image")
                 
                 GeometryReader { proxy in
                     ScrollView {
                         VStack {
                             VStack(alignment: .leading) {
+                                if let instance = viewModel.currentInstance, viewModel.hasMultipleInstances {
+                                    selectedSiteSection(instance)
+                                        .padding(.bottom, 20)
+                                        .accessibilityIdentifier("selected_site_section")
+                                }
                                 if viewModel.config.uiComponents.loginRegistrationEnabled {
                                     Text(AuthLocalization.SignIn.logInTitle)
                                         .font(Theme.Fonts.displaySmall)
@@ -293,6 +303,42 @@ public struct SignInView: View {
         }
     }
     
+    private func selectedSiteSection(_ instance: Instance) -> some View {
+        HStack(spacing: 12) {
+            InstanceThemedImage(
+                source: instance.logoURLString,
+                allowsBundledAsset: true,
+                fallback: ThemeAssets.appLogo.swiftUIImage
+            )
+            .aspectRatio(contentMode: .fit)
+            .frame(width: 32, height: 32)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(AuthLocalization.SignIn.selectedSite)
+                    .font(Theme.Fonts.labelSmall)
+                    .foregroundColor(Theme.Colors.textSecondary)
+                Text(instance.name)
+                    .font(Theme.Fonts.bodyLarge)
+                    .foregroundColor(Theme.Colors.textPrimary)
+            }
+
+            Spacer()
+
+            Button(AuthLocalization.SignIn.change) {
+                viewModel.router.back()
+            }
+            .font(Theme.Fonts.labelLarge)
+            .foregroundColor(Theme.Colors.accentColor)
+            .accessibilityIdentifier("change_site_button")
+        }
+        .padding(12)
+        .overlay(
+            Theme.Shapes.textInputShape
+                .stroke(lineWidth: 1)
+                .fill(Theme.Colors.textInputStroke)
+        )
+    }
+
     @ViewBuilder
     private var agreements: some View {
         if let eulaURL = viewModel.config.agreement.eulaURL,
@@ -332,6 +378,7 @@ struct SignInView_Previews: PreviewProvider {
             analytics: AuthorizationAnalyticsMock(),
             validator: Validator(),
             storage: CoreStorageMock(),
+            instanceProvider: InstanceProviderMock(),
             sourceScreen: .default
         )
         

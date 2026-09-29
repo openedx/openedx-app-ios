@@ -6,6 +6,15 @@
 //
 
 import Foundation
+import SwiftUI
+import Theme
+
+extension Notification.Name {
+    /// Posted whenever `applyThemeForCurrentInstance()` updates `Theme.Colors`/`Theme.UIColors`.
+    /// `UIWindow.tintColor` is a one-time snapshot, not a live binding to those statics -- the
+    /// app layer observes this to refresh it. See AppDelegate.
+    public static let accentColorDidChange = Notification.Name("org.openedx.core.accentColorDidChange")
+}
 
 /// @mockable
 public protocol InstanceSessionManagerProtocol: Sendable {
@@ -17,6 +26,16 @@ public protocol InstanceSessionManagerProtocol: Sendable {
     /// storage, then clears the selection. Leaves CoreData rows and downloaded files
     /// in place so a later re-login resumes fast.
     func logoutCurrentInstance() async
+
+    /// Logs out of `instance`'s session. Routes to `logoutCurrentInstance()` (full teardown)
+    /// when it's the active instance; otherwise just clears that instance's stored tokens,
+    /// leaving the active session untouched.
+    func logout(_ instance: Instance) async
+
+    /// Applies the current instance's accent color (or resets to the app default if none is
+    /// selected). Called once at launch after the catalog resolves -- a persisted-selection
+    /// restore doesn't go through `switchActiveInstance(to:)`, so nothing else triggers it.
+    func applyThemeForCurrentInstance()
 }
 
 public final class InstanceSessionManager: InstanceSessionManagerProtocol {
@@ -41,7 +60,7 @@ public final class InstanceSessionManager: InstanceSessionManagerProtocol {
         // No teardown -- storage, CoreData, and downloads stay untouched.
         instanceStore.select(instance)
 
-        // No ThemeManager yet -- apply per-instance theme here once it exists.
+        applyThemeForCurrentInstance()
     }
 
     public func logoutCurrentInstance() async {
@@ -57,9 +76,99 @@ public final class InstanceSessionManager: InstanceSessionManagerProtocol {
         // Clear selection last, so nothing observes a half-logged-out state.
         instanceStore.select(nil)
 
-        // No ThemeManager yet -- reset theme here once it exists.
+        applyThemeForCurrentInstance()
 
         // CoreData rows and downloaded files are left in place on purpose --
         // see CoreDataHandlerProtocol.clear(instanceKey:) for an explicit wipe.
     }
+
+    public func logout(_ instance: Instance) async {
+        if instanceStore.currentInstance?.key == instance.key {
+            await logoutCurrentInstance()
+        } else {
+            storage.clearSession(forInstanceKey: instance.key)
+        }
+    }
+
+    public func applyThemeForCurrentInstance() {
+        guard let accentColor = Self.resolveAccentColor(for: instanceStore.currentInstance) else {
+            // Nothing selected, or the instance didn't supply an accent_color -- back to
+            // the app-level default (every other Theme.Colors.update() param already
+            // defaults to it).
+            Theme.Colors.update()
+            Theme.UIColors.update()
+            Self.postAccentColorDidChange()
+            return
+        }
+        // accentXColor/accentButtonColor share accentColor's value -- no separate config
+        // key exists for them.
+        Theme.Colors.update(
+            accentColor: Color(uiColor: accentColor),
+            accentXColor: Color(uiColor: accentColor),
+            accentButtonColor: Color(uiColor: accentColor)
+        )
+        Theme.UIColors.update(accentColor: accentColor, accentXColor: accentColor)
+        Self.postAccentColorDidChange()
+    }
+
+    /// This type isn't actor-isolated, so `applyThemeForCurrentInstance()` can run off the
+    /// main thread (e.g. called via `await` from a nonisolated async context). `post(...)`
+    /// delivers to every observer SYNCHRONOUSLY on the posting thread, and AppDelegate's
+    /// observer touches `UIWindow.tintColor` -- touching UIKit off-main crashed
+    /// (EXC_BREAKPOINT) the moment an instance was selected. Always post from main.
+    private static func postAccentColorDidChange() {
+        if Thread.isMainThread {
+            NotificationCenter.default.post(name: .accentColorDidChange, object: nil)
+        } else {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .accentColorDidChange, object: nil)
+            }
+        }
+    }
+
+    /// A single UIColor that resolves to the instance's light/dark "accent_color" hex per the
+    /// active trait collection -- SwiftUI's `Color(uiColor:)` stays adaptive through this.
+    /// Falls back to the instance's flat `color` field when THEME.LIGHT.accent_color isn't set,
+    /// per `Instance.themeColors`'s own doc comment ("nil derives the palette from color").
+    private static func resolveAccentColor(for instance: Instance?) -> UIColor? {
+        guard let instance else { return nil }
+        let lightHex = instance.themeColors?.light["accent_color"] ?? instance.color
+        guard let light = UIColor(hex: lightHex) else { return nil }
+        let dark = instance.themeColors?.dark["accent_color"].flatMap { UIColor(hex: $0) } ?? light
+        return UIColor { $0.userInterfaceStyle == .dark ? dark : light }
+    }
 }
+
+#if DEBUG
+public final class InstanceSessionManagerProtocolMock: InstanceSessionManagerProtocol, @unchecked Sendable {
+    public private(set) var switchActiveInstanceCallCount = 0
+    public private(set) var logoutCurrentInstanceCallCount = 0
+    public private(set) var logoutCallCount = 0
+    public private(set) var lastLoggedOutInstance: Instance?
+
+    /// Optional side effect run by `logout(_:)`, for tests that need to simulate the real
+    /// implementation's storage mutation (e.g. clearing a `CoreStorageMock` session key).
+    public var logoutHandler: ((Instance) -> Void)?
+
+    public init() {}
+
+    public func switchActiveInstance(to instance: Instance) async {
+        switchActiveInstanceCallCount += 1
+    }
+
+    public func logoutCurrentInstance() async {
+        logoutCurrentInstanceCallCount += 1
+    }
+
+    public func logout(_ instance: Instance) async {
+        logoutCallCount += 1
+        lastLoggedOutInstance = instance
+        logoutHandler?(instance)
+    }
+
+    public private(set) var applyThemeForCurrentInstanceCallCount = 0
+    public func applyThemeForCurrentInstance() {
+        applyThemeForCurrentInstanceCallCount += 1
+    }
+}
+#endif

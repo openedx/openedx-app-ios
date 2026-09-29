@@ -48,7 +48,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
 
         // When
@@ -82,7 +83,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
 
         // When
@@ -120,7 +122,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
 
         // When
@@ -170,7 +173,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
 
         // When
@@ -201,7 +205,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
 
         // When
@@ -229,7 +234,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
 
         // When
@@ -263,7 +269,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
         viewModel.coursesForSync = [course]
 
@@ -321,7 +328,8 @@ final class DatesAndCalendarViewModelTests: XCTestCase {
             profileStorage: profileStorage,
             persistence: persistence,
             calendarManager: calendarManager,
-            connectivity: connectivity
+            connectivity: connectivity,
+            instanceStore: InstanceStore()
         )
         viewModel.calendarName = "New Calendar"
 

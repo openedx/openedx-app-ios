@@ -25,6 +25,8 @@ public protocol CoreStorage: Sendable {
     var latestAvailableAppVersion: String? {get set}
     var updateAppRequired: Bool {get set}
     func clear()
+    func hasSession(forInstanceKey key: String) -> Bool
+    func clearSession(forInstanceKey key: String)
 }
 
 #if DEBUG
@@ -45,6 +47,15 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
     public var latestAvailableAppVersion: String?
     public var updateAppRequired: Bool = false
     public func clear() {}
+
+    /// Namespace -> hasSession override, for tests. `hasSession(forInstanceKey:)` looks here.
+    public var sessionInstanceKeys: Set<String> = []
+    public func hasSession(forInstanceKey key: String) -> Bool {
+        sessionInstanceKeys.contains(key)
+    }
+    public func clearSession(forInstanceKey key: String) {
+        sessionInstanceKeys.remove(key)
+    }
     
     public init() {}
 }

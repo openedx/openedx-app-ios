@@ -101,6 +101,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
 
+        // window.tintColor isn't live-bound to Theme.UIColors.accentColor -- it's a one-time
+        // snapshot, so anything relying on the inherited tint (nav bars, back buttons, bar
+        // button items) needs this to pick up a later instance switch/logout.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(accentColorDidChange),
+            name: .accentColorDidChange,
+            object: nil
+        )
+
         return true
     }
 
@@ -174,6 +184,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         let config = await loader.load()
         instanceStore.updateInstancesConfig(config)
+
+        // A persisted selection is restored inside updateInstancesConfig() above without
+        // going through switchActiveInstance(to:), so nothing else applies its theme colors.
+        Container.shared.resolve(InstanceSessionManagerProtocol.self)?.applyThemeForCurrentInstance()
+
+        reconcileStaleKeychainSessions(against: instanceStore)
+    }
+
+    /// Keychain survives an app delete + reinstall; UserDefaults doesn't. Left alone, a
+    /// reinstall shows every previously-logged-in instance as still signed in (Keychain has
+    /// a token) with no matching UserDefaults `user` record -- tapping one opens Home with a
+    /// dead token. A real login/logout always sets/clears both together, so that mismatch
+    /// only means a reinstall; reconcile it for every instance on every launch.
+    ///
+    /// Must run after `updateInstancesConfig(_:)` above, once the real catalog (not the
+    /// bundled placeholder) is loaded.
+    private func reconcileStaleKeychainSessions(against instanceStore: InstanceStore) {
+        guard let appStorage = Container.shared.resolve(AppStorage.self) else { return }
+        for instance in instanceStore.instancesConfig.instances
+        where appStorage.hasSession(forInstanceKey: instance.key)
+            && !appStorage.hasUserRecord(forInstanceKey: instance.key) {
+            appStorage.clearSession(forInstanceKey: instance.key)
+        }
+
+        // UserDefaults writes aren't guaranteed to hit disk before an abrupt process kill
+        // (e.g. Xcode's Stop button), so a logout right before that can leave the selected-
+        // instance pointer stuck on an instance with no session. Deselect it here too.
+        if let current = instanceStore.currentInstance, !appStorage.hasSession(forInstanceKey: current.key) {
+            instanceStore.select(nil)
+        }
     }
 
     private func initDI() {
@@ -192,6 +232,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     @objc private func didUserAuthorize() {
         Container.shared.resolve(PushNotificationsManager.self)?.synchronizeToken()
+    }
+
+    @objc private func accentColorDidChange() {
+        window?.tintColor = Theme.UIColors.accentColor
     }
     
     @objc func didUserLogout(_ notification: Notification) {

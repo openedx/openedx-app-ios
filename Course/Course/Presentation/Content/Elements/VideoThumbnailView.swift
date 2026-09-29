@@ -92,6 +92,7 @@ struct VideoThumbnailView: View {
         thumbnailHeight: CGFloat = 108,
         isCurrentVideo: Bool = false
     ) {
+        self.type = type
         self.thumbnailData = thumbnailData
         self.thumbnailImage = thumbnailImage
         self.isGeneratingThumbnail = isGeneratingThumbnail
