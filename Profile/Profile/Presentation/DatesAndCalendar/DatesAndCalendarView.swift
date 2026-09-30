@@ -25,8 +25,10 @@ public struct DatesAndCalendarView: View {
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
-                ThemeAssets.headerBackground.swiftUIImage
-                    .resizable()
+                InstanceThemedImage(
+                    source: viewModel.currentInstance?.headerBackgroundURLString,
+                    fallback: ThemeAssets.headerBackground.swiftUIImage
+                )
                     .edgesIgnoringSafeArea(.top)
                     .frame(maxWidth: .infinity, maxHeight: 200)
                     .accessibilityIdentifier("title_bg_image")
@@ -188,7 +190,8 @@ struct DatesAndCalendarView_Previews: PreviewProvider {
             profileStorage: ProfileStoragePreview(),
             persistence: ProfilePersistencePreview(),
             calendarManager: CalendarManagerMock(),
-            connectivity: Connectivity(config: ConfigMock())
+            connectivity: Connectivity(config: ConfigMock()),
+            instanceStore: InstanceStore()
         )
         DatesAndCalendarView(viewModel: vm)
             .loadFonts()

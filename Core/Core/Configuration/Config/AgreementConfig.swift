@@ -17,7 +17,8 @@ private enum AgreementKeys: String, RawStringExtractable {
     case supportedLanguages = "SUPPORTED_LANGUAGES"
 }
 
-public class AgreementConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class AgreementConfig: NSObject, @unchecked Sendable {
     public var privacyPolicyURL: URL?
     public var tosURL: URL?
     public var cookiePolicyURL: URL?

@@ -13,7 +13,8 @@ private enum FeaturesKeys: String {
     case appLevelDatesEnabled = "APP_LEVEL_DATES_ENABLED"
 }
 
-public class FeaturesConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class FeaturesConfig: NSObject, @unchecked Sendable {
     public var whatNewEnabled: Bool
     public var startupScreenEnabled: Bool
     public var appLevelDatesEnabled: Bool

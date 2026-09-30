@@ -1,0 +1,45 @@
+{
+    "FIREBASE": {
+        "ENABLED": false,
+        "ANALYTICS_SOURCE": "firebase",
+        "CLOUD_MESSAGING_ENABLED": false,
+        "API_KEY": "",
+        "BUNDLE_ID": "",
+        "CLIENT_ID": "",
+        "DATABASE_URL": "",
+        "GCM_SENDER_ID": "",
+        "GOOGLE_APP_ID": "",
+        "PROJECT_ID": "",
+        "REVERSED_CLIENT_ID": "",
+        "STORAGE_BUCKET": ""
+    },
+    "FACEBOOK": {
+        "ENABLED": false,
+        "FACEBOOK_APP_ID": "",
+        "CLIENT_TOKEN": ""
+    },
+    "MICROSOFT": {
+        "ENABLED": false,
+        "CLIENT_ID": ""
+    },
+    "GOOGLE": {
+        "ENABLED": false,
+        "GOOGLE_PLUS_KEY": "",
+        "CLIENT_ID": ""
+    },
+    "APPLE_SIGNIN": {
+        "ENABLED": false
+    },
+    "BRANCH": {
+        "ENABLED": false,
+        "KEY": ""
+    },
+    "URI_SCHEME": "org.openedx.app",
+    "APP_STORE_ID": "0000000000",
+    "API_HOST_URL": "https://example-instance.example.com",
+    "SSO_URL": "https://example-instance.example.com/auth/login/tpa-saml/?auth_entry=login",
+    "SSO_FINISHED_URL": "https://example-instance.example.com/auth/login/tpa-saml/auth/complete/tpa-saml",
+    "OAUTH_CLIENT_ID": "example-oauth-client-id",
+    "INSTANCES_CATALOG_URL": "",
+    "INSTANCES": []
+}

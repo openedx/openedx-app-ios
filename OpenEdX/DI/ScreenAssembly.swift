@@ -91,9 +91,20 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(AuthorizationAnalytics.self)!,
                 validator: r.resolve(Validator.self)!,
                 storage: r.resolve(CoreStorage.self)!,
+                instanceProvider: r.resolve(InstanceProvider.self)!,
                 sourceScreen: sourceScreen
             )
         }
+        container.register(LearningSitesViewModel.self) { @MainActor r, isSwitching in
+            LearningSitesViewModel(
+                instanceStore: r.resolve(InstanceStore.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                sessionManager: r.resolve(InstanceSessionManagerProtocol.self)!,
+                router: r.resolve(AuthorizationRouter.self)!,
+                isSwitching: isSwitching
+            )
+        }
+
         container.register(SSOWebViewModel.self) { @MainActor r in
             SSOWebViewModel(
                 interactor: r.resolve(AuthInteractorProtocol.self)!,
@@ -283,7 +294,8 @@ class ScreenAssembly: Assembly {
         container.register(SettingsViewModel.self) { @MainActor r in
             SettingsViewModel(
                 interactor: r.resolve(ProfileInteractorProtocol.self)!,
-                downloadManager: r.resolve(DownloadManagerProtocol.self)!,
+                sessionManager: r.resolve(InstanceSessionManagerProtocol.self)!,
+                instanceStore: r.resolve(InstanceStore.self)!,
                 router: r.resolve(ProfileRouter.self)!,
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 coreAnalytics: r.resolve(CoreAnalytics.self)!,
@@ -301,7 +313,8 @@ class ScreenAssembly: Assembly {
                 profileStorage: r.resolve(ProfileStorage.self)!,
                 persistence: r.resolve(ProfilePersistenceProtocol.self)!,
                 calendarManager: r.resolve(CalendarManagerProtocol.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                instanceStore: r.resolve(InstanceStore.self)!
             )
         }
         .inObjectScope(.weak)
@@ -312,7 +325,8 @@ class ScreenAssembly: Assembly {
                 analytics: r.resolve(ProfileAnalytics.self)!,
                 config: r.resolve(ConfigProtocol.self)!,
                 connectivity: r.resolve(ConnectivityProtocol.self)!,
-                interactor: r.resolve(ProfileInteractorProtocol.self)!
+                interactor: r.resolve(ProfileInteractorProtocol.self)!,
+                instanceStore: r.resolve(InstanceStore.self)!
             )
         }
         
@@ -364,7 +378,10 @@ class ScreenAssembly: Assembly {
         
         // MARK: Course
         container.register(CoursePersistenceProtocol.self) { r in
-            CoursePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+            CoursePersistence(
+                container: r.resolve(DatabaseManager.self)!.getPersistentContainer(),
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }
         
         container.register(CourseDetailsViewModel.self) { @MainActor r in
@@ -717,7 +734,10 @@ class ScreenAssembly: Assembly {
         // MARK: Downloads
         
         container.register(DownloadsPersistenceProtocol.self) { r in
-            DownloadsPersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+            DownloadsPersistence(
+                container: r.resolve(DatabaseManager.self)!.getPersistentContainer(),
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }
         
         container.register(DownloadsRepositoryProtocol.self) { r in

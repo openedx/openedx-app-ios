@@ -13,8 +13,36 @@ import Swinject
 
 class NetworkAssembly: Assembly {
     func assemble(container: Container) {
+        container.register(InstanceStore.self) { _ in
+            InstanceStore()
+        }.inObjectScope(.container)
+
+        container.register(InstanceProvider.self) { r in
+            r.resolve(InstanceStore.self)!
+        }.inObjectScope(.container)
+
+        container.register(InstanceFilePathProvider.self) { r in
+            InstanceFilePathProvider(instanceStore: r.resolve(InstanceProvider.self)!)
+        }.inObjectScope(.container)
+
+        container.register(InstanceApiServiceProtocol.self) { _ in
+            // INSTANCES_CATALOG_URL now lives in the bundled config.json's app-level
+            // keys (see InstanceConfigLoader.bundledCatalogURL()), not ConfigProtocol --
+            // that property is dead weight, left in place only until the ConfigProtocol
+            // cleanup pass that retires YAML for the app-level keys still on Config too.
+            InstanceApiService(url: InstanceConfigLoader.bundledCatalogURL())
+        }.inObjectScope(.container)
+
+        container.register(InstanceConfigLoader.self) { r in
+            InstanceConfigLoader(apiService: r.resolve(InstanceApiServiceProtocol.self)!)
+        }.inObjectScope(.container)
+
         container.register(RequestInterceptor.self) { r in
-            RequestInterceptor(config: r.resolve(ConfigProtocol.self)!, storage: r.resolve(CoreStorage.self)!)
+            RequestInterceptor(
+                config: r.resolve(ConfigProtocol.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(Alamofire.Session.self) { r in

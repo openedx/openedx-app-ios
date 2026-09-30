@@ -76,10 +76,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Theme.Fonts.registerFonts()
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = RouteController()
-        window?.makeKeyAndVisible()
         window?.tintColor = Theme.UIColors.accentColor
-          
+
+        // Wait for the instance catalog before showing anything, so routing happens
+        // against the real catalog, not the bundled placeholder. The Launch Screen stays up
+        // for the wait -- makeKeyAndVisible() is what ends it, so no extra UI is needed.
+        Task {
+            await loadInstanceCatalog()
+            window?.rootViewController = RouteController()
+            window?.makeKeyAndVisible()
+        }
+
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(didUserAuthorize),
@@ -91,6 +98,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             self,
             selector: #selector(didUserLogout),
             name: .userLoggedOut,
+            object: nil
+        )
+
+        // window.tintColor isn't live-bound to Theme.UIColors.accentColor -- it's a one-time
+        // snapshot, so anything relying on the inherited tint (nav bars, back buttons, bar
+        // button items) needs this to pick up a later instance switch/logout.
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(accentColorDidChange),
+            name: .accentColorDidChange,
             object: nil
         )
 
@@ -158,6 +175,47 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize your plugins here
     }
 
+    /// Fetches the remote instance catalog and hands it to `InstanceStore`. Falls back to
+    /// the bundled/cached catalog near-instantly if no URL is configured or the fetch fails.
+    private func loadInstanceCatalog() async {
+        guard let loader = Container.shared.resolve(InstanceConfigLoader.self),
+              let instanceStore = Container.shared.resolve(InstanceStore.self) else {
+            return
+        }
+        let config = await loader.load()
+        instanceStore.updateInstancesConfig(config)
+
+        // A persisted selection is restored inside updateInstancesConfig() above without
+        // going through switchActiveInstance(to:), so nothing else applies its theme colors.
+        Container.shared.resolve(InstanceSessionManagerProtocol.self)?.applyThemeForCurrentInstance()
+
+        reconcileStaleKeychainSessions(against: instanceStore)
+    }
+
+    /// Keychain survives an app delete + reinstall; UserDefaults doesn't. Left alone, a
+    /// reinstall shows every previously-logged-in instance as still signed in (Keychain has
+    /// a token) with no matching UserDefaults `user` record -- tapping one opens Home with a
+    /// dead token. A real login/logout always sets/clears both together, so that mismatch
+    /// only means a reinstall; reconcile it for every instance on every launch.
+    ///
+    /// Must run after `updateInstancesConfig(_:)` above, once the real catalog (not the
+    /// bundled placeholder) is loaded.
+    private func reconcileStaleKeychainSessions(against instanceStore: InstanceStore) {
+        guard let appStorage = Container.shared.resolve(AppStorage.self) else { return }
+        for instance in instanceStore.instancesConfig.instances
+        where appStorage.hasSession(forInstanceKey: instance.key)
+            && !appStorage.hasUserRecord(forInstanceKey: instance.key) {
+            appStorage.clearSession(forInstanceKey: instance.key)
+        }
+
+        // UserDefaults writes aren't guaranteed to hit disk before an abrupt process kill
+        // (e.g. Xcode's Stop button), so a logout right before that can leave the selected-
+        // instance pointer stuck on an instance with no session. Deselect it here too.
+        if let current = instanceStore.currentInstance, !appStorage.hasSession(forInstanceKey: current.key) {
+            instanceStore.select(nil)
+        }
+    }
+
     private func initDI() {
         let navigation = UINavigationController()
         navigation.modalPresentationStyle = .fullScreen
@@ -175,6 +233,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     @objc private func didUserAuthorize() {
         Container.shared.resolve(PushNotificationsManager.self)?.synchronizeToken()
     }
+
+    @objc private func accentColorDidChange() {
+        window?.tintColor = Theme.UIColors.accentColor
+    }
     
     @objc func didUserLogout(_ notification: Notification) {
         guard Date().timeIntervalSince1970 - lastForceLogoutTime > 5 else {
@@ -186,14 +248,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             analyticsManager?.userLogout(force: true)
             
             lastForceLogoutTime = Date().timeIntervalSince1970
-            Container.shared.resolve(CoreStorage.self)?.clear()
-            
+
+            // Routes through InstanceSessionManager instead of duplicating cleanup here.
             Task {
-                await Container.shared.resolve(CorePersistenceProtocol.self)?.deleteAllProgress()
-                await Container.shared.resolve(DownloadManagerProtocol.self)?.deleteAll()
-                await Container.shared.resolve(CoreDataHandlerProtocol.self)?.clear()
+                await Container.shared.resolve(InstanceSessionManagerProtocol.self)?.logoutCurrentInstance()
+                window?.rootViewController = RouteController()
             }
-            window?.rootViewController = RouteController()
         }
         
         UNUserNotificationCenter.current().removeAllDeliveredNotifications()

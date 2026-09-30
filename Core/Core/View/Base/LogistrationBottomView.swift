@@ -15,6 +15,9 @@ public enum LogistrationSourceScreen: Equatable, Sendable {
     case discovery
     case courseDetail(String, String)
     case programDetails(String)
+    /// Reached via the Learning Sites picker (launch or Settings) -- the sign-in screen's
+    /// back button is valid here even when `startupScreenEnabled` is off.
+    case learningSites
     
     public var value: String? {
         return String(describing: self).components(separatedBy: "(").first

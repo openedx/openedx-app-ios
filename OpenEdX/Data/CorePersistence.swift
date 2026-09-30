@@ -18,12 +18,17 @@ public final class CorePersistence: CorePersistenceProtocol {
             predicate: CDPredicate? = nil,
             fetchLimit: Int? = nil,
             context: NSManagedObjectContext,
-            userId: Int32?
+            userId: Int32?,
+            instanceKey: String
         ) throws -> [CDDownloadData] {
             let request = CDDownloadData.fetchRequest()
+            // Every read is scoped to the current instance first, then narrowed further
+            // by whatever CDPredicate the caller asked for.
+            var subpredicates: [NSPredicate] = [NSPredicate(format: "instanceKey == %@", instanceKey)]
             if let predicate = predicate {
-                request.predicate = predicate.predicate
+                subpredicates.append(predicate.predicate)
             }
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: subpredicates)
             if let fetchLimit = fetchLimit {
                 request.fetchLimit = fetchLimit
             }
@@ -62,10 +67,16 @@ public final class CorePersistence: CorePersistenceProtocol {
 
     private let container: NSPersistentContainer
     private let context: NSManagedObjectContext
-    
-    public init(container: NSPersistentContainer) {
+    private let instanceStore: InstanceProvider
+
+    /// Read fresh on every access so an instance switch mid-session is reflected on
+    /// the very next call, not just at init.
+    private var instanceKey: String { instanceStore.currentInstanceKey }
+
+    public init(container: NSPersistentContainer, instanceStore: InstanceProvider) {
         self.container = container
         self.context = container.newBackgroundContext()
+        self.instanceStore = instanceStore
     }
 
     public func set(userId: Int) {
@@ -83,6 +94,7 @@ public final class CorePersistence: CorePersistenceProtocol {
         downloadQuality: DownloadQuality
     ) {
         let userId = getUserId32() ?? 0
+        let currentInstanceKey = instanceKey
         let objects: [[String: Any]] = blocks.compactMap { block -> [String: Any]? in
             let downloadDataId = downloadDataId(from: block.id)
             var fileExtension: String?
@@ -115,6 +127,7 @@ public final class CorePersistence: CorePersistenceProtocol {
                 "blockId": block.id,
                 "userId": userId,
                 "courseId": block.courseId,
+                "instanceKey": currentInstanceKey,
                 "url": url,
                 "fileName": fileName ?? "",
                 "displayName": block.displayName,
@@ -134,12 +147,14 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func addToDownloadQueue(tasks: [DownloadDataTask]) {
+        let currentInstanceKey = instanceKey
         let objects: [[String: Any]] = tasks.map { task in
             [
                 "id": downloadDataId(from: task.id),
                 "blockId": task.blockId,
                 "userId": task.userId,
                 "courseId": task.courseId,
+                "instanceKey": currentInstanceKey,
                 "url": task.url,
                 "fileName": task.fileName,
                 "displayName": task.displayName,
@@ -182,10 +197,12 @@ public final class CorePersistence: CorePersistenceProtocol {
 
     public func getDownloadDataTasks() async -> [DownloadDataTask] {
         let userId = getUserId32() ?? 0
+        let currentInstanceKey = instanceKey
         return await perform {[context] in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 context: context,
-                userId: userId
+                userId: userId,
+                instanceKey: currentInstanceKey
             ) else {
                 return []
             }
@@ -201,11 +218,13 @@ public final class CorePersistence: CorePersistenceProtocol {
     ) async -> [DownloadDataTask] {
         let uID = userId
         let int32Id = getUserId32()
+        let currentInstanceKey = instanceKey
         return await perform { [context] in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .courseId(courseId),
                 context: context,
-                userId: int32Id
+                userId: int32Id,
+                instanceKey: currentInstanceKey
             ) else {
                 return []
             }
@@ -225,11 +244,13 @@ public final class CorePersistence: CorePersistenceProtocol {
     public func downloadDataTask(for blockId: String) async -> DownloadDataTask? {
         let dataId = downloadDataId(from: blockId)
         let userId = getUserId32()
+        let currentInstanceKey = instanceKey
         return await perform { [context] in
             let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .id(dataId),
                 context: context,
-                userId: userId
+                userId: userId,
+                instanceKey: currentInstanceKey
             )
 
             guard let downloadData = data?.first else {
@@ -243,12 +264,14 @@ public final class CorePersistence: CorePersistenceProtocol {
     public func updateTask(task: DownloadDataTask) {
         let dataId = downloadDataId(from: task.id)
         let userId = getUserId32()
+        let currentInstanceKey = instanceKey
 
         context.perform { [context] in
             guard let data = try? CorePersistenceHelper.fetchCDDownloadData(
                 predicate: .id(dataId),
                 context: context,
-                userId: userId
+                userId: userId,
+                instanceKey: currentInstanceKey
             ) else {
                 return
             }
@@ -274,9 +297,13 @@ public final class CorePersistence: CorePersistenceProtocol {
         }
     }
     public func deleteDownloadDataTasks(ids: [String]) {
+        let currentInstanceKey = instanceKey
         context.perform { [context] in
             let request: NSFetchRequest<any NSFetchRequestResult> = CDDownloadData.fetchRequest()
-            request.predicate = NSPredicate(format: "id IN %@", ids)
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "id IN %@", ids),
+                NSPredicate(format: "instanceKey == %@", currentInstanceKey)
+            ])
             let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: request)
             batchDeleteRequest.resultType = .resultTypeObjectIDs
             
@@ -321,12 +348,14 @@ public final class CorePersistence: CorePersistenceProtocol {
     
     // MARK: - Offline Progress
     public func saveOfflineProgress(progress: OfflineProgress) async {
+        let currentInstanceKey = instanceKey
         await perform { [context] in
             let progressForSaving = CDOfflineProgress(context: context)
             context.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
             progressForSaving.blockID = progress.blockID
             progressForSaving.progressJson = progress.progressJson
-            
+            progressForSaving.instanceKey = currentInstanceKey
+
             do {
                 try context.save()
             } catch {
@@ -336,9 +365,13 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func loadProgress(for blockID: String) async -> OfflineProgress? {
-        await perform { [context] in
+        let currentInstanceKey = instanceKey
+        return await perform { [context] in
             let request = CDOfflineProgress.fetchRequest()
-            request.predicate = NSPredicate(format: "blockID = %@", blockID)
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "blockID = %@", blockID),
+                NSPredicate(format: "instanceKey = %@", currentInstanceKey)
+            ])
             guard let progress = try? context.fetch(request).first,
                   let savedBlockID = progress.blockID,
                   let progressJson = progress.progressJson,
@@ -351,8 +384,11 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func loadAllOfflineProgress() async -> [OfflineProgress] {
-        await perform { [context] in
-            let result = try? context.fetch(CDOfflineProgress.fetchRequest())
+        let currentInstanceKey = instanceKey
+        return await perform { [context] in
+            let request = CDOfflineProgress.fetchRequest()
+            request.predicate = NSPredicate(format: "instanceKey = %@", currentInstanceKey)
+            let result = try? context.fetch(request)
                 .map {
                     OfflineProgress(
                         progressJson: $0.progressJson ?? ""
@@ -366,9 +402,13 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func deleteProgress(for blockID: String) async {
+        let currentInstanceKey = instanceKey
         await perform { [context] in
             let request = CDOfflineProgress.fetchRequest()
-            request.predicate = NSPredicate(format: "blockID = %@", blockID)
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+                NSPredicate(format: "blockID = %@", blockID),
+                NSPredicate(format: "instanceKey = %@", currentInstanceKey)
+            ])
             guard let progress = try? context.fetch(request).first else { return }
             
             do {
@@ -382,8 +422,10 @@ public final class CorePersistence: CorePersistenceProtocol {
     }
     
     public func deleteAllProgress() async {
+        let currentInstanceKey = instanceKey
         await perform { [context] in
             let request = CDOfflineProgress.fetchRequest()
+            request.predicate = NSPredicate(format: "instanceKey = %@", currentInstanceKey)
             guard let allProgress = try? context.fetch(request) else { return }
             
             do {

@@ -19,6 +19,7 @@
 		071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 071009C628D1DA4F00344290 /* SignInViewModel.swift */; };
 		07169458296D913400E3DED6 /* Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE3B28D0A319006D8A5D /* Authorization.framework */; platformFilter = ios; };
 		07169464296D96DD00E3DED6 /* SignInViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */; };
+		CC17B772EB764690BF49B5B4 /* LearningSitesViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20675D1281E4AFDB49DB428 /* LearningSitesViewModelTests.swift */; };
 		0770DE4728D0A3DA006D8A5D /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE4628D0A3DA006D8A5D /* Core.framework */; };
 		0770DE4E28D0A677006D8A5D /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE4D28D0A677006D8A5D /* SignInView.swift */; };
 		0770DE6828D0BF03006D8A5D /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE6728D0BF03006D8A5D /* swiftgen.yml */; };
@@ -45,6 +46,8 @@
 		DE843D6BB1B9DDA398494890 /* Pods_App_Authorization.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BCFB7C19382EECF15131B6 /* Pods_App_Authorization.framework */; };
 		E03261642AE64676002CA7EB /* StartupViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261632AE64676002CA7EB /* StartupViewModel.swift */; };
 		E03261662AE64AF4002CA7EB /* StartupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03261652AE64AF4002CA7EB /* StartupView.swift */; };
+		D3823C1D148543EBAF6E72D5 /* LearningSitesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3C1A59CA22C043B5B0B43646 /* LearningSitesViewModel.swift */; };
+		4B59BF99F958493F94F19119 /* LearningSitesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9BDA13C3C4465B82EBFFA4 /* LearningSitesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -83,6 +86,7 @@
 		071009C628D1DA4F00344290 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
 		07169454296D913300E3DED6 /* AuthorizationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AuthorizationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModelTests.swift; sourceTree = "<group>"; };
+		D20675D1281E4AFDB49DB428 /* LearningSitesViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningSitesViewModelTests.swift; sourceTree = "<group>"; };
 		0770DE3B28D0A319006D8A5D /* Authorization.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Authorization.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE4628D0A3DA006D8A5D /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE4D28D0A677006D8A5D /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
@@ -119,6 +123,8 @@
 		CEB25A002CC13A36007FC792 /* SocialAuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocialAuthResponse.swift; sourceTree = "<group>"; };
 		E03261632AE64676002CA7EB /* StartupViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupViewModel.swift; sourceTree = "<group>"; };
 		E03261652AE64AF4002CA7EB /* StartupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartupView.swift; sourceTree = "<group>"; };
+		3C1A59CA22C043B5B0B43646 /* LearningSitesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningSitesViewModel.swift; sourceTree = "<group>"; };
+		9A9BDA13C3C4465B82EBFFA4 /* LearningSitesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LearningSitesView.swift; sourceTree = "<group>"; };
 		E78971D8E6ED2116BBF9FD66 /* Pods-App-Authorization.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.release.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.release.xcconfig"; sourceTree = "<group>"; };
 		F52826C68AEA1CF4769389EA /* Pods-App-Authorization.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releasestage.xcconfig"; sourceTree = "<group>"; };
 		F5802BBA113276950ABCD9B3 /* Pods-App-Authorization.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Authorization.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Authorization/Pods-App-Authorization.releaseprod.xcconfig"; sourceTree = "<group>"; };
@@ -190,6 +196,7 @@
 				99C165492C0C4EF000DC384D /* SSO */,
 				BA8B3A302AD5485100D25EF5 /* SocialAuth */,
 				E03261622AE6464A002CA7EB /* Startup */,
+				3B80FE1C87E04870A6AF2DA5 /* LearningSites */,
 				020C31BD290AADA700D6DEA2 /* Base */,
 				071009C528D1D9FA00344290 /* Login */,
 				07169462296D93E000E3DED6 /* Registration */,
@@ -223,6 +230,7 @@
 			children = (
 				022D0480297442B200E0059B /* Register */,
 				07169484296EC3D700E3DED6 /* Login */,
+				F316F4DD3C0A4F01BB8EF3AB /* LearningSites */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -234,6 +242,14 @@
 				07169463296D96DD00E3DED6 /* SignInViewModelTests.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		F316F4DD3C0A4F01BB8EF3AB /* LearningSites */ = {
+			isa = PBXGroup;
+			children = (
+				D20675D1281E4AFDB49DB428 /* LearningSitesViewModelTests.swift */,
+			);
+			path = LearningSites;
 			sourceTree = "<group>";
 		};
 		0770DE3128D0A318006D8A5D = {
@@ -366,6 +382,15 @@
 				E03261652AE64AF4002CA7EB /* StartupView.swift */,
 			);
 			path = Startup;
+			sourceTree = "<group>";
+		};
+		3B80FE1C87E04870A6AF2DA5 /* LearningSites */ = {
+			isa = PBXGroup;
+			children = (
+				3C1A59CA22C043B5B0B43646 /* LearningSitesViewModel.swift */,
+				9A9BDA13C3C4465B82EBFFA4 /* LearningSitesView.swift */,
+			);
+			path = LearningSites;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -556,6 +581,7 @@
 			files = (
 				022D0482297442BA00E0059B /* SignUpViewModelTests.swift in Sources */,
 				07169464296D96DD00E3DED6 /* SignInViewModelTests.swift in Sources */,
+				CC17B772EB764690BF49B5B4 /* LearningSitesViewModelTests.swift in Sources */,
 				A5B468112F29C845002A4ECA /* AuthorizationMocks.generated.swift in Sources */,
 				02E0618429DC2373006E9024 /* ResetPasswordViewModelTests.swift in Sources */,
 			);
@@ -580,6 +606,8 @@
 				02F3BFE5292533720051930C /* AuthorizationRouter.swift in Sources */,
 				99C1654F2C0C4F5900DC384D /* SSOWebView.swift in Sources */,
 				E03261662AE64AF4002CA7EB /* StartupView.swift in Sources */,
+				D3823C1D148543EBAF6E72D5 /* LearningSitesViewModel.swift in Sources */,
+				4B59BF99F958493F94F19119 /* LearningSitesView.swift in Sources */,
 				071009C728D1DA4F00344290 /* SignInViewModel.swift in Sources */,
 				BA8B3A322AD5487300D25EF5 /* SocialAuthView.swift in Sources */,
 				99C1654D2C0C4F2F00DC384D /* SSOHelper.swift in Sources */,

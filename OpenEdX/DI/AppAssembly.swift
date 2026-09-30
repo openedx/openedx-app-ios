@@ -101,14 +101,27 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(CorePersistenceProtocol.self) { r in
-            CorePersistence(container: r.resolve(DatabaseManager.self)!.getPersistentContainer())
+            CorePersistence(
+                container: r.resolve(DatabaseManager.self)!.getPersistentContainer(),
+                instanceStore: r.resolve(InstanceProvider.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(DownloadManagerProtocol.self) { @MainActor r in
             DownloadManager(
                 persistence: r.resolve(CorePersistenceProtocol.self)!,
                 appStorage: r.resolve(CoreStorage.self)!,
-                connectivity: r.resolve(ConnectivityProtocol.self)!
+                connectivity: r.resolve(ConnectivityProtocol.self)!,
+                filePathProvider: r.resolve(InstanceFilePathProvider.self)!
+            )
+        }.inObjectScope(.container)
+
+        container.register(InstanceSessionManagerProtocol.self) { r in
+            InstanceSessionManager(
+                instanceStore: r.resolve(InstanceStore.self)!,
+                storage: r.resolve(CoreStorage.self)!,
+                downloadManager: r.resolve(DownloadManagerProtocol.self)!
+                // pushTokenUnregistrar: nil -- wired once push/Firebase lands.
             )
         }.inObjectScope(.container)
         
@@ -148,8 +161,11 @@ class AppAssembly: Assembly {
             r.resolve(Router.self)!
         }.inObjectScope(.container)
         
-        container.register(ConfigProtocol.self) { _ in
-            Config()
+        container.register(ConfigProtocol.self) { r in
+            InstanceAwareConfig(
+                appConfig: Config(),
+                instanceProvider: r.resolve(InstanceProvider.self)!
+            )
         }.inObjectScope(.container)
         
         container.register(CSSInjector.self) { r in
@@ -169,7 +185,8 @@ class AppAssembly: Assembly {
         container.register(AppStorage.self) { r in
             AppStorage(
                 keychain: r.resolve(KeychainSwift.self)!,
-                userDefaults: r.resolve(UserDefaults.self)!
+                userDefaults: r.resolve(UserDefaults.self)!,
+                instanceStore: r.resolve(InstanceProvider.self)!
             )
         }.inObjectScope(.container)
         
@@ -232,12 +249,11 @@ class AppAssembly: Assembly {
         }.inObjectScope(.container)
         
         container.register(PipManagerProtocol.self) { @MainActor r in
-            let config = r.resolve(ConfigProtocol.self)!
-            return PipManager(
+            PipManager(
                 router: r.resolve(Router.self)!,
                 discoveryInteractor: r.resolve(DiscoveryInteractorProtocol.self)!,
                 courseInteractor: r.resolve(CourseInteractorProtocol.self)!,
-                courseDropDownNavigationEnabled: config.uiComponents.courseDropDownNavigationEnabled
+                config: r.resolve(ConfigProtocol.self)!
             )
         }.inObjectScope(.container)
 

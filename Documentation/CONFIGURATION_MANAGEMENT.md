@@ -1,108 +1,105 @@
 # Configuration Management
 
-This documentation provides a comprehensive solution for integrating and managing configuration files in OpenEdx iOS project.
+This document describes how the app is configured, both locally (build-time) and remotely
+(runtime instance catalog). As of the instance-model work (`infra/03-remote-config-fetch`
+onward), **JSON is the single configuration format used end-to-end** — there is no YAML
+anywhere in the config pipeline.
 
-## Features
+## Why one format
 
-- **Build Phase Script Integration:** Adds a script to the Build Phase of Xcode. It calls the Xcode build phase run script, which takes care of the virtual environment and installing dependencies and executes a Python script `process_config.py` with `$CONFIGURATION` and `scheme_mappings` argument.
-- **Python Script for Configuration:** Utilizes `process_config.py` for:
-  - Adding essential keys to `Info.plist` (e.g., Facebook, Microsoft keys).
-  - Creating `GoogleServices.plist` with Firebase keys.
-  - Generating `config.plist` from `ios.yaml` and `shared.yaml`.
+Earlier revisions of this project used `config.yaml` for local/build-time config and were
+briefly considering a second, separate JSON format for the remote instance directory (fetched
+by URL, or bundled locally). That would have meant two independent parsers — `PyYAML` in the
+build scripts and a JSON decoder in Swift — each with its own schema and casing convention,
+kept in sync only by developer discipline. Nothing in the toolchain enforces that; a field
+renamed or reshaped in one format's parser and not the other drifts silently until it breaks
+at runtime.
 
-Inside `Config.swift`, parsing and populating relevant keys and classes are done, e.g. `AgreementConfig.swift` and `FirebaseConfig.swift`.
+Using JSON everywhere collapses that to one schema, one casing convention
+(`UPPER_SNAKE_CASE`), and one thing to keep consistent when the schema changes.
 
-## Getting Started
+## Local / build-time config: `config.json`
 
-### Configuration Setup
+- Lives per environment: `default_config/dev/config.json`, `.../stage/config.json`,
+  `.../prod/config.json`. (`config.yaml` has been deleted from all three — there is no YAML
+  fallback.)
+- Read at build time by `config_script/process_config.py` and `whitelabel.py`, which were
+  rewritten to parse JSON instead of YAML. These scripts flatten the relevant keys into the
+  build-time `Info.plist` that `Config.swift` reads at runtime — the Swift layer never parses
+  `config.json` directly for these app-level keys.
+- `default_config/config_settings.json` (which config directory/mapping the build uses) and
+  each environment's `file_mappings.json` (which config file maps to which target) are JSON
+  too — build-tooling plumbing, not app config, but kept in the same format as everything
+  else so `default_config/` isn't half JSON, half YAML.
+- Also holds `INSTANCES_CATALOG_URL` — the URL the app fetches the remote instance catalog
+  from at launch — and a bundled fallback catalog for offline/first-run use.
+- **Temporary compatibility bridge**: `Config.swift` still hard-requires `API_HOST_URL`,
+  `SSO_URL`, `SSO_FINISHED_URL`, and `OAUTH_CLIENT_ID` at the top level, because it's the only
+  `ConfigProtocol` implementation wired into DI until `InstanceAwareConfig` lands (PR-9).
+  These four keys are mirrored from the example/default instance and are explicitly commented
+  as removable once PR-9 ships. Don't add new app-level keys here without checking whether
+  they actually belong on `Instance` instead.
 
-Edit a `config_settings.yaml` in the `default_config` folder. It should contain data as follows:
+## Upgrading from a pre-JSON checkout
 
-```yaml
-config_directory: '{path_to_config_folder}'
-config_mapping:
-  prod: 'prod'
-  stage: 'stage'
-  dev: 'dev'
-# These mappings are configurable, e.g. dev: 'prod_test'
+If your `config_directory` still has an old `config.yaml` and no `config.json`,
+`process_config.py` fails the build with a message naming both files rather than a generic
+"config files not found." Convert with:
+
+```
+python3 config_script/yaml_to_json_config.py path/to/config.yaml
 ```
 
-- `config_directory` provides the path of the config directory.
-- `config_mappings` provides mappings that can be utilized to map the Xcode build scheme to a defined folder within the config directory, and it will be referenced.
+This writes the equivalent `config.json` next to it (structure carries over as-is — the
+schema didn't reshape moving formats, just casing, which was already consistent). Delete the
+old `.yaml` file once you've checked the output in. The same script converts
+`config_settings.yaml`/`file_mappings.yaml` if you're upgrading from before those were
+converted too.
 
-### Configuration Files
+## Remote instance catalog
 
-Two main configuration files are used: `ios.yaml` and `shared.yaml`, placed under the folder defined in `config_mappings`. Additionally, a `mappings.yaml` file is required in the same directory, specifying the YAML files to be processed. Its structure is as follows:
+- `InstanceApiService` does a plain `URLSession` GET against `INSTANCES_CATALOG_URL` — not
+  routed through the authenticated Alamofire/API stack, since this is a fixed, anonymous,
+  external endpoint. It returns raw JSON bytes; all parsing happens in `InstancesConfig`.
+- `InstanceConfigLoader.load()` merge policy (offline-safe):
+  - Baseline = last cached successful fetch, else the bundled catalog, else empty.
+  - Every launch awaits a live fetch. A non-empty response wholesale-replaces the baseline and
+    becomes the new cache.
+  - A failed fetch, or a fetch that succeeds with zero instances, leaves the baseline
+    untouched — a reachable-but-empty catalog must never wipe a good cache.
+- Both the bundled catalog and the remote catalog are parsed through the same `Instance` /
+  `InstancesConfig` `Codable` model — one schema for both sources, not two.
 
-```yaml
-ios:
-    files:
-      - {file_one.yaml}
-      - {file_two.yaml}
-```
+## Schema conventions
 
-- `ios.yaml` will contain config data specific to iOS, e.g., Firebase keys, Facebook keys, etc.
-- `shared.yaml` will contain config data that is shared, e.g., `API_HOST_URL`, `OAUTH_CLIENT_ID`, `TOKEN_TYPE`, etc.
+- All keys this project owns are uniformly `UPPER_SNAKE_CASE` (`NAME`, `COLOR`, `THEME.LIGHT`
+  / `DARK`, `LOGO_URL`, `HEADER_BACKGROUND_URL`, etc.) across local and remote — a shared
+  instance schema reads the same regardless of which source parsed it.
+- A remote payload that arrives snake_case or mixed-case is normalized on the way in,
+  key-by-key, at every nesting depth. Anything with no explicit mapping passes through
+  unchanged.
+  - **Known naming debt**: this normalization function is still called
+    `remoteToYAMLKeyMap`, a holdover from before YAML was retired — it no longer maps to
+    YAML anything. Rename it (e.g. `remoteKeyNormalizationMap`) as part of the PR-9 cleanup
+    below, so the name doesn't mislead anyone reading the schema fresh.
+- Palette-internal field names (`accent_color`, etc.) are deliberately left alone — that's the
+  Theme module's own contract, not this schema's to rename.
 
-## Future Support
+## What's explicitly out of scope today
 
-- To add config related to some other service, create a class, e.g. `ServiceNameConfig.swift`, to be able to populate related fields.
-- Create an `extension` to `Config.swift` to be able to add the newly created service as a variable to the main Config.
-- If needed, make a protocol to be referenced inside the scope of `ConfigProtocol` so that the config is available using `ConfigProtocol` service.
+- Wiring `InstanceConfigLoader` into the app launch sequence / DI — PR-9.
+- Instance picker / selection UI — PR-10.
+- Removing the temporary `Config.swift` bridge keys once `InstanceAwareConfig` exists, and
+  renaming `remoteToYAMLKeyMap` — PR-9.
+- Removing the dead `ConfigProtocol.instancesCatalogURL` property, once nothing references it.
 
-Example:
+## Summary
 
-```swift
-private let key = "KEY"
-extension Config {
-    public var serviceNameConfig: ServiceNameConfig {
-        return ServiceNameConfig(dictionary: self[key] as? [String: AnyObject] ?? [:])
-    }
-}
-```
+| Concern | Format | Owner |
+|---|---|---|
+| Local/build-time app config | JSON (`config.json`) | `process_config.py` / `whitelabel.py` → build-time plist |
+| Build-tooling plumbing (`config_settings.json`, `file_mappings.json`) | JSON | `process_config.py` / `whitelabel.py` |
+| Bundled fallback instance catalog | JSON | `InstancesConfig` (`Codable`) |
+| Remote instance catalog | JSON (fetched from `INSTANCES_CATALOG_URL`) | `InstanceApiService` + `InstanceConfigLoader` |
 
-## Note
-
-If Firebase Configuration is provided the updated `FirebaseCrashlytics` build phase script extracts `googleAppID` from the newly generated `GoogleService-Info.plist` and runs the Crashlytics script with the provifing id.
-
-## Examples of Config Files
-
-`ios.yaml`:
-
-```yaml
-OAUTH_CLIENT_ID: ''
-
-FIREBASE:
-  ENABLED: true
-  API_KEY: "testApiKey"
-  BUNDLE_ID: "testBundleID"
-  CLIENT_ID: "testClientID"
-  DATABASE_URL: "https://test.database.url"
-  GCM_SENDER_ID: "testGCMSenderID"
-  GOOGLE_APP_ID: "testGoogleAppID"
-  PROJECT_ID: "testProjectID"
-  REVERSED_CLIENT_ID: "testReversedClientID"
-  STORAGE_BUCKET: "testStorageBucket"
-  ANALYTICS_SOURCE: "firebase"
-
-MICROSOFT:
-  ENABLED: true
-  CLIENT_ID: "microsoftAppID"
-```
-
-`shared.yaml`:
-
-```yaml
-API_HOST_URL: "https://www.example.com"
-FEEDBACK_EMAIL_ADDRESS: "example@mail.com"
-TOKEN_TYPE: "JWT"
-
-AGREEMENT_URLS:
-  PRIVACY_POLICY_URL: "https://www.example.com/privacy"
-  TOS_URL: "https://www.example.com/tos"
-
-# Features
-WHATS_NEW_ENABLED: false
-```
-
-The `default_config` directory is added to the project to provide an idea of how to write config YAML files.
+No YAML remains anywhere in this pipeline.

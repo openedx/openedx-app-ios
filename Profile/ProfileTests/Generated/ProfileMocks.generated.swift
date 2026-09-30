@@ -18,7 +18,7 @@ import ZipArchive
 
 public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
     public init() { }
-    public init(baseURL: URL = URL(fileURLWithPath: ""), baseSSOURL: URL = URL(fileURLWithPath: ""), ssoFinishedURL: URL = URL(fileURLWithPath: ""), ssoButtonTitle: [String: Any] = [String: Any](), oAuthClientId: String = "", tokenType: TokenType, feedbackEmail: String = "", appStoreLink: String = "", faq: URL? = nil, platformName: String = "", agreement: AgreementConfig, firebase: FirebaseConfig, facebook: FacebookConfig, microsoft: MicrosoftConfig, google: GoogleConfig, appleSignIn: AppleSignInConfig, features: FeaturesConfig, theme: ThemeConfig, uiComponents: UIComponentsConfig, discovery: DiscoveryConfig, dashboard: DashboardConfig, braze: BrazeConfig, branch: BranchConfig, program: DiscoveryConfig, experimentalFeatures: ExperimentalFeaturesConfig, URIScheme: String = "") {
+    public init(baseURL: URL = URL(fileURLWithPath: ""), baseSSOURL: URL = URL(fileURLWithPath: ""), ssoFinishedURL: URL = URL(fileURLWithPath: ""), ssoButtonTitle: [String: Any] = [String: Any](), oAuthClientId: String = "", tokenType: TokenType, feedbackEmail: String = "", appStoreLink: String = "", faq: URL? = nil, platformName: String = "", agreement: AgreementConfig, firebase: FirebaseConfig, facebook: FacebookConfig, microsoft: MicrosoftConfig, google: GoogleConfig, appleSignIn: AppleSignInConfig, features: FeaturesConfig, theme: ThemeConfig, uiComponents: UIComponentsConfig, discovery: DiscoveryConfig, dashboard: DashboardConfig, braze: BrazeConfig, branch: BranchConfig, program: DiscoveryConfig, experimentalFeatures: ExperimentalFeaturesConfig, URIScheme: String = "", instancesCatalogURL: URL? = nil) {
         self.baseURL = baseURL
         self.baseSSOURL = baseSSOURL
         self.ssoFinishedURL = ssoFinishedURL
@@ -45,6 +45,7 @@ public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
         self._program = program
         self._experimentalFeatures = experimentalFeatures
         self.URIScheme = URIScheme
+        self.instancesCatalogURL = instancesCatalogURL
     }
 
 
@@ -189,6 +190,7 @@ public final class ConfigProtocolMock: ConfigProtocol, @unchecked Sendable {
 
 
     public var URIScheme: String = ""
+    public var instancesCatalogURL: URL? = nil
 }
 
 public final class CoreAnalyticsMock: CoreAnalytics {
@@ -339,6 +341,14 @@ public final class CoreStorageMock: CoreStorage, @unchecked Sendable {
             clearHandler()
         }
         
+    }
+
+    public var sessionInstanceKeys: Set<String> = []
+    public func hasSession(forInstanceKey key: String) -> Bool {
+        sessionInstanceKeys.contains(key)
+    }
+    public func clearSession(forInstanceKey key: String) {
+        sessionInstanceKeys.remove(key)
     }
 }
 
@@ -1778,6 +1788,25 @@ public final class ProfileRouterMock: ProfileRouter, @unchecked Sendable {
         }
         if let showManageAccountHandler = showManageAccountHandler {
             showManageAccountHandler()
+        }
+        
+    }
+
+    private let showLearningSitesState = MockoloMutex(MockoloHandlerState<Never, @Sendable () -> ()>())
+    public var showLearningSitesCallCount: Int {
+        return showLearningSitesState.withLock(\.callCount)
+    }
+    public var showLearningSitesHandler: (@Sendable () -> ())? {
+        get { showLearningSitesState.withLock(\.handler) }
+        set { showLearningSitesState.withLock { $0.handler = newValue } }
+    }
+    public func showLearningSites() {
+        let showLearningSitesHandler = showLearningSitesState.withLock { state in
+            state.callCount += 1
+            return state.handler
+        }
+        if let showLearningSitesHandler = showLearningSitesHandler {
+            showLearningSitesHandler()
         }
         
     }

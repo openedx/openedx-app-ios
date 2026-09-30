@@ -28,7 +28,14 @@ public protocol ConnectivityProtocol: Sendable {
 public class Connectivity: ConnectivityProtocol {
 
     private let networkManager = NetworkReachabilityManager()
-    private let verificationURL: URL
+    /// Read live in `verifyInternet()`, not captured once -- `config` is `InstanceAwareConfig`
+    /// in production, so `.baseURL` tracks whichever instance is selected. Caching it at init
+    /// (the way `API`'s own baseURL is frozen at DI registration) meant this kept pinging
+    /// whatever host was selected when `Connectivity` first got resolved -- usually the app's
+    /// placeholder default, since this is a widely-depended-on singleton resolved early. Every
+    /// later verification against that unreachable placeholder reported "offline" regardless of
+    /// actual connectivity, even right after a successful login to a real instance.
+    private let config: ConfigProtocol
     private let verificationTimeout: TimeInterval
     private let cacheValidity: TimeInterval = 30
     private let notReachableDelay: TimeInterval = 1.5
@@ -36,6 +43,9 @@ public class Connectivity: ConnectivityProtocol {
     private var lastVerificationDate: TimeInterval?
     private var lastVerificationResult: Bool = true
     private var notReachableTask: Task<Void, Never>?
+    /// Not removed in `deinit` -- this is a `.container`-scope singleton, alive for the
+    /// app's whole session.
+    private var instanceObserver: NSObjectProtocol?
 
     // MARK: - Observable property (new way)
     public private(set) var internetState: InternetState? {
@@ -75,8 +85,21 @@ public class Connectivity: ConnectivityProtocol {
         config: ConfigProtocol,
         timeout: TimeInterval = 15
     ) {
-        self.verificationURL = config.baseURL
+        self.config = config
         self.verificationTimeout = timeout
+
+        // The first verification often runs before any instance is selected, hits the
+        // placeholder host, and that "offline" verdict then sits cached -- causing a false
+        // offline banner right after login. Re-verify whenever the selected instance changes.
+        instanceObserver = NotificationCenter.default.addObserver(
+            forName: .instanceDidChange,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            Task { @MainActor in
+                await self?.performVerification()
+            }
+        }
 
         networkManager?.startListening(onQueue: .global()) { [weak self] status in
             guard let self = self else { return }
@@ -123,7 +146,16 @@ public class Connectivity: ConnectivityProtocol {
     }
 
     private func verifyInternet() async -> Bool {
-        var request = URLRequest(url: verificationURL)
+        if await headCheck() { return true }
+        // A single failed check -- especially the very first one, which can land right as
+        // the app cold-launches -- is often the network stack still warming up, not real
+        // offline. Retry once before trusting it and showing the offline banner.
+        try? await Task.sleep(nanoseconds: 800_000_000)
+        return await headCheck()
+    }
+
+    private func headCheck() async -> Bool {
+        var request = URLRequest(url: config.baseURL)
         request.httpMethod = "HEAD"
         request.timeoutInterval = verificationTimeout
         do {

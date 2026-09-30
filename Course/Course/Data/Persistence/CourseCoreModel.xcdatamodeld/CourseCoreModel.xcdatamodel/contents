@@ -80,9 +80,11 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="numPages" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="org" optional="YES" attributeType="String"/>
+        <attribute name="instanceKey" optional="YES" attributeType="String"/>
         <uniquenessConstraints>
             <uniquenessConstraint>
                 <constraint value="courseID"/>
+                <constraint value="instanceKey"/>
             </uniquenessConstraint>
         </uniquenessConstraints>
     </entity>

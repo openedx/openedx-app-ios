@@ -69,7 +69,8 @@ public final class SettingsViewModel {
     private(set) var userSettings: UserSettings
     
     private let interactor: ProfileInteractorProtocol
-    private let downloadManager: DownloadManagerProtocol
+    private let sessionManager: InstanceSessionManagerProtocol
+    private let instanceStore: InstanceStore
     let router: ProfileRouter
     let analytics: ProfileAnalytics
     let coreAnalytics: CoreAnalytics
@@ -77,10 +78,15 @@ public final class SettingsViewModel {
     let corePersistence: CorePersistenceProtocol
     let connectivity: ConnectivityProtocol
     private var coreStorage: CoreStorage
+
+    /// The signed-in instance, shown as the "Current Learning Site" section in Settings.
+    var currentInstance: Instance? { instanceStore.currentInstance }
+    var hasMultipleInstances: Bool { instanceStore.instancesConfig.instances.count > 1 }
     
     public init(
         interactor: ProfileInteractorProtocol,
-        downloadManager: DownloadManagerProtocol,
+        sessionManager: InstanceSessionManagerProtocol,
+        instanceStore: InstanceStore,
         router: ProfileRouter,
         analytics: ProfileAnalytics,
         coreAnalytics: CoreAnalytics,
@@ -90,7 +96,8 @@ public final class SettingsViewModel {
         coreStorage: CoreStorage
     ) {
         self.interactor = interactor
-        self.downloadManager = downloadManager
+        self.sessionManager = sessionManager
+        self.instanceStore = instanceStore
         self.router = router
         self.analytics = analytics
         self.coreAnalytics = coreAnalytics
@@ -166,7 +173,7 @@ public final class SettingsViewModel {
     
     func logOut() async {
         try? await interactor.logOut()
-        try? await downloadManager.cancelAllDownloading()
+        await sessionManager.logoutCurrentInstance()
         await corePersistence.deleteAllProgress()
         router.showStartupScreen()
         analytics.userLogout(force: false)

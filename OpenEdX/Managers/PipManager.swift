@@ -17,7 +17,11 @@ public final class PipManager: PipManagerProtocol {
     let discoveryInteractor: DiscoveryInteractorProtocol
     let courseInteractor: CourseInteractorProtocol
     let router: Router
-    let courseDropDownNavigationEnabled: Bool
+    /// Read live via `config.uiComponents`, not cached -- `config` is `InstanceAwareConfig` in
+    /// production, so this tracks whichever instance is selected. Same DI-singleton-captures-a-
+    /// stale-value bug already found and fixed in CSSInjector/Connectivity/RequestInterceptor.
+    let config: ConfigProtocol
+    var courseDropDownNavigationEnabled: Bool { config.uiComponents.courseDropDownNavigationEnabled }
     public var isPipActive: Bool {
         controllerHolder != nil
     }
@@ -30,12 +34,12 @@ public final class PipManager: PipManagerProtocol {
         router: Router,
         discoveryInteractor: DiscoveryInteractorProtocol,
         courseInteractor: CourseInteractorProtocol,
-        courseDropDownNavigationEnabled: Bool
+        config: ConfigProtocol
     ) {
         self.discoveryInteractor = discoveryInteractor
         self.courseInteractor = courseInteractor
         self.router = router
-        self.courseDropDownNavigationEnabled = courseDropDownNavigationEnabled
+        self.config = config
     }
     
     public func holder(

@@ -12,6 +12,8 @@
 "SIGN_IN.EMAIL_OR_USERNAME" = "Email or username";
 "SIGN_IN.PASSWORD" = "Password";
 "SIGN_IN.FORGOT_PASS_BTN" = "Forgot password?";
+"SIGN_IN.SELECTED_SITE" = "Selected Site";
+"SIGN_IN.CHANGE" = "Change";
 "SIGN_IN.AGREEMENT" = "By signing in to this app, you agree to the [%@ End User License Agreement](%@) and [%@ Terms of Service and Honor Code](%@) and you acknowledge that %@ and each Member process your personal data in
 accordance with the [Privacy Policy.](%@)";
 "SIGN_IN.SSO_HEADING" = "Start today to build your career with confidence";
@@ -55,3 +57,17 @@ accordance with the [Privacy Policy.](%@)";
 "STARTUP.SEARCH_PLACEHOLDER" = "Search our 3000+ courses";
 "STARTUP.EXPLORE_ALL_COURSES" = "Explore all courses";
 "STARTUP.TITLE" = "Start";
+
+"LEARNING_SITES.TITLE" = "Learning Sites";
+"LEARNING_SITES.GET_STARTED" = "Get Started";
+"LEARNING_SITES.WELCOME_SUBTITLE" = "Welcome! Select your learning site";
+"LEARNING_SITES.SEARCH_TITLE" = "Search";
+"LEARNING_SITES.SUBTITLE" = "Select or add a learning site";
+"LEARNING_SITES.CURRENT_SITE" = "Current Learning Site";
+"LEARNING_SITES.MORE_SITES" = "More Learning Sites";
+"LEARNING_SITES.ADD_SITE" = "Add a Learning Site";
+"LEARNING_SITES.SEARCH_PLACEHOLDER" = "University of Arts & Sciences";
+"LEARNING_SITES.EMPTY_SEARCH" = "No schools match your search";
+"LEARNING_SITES.LOG_OUT_TITLE" = "Log Out";
+"LEARNING_SITES.LOG_OUT_MESSAGE" = "Are you sure you want to log out of %@?";
+"LEARNING_SITES.LOG_OUT_ACTION" = "Log Out";

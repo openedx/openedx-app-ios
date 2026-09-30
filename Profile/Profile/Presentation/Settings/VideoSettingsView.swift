@@ -22,9 +22,11 @@ public struct VideoSettingsView: View {
         GeometryReader { proxy in
             ZStack(alignment: .top) {
                 VStack {
-                    ThemeAssets.headerBackground.swiftUIImage
-                        .resizable()
-                        .edgesIgnoringSafeArea(.top)
+                    InstanceThemedImage(
+                        source: viewModel.currentInstance?.headerBackgroundURLString,
+                        fallback: ThemeAssets.headerBackground.swiftUIImage
+                    )
+                    .edgesIgnoringSafeArea(.top)
                 }
                 .frame(maxWidth: .infinity, maxHeight: 200)
                 .accessibilityIdentifier("auth_bg_image")
@@ -134,7 +136,8 @@ public struct VideoSettingsView: View {
         let router = ProfileRouterPreview()
         let vm = SettingsViewModel(
             interactor: ProfileInteractor.mock,
-            downloadManager: DownloadManagerMock(),
+            sessionManager: InstanceSessionManagerProtocolMock(),
+            instanceStore: InstanceStore(),
             router: router,
             analytics: ProfileAnalyticsPreview(),
             coreAnalytics: CoreAnalyticsMock(),

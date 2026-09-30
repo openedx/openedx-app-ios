@@ -33,12 +33,12 @@ jobs:
               test -f Authorization/Authorization/uk.lproj/Localizable.strings;
 
     steps:
-      - uses: nschloe/action-cached-lfs-checkout@v1.2.1
+      - uses: nschloe/action-cached-lfs-checkout@d6efedcb8fc03d006e1e77743718e26234ed2c97 # v1.2.1
         with:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Use Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: 3.11
 

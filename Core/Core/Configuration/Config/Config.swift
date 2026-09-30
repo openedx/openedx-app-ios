@@ -35,6 +35,9 @@ public protocol ConfigProtocol: Sendable {
     var program: DiscoveryConfig { get }
     var experimentalFeatures: ExperimentalFeaturesConfig { get }
     var URIScheme: String { get }
+    /// Where to fetch the INSTANCES catalog from at launch. `nil` when unconfigured --
+    /// callers fall back to the bundled catalog instead of attempting a live fetch.
+    var instancesCatalogURL: URL? { get }
 }
 
 public enum TokenType: String, Sendable {
@@ -56,6 +59,7 @@ private enum ConfigKeys: String, Sendable {
     case appstoreID = "APP_STORE_ID"
     case faq = "FAQ_URL"
     case URIScheme = "URI_SCHEME"
+    case instancesCatalogURL = "INSTANCES_CATALOG_URL"
 }
 
 public class Config: @unchecked Sendable {
@@ -189,6 +193,13 @@ extension Config: ConfigProtocol {
     
     public var URIScheme: String {
         return string(for: ConfigKeys.URIScheme.rawValue) ?? ""
+    }
+
+    public var instancesCatalogURL: URL? {
+        guard let urlString = string(for: ConfigKeys.instancesCatalogURL.rawValue), !urlString.isEmpty else {
+            return nil
+        }
+        return URL(string: urlString)
     }
 }
 

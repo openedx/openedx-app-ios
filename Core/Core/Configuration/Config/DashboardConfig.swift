@@ -17,9 +17,10 @@ private enum DashboardKeys: String, RawStringExtractable {
     case dashboardType = "TYPE"
 }
 
-public class DashboardConfig: NSObject {
+// `@unchecked Sendable`: properties are set once in `init` and never mutated.
+public class DashboardConfig: NSObject, @unchecked Sendable {
     public let type: DashboardConfigType
-    
+
     init(dictionary: [String: AnyObject]) {
         type = (dictionary[DashboardKeys.dashboardType] as? String).flatMap {
             DashboardConfigType(rawValue: $0)
