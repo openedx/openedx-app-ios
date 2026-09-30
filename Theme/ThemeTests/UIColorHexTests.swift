@@ -18,7 +18,11 @@ final class UIColorHexTests: XCTestCase {
 
     func test_sixDigitHex_withHash_parsesOpaque() {
         let color = UIColor(hex: "#FF0000")
-        XCTAssertEqual(components(color!), (1, 0, 0, 1))
+        let (r, g, b, a) = components(color!)
+        XCTAssertEqual(r, 1)
+        XCTAssertEqual(g, 0)
+        XCTAssertEqual(b, 0)
+        XCTAssertEqual(a, 1)
     }
 
     func test_sixDigitHex_withoutHash_parses() {
