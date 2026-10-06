@@ -37,7 +37,4 @@
    <FileRef
       location = "group:Theme/Theme.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
 </Workspace>

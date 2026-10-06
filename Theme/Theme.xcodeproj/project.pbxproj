@@ -8,24 +8,22 @@
 
 /* Begin PBXBuildFile section */
 		0295B1DC297FF114003B0C65 /* fonts_file.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0295B1DA297FF0E9003B0C65 /* fonts_file.ttf */; };
-		049A2F1F1CE68BB8A9373D0D /* Pods_App_Theme_ThemeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52EBBA416BC61CD2B78879B7 /* Pods_App_Theme_ThemeTests.framework */; };
 		0770DE5428D0B00C006D8A5D /* swiftgen.yml in Resources */ = {isa = PBXBuildFile; fileRef = 0770DE5328D0B00C006D8A5D /* swiftgen.yml */; };
 		0770DE7B28D0C78C006D8A5D /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0770DE7A28D0C78C006D8A5D /* Theme.swift */; };
-		4875747BC644481E79603124 /* Pods_App_Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51EFD5ECB23A4898127124B9 /* Pods_App_Theme.framework */; };
-		E04A731A2B171D2B00E31764 /* FontParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179F82B0EF981002AB695 /* FontParserTests.swift */; };
 		2A3E81F320D84BFC8A214AE1 /* UIColorHexTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D838B177D324C20A195BE14 /* UIColorHexTests.swift */; };
+		8CA6F23038582BF65FE53485 /* ThemeFontSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BCB72D9A40E364B4A1831E /* ThemeFontSet.swift */; };
+		D8BDB62C7A984EEB82E2B7AD /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77397399EEE64A5E9C59DB05 /* UIColor+Hex.swift */; };
+		D9C14591F7B39073BE3D6D93 /* ThemeColorSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0EC1EE9D844E583446E6F /* ThemeColorSetTests.swift */; };
+		E04A731A2B171D2B00E31764 /* FontParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E09179F82B0EF981002AB695 /* FontParserTests.swift */; };
 		E0C716A72B0B05BA00858BAB /* fonts.json in Resources */ = {isa = PBXBuildFile; fileRef = E0C716A62B0B05BA00858BAB /* fonts.json */; };
 		E0C716A92B0B065600858BAB /* FontParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0C716A82B0B065600858BAB /* FontParser.swift */; };
 		E0C716AB2B0B0B8E00858BAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E0C716AA2B0B0B8E00858BAB /* Assets.xcassets */; };
 		E0D6E69F2B161BD70089F9C9 /* ThemeAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D6E69E2B161BD70089F9C9 /* ThemeAssets.swift */; };
 		E0D6E6A72B16DD4E0089F9C9 /* RoundedCorners.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0D6E6A62B16DD4E0089F9C9 /* RoundedCorners.swift */; };
-		D8BDB62C7A984EEB82E2B7AD /* UIColor+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77397399EEE64A5E9C59DB05 /* UIColor+Hex.swift */; };
 		E0D6E6B22B16EA380089F9C9 /* Theme.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0770DE0828D07831006D8A5D /* Theme.framework */; platformFilter = ios; };
-		FA856892E778043E79507F3F /* ThemeColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F329370B7656E66CA9BD5082 /* ThemeColorSet.swift */; };
-		F995360AF523166F6EE32CBC /* ThemeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24E8EDE81D7AF529BBD275A /* ThemeDefinition.swift */; };
 		F410EA2022632B87ED9BAF6F /* ThemeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8DEE13AF882AF05D97BB05C /* ThemeManager.swift */; };
-		8CA6F23038582BF65FE53485 /* ThemeFontSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5BCB72D9A40E364B4A1831E /* ThemeFontSet.swift */; };
-		D9C14591F7B39073BE3D6D93 /* ThemeColorSetTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56A0EC1EE9D844E583446E6F /* ThemeColorSetTests.swift */; };
+		F995360AF523166F6EE32CBC /* ThemeDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = B24E8EDE81D7AF529BBD275A /* ThemeDefinition.swift */; };
+		FA856892E778043E79507F3F /* ThemeColorSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = F329370B7656E66CA9BD5082 /* ThemeColorSet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,50 +38,24 @@
 
 /* Begin PBXFileReference section */
 		0295B1DA297FF0E9003B0C65 /* fonts_file.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = fonts_file.ttf; sourceTree = "<group>"; };
-		0754BB7841E3C0F8D6464951 /* Pods-App-Core.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releasestage.xcconfig"; sourceTree = "<group>"; };
 		0770DE0828D07831006D8A5D /* Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0770DE5328D0B00C006D8A5D /* swiftgen.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		0770DE7A28D0C78C006D8A5D /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugstage.xcconfig"; sourceTree = "<group>"; };
-		185C3037FC537A93E532FB5B /* Pods-App-Theme-ThemeTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.releasestage.xcconfig"; sourceTree = "<group>"; };
-		1A154A95AF4EE85A4A1C083B /* Pods-App-Core.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releasedev.xcconfig"; sourceTree = "<group>"; };
-		21B4805F3A71E72020CC2412 /* Pods-App-Theme-ThemeTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.debugstage.xcconfig"; sourceTree = "<group>"; };
-		2B7E6FE7843FC4CF2BFA712D /* Pods-App-Core.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debug.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debug.xcconfig"; sourceTree = "<group>"; };
-		3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		3C05B03529F8351A9CE573A5 /* Pods-App-Theme-ThemeTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.debugdev.xcconfig"; sourceTree = "<group>"; };
-		3E75F15A0CFA31FEFFD74BDA /* Pods-App-Theme.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.releasestage.xcconfig"; sourceTree = "<group>"; };
-		46BF778BEF031F5C0C986D5B /* Pods-App-Theme.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.debugstage.xcconfig"; sourceTree = "<group>"; };
-		487962E20A82E0E0A3240D2D /* Pods-App-Theme-ThemeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.debug.xcconfig"; sourceTree = "<group>"; };
-		4E492CB27902B082FC4770F7 /* Pods-App-Theme.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		4E638A48662937AB3FD07407 /* Pods-App-Theme-ThemeTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.debugprod.xcconfig"; sourceTree = "<group>"; };
-		51EFD5ECB23A4898127124B9 /* Pods_App_Theme.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Theme.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		52EBBA416BC61CD2B78879B7 /* Pods_App_Theme_ThemeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Theme_ThemeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		588E75C5DF545DC8AAC2C10F /* Pods-App-Theme.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.releasedev.xcconfig"; sourceTree = "<group>"; };
-		5D02E092DEDAF8A9DE9D34E7 /* Pods-App-Theme.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.debugprod.xcconfig"; sourceTree = "<group>"; };
-		60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.release.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.release.xcconfig"; sourceTree = "<group>"; };
-		72B5AEE033EE8E4086910FAA /* Pods-App-Theme-ThemeTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		7AFDB8C1E97070E426F05ABC /* Pods-App-Theme.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.release.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.release.xcconfig"; sourceTree = "<group>"; };
-		8975BD5CEEDBF3A35A67D289 /* Pods-App-Theme.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.debug.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.debug.xcconfig"; sourceTree = "<group>"; };
-		960BB69958C7376CD354D74F /* Pods-App-Theme.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Theme/Pods-App-Theme.debugdev.xcconfig"; sourceTree = "<group>"; };
-		9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugdev.xcconfig"; sourceTree = "<group>"; };
-		A8316465C7A08B99CB3108AA /* Pods-App-Theme-ThemeTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.releasedev.xcconfig"; sourceTree = "<group>"; };
-		C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Core.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Core/Pods-App-Core.debugprod.xcconfig"; sourceTree = "<group>"; };
+		4D838B177D324C20A195BE14 /* UIColorHexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexTests.swift; sourceTree = "<group>"; };
+		56A0EC1EE9D844E583446E6F /* ThemeColorSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeColorSetTests.swift; sourceTree = "<group>"; };
+		77397399EEE64A5E9C59DB05 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
+		B24E8EDE81D7AF529BBD275A /* ThemeDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeDefinition.swift; sourceTree = "<group>"; };
+		D8DEE13AF882AF05D97BB05C /* ThemeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		E001ADD92B1767C000DE3A03 /* Theme.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; name = Theme.xctestplan; path = ../Theme.xctestplan; sourceTree = "<group>"; };
 		E09179F82B0EF981002AB695 /* FontParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParserTests.swift; sourceTree = "<group>"; };
-		4D838B177D324C20A195BE14 /* UIColorHexTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorHexTests.swift; sourceTree = "<group>"; };
 		E0C716A62B0B05BA00858BAB /* fonts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = fonts.json; sourceTree = "<group>"; };
 		E0C716A82B0B065600858BAB /* FontParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontParser.swift; sourceTree = "<group>"; };
 		E0C716AA2B0B0B8E00858BAB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E0D6E69E2B161BD70089F9C9 /* ThemeAssets.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeAssets.swift; sourceTree = "<group>"; };
 		E0D6E6A62B16DD4E0089F9C9 /* RoundedCorners.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCorners.swift; sourceTree = "<group>"; };
-		77397399EEE64A5E9C59DB05 /* UIColor+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Hex.swift"; sourceTree = "<group>"; };
 		E0D6E6AE2B16EA380089F9C9 /* ThemeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ThemeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		F6E09DC289758CE811EF93D8 /* Pods-App-Theme-ThemeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Theme-ThemeTests.release.xcconfig"; path = "Target Support Files/Pods-App-Theme-ThemeTests/Pods-App-Theme-ThemeTests.release.xcconfig"; sourceTree = "<group>"; };
 		F329370B7656E66CA9BD5082 /* ThemeColorSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeColorSet.swift; sourceTree = "<group>"; };
-		B24E8EDE81D7AF529BBD275A /* ThemeDefinition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeDefinition.swift; sourceTree = "<group>"; };
-		D8DEE13AF882AF05D97BB05C /* ThemeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeManager.swift; sourceTree = "<group>"; };
 		F5BCB72D9A40E364B4A1831E /* ThemeFontSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeFontSet.swift; sourceTree = "<group>"; };
-		56A0EC1EE9D844E583446E6F /* ThemeColorSetTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeColorSetTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,7 +63,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4875747BC644481E79603124 /* Pods_App_Theme.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +71,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0D6E6B22B16EA380089F9C9 /* Theme.framework in Frameworks */,
-				049A2F1F1CE68BB8A9373D0D /* Pods_App_Theme_ThemeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,8 +95,6 @@
 				0770DE0A28D07831006D8A5D /* Theme */,
 				E09179FA2B0F204D002AB695 /* ThemeTests */,
 				0770DE0928D07831006D8A5D /* Products */,
-				C9DFE47E699CFFA85A77AF2C /* Pods */,
-				F1620A3A2C8B0699EAA61B57 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,38 +131,6 @@
 			path = SwiftGen;
 			sourceTree = "<group>";
 		};
-		C9DFE47E699CFFA85A77AF2C /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				2B7E6FE7843FC4CF2BFA712D /* Pods-App-Core.debug.xcconfig */,
-				60153262DBC2F9E660D7E11B /* Pods-App-Core.release.xcconfig */,
-				C7E5BCE79CE297B20777B27A /* Pods-App-Core.debugprod.xcconfig */,
-				9D5B06CAA99EA5CD49CBE2BB /* Pods-App-Core.debugdev.xcconfig */,
-				3B74C6685E416657F3C5F5A8 /* Pods-App-Core.releaseprod.xcconfig */,
-				1A154A95AF4EE85A4A1C083B /* Pods-App-Core.releasedev.xcconfig */,
-				0E13E9173C9C4CFC19F8B6F2 /* Pods-App-Core.debugstage.xcconfig */,
-				0754BB7841E3C0F8D6464951 /* Pods-App-Core.releasestage.xcconfig */,
-				8975BD5CEEDBF3A35A67D289 /* Pods-App-Theme.debug.xcconfig */,
-				5D02E092DEDAF8A9DE9D34E7 /* Pods-App-Theme.debugprod.xcconfig */,
-				46BF778BEF031F5C0C986D5B /* Pods-App-Theme.debugstage.xcconfig */,
-				960BB69958C7376CD354D74F /* Pods-App-Theme.debugdev.xcconfig */,
-				7AFDB8C1E97070E426F05ABC /* Pods-App-Theme.release.xcconfig */,
-				4E492CB27902B082FC4770F7 /* Pods-App-Theme.releaseprod.xcconfig */,
-				3E75F15A0CFA31FEFFD74BDA /* Pods-App-Theme.releasestage.xcconfig */,
-				588E75C5DF545DC8AAC2C10F /* Pods-App-Theme.releasedev.xcconfig */,
-				487962E20A82E0E0A3240D2D /* Pods-App-Theme-ThemeTests.debug.xcconfig */,
-				4E638A48662937AB3FD07407 /* Pods-App-Theme-ThemeTests.debugprod.xcconfig */,
-				21B4805F3A71E72020CC2412 /* Pods-App-Theme-ThemeTests.debugstage.xcconfig */,
-				3C05B03529F8351A9CE573A5 /* Pods-App-Theme-ThemeTests.debugdev.xcconfig */,
-				F6E09DC289758CE811EF93D8 /* Pods-App-Theme-ThemeTests.release.xcconfig */,
-				72B5AEE033EE8E4086910FAA /* Pods-App-Theme-ThemeTests.releaseprod.xcconfig */,
-				185C3037FC537A93E532FB5B /* Pods-App-Theme-ThemeTests.releasestage.xcconfig */,
-				A8316465C7A08B99CB3108AA /* Pods-App-Theme-ThemeTests.releasedev.xcconfig */,
-			);
-			name = Pods;
-			path = ../Pods;
-			sourceTree = "<group>";
-		};
 		E09179FA2B0F204D002AB695 /* ThemeTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -214,15 +150,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		F1620A3A2C8B0699EAA61B57 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				51EFD5ECB23A4898127124B9 /* Pods_App_Theme.framework */,
-				52EBBA416BC61CD2B78879B7 /* Pods_App_Theme_ThemeTests.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -240,7 +167,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0770DE0F28D07831006D8A5D /* Build configuration list for PBXNativeTarget "Theme" */;
 			buildPhases = (
-				ED83AD5255805030E042D62A /* [CP] Check Pods Manifest.lock */,
 				0770DE5A28D0B1E5006D8A5D /* SwiftGen */,
 				0770DE0328D07831006D8A5D /* Headers */,
 				0770DE0428D07831006D8A5D /* Sources */,
@@ -260,7 +186,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E0D6E6B52B16EA380089F9C9 /* Build configuration list for PBXNativeTarget "ThemeTests" */;
 			buildPhases = (
-				9014A6045E55D36F2E521E4D /* [CP] Check Pods Manifest.lock */,
 				E0D6E6AA2B16EA380089F9C9 /* Sources */,
 				E0D6E6AB2B16EA380089F9C9 /* Frameworks */,
 				E0D6E6AC2B16EA380089F9C9 /* Resources */,
@@ -353,51 +278,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
-		};
-		9014A6045E55D36F2E521E4D /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Theme-ThemeTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		ED83AD5255805030E042D62A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Theme-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if [[ -f \"${SRCROOT}/../BuildTools/bin/swiftgen\" ]]; then\n  \"${SRCROOT}/../BuildTools/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'make bootstrap' to install it.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -506,7 +387,6 @@
 		};
 		02DD1C9A29E80CE400F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 46BF778BEF031F5C0C986D5B /* Pods-App-Theme.debugstage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -526,6 +406,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -599,7 +483,6 @@
 		};
 		02DD1C9D29E80CED00F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3E75F15A0CFA31FEFFD74BDA /* Pods-App-Theme.releasestage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -619,6 +502,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -697,7 +584,6 @@
 		};
 		0727875D28D2326B002E9142 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 960BB69958C7376CD354D74F /* Pods-App-Theme.debugdev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -717,6 +603,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -790,7 +680,6 @@
 		};
 		0727875F28D23272002E9142 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 588E75C5DF545DC8AAC2C10F /* Pods-App-Theme.releasedev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -810,6 +699,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -888,7 +781,6 @@
 		};
 		0727876128D23277002E9142 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5D02E092DEDAF8A9DE9D34E7 /* Pods-App-Theme.debugprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -908,6 +800,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -981,7 +877,6 @@
 		};
 		0727876328D2327C002E9142 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E492CB27902B082FC4770F7 /* Pods-App-Theme.releaseprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1001,6 +896,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1137,7 +1036,6 @@
 		};
 		0770DE1028D07831006D8A5D /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8975BD5CEEDBF3A35A67D289 /* Pods-App-Theme.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1157,6 +1055,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1172,7 +1074,6 @@
 		};
 		0770DE1128D07831006D8A5D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7AFDB8C1E97070E426F05ABC /* Pods-App-Theme.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1192,6 +1093,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Theme;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1206,7 +1111,6 @@
 		};
 		E0D6E6B62B16EA380089F9C9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 487962E20A82E0E0A3240D2D /* Pods-App-Theme-ThemeTests.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1217,6 +1121,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -1228,7 +1136,6 @@
 		};
 		E0D6E6B72B16EA380089F9C9 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E638A48662937AB3FD07407 /* Pods-App-Theme-ThemeTests.debugprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1239,6 +1146,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -1250,7 +1161,6 @@
 		};
 		E0D6E6B82B16EA380089F9C9 /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 21B4805F3A71E72020CC2412 /* Pods-App-Theme-ThemeTests.debugstage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1261,6 +1171,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -1272,7 +1186,6 @@
 		};
 		E0D6E6B92B16EA380089F9C9 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C05B03529F8351A9CE573A5 /* Pods-App-Theme-ThemeTests.debugdev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1283,6 +1196,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
@@ -1294,7 +1211,6 @@
 		};
 		E0D6E6BA2B16EA380089F9C9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F6E09DC289758CE811EF93D8 /* Pods-App-Theme-ThemeTests.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1305,6 +1221,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1315,7 +1235,6 @@
 		};
 		E0D6E6BB2B16EA380089F9C9 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72B5AEE033EE8E4086910FAA /* Pods-App-Theme-ThemeTests.releaseprod.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1326,6 +1245,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1336,7 +1259,6 @@
 		};
 		E0D6E6BC2B16EA380089F9C9 /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 185C3037FC537A93E532FB5B /* Pods-App-Theme-ThemeTests.releasestage.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1347,6 +1269,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
@@ -1357,7 +1283,6 @@
 		};
 		E0D6E6BD2B16EA380089F9C9 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A8316465C7A08B99CB3108AA /* Pods-App-Theme-ThemeTests.releasedev.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1368,6 +1293,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ThemeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;

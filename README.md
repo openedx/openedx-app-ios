@@ -9,7 +9,7 @@ Modern vision of the mobile application for the Open edX platform from Raccoon G
 
         git clone https://github.com/openedx/openedx-app-ios.git
 
-2. Navigate to the project folder and run ``pod install``.
+2. Navigate to the project folder and run ``make bootstrap``. It downloads the SwiftLint, SwiftGen and Mockolo versions pinned in ``BuildTools/Package.swift``. Libraries are Swift packages, and Xcode resolves them when you open the workspace.
 
 3. Open ``OpenEdX.xcworkspace``.
 

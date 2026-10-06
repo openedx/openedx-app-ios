@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1CB2F17F0A984BD27F49F2E9 /* Pods_App_Downloads_DownloadsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3FC4AE0884E758D75EDD5E4 /* Pods_App_Downloads_DownloadsTests.framework */; };
 		CE8648812DA575DF00821EC9 /* Downloads.h in Headers */ = {isa = PBXBuildFile; fileRef = CE86487C2DA575DF00821EC9 /* Downloads.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		CE8648822DA575DF00821EC9 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = CE86487E2DA575DF00821EC9 /* Localizable.strings */; };
 		CE8648832DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE8648632DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift */; };
@@ -35,7 +34,6 @@
 		CEB36E562D6A2A0400907A89 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEB36E552D6A2A0400907A89 /* Core.framework */; };
 		CEB36E5A2D6A2B9900907A89 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB36E592D6A2B9900907A89 /* OEXFoundation */; };
 		CEC873C02D75E15C00A2626C /* DownloadsMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */; };
-		EDE11E2D4D726D34775CF243 /* Pods_App_Downloads.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE4EC0036E64DA88BB2D053F /* Pods_App_Downloads.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -62,22 +60,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		090BFB7D7F2C86DFA2936EB2 /* Pods-App-Downloads.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.release.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.release.xcconfig"; sourceTree = "<group>"; };
-		0E8EBB4043682DB77566B7E3 /* Pods-App-Downloads-DownloadsTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		1109AE1E7971BC02E1BAB67E /* Pods-App-Downloads.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debug.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debug.xcconfig"; sourceTree = "<group>"; };
-		15963788F5DBB4D08F12A1CD /* Pods-App-Downloads-DownloadsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.debug.xcconfig"; sourceTree = "<group>"; };
-		1725466C875D9294B70D0AAF /* Pods-App-Downloads-DownloadsTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.debugstage.xcconfig"; sourceTree = "<group>"; };
-		18A1A0C393E3870DFB03C9A0 /* Pods-App-Downloads-DownloadsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.release.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.release.xcconfig"; sourceTree = "<group>"; };
-		1BC76E2F677366D97F4C8A50 /* Pods-App-Downloads-DownloadsTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.debugdev.xcconfig"; sourceTree = "<group>"; };
-		4E3A5F43F066E899910779EB /* Pods-App-Downloads-DownloadsTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.debugprod.xcconfig"; sourceTree = "<group>"; };
-		5E786010692BE6984E8D1570 /* Pods-App-Downloads.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.releasedev.xcconfig"; sourceTree = "<group>"; };
-		6BE90243EF91211FDA213B0F /* Pods-App-Downloads-DownloadsTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.releasestage.xcconfig"; sourceTree = "<group>"; };
-		9F39C3E83AF8F1DCD9CC6524 /* Pods-App-Downloads.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		B97FA1C25474F0A5C5805030 /* Pods-App-Downloads-DownloadsTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads-DownloadsTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Downloads-DownloadsTests/Pods-App-Downloads-DownloadsTests.releasedev.xcconfig"; sourceTree = "<group>"; };
-		BF33DE5299BA76752DF1906E /* Pods-App-Downloads.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugdev.xcconfig"; sourceTree = "<group>"; };
-		C3FC4AE0884E758D75EDD5E4 /* Pods_App_Downloads_DownloadsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Downloads_DownloadsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CBAF7DDC4CDC8CA40A2E10F7 /* Pods-App-Downloads.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugstage.xcconfig"; sourceTree = "<group>"; };
-		CE4EC0036E64DA88BB2D053F /* Pods_App_Downloads.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Downloads.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE8648632DA575DF00821EC9 /* DownloadCoursePreviewResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadCoursePreviewResponse.swift; sourceTree = "<group>"; };
 		CE8648652DA575DF00821EC9 /* DownloadsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsEndpoint.swift; sourceTree = "<group>"; };
 		CE8648682DA575DF00821EC9 /* DownloadsPersistenceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsPersistenceProtocol.swift; sourceTree = "<group>"; };
@@ -103,8 +85,6 @@
 		CEB36E412D6A0E2C00907A89 /* swiftgen.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = swiftgen.yml; sourceTree = "<group>"; };
 		CEB36E552D6A2A0400907A89 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEC873BF2D75E15C00A2626C /* DownloadsMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsMocks.generated.swift; sourceTree = "<group>"; };
-		F88F26577D0F66933184E825 /* Pods-App-Downloads.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.debugprod.xcconfig"; sourceTree = "<group>"; };
-		FA71B94B494DEAD479651F27 /* Pods-App-Downloads.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Downloads.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Downloads/Pods-App-Downloads.releasestage.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +94,6 @@
 			files = (
 				CEB36E282D6A0D6C00907A89 /* OEXFoundation in Frameworks */,
 				CEB36E562D6A2A0400907A89 /* Core.framework in Frameworks */,
-				EDE11E2D4D726D34775CF243 /* Pods_App_Downloads.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -124,37 +103,12 @@
 			files = (
 				CEB36E122D6A0D0B00907A89 /* Downloads.framework in Frameworks */,
 				CEB36E5A2D6A2B9900907A89 /* OEXFoundation in Frameworks */,
-				1CB2F17F0A984BD27F49F2E9 /* Pods_App_Downloads_DownloadsTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B020C5F22CBC6B88CC8A70EB /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				1109AE1E7971BC02E1BAB67E /* Pods-App-Downloads.debug.xcconfig */,
-				CBAF7DDC4CDC8CA40A2E10F7 /* Pods-App-Downloads.debugstage.xcconfig */,
-				F88F26577D0F66933184E825 /* Pods-App-Downloads.debugprod.xcconfig */,
-				BF33DE5299BA76752DF1906E /* Pods-App-Downloads.debugdev.xcconfig */,
-				090BFB7D7F2C86DFA2936EB2 /* Pods-App-Downloads.release.xcconfig */,
-				9F39C3E83AF8F1DCD9CC6524 /* Pods-App-Downloads.releaseprod.xcconfig */,
-				FA71B94B494DEAD479651F27 /* Pods-App-Downloads.releasestage.xcconfig */,
-				5E786010692BE6984E8D1570 /* Pods-App-Downloads.releasedev.xcconfig */,
-				15963788F5DBB4D08F12A1CD /* Pods-App-Downloads-DownloadsTests.debug.xcconfig */,
-				1725466C875D9294B70D0AAF /* Pods-App-Downloads-DownloadsTests.debugstage.xcconfig */,
-				4E3A5F43F066E899910779EB /* Pods-App-Downloads-DownloadsTests.debugprod.xcconfig */,
-				1BC76E2F677366D97F4C8A50 /* Pods-App-Downloads-DownloadsTests.debugdev.xcconfig */,
-				18A1A0C393E3870DFB03C9A0 /* Pods-App-Downloads-DownloadsTests.release.xcconfig */,
-				0E8EBB4043682DB77566B7E3 /* Pods-App-Downloads-DownloadsTests.releaseprod.xcconfig */,
-				6BE90243EF91211FDA213B0F /* Pods-App-Downloads-DownloadsTests.releasestage.xcconfig */,
-				B97FA1C25474F0A5C5805030 /* Pods-App-Downloads-DownloadsTests.releasedev.xcconfig */,
-			);
-			name = Pods;
-			path = ../Pods;
-			sourceTree = "<group>";
-		};
 		CE8648642DA575DF00821EC9 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -252,7 +206,6 @@
 				CE86487F2DA575DF00821EC9 /* Downloads */,
 				CEB36E3F2D6A0DE800907A89 /* DownloadsTests */,
 				CEB36E0A2D6A0D0B00907A89 /* Products */,
-				B020C5F22CBC6B88CC8A70EB /* Pods */,
 				FA6696D1625DF71CF1ED8DD8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -287,8 +240,6 @@
 			isa = PBXGroup;
 			children = (
 				CEB36E552D6A2A0400907A89 /* Core.framework */,
-				CE4EC0036E64DA88BB2D053F /* Pods_App_Downloads.framework */,
-				C3FC4AE0884E758D75EDD5E4 /* Pods_App_Downloads_DownloadsTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -311,7 +262,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CEB36E1A2D6A0D0B00907A89 /* Build configuration list for PBXNativeTarget "Downloads" */;
 			buildPhases = (
-				A0943E23063B85F2D8D788FE /* [CP] Check Pods Manifest.lock */,
 				CEB36E542D6A29E600907A89 /* SwiftGen */,
 				CEB36E042D6A0D0B00907A89 /* Headers */,
 				CEB36E052D6A0D0B00907A89 /* Sources */,
@@ -334,7 +284,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CEB36E1F2D6A0D0B00907A89 /* Build configuration list for PBXNativeTarget "DownloadsTests" */;
 			buildPhases = (
-				0C1EA5B03399FBC94D9F0942 /* [CP] Check Pods Manifest.lock */,
 				CEB36E0D2D6A0D0B00907A89 /* Sources */,
 				CEB36E0E2D6A0D0B00907A89 /* Frameworks */,
 				CEB36E0F2D6A0D0B00907A89 /* Resources */,
@@ -411,50 +360,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0C1EA5B03399FBC94D9F0942 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Downloads-DownloadsTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A0943E23063B85F2D8D788FE /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Downloads-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		CEB36E542D6A29E600907A89 /* SwiftGen */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -471,7 +376,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
+			shellScript = "if [[ -f \"${SRCROOT}/../BuildTools/bin/swiftgen\" ]]; then\n  \"${SRCROOT}/../BuildTools/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'make bootstrap' to install it.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -534,7 +439,6 @@
 /* Begin XCBuildConfiguration section */
 		CEB36E1B2D6A0D0B00907A89 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1109AE1E7971BC02E1BAB67E /* Pods-App-Downloads.debug.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -559,6 +463,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -574,7 +482,6 @@
 		};
 		CEB36E1C2D6A0D0B00907A89 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 090BFB7D7F2C86DFA2936EB2 /* Pods-App-Downloads.release.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -599,6 +506,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -738,7 +649,6 @@
 		};
 		CEB36E202D6A0D0B00907A89 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 15963788F5DBB4D08F12A1CD /* Pods-App-Downloads-DownloadsTests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -747,6 +657,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -760,7 +674,6 @@
 		};
 		CEB36E212D6A0D0B00907A89 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 18A1A0C393E3870DFB03C9A0 /* Pods-App-Downloads-DownloadsTests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -769,6 +682,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -848,7 +765,6 @@
 		};
 		CEB36E2A2D6A0DA500907A89 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BF33DE5299BA76752DF1906E /* Pods-App-Downloads.debugdev.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -873,6 +789,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -888,7 +808,6 @@
 		};
 		CEB36E2B2D6A0DA500907A89 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1BC76E2F677366D97F4C8A50 /* Pods-App-Downloads-DownloadsTests.debugdev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -897,6 +816,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -976,7 +899,6 @@
 		};
 		CEB36E2D2D6A0DAD00907A89 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F88F26577D0F66933184E825 /* Pods-App-Downloads.debugprod.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -1001,6 +923,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1016,7 +942,6 @@
 		};
 		CEB36E2E2D6A0DAD00907A89 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4E3A5F43F066E899910779EB /* Pods-App-Downloads-DownloadsTests.debugprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1025,6 +950,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1104,7 +1033,6 @@
 		};
 		CEB36E302D6A0DB400907A89 /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBAF7DDC4CDC8CA40A2E10F7 /* Pods-App-Downloads.debugstage.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -1129,6 +1057,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1144,7 +1076,6 @@
 		};
 		CEB36E312D6A0DB400907A89 /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1725466C875D9294B70D0AAF /* Pods-App-Downloads-DownloadsTests.debugstage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1153,6 +1084,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1225,7 +1160,6 @@
 		};
 		CEB36E332D6A0DBC00907A89 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5E786010692BE6984E8D1570 /* Pods-App-Downloads.releasedev.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -1250,6 +1184,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1264,7 +1202,6 @@
 		};
 		CEB36E342D6A0DBC00907A89 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B97FA1C25474F0A5C5805030 /* Pods-App-Downloads-DownloadsTests.releasedev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1273,6 +1210,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1345,7 +1286,6 @@
 		};
 		CEB36E362D6A0DC300907A89 /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA71B94B494DEAD479651F27 /* Pods-App-Downloads.releasestage.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -1370,6 +1310,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1384,7 +1328,6 @@
 		};
 		CEB36E372D6A0DC300907A89 /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6BE90243EF91211FDA213B0F /* Pods-App-Downloads-DownloadsTests.releasestage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1393,6 +1336,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1465,7 +1412,6 @@
 		};
 		CEB36E392D6A0DC900907A89 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F39C3E83AF8F1DCD9CC6524 /* Pods-App-Downloads.releaseprod.xcconfig */;
 			buildSettings = {
 				BUILD_LIBRARY_FOR_DISTRIBUTION = NO;
 				CLANG_ENABLE_MODULES = YES;
@@ -1490,6 +1436,10 @@
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Downloads;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1504,7 +1454,6 @@
 		};
 		CEB36E3A2D6A0DC900907A89 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E8EBB4043682DB77566B7E3 /* Pods-App-Downloads-DownloadsTests.releaseprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1513,6 +1462,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DownloadsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

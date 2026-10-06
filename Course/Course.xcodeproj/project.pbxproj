@@ -80,7 +80,6 @@
 		0766DFCE299AB26D00EBEF6A /* EncodedVideoPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */; };
 		0766DFD0299AB29000EBEF6A /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */; };
 		07DE59862BECB868001CBFBC /* CourseAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07DE59852BECB868001CBFBC /* CourseAnalytics.swift */; };
-		197FB8EA8F92F00A8F383D82 /* Pods_App_Course.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */; };
 		975F475E2B6151FD00E5B031 /* CourseDatesMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F475D2B6151FD00E5B031 /* CourseDatesMock.swift */; };
 		975F47602B615DA700E5B031 /* CourseStructureMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 975F475F2B615DA700E5B031 /* CourseStructureMock.swift */; };
 		97C99C362B9A08FE004EEDE2 /* CalendarSyncProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97C99C352B9A08FE004EEDE2 /* CalendarSyncProgressView.swift */; };
@@ -98,7 +97,6 @@
 		A5A510A42E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */; };
 		A5A510A62E672E4A00553607 /* AssignmentCarouselDetailCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */; };
 		A5B468142F29DCA3002A4ECA /* CourseMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B468122F29DCA3002A4ECA /* CourseMocks.generated.swift */; };
-		B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */; };
 		BA58CF5D2B3D804D005B102E /* CourseStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF5C2B3D804D005B102E /* CourseStorage.swift */; };
 		BA58CF612B471041005B102E /* VideoDownloadQualityBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */; };
 		BA58CF642B471363005B102E /* VideoDownloadQualityContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA58CF632B471363005B102E /* VideoDownloadQualityContainerView.swift */; };
@@ -252,25 +250,11 @@
 		0766DFCD299AB26D00EBEF6A /* EncodedVideoPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncodedVideoPlayer.swift; sourceTree = "<group>"; };
 		0766DFCF299AB29000EBEF6A /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		07DE59852BECB868001CBFBC /* CourseAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseAnalytics.swift; sourceTree = "<group>"; };
-		2A444220A08C5035164B071F /* Pods-App-Course-CourseTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.releasedev.xcconfig"; sourceTree = "<group>"; };
-		3A55620C6018088BFF77F9AE /* Pods-App-CourseDetails.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debug.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debug.xcconfig"; sourceTree = "<group>"; };
-		3D506212980347A9D5A70E20 /* Pods-App-Course.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debugstage.xcconfig"; sourceTree = "<group>"; };
-		418D00932369361311AEEBD3 /* Pods-App-Course-CourseTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debugprod.xcconfig"; sourceTree = "<group>"; };
-		4D2F08669DD2579EAAE02E2F /* Pods-App-Course.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.releasedev.xcconfig"; sourceTree = "<group>"; };
-		4DD47D29A4059C1222E8B7D2 /* Pods-App-Course-CourseTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Course_CourseTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		51A3A7BA0FC6386531BE678A /* Pods-App-CourseDetails.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debugdev.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debugdev.xcconfig"; sourceTree = "<group>"; };
-		600A464AEDA7BEFEC1A7FE99 /* Pods-App-Course-CourseTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debugdev.xcconfig"; sourceTree = "<group>"; };
-		69A261790A0B4C724CCFA4F2 /* Pods-App-CourseDetails.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.release.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.release.xcconfig"; sourceTree = "<group>"; };
-		831B08139890634968EDD44D /* Pods-App-Course-CourseTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 		975F475D2B6151FD00E5B031 /* CourseDatesMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesMock.swift; sourceTree = "<group>"; };
 		975F475F2B615DA700E5B031 /* CourseStructureMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStructureMock.swift; sourceTree = "<group>"; };
 		97C99C352B9A08FE004EEDE2 /* CalendarSyncProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarSyncProgressView.swift; sourceTree = "<group>"; };
 		97CA95242B875EE200A9EDEA /* DatesSuccessView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatesSuccessView.swift; sourceTree = "<group>"; };
 		97E7DF0E2B7C852A00A2A09B /* DatesStatusInfoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatesStatusInfoView.swift; sourceTree = "<group>"; };
-		99AEF08FD75F1509863D3302 /* Pods-App-CourseDetails.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.debugprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.debugprod.xcconfig"; sourceTree = "<group>"; };
-		9B5D3D31A9CFA08B6C4347BD /* Pods-App-CourseDetails.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releasedev.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releasedev.xcconfig"; sourceTree = "<group>"; };
-		A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.releasestage.xcconfig"; sourceTree = "<group>"; };
 		A52897D02E24F5C1009C7044 /* CourseCompletionCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseCompletionCarouselSlideView.swift; sourceTree = "<group>"; };
 		A52897D32E24FA9F009C7044 /* CourseOutlineAndProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseOutlineAndProgressView.swift; sourceTree = "<group>"; };
 		A52897D52E2500E5009C7044 /* WhatsNew.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = WhatsNew.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -283,8 +267,6 @@
 		A5A510A32E6728AD00553607 /* CourseAssignmentsCarouselSlideView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseAssignmentsCarouselSlideView.swift; sourceTree = "<group>"; };
 		A5A510A52E672E4A00553607 /* AssignmentCarouselDetailCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssignmentCarouselDetailCardView.swift; sourceTree = "<group>"; };
 		A5B468122F29DCA3002A4ECA /* CourseMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseMocks.generated.swift; sourceTree = "<group>"; };
-		ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debug.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debug.xcconfig"; sourceTree = "<group>"; };
-		B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-CourseDetails.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-CourseDetails/Pods-App-CourseDetails.releaseprod.xcconfig"; sourceTree = "<group>"; };
 		BA58CF5C2B3D804D005B102E /* CourseStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseStorage.swift; sourceTree = "<group>"; };
 		BA58CF602B471041005B102E /* VideoDownloadQualityBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityBarView.swift; sourceTree = "<group>"; };
 		BA58CF632B471363005B102E /* VideoDownloadQualityContainerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoDownloadQualityContainerView.swift; sourceTree = "<group>"; };
@@ -334,14 +316,6 @@
 		DB205BFA2AE81B1200136EC2 /* CourseDateViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDateViewModelTests.swift; sourceTree = "<group>"; };
 		DB7D6EAB2ADFCAC40036BB13 /* CourseDatesView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CourseDatesView.swift; sourceTree = "<group>"; };
 		DB7D6EAD2ADFCB4A0036BB13 /* CourseDatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseDatesViewModel.swift; sourceTree = "<group>"; };
-		DBE05972CB5115D4535C6B8A /* Pods-App-Course-CourseTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.debug.xcconfig"; sourceTree = "<group>"; };
-		E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Course.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6BDAE887ED8A46860B3F6D3 /* Pods-App-Course-CourseTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.release.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.release.xcconfig"; sourceTree = "<group>"; };
-		E954A304FDC0409BEC34C125 /* Pods-App-Course.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debugprod.xcconfig"; sourceTree = "<group>"; };
-		EBB67646EDD08315BA7B3DC5 /* Pods-App-Course-CourseTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course-CourseTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests.releasestage.xcconfig"; sourceTree = "<group>"; };
-		EDCFD7A1BFD2200B14F10F71 /* Pods-App-Course.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.debugdev.xcconfig"; sourceTree = "<group>"; };
-		F4640D6B8065C404E0BC30D5 /* Pods-App-Course.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.release.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.release.xcconfig"; sourceTree = "<group>"; };
-		F496B47B12CFD866EA6845CC /* Pods-App-Course.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Course.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Course/Pods-App-Course.releaseprod.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -351,7 +325,6 @@
 			files = (
 				023812E8297AC8EB0087098F /* Course.framework in Frameworks */,
 				CE7CAF412CC1563500E0AC9D /* OEXFoundation in Frameworks */,
-				B8F50317B6B830A0E520C954 /* Pods_App_Course_CourseTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -361,7 +334,6 @@
 			files = (
 				A52897D62E2500E5009C7044 /* WhatsNew.framework in Frameworks */,
 				02B6B3C928E1E68100232911 /* Core.framework in Frameworks */,
-				197FB8EA8F92F00A8F383D82 /* Pods_App_Course.framework in Frameworks */,
 				CEBCA4342CC13CDE00076589 /* YouTubePlayerKit in Frameworks */,
 				02F98A8128F8224200DE94C0 /* Discussion.framework in Frameworks */,
 				CEB1E2732CC14EC400921517 /* OEXFoundation in Frameworks */,
@@ -415,7 +387,6 @@
 				023812E5297AC8EB0087098F /* CourseTests */,
 				0289F8EF28E1C3510064F8F3 /* Products */,
 				02B6B3C728E1E68100232911 /* Frameworks */,
-				D52670044E8768425E23C627 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -499,8 +470,6 @@
 				A52897D52E2500E5009C7044 /* WhatsNew.framework */,
 				02F98A8028F8224200DE94C0 /* Discussion.framework */,
 				02B6B3C828E1E68100232911 /* Core.framework */,
-				E5E795BD160CDA7D9C120DE6 /* Pods_App_Course.framework */,
-				50E59D2B81E12610964282C5 /* Pods_App_Course_CourseTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -862,36 +831,6 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		D52670044E8768425E23C627 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				3A55620C6018088BFF77F9AE /* Pods-App-CourseDetails.debug.xcconfig */,
-				99AEF08FD75F1509863D3302 /* Pods-App-CourseDetails.debugprod.xcconfig */,
-				51A3A7BA0FC6386531BE678A /* Pods-App-CourseDetails.debugdev.xcconfig */,
-				69A261790A0B4C724CCFA4F2 /* Pods-App-CourseDetails.release.xcconfig */,
-				B196A14555D0E006995A5683 /* Pods-App-CourseDetails.releaseprod.xcconfig */,
-				9B5D3D31A9CFA08B6C4347BD /* Pods-App-CourseDetails.releasedev.xcconfig */,
-				ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */,
-				E954A304FDC0409BEC34C125 /* Pods-App-Course.debugprod.xcconfig */,
-				EDCFD7A1BFD2200B14F10F71 /* Pods-App-Course.debugdev.xcconfig */,
-				F4640D6B8065C404E0BC30D5 /* Pods-App-Course.release.xcconfig */,
-				F496B47B12CFD866EA6845CC /* Pods-App-Course.releaseprod.xcconfig */,
-				4D2F08669DD2579EAAE02E2F /* Pods-App-Course.releasedev.xcconfig */,
-				DBE05972CB5115D4535C6B8A /* Pods-App-Course-CourseTests.debug.xcconfig */,
-				418D00932369361311AEEBD3 /* Pods-App-Course-CourseTests.debugprod.xcconfig */,
-				600A464AEDA7BEFEC1A7FE99 /* Pods-App-Course-CourseTests.debugdev.xcconfig */,
-				E6BDAE887ED8A46860B3F6D3 /* Pods-App-Course-CourseTests.release.xcconfig */,
-				4DD47D29A4059C1222E8B7D2 /* Pods-App-Course-CourseTests.releaseprod.xcconfig */,
-				2A444220A08C5035164B071F /* Pods-App-Course-CourseTests.releasedev.xcconfig */,
-				3D506212980347A9D5A70E20 /* Pods-App-Course.debugstage.xcconfig */,
-				A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */,
-				831B08139890634968EDD44D /* Pods-App-Course-CourseTests.debugstage.xcconfig */,
-				EBB67646EDD08315BA7B3DC5 /* Pods-App-Course-CourseTests.releasestage.xcconfig */,
-			);
-			name = Pods;
-			path = ../Pods;
-			sourceTree = "<group>";
-		};
 		DB7D6EAA2ADFCAA00036BB13 /* Dates */ = {
 			isa = PBXGroup;
 			children = (
@@ -920,7 +859,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 023812F1297AC8EB0087098F /* Build configuration list for PBXNativeTarget "CourseTests" */;
 			buildPhases = (
-				EBA99FC2A045E19AF88DF2E7 /* [CP] Check Pods Manifest.lock */,
 				023812E0297AC8EA0087098F /* Sources */,
 				023812E1297AC8EA0087098F /* Frameworks */,
 				023812E2297AC8EA0087098F /* Resources */,
@@ -940,7 +878,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0289F8F528E1C3510064F8F3 /* Build configuration list for PBXNativeTarget "Course" */;
 			buildPhases = (
-				B2836B9489F24D888A56D857 /* [CP] Check Pods Manifest.lock */,
 				0289F8E928E1C3510064F8F3 /* Headers */,
 				0289F90028E1C3B60064F8F3 /* SwiftGen */,
 				0289F8EA28E1C3510064F8F3 /* Sources */,
@@ -1036,72 +973,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
-		};
-		92C3B3183886DDECE1CBAC22 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-App-Course-CourseTests/Pods-App-Course-CourseTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B2836B9489F24D888A56D857 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Course-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EBA99FC2A045E19AF88DF2E7 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Course-CourseTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if [[ -f \"${SRCROOT}/../BuildTools/bin/swiftgen\" ]]; then\n  \"${SRCROOT}/../BuildTools/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'make bootstrap' to install it.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1285,7 +1157,6 @@
 /* Begin XCBuildConfiguration section */
 		023812EB297AC8EB0087098F /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DBE05972CB5115D4535C6B8A /* Pods-App-Course-CourseTests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1295,6 +1166,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1307,7 +1182,6 @@
 		};
 		023812EC297AC8EB0087098F /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 418D00932369361311AEEBD3 /* Pods-App-Course-CourseTests.debugprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1317,6 +1191,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1329,7 +1207,6 @@
 		};
 		023812ED297AC8EB0087098F /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 600A464AEDA7BEFEC1A7FE99 /* Pods-App-Course-CourseTests.debugdev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1339,6 +1216,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1351,7 +1232,6 @@
 		};
 		023812EE297AC8EB0087098F /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E6BDAE887ED8A46860B3F6D3 /* Pods-App-Course-CourseTests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1361,6 +1241,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1373,7 +1257,6 @@
 		};
 		023812EF297AC8EB0087098F /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4DD47D29A4059C1222E8B7D2 /* Pods-App-Course-CourseTests.releaseprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1383,6 +1266,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1395,7 +1282,6 @@
 		};
 		023812F0297AC8EB0087098F /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2A444220A08C5035164B071F /* Pods-App-Course-CourseTests.releasedev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1405,6 +1291,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1539,7 +1429,6 @@
 		};
 		0289F8F628E1C3510064F8F3 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ADC2A1B8183A674705F5F7E2 /* Pods-App-Course.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1563,6 +1452,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1578,7 +1471,6 @@
 		};
 		0289F8F728E1C3510064F8F3 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4640D6B8065C404E0BC30D5 /* Pods-App-Course.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1602,6 +1494,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1680,7 +1576,6 @@
 		};
 		0289F8F928E1C3750064F8F3 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EDCFD7A1BFD2200B14F10F71 /* Pods-App-Course.debugdev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1704,6 +1599,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1783,7 +1682,6 @@
 		};
 		0289F8FB28E1C37B0064F8F3 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E954A304FDC0409BEC34C125 /* Pods-App-Course.debugprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1807,6 +1705,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1880,7 +1782,6 @@
 		};
 		0289F8FD28E1C3830064F8F3 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D2F08669DD2579EAAE02E2F /* Pods-App-Course.releasedev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -1904,6 +1805,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1976,7 +1881,6 @@
 		};
 		0289F8FF28E1C3880064F8F3 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F496B47B12CFD866EA6845CC /* Pods-App-Course.releaseprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2000,6 +1904,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -2078,7 +1986,6 @@
 		};
 		02DD1CB829E80D4200F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3D506212980347A9D5A70E20 /* Pods-App-Course.debugstage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2102,6 +2009,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -2117,7 +2028,6 @@
 		};
 		02DD1CB929E80D4200F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 831B08139890634968EDD44D /* Pods-App-Course-CourseTests.debugstage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2127,6 +2037,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -2197,7 +2111,6 @@
 		};
 		02DD1CBB29E80D4700F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A47C63D9EB0D866F303D4588 /* Pods-App-Course.releasestage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2221,6 +2134,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseDetails;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -2235,7 +2152,6 @@
 		};
 		02DD1CBC29E80D4700F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBB67646EDD08315BA7B3DC5 /* Pods-App-Course-CourseTests.releasestage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -2245,6 +2161,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.CourseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

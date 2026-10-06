@@ -8,10 +8,12 @@ set -e
 DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 cd "${DIR}"
 
+MOCKOLO="${DIR}/BuildTools/bin/mockolo"
+
 # Check if mockolo is installed
-if ! which mockolo >/dev/null; then
+if [[ ! -x "${MOCKOLO}" ]]; then
     echo "Error: mockolo is not installed"
-    echo "Install it with: brew install mockolo"
+    echo "Install it with: make bootstrap"
     exit 1
 fi
 
@@ -19,7 +21,7 @@ echo "Generating mocks with Mockolo..."
 
 # Core module
 echo "Generating Core mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Core/Core" \
     --destination "Core/CoreTests/Generated/CoreMocks.generated.swift" \
     --mock-final \
@@ -28,7 +30,7 @@ mockolo \
 
 # Authorization module (includes Core sources for shared protocols like AuthInteractorProtocol)
 echo "Generating Authorization mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Authorization/Authorization" "Core/Core" \
     --destination "Authorization/AuthorizationTests/Generated/AuthorizationMocks.generated.swift" \
     --mock-final \
@@ -37,7 +39,7 @@ mockolo \
 
 # Course module (includes Core sources for shared protocols)
 echo "Generating Course mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Course/Course" "Core/Core" \
     --destination "Course/CourseTests/Generated/CourseMocks.generated.swift" \
     --mock-final \
@@ -46,7 +48,7 @@ mockolo \
 
 # WhatsNew module
 echo "Generating WhatsNew mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "WhatsNew/WhatsNew" \
     --destination "WhatsNew/WhatsNewTests/Generated/WhatsNewMocks.generated.swift" \
     --mock-final \
@@ -55,7 +57,7 @@ mockolo \
 
 # Discovery module (includes Core sources for shared protocols)
 echo "Generating Discovery mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Discovery/Discovery" "Core/Core" \
     --destination "Discovery/DiscoveryTests/Generated/DiscoveryMocks.generated.swift" \
     --mock-final \
@@ -64,7 +66,7 @@ mockolo \
 
 # Dashboard module (includes Core sources for shared protocols)
 echo "Generating Dashboard mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Dashboard/Dashboard" "Core/Core" \
     --destination "Dashboard/DashboardTests/Generated/DashboardMocks.generated.swift" \
     --mock-final \
@@ -73,7 +75,7 @@ mockolo \
 
 # Downloads module (includes Core sources for shared protocols)
 echo "Generating Downloads mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Downloads/Downloads" "Core/Core" \
     --destination "Downloads/DownloadsTests/Generated/DownloadsMocks.generated.swift" \
     --mock-final \
@@ -82,7 +84,7 @@ mockolo \
 
 # Profile module (includes Core sources for shared protocols)
 echo "Generating Profile mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Profile/Profile" "Core/Core" \
     --destination "Profile/ProfileTests/Generated/ProfileMocks.generated.swift" \
     --mock-final \
@@ -91,7 +93,7 @@ mockolo \
 
 # Discussion module (includes Core sources for shared protocols)
 echo "Generating Discussion mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "Discussion/Discussion" "Core/Core" \
     --destination "Discussion/DiscussionTests/Generated/DiscussionMocks.generated.swift" \
     --mock-final \
@@ -100,7 +102,7 @@ mockolo \
 
 # AppDates module (includes Core sources for shared protocols)
 echo "Generating AppDates mocks..."
-mockolo \
+"${MOCKOLO}" \
     --sourcedirs "AppDates/AppDates" "Core/Core" \
     --destination "AppDates/AppDatesTests/Generated/AppDatesMocks.generated.swift" \
     --mock-final \

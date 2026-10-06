@@ -55,7 +55,6 @@
 		02F81DE32BF502B9002D3604 /* SyncSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F81DE22BF502B9002D3604 /* SyncSelector.swift */; };
 		02FE9A802BC707D500B3C206 /* SettingsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02FE9A7F2BC707D400B3C206 /* SettingsViewModelTests.swift */; };
 		0796C8C929B7905300444B05 /* ProfileBottomSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */; };
-		25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */; };
 		BAD9CA3F2B29BF5C00DE790A /* ProfileSupportInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfoView.swift */; };
 		CE1735042CD23D7A00F9606A /* DatesAndCalendarViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE1735032CD23D7A00F9606A /* DatesAndCalendarViewModelTests.swift */; };
 		CE73457329781A6300B55797 /* ProfileMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE73457229781A6300B55797 /* ProfileMocks.generated.swift */; };
@@ -63,7 +62,6 @@
 		CE961F032CD163FD00799B9F /* CalendarManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE961F022CD163FD00799B9F /* CalendarManagerTests.swift */; };
 		CEB1E2702CC14EB000921517 /* OEXFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = CEB1E26F2CC14EB000921517 /* OEXFoundation */; };
 		CEBCA4312CC13CB900076589 /* BranchSDK in Frameworks */ = {isa = PBXBuildFile; productRef = CEBCA4302CC13CB900076589 /* BranchSDK */; };
-		E8264C634DD8AD314ECE8905 /* Pods_App_Profile_ProfileTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -139,28 +137,10 @@
 		02F81DE22BF502B9002D3604 /* SyncSelector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SyncSelector.swift; sourceTree = "<group>"; };
 		02FE9A7F2BC707D400B3C206 /* SettingsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsViewModelTests.swift; path = ProfileTests/Presentation/Settings/SettingsViewModelTests.swift; sourceTree = SOURCE_ROOT; };
 		0796C8C829B7905300444B05 /* ProfileBottomSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileBottomSheet.swift; sourceTree = "<group>"; };
-		0E5054C44435557666B6D885 /* Pods-App-Profile.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugstage.xcconfig"; sourceTree = "<group>"; };
-		3674C51E1BE41D834B5C4E99 /* Pods-App-Profile.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugdev.xcconfig"; sourceTree = "<group>"; };
-		52AFEEDE612F39072A418B1B /* Pods-App-Profile-ProfileTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.debug.xcconfig"; sourceTree = "<group>"; };
-		5788D9F297637D0D4A327E3B /* Pods-App-Profile-ProfileTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.debugprod.xcconfig"; sourceTree = "<group>"; };
-		7353334255A8C1EC85A413DE /* Pods-App-Profile.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		7866F14F89F9B83062105100 /* Pods-App-Profile-ProfileTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.releasestage.xcconfig"; sourceTree = "<group>"; };
-		7B80961BB9886B28B90B9ECB /* Pods-App-Profile.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.releasestage.xcconfig"; sourceTree = "<group>"; };
-		7F6936DF5D5491AE5B6403BC /* Pods-App-Profile-ProfileTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.debugdev.xcconfig"; sourceTree = "<group>"; };
-		8C5B79329D30C10E32838360 /* Pods-App-Profile-ProfileTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.release.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.release.xcconfig"; sourceTree = "<group>"; };
-		99E3D23305C745FE0FF57A62 /* Pods-App-Profile.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.release.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.release.xcconfig"; sourceTree = "<group>"; };
-		9AC2F1A5AE5AC7F0CFCB9FE3 /* Pods-App-Profile-ProfileTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.releasedev.xcconfig"; sourceTree = "<group>"; };
-		9D125F82E0EAC4B6C0CE280F /* Pods-App-Profile-ProfileTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		A9F98CD65D1F657EB8F9EA59 /* Pods-App-Profile.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.releasedev.xcconfig"; sourceTree = "<group>"; };
-		B3F05DC21379BD4FE1AFCCF1 /* Pods-App-Profile.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debugprod.xcconfig"; sourceTree = "<group>"; };
 		BAD9CA3E2B29BF5C00DE790A /* ProfileSupportInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileSupportInfoView.swift; sourceTree = "<group>"; };
-		BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Profile.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Profile_ProfileTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE1735032CD23D7A00F9606A /* DatesAndCalendarViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatesAndCalendarViewModelTests.swift; sourceTree = "<group>"; };
 		CE73457229781A6300B55797 /* ProfileMocks.generated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileMocks.generated.swift; sourceTree = "<group>"; };
 		CE961F022CD163FD00799B9F /* CalendarManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarManagerTests.swift; sourceTree = "<group>"; };
-		F52EFE7DC07BE68B9A302DAF /* Pods-App-Profile.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile.debug.xcconfig"; path = "Target Support Files/Pods-App-Profile/Pods-App-Profile.debug.xcconfig"; sourceTree = "<group>"; };
-		FB33709D5DBACDEA33BD016F /* Pods-App-Profile-ProfileTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Profile-ProfileTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Profile-ProfileTests/Pods-App-Profile-ProfileTests.debugstage.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,7 +151,6 @@
 				CEB1E2702CC14EB000921517 /* OEXFoundation in Frameworks */,
 				CEBCA4312CC13CB900076589 /* BranchSDK in Frameworks */,
 				025DE1A028DB4D9D0053E0F4 /* Core.framework in Frameworks */,
-				25B36FF48C1307888A3890DA /* Pods_App_Profile.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,7 +160,6 @@
 			files = (
 				02A9A91E2978194A00B55797 /* Profile.framework in Frameworks */,
 				CE7CAF3D2CC1562C00E0AC9D /* OEXFoundation in Frameworks */,
-				E8264C634DD8AD314ECE8905 /* Pods_App_Profile_ProfileTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +194,6 @@
 				020F834C28DB4CCD0062FA70 /* Profile */,
 				02A9A91B2978194A00B55797 /* ProfileTests */,
 				020F834B28DB4CCD0062FA70 /* Products */,
-				9D2C983A22FF6FE2CC8BC994 /* Pods */,
 				C456081FB065DCEDAB8119E4 /* Frameworks */,
 				0796C8C529B78F5700444B05 /* Recovered References */,
 			);
@@ -432,30 +409,6 @@
 			name = "Recovered References";
 			sourceTree = "<group>";
 		};
-		9D2C983A22FF6FE2CC8BC994 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				F52EFE7DC07BE68B9A302DAF /* Pods-App-Profile.debug.xcconfig */,
-				3674C51E1BE41D834B5C4E99 /* Pods-App-Profile.debugdev.xcconfig */,
-				B3F05DC21379BD4FE1AFCCF1 /* Pods-App-Profile.debugprod.xcconfig */,
-				99E3D23305C745FE0FF57A62 /* Pods-App-Profile.release.xcconfig */,
-				7353334255A8C1EC85A413DE /* Pods-App-Profile.releaseprod.xcconfig */,
-				A9F98CD65D1F657EB8F9EA59 /* Pods-App-Profile.releasedev.xcconfig */,
-				52AFEEDE612F39072A418B1B /* Pods-App-Profile-ProfileTests.debug.xcconfig */,
-				7F6936DF5D5491AE5B6403BC /* Pods-App-Profile-ProfileTests.debugdev.xcconfig */,
-				5788D9F297637D0D4A327E3B /* Pods-App-Profile-ProfileTests.debugprod.xcconfig */,
-				8C5B79329D30C10E32838360 /* Pods-App-Profile-ProfileTests.release.xcconfig */,
-				9D125F82E0EAC4B6C0CE280F /* Pods-App-Profile-ProfileTests.releaseprod.xcconfig */,
-				9AC2F1A5AE5AC7F0CFCB9FE3 /* Pods-App-Profile-ProfileTests.releasedev.xcconfig */,
-				0E5054C44435557666B6D885 /* Pods-App-Profile.debugstage.xcconfig */,
-				7B80961BB9886B28B90B9ECB /* Pods-App-Profile.releasestage.xcconfig */,
-				FB33709D5DBACDEA33BD016F /* Pods-App-Profile-ProfileTests.debugstage.xcconfig */,
-				7866F14F89F9B83062105100 /* Pods-App-Profile-ProfileTests.releasestage.xcconfig */,
-			);
-			name = Pods;
-			path = ../Pods;
-			sourceTree = "<group>";
-		};
 		BAD9CA402B29D6CD00DE790A /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
@@ -468,8 +421,6 @@
 			isa = PBXGroup;
 			children = (
 				025DE19F28DB4D9D0053E0F4 /* Core.framework */,
-				BEA369C38362C1A91A012F70 /* Pods_App_Profile.framework */,
-				C85ADF87135E03275A980E07 /* Pods_App_Profile_ProfileTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -499,7 +450,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 020F835128DB4CCD0062FA70 /* Build configuration list for PBXNativeTarget "Profile" */;
 			buildPhases = (
-				1C9532815A1B32E73E22103E /* [CP] Check Pods Manifest.lock */,
 				021D926228DDAF4300ACC565 /* SwiftGen */,
 				020F834528DB4CCD0062FA70 /* Headers */,
 				020F834628DB4CCD0062FA70 /* Sources */,
@@ -519,7 +469,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 02A9A9272978194A00B55797 /* Build configuration list for PBXNativeTarget "ProfileTests" */;
 			buildPhases = (
-				0EF6D72318BE090E24C6A32C /* [CP] Check Pods Manifest.lock */,
 				02A9A9162978194A00B55797 /* Sources */,
 				02A9A9172978194A00B55797 /* Frameworks */,
 				02A9A9182978194A00B55797 /* Resources */,
@@ -624,51 +573,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
-		};
-		0EF6D72318BE090E24C6A32C /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Profile-ProfileTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		1C9532815A1B32E73E22103E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Profile-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if [[ -f \"${SRCROOT}/../BuildTools/bin/swiftgen\" ]]; then\n  \"${SRCROOT}/../BuildTools/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'make bootstrap' to install it.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -880,7 +785,6 @@
 		};
 		020F835228DB4CCD0062FA70 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F52EFE7DC07BE68B9A302DAF /* Pods-App-Profile.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -900,6 +804,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -915,7 +823,6 @@
 		};
 		020F835328DB4CCD0062FA70 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 99E3D23305C745FE0FF57A62 /* Pods-App-Profile.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -935,6 +842,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1012,7 +923,6 @@
 		};
 		020F835528DB4CE50062FA70 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B3F05DC21379BD4FE1AFCCF1 /* Pods-App-Profile.debugprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1032,6 +942,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1110,7 +1024,6 @@
 		};
 		020F835728DB4CEB0062FA70 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3674C51E1BE41D834B5C4E99 /* Pods-App-Profile.debugdev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1130,6 +1043,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1202,7 +1119,6 @@
 		};
 		020F835928DB4CF10062FA70 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A9F98CD65D1F657EB8F9EA59 /* Pods-App-Profile.releasedev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1222,6 +1138,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1293,7 +1213,6 @@
 		};
 		020F835B28DB4CF50062FA70 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7353334255A8C1EC85A413DE /* Pods-App-Profile.releaseprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1313,6 +1232,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1327,7 +1250,6 @@
 		};
 		02A9A9212978194A00B55797 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 52AFEEDE612F39072A418B1B /* Pods-App-Profile-ProfileTests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1336,6 +1258,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1348,7 +1274,6 @@
 		};
 		02A9A9222978194A00B55797 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7F6936DF5D5491AE5B6403BC /* Pods-App-Profile-ProfileTests.debugdev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1357,6 +1282,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1369,7 +1298,6 @@
 		};
 		02A9A9232978194A00B55797 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5788D9F297637D0D4A327E3B /* Pods-App-Profile-ProfileTests.debugprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1378,6 +1306,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1390,7 +1322,6 @@
 		};
 		02A9A9242978194A00B55797 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8C5B79329D30C10E32838360 /* Pods-App-Profile-ProfileTests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1399,6 +1330,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1411,7 +1346,6 @@
 		};
 		02A9A9252978194A00B55797 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D125F82E0EAC4B6C0CE280F /* Pods-App-Profile-ProfileTests.releaseprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1420,6 +1354,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1432,7 +1370,6 @@
 		};
 		02A9A9262978194A00B55797 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9AC2F1A5AE5AC7F0CFCB9FE3 /* Pods-App-Profile-ProfileTests.releasedev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1441,6 +1378,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1516,7 +1457,6 @@
 		};
 		02DD1CB229E80D3300F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0E5054C44435557666B6D885 /* Pods-App-Profile.debugstage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1536,6 +1476,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1551,7 +1495,6 @@
 		};
 		02DD1CB329E80D3300F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FB33709D5DBACDEA33BD016F /* Pods-App-Profile-ProfileTests.debugstage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1560,6 +1503,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1629,7 +1576,6 @@
 		};
 		02DD1CB529E80D3800F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7B80961BB9886B28B90B9ECB /* Pods-App-Profile.releasestage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1649,6 +1595,10 @@
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Profile;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1663,7 +1613,6 @@
 		};
 		02DD1CB629E80D3800F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7866F14F89F9B83062105100 /* Pods-App-Profile-ProfileTests.releasestage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1672,6 +1621,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.ProfileTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;

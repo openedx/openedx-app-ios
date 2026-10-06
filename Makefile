@@ -1,3 +1,6 @@
+bootstrap:
+	./BuildTools/bootstrap.sh
+
 clean_translations:
 	rm -rf I18N/
 	python3 i18n_scripts/translation.py --clean

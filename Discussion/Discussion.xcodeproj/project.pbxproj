@@ -55,8 +55,6 @@
 		0766DFC4299AA2C200EBEF6A /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFC3299AA2C200EBEF6A /* Post.swift */; };
 		0766DFC6299AA30500EBEF6A /* ThreadType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFC5299AA30500EBEF6A /* ThreadType.swift */; };
 		0766DFCA299AA3D400EBEF6A /* Data_CreatedComment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0766DFC9299AA3D400EBEF6A /* Data_CreatedComment.swift */; };
-		7527943BE0D66C33B167A41A /* Pods_App_Discussion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A7A0375EDDEB8948165EAD /* Pods_App_Discussion.framework */; };
-		9FC0EF907C0334E383C300C4 /* Pods_App_Discussion_DiscussionTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */; };
 		A5B4681D2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5B4681B2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift */; };
 		BA3C45672BA9E13000672C96 /* Data_DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */; };
 		BA3C45692BA9E18D00672C96 /* DiscussionInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */; };
@@ -157,24 +155,9 @@
 		0766DFC3299AA2C200EBEF6A /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		0766DFC5299AA30500EBEF6A /* ThreadType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThreadType.swift; sourceTree = "<group>"; };
 		0766DFC9299AA3D400EBEF6A /* Data_CreatedComment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_CreatedComment.swift; sourceTree = "<group>"; };
-		1DF890C9EF8CFBC7610676BF /* Pods-App-Discussion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.release.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.release.xcconfig"; sourceTree = "<group>"; };
-		2F4E0FCAD2C351B8C3DCE0DA /* Pods-App-Discussion-DiscussionTests.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.debugprod.xcconfig"; sourceTree = "<group>"; };
-		307AD0C3C81316D6B0C04178 /* Pods-App-Discussion-DiscussionTests.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.debugdev.xcconfig"; sourceTree = "<group>"; };
-		4D6EE7EAA4004C3BE8757E3E /* Pods-App-Discussion-DiscussionTests.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.debugstage.xcconfig"; sourceTree = "<group>"; };
-		55A6A0C34167EFFA9736A83E /* Pods-App-Discussion-DiscussionTests.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		59F3BBE6ACFA3C87C2294DA0 /* Pods-App-Discussion-DiscussionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.release.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.release.xcconfig"; sourceTree = "<group>"; };
-		5F59EC4433FF0AE0743D284D /* Pods-App-Discussion.releaseprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releaseprod.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releaseprod.xcconfig"; sourceTree = "<group>"; };
-		66A7A0375EDDEB8948165EAD /* Pods_App_Discussion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discussion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A55CEBCC51BDC30B8354E258 /* Pods-App-Discussion.debugprod.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugprod.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugprod.xcconfig"; sourceTree = "<group>"; };
 		A5B4681B2F2A0EFD002A4ECA /* DiscussionMocks.generated.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionMocks.generated.swift; sourceTree = "<group>"; };
-		ACA8EF2DEDDB7695162C381A /* Pods-App-Discussion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debug.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debug.xcconfig"; sourceTree = "<group>"; };
-		ACDA8EE733B97BCD8689A0B4 /* Pods-App-Discussion.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugstage.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugstage.xcconfig"; sourceTree = "<group>"; };
-		B472516A5A79E87C40766D93 /* Pods-App-Discussion-DiscussionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.debug.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BA3C45662BA9E13000672C96 /* Data_DiscussionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_DiscussionInfo.swift; sourceTree = "<group>"; };
 		BA3C45682BA9E18D00672C96 /* DiscussionInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscussionInfo.swift; sourceTree = "<group>"; };
-		BBF5EC7249109D6718A229CF /* Pods-App-Discussion.debugdev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.debugdev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.debugdev.xcconfig"; sourceTree = "<group>"; };
-		C214357310D8AC9185B38ABA /* Pods-App-Discussion-DiscussionTests.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasestage.xcconfig"; sourceTree = "<group>"; };
-		C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_App_Discussion_DiscussionTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE2691DC2D9D2868002B8B50 /* HTMLContentFixProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentFixProcessor.swift; sourceTree = "<group>"; };
 		CE517F422D9C0AA80012EF71 /* AttributedStringConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttributedStringConverter.swift; sourceTree = "<group>"; };
 		CE517F432D9C0AA80012EF71 /* BlockState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockState.swift; sourceTree = "<group>"; };
@@ -184,9 +167,6 @@
 		CE517F482D9C0AA80012EF71 /* Tokenizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tokenizer.swift; sourceTree = "<group>"; };
 		CE517F562D9C17D40012EF71 /* HTMLContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLContentView.swift; sourceTree = "<group>"; };
 		CE517F582D9C17F60012EF71 /* HTMLImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HTMLImageView.swift; sourceTree = "<group>"; };
-		ED561A5DE961B1E12B42F4E0 /* Pods-App-Discussion.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasedev.xcconfig"; sourceTree = "<group>"; };
-		F57B9404423B3E624DD25D81 /* Pods-App-Discussion.releasestage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion.releasestage.xcconfig"; path = "Target Support Files/Pods-App-Discussion/Pods-App-Discussion.releasestage.xcconfig"; sourceTree = "<group>"; };
-		FE1509B856949D2742A10836 /* Pods-App-Discussion-DiscussionTests.releasedev.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; path = "Target Support Files/Pods-App-Discussion-DiscussionTests/Pods-App-Discussion-DiscussionTests.releasedev.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,7 +176,6 @@
 			files = (
 				0218195928F7347200202564 /* Core.framework in Frameworks */,
 				CEB1E2762CC14ED700921517 /* OEXFoundation in Frameworks */,
-				7527943BE0D66C33B167A41A /* Pods_App_Discussion.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,7 +185,6 @@
 			files = (
 				0240D8D32987FE1F003CFE50 /* Discussion.framework in Frameworks */,
 				CE7CAF472CC1566D00E0AC9D /* OEXFoundation in Frameworks */,
-				9FC0EF907C0334E383C300C4 /* Pods_App_Discussion_DiscussionTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +199,6 @@
 				0240D8D02987FE1F003CFE50 /* DiscussionTests */,
 				0218194E28F7344A00202564 /* Products */,
 				0218195728F7347200202564 /* Frameworks */,
-				D70279BE0CF058E150A59B90 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -252,8 +229,6 @@
 			isa = PBXGroup;
 			children = (
 				0218195828F7347200202564 /* Core.framework */,
-				66A7A0375EDDEB8948165EAD /* Pods_App_Discussion.framework */,
-				C40A586C6164140DC2079231 /* Pods_App_Discussion_DiscussionTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -507,30 +482,6 @@
 			path = HTMLStreamer;
 			sourceTree = "<group>";
 		};
-		D70279BE0CF058E150A59B90 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				ACA8EF2DEDDB7695162C381A /* Pods-App-Discussion.debug.xcconfig */,
-				BBF5EC7249109D6718A229CF /* Pods-App-Discussion.debugdev.xcconfig */,
-				A55CEBCC51BDC30B8354E258 /* Pods-App-Discussion.debugprod.xcconfig */,
-				1DF890C9EF8CFBC7610676BF /* Pods-App-Discussion.release.xcconfig */,
-				ED561A5DE961B1E12B42F4E0 /* Pods-App-Discussion.releasedev.xcconfig */,
-				5F59EC4433FF0AE0743D284D /* Pods-App-Discussion.releaseprod.xcconfig */,
-				B472516A5A79E87C40766D93 /* Pods-App-Discussion-DiscussionTests.debug.xcconfig */,
-				307AD0C3C81316D6B0C04178 /* Pods-App-Discussion-DiscussionTests.debugdev.xcconfig */,
-				2F4E0FCAD2C351B8C3DCE0DA /* Pods-App-Discussion-DiscussionTests.debugprod.xcconfig */,
-				59F3BBE6ACFA3C87C2294DA0 /* Pods-App-Discussion-DiscussionTests.release.xcconfig */,
-				FE1509B856949D2742A10836 /* Pods-App-Discussion-DiscussionTests.releasedev.xcconfig */,
-				55A6A0C34167EFFA9736A83E /* Pods-App-Discussion-DiscussionTests.releaseprod.xcconfig */,
-				ACDA8EE733B97BCD8689A0B4 /* Pods-App-Discussion.debugstage.xcconfig */,
-				F57B9404423B3E624DD25D81 /* Pods-App-Discussion.releasestage.xcconfig */,
-				4D6EE7EAA4004C3BE8757E3E /* Pods-App-Discussion-DiscussionTests.debugstage.xcconfig */,
-				C214357310D8AC9185B38ABA /* Pods-App-Discussion-DiscussionTests.releasestage.xcconfig */,
-			);
-			name = Pods;
-			path = ../Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -549,7 +500,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0218195428F7344A00202564 /* Build configuration list for PBXNativeTarget "Discussion" */;
 			buildPhases = (
-				D9FF14C95F963E9CCBF577BD /* [CP] Check Pods Manifest.lock */,
 				0218194828F7344A00202564 /* Headers */,
 				0218196E28F7355400202564 /* SwiftGen */,
 				0218194928F7344A00202564 /* Sources */,
@@ -570,7 +520,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0240D8DC2987FE1F003CFE50 /* Build configuration list for PBXNativeTarget "DiscussionTests" */;
 			buildPhases = (
-				D42AB95EE00BC248888BC25A /* [CP] Check Pods Manifest.lock */,
 				0240D8CB2987FE1F003CFE50 /* Sources */,
 				0240D8CC2987FE1F003CFE50 /* Frameworks */,
 				0240D8CD2987FE1F003CFE50 /* Resources */,
@@ -665,51 +614,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "if [[ -f \"${PODS_ROOT}/SwiftGen/bin/swiftgen\" ]]; then\n  \"${PODS_ROOT}/SwiftGen/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'pod install --repo-update' to install it.\"\nfi\n";
-		};
-		D42AB95EE00BC248888BC25A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Discussion-DiscussionTests-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D9FF14C95F963E9CCBF577BD /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-App-Discussion-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "if [[ -f \"${SRCROOT}/../BuildTools/bin/swiftgen\" ]]; then\n  \"${SRCROOT}/../BuildTools/bin/swiftgen\"\nelse\n  echo \"warning: SwiftGen is not installed. Run 'make bootstrap' to install it.\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -938,7 +843,6 @@
 		};
 		0218195528F7344A00202564 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ACA8EF2DEDDB7695162C381A /* Pods-App-Discussion.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -958,6 +862,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -973,7 +881,6 @@
 		};
 		0218195628F7344A00202564 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1DF890C9EF8CFBC7610676BF /* Pods-App-Discussion.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -993,6 +900,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1071,7 +982,6 @@
 		};
 		0218196728F7351B00202564 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A55CEBCC51BDC30B8354E258 /* Pods-App-Discussion.debugprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1091,6 +1001,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1170,7 +1084,6 @@
 		};
 		0218196928F7352100202564 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BBF5EC7249109D6718A229CF /* Pods-App-Discussion.debugdev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1190,6 +1103,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1263,7 +1180,6 @@
 		};
 		0218196B28F7352600202564 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5F59EC4433FF0AE0743D284D /* Pods-App-Discussion.releaseprod.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1283,6 +1199,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1355,7 +1275,6 @@
 		};
 		0218196D28F7352B00202564 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ED561A5DE961B1E12B42F4E0 /* Pods-App-Discussion.releasedev.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1375,6 +1294,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1389,7 +1312,6 @@
 		};
 		0240D8D62987FE1F003CFE50 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B472516A5A79E87C40766D93 /* Pods-App-Discussion-DiscussionTests.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1398,6 +1320,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1410,7 +1336,6 @@
 		};
 		0240D8D72987FE1F003CFE50 /* DebugDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 307AD0C3C81316D6B0C04178 /* Pods-App-Discussion-DiscussionTests.debugdev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1419,6 +1344,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1431,7 +1360,6 @@
 		};
 		0240D8D82987FE1F003CFE50 /* DebugProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2F4E0FCAD2C351B8C3DCE0DA /* Pods-App-Discussion-DiscussionTests.debugprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1440,6 +1368,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1452,7 +1384,6 @@
 		};
 		0240D8D92987FE1F003CFE50 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 59F3BBE6ACFA3C87C2294DA0 /* Pods-App-Discussion-DiscussionTests.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1461,6 +1392,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1473,7 +1408,6 @@
 		};
 		0240D8DA2987FE1F003CFE50 /* ReleaseDev */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE1509B856949D2742A10836 /* Pods-App-Discussion-DiscussionTests.releasedev.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1482,6 +1416,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1494,7 +1432,6 @@
 		};
 		0240D8DB2987FE1F003CFE50 /* ReleaseProd */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 55A6A0C34167EFFA9736A83E /* Pods-App-Discussion-DiscussionTests.releaseprod.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1503,6 +1440,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1579,7 +1520,6 @@
 		};
 		02DD1CBE29E80D5300F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ACDA8EE733B97BCD8689A0B4 /* Pods-App-Discussion.debugstage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1599,6 +1539,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1614,7 +1558,6 @@
 		};
 		02DD1CBF29E80D5300F35DCE /* DebugStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4D6EE7EAA4004C3BE8757E3E /* Pods-App-Discussion-DiscussionTests.debugstage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1623,6 +1566,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
@@ -1693,7 +1640,6 @@
 		};
 		02DD1CC129E80D5B00F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F57B9404423B3E624DD25D81 /* Pods-App-Discussion.releasestage.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1713,6 +1659,10 @@
 				);
 				MARKETING_VERSION = 1.0;
 				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu17 gnu++20";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.Discussion;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -1727,7 +1677,6 @@
 		};
 		02DD1CC229E80D5B00F35DCE /* ReleaseStage */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C214357310D8AC9185B38ABA /* Pods-App-Discussion-DiscussionTests.releasestage.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1736,6 +1685,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				MACOSX_DEPLOYMENT_TARGET = 12.6;
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.openedx.DiscussionTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = auto;
