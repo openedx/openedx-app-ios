@@ -24,9 +24,11 @@ struct MainScreenView: View {
 
     init(viewModel: MainScreenViewModel) {
         self.viewModel = viewModel
-        UITabBar.appearance().isTranslucent = false
-        UITabBar.appearance().barTintColor = Theme.UIColors.tabbarActiveColor
-        UITabBar.appearance().backgroundColor = Theme.UIColors.tabbarBGColor
+        let tabBarAppearance = UITabBarAppearance()
+        tabBarAppearance.configureWithOpaqueBackground()
+        tabBarAppearance.backgroundColor = Theme.UIColors.tabbarBGColor
+        UITabBar.appearance().standardAppearance = tabBarAppearance
+        UITabBar.appearance().scrollEdgeAppearance = tabBarAppearance
         UITabBar.appearance().unselectedItemTintColor = Theme.UIColors.tabbarInactiveColor
         
         UITabBarItem.appearance().setTitleTextAttributes(

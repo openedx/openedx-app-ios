@@ -193,7 +193,6 @@ public struct ResponsesView: View {
                                         }
                                     }
                                 )
-                                .ignoresSafeArea(.all, edges: .horizontal)
                             }
                         }
                     }
@@ -232,7 +231,6 @@ public struct ResponsesView: View {
                     ProgressBar(size: 40, lineWidth: 8)
                 }
             }
-            .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(true)
             .navigationTitle(title)

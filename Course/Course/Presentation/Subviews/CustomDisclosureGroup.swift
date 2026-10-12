@@ -13,13 +13,12 @@ struct CustomDisclosureGroup: View {
     private let proxyWidth: CGFloat
     private let course: CourseStructure
     private let viewModel: CourseContainerViewModel
-    private let idiom: UIUserInterfaceIdiom
+    @Environment(\.layoutIdiom) private var idiom
     
     init(course: CourseStructure, proxy: GeometryProxy, viewModel: CourseContainerViewModel) {
         self.course = course
         self.proxyWidth = proxy.size.width
         self.viewModel = viewModel
-        self.idiom = UIDevice.current.userInterfaceIdiom
     }
     
     var body: some View {

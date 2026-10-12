@@ -15,7 +15,7 @@ public struct SettingsView: View {
     
     private var viewModel: SettingsViewModel
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
@@ -29,7 +29,7 @@ public struct SettingsView: View {
                         source: viewModel.currentInstance?.headerBackgroundURLString,
                         fallback: ThemeAssets.headerBackground.swiftUIImage
                     )
-                    .edgesIgnoringSafeArea(.top)
+                    .edgesIgnoringSafeArea([.top, .horizontal])
                 }
                 .frame(maxWidth: .infinity, maxHeight: 50)
                 .accessibilityIdentifier("auth_bg_image")
@@ -50,7 +50,6 @@ public struct SettingsView: View {
                                 }
                             )
                             .backViewStyle()
-                            .padding(.leading, isHorizontal ? 48 : 0)
                             .accessibilityIdentifier("back_button")
                             
                         }.frame(minWidth: 0,
@@ -108,7 +107,7 @@ public struct SettingsView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
-        .ignoresSafeArea(.all, edges: .horizontal)
+        .minimumTopSafeArea()
     }
     
     // MARK: - Dates & Calendar

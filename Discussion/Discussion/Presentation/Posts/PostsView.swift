@@ -20,8 +20,9 @@ public struct PostsView: View {
     private let currentBlockID: String
     private let courseID: String
     private var showTopMenu: Bool
+    @Environment(\.layoutIdiom) private var layoutIdiom
     private var isPad: Bool {
-        UIDevice.current.userInterfaceIdiom == .pad
+        layoutIdiom == .pad
     }
     
     public init(

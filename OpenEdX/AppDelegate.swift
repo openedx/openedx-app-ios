@@ -29,8 +29,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UIApplication.shared.delegate as! AppDelegate
     }
 
-    var window: UIWindow?
-        
+    private var window: UIWindow? {
+        UIApplication.shared.connectedScenes
+            .compactMap { ($0.delegate as? SceneDelegate)?.window }
+            .first
+    }
+
     private let pluginManager = PluginManager()
     private var assembler: Assembler?
     
@@ -75,17 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         Theme.Fonts.registerFonts()
-        window = UIWindow(frame: UIScreen.main.bounds)
-        window?.tintColor = Theme.UIColors.accentColor
-
-        // Wait for the instance catalog before showing anything, so routing happens
-        // against the real catalog, not the bundled placeholder. The Launch Screen stays up
-        // for the wait -- makeKeyAndVisible() is what ends it, so no extra UI is needed.
-        Task {
-            await loadInstanceCatalog()
-            window?.rootViewController = RouteController()
-            window?.makeKeyAndVisible()
-        }
 
         NotificationCenter.default.addObserver(
             self,
@@ -101,23 +94,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             object: nil
         )
 
-        // window.tintColor isn't live-bound to Theme.UIColors.accentColor -- it's a one-time
-        // snapshot, so anything relying on the inherited tint (nav bars, back buttons, bar
-        // button items) needs this to pick up a later instance switch/logout.
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(accentColorDidChange),
-            name: .accentColorDidChange,
-            object: nil
-        )
-
         return true
     }
 
     func application(
-        _ app: UIApplication,
-        open url: URL, options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+        _ application: UIApplication,
+        configurationForConnecting connectingSceneSession: UISceneSession,
+        options: UIScene.ConnectionOptions
+    ) -> UISceneConfiguration {
+        UISceneConfiguration(name: "Default Configuration", sessionRole: connectingSceneSession.role)
+    }
+
+    @discardableResult
+    func handleOpenURL(_ context: UIOpenURLContext) -> Bool {
+        var options: [UIApplication.OpenURLOptionsKey: Any] = [:]
+        options[.sourceApplication] = context.options.sourceApplication
+        options[.annotation] = context.options.annotation
+        options[.openInPlace] = context.options.openInPlace
+        return handleOpenURL(context.url, options: options)
+    }
+
+    private func handleOpenURL(
+        _ url: URL,
+        options: [UIApplication.OpenURLOptionsKey: Any]
     ) -> Bool {
+        let app = UIApplication.shared
         guard let config = Container.shared.resolve(ConfigProtocol.self) else { return false }
 
         if let deepLinkManager = Container.shared.resolve(DeepLinkManager.self),
@@ -177,7 +178,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     /// Fetches the remote instance catalog and hands it to `InstanceStore`. Falls back to
     /// the bundled/cached catalog near-instantly if no URL is configured or the fetch fails.
-    private func loadInstanceCatalog() async {
+    func loadInstanceCatalog() async {
         guard let loader = Container.shared.resolve(InstanceConfigLoader.self),
               let instanceStore = Container.shared.resolve(InstanceStore.self) else {
             return
@@ -217,7 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     private func initDI() {
-        let navigation = UINavigationController()
+        let navigation = AppNavigationController()
         navigation.modalPresentationStyle = .fullScreen
         
         assembler = Assembler(
@@ -234,10 +235,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Container.shared.resolve(PushNotificationsManager.self)?.synchronizeToken()
     }
 
-    @objc private func accentColorDidChange() {
-        window?.tintColor = Theme.UIColors.accentColor
-    }
-    
     @objc func didUserLogout(_ notification: Notification) {
         guard Date().timeIntervalSince1970 - lastForceLogoutTime > 5 else {
             return

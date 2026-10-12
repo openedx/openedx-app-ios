@@ -12,7 +12,7 @@ import Theme
 
 public struct ResetPasswordView: View {
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
 
     @Bindable private var viewModel: ResetPasswordViewModel
 
@@ -26,7 +26,7 @@ public struct ResetPasswordView: View {
                 VStack {
                     ThemeAssets.headerBackground.swiftUIImage
                         .resizable()
-                        .edgesIgnoringSafeArea(.top)
+                        .edgesIgnoringSafeArea([.top, .horizontal])
                 }
                 .frame(maxWidth: .infinity, maxHeight: 200)
                 .accessibilityIdentifier("auth_bg_image")
@@ -37,7 +37,7 @@ public struct ResetPasswordView: View {
                                   leftButtonColor: Theme.Colors.loginNavigationText,
                                   leftButtonAction: {
                         viewModel.router.back()
-                    }).padding(.leading, isHorizontal ? 48 : 0)
+                    })
                     
                     ScrollView {
                         VStack {
@@ -169,7 +169,7 @@ public struct ResetPasswordView: View {
                         }
                 }
             }
-            .ignoresSafeArea(.all, edges: .horizontal)
+            .minimumTopSafeArea()
             .background(Theme.Colors.background.ignoresSafeArea(.all))
             .navigationBarHidden(true)
         }

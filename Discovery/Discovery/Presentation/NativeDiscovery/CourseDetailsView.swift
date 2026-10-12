@@ -15,7 +15,7 @@ import Theme
 public struct CourseDetailsView: View {
 
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.isHorizontal) var isHorizontal
+    @Environment(\.isHorizontalLayout) var isHorizontal
 
     @State var isProcessing: Bool = true
 
@@ -25,12 +25,6 @@ public struct CourseDetailsView: View {
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
     private var courseID: String
     
-    private func updateOrientation() {
-        viewModel.isHorisontal =
-        UIDevice.current.orientation == .landscapeLeft
-        || UIDevice.current.orientation == .landscapeRight
-    }
-    
     public init(viewModel: CourseDetailsViewModel, courseID: String, title: String) {
         self.viewModel = viewModel
         self.title = title
@@ -38,7 +32,6 @@ public struct CourseDetailsView: View {
         Task {
             await viewModel.getCourseDetail(courseID: courseID)
         }
-        self.updateOrientation()
     }
     
     public var body: some View {
@@ -59,7 +52,7 @@ public struct CourseDetailsView: View {
                                 if let courseDetails = viewModel.courseDetails {
                                     
                                     // MARK: - iPad
-                                    if viewModel.isHorisontal {
+                                    if proxy.size.width > proxy.size.height {
                                         HStack(alignment: .top) {
                                             VStack(alignment: .leading) {
                                                 
@@ -180,12 +173,6 @@ public struct CourseDetailsView: View {
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(false)
             .navigationTitle(DiscoveryLocalization.Details.title)
-            
-            .onReceive(NotificationCenter
-                .Publisher(center: .default,
-                           name: UIDevice.orientationDidChangeNotification)) { _ in
-                updateOrientation()
-            }
             
             // MARK: - Offline mode SnackBar
             if viewModel.courseState() != .enrollOpen {

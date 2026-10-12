@@ -20,14 +20,14 @@ public struct DynamicOffsetView: View {
         return 300 - topInset
     }
     private let coordinateBoundaryLower: CGFloat = -115
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     
     @Binding private var coordinate: CGFloat
     @Binding private var collapsed: Bool
     @Binding private var viewHeight: CGFloat
     @State private var collapseHeight: CGFloat = .zero
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     @State private var isOnTheScreen: Bool = false
     public init(
@@ -78,6 +78,9 @@ public struct DynamicOffsetView: View {
             if isHorizontal {
                 collapsed = true
             }
+            changeCollapsedHeight(collapsed: collapsed, isHorizontal: isHorizontal)
+        }
+        .onChange(of: idiom) { _ in
             changeCollapsedHeight(collapsed: collapsed, isHorizontal: isHorizontal)
         }
     }

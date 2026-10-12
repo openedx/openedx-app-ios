@@ -15,7 +15,7 @@ public struct WhatsNewView: View {
 
     @Bindable private var viewModel: WhatsNewViewModel
 
-    @Environment(\.isHorizontal)
+    @Environment(\.isHorizontalLayout)
     private var isHorizontal
 
     public init(router: WhatsNewRouter, viewModel: WhatsNewViewModel) {

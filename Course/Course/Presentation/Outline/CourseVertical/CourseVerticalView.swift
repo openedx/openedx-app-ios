@@ -18,7 +18,7 @@ public struct CourseVerticalView: View {
     private var courseID: String
 
     private var viewModel: CourseVerticalViewModel
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     
     public init(
         title: String,

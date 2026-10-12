@@ -15,7 +15,7 @@ public struct DeviceStorageFullAlertView: View {
     private let close: () -> Void
     @State private var fadeEffect: Bool = false
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(
         sequentials: [CourseSequential],

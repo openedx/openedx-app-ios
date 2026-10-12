@@ -18,7 +18,7 @@ struct CourseHeaderView: View {
     private var animationNamespace: Namespace.ID
     @Binding private var collapsed: Bool
     @Binding private var isAnimatingForTap: Bool
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     private let collapsedHorizontalHeight: CGFloat = 230
     private let collapsedVerticalHeight: CGFloat = 260
@@ -90,7 +90,7 @@ struct CourseHeaderView: View {
                                 .font(Theme.Fonts.bodyLarge)
                         }
                         .padding(.top, 46)
-                        .padding(.leading, 24)
+                        .padding(.leading, 54)
                         courseMenuBar(containerWidth: containerWidth)
                             .matchedGeometryEffect(id: GeometryName.topTabBar, in: animationNamespace)
                             .padding(.bottom, 12)

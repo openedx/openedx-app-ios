@@ -11,7 +11,7 @@ import Theme
 struct LessonLineProgressView: View {
     var viewModel: CourseUnitViewModel
 
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
 
     init(viewModel: CourseUnitViewModel) {
         self.viewModel = viewModel

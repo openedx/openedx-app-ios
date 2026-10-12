@@ -12,7 +12,7 @@ import Theme
 public struct VideoSettingsView: View {
     
     @Bindable private var viewModel: SettingsViewModel
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(viewModel: SettingsViewModel) {
         self.viewModel = viewModel
@@ -26,7 +26,7 @@ public struct VideoSettingsView: View {
                         source: viewModel.currentInstance?.headerBackgroundURLString,
                         fallback: ThemeAssets.headerBackground.swiftUIImage
                     )
-                    .edgesIgnoringSafeArea(.top)
+                    .edgesIgnoringSafeArea([.top, .horizontal])
                 }
                 .frame(maxWidth: .infinity, maxHeight: 200)
                 .accessibilityIdentifier("auth_bg_image")
@@ -47,7 +47,6 @@ public struct VideoSettingsView: View {
                                 }
                             )
                             .backViewStyle()
-                            .padding(.leading, isHorizontal ? 48 : 0)
                             .accessibilityIdentifier("back_button")
                             
                         }.frame(minWidth: 0,
@@ -123,7 +122,7 @@ public struct VideoSettingsView: View {
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
         .navigationTitle(ProfileLocalization.Settings.videoSettingsTitle)
-        .ignoresSafeArea(.all, edges: .horizontal)
+        .minimumTopSafeArea()
         .background(
             Theme.Colors.background
                 .ignoresSafeArea()

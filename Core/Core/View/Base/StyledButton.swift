@@ -18,7 +18,7 @@ public struct StyledButton: View {
     private let title: String
     private let action: () -> Void
     private let isTransparent: Bool
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     private let buttonColor: Color
     private let textColor: Color
     private let isActive: Bool

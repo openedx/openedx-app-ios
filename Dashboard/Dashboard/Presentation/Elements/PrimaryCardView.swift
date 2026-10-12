@@ -27,7 +27,7 @@ public struct PrimaryCardView: View {
     private var assignmentAction: (String?) -> Void
     private var openCourseAction: () -> Void
     private var resumeAction: () -> Void
-    @Environment(\.isHorizontal) var isHorizontal
+    @Environment(\.isHorizontalLayout) var isHorizontal
     
     public init(
         courseName: String,

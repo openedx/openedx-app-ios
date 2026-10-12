@@ -27,9 +27,9 @@ public struct CourseContainerView: View {
     @State private var lastCoordinate: CGFloat = .zero
     @State private var collapsed: Bool = false
     @State private var viewHeight: CGFloat = .zero
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     @Namespace private var animationNamespace
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     private let discussionRouter: DiscussionRouter
     
     private let coordinateBoundaryLower: CGFloat = -115
@@ -172,28 +172,30 @@ public struct CourseContainerView: View {
     }
     
     private func backButton(containerWidth: CGFloat) -> some View {
-        ZStack(alignment: .topLeading) {
-            if !collapsed {
-                HStack {
-                    ZStack(alignment: .bottom) {
-                        VisualEffectView(effect: UIBlurEffect(style: .regular))
-                            .clipShape(Circle())
-                        BackNavigationButton(
-                            color: Theme.Colors.textPrimary,
-                            action: {
-                                viewModel.router.back()
-                            }
-                        )
-                        .backViewStyle()
-                        .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
-                        .offset(y: 7)
-                    }
-                    .frame(width: 30, height: 30)
-                    .padding(.vertical, 8)
-                    .padding(.leading, 12)
-                    .padding(.top, idiom == .pad ? 0 : 55)
-                    Spacer()
+        let collapsedTitleRowCenterY: CGFloat = isHorizontal ? 39.5 : 69.5
+        let expandedButtonCenterY: CGFloat = 78
+        let collapsedOffset = collapsedTitleRowCenterY - expandedButtonCenterY
+        return ZStack(alignment: .topLeading) {
+            HStack {
+                ZStack(alignment: .bottom) {
+                    VisualEffectView(effect: UIBlurEffect(style: .regular))
+                        .clipShape(Circle())
+                    BackNavigationButton(
+                        color: Theme.Colors.textPrimary,
+                        action: {
+                            viewModel.router.back()
+                        }
+                    )
+                    .backViewStyle()
+                    .matchedGeometryEffect(id: GeometryName.backButton, in: animationNamespace)
+                    .offset(y: 7)
                 }
+                .frame(width: 30, height: 30)
+                .padding(.vertical, 8)
+                .padding(.leading, 12)
+                .padding(.top, idiom == .pad ? 0 : 55)
+                .offset(y: collapsed && idiom != .pad ? collapsedOffset : 0)
+                Spacer()
             }
         }
     }

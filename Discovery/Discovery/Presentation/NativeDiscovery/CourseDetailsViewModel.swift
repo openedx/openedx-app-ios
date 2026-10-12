@@ -22,7 +22,6 @@ public final class CourseDetailsViewModel {
     var courseDetails: CourseDetails?
     private(set) var isShowProgress = false
     var showError: Bool = false
-    var isHorisontal: Bool = false
     var errorMessage: String? {
         didSet {
             withAnimation {

@@ -23,10 +23,8 @@ public struct EncodedVideoPlayer: View {
     private var isOnScreen: Bool
     
     private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
-    @State private var orientation = UIDevice.current.orientation
     @State private var isLoading: Bool = true
     @State private var isAnimating: Bool = false
-    @State private var isOrientationChanged: Bool = false
     @State private var subtitleText: String = ""
     
     @State var showAlert = false
@@ -38,7 +36,7 @@ public struct EncodedVideoPlayer: View {
         }
     }
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(
         viewModel: EncodedVideoPlayerViewModel,

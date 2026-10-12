@@ -26,12 +26,12 @@ public struct PickerMenu: View {
     
     @State private var search: String = ""
     @State public var selectedItem: PickerItem = PickerItem(key: "", value: "")
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     private let ipadPickerWidth: CGFloat = 300
     private var items: [PickerItem]
     private let titleText: String
     private let router: BaseRouter
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     private var selected: ((PickerItem) -> Void) = { _ in }
     private let emptyKey: String = "--empty--"
 

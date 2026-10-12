@@ -183,6 +183,7 @@ public struct SearchView: View {
             .avoidKeyboard(dismissKeyboardByTap: true)
             .background(Theme.Colors.background.ignoresSafeArea())
         }
+        .minimumTopSafeArea()
     }
     
     private func searchHeader(viewModel: SearchViewModel<RunLoop>) -> some View {

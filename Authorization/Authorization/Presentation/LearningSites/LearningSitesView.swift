@@ -12,7 +12,7 @@ import Theme
 public struct LearningSitesView: View {
 
     @Bindable private var viewModel: LearningSitesViewModel
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
 
     public init(viewModel: LearningSitesViewModel) {
         self.viewModel = viewModel
@@ -134,6 +134,7 @@ public struct LearningSitesView: View {
         }
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
+        .minimumTopSafeArea()
     }
 
     @ViewBuilder

@@ -27,7 +27,7 @@ public struct ListDashboardView: View {
     
     @Bindable private var viewModel: ListDashboardViewModel
     private let router: DashboardRouter
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     
     public init(viewModel: ListDashboardViewModel, router: DashboardRouter) {
         self.viewModel = viewModel
@@ -154,6 +154,7 @@ public struct ListDashboardView: View {
                     .ignoresSafeArea()
             )
         }
+        .minimumTopSafeArea()
     }
 }
 

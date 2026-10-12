@@ -28,7 +28,7 @@ struct NewCalendarView: View {
     
     @Bindable
     private var viewModel: DatesAndCalendarViewModel
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     private var beginSyncingTapped: (() -> Void) = {}
     private var onCloseTapped: (() -> Void) = {}
     @State private var calendarName: String = ""

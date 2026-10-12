@@ -12,7 +12,7 @@ import Theme
 
 public struct SignUpView: View {
 
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
 
     @Bindable private var viewModel: SignUpViewModel
 
@@ -25,7 +25,7 @@ public struct SignUpView: View {
             VStack {
                 ThemeAssets.headerBackground.swiftUIImage
                     .resizable()
-                    .edgesIgnoringSafeArea(.top)
+                    .edgesIgnoringSafeArea([.top, .horizontal])
             }
             .frame(maxWidth: .infinity, maxHeight: 200)
             .accessibilityIdentifier("auth_bg_image")
@@ -46,7 +46,6 @@ public struct SignUpView: View {
                             }
                         )
                         .backViewStyle()
-                        .padding(.leading, isHorizontal ? 48 : 0)
                         
                     }.frame(minWidth: 0,
                             maxWidth: .infinity,
@@ -190,7 +189,7 @@ public struct SignUpView: View {
                     }
             }
         }
-        .ignoresSafeArea(.all, edges: .horizontal)
+        .minimumTopSafeArea()
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .navigationBarHidden(true)
         .task {

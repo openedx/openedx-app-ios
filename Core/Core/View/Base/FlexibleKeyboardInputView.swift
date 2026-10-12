@@ -12,7 +12,6 @@ public struct FlexibleKeyboardInputView: View {
     
     @State private var commentText: String = ""
     @State private var commentSize: CGFloat = .init(64)
-    @Environment(\.isHorizontal) private var isHorizontal
     public var sendText: ((String) -> Void)
     private let hint: String
     
@@ -91,7 +90,7 @@ public struct FlexibleKeyboardInputView: View {
                             .padding(.top, 8)
                             .disabled(!canSend)
                                 
-                        }.padding(.horizontal, isHorizontal ? 50 : 16)
+                        }.padding(.horizontal, 16)
                         
                     }
                     .padding(.leading, 6)

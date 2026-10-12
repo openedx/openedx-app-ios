@@ -12,8 +12,8 @@ import Core
 
 public struct AppDownloadsView: View {
     
-    @Environment(\.isHorizontal) private var isHorizontal
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.isHorizontalLayout) private var isHorizontal
+    @Environment(\.layoutIdiom) private var idiom
     
     @Bindable private var viewModel: AppDownloadsViewModel
 
@@ -149,6 +149,7 @@ public struct AppDownloadsView: View {
                 await viewModel.getDownloadCourses()
             }
         }
+        .minimumTopSafeArea()
     }
     
     // MARK: - Custom header view

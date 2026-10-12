@@ -17,7 +17,7 @@ public struct DiscoveryView: View {
     
     private var sourceScreen: LogistrationSourceScreen
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
     
     private let discoveryNew: some View = VStack(alignment: .leading) {

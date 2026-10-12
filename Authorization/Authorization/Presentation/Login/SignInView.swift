@@ -16,7 +16,7 @@ public struct SignInView: View {
     @State private var email: String = ""
     @State private var password: String = ""
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     private var viewModel: SignInViewModel
     
@@ -31,7 +31,7 @@ public struct SignInView: View {
                     source: viewModel.currentInstance?.headerBackgroundURLString,
                     fallback: ThemeAssets.headerBackground.swiftUIImage
                 )
-                .edgesIgnoringSafeArea(.top)
+                .edgesIgnoringSafeArea([.top, .horizontal])
                 .accessibilityIdentifier("auth_bg_image")
             }.frame(maxWidth: .infinity, maxHeight: 200)
             if viewModel.config.features.startupScreenEnabled || viewModel.sourceScreen == .learningSites {
@@ -43,7 +43,6 @@ public struct SignInView: View {
                         }
                     )
                     .backViewStyle()
-                    .padding(.leading, isHorizontal ? 48 : 0)
                     .padding(.top, 11)
                     
                 }.frame(maxWidth: .infinity, alignment: .topLeading)
@@ -296,7 +295,7 @@ public struct SignInView: View {
             }
         }
         .navigationBarHidden(true)
-        .ignoresSafeArea(.all, edges: .horizontal)
+        .minimumTopSafeArea()
         .background(Theme.Colors.background.ignoresSafeArea(.all))
         .onFirstAppear {
             viewModel.trackScreenEvent()

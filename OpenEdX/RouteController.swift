@@ -140,3 +140,64 @@ class RouteController: UIViewController {
         }
     }
 }
+
+final class AppNavigationController: UINavigationController {
+
+#if canImport(SwiftUI, _version: 8.0.85.27)
+    @available(iOS 27.1, *)
+    override var preferredVerticalBarBehavior: UIVerticalBarBehavior {
+        if topViewController is UIHostingController<MainScreenView> || traitCollection.verticalSizeClass == .compact {
+            return .automatic
+        }
+        return .disabled
+    }
+
+    @available(iOS 27.1, *)
+    override var childForPreferredVerticalBarBehavior: UIViewController? {
+        nil
+    }
+#endif
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        registerForTraitChanges([UITraitVerticalSizeClass.self]) { (self: Self, _) in
+            self.verticalBarConfigurationDidChange()
+        }
+    }
+
+    override func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        super.pushViewController(viewController, animated: animated)
+        verticalBarConfigurationDidChange()
+    }
+
+    override func popViewController(animated: Bool) -> UIViewController? {
+        let popped = super.popViewController(animated: animated)
+        verticalBarConfigurationDidChange()
+        return popped
+    }
+
+    override func popToViewController(_ viewController: UIViewController, animated: Bool) -> [UIViewController]? {
+        let popped = super.popToViewController(viewController, animated: animated)
+        verticalBarConfigurationDidChange()
+        return popped
+    }
+
+    override func popToRootViewController(animated: Bool) -> [UIViewController]? {
+        let popped = super.popToRootViewController(animated: animated)
+        verticalBarConfigurationDidChange()
+        return popped
+    }
+
+    override func setViewControllers(_ viewControllers: [UIViewController], animated: Bool) {
+        super.setViewControllers(viewControllers, animated: animated)
+        verticalBarConfigurationDidChange()
+    }
+
+    private func verticalBarConfigurationDidChange() {
+#if canImport(SwiftUI, _version: 8.0.85.27)
+        if #available(iOS 27.1, *) {
+            setNeedsUpdateOfVerticalBarConfiguration()
+        }
+#endif
+    }
+}

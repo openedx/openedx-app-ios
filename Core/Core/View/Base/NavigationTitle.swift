@@ -13,8 +13,6 @@ public struct NavigationTitle: View {
     private let title: String
     private let backAction: () -> Void
     
-    @Environment(\.isHorizontal) private var isHorizontal
-    
     public init(title: String, backAction: @escaping () -> Void) {
         self.title = title
         self.backAction = backAction
@@ -37,7 +35,6 @@ public struct NavigationTitle: View {
                 )
                 .backViewStyle()
                 .foregroundColor(Theme.Colors.styledButtonText)
-                .padding(.leading, isHorizontal ? 48 : 0)
                 .accessibilityIdentifier("back_button")
                 
             }.frame(minWidth: 0,

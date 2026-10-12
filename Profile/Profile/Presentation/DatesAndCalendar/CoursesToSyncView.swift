@@ -14,7 +14,7 @@ public struct CoursesToSyncView: View {
     @Bindable
     private var viewModel: DatesAndCalendarViewModel
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(viewModel: DatesAndCalendarViewModel) {
         self.viewModel = viewModel
@@ -27,7 +27,7 @@ public struct CoursesToSyncView: View {
                     source: viewModel.currentInstance?.headerBackgroundURLString,
                     fallback: ThemeAssets.headerBackground.swiftUIImage
                 )
-                    .edgesIgnoringSafeArea(.top)
+                    .edgesIgnoringSafeArea([.top, .horizontal])
                     .frame(maxWidth: .infinity, maxHeight: 200)
                     .accessibilityIdentifier("title_bg_image")
                 
@@ -67,7 +67,7 @@ public struct CoursesToSyncView: View {
                             
                             coursesList
                         }
-                        .padding(.horizontal, isHorizontal ? 48 : 0)
+                        .padding(.horizontal, isHorizontal ? 24 : 0)
                     }
                     .frameLimit(width: proxy.size.width)
                     .roundedBackground(Theme.Colors.background)
@@ -80,7 +80,7 @@ public struct CoursesToSyncView: View {
                     ErrorAlertView(errorMessage: $viewModel.errorMessage)
                 }
             }
-            .ignoresSafeArea(.all, edges: .horizontal)
+            .minimumTopSafeArea()
         }
         .onChange(of: viewModel.hideInactiveCourses) { _, hide in
             viewModel.profileStorage.hideInactiveCourses = hide

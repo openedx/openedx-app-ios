@@ -27,7 +27,7 @@ public struct CourseUnitView: View {
     @State var offsetView: CGPoint = .zero
     @State var showDiscussion: Bool = false
     @Environment(\.isPresented) private var isPresented
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     public let playerStateSubject = CurrentValueSubject<VideoPlayerState?, Never>(nil)
     
     // Dropdown parameters
@@ -155,6 +155,7 @@ public struct CourseUnitView: View {
                 .ignoresSafeArea()
         )
         .dropdownAnimation(isActive: isDropdownActive, value: showDropdown)
+        .minimumTopSafeArea()
     }
 
     // MARK: - Content

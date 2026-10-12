@@ -17,7 +17,7 @@ public struct Subtitle: Sendable {
 
 public struct SubtitlesView: View {
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     private var viewModel: VideoPlayerViewModel
     private var scrollTo: ((Date) -> Void) = { _ in }

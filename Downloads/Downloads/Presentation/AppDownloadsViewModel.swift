@@ -28,6 +28,8 @@ public final class AppDownloadsViewModel {
     private var courseTasks: [String: [DownloadDataTask]] = [:]
     private var courseSizes: [String: Int64] = [:]
     private var finishedTaskIds: Set<String> = []
+    private var taskProgress: [String: Double] = [:]
+    private var progressUpdateRevisions: [String: Int] = [:]
     private var waitingDownloads: [CourseBlock]?
     private var courseStructureCache: [String: CourseStructure] = [:]
     private var structureLoadingTasks: [String: Task<Void, Never>] = [:]
@@ -92,24 +94,48 @@ public final class AppDownloadsViewModel {
             .sink { [weak self] event in
                 guard let self = self else { return }
                 Task {
-                    switch event {
-                    case .finished(let task), .started(let task):
-                        await self.updateDownloadProgress(for: task)
-                    case .canceled, .courseCanceled, .allCanceled:
-                        await self.refreshDownloadStates()
-                    default:
-                        break
-                    }
+                    await self.processDownloadEvent(event)
                 }
             }
             .store(in: &cancellables)
     }
+
+    private func processDownloadEvent(_ event: DownloadManagerEvent) async {
+        switch event {
+        case .started(let task):
+            finishedTaskIds.remove(task.id)
+            taskProgress[task.id] = max(task.progress, taskProgress[task.id] ?? 0)
+            await updateDownloadProgress(for: task)
+        case .progress(let task):
+            guard !finishedTaskIds.contains(task.id) else { return }
+            taskProgress[task.id] = max(task.progress, taskProgress[task.id] ?? 0)
+            await updateDownloadProgress(for: task)
+        case .finished(let task):
+            finishedTaskIds.insert(task.id)
+            taskProgress.removeValue(forKey: task.id)
+            await updateDownloadProgress(for: task)
+        case .canceled, .courseCanceled, .allCanceled:
+            taskProgress.removeAll()
+            await refreshDownloadStates()
+        default:
+            break
+        }
+    }
     
     private func updateDownloadProgress(for task: DownloadDataTask) async {
         let courseID = task.courseId
-        let (downloaded, total) = await calculateAccurateDownloadProgress(courseID: courseID)
+        let revision = (progressUpdateRevisions[courseID] ?? 0) + 1
+        progressUpdateRevisions[courseID] = revision
+        let progressSnapshot = taskProgress
+
+        let (downloaded, total) = await calculateAccurateDownloadProgress(
+            courseID: courseID,
+            taskProgress: progressSnapshot
+        )
         let isFullyDownloaded = await downloadsHelper.isFullyDownloaded(courseID: courseID)
         let isDownloading = await downloadsHelper.isDownloading(courseID: courseID)
+
+        guard progressUpdateRevisions[courseID] == revision else { return }
         
         downloadedSizes[courseID] = Int64(downloaded)
         courseSizes[courseID] = Int64(total)
@@ -167,12 +193,22 @@ public final class AppDownloadsViewModel {
         }
     }
     
-    private func calculateAccurateDownloadProgress(courseID: String) async -> (downloaded: Int, total: Int) {
+    private func calculateAccurateDownloadProgress(
+        courseID: String,
+        taskProgress: [String: Double] = [:]
+    ) async -> (downloaded: Int, total: Int) {
         let tasks = await downloadsHelper.getDownloadTasksForCourse(courseID: courseID)
-        let downloadedSize = tasks.reduce(0) { $0 + ($1.state == .finished ? $1.actualSize : 0) }
+        let downloadedSize = tasks.reduce(0) { partialResult, task in
+            if task.state == .finished {
+                return partialResult + task.actualSize
+            }
+
+            let progress = min(max(taskProgress[task.id] ?? 0, 0), 1)
+            return partialResult + Int(Double(task.fileSize) * progress)
+        }
         
         if let courseStructure = await getCourseStructureIfAvailable(courseID: courseID) {
-            let totalSize = calculateTotalSizeFromStructure(courseStructure: courseStructure, downloadedTasks: tasks)
+            let totalSize = calculateTotalSizeFromStructure(courseStructure: courseStructure)
             return (downloadedSize, totalSize)
         } else {
             let (_, total) = await downloadsHelper.calculateDownloadProgress(courseID: courseID)
@@ -182,26 +218,9 @@ public final class AppDownloadsViewModel {
         }
     }
     
-    private func calculateTotalSizeFromStructure(
-        courseStructure: CourseStructure,
-        downloadedTasks: [DownloadDataTask]
-    ) -> Int {
+    private func calculateTotalSizeFromStructure(courseStructure: CourseStructure) -> Int {
         let downloadableBlocks = getDownloadableBlocks(from: courseStructure)
-        var totalSize = 0
-        
-        for block in downloadableBlocks {
-            if let downloadTask = downloadedTasks.first(where: { $0.blockId == block.id }),
-               downloadTask.state == .finished,
-               downloadTask.actualSize > 0 {
-                // Use actual size for finished downloads
-                totalSize += downloadTask.actualSize
-            } else {
-                // Use file size for not-yet-downloaded blocks
-                totalSize += block.fileSize ?? 0
-            }
-        }
-        
-        return totalSize
+        return downloadableBlocks.reduce(0) { $0 + ($1.fileSize ?? 0) }
     }
     
     private func getCourseStructureIfAvailable(courseID: String) async -> CourseStructure? {

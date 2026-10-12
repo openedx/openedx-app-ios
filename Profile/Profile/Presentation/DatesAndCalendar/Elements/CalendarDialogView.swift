@@ -34,7 +34,7 @@ struct CalendarDialogView: View {
         }
     }
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     private var onCloseTapped: (() -> Void) = {}
     private var action: (() -> Void) = {}
     private let type: CalendarDialogType

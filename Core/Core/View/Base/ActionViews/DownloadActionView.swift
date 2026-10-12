@@ -31,7 +31,7 @@ public struct DownloadActionView: View {
     private let cancel: () -> Void
     @State private var fadeEffect: Bool = false
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(
         actionType: ContentActionType,

@@ -27,7 +27,7 @@ public struct CourseOutlineAndProgressView: View {
                         viewModelProgress: viewModelProgress,
                         viewModelContainer: viewModelContainer,
                         isVideo: isVideo,
-                        idiom: UIDevice.current.userInterfaceIdiom
+                        idiom: idiom
                     ) { proxy in
                         downloadQualityBars(proxy: proxy)
                     }
@@ -65,7 +65,7 @@ public struct CourseOutlineAndProgressView: View {
         return sections
     }
     
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     
     @State private var openCertificateView: Bool = false
     @State private var showingDownloads: Bool = false

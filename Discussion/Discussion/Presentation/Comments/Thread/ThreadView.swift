@@ -188,7 +188,6 @@ public struct ThreadView: View {
                                         }
                                     }
                                 )
-                                .ignoresSafeArea(.all, edges: .horizontal)
                             }
                         }
                         .onReceive(viewModel.addPostSubject, perform: { newComment in
@@ -248,7 +247,6 @@ public struct ThreadView: View {
                     }
                 }
             }
-            .ignoresSafeArea(.all, edges: .horizontal)
             .navigationBarHidden(false)
             .navigationBarBackButtonHidden(true)
             .navigationTitle(title)

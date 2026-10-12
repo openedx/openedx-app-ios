@@ -25,7 +25,7 @@ public struct CourseCellView: View {
     private var type: CellType
     private var index: Double
     private var cellsCount: Int
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     
     public init(model: CourseItem, type: CellType, index: Int, cellsCount: Int, useRelativeDates: Bool) {
         self.type = type

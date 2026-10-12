@@ -15,8 +15,8 @@ public struct AllCoursesView: View {
     
     @Bindable private var viewModel: AllCoursesViewModel
     private let router: DashboardRouter
-    @Environment(\.isHorizontal) private var isHorizontal
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.isHorizontalLayout) private var isHorizontal
+    @Environment(\.layoutIdiom) private var idiom
     
     public init(viewModel: AllCoursesViewModel, router: DashboardRouter) {
         self.viewModel = viewModel
@@ -168,6 +168,7 @@ public struct AllCoursesView: View {
             .navigationBarHidden(true)
             .navigationTitle(DashboardLocalization.Learn.allCourses)
         }
+        .minimumTopSafeArea()
     }
     
     private func columns() -> [GridItem] {

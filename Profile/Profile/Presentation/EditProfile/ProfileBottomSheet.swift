@@ -12,7 +12,7 @@ import Theme
 struct ProfileBottomSheet: View {
     
     @State private var yPosition: CGFloat = 0
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     private var dragGesture: some Gesture {
         DragGesture()
             .onChanged { value in
@@ -39,7 +39,7 @@ struct ProfileBottomSheet: View {
     private var removePhoto: () -> Void
     @Binding private var showingBottomSheet: Bool
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     private var maxWidth: CGFloat {
         idiom == .pad || (idiom == .phone && isHorizontal) ? 330 : .infinity

@@ -45,6 +45,7 @@
 		07A7D78F28F5C9060000BE81 /* Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07A7D78E28F5C9060000BE81 /* Core.framework */; };
 		07A7D79028F5C9060000BE81 /* Core.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 07A7D78E28F5C9060000BE81 /* Core.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07D5DA3428D075AA00752FD9 /* AppDelegate.swift */; };
+		5CE0E5A12EA0000100D1E001 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE0E5A22EA0000100D1E001 /* SceneDelegate.swift */; };
 		07D5DA3E28D075AB00752FD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 07D5DA3D28D075AB00752FD9 /* Assets.xcassets */; };
 		149FF39E2B9F1AB50034B33F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 149FF39C2B9F1AB50034B33F /* LaunchScreen.storyboard */; };
 		705A908842AAAFC361CD9D52 /* Pods_App_OpenEdX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58FAA9E3ECC93D0E638D877D /* Pods_App_OpenEdX.framework */; };
@@ -137,6 +138,7 @@
 		07A7D78E28F5C9060000BE81 /* Core.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Core.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		07D5DA3128D075AA00752FD9 /* OpenEdX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenEdX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		07D5DA3428D075AA00752FD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		5CE0E5A22EA0000100D1E001 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		07D5DA3D28D075AB00752FD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		149FF39D2B9F1AB50034B33F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		23F5E05C0D7EC044B0C9E719 /* Pods-App-OpenEdX.debugstage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-App-OpenEdX.debugstage.xcconfig"; path = "Target Support Files/Pods-App-OpenEdX/Pods-App-OpenEdX.debugstage.xcconfig"; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			children = (
 				025EF2F7297177F300B838AB /* OpenEdX.entitlements */,
 				07D5DA3428D075AA00752FD9 /* AppDelegate.swift */,
+				5CE0E5A22EA0000100D1E001 /* SceneDelegate.swift */,
 				0770DE1628D080A1006D8A5D /* RouteController.swift */,
 				0770DE1F28D0858A006D8A5D /* Router.swift */,
 				A50066882B613E800024680B /* Managers */,
@@ -576,6 +579,7 @@
 				0293A2072A6FCDA30090A336 /* DiscoveryPersistence.swift in Sources */,
 				CED29EAD2D91D88E00836226 /* DatesPersistence.swift in Sources */,
 				07D5DA3528D075AA00752FD9 /* AppDelegate.swift in Sources */,
+				5CE0E5A12EA0000100D1E001 /* SceneDelegate.swift in Sources */,
 				02F175312A4DA95B0019CD70 /* MainScreenAnalytics.swift in Sources */,
 				BA7468762B96201D00793145 /* DeepLinkRouter.swift in Sources */,
 				0727878E28D347C7002E9142 /* MainScreenView.swift in Sources */,

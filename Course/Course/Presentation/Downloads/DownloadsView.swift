@@ -15,7 +15,7 @@ public struct DownloadsView: View {
     // MARK: - Properties
 
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     private var viewModel: DownloadsViewModel
 
     var isSheet: Bool = true
@@ -67,6 +67,7 @@ public struct DownloadsView: View {
                 }
                 .padding(.top, isSheet ? 0 : 40)
         }
+        .minimumTopSafeArea()
     }
 
     private var content: some View {

@@ -12,8 +12,6 @@ import Theme
 struct LessonProgressView: View {
     @Bindable var viewModel: CourseUnitViewModel
     
-    @Environment(\.isHorizontal) private var isHorizontal
-    
     init(viewModel: CourseUnitViewModel) {
         self.viewModel = viewModel
     }
@@ -39,7 +37,7 @@ struct LessonProgressView: View {
                 }
                 Spacer()
             }
-            .padding(.trailing, isHorizontal ? 0 : 6)
+            .padding(.trailing, 6)
         }
     }
 }

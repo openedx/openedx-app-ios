@@ -44,7 +44,7 @@ public struct LogistrationBottomView: View {
     private let action: (LogistrationAction) -> Void
     private let ssoEnabled: Bool
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(ssoEnabled: Bool, _ action: @escaping (LogistrationAction) -> Void) {
         self.ssoEnabled = ssoEnabled

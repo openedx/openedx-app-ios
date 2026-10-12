@@ -26,7 +26,7 @@ public struct YouTubeVideoPlayer: View {
         }
     }
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
 
     public init(viewModel: YouTubeVideoPlayerViewModel, isOnScreen: Bool) {
         self.viewModel =  viewModel
@@ -36,7 +36,7 @@ public struct YouTubeVideoPlayer: View {
     public var body: some View {
             ZStack {
                 GeometryReader { reader in
-                    adaptiveStack(isHorizontal: isHorizontal) {
+                    playerLayout {
                         VStack {
                             YouTubePlayerView(
                                 viewModel.youtubePlayer,
@@ -48,7 +48,7 @@ public struct YouTubeVideoPlayer: View {
                             .cornerRadius(12)
                             .padding(.horizontal, isHorizontal ? 0 : 8)
                             .aspectRatio(16 / 8.8, contentMode: .fit)
-                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : 380)
+                            .frame(minWidth: isHorizontal ? reader.size.width  * 0.6 : min(380, reader.size.width))
                             // Adjust the width based on the horizontal state
                             if isHorizontal {
                                 Spacer()
@@ -81,6 +81,12 @@ public struct YouTubeVideoPlayer: View {
                 viewModel.saveCurrentProgress(duration: viewModel.playerHolder.duration)
             }
         }
+
+    private var playerLayout: AnyLayout {
+        isHorizontal
+        ? AnyLayout(HStackLayout(spacing: 0))
+        : AnyLayout(VStackLayout(alignment: .center, spacing: 0))
+    }
 }
 
 #if DEBUG

@@ -16,7 +16,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
     private var viewModel: PrimaryCourseDashboardViewModel
     @ViewBuilder let programView: ProgramView
     private var openDiscoveryPage: () -> Void
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     
     @State private var selectedMenu: MenuOption = .courses
     
@@ -202,6 +202,7 @@ public struct PrimaryCourseDashboardView<ProgramView: View>: View {
             .navigationBarHidden(true)
             .navigationTitle(DashboardLocalization.title)
         }
+        .minimumTopSafeArea()
     }
     
     @ViewBuilder

@@ -13,6 +13,7 @@ import Core
 public struct DatesView: View {
     
     @StateObject private var viewModel: DatesViewModel
+    @Environment(\.layoutIdiom) private var idiom
     
     public init(viewModel: DatesViewModel) {
         self._viewModel = StateObject(wrappedValue: { viewModel }())
@@ -140,6 +141,7 @@ public struct DatesView: View {
             Theme.Colors.background
                 .ignoresSafeArea()
         )
+        .minimumTopSafeArea()
     }
     
     private func titleAndSettings(proxy: GeometryProxy) -> some View {
@@ -168,8 +170,7 @@ public struct DatesView: View {
                     })
                 }
                 .padding(.top, 8)
-                .offset(x: UIDevice.current.userInterfaceIdiom == .pad ? 1 : 5,
-                        y: UIDevice.current.userInterfaceIdiom == .pad ? 4 : -5)
+                .offset(x: idiom == .pad ? 1 : 5, y: idiom == .pad ? 4 : -5)
             }
             .listRowBackground(Color.clear)
             .padding(.horizontal, 20)
@@ -179,7 +180,7 @@ public struct DatesView: View {
 }
 
 struct DatesEmptyStateView: View {
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     var body: some View {
         VStack(alignment: .center, spacing: 0) {
             CoreAssets.dates.swiftUIImage

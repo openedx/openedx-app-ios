@@ -16,7 +16,7 @@ public struct SyncCalendarOptionsView: View {
     
     @State private var screenDimmed: Bool = false
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(viewModel: DatesAndCalendarViewModel) {
         self.viewModel = viewModel
@@ -29,7 +29,7 @@ public struct SyncCalendarOptionsView: View {
                     source: viewModel.currentInstance?.headerBackgroundURLString,
                     fallback: ThemeAssets.headerBackground.swiftUIImage
                 )
-                    .edgesIgnoringSafeArea(.top)
+                    .edgesIgnoringSafeArea([.top, .horizontal])
                     .frame(maxWidth: .infinity, maxHeight: 200)
                     .accessibilityIdentifier("title_bg_image")
                 
@@ -99,7 +99,7 @@ public struct SyncCalendarOptionsView: View {
                             }
                             RelativeDatesToggleView(useRelativeDates: $viewModel.profileStorage.useRelativeDates)
                         }
-                        .padding(.horizontal, isHorizontal ? 48 : 0)
+                        .padding(.horizontal, isHorizontal ? 24 : 0)
                         .frameLimit(width: proxy.size.width)
                     }
                     .roundedBackground(Theme.Colors.background)
@@ -193,7 +193,7 @@ public struct SyncCalendarOptionsView: View {
                 }
                 
             }
-            .ignoresSafeArea(.all, edges: .horizontal)
+            .minimumTopSafeArea()
         }
         .onFirstAppear {
             Task {

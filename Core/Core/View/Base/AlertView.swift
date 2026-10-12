@@ -51,7 +51,7 @@ public struct AlertView: View {
     private var nextSectionTapped: (() -> Void) = {}
     private let type: AlertViewType
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(
         alertTitle: String,

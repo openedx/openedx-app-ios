@@ -12,7 +12,7 @@ import Theme
 public struct UpdateNotificationView: View {
     
     private let config: ConfigProtocol
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     
     public init(config: ConfigProtocol) {
         self.config = config

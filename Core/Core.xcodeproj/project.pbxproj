@@ -57,6 +57,7 @@
 		0282DA7328F98CC9003C3F07 /* WebUnitView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0282DA7228F98CC9003C3F07 /* WebUnitView.swift */; };
 		0283347D28D4D3DE00C828FC /* Data_Discovery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283347C28D4D3DE00C828FC /* Data_Discovery.swift */; };
 		0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0283347F28D4DCD200C828FC /* ViewExtension.swift */; };
+		5CE0E5B12EA0000100D1E001 /* LayoutEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CE0E5B22EA0000100D1E001 /* LayoutEnvironment.swift */; };
 		0284DBFE28D48C5300830893 /* CourseItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0284DBFD28D48C5300830893 /* CourseItem.swift */; };
 		028CE96929858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028CE96829858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift */; };
 		028F9F37293A44C700DE65D0 /* Data_ResetPassword.swift in Sources */ = {isa = PBXBuildFile; fileRef = 028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */; };
@@ -277,6 +278,7 @@
 		0282DA7228F98CC9003C3F07 /* WebUnitView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebUnitView.swift; sourceTree = "<group>"; };
 		0283347C28D4D3DE00C828FC /* Data_Discovery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_Discovery.swift; sourceTree = "<group>"; };
 		0283347F28D4DCD200C828FC /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
+		5CE0E5B22EA0000100D1E001 /* LayoutEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LayoutEnvironment.swift; sourceTree = "<group>"; };
 		0284DBFD28D48C5300830893 /* CourseItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseItem.swift; sourceTree = "<group>"; };
 		028CE96829858ECC00B6B1C3 /* FlexibleKeyboardInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlexibleKeyboardInputView.swift; sourceTree = "<group>"; };
 		028F9F36293A44C700DE65D0 /* Data_ResetPassword.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data_ResetPassword.swift; sourceTree = "<group>"; };
@@ -530,6 +532,7 @@
 				CE5BBFF32E24236500D51C92 /* ColorExtension.swift */,
 				CEC8753E2D786F7B00A2626C /* ArrayExtension.swift */,
 				0283347F28D4DCD200C828FC /* ViewExtension.swift */,
+				5CE0E5B22EA0000100D1E001 /* LayoutEnvironment.swift */,
 				02F6EF4928D9F0A700835477 /* DateExtension.swift */,
 				07460FE2294B72D700F70538 /* Notification.swift */,
 				CEF4AA1D2DBA41C4006C4F0A /* StringExtension.swift */,
@@ -1265,6 +1268,7 @@
 				028F9F37293A44C700DE65D0 /* Data_ResetPassword.swift in Sources */,
 				022C64E429AE0191000F532B /* TextWithUrls.swift in Sources */,
 				0283348028D4DCD200C828FC /* ViewExtension.swift in Sources */,
+				5CE0E5B12EA0000100D1E001 /* LayoutEnvironment.swift in Sources */,
 				02A4833529B8A73400D33F33 /* CorePersistenceProtocol.swift in Sources */,
 				0233D5732AF13EEE00BAC8BD /* AppReviewButton.swift in Sources */,
 				02512FF0299533DF0024D438 /* CoreDataHandlerProtocol.swift in Sources */,

@@ -12,7 +12,7 @@ import Theme
 public struct HandoutsUpdatesDetailView: View {
     
     @Environment(\.colorScheme) var colorSchemeNative
-    private var idiom: UIUserInterfaceIdiom { UIDevice.current.userInterfaceIdiom }
+    @Environment(\.layoutIdiom) private var idiom
     @State var colorScheme: ColorScheme = UITraitCollection.current.userInterfaceStyle == .light ? .light : .dark
     
     private var router: CourseRouter

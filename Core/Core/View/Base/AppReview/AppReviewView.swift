@@ -13,7 +13,7 @@ public struct AppReviewView: View {
         
     @Bindable private var viewModel: AppReviewViewModel
 
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
     @Environment(\.presentationMode) private var presentationMode
     
     public init(viewModel: AppReviewViewModel) {

@@ -160,6 +160,7 @@ public struct DiscussionSearchTopicsView: View {
                 }
             }
         }
+        .minimumTopSafeArea()
     }
     
     private func searchHeader(viewModel: DiscussionSearchTopicsViewModel) -> some View {

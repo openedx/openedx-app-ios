@@ -14,7 +14,7 @@ public struct StartupView: View {
     
 //    @State private var searchQuery: String = ""
     
-    @Environment(\.isHorizontal) private var isHorizontal
+    @Environment(\.isHorizontalLayout) private var isHorizontal
 
     @Bindable private var viewModel: StartupViewModel
 
@@ -134,6 +134,7 @@ public struct StartupView: View {
         .onFirstAppear {
             viewModel.trackScreenEvent()
         }
+        .minimumTopSafeArea()
     }
 }
 
