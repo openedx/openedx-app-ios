@@ -22,6 +22,12 @@ public struct ColorInversionInjection: WebViewScriptInjectionProtocol, CSSInject
                 img, video, iframe {
                     filter: invert(100%) hue-rotate(180deg) !important;
                 }
+                img {
+                    /* Course figures are often PNGs with dark text on a transparent
+                       background. Give them the white page they were drawn for; the
+                       double inversion above keeps it white. */
+                    background-color: #ffffff;
+                }
             }
         """
         return cssScript(with: css)

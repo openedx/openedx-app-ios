@@ -160,6 +160,10 @@ private struct ChapterRowView: View {
     }
     
     private func downloadAllSubsections(state: DownloadViewState) {
+        guard state != .downloading else {
+            viewModel.showDownloadsList()
+            return
+        }
         Task {
             var allBlocks: [CourseBlock] = []
             var sequentialsToDownload: [CourseSequential] = []

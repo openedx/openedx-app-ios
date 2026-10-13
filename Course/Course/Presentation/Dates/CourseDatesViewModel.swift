@@ -26,6 +26,7 @@ public class CourseDatesViewModel {
     var courseDates: CourseDates?
     var isOn: Bool = false
     var eventState: EventState?
+    private var isLoadingDates = false
 
     var errorMessage: String?
 
@@ -40,7 +41,6 @@ public class CourseDatesViewModel {
     let config: ConfigProtocol
     let courseID: String
     let courseName: String
-    var courseStructure: CourseStructure?
     let analytics: CourseAnalytics
     let calendarManager: CalendarManagerProtocol
     
@@ -67,7 +67,10 @@ public class CourseDatesViewModel {
         addObservers()
     }
         
-    var sortedStatuses: [CompletionStatus] {
+    /// Statuses present in `courseDates`, in display order. Takes the dates the list is
+    /// drawing rather than reading `self.courseDates`, which a background refresh can
+    /// replace while the list still renders the previous value.
+    func sortedStatuses(in courseDates: CourseDates) -> [CompletionStatus] {
         let desiredSequence = [
             CompletionStatus.completed,
             CompletionStatus.pastDue,
@@ -79,26 +82,24 @@ public class CourseDatesViewModel {
         
         // Filter out keys that don't exist in the dictionary
         let filteredKeys = desiredSequence.filter {
-            courseDates?.statusDatesBlocks.keys.contains($0) ?? false }
+            courseDates.statusDatesBlocks.keys.contains($0) }
         return filteredKeys
     }
     
     @MainActor
-    func getCourseDates(courseID: String) async {
-        isShowProgress = true
+    func getCourseDates(courseID: String, withProgress: Bool = true) async {
+        isLoadingDates = true
+        isShowProgress = withProgress
         do {
             courseDates = try await interactor.getCourseDates(courseID: courseID)
-            await getCourseStructure(courseID: courseID)
-            if courseDates?.courseDateBlocks == nil {
-                isShowProgress = false
-                courseDates = nil
-                return
-            }
-            isShowProgress = false
         } catch {
-            isShowProgress = false
-            courseDates = nil
+            // A background refresh must not wipe dates the learner is already looking at.
+            if withProgress {
+                courseDates = nil
+            }
         }
+        isShowProgress = false
+        isLoadingDates = false
     }
     
     func showCourseDetails(componentID: String, blockLink: String) async {
@@ -109,15 +110,6 @@ public class CourseDatesViewModel {
                 courseStructure: courseStructure,
                 blockLink: blockLink
             )
-        } catch _ {
-            errorMessage = CourseLocalization.Error.componentNotFount
-        }
-    }
-    
-    @MainActor
-    func getCourseStructure(courseID: String) async {
-        do {
-            courseStructure = try await interactor.getLoadedCourseBlocks(courseID: courseID)
         } catch _ {
             errorMessage = CourseLocalization.Error.componentNotFount
         }
@@ -181,19 +173,21 @@ extension CourseDatesViewModel {
     }
     
     @objc private func getCourseDates(_ notification: Notification) {
+        // The course container asks for fresh dates every time it reloads the outline.
+        // The tab already loads its own dates when it appears, so skip a request that is
+        // already in flight and refresh loaded dates quietly instead of blanking the list.
+        guard notification.object as? String == courseID, !isLoadingDates else { return }
         Task {
-            await getCourseDates(courseID: courseID)
+            await getCourseDates(courseID: courseID, withProgress: courseDates == nil)
         }
     }
     
     @objc private func handleShiftDueDates(_ notification: Notification) {
-        if let courseID = notification.object as? String {
-            Task {
-                await getCourseDates(courseID: courseID)
-                await MainActor.run { [weak self] in
-                    self?.eventState = .shiftedDueDates
-                }
-            }
+        guard let (courseID, _) = notification.object as? (String, String),
+              courseID == self.courseID else { return }
+        Task {
+            await getCourseDates(courseID: courseID, withProgress: false)
+            eventState = .shiftedDueDates
         }
     }
     

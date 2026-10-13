@@ -14,6 +14,7 @@ struct CourseDateListView: View {
     var viewModel: CourseDatesViewModel
 
     @State private var isExpanded = false
+    @State private var syncStatus: SyncStatus = .offline
     @Binding var coordinate: CGFloat
     @Binding var collapsed: Bool
     @Binding var viewHeight: CGFloat
@@ -30,13 +31,10 @@ struct CourseDateListView: View {
                         viewHeight: $viewHeight
                     )
                     VStack(alignment: .leading, spacing: 0) {
-                        
-                        @State var status: SyncStatus = .offline
-                        
-                        CalendarSyncStatusView(status: status, router: viewModel.router)
+                        CalendarSyncStatusView(status: syncStatus, router: viewModel.router)
                             .padding(.bottom, 16)
                             .task {
-                                status = await viewModel.syncStatus()
+                                syncStatus = await viewModel.syncStatus()
                             }
                         
                         if !courseDates.hasEnded {
@@ -49,7 +47,7 @@ struct CourseDateListView: View {
                             .padding(.bottom, 16)
                         }
                         
-                        ForEach(Array(viewModel.sortedStatuses), id: \.self) { status in
+                        ForEach(viewModel.sortedStatuses(in: courseDates), id: \.self) { status in
                             let courseDateBlockDict = courseDates.statusDatesBlocks[status]!
                             if status == .completed {
                                 CompletedBlocks(

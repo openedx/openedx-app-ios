@@ -242,6 +242,10 @@ struct CourseCompletionCarouselSlideView<DownloadBarsView: View>: View {
     }
 
     private func downloadAllSubsections(in chapter: CourseChapter, state: DownloadViewState) {
+        guard state != .downloading else {
+            viewModelContainer.showDownloadsList()
+            return
+        }
         Task {
             var allBlocks: [CourseBlock] = []
             var sequentialsToDownload: [CourseSequential] = []

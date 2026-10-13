@@ -89,6 +89,7 @@ extension CourseTab {
     var downloadedFilesSize: Int = 0
     var largestDownloadBlocks: [CourseBlock] = []
     var downloadAllButtonState: OfflineView.DownloadAllState = .start
+    var isDownloadsListPresented = false
     var expandedSections: [String: Bool] = [:]
     var courseDeadlines: CourseDates?
     private(set) var assignmentSectionsData: [AssignmentSection] = []
@@ -219,7 +220,16 @@ extension CourseTab {
     @MainActor
     func getCourseStructure(courseID: String) async throws -> CourseStructure? {
         if isInternetAvaliable {
-            return try await interactor.getCourseBlocks(courseID: courseID)
+            do {
+                return try await interactor.getCourseBlocks(courseID: courseID)
+            } catch let error where error.isInternetError {
+                // A network that is up but not working fails only after the request times
+                // out; open the copy saved on the last visit rather than an empty course.
+                if let saved = try? await interactor.getLoadedCourseBlocks(courseID: courseID) {
+                    return saved
+                }
+                throw error
+            }
         } else {
             return try await interactor.getLoadedCourseBlocks(courseID: courseID)
         }
@@ -312,7 +322,10 @@ extension CourseTab {
 
         do {
             try await interactor.shiftDueDates(courseID: courseID)
-            NotificationCenter.default.post(name: .shiftCourseDates, object: courseID)
+            NotificationCenter.default.post(
+                name: .shiftCourseDates,
+                object: (courseID, courseStructure?.displayName ?? "")
+            )
             isShowProgress = false
             isShowRefresh = false
 
@@ -379,8 +392,18 @@ extension CourseTab {
         }
     }
 
+    /// A section's progress indicator opens the list of videos being downloaded, where each one
+    /// can be cancelled, instead of cancelling the whole section on a single tap.
+    func showDownloadsList() {
+        isDownloadsListPresented = true
+    }
+
     @MainActor
     func onDownloadViewTap(chapter: CourseChapter, state: DownloadViewState) async {
+        guard state != .downloading else {
+            showDownloadsList()
+            return
+        }
         let blocks = chapter.childs
             .flatMap { $0.childs }
             .flatMap { $0.childs }
@@ -1442,7 +1465,7 @@ extension CourseTab {
         for chapter in courseStructure.childs {
             for sequential in chapter.childs {
                 if sequential.blockId == blockKey || sequential.id == blockKey {
-                    if sequential.completion >= 1.0 {
+                    if sequential.completion >= 1.0 || isEveryGradedProblemAttempted(in: sequential) {
                         return .completed
                     }
 
@@ -1455,6 +1478,17 @@ extension CourseTab {
             }
         }
         return nil
+    }
+
+    /// An assignment is done once every graded problem in it has been attempted. A problem is
+    /// marked complete when it is submitted, whatever the score, while the subsection itself
+    /// stays incomplete until its videos and text are viewed too.
+    private func isEveryGradedProblemAttempted(in sequential: CourseSequential) -> Bool {
+        let scoredTypes: Set<BlockType> = [.problem, .dragAndDropV2, .openassessment, .peerInstructionTool]
+        let gradedProblems = sequential.childs
+            .flatMap { $0.childs }
+            .filter { $0.graded && scoredTypes.contains($0.type) }
+        return !gradedProblems.isEmpty && gradedProblems.allSatisfy { $0.completion >= 1.0 }
     }
 
     private func createUIModels(from subsections: [CourseProgressSubsection]) -> [CourseProgressSubsectionUI] {
@@ -1775,7 +1809,9 @@ extension CourseTab {
 
 extension CourseContainerViewModel {
     @objc private func handleShiftDueDates(_ notification: Notification) {
-        if let courseID = notification.object as? String {
+        // Every sender posts `(courseID, courseName)`; calendar sync needs the name too.
+        if let (courseID, _) = notification.object as? (String, String),
+           courseID == courseStructure?.id {
             Task {
                 await withTaskGroup(of: Void.self) { group in
                     group.addTask {

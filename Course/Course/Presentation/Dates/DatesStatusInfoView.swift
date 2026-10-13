@@ -43,7 +43,13 @@ struct DatesStatusInfoView: View {
                 .foregroundColor(Theme.Colors.textPrimary)
                 .padding(.horizontal, 16)
             
-            if !button.isEmpty {
+            if isLoading {
+                // Keep the banner and the dates in place while the request runs, the way the
+                // app-level Dates screen does, instead of swapping the whole list for a spinner.
+                ProgressBar(size: 40, lineWidth: 8)
+                    .frame(maxWidth: .infinity, maxHeight: 42)
+                    .accessibilityLabel(CourseLocalization.Accessibility.loadingSection)
+            } else if !button.isEmpty {
                 UnitButtonView(type: .custom(button)) {
                     guard !isLoading else { return }
                     isLoading = true
@@ -58,6 +64,7 @@ struct DatesStatusInfoView: View {
                         if courseDatesViewModel != nil {
                             await courseDatesViewModel?.shiftDueDates(
                                 courseID: courseID,
+                                withProgress: false,
                                 screen: screen,
                                 type: datesBannerInfo.status?.analyticsBannerType ?? ""
                             )
@@ -68,11 +75,10 @@ struct DatesStatusInfoView: View {
                                 type: datesBannerInfo.status?.analyticsBannerType ?? ""
                             )
                         }
-                         isLoading = false
+                        isLoading = false
                     }
                 }
                 .padding([.leading, .trailing], 16)
-                .disabled(isLoading)
             }
             Spacer()
         }

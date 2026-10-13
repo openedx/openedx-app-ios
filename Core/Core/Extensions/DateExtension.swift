@@ -14,8 +14,10 @@ public extension Date {
         var date: Date
         var dateFormatter: DateFormatter?
         dateFormatter = DateFormatter()
-        dateFormatter?.locale = .current
-        
+        // A fixed-format API date must not follow the user's locale: with the 24-hour
+        // time switch overridden, `HH` stops matching hours past noon (Apple QA1480).
+        dateFormatter?.locale = Locale(identifier: "en_US_POSIX")
+
         date = formats.compactMap { format -> Date? in
             dateFormatter?.dateFormat = format
             guard let formattedDate = dateFormatter?.date(from: iso8601) else { return nil }

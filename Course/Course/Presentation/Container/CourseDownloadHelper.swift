@@ -107,7 +107,9 @@ public final class CourseDownloadHelper: CourseDownloadHelperProtocol, @unchecke
     }
 
     public func refreshValue() {
-        Task(priority: .background) {
+        // Runs at the caller's priority: the result drives the download buttons on screen,
+        // and a background task can wait seconds for a thread while the device is busy.
+        Task {
             await refreshValue()
         }
     }

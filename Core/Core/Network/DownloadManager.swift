@@ -204,6 +204,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     private let appStorage: CoreStorage
     private let connectivity: ConnectivityProtocol
     private let filePathProvider: InstanceFilePathProvider
+    private let session: Session
     private var downloadRequest: DownloadRequest?
     nonisolated
     private let currentDownloadEventPublisher: PassthroughSubject<DownloadManagerEvent, Never> = .init()
@@ -230,12 +231,14 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         persistence: CorePersistenceProtocol,
         appStorage: CoreStorage,
         connectivity: ConnectivityProtocol,
-        filePathProvider: InstanceFilePathProvider
+        filePathProvider: InstanceFilePathProvider,
+        session: Session = AF
     ) {
         self.persistence = persistence
         self.appStorage = appStorage
         self.connectivity = connectivity
         self.filePathProvider = filePathProvider
+        self.session = session
         if let userId = appStorage.user?.id {
             persistence.set(userId: userId)
         }
@@ -606,9 +609,9 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         }
 
         if let resumeData = download.resumeData {
-            downloadRequest = AF.download(resumingWith: resumeData, to: destination)
+            downloadRequest = session.download(resumingWith: resumeData, to: destination).validate()
         } else {
-            downloadRequest = AF.download(url, to: destination)
+            downloadRequest = session.download(url, to: destination).validate()
         }
 
         downloadRequest?.downloadProgress { @Sendable [weak self] prog in
@@ -636,6 +639,21 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         currentDownloadEventPublisher.send(.started(download))
     }
 
+    /// Drops a download the server refused or that broke for a reason other than the
+    /// connection, so `newDownload()` moves on instead of picking it up again, and leaves
+    /// it to be reported with the others once the queue is done. `file` is whatever the
+    /// server sent instead, such as an error page, which must not stay on disk.
+    private func failDownload(_ download: DownloadDataTask, file: URL?) {
+        if let file {
+            try? FileManager.default.removeItem(at: file)
+        }
+        failedDownloads.append(download)
+        try? cancelDownloading(task: download)
+        Task {
+            try? await self.newDownload()
+        }
+    }
+
     private func setCurrentTask(with task: DownloadDataTask?) async {
         currentDownloadTask = task
     }
@@ -646,10 +664,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
             if error.isInternetError {
                 state = .waiting
             } else if error.asAFError?.isExplicitlyCancelledError == false {
-                self.failedDownloads.append(download)
-                Task {
-                    try? await self.newDownload()
-                }
+                failDownload(download, file: response.fileURL)
                 return
             }
         }
@@ -697,9 +712,9 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
         currentDownloadTask = download
         currentDownloadTask?.state = .inProgress
         if let resumeData = download.resumeData {
-            downloadRequest = AF.download(resumingWith: resumeData, to: destination)
+            downloadRequest = session.download(resumingWith: resumeData, to: destination).validate()
         } else {
-            downloadRequest = AF.download(url, to: destination)
+            downloadRequest = session.download(url, to: destination).validate()
         }
         downloadRequest?.downloadProgress { [weak self] prog in
             guard let self else { return }
@@ -729,8 +744,7 @@ public actor DownloadManager: DownloadManagerProtocol, @unchecked Sendable {
     private func completeHTMLDownload(with response: AFDownloadResponse<URL>, for download: DownloadDataTask) async {
         if let error = response.error {
             if error.asAFError?.isExplicitlyCancelledError == false {
-                failedDownloads.append(download)
-                try? await self.newDownload()
+                failDownload(download, file: response.fileURL)
                 return
             }
         }

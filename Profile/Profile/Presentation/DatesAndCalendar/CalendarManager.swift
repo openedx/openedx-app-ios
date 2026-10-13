@@ -188,7 +188,7 @@ public final class CalendarManager: CalendarManagerProtocol {
         courseName: String,
         calendar: EKCalendar
     ) -> Bool {
-        let events = generateEvents(for: dateBlocks, courseName: courseName, calendar: calendar)
+        let events = generateEvents(for: dateBlocks, courseID: courseID, courseName: courseName, calendar: calendar)
         var saveSuccessful = true
         events.forEach { event in
             if !eventExists(event, in: calendar) {
@@ -251,6 +251,7 @@ public final class CalendarManager: CalendarManagerProtocol {
     
     private func generateEvents(
         for dateBlocks: [Date: [CourseDateBlock]],
+        courseID: String,
         courseName: String,
         calendar: EKCalendar
     ) -> [EKEvent] {
@@ -258,12 +259,22 @@ public final class CalendarManager: CalendarManagerProtocol {
         dateBlocks.forEach { item in
             let blocks = item.value
             if blocks.count > 1 {
-                if let generatedEvent = calendarEvent(for: blocks, courseName: courseName, calendar: calendar) {
+                if let generatedEvent = calendarEvent(
+                    for: blocks,
+                    courseID: courseID,
+                    courseName: courseName,
+                    calendar: calendar
+                ) {
                     events.append(generatedEvent)
                 }
             } else {
                 if let block = blocks.first {
-                    if let generatedEvent = calendarEvent(for: block, courseName: courseName, calendar: calendar) {
+                    if let generatedEvent = calendarEvent(
+                        for: block,
+                        courseID: courseID,
+                        courseName: courseName,
+                        calendar: calendar
+                    ) {
                         events.append(generatedEvent)
                     }
                 }
@@ -272,7 +283,12 @@ public final class CalendarManager: CalendarManagerProtocol {
         return events
     }
     
-    private func calendarEvent(for block: CourseDateBlock, courseName: String, calendar: EKCalendar) -> EKEvent? {
+    private func calendarEvent(
+        for block: CourseDateBlock,
+        courseID: String,
+        courseName: String,
+        calendar: EKCalendar
+    ) -> EKEvent? {
         guard !block.title.isEmpty else { return nil }
         
         let title = block.title
@@ -281,7 +297,7 @@ public final class CalendarManager: CalendarManagerProtocol {
         let endDate = block.date
         var notes = "\(calendar.title)\n\n\(block.title)"
         
-        if let link = generateDeeplink(componentBlockID: block.firstComponentBlockID) {
+        if let link = generateDeeplink(componentBlockID: block.firstComponentBlockID, courseID: courseID) {
             notes += "\n\(link)"
         }
         
@@ -296,7 +312,12 @@ public final class CalendarManager: CalendarManagerProtocol {
         )
     }
 
-    private func calendarEvent(for blocks: [CourseDateBlock], courseName: String, calendar: EKCalendar) -> EKEvent? {
+    private func calendarEvent(
+        for blocks: [CourseDateBlock],
+        courseID: String,
+        courseName: String,
+        calendar: EKCalendar
+    ) -> EKEvent? {
         guard let block = blocks.first, !block.title.isEmpty else { return nil }
         
         let title = block.title
@@ -304,7 +325,7 @@ public final class CalendarManager: CalendarManagerProtocol {
         let secondAlert = startDate.addingTimeInterval(Double(alertOffset) * 86400)
         let endDate = block.date
         let notes = "\(calendar.title)\n\n" + blocks.compactMap { block -> String in
-            if let link = generateDeeplink(componentBlockID: block.firstComponentBlockID) {
+            if let link = generateDeeplink(componentBlockID: block.firstComponentBlockID, courseID: courseID) {
                 return "\(block.title)\n\(link)"
             } else {
                 return block.title
@@ -348,24 +369,31 @@ public final class CalendarManager: CalendarManagerProtocol {
         }
     }
     
-    private func generateDeeplink(componentBlockID: String) -> String? {
+    private func generateDeeplink(componentBlockID: String, courseID: String) -> String? {
         guard !componentBlockID.isEmpty else {
             return nil
         }
         let branchUniversalObject = BranchUniversalObject(
             canonicalIdentifier: "\(CalendarDeepLinkType.courseComponent.rawValue)/\(componentBlockID)"
         )
-        let dictionary: NSMutableDictionary = [
-            CalendarDeepLinkKeys.screenName.rawValue: CalendarDeepLinkType.courseComponent.rawValue,
-            CalendarDeepLinkKeys.courseID.rawValue: profileStorage.calendarSettings?.calendarName ?? "",
-            CalendarDeepLinkKeys.componentID.rawValue: componentBlockID
-        ]
         let metadata = BranchContentMetadata()
-        metadata.customMetadata = dictionary
+        metadata.customMetadata = NSMutableDictionary(
+            dictionary: deepLinkMetadata(componentBlockID: componentBlockID, courseID: courseID)
+        )
         branchUniversalObject.contentMetadata = metadata
         let properties = BranchLinkProperties()
         let shortUrl = branchUniversalObject.getShortUrl(with: properties)
         return shortUrl
+    }
+
+    /// What a calendar event's link carries. The app opens the course by `course_id`
+    /// (DeepLinkManager.showCourseScreen), so it must be the course ID, not the calendar name.
+    func deepLinkMetadata(componentBlockID: String, courseID: String) -> [String: String] {
+        [
+            CalendarDeepLinkKeys.screenName.rawValue: CalendarDeepLinkType.courseComponent.rawValue,
+            CalendarDeepLinkKeys.courseID.rawValue: courseID,
+            CalendarDeepLinkKeys.componentID.rawValue: componentBlockID
+        ]
     }
 
     private func generateEvent(

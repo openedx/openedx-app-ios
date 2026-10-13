@@ -7,11 +7,10 @@
 
 import Foundation
 
+// Equality is memberwise on purpose. SwiftUI skips redrawing a view whose inputs compare
+// equal, so an id-only `==` kept the outline showing stale completion, due dates and
+// progress until the course screen was opened again.
 public struct CourseStructure: Equatable, Sendable {
-    public static func == (lhs: CourseStructure, rhs: CourseStructure) -> Bool {
-        return lhs.id == rhs.id
-    }
-
     public let id: String
     public let graded: Bool
     public let completion: Double
@@ -101,7 +100,7 @@ public struct CourseImage: Decodable, Sendable, Equatable {
     }
 }
 
-public struct CourseProgress: Sendable {
+public struct CourseProgress: Sendable, Equatable {
     public let totalAssignmentsCount: Int?
     public let assignmentsCompleted: Int?
     
@@ -112,11 +111,6 @@ public struct CourseProgress: Sendable {
 }
 
 public struct CourseChapter: Identifiable, Sendable, Equatable {
-    public static func == (lhs: CourseChapter, rhs: CourseChapter) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.blockId == rhs.blockId
-    }
-
     public let blockId: String
     public let id: String
     public let displayName: String
@@ -139,11 +133,6 @@ public struct CourseChapter: Identifiable, Sendable, Equatable {
 }
 
 public struct CourseSequential: Identifiable, Sendable, Equatable {
-    public static func == (lhs: CourseSequential, rhs: CourseSequential) -> Bool {
-        lhs.id == rhs.id &&
-        lhs.blockId == rhs.blockId
-    }
-
     public let blockId: String
     public let id: String
     public let displayName: String
@@ -231,7 +220,7 @@ public struct SubtitleUrl: Equatable, Sendable {
     }
 }
 
-public struct SequentialProgress: Sendable {
+public struct SequentialProgress: Sendable, Equatable {
     public let assignmentType: String?
     public let numPointsEarned: Int?
     public let numPointsPossible: Int?

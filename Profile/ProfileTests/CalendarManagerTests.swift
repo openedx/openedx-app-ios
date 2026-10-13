@@ -290,4 +290,28 @@ final class CalendarManagerTests: XCTestCase {
 
         XCTAssertEqual(manager.colorSelection?.color, Color.accentColor)
     }
+
+    func testCalendarEventLink_opensTheCourseTheEventBelongsTo() {
+        let profileStorage = ProfileStorageMock()
+        profileStorage.calendarSettings = CalendarSettings(
+            colorSelection: "accent",
+            calendarName: "My Courses",
+            accountSelection: "iCloud",
+            courseCalendarSync: true
+        )
+        let manager = CalendarManager(
+            persistence: ProfilePersistenceProtocolMock(),
+            interactor: ProfileInteractorProtocolMock(),
+            profileStorage: profileStorage
+        )
+
+        let metadata = manager.deepLinkMetadata(
+            componentBlockID: "block-v1:OpenedX+DemoX+DemoCourse+type@sequential+block@homework",
+            courseID: "course-v1:OpenedX+DemoX+DemoCourse"
+        )
+
+        XCTAssertEqual(metadata["course_id"], "course-v1:OpenedX+DemoX+DemoCourse")
+        XCTAssertEqual(metadata["component_id"], "block-v1:OpenedX+DemoX+DemoCourse+type@sequential+block@homework")
+        XCTAssertEqual(metadata["screen_name"], "course_component")
+    }
 }

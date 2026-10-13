@@ -70,6 +70,8 @@ public struct CourseContainerView: View {
         self.courseDatesViewModel = courseDatesViewModel
         self.courseProgressViewModel = courseProgressViewModel
         Task {
+            // Without access the server has no content to give; don't ask for it.
+            guard viewModel.isActive != false else { return }
             await withTaskGroup(of: Void.self) { group in
                 group.addTask {
                     await viewModel.getCourseBlocks(courseID: courseID)
@@ -95,6 +97,9 @@ public struct CourseContainerView: View {
         .onChange(of: viewModel.selection, perform: didSelect)
         .onChange(of: coordinate, perform: collapseHeader)
         .background(Theme.Colors.background)
+        .sheet(isPresented: $viewModel.isDownloadsListPresented) {
+            DownloadsView(router: viewModel.router, courseHelper: viewModel.courseHelper)
+        }
     }
     
     @ViewBuilder
@@ -112,6 +117,8 @@ public struct CourseContainerView: View {
                     viewHeight: $viewHeight,
                     dateTabIndex: CourseTab.dates.rawValue
                 )
+            } else if viewModel.isActive == false {
+                noAccessContent
             } else {
                 ZStack(alignment: .top) {
                     tabs
@@ -161,6 +168,22 @@ public struct CourseContainerView: View {
         }
     }
     
+    private var noAccessContent: some View {
+        VStack(spacing: 0) {
+            NavigationBar(
+                title: title,
+                leftButtonAction: { viewModel.router.back() }
+            )
+            FullScreenErrorView(
+                type: .noContent(
+                    CourseLocalization.Error.courseAccessUnavailable,
+                    image: CoreAssets.lockIcon.swiftUIImage
+                )
+            )
+        }
+        .background(Theme.Colors.background.ignoresSafeArea())
+    }
+
     private func showDatesSuccessView(title: String, message: String) -> some View {
         return DatesSuccessView(
             title: title,

@@ -34,6 +34,7 @@
 "ERROR.ASSIGNMENTS_UNAVAILABLE" = "No assignments available for this course.";
 "ERROR.COURSE_DATE_UNAVAILABLE" = "Course dates are not currently available.";
 "ERROR.COURSEWARE_UNAVAILABLE" = "No course content is currently available.";
+"ERROR.COURSE_ACCESS_UNAVAILABLE" = "You don't currently have access to this course.";
 
 "ALERT.ROTATE_DEVICE" = "Rotate your device to view this video in full screen.";
 "ALERT.DELETE_ALL_VIDEOS" = "Are you sure you want to delete all video(s) for";

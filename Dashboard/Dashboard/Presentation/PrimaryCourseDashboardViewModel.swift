@@ -7,7 +7,9 @@
 
 import Foundation
 import Core
+import Combine
 import SwiftUI
+import OEXFoundation
 
 @MainActor
 @Observable
@@ -36,6 +38,7 @@ public class PrimaryCourseDashboardViewModel {
     var storage: CoreStorage
     let router: DashboardRouter
     @ObservationIgnored nonisolated(unsafe) private var observers: [NSObjectProtocol] = []
+    @ObservationIgnored private var cancellables = Set<AnyCancellable>()
 
     private let ipadPageSize = 7
     private let iphonePageSize = 5
@@ -89,6 +92,16 @@ public class PrimaryCourseDashboardViewModel {
         }
 
         observers.append(contentsOf: [enrollmentObserver, completionObserver, refreshObserver])
+
+        connectivity.internetReachableSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] state in
+                guard state == .notReachable else { return }
+                Task { @MainActor in
+                    await self?.showSavedEnrollmentsIfStillLoading()
+                }
+            }
+            .store(in: &cancellables)
     }
     
     func setupNotifications() {
@@ -148,9 +161,26 @@ public class PrimaryCourseDashboardViewModel {
                 storage.updateAppRequired = true
                 self.router.showUpdateRequiredView(showAccountLink: true)
             } else {
-                errorMessage = CoreLocalization.Error.unknownError
+                // A failed refresh must not take the learner's courses away: fall back to the
+                // ones saved by the last successful load instead of showing "No Courses".
+                if enrollments == nil {
+                    enrollments = try? await interactor.getPrimaryEnrollmentOffline()
+                }
+                errorMessage = error.isInternetError
+                ? CoreLocalization.Error.slowOrNoInternetConnection
+                : CoreLocalization.Error.unknownError
             }
         }
+    }
+
+    /// On a network that is up but doesn't work (captive portal, in-flight Wi-Fi) the request
+    /// hangs until it times out. As soon as the app knows it is offline, show the saved
+    /// courses instead of the spinner; a late response still replaces them.
+    private func showSavedEnrollmentsIfStillLoading() async {
+        guard fetchInProgress, enrollments == nil,
+              let saved = try? await interactor.getPrimaryEnrollmentOffline() else { return }
+        enrollments = saved
+        fetchInProgress = false
     }
     
     func trackDashboardCourseClicked(courseID: String, courseName: String) {

@@ -7,6 +7,7 @@
 
 import XCTest
 import Combine
+import Alamofire
 @testable import Core
 
 @MainActor
@@ -15,6 +16,7 @@ final class DownloadManagerTests: XCTestCase {
     var persistence: CorePersistenceProtocolMock!
     var storage: CoreStorageMock!
     var connectivity: ConnectivityProtocolMock!
+    var cancellables = Set<AnyCancellable>()
 
     override func setUp() {
         super.setUp()
@@ -118,6 +120,42 @@ final class DownloadManagerTests: XCTestCase {
 
         // Then
         XCTAssertEqual(currentDownloadTask?.id, mockTask.id)
+    }
+
+    func testNewDownload_WhenServerRefusesTheFile_ReportsItAsFailedNotDownloaded() async throws {
+        // Given
+        let task = createMockDownloadTask()
+        persistence.getDownloadDataTasksHandler = { [task] }
+        connectivity.isMobileData = false
+        let configuration = URLSessionConfiguration.af.default
+        configuration.protocolClasses = [ForbiddenURLProtocol.self]
+
+        let downloadManager = DownloadManager(
+            persistence: persistence,
+            appStorage: storage,
+            connectivity: connectivity,
+            filePathProvider: InstanceFilePathProvider(instanceStore: InstanceProviderMock()),
+            session: Session(configuration: configuration)
+        )
+        var finishedCount = 0
+        await downloadManager.eventPublisher()
+            .sink { event in
+                if case .finished = event {
+                    finishedCount += 1
+                }
+            }
+            .store(in: &cancellables)
+        let reported = expectation(forNotification: .showDownloadFailed, object: nil) { notification in
+            (notification.object as? [DownloadDataTask])?.map(\.id) == [task.id]
+        }
+
+        // When
+        try await downloadManager.resumeDownloading()
+
+        // Then
+        await fulfillment(of: [reported], timeout: 10)
+        XCTAssertEqual(finishedCount, 0)
+        XCTAssertEqual(persistence.deleteDownloadDataTasksCallCount, 1)
     }
 
     // MARK: - Test Cancel Downloads
@@ -365,4 +403,25 @@ final class DownloadManagerTests: XCTestCase {
             offlineDownload: nil
         )
     }
+}
+
+/// Answers every request the way a CDN answers a link it refuses: 403 with an XML body.
+private final class ForbiddenURLProtocol: URLProtocol {
+    override class func canInit(with request: URLRequest) -> Bool { true }
+    override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
+
+    override func startLoading() {
+        guard let url = request.url,
+              let response = HTTPURLResponse(
+                url: url,
+                statusCode: 403,
+                httpVersion: "HTTP/1.1",
+                headerFields: ["Content-Type": "application/xml"]
+              ) else { return }
+        client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
+        client?.urlProtocol(self, didLoad: Data("<Error><Code>AccessDenied</Code></Error>".utf8))
+        client?.urlProtocolDidFinishLoading(self)
+    }
+
+    override func stopLoading() {}
 }

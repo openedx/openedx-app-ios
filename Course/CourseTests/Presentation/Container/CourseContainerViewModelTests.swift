@@ -333,6 +333,7 @@ final class CourseContainerViewModelTests: XCTestCase {
         )
 
         interactor.getCourseBlocksHandler = { _ in throw noInternetError }
+        interactor.getLoadedCourseBlocksHandler = { _ in throw NoCachedDataError() }
         interactor.getCourseAssignmentBlocksHandler = { _ in courseStructure }
 
         let mockCourseProgress = CourseProgressDetails(
@@ -615,5 +616,146 @@ final class CourseContainerViewModelTests: XCTestCase {
 
         viewModel.trackSelectedTab(selection: .handounds, courseId: "1", courseName: "name")
         XCTAssertEqual(analytics.courseOutlineHandoutsTabClickedCallCount, 1)
+    }
+
+    private func makeViewModel(
+        manager: DownloadManagerProtocol = DownloadManagerMock(),
+        interactor: CourseInteractorProtocolMock = CourseInteractorProtocolMock()
+    ) -> CourseContainerViewModel {
+        let connectivity = ConnectivityProtocolMock()
+        connectivity.isInternetAvaliable = true
+        connectivity.internetReachableSubject = .init(.reachable)
+        return CourseContainerViewModel(
+            interactor: interactor,
+            authInteractor: AuthInteractorProtocolMock(),
+            router: CourseRouterMock(),
+            analytics: CourseAnalyticsMock(),
+            config: ConfigMock(),
+            connectivity: connectivity,
+            manager: manager,
+            storage: CourseStorageMock(),
+            isActive: true,
+            courseStart: Date(),
+            courseEnd: nil,
+            enrollmentStart: nil,
+            enrollmentEnd: nil,
+            lastVisitedBlockID: nil,
+            coreAnalytics: CoreAnalyticsMock(),
+            courseHelper: courseHelperMock
+        )
+    }
+
+    private func block(_ id: String, _ type: BlockType, completion: Double) -> CourseBlock {
+        CourseBlock(
+            blockId: id,
+            id: id,
+            courseId: "course",
+            graded: true,
+            due: nil,
+            completion: completion,
+            type: type,
+            displayName: id,
+            studentUrl: "",
+            webUrl: "",
+            encodedVideo: nil,
+            multiDevice: true,
+            offlineDownload: nil
+        )
+    }
+
+    private func course(withAssignment blocks: [CourseBlock]) -> CourseStructure {
+        let unit = CourseVertical(
+            blockId: "unit",
+            id: "unit",
+            courseId: "course",
+            displayName: "Unit",
+            type: .vertical,
+            completion: 0,
+            childs: blocks,
+            webUrl: ""
+        )
+        let assignment = CourseSequential(
+            blockId: "homework",
+            id: "homework",
+            displayName: "Homework",
+            type: .sequential,
+            completion: 0.75,
+            childs: [unit],
+            sequentialProgress: nil,
+            due: nil
+        )
+        return CourseStructure(
+            id: "course",
+            graded: true,
+            completion: 0,
+            viewYouTubeUrl: "",
+            encodedVideo: "",
+            displayName: "Course",
+            topicID: nil,
+            childs: [
+                CourseChapter(blockId: "section", id: "section", displayName: "Section", type: .chapter, childs: [assignment])
+            ],
+            media: CourseMedia(image: CourseImage(raw: "", small: "", large: "")),
+            certificate: nil,
+            org: "",
+            isSelfPaced: true,
+            courseProgress: nil
+        )
+    }
+
+    func testOutlineInputs_withNewCompletion_doNotCompareEqual() {
+        // SwiftUI redraws the outline only when its inputs compare unequal.
+        let started = course(withAssignment: [block("problem", .problem, completion: 0)])
+        let finished = course(withAssignment: [block("problem", .problem, completion: 1)])
+
+        XCTAssertNotEqual(started, finished)
+        XCTAssertNotEqual(started.childs[0], finished.childs[0])
+        XCTAssertNotEqual(started.childs[0].childs[0], finished.childs[0].childs[0])
+    }
+
+    func testSectionIndicatorWhileDownloading_opensDownloadsListInsteadOfCancelling() async {
+        let downloadManager = DownloadManagerProtocolMock()
+        let viewModel = makeViewModel(manager: downloadManager)
+        let section = CourseChapter(blockId: "", id: "section", displayName: "Section", type: .chapter, childs: [])
+
+        await viewModel.onDownloadViewTap(chapter: section, state: .downloading)
+
+        XCTAssertTrue(viewModel.isDownloadsListPresented)
+        XCTAssertEqual(downloadManager.cancelDownloadingCallCount, 0)
+    }
+
+    func testAssignmentWithEveryGradedProblemAttempted_isCompleted_evenWithAnUnwatchedVideo() {
+        let viewModel = makeViewModel()
+        viewModel.courseStructure = course(withAssignment: [
+            block("setup", .html, completion: 1),
+            block("video", .video, completion: 0),
+            block("problem1", .problem, completion: 1),
+            block("problem2", .problem, completion: 1)
+        ])
+
+        XCTAssertEqual(viewModel.getSequentialAssignmentStatus(for: "homework"), .completed)
+    }
+
+    func testAssignmentWithAnUnattemptedGradedProblem_isNotCompleted() {
+        let viewModel = makeViewModel()
+        viewModel.courseStructure = course(withAssignment: [
+            block("problem1", .problem, completion: 1),
+            block("problem2", .problem, completion: 0)
+        ])
+
+        XCTAssertEqual(viewModel.getSequentialAssignmentStatus(for: "homework"), .incomplete)
+    }
+
+    func testCourseStructure_whenTheNetworkFails_opensTheSavedCopy() async throws {
+        let interactor = CourseInteractorProtocolMock()
+        let saved = course(withAssignment: [block("problem", .problem, completion: 0)])
+        interactor.getCourseBlocksHandler = { _ in throw AFError.sessionTaskFailed(error: URLError(.timedOut)) }
+        interactor.getLoadedCourseBlocksHandler = { _ in saved }
+        let viewModel = makeViewModel(interactor: interactor)
+
+        let structure = try await viewModel.getCourseStructure(courseID: "course")
+
+        XCTAssertEqual(structure?.id, saved.id)
+        XCTAssertEqual(interactor.getLoadedCourseBlocksCallCount, 1)
     }
 }

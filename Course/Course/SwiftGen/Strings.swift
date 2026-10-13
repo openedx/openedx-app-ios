@@ -559,6 +559,8 @@ public enum CourseLocalization {
     public static let assignmentsUnavailable = CourseLocalization.tr("Localizable", "ERROR.ASSIGNMENTS_UNAVAILABLE", fallback: "No assignments available for this course.")
     /// Course component not found, please reload
     public static let componentNotFount = CourseLocalization.tr("Localizable", "ERROR.COMPONENT_NOT_FOUNT", fallback: "Course component not found, please reload")
+    /// You don't currently have access to this course.
+    public static let courseAccessUnavailable = CourseLocalization.tr("Localizable", "ERROR.COURSE_ACCESS_UNAVAILABLE", fallback: "You don't currently have access to this course.")
     /// Course dates are not currently available.
     public static let courseDateUnavailable = CourseLocalization.tr("Localizable", "ERROR.COURSE_DATE_UNAVAILABLE", fallback: "Course dates are not currently available.")
     /// No course content is currently available.

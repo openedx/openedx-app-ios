@@ -25,6 +25,7 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
         super.setUp()
         interactor = DashboardInteractorProtocolMock()
         connectivity = ConnectivityProtocolMock()
+        connectivity.internetReachableSubject = .init(.reachable)
         analytics = DashboardAnalyticsMock()
         storage = CoreStorageMock()
         config = ConfigMock()
@@ -158,6 +159,7 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
 
         connectivity.isInternetAvaliable = true
         interactor.getPrimaryEnrollmentHandler = { _ in throw NSError(domain: "error", code: -1, userInfo: nil) }
+        interactor.getPrimaryEnrollmentOfflineHandler = { throw NoCachedDataError() }
 
         // When
         await viewModel.getEnrollments()
@@ -168,6 +170,62 @@ final class PrimaryCourseDashboardViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.errorMessage, CoreLocalization.Error.unknownError)
         XCTAssertTrue(viewModel.showError)
         XCTAssertFalse(viewModel.fetchInProgress)
+    }
+
+    func testGetEnrollments_whenTheRequestFails_showsTheSavedCourses() async {
+        // Given
+        let viewModel = PrimaryCourseDashboardViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            config: config,
+            storage: storage,
+            router: router
+        )
+        connectivity.isInternetAvaliable = true
+        interactor.getPrimaryEnrollmentHandler = { _ in throw URLError(.timedOut) }
+        interactor.getPrimaryEnrollmentOfflineHandler = { self.enrollment }
+
+        // When
+        await viewModel.getEnrollments()
+
+        // Then
+        XCTAssertEqual(viewModel.enrollments, enrollment)
+        XCTAssertTrue(viewModel.showError)
+        XCTAssertFalse(viewModel.fetchInProgress)
+    }
+
+    func testGoingOfflineWhileLoading_showsTheSavedCoursesBeforeTheRequestTimesOut() async {
+        // Given
+        let viewModel = PrimaryCourseDashboardViewModel(
+            interactor: interactor,
+            connectivity: connectivity,
+            analytics: analytics,
+            config: config,
+            storage: storage,
+            router: router
+        )
+        connectivity.isInternetAvaliable = true
+        interactor.getPrimaryEnrollmentHandler = { _ in
+            try await Task.sleep(for: .seconds(1))
+            throw URLError(.timedOut)
+        }
+        interactor.getPrimaryEnrollmentOfflineHandler = { self.enrollment }
+        let loading = Task { await viewModel.getEnrollments() }
+        try? await Task.sleep(for: .milliseconds(100))
+
+        // When
+        connectivity.internetReachableSubject.send(.notReachable)
+        let deadline = Date().addingTimeInterval(0.8)
+        while viewModel.enrollments == nil && Date() < deadline {
+            try? await Task.sleep(for: .milliseconds(20))
+        }
+
+        // Then: the saved courses are on screen while the request is still hanging
+        XCTAssertEqual(viewModel.enrollments, enrollment)
+        XCTAssertFalse(viewModel.fetchInProgress)
+        await loading.value
+        XCTAssertEqual(viewModel.enrollments, enrollment)
     }
 
     func testTrackDashboardCourseClicked() {
