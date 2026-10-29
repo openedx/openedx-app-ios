@@ -28,6 +28,10 @@ public enum CoreLocalization {
   public static let view = CoreLocalization.tr("Localizable", "VIEW", fallback: "View")
   /// Yesterday
   public static let yesterday = CoreLocalization.tr("Localizable", "YESTERDAY", fallback: "Yesterday")
+  public enum Accessibility {
+    /// Show password
+    public static let showPassword = CoreLocalization.tr("Localizable", "ACCESSIBILITY.SHOW_PASSWORD", fallback: "Show password")
+  }
   public enum Alert {
     /// Accept
     public static let accept = CoreLocalization.tr("Localizable", "ALERT.ACCEPT", fallback: "Accept")

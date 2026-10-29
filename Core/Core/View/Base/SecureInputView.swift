@@ -30,13 +30,31 @@ public struct SecureInputView: View {
                 }
             }.padding(.trailing, 32)
 
-            Button(action: {
-                isSecured.toggle()
-            }) {
-                Image(systemName: self.isSecured ? "eye.slash" : "eye")
-                    .accentColor(Theme.Colors.textInputPlaceholderColor)
+            Toggle(isOn: Binding(
+                get: { !isSecured },
+                set: { isSecured = !$0 }
+            )) {
+                Label {
+                    Text(CoreLocalization.Accessibility.showPassword)
+                } icon: {
+                    Image(systemName: self.isSecured ? "eye.slash" : "eye")
+                        .foregroundColor(Theme.Colors.textInputPlaceholderColor)
+                }
             }
-            .frame(height: 23)
+            .toggleStyle(PasswordVisibilityToggleStyle())
+            .accessibilityLabel(CoreLocalization.Accessibility.showPassword)
         }
+    }
+}
+
+// Shows only the existing eye icon while keeping the Toggle's built-in accessibility,
+// so VoiceOver reads "Show password" with an on or off value.
+private struct PasswordVisibilityToggleStyle: ToggleStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .labelStyle(.iconOnly)
+            .frame(height: 23)
+            .contentShape(Rectangle())
+            .onTapGesture { configuration.isOn.toggle() }
     }
 }
