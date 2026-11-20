@@ -142,7 +142,7 @@ public struct SignUpView: View {
                                     HStack(alignment: .center) {
                                         ProgressBar(size: 40, lineWidth: 8)
                                             .padding(20)
-                                            .accessibilityLabel("progressbar")
+                                            .accessibilityIdentifier("progressbar")
                                     }.frame(maxWidth: .infinity)
                                 } else {
                                     StyledButton(AuthLocalization.SignUp.createAccountBtn) {
@@ -154,7 +154,7 @@ public struct SignUpView: View {
                                     }
                                     .padding(.top, 30)
                                     .frame(maxWidth: .infinity)
-                                    .accessibilityLabel("signup_button")
+                                    .accessibilityIdentifier("signup_button")
                                 }
                                 Spacer()
                             }
