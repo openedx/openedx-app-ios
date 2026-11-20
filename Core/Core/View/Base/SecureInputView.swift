@@ -13,10 +13,15 @@ public struct SecureInputView: View {
     @Binding private var text: String
     @State private var isSecured: Bool = true
     private let placeholder: String
+    private let accessibilityLabel: String
     
-    public init(_ text: Binding<String>, placeholder: String = "") {
+    /// The spoken name for the text field. It is applied to the field, not the whole view,
+    /// so the Show password toggle keeps its own name. Defaults to `placeholder`;
+    /// pass a value when the placeholder isn't a suitable name.
+    public init(_ text: Binding<String>, placeholder: String = "", accessibilityLabel: String? = nil) {
         self._text = text
         self.placeholder = placeholder
+        self.accessibilityLabel = accessibilityLabel ?? placeholder
     }
     
     public var body: some View {
@@ -28,7 +33,9 @@ public struct SecureInputView: View {
                     TextField(placeholder, text: $text)
                         .autocapitalization(.none)
                 }
-            }.padding(.trailing, 32)
+            }
+            .accessibilityLabel(accessibilityLabel)
+            .padding(.trailing, 32)
 
             Toggle(isOn: Binding(
                 get: { !isSecured },
