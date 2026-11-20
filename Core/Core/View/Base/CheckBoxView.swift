@@ -28,22 +28,40 @@ public struct CheckBoxView: View {
     }
 
     public var body: some View {
-        HStack(spacing: 10) {
-            Image(
-                systemName: checked ? "checkmark.square.fill" : "square"
-            )
-            .foregroundColor(
-                checked ? Theme.Colors.accentXColor : color
-            )
+        Toggle(isOn: Binding(
+            get: { checked },
+            set: { newValue in
+                withAnimation(.linear(duration: 0.1)) {
+                    checked = newValue
+                }
+            }
+        )) {
             Text(text)
                 .font(font)
                 .foregroundColor(color)
         }
-        .onTapGesture {
-            withAnimation(.linear(duration: 0.1)) {
-                self.checked.toggle()
-            }
+        .toggleStyle(CheckBoxToggleStyle(color: color))
+    }
+}
+
+// Draws the existing checkbox look while keeping the Toggle's built-in accessibility,
+// so VoiceOver reads the box and its text as one control with an on or off value.
+private struct CheckBoxToggleStyle: ToggleStyle {
+    let color: Color
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(spacing: 10) {
+            Image(
+                systemName: configuration.isOn ? "checkmark.square.fill" : "square"
+            )
+            .foregroundColor(
+                configuration.isOn ? Theme.Colors.accentXColor : color
+            )
+            .accessibilityHidden(true)
+            configuration.label
         }
+        .contentShape(Rectangle())
+        .onTapGesture { configuration.isOn.toggle() }
     }
 }
 

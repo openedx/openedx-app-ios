@@ -115,6 +115,9 @@ public struct CoursesToSyncView: View {
                             text: course.name,
                             color: Theme.Colors.textPrimary.opacity(course.recentlyActive ? 1 : 0.8)
                         )
+                        // Inactive courses can't be synced, so mark them disabled. VoiceOver then
+                        // announces them as dimmed instead of as switches that can be changed.
+                        .disabled(!course.recentlyActive)
                         
                         if !course.recentlyActive {
                             Text(ProfileLocalization.CoursesToSync.inactive)
