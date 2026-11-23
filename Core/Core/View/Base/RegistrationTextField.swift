@@ -61,6 +61,7 @@ public struct RegistrationTextField: View {
                             )
                     )
                     .shake($config.shake)
+                    .accessibilityLabel(config.field.label)
                     .accessibilityIdentifier("\(config.field.name)_textarea")
             } else {
                 if textContentType == .password {
@@ -108,6 +109,7 @@ public struct RegistrationTextField: View {
                                 )
                         )
                         .shake($config.shake)
+                        .accessibilityLabel(config.field.label)
                         .accessibilityIdentifier("\(config.field.name)_textfield")
                 }
             }

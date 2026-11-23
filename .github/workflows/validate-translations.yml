@@ -11,7 +11,7 @@ on:
 jobs:
   translations:
     name: "${{ matrix.case.name }}"
-    runs-on: macos-14
+    runs-on: macos-latest
 
     strategy:
       matrix:

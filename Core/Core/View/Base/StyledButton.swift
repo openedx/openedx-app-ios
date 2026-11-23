@@ -91,7 +91,8 @@ public struct StyledButton: View {
                 .opacity(isActive ? 1.0 : 0.6)
         
         )
-        .accessibilityElement(children: .ignore)
+        // Leave the native Button as the accessibility element, so VoiceOver announces
+        // "button" and, when disabled, "dimmed".
         .accessibilityLabel(title)
     }
 }

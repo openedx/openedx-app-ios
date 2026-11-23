@@ -117,6 +117,7 @@ public struct SignInView: View {
                                                 .stroke(lineWidth: 1)
                                                 .fill(Theme.Colors.textInputStroke)
                                         )
+                                        .accessibilityLabel(AuthLocalization.SignIn.emailOrUsername)
                                         .accessibilityIdentifier("username_textfield")
                                     
                                     Text(AuthLocalization.SignIn.password)
@@ -124,7 +125,7 @@ public struct SignInView: View {
                                         .foregroundColor(Theme.Colors.textPrimary)
                                         .padding(.top, 18)
                                         .accessibilityIdentifier("password_text")
-                                    SecureInputView($password)
+                                    SecureInputView($password, accessibilityLabel: AuthLocalization.SignIn.password)
                                         .font(Theme.Fonts.bodyLarge)
                                         .padding(.all, 14)
                                         .background(
